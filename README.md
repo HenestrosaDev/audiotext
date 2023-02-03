@@ -91,6 +91,7 @@ If you want to execute the program:
 If you want to open the code:
 - Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command and then open it with your favourite IDE (mine is [PyCharm](https://www.jetbrains.com/pycharm/)).
 - Please bear in mind that you cannot generate a single .exe file for this project with PyInstaller due to the dependency with the CustonTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
+- It's crucial to note that I've had to comment out the line `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package. If it wasn't commented, the project would need to run a command line along with the GUI. Otherwise, the program wouldn't run when calling this function because the mentioned line throws an error that stops the function from running (in case that the program doesn't run on a console), which cannot be handled within the project code.  
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
