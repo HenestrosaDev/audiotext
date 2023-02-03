@@ -1,0 +1,108 @@
+# Copyright (C) 2023 HenestrosaConH
+# José Carlos López Henestrosa <henestrosaconh@gmail.com>, 2023.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"POT-Creation-Date: 2023-01-26 11:32+0100\n"
+"PO-Revision-Date: 2023-01-26 11:32+0100\n"
+"Last-Translator: José Carlos López Henestrosa <henestrosaconh@gmail.com>\n"
+"Language-Team: José Carlos López Henestrosa <henestrosaconh@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: audiotext\src\main.py:53
+#: audiotext\src\main.py:118
+msgid "Audio language"
+msgstr "Idioma del audio"
+
+#: audiotext\src\main.py:65
+#: audiotext\src\main.py:119
+msgid "Select audio file"
+msgstr "Seleccionar archivo de audio"
+
+#: audiotext\src\main.py:72
+msgid "Transcribe from microphone"
+msgstr "Transcribir del micrófono"
+
+#: audiotext\src\main.py:81
+#: audiotext\src\main.py:120
+msgid "Generate text"
+msgstr "Generar texto"
+
+#: audiotext\src\main.py:89
+#: audiotext\src\main.py:121
+msgid "App language"
+msgstr "Idioma de la app"
+
+#: audiotext\src\main.py:103
+#: audiotext\src\main.py:122
+msgid "Appearance mode"
+msgstr "Tema actual"
+
+#: audiotext\src\main.py:86
+#: audiotext\src\main.py:109
+#: audiotext\src\main.py:123
+#: audiotext\src\main.py:124
+#: audiotext\src\main.py:155
+msgid "System"
+msgstr "Sistema"
+
+#: audiotext\src\main.py:109
+#: audiotext\src\main.py:123
+#: audiotext\src\main.py:153
+msgid "Dark"
+msgstr "Oscuro"
+
+#: audiotext\src\main.py:109
+#: audiotext\src\main.py:123
+#: audiotext\src\main.py:154
+msgid "Light"
+msgstr "Claro"
+
+#: audiotext\src\main.py:125
+#: audiotext\src\main.py:142
+msgid "Save transcription"
+msgstr "Guardar transcripción"
+
+#: audiotext\src\main.py:175
+msgid "Error: No audio file selected, please select one before generating text."
+msgstr "Error: No se ha seleccionado un archivo de audio, por favor seleccione uno antes de generar el texto."
+
+#: audiotext\src\main.py:219
+msgid "Error: The selected audio language is not valid."
+msgstr "Error: El idioma del audio seleccionado no es válido."
+
+#: audiotext\src\logic.py:20
+msgid "Select a file"
+msgstr "Selecciona un archivo"
+
+#: audiotext\src\logic.py:21
+msgid "Audio files"
+msgstr "Archivos de audio"
+
+#: audiotext\src\logic.py:102
+msgid "Say something"
+msgstr "Di algo"
+
+#: audiotext\src\logic.py:111
+msgid "Error: Microphone not available."
+msgstr "Error: Micrófono no disponible."
+
+#: audiotext\src\logic.py:113
+msgid "Error: Please, try again."
+msgstr "Error: Por favor, inténtalo de nuevo."
+
+#: audiotext\src\logic.py:126
+msgid "Save as"
+msgstr "Guardar como"
+
+#: audiotext\src\logic.py:128
+msgid "All Files"
+msgstr "Todos los archivos"
+
+#: audiotext\src\logic.py:130
+msgid "Text file"
+msgstr "Archivo de texto"

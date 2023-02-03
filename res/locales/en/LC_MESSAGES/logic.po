@@ -1,0 +1,44 @@
+# Copyright (C) 2023 HenestrosaConH
+# José Carlos López Henestrosa <henestrosaconh@gmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"POT-Creation-Date: 2023-01-26 11:32+0100\n"
+"PO-Revision-Date: 2023-01-26 11:32+0100\n"
+"Last-Translator: José Carlos López Henestrosa <henestrosaconh@gmail.com>\n"
+"Language-Team: José Carlos López Henestrosa <henestrosaconh@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: audiotext\src\logic.py:20
+msgid "Select a file"
+msgstr "Select a file"
+
+#: audiotext\src\logic.py:21
+msgid "Audio files"
+msgstr "Audio files"
+
+#: audiotext\src\logic.py:102
+msgid "Say something"
+msgstr "Say something"
+
+#: audiotext\src\logic.py:109
+msgid "Error: Microphone not available."
+msgstr "Error: Microphone not available."
+
+#: audiotext\src\logic.py:126
+msgid "Save as"
+msgstr "Save as"
+
+#: audiotext\src\logic.py:128
+msgid "All Files"
+msgstr "All Files"
+
+#: audiotext\src\logic.py:128
+msgid "Text file"
+msgstr "Text file"
+
