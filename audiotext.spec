@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['D:\\Mio\\Proyectos\\Python\\audiotext\\src\\main.py'],
+    ['ROOT DIRECTORY PATH\\audiotext\\src\\main.py'],
     pathex=[],
     binaries=[],
     datas=[
