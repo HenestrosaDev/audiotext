@@ -37,6 +37,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#project-structure">Project Structure</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -55,13 +56,20 @@
 
 [![Main screenshot light][main-system]](https://github.com/HenestrosaConH/audiotext)
 
-The project structure is as follows:
+The project is available in Spanish and English. It supports 71 different languages and can take the audio from an audio file, video file or microphone. 
+You can also select the theme you like best. It can be dark, light or the one configured in the system.  
+
+<!-- PROJECT STRUCTURE -->
+
+### Project Structure
+
+Directories:
  
 - `docs`: Contains files related to the documentation of the project.
 - `res`: Contains all the static resources used by the app, which are the app icon (located in the `img` folder) and the i18n files (located in the `locales` folder).
 - `src`:  Contains the source code files of the app.
 
-Besides those directories, there are also these two files (apart from the .gitignore, README.md and LICENSE):
+Besides those directories, there are also these two files in the root (apart from the .gitignore, README.md and LICENSE):
 
 - `audiotext.spec`: Used to generate a .exe file with [PyInstaller](https://pyinstaller.org/en/stable/). Notice that, inside the file, there are some annotations, which are `ROOT DIRECTORY PATH`, `PATH TO CUSTOM TKINTER` and `PATH TO RES FOLDER`. You will have to replace them by the indicated path of your computer. For example, my `PATH TO CUSTOMTKINTER` is `c:\\users\\JC\\appdata\\local\\programs\\python\\python310\\lib\\site-packages\\customtkinter`.  
 - `requirements.txt`: Lists the names and versions of each package used to build this project.
@@ -72,6 +80,7 @@ Besides those directories, there are also these two files (apart from the .gitig
 
 ### Built With
 
+- [moviepy](https://pypi.org/project/moviepy/)
 - [pydub](https://github.com/jiaaro/pydub)
 - [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)
 - [SpeechRecognition](https://pypi.org/project/SpeechRecognition/)
@@ -124,10 +133,13 @@ Don't forget to give the project a star! Thanks again!
 
 ## Acknowledgments
 
-I've made use of the following repositories to make this README:
+I've made use of the following resources to make this project:
 
--   [Best-README-Template](https://github.com/othneildrew/Best-README-Template/)
--   [Img Shields](https://shields.io)
+- [Extracting Speech from Video using Python](https://towardsdatascience.com/extracting-speech-from-video-using-python-f0ec7e312d38)
+- [How to Translate Python Applications with the GNU gettext Module](https://phrase.com/blog/posts/translate-python-gnu-gettext/)
+- [How to Convert Speech to Text in Python](https://www.thepythoncode.com/article/using-speech-recognition-to-convert-speech-to-text-python)
+- [Best-README-Template](https://github.com/othneildrew/Best-README-Template/)
+- [Img Shields](https://shields.io)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

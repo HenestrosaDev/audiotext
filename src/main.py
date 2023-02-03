@@ -170,7 +170,17 @@ class App(customtkinter.CTk):
 
 	def get_transcription(self, source):
 		selected_path = Path(self.filepath)
-		is_file_valid = selected_path.is_file() and selected_path.suffix in constants.AUDIO_FILE_EXTENSIONS
+		is_file_extension_valid = False
+
+		if selected_path.suffix in constants.VIDEO_FILE_EXTENSIONS:
+			is_file_extension_valid = True
+		else:
+			for extensions in constants.AUDIO_FILE_EXTENSIONS.values():
+				if selected_path.suffix in extensions:
+					is_file_extension_valid = True
+					break
+
+		is_file_valid = selected_path.is_file() and is_file_extension_valid
 
 		if source == constants.FILE and not is_file_valid:
 			self.display_text(utils._("Error: No audio file selected, please select one before generating text."))
