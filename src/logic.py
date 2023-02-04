@@ -1,10 +1,10 @@
 import constants
 import os
-import moviepy.editor as mp
 import shutil
 import speech_recognition as sr
 import traceback
 import utils
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from pathlib import Path
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
@@ -64,7 +64,7 @@ async def generate_file_transcription(filepath: str, language_code: str) -> str:
 		elif content_type in constants.AUDIO_FILE_EXTENSIONS["mp3"]:
 			sound = AudioSegment.from_mp3(filepath)
 		elif content_type in constants.VIDEO_FILE_EXTENSIONS:
-			clip = mp.VideoFileClip(filepath)
+			clip = VideoFileClip(filepath)
 			video_audio_path = chunks_directory / f"{Path(filepath).stem}.wav"
 			clip.audio.write_audiofile(video_audio_path)
 			sound = AudioSegment.from_wav(video_audio_path)
