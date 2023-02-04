@@ -24,7 +24,7 @@
   <h3 align="center">Audiotext</h3>
 
   <p align="center">
-    A program that transcribes audio from a file or microphone to text in any supported language by Google API.
+    A program that transcribes audio from a file or microphone to text in any language supported by the Google API.
     <br />
     <a href="https://github.com/HenestrosaConH/audiotext/issues">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues">Request Feature</a>
   </p>
@@ -80,11 +80,11 @@ Besides those directories, there are also these two files in the root (apart fro
 
 ### Built With
 
-- [moviepy](https://pypi.org/project/moviepy/)
-- [pydub](https://github.com/jiaaro/pydub)
 - [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)
-- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/)
+- [moviepy](https://pypi.org/project/moviepy/)
 - [PyAudio](https://pypi.org/project/PyAudio/)
+- [pydub](https://github.com/jiaaro/pydub)
+- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
