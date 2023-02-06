@@ -126,7 +126,8 @@ Don't forget to give the project a star! Thanks again!
 
 ## Contact
 
-<a href="mailto:henestrosaconh@gmail.com">Email</a> - [LinkedIn][linkedin-url]
+<a href="https://www.linkedin.com/in/henestrosaconh/" target="blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a> 
+<a href="mailto:henestrosaconh@gmail.com" target="_blank"><img alt="Gmail" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
