@@ -1,4 +1,4 @@
-LANGUAGES = {
+AUDIO_LANGUAGES = {
     "af": "Afrikaans",
     "am": "አማርኛ",
     "ar": "العربية",
@@ -28,7 +28,8 @@ LANGUAGES = {
     "de": "Deutsch",
     "de_CH": "Schweizer Hochdeutsch",
     "el": "Ελληνικά",
-    "en": "English (United States)",
+    "en": "English",
+    "en_US": "English (United States)",
     "en_AU": "English (Australia)",
     "en_CA": "English (Canada)",
     "en_GB": "English (United Kingdom)",
@@ -105,6 +106,7 @@ LANGUAGES = {
     "pl": "Polski",
     "pt_BR": "Português (Brasil)",
     "pt_PT": "Português (Portugal)",
+    "pt": "Português",
     "ro": "Română",
     "ru": "Русский",
     "si": "සිංහල",
@@ -133,6 +135,11 @@ LANGUAGES = {
     "zh_HK": "中文（香港）",
     "zh_TW": "中文（台灣）",
     "zu": "Isizulu",
+}
+
+APP_LANGUAGES = {
+    "en": "English",
+    "es": "Español"
 }
 
 FILE = "file"

@@ -5,12 +5,12 @@ block_cipher = None
 
 
 a = Analysis(
-    ['ROOT DIRECTORY PATH\\audiotext\\src\\main.py'],
+    ['src/main.py'],
     pathex=[],
     binaries=[],
     datas=[
-        ('PATH TO CUSTOMTKINTER', 'customtkinter/'),
-        ('PATH TO RES FOLDER', 'res/')
+        ('/opt/homebrew/lib/python3.10/site-packages/customtkinter', 'customtkinter/'),
+        ('res', 'res/')
     ],
     hiddenimports=[],
     hookspath=[],
@@ -40,7 +40,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['ROOT DIRECTORY PATH\\audiotext\\res\\img\\icon.ico'],
+    icon=['res/img/icon.ico'],
 )
 coll = COLLECT(
     exe,

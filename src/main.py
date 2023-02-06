@@ -5,8 +5,8 @@ from pathlib import Path
 
 import constants as c
 import customtkinter
-import logic as lgc
 import utils as u
+import logic as lgc
 
 
 class App(customtkinter.CTk):
@@ -56,10 +56,10 @@ class App(customtkinter.CTk):
         self.lbl_audio_language.grid(row=1, column=0, padx=20, pady=(20, 0))
 
         self.cbx_audio_language = customtkinter.CTkComboBox(
-            self.frm_sidebar, values=list(c.LANGUAGES.values())
+            self.frm_sidebar, values=list(c.AUDIO_LANGUAGES.values())
         )
         self.cbx_audio_language.grid(row=2, column=0, padx=20, pady=10)
-        self.cbx_audio_language.set(c.LANGUAGES[locale.getdefaultlocale()[0]])
+        self.cbx_audio_language.set(c.AUDIO_LANGUAGES[locale.getlocale()[0]])
 
         # Select file button
         self.btn_select_file = customtkinter.CTkButton(
@@ -93,11 +93,13 @@ class App(customtkinter.CTk):
 
         self.omn_app_language = customtkinter.CTkOptionMenu(
             self.frm_sidebar,
-            values=[c.LANGUAGES["es"], c.LANGUAGES["en"]],
+            values=list(c.APP_LANGUAGES.values()),
             command=self.change_app_language,
         )
         self.omn_app_language.grid(row=8, column=0, padx=20, pady=10)
-        self.omn_app_language.set(c.LANGUAGES[locale.getdefaultlocale()[0]])
+        self.omn_app_language.set(
+            c.APP_LANGUAGES.get(locale.getlocale()[0].split("_")[0], "English")
+        )
 
         # Appearance mode
         self.lbl_appearance_mode = customtkinter.CTkLabel(
@@ -113,7 +115,7 @@ class App(customtkinter.CTk):
         self.omn_appearance_mode.grid(row=10, column=0, padx=20, pady=10)
 
     def change_app_language(self, language_name):
-        language_code = [i for i in c.LANGUAGES if c.LANGUAGES[i] == language_name][0]
+        language_code = [i for i in c.AUDIO_LANGUAGES if c.AUDIO_LANGUAGES[i] == language_name][0]
         u.load_translation(language_code)
 
         self.lbl_audio_language.configure(text=f'{u._("Audio language")}:')
@@ -207,7 +209,7 @@ class App(customtkinter.CTk):
             # Get the selected language code
             language_code = [
                 key
-                for key, value in c.LANGUAGES.items()
+                for key, value in c.AUDIO_LANGUAGES.items()
                 if value.lower() == self.cbx_audio_language.get().strip().lower()
             ][0]
 

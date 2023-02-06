@@ -1,6 +1,7 @@
 import gettext
 import locale
 import sys
+import constants as c
 from pathlib import Path
 
 
@@ -39,10 +40,19 @@ def load_translation(language_code: str):
 
     :param str language_code: The code for the language to be used for translation.
     """
+    try:
+        lang_code_without_territory = language_code.split("_")[0]
+        if lang_code_without_territory not in c.APP_LANGUAGES:
+            lang_code_without_territory = "en"
+    except Exception:
+        lang_code_without_territory = "en"
+        locale.setlocale(locale.LC_ALL, "en_US")
+
+
     translation = gettext.translation(
         "all",
         localedir=ROOT_PATH / "res/locales",
-        languages=[language_code],
+        languages=[lang_code_without_territory],
         fallback=True,
     )
     translation.install()
@@ -50,4 +60,4 @@ def load_translation(language_code: str):
     _ = translation.gettext
 
 
-load_translation(locale.getdefaultlocale()[0])
+load_translation(locale.getlocale()[0])
