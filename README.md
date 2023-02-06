@@ -71,7 +71,7 @@ Directories:
 
 Besides those directories, there are also these two files in the root (apart from the .gitignore, README.md and LICENSE):
 
-- `audiotext.spec`: Used to generate a .exe file with [PyInstaller](https://pyinstaller.org/en/stable/). Notice that, inside the file, there are is the annotation `PATH TO CUSTOM TKINTER`. You will have to replace it by the actual path in your computer. To get it, you can execute `pip show customtkinter`.  
+- `audiotext.spec`: Used to generate a .exe file with [PyInstaller](https://pyinstaller.org/en/stable/). Notice that, inside the file, there are is the annotation `PATH TO CUSTOMTKINTER`. You will have to replace it by the actual path in your computer. To get it, you can execute `pip show customtkinter`.  
 - `requirements.txt`: Lists the names and versions of each package used to build this project.
  
 <p align="right">(<a href="#top">back to top</a>)</p>

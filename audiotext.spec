@@ -9,7 +9,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[
-        ('/opt/homebrew/lib/python3.10/site-packages/customtkinter', 'customtkinter/'),
+        ('PATH TO CUSTOMTKINTER', 'customtkinter/'),
         ('res', 'res/')
     ],
     hiddenimports=[],
