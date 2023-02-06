@@ -135,36 +135,23 @@ LANGUAGES = {
     "zu": "Isizulu",
 }
 
+FILE = "file"
+MIC = "mic"
+
 AUDIO_FILE_EXTENSIONS = {
     "mp3": [".mp3", ".mpeg"],
     "wav": [".wav", "wma"],
     "ogg": [".ogg", ".oga", ".opus"],
 }
 
+# fmt: off
 VIDEO_FILE_EXTENSIONS = [
-    ".mp4",
-    ".m4a",
-    ".m4v",
-    ".f4v",
-    ".f4a",
-    ".m4b",
-    ".m4r",
-    ".f4b",
-    ".mov",  # MP4
+    ".mp4", ".m4a", ".m4v", ".f4v", ".f4a", ".m4b", ".m4r", ".f4b", ".mov",  # MP4
     ".avi",  # AVI
     ".webm",  # WebM
     ".flv",  # FLV
     ".mkv",  # MKV
-    ".3gp",
-    ".3gp2",
-    ".3g2",
-    ".3gpp",
-    ".3gpp2",  # 3GP
-    ".ogv",
-    ".ogx",  # OGG
-    ".wmv",
-    ".asf",  # AIFF / ASF
+    ".3gp", ".3gp2", ".3g2", ".3gpp", ".3gpp2",  # 3GP
+    ".ogv", ".ogx",  # OGG
+    ".wmv", ".asf"  # AIFF / ASF
 ]
-
-FILE = "file"
-MIC = "mic"

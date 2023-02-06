@@ -1,11 +1,12 @@
 import asyncio
-import constants
-import customtkinter
 import locale
-import logic
 import threading
-import utils
 from pathlib import Path
+
+import constants as c
+import customtkinter
+import logic as lgc
+import utils as u
 
 
 class App(customtkinter.CTk):
@@ -25,7 +26,7 @@ class App(customtkinter.CTk):
         customtkinter.set_default_color_theme("blue")
 
         self.title("Audiotext")
-        self.wm_iconbitmap(utils.ROOT_PATH / "res/img/icon.ico")
+        self.wm_iconbitmap(u.ROOT_PATH / "res/img/icon.ico")
         self.geometry(f"{1000}x{700}")
         self.minsize(750, 550)
 
@@ -50,27 +51,27 @@ class App(customtkinter.CTk):
 
         # Audio language
         self.lbl_audio_language = customtkinter.CTkLabel(
-            self.frm_sidebar, text=f'{utils._("Audio language")}:', anchor="w"
+            self.frm_sidebar, text=f'{u._("Audio language")}:', anchor="w"
         )
         self.lbl_audio_language.grid(row=1, column=0, padx=20, pady=(20, 0))
 
         self.cbx_audio_language = customtkinter.CTkComboBox(
-            self.frm_sidebar, values=list(constants.LANGUAGES.values())
+            self.frm_sidebar, values=list(c.LANGUAGES.values())
         )
         self.cbx_audio_language.grid(row=2, column=0, padx=20, pady=10)
-        self.cbx_audio_language.set(constants.LANGUAGES[locale.getdefaultlocale()[0]])
+        self.cbx_audio_language.set(c.LANGUAGES[locale.getdefaultlocale()[0]])
 
         # Select file button
         self.btn_select_file = customtkinter.CTkButton(
-            self.frm_sidebar, text=utils._("Select audio file"), command=self.open_file
+            self.frm_sidebar, text=u._("Select audio file"), command=self.open_file
         )
         self.btn_select_file.grid(row=3, column=0, padx=20, pady=(30, 20))
 
         # Transcribe from microphone button
         self.btn_transcribe_from_mic = customtkinter.CTkButton(
             self.frm_sidebar,
-            text=utils._("Transcribe from microphone"),
-            command=lambda: self.get_transcription(constants.MIC),
+            text=u._("Transcribe from microphone"),
+            command=lambda: self.get_transcription(c.MIC),
         )
         self.btn_transcribe_from_mic.grid(row=4, column=0, padx=20, pady=(20, 30))
 
@@ -78,59 +79,55 @@ class App(customtkinter.CTk):
         self.btn_generate_text = customtkinter.CTkButton(
             self.frm_sidebar,
             fg_color="green",
-            text=utils._("Generate text"),
-            command=lambda: self.get_transcription(constants.FILE),
+            text=u._("Generate text"),
+            command=lambda: self.get_transcription(c.FILE),
         )
         self.btn_generate_text.grid(row=5, column=0, padx=20, pady=10)
         self.btn_generate_text.grid_remove()  # hidden at start
 
         # App language
         self.lbl_app_language = customtkinter.CTkLabel(
-            self.frm_sidebar, text=f'{utils._("App language")}:', anchor="w"
+            self.frm_sidebar, text=f'{u._("App language")}:', anchor="w"
         )
         self.lbl_app_language.grid(row=7, column=0, padx=20, pady=(20, 0))
 
         self.omn_app_language = customtkinter.CTkOptionMenu(
             self.frm_sidebar,
-            values=[constants.LANGUAGES["es"], constants.LANGUAGES["en"]],
+            values=[c.LANGUAGES["es"], c.LANGUAGES["en"]],
             command=self.change_app_language,
         )
         self.omn_app_language.grid(row=8, column=0, padx=20, pady=10)
-        self.omn_app_language.set(constants.LANGUAGES[locale.getdefaultlocale()[0]])
+        self.omn_app_language.set(c.LANGUAGES[locale.getdefaultlocale()[0]])
 
         # Appearance mode
         self.lbl_appearance_mode = customtkinter.CTkLabel(
-            self.frm_sidebar, text=f'{utils._("Appearance mode")}:', anchor="w"
+            self.frm_sidebar, text=f'{u._("Appearance mode")}:', anchor="w"
         )
         self.lbl_appearance_mode.grid(row=9, column=0, padx=20, pady=(10, 0))
 
         self.omn_appearance_mode = customtkinter.CTkOptionMenu(
             self.frm_sidebar,
-            values=[utils._("System"), utils._("Light"), utils._("Dark")],
+            values=[u._("System"), u._("Light"), u._("Dark")],
             command=self.change_appearance_mode_event,
         )
         self.omn_appearance_mode.grid(row=10, column=0, padx=20, pady=10)
 
     def change_app_language(self, language_name):
-        language_code = [
-            i for i in constants.LANGUAGES if constants.LANGUAGES[i] == language_name
-        ][0]
-        utils.load_translation(language_code)
+        language_code = [i for i in c.LANGUAGES if c.LANGUAGES[i] == language_name][0]
+        u.load_translation(language_code)
 
-        self.lbl_audio_language.configure(text=f'{utils._("Audio language")}:')
-        self.btn_select_file.configure(text=utils._("Select audio file"))
-        self.btn_transcribe_from_mic.configure(
-            text=utils._("Transcribe from microphone")
-        )
-        self.btn_generate_text.configure(text=utils._("Generate text"))
-        self.lbl_app_language.configure(text=f'{utils._("App language")}:')
-        self.lbl_appearance_mode.configure(text=f'{utils._("Appearance mode")}:')
+        self.lbl_audio_language.configure(text=f'{u._("Audio language")}:')
+        self.btn_select_file.configure(text=u._("Select audio file"))
+        self.btn_transcribe_from_mic.configure(text=u._("Transcribe from microphone"))
+        self.btn_generate_text.configure(text=u._("Generate text"))
+        self.lbl_app_language.configure(text=f'{u._("App language")}:')
+        self.lbl_appearance_mode.configure(text=f'{u._("Appearance mode")}:')
         self.omn_appearance_mode.configure(
-            values=[utils._("System"), utils._("Light"), utils._("Dark")]
+            values=[u._("System"), u._("Light"), u._("Dark")]
         )
-        self.omn_appearance_mode.set(utils._("System"))
-        self.btn_save.configure(text=utils._("Save transcription"))
-        customtkinter.set_appearance_mode(utils._(self.omn_appearance_mode.get()))
+        self.omn_appearance_mode.set(u._("System"))
+        self.btn_save.configure(text=u._("Save transcription"))
+        customtkinter.set_appearance_mode(u._(self.omn_appearance_mode.get()))
 
     def create_main_content(self):
         # Selected file entry
@@ -148,7 +145,7 @@ class App(customtkinter.CTk):
         self.btn_save = customtkinter.CTkButton(
             self,
             fg_color="green",
-            text=utils._("Save transcription"),
+            text=u._("Save transcription"),
             command=self.save_transcription,
         )
         self.btn_save.grid(row=2, column=1, padx=20, pady=(0, 20), sticky="sew")
@@ -159,16 +156,16 @@ class App(customtkinter.CTk):
     @staticmethod
     def change_appearance_mode_event(new_appearance_mode: str):
         appearance_mode_map = {
-            utils._("Dark"): "Dark",
-            utils._("Light"): "Light",
-            utils._("System"): "System",
+            u._("Dark"): "Dark",
+            u._("Light"): "Light",
+            u._("System"): "System",
         }
         appearance_mode = appearance_mode_map.get(new_appearance_mode, "System")
         customtkinter.set_appearance_mode(appearance_mode)
 
     def open_file(self):
         # Open the file dialog
-        filepath = logic.open_file()
+        filepath = lgc.open_file()
 
         if filepath:
             self.filepath = filepath
@@ -182,18 +179,18 @@ class App(customtkinter.CTk):
         selected_path = Path(self.filepath)
         is_file_extension_valid = False
 
-        if selected_path.suffix in constants.VIDEO_FILE_EXTENSIONS:
+        if selected_path.suffix in c.VIDEO_FILE_EXTENSIONS:
             is_file_extension_valid = True
         else:
-            for extensions in constants.AUDIO_FILE_EXTENSIONS.values():
+            for extensions in c.AUDIO_FILE_EXTENSIONS.values():
                 if selected_path.suffix in extensions:
                     is_file_extension_valid = True
                     break
         is_file_valid = selected_path.is_file() and is_file_extension_valid
 
-        if source == constants.FILE and not is_file_valid:
+        if source == c.FILE and not is_file_valid:
             self.display_text(
-                utils._(
+                u._(
                     "Error: No audio file selected, please select one before generating text."
                 )
             )
@@ -210,7 +207,7 @@ class App(customtkinter.CTk):
             # Get the selected language code
             language_code = [
                 key
-                for key, value in constants.LANGUAGES.items()
+                for key, value in c.LANGUAGES.items()
                 if value.lower() == self.cbx_audio_language.get().strip().lower()
             ][0]
 
@@ -225,14 +222,12 @@ class App(customtkinter.CTk):
             self.btn_transcribe_from_mic.configure(state="disabled")
 
             # Get transcription
-            if source == constants.FILE:
-                self.transcription = await logic.generate_file_transcription(
+            if source == c.FILE:
+                self.transcription = await lgc.generate_file_transcription(
                     self.filepath, language_code
                 )
-            elif source == constants.MIC:
-                self.transcription = await logic.generate_mic_transcription(
-                    language_code
-                )
+            elif source == c.MIC:
+                self.transcription = await lgc.generate_mic_transcription(language_code)
             # Display transcription
             self.display_text(self.transcription)
 
@@ -248,16 +243,14 @@ class App(customtkinter.CTk):
             if self.transcription:
                 self.btn_save.grid()
         except IndexError:
-            self.display_text(
-                utils._("Error: The selected audio language is not valid.")
-            )
+            self.display_text(u._("Error: The selected audio language is not valid."))
 
     def display_text(self, message):
         self.tbx_transcription.delete("1.0", "end")
         self.tbx_transcription.insert("0.0", message)
 
     def save_transcription(self):
-        logic.save_transcription(
+        lgc.save_transcription(
             self.ent_selected_file.get(), self.tbx_transcription.get("1.0", "end-1c")
         )
 
