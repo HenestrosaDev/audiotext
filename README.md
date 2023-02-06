@@ -54,7 +54,7 @@
 
 ## About The Project
 
-[![Main screenshot light][main-system]](https://github.com/HenestrosaConH/audiotext)
+[![Main screenshot light][demo]](https://github.com/HenestrosaConH/audiotext)
 
 The project is available in Spanish and English. It supports 71 different languages and can take the audio from an audio file, video file or microphone. 
 You can also select the theme you like best. It can be dark, light or the one configured in the system.  
@@ -156,5 +156,5 @@ I've made use of the following resources to make this project:
 [issues-shield]: https://img.shields.io/github/issues/HenestrosaConH/audiotext.svg?style=for-the-badge
 [issues-url]: https://github.com/HenestrosaConH/audiotext/issues
 [linkedin-url]: https://linkedin.com/in/henestrosaconh
-[main-system]: docs/main-system.png
+[demo]: docs/demo.gif
 [icon]: docs/icon.png
