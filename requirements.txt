@@ -1,5 +1,5 @@
-customtkinter==5.0.5
-pydub==0.25.1
-SpeechRecognition==3.9.0
-pyaudio==0.2.13
-moviepy==1.0.3
+customtkinter~=5.0.5
+pydub~=0.25.1
+SpeechRecognition~=3.9.0
+pyaudio~=0.2.13
+moviepy~=1.0.3
