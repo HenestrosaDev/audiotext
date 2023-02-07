@@ -17,37 +17,34 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="docs/icon.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">Audiotext</h3>
-
-  <p align="center">
-    A program that transcribes audio from a file or microphone to text in any language supported by the Google API.
-    <br />
-    <a href="https://github.com/HenestrosaConH/audiotext/issues">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues">Request Feature</a>
-  </p>
+    <a href="https://github.com/othneildrew/Best-README-Template">
+        <img src="docs/icon.png" alt="Logo" width="80" height="80">
+    </a>
+    <h3 align="center">Audiotext</h3>
+    <p align="center">
+        A program that transcribes audio from a file or microphone to text in any language supported by the Google API.
+        <br />
+        <a href="https://github.com/HenestrosaConH/audiotext/issues">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues">Request Feature</a>
+    </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#project-structure">Project Structure</a></li>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-    </li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
+    <summary>Table of Contents</summary>
+    <ol>
+        <li>
+            <a href="#about-the-project">About The Project</a>
+            <ul>
+                <li><a href="#project-structure">Project Structure</a></li>
+                <li><a href="#built-with">Built With</a></li>
+            </ul>
+        </li>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#contributing">Contributing</a></li>
+        <li><a href="#license">License</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#acknowledgments">Acknowledgments</a></li>
+    </ol>
 </details>
 
 <!-- ABOUT THE PROJECT -->
@@ -72,7 +69,7 @@ Directories:
 Besides those directories, there are also these two files in the root (apart from the .gitignore, README.md and LICENSE):
 
 - `audiotext.spec`: Used to generate a .exe file with [PyInstaller](https://pyinstaller.org/en/stable/). Notice that, inside the file, there are is the annotation `PATH TO CUSTOMTKINTER`. You will have to replace it by the actual path in your computer. To get it, you can execute `pip show customtkinter`.  
-- `requirements.txt`: Lists the names and versions of each package used to build this project.
+- `requirements.txt`: Lists the names and versions of each package used to build this project. To install the requirements, execute `pip install -r requirements.txt`.
  
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -122,6 +119,14 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- LICENSE -->
+
+## License
+
+Distributed under the Creative Commons 1.0 License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
 
