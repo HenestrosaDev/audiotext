@@ -59,7 +59,7 @@ class MainWindow(ctk.CTkFrame):
 
         # Select file button
         self.btn_select_file = ctk.CTkButton(
-            self.frm_sidebar, text=_("Select audio file"), command=self._on_select_file
+            self.frm_sidebar, text=_("Select file"), command=self._on_select_file
         )
         self.btn_select_file.grid(row=3, column=0, padx=20, pady=(30, 20))
 
@@ -201,9 +201,9 @@ class MainWindow(ctk.CTkFrame):
         from utils.i18n import _
 
         self.lbl_audio_language.configure(text=f'{_("Audio language")}:')
-        self.btn_select_file.configure(text=_("Select audio file"))
+        self.btn_select_file.configure(text=_("Select file"))
         self.btn_transcribe_from_mic.configure(text=_("Transcribe from microphone"))
-        self.btn_generate_transcription.configure(text=_("Generate text"))
+        self.btn_generate_transcription.configure(text=_("Generate transcription"))
         self.lbl_app_language.configure(text=f'{_("App language")}:')
         self.lbl_appearance_mode.configure(text=f'{_("Appearance mode")}:')
         self.omn_appearance_mode.configure(values=[_("System"), _("Light"), _("Dark")])

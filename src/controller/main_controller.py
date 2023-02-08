@@ -258,9 +258,7 @@ class MainController:
                 )
             except sr.UnknownValueError:
                 self.view.display_text(
-                    _(
-                        "Error: Sorry, I cannot clarify what you are saying. Please try again."
-                    )
+                    _("Sorry, I cannot clarify what you are saying. Please try again.")
                 )
             except Exception:
                 print(traceback.format_exc())

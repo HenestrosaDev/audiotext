@@ -1,0 +1,108 @@
+# Copyright (C) 2023 HenestrosaConH
+# This file is distributed under the same license as the PACKAGE package.
+# José Carlos López Henestrosa <henestrosaconh@gmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.3.0\n"
+"Report-Msgid-Bugs-To: José Carlos López Henestrosa <henestrosaconh@gmail.com>\n"
+"POT-Creation-Date: 2023-02-08 18:22+0100\n"
+"PO-Revision-Date: 2023-02-08 18:22+0100\n"
+"Last-Translator: José Carlos López Henestrosa <henestrosaconh@gmail.com>\n"
+"Language-Team: José Carlos López Henestrosa <henestrosaconh@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: src\view\main_window.py:62
+#: src\view\main_window.py:204
+msgid "Select file"
+msgstr "Selecciona archivo"
+
+#: src\view\main_window.py:69
+#: src\view\main_window.py:205
+msgid "Transcribe from microphone"
+msgstr "Transcribir del micrófono"
+
+#: src\view\main_window.py:78
+msgid "Generate transcription"
+msgstr "Generar transcripción"
+
+#: src\view\main_window.py:108
+#: src\view\main_window.py:209
+#: src\view\main_window.py:210
+#: src\view\main_window.py:219
+msgid "System"
+msgstr "Sistema"
+
+#: src\view\main_window.py:108
+#: src\view\main_window.py:209
+#: src\view\main_window.py:218
+msgid "Light"
+msgstr "Claro"
+
+#: src\view\main_window.py:108
+#: src\view\main_window.py:209
+#: src\view\main_window.py:217
+msgid "Dark"
+msgstr "Oscuro"
+
+#: src\view\main_window.py:133
+#: src\view\main_window.py:211
+msgid "Save transcription"
+msgstr "Guardar transcripción"
+
+
+#: src\controller\main_controller.py:35
+msgid "Select a file"
+msgstr "Seleccionar archivo"
+
+#: src\controller\main_controller.py:37
+msgid "Audio files"
+msgstr "Archivos de audio"
+
+#: src\controller\main_controller.py:38
+msgid "Video files"
+msgstr "Archivos de vídeo"
+
+#: src\controller\main_controller.py:93
+msgid "Error: No audio file selected, please select one before generating text."
+msgstr "Error: No se ha seleccionado un archivo de audio. Por favor, seleccione uno antes de generar el texto."
+
+#: src\controller\main_controller.py:116
+msgid "Error: The selected audio language is not valid."
+msgstr "Error: El idioma del audio seleccionado no es válido."
+
+#: src\controller\main_controller.py:120
+#: src\controller\main_controller.py:224
+msgid "Error generating the file transcription. Please try again."
+msgstr "Error generando la transcripción. Por favor, inténtelo de nuevo."
+
+#: src\controller\main_controller.py:254
+msgid "Error: No microphone detected."
+msgstr "Error: Micrófono no disponible."
+
+#: src\controller\main_controller.py:257
+msgid "Error: Listening timed out while waiting for phrase to start."
+msgstr "Error: No se ha detectado audio disponible para transcribir."
+
+#: src\controller\main_controller.py:262
+msgid "Sorry, I cannot clarify what you are saying. Please try again."
+msgstr "Lo siento, no puedo entender lo que está diciendo. Por favor, inténtelo de nuevo."
+
+#: src\controller\main_controller.py:267
+msgid "Unexpected error. Please try again."
+msgstr "Error inesperado. Por favor, inténtelo de nuevo."
+
+#: src\controller\main_controller.py:280
+msgid "Save as"
+msgstr "Guardar como"
+
+#: src\controller\main_controller.py:282
+msgid "Text file"
+msgstr "Archivo de texto"
+
+#: src\controller\main_controller.py:282
+msgid "All Files"
+msgstr "Todos los archivos"
