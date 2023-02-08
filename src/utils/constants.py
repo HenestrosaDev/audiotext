@@ -1,3 +1,6 @@
+APP_NAME = "Audiotext"
+APP_LANGUAGES = {"en": "English", "es": "Español"}
+
 AUDIO_LANGUAGES = {
     "af": "Afrikaans",
     "am": "አማርኛ",
@@ -137,11 +140,6 @@ AUDIO_LANGUAGES = {
     "zu": "Isizulu",
 }
 
-APP_LANGUAGES = {
-    "en": "English",
-    "es": "Español"
-}
-
 FILE = "file"
 MIC = "mic"
 
@@ -150,6 +148,8 @@ AUDIO_FILE_EXTENSIONS = {
     "wav": [".wav", "wma"],
     "ogg": [".ogg", ".oga", ".opus"],
 }
+
+ICON_RELATIVE_PATH = "res/img/icon.ico"
 
 # fmt: off
 VIDEO_FILE_EXTENSIONS = [
