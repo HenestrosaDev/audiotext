@@ -29,7 +29,7 @@ def load_translation(language_code: str):
         locale.setlocale(locale.LC_ALL, "en_US")
 
     translation = gettext.translation(
-        "all",
+        "app",
         localedir=rp.ROOT_PATH / "res/locales",
         languages=[lang_code_without_territory],
         fallback=True,
