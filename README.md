@@ -103,6 +103,16 @@ If you want to open the code:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<!-- ROADMAP -->
+
+## Roadmap
+
+- [ ] Add a percentage to the progress bar.
+
+You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- CONTRIBUTING -->
 
 ## Contributing  
