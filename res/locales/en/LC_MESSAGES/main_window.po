@@ -29,6 +29,14 @@ msgstr "Transcribe from microphone"
 msgid "Generate transcription"
 msgstr "Generate transcription"
 
+#: src\view\main_window.py:86
+msgid "App language"
+msgstr "App language"
+
+#: src\view\main_window.py:102
+msgid "Appearance mode"
+msgstr "Appearance mode"
+
 #: src\view\main_window.py:108
 #: src\view\main_window.py:209
 #: src\view\main_window.py:210

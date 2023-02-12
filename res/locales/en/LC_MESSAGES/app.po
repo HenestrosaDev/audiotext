@@ -16,56 +16,56 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:35
+#: src\controller\main_controller.py:35
 msgid "Select a file"
 msgstr "Select a file"
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:37
+#: src\controller\main_controller.py:37
 msgid "Audio files"
 msgstr "Audio files"
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:38
+#: src\controller\main_controller.py:38
 msgid "Video files"
 msgstr "Video files"
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:93
+#: src\controller\main_controller.py:93
 msgid "Error: No audio file selected, please select one before generating text."
 msgstr "Error: No audio file selected, please select one before generating text."
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:116
+#: src\controller\main_controller.py:116
 msgid "Error: The selected audio language is not valid."
 msgstr "Error: The selected audio language is not valid."
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:120
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:224
+#: src\controller\main_controller.py:120
+#: src\controller\main_controller.py:224
 msgid "Error generating the file transcription. Please try again."
 msgstr "Error generating the file transcription. Please try again."
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:254
+#: src\controller\main_controller.py:254
 msgid "Error: No microphone detected."
 msgstr "Error: No microphone detected."
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:257
+#: src\controller\main_controller.py:257
 msgid "Error: Listening timed out while waiting for phrase to start."
 msgstr "Error: Listening timed out while waiting for phrase to start."
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:262
+#: src\controller\main_controller.py:262
 msgid "Sorry, I cannot clarify what you are saying. Please try again."
 msgstr "Sorry, I cannot clarify what you are saying. Please try again."
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:267
+#: src\controller\main_controller.py:267
 msgid "Unexpected error. Please try again."
 msgstr "Unexpected error. Please try again."
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:280
+#: src\controller\main_controller.py:280
 msgid "Save as"
 msgstr "Save as"
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:282
+#: src\controller\main_controller.py:282
 msgid "Text file"
 msgstr "Text file"
 
-#: D:\Mio\Proyectos\Python\audiotext\src\controller\main_controller.py:282
+#: src\controller\main_controller.py:282
 msgid "All Files"
 msgstr "All Files"
 
@@ -83,6 +83,14 @@ msgstr "Transcribe from microphone"
 #: src\view\main_window.py:78
 msgid "Generate transcription"
 msgstr "Generate transcription"
+
+#: src\view\main_window.py:86
+msgid "App language"
+msgstr "App language"
+
+#: src\view\main_window.py:102
+msgid "Appearance mode"
+msgstr "Appearance mode"
 
 #: src\view\main_window.py:108
 #: src\view\main_window.py:209
