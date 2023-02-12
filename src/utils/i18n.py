@@ -40,4 +40,4 @@ def load_translation(language_code: str):
     _ = translation.gettext
 
 
-load_translation(locale.getlocale()[0])
+load_translation(locale.getdefaultlocale()[0])
