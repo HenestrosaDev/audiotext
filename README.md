@@ -107,6 +107,8 @@ If you want to open the code:
 
 ## Roadmap
 
+- [ ] Add pre-commit config.
+- [ ] Add unit tests.
 - [ ] Add a percentage to the progress bar.
 
 You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues).
