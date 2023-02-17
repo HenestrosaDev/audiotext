@@ -24,7 +24,7 @@
     <p align="center">
         A program that transcribes audio from a file or microphone to text in any language supported by the Google API.
         <br />
-        <a href="https://github.com/HenestrosaConH/audiotext/issues">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues">Request Feature</a>
+        <a href="https://github.com/HenestrosaConH/audiotext/issues">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues">Request Feature</a> · <a href="https://github.com/HenestrosaConH/audiotext/discussions">Ask Question</a>
     </p>
 </div>
 
