@@ -49,6 +49,7 @@
     - [Project Structure](#project-structure)
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
+- [Usage](#usage)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -100,7 +101,11 @@ Besides those directories, there are also these two files in the root (apart fro
 **Important**: You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. You can download FFmpeg from the [official site](https://ffmpeg.org/download.html).
 
 If you want to execute the program:
-- Go to [releases](https://github.com/HenestrosaConH/audiotext/releases) and download the latest one. Once you download it and uncompress it, open the `audiotext` folder and open the `audiotext.exe` file. 
+- Go to [releases](https://github.com/HenestrosaConH/audiotext/releases)
+- Download the latest release. 
+- Uncompress the downloaded file
+- Open the `audiotext` folder 
+- Open the `audiotext.exe` file 
 
 If you want to open the code:
 - Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command and then open it with your favourite IDE (mine is [PyCharm](https://www.jetbrains.com/pycharm/)).
@@ -110,6 +115,62 @@ If you want to open the code:
 - For Mac M1 users: There is a problem installing the `pyaudio` library. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- USAGE -->
+
+## Usage
+
+Once you've followed the [getting started](#getting-started) guidelines, you'll see something like this:
+
+![main-system][main-system]
+
+### Select audio file
+
+Click on the `Select audio file` button and select a file from the file explorer. Please note that audio files are selected by default. To select video files, you'll have to click on the combo box in the bottom right corner of the file explorer to change the file type, as indicated in red in the following image.
+
+![file-explorer][file-explorer]
+
+Once you select the file, a green button named `Generate transcription` will show up. Click on it to start generating the transcription.
+
+If there is no error, you'll see the audio transcription in the text box, as shown in the gif above.
+
+Please bear in mind that this process may take some time to complete, depending on the length of the file and whether it is an audio or video file.
+
+### Transcribe from microphone
+
+You just have to click on the `Transcribe from microphone` button and say whatever you want to be transcribed.
+Please keep in mind that your Operating System needs to recognize an input source. Otherwise, an error will be shown in the textbox indicating that no microphone was detected.
+
+It's also worth noting that you have 3 seconds to speak from the moment you click the button to the timeout. In case that no input was received, you'll see an error in the screen notifying it.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+### Save transcription
+
+Once the program has generated the transcription, you'll see a green button named `Save transcription` below the text box.
+
+![generated-transcription][generated-transcription]
+
+To save it, you just have to click on the mentioned button. A file explorer will be prompted. You have to give the file a name and select the path where you want to store it. By default, the extension of the file is `.txt`, but you change it to any other file type you want
+
+### Appearance mode
+
+The program supports three appearance modes:
+
+<details>
+  <summary>System</summary>
+  <img src="docs/main-system.png" alt="System theme">
+</details>
+
+<details>
+  <summary>Dark</summary>
+  <img src="docs/main-system.png" alt="Dark theme">
+</details>
+
+<details>
+  <summary>Light</summary>
+  <img src="docs/main-light.png" alt="Light theme">
+</details>
 
 <!-- ROADMAP -->
 
@@ -145,8 +206,8 @@ Distributed under the Creative Commons 1.0 License. See `LICENSE` for more infor
 
 ## Contact
 
-<a href="https://www.linkedin.com/in/henestrosaconh/" target="blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a> 
-<a href="mailto:henestrosaconh@gmail.com" target="_blank"><img alt="Gmail" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
+[![LinkedIn][linkedin-shield]][linkedin-url]
+[![henestrosaconh@gmail.com][gmail-shield]][gmail-url]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -170,3 +231,11 @@ I've made use of the following resources to make this project:
 [linkedin-url]: https://linkedin.com/in/henestrosaconh
 [demo]: docs/demo.gif
 [icon]: docs/icon.png
+[main-system]: docs/main-system.png
+[main-light]: docs/main-light.png
+[file-explorer]: docs/file-explorer.png
+[generated-transcription]: docs/generated-transcription.png
+[linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+[linkedin-url]: https://linkedin.com/in/henestrosaconh
+[gmail-shield]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
+[gmail-url]: mailto:henestrosaconh@gmail.com
