@@ -35,7 +35,7 @@
         </a>
         <br />
         <br />
-        <a href="https://github.com/HenestrosaConH/audiotext/issues">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues">Request Feature</a> · <a href="https://github.com/HenestrosaConH/audiotext/discussions">Ask Question</a>
+        <a href="https://github.com/HenestrosaConH/audiotext/issues/new/choose">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues/new/choose">Request Feature</a> · <a href="https://github.com/HenestrosaConH/audiotext/discussions">Ask Question</a>
     </p>
 </div>
 
@@ -182,7 +182,7 @@ The program supports three appearance modes:
 - [ ] Add a percentage to the progress bar.
 - [ ] Do a web version with Django/Flask.
 
-You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues).
+You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues/new/choose).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
