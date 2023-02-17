@@ -12,9 +12,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <a href="https://github.com/othneildrew/Best-README-Template">
-        <img src="docs/icon.png" alt="Logo" width="156" height="156" style="margin-bottom:-40px">
-    </a>
+    <img src="docs/icon.png" alt="Logo" width="156" height="156" style="margin-bottom:-40px">
     <h2 align="center">Audiotext</h2>
     <p align="center">
         A program that transcribes audio from a file or microphone to text in any language supported by the Google API.
