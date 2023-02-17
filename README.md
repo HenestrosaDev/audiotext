@@ -99,11 +99,14 @@ Besides those directories, there are also these two files in the root (apart fro
 **Important**: You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. You can download FFmpeg from the [official site](https://ffmpeg.org/download.html).
 
 If you want to execute the program:
+
 - Go to [releases](https://github.com/HenestrosaConH/audiotext/releases)
 - Download the latest release. 
 - Uncompress the downloaded file
 - Open the `audiotext` folder 
-- Open the `audiotext.exe` file 
+- Depending on the OS:
+  - **Windows**: Open the `audiotext.exe` file
+  - **GNU-Linux and macOS**: Open the `audiotext` file. 
 
 If you want to open the code:
 - Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command and then open it with your favourite IDE (mine is [PyCharm](https://www.jetbrains.com/pycharm/)).
@@ -118,7 +121,7 @@ If you want to open the code:
 
 ## Usage
 
-Once you've followed the [getting started](#getting-started) guidelines, you'll see something like this:
+Once you open the audiotext executable file (explained in the [getting started](#getting-started) section), you'll see something like this:
 
 ![main-system][main-system]
 
@@ -130,7 +133,7 @@ Click on the `Select audio file` button and select a file from the file explorer
 
 Once you select the file, a green button named `Generate transcription` will show up. Click on it to start generating the transcription.
 
-If there is no error, you'll see the audio transcription in the text box, as shown in the gif above.
+If there is no error, you'll see the audio transcription in the text box, as shown in the [About the project gif](#about-the-project).
 
 Please bear in mind that this process may take some time to complete, depending on the length of the file and whether it is an audio or video file.
 
@@ -139,9 +142,7 @@ Please bear in mind that this process may take some time to complete, depending 
 You just have to click on the `Transcribe from microphone` button and say whatever you want to be transcribed.
 Please keep in mind that your Operating System needs to recognize an input source. Otherwise, an error will be shown in the textbox indicating that no microphone was detected.
 
-It's also worth noting that you have 3 seconds to speak from the moment you click the button to the timeout. In case that no input was received, you'll see an error in the screen notifying it.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+It's also worth noting that you have 3 seconds to speak from the moment you click the button to the timeout. In case that no input was received, you'll see an error in the text box notifying it.
 
 ### Save transcription
 
@@ -149,7 +150,7 @@ Once the program has generated the transcription, you'll see a green button name
 
 ![generated-transcription][generated-transcription]
 
-To save it, you just have to click on the mentioned button. A file explorer will be prompted. You have to give the file a name and select the path where you want to store it. By default, the extension of the file is `.txt`, but you change it to any other file type you want
+To save it, you just have to click on the mentioned button. A file explorer will be prompted. You have to give the file a name and select the path where you want to store it. By default, the extension of the file is `.txt`, but you can change it to any other file type you want
 
 ### Appearance mode
 
@@ -169,6 +170,8 @@ The program supports three appearance modes:
   <summary>Light</summary>
   <img src="docs/main-light.png" alt="Light theme">
 </details>
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 
