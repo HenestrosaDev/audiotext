@@ -124,7 +124,7 @@ Don't forget to follow these principles:
 
 ## Styleguide
 ### Commit Messages
-Commits' titles are capitalized, short, and starts with verb. For example: "Add section about inspecting more than one path" or "Pin minimal python version".
+Commits' titles are capitalized, short, and starts with verb in present-tense, imperative-style. For example: "Add section about inspecting more than one path" or "Pin minimal python version".
 
 In order to require this, commits needs to be concise, and do only one action. For example, this commit is bad: "Add contributing guides". You need to split this commit into separate ones:
 
