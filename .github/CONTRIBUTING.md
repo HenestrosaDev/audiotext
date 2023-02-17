@@ -135,6 +135,17 @@ In order to require this, commits needs to be concise, and do only one action. F
 ### Code style
 The project uses black and isort to ensure that all code is properly formatted. The pre-commit hook already has these tools set-up, but it would be good if you also set them up in your local environment.
 
+In an attempt to keep consistency and maintainability in the code-base, here are some high-level guidelines for code that might not be enforced by linters.
+
+* Use f-strings.
+* Keep/cast path variables as `pathlib.Path` objects. Do not use `os.path`. For public-facing functions, cast path arguments immediately to `Path`.
+* Use magic-methods when appropriate. It might be better to implement ``MyClass.__call__()`` instead of ``MyClass.run()``.
+* Do not return sentinel values for error-states like `-1` or `None`. Instead, raise an exception.
+* Avoid deeply nested code. Techniques like returning early and breaking up a complicated function into multiple functions results in easier to read and test code.
+* Consider if you are double-name-spacing and how modules are meant to be imported.
+  Consider the module name-space and whether it's flattened in `__init__.py`.
+* Only use multiple-inheritance if using a mixin. Mixin classes should end in `"Mixin"`.
+
 <!-- omit in toc -->
 ## Attribution
 This guide is based on the **contributing-gen**. [Make your own](https://github.com/bttger/contributing-gen)!
