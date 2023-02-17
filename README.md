@@ -9,43 +9,51 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
     <a href="https://github.com/othneildrew/Best-README-Template">
-        <img src="docs/icon.png" alt="Logo" width="80" height="80">
+        <img src="docs/icon.png" alt="Logo" width="156" height="156" style="margin-bottom:-40px">
     </a>
-    <h3 align="center">Audiotext</h3>
+    <h2 align="center">Audiotext</h2>
     <p align="center">
         A program that transcribes audio from a file or microphone to text in any language supported by the Google API.
+        <br />
+        <br />
+        <a href="https://github.com/HenestrosaConH/audiotext/stargazers">
+          <img alt="GitHub Contributors" src="https://img.shields.io/github/stars/HenestrosaConH/audiotext" />
+        </a>
+        <a href="https://github.com/HenestrosaConH/audiotext/graphs/contributors">
+          <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/HenestrosaConH/audiotext" />
+        </a>
+        <a href="https://github.com/HenestrosaConH/audiotext/issues">
+          <img alt="Issues" src="https://img.shields.io/github/issues/HenestrosaConH/audiotext" />
+        </a>
+        <a href="https://github.com/HenestrosaConH/audiotext/pulls">
+          <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/HenestrosaConH/audiotext" />
+        </a>
+        <a href="https://github.com/HenestrosaConH/audiotext/blob/main/LICENSE">
+          <img alt="GitHub pull requests" src="https://img.shields.io/github/license/HenestrosaConH/audiotext" />
+        </a>
+        <br />
         <br />
         <a href="https://github.com/HenestrosaConH/audiotext/issues">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues">Request Feature</a> · <a href="https://github.com/HenestrosaConH/audiotext/discussions">Ask Question</a>
     </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
-<details>
-    <summary>Table of Contents</summary>
-    <ol>
-        <li>
-            <a href="#about-the-project">About The Project</a>
-            <ul>
-                <li><a href="#project-structure">Project Structure</a></li>
-                <li><a href="#built-with">Built With</a></li>
-            </ul>
-        </li>
-        <li><a href="#getting-started">Getting Started</a></li>
-        <li><a href="#contributing">Contributing</a></li>
-        <li><a href="#license">License</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#acknowledgments">Acknowledgments</a></li>
-    </ol>
-</details>
+
+## Table of Contents
+
+- [About The Project](#about-the-project)
+    - [Project Structure](#project-structure)
+    - [Built With](#built-with)
+- [Getting Started](#getting-started)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgments](#acknowledgments)
 
 <!-- ABOUT THE PROJECT -->
 
@@ -110,6 +118,7 @@ If you want to open the code:
 - [ ] Add pre-commit config.
 - [ ] Add unit tests.
 - [ ] Add a percentage to the progress bar.
+- [ ] Do a web version with Django/Flask.
 
 You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues).
 
@@ -128,7 +137,7 @@ Please, read the [CONTRIBUTING.md](https://github.com/HenestrosaConH/audiotext/b
 
 ## License
 
-Distributed under the Creative Commons 1.0 License. See `LICENSE.txt` for more information.
+Distributed under the Creative Commons 1.0 License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -158,14 +167,6 @@ I've made use of the following resources to make this project:
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/HenestrosaConH/audiotext.svg?style=for-the-badge
-[contributors-url]: https://github.com/HenestrosaConH/audiotext/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/HenestrosaConH/audiotext.svg?style=for-the-badge
-[forks-url]: https://github.com/HenestrosaConH/audiotext/network/members
-[stars-shield]: https://img.shields.io/github/stars/HenestrosaConH/audiotext.svg?style=for-the-badge
-[stars-url]: https://github.com/HenestrosaConH/audiotext/stargazers
-[issues-shield]: https://img.shields.io/github/issues/HenestrosaConH/audiotext.svg?style=for-the-badge
-[issues-url]: https://github.com/HenestrosaConH/audiotext/issues
 [linkedin-url]: https://linkedin.com/in/henestrosaconh
 [demo]: docs/demo.gif
 [icon]: docs/icon.png
