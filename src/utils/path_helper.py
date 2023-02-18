@@ -16,9 +16,9 @@ def get_path(relative_path: str = "") -> Path:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = Path(sys._MEIPASS)
     except (Exception,):
-        base_path = Path(__file__).parent.parent.parent.resolve()
+        base_path = Path(__file__).parent.parent.parent
 
-    return (base_path / relative_path).resolve()
+    return base_path / relative_path
 
 
 ROOT_PATH = get_path("")
