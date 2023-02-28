@@ -96,10 +96,10 @@ Besides those directories, there are also these two files in the root (apart fro
 
 ## Getting Started
 
-**Important**: You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. You can download FFmpeg from the [official site](https://ffmpeg.org/download.html).
+### Important 
+You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. You can download FFmpeg from the [official site](https://ffmpeg.org/download.html).
 
-If you want to execute the program:
-
+### To execute the program
 - Go to [releases](https://github.com/HenestrosaConH/audiotext/releases)
 - Download the latest release. 
 - Uncompress the downloaded file
@@ -108,7 +108,7 @@ If you want to execute the program:
   - **Windows**: Open the `audiotext.exe` file
   - **GNU-Linux and macOS**: Open the `audiotext` file. 
 
-If you want to open the code:
+### To open the code
 - Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command and then open it with your favourite IDE (mine is [PyCharm](https://www.jetbrains.com/pycharm/)).
 - Please bear in mind that you cannot generate a single .exe file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
 - It's crucial to note that I've had to comment out the line `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package. If it wasn't commented, the project would need to run a command line along with the GUI. Otherwise, the program wouldn't run when calling this function because the mentioned line throws an error that stops the function from running (in case that the program doesn't run on a console), which cannot be handled within the project code.
@@ -171,16 +171,25 @@ The program supports three appearance modes:
   <img src="docs/main-light.png" alt="Light theme">
 </details>
 
+### API usage
+
+Since the program makes use of Google Speech-To-Text API free tier, which can transcribe up to 60 minutes of audio per month at no cost,
+you might have to add an API key if you want an extensive use of this functionality.
+
+I have the intention to add an option to the program to ask the user for an API key in order to store it without the need of accessing the source code.
+However, this hasn't been done yet (I intend to do it though, as you can see in the [roadmap](#roadmap)) so you have to add it manually.
+This can be done by adding `key=<ACTUAL API KEY>` argument to both `recognize_google()` methods in the file `src/controller/main_controller.py`. 
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 
 ## Roadmap
 
+- [ ] Add an option to let the user insert their Google Speech-To-Text API key.
 - [ ] Add pre-commit config.
 - [ ] Add unit tests.
 - [ ] Add a percentage to the progress bar.
-- [ ] Do a web version with Django/Flask.
 
 You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues/new/choose).
 
