@@ -60,8 +60,108 @@
 
 [![Main screenshot light][demo]](https://github.com/HenestrosaConH/audiotext)
 
-The project is available in Spanish and English. It supports 71 different languages and can take the audio from an audio file, video file or microphone. 
-You can also select the theme you like best. It can be dark, light or the one configured in the system.  
+The project is available in Spanish and English. It supports 69 different languages, along with some of their dialects, and can take the audio from an audio file, video file or microphone. 
+You can also select the theme you like best. It can be dark, light or the one configured in the system.
+
+<details>
+  <summary>List of supported languages</summary>
+
+Afrikaans    
+አማርኛ    
+لعربية  
+(العربية (الإمارات  
+(العربية (البحرين  
+(العربية (الجزائر  
+(العربية (مصر  
+العربية (إسرائيل  
+(العربية (الأردن  
+(العربية (الكويت  
+(العربية (لبنان  
+(العربية (المغرب  
+(العربية (عُمان  
+(العربية (فلسطين  
+(العربية (قطر  
+(العربية (السعودية  
+(العربية (تونس  
+Azərbaycan  
+беларуская  
+Български  
+বাংলা  
+বাংলা (বাংলাদেশ)  
+বাংলা (ভারত)  
+Català  
+Čeština  
+Dansk  
+Deutsch  
+Schweizer Hochdeutsch  
+Ελληνικά  
+English  
+Español  
+Eesti  
+Euskara  
+فارسی  
+Suomi  
+Filipino  
+Français  
+Galego  
+ગુજરાતી  
+हिन्दी  
+Hrvatski  
+Magyar  
+հայերեն  
+Bahasa Indonesia  
+Íslenska  
+Italiano  
+עברית  
+日本語  
+Basa Jawa  
+ქართულად  
+Қазақ  
+ខ្មែរ  
+ಕನ್ನಡ  
+한국어  
+ລາວ  
+Lietuvių  
+Latviešu  
+മലയാളം  
+Монгол  
+मराठी  
+Bahasa Melayu  
+Malti  
+नेपाली  
+Nederlands  
+Norsk (Nynorsk)  
+Norsk (Bokmål)  
+ਪੰਜਾਬੀ  
+Polski  
+Português  
+Română  
+Русский  
+සිංහල  
+Slovenčina  
+Slovenščina  
+Српски  
+Basa Sunda  
+Svenska  
+Kiswahili  
+தமிழ்  
+தமிழ் (இந்தியா)  
+தமிழ் (இலங்கை)  
+தமிழ் (மலேஷியா)  
+தமிழ் (சிங்கப்பூர்)  
+తెలుగు  
+ไทย  
+Türkçe  
+Українська  
+اردو  
+(اردو (بھارت  
+(اردو (پاکستان  
+Tiếng Việt  
+中文（中国）  
+中文（香港）  
+中文（台灣）  
+Isizulu  
+</details>
 
 <!-- PROJECT STRUCTURE -->
 
