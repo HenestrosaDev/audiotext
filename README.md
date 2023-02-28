@@ -167,15 +167,17 @@ Isizulu
 
 ### Project Structure
 
-Directories:
- 
+#### Root directories
 - `docs`: Contains files related to the documentation of the project.
 - `res`: Contains all the static resources used by the app, which are the app icon (located in the `img` folder) and the i18n files (located in the `locales` folder).
 - `src`:  Contains the source code files of the app.
 
-Besides those directories, there are also these two files in the root (apart from the .gitignore, README.md and LICENSE):
+#### Root files
 
+- `.gitignore`: File used by the version control system Git to specify files or directories that should be ignored by Git when tracking changes to a project.
 - `audiotext.spec`: Used to generate a .exe file with [PyInstaller](https://pyinstaller.org/en/stable/). Notice that, inside the file, there is the annotation `PATH TO CUSTOMTKINTER`. You will have to replace it by the actual path in your computer. To get it, you can execute `pip show customtkinter`.  
+- `LICENSE`: Project license, which is [Creative Commons 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/).
+- `README.md`: What you're reading right now.
 - `requirements.txt`: Lists the names and versions of each package used to build this project. To install the requirements, execute `pip install -r requirements.txt`.
  
 <!-- BUILT WITH -->
