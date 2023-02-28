@@ -78,8 +78,6 @@ Besides those directories, there are also these two files in the root (apart fro
 - `audiotext.spec`: Used to generate a .exe file with [PyInstaller](https://pyinstaller.org/en/stable/). Notice that, inside the file, there is the annotation `PATH TO CUSTOMTKINTER`. You will have to replace it by the actual path in your computer. To get it, you can execute `pip show customtkinter`.  
 - `requirements.txt`: Lists the names and versions of each package used to build this project. To install the requirements, execute `pip install -r requirements.txt`.
  
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 <!-- BUILT WITH -->
 
 ### Built With
@@ -212,12 +210,13 @@ Distributed under the Creative Commons 1.0 License. See `LICENSE` for more infor
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- CONTACT -->
+<!-- AUTHORS -->
 
-## Contact
+## Authors
 
-[![LinkedIn][linkedin-shield]][linkedin-url]
-[![henestrosaconh@gmail.com][gmail-shield]][gmail-url]
+- HenestrosaConH <henestrosaconh@gmail.com> (José Carlos López)
+
+See also the list of [contributors](https://github.com/HenestrosaConH/mobile-strings-converter/contributors) who participated in this project.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
