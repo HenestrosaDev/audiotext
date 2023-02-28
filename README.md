@@ -237,14 +237,9 @@ I've made use of the following resources to make this project:
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[linkedin-url]: https://linkedin.com/in/henestrosaconh
 [demo]: docs/demo.gif
 [icon]: docs/icon.png
 [main-system]: docs/main-system.png
 [main-light]: docs/main-light.png
 [file-explorer]: docs/file-explorer.png
 [generated-transcription]: docs/generated-transcription.png
-[linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-[linkedin-url]: https://linkedin.com/in/henestrosaconh
-[gmail-shield]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
-[gmail-url]: mailto:henestrosaconh@gmail.com
