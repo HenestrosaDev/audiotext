@@ -174,12 +174,12 @@ Isizulu
 
 ### Project Structure
 
-#### Root directories
+#### Root Directories
 - `docs`: Contains files related to the documentation of the project.
 - `res`: Contains all the static resources used by the app, which are the app icon (located in the `img` folder) and the i18n files (located in the `locales` folder).
 - `src`:  Contains the source code files of the app.
 
-#### Root files
+#### Root Files
 
 - `.gitignore`: File used by the version control system Git to specify files or directories that should be ignored by Git when tracking changes to a project.
 - `audiotext.spec`: Used to generate a .exe file with [PyInstaller](https://pyinstaller.org/en/stable/). Notice that, inside the file, there is the annotation `PATH TO CUSTOMTKINTER`. You will have to replace it by the actual path in your computer. To get it, you can execute `pip show customtkinter`.  
@@ -244,7 +244,7 @@ If there is no error, you'll see the audio transcription in the text box, as sho
 
 Please bear in mind that this process may take some time to complete, depending on the length of the file and whether it is an audio or video file.
 
-### Transcribe From microphone
+### Transcribe From Microphone
 
 You just have to click on the `Transcribe from microphone` button and say whatever you want to be transcribed.
 Please keep in mind that your Operating System needs to recognize an input source. Otherwise, an error will be shown in the textbox indicating that no microphone was detected.
@@ -278,7 +278,7 @@ The program supports three appearance modes:
   <img src="docs/main-light.png" alt="Light theme">
 </details>
 
-### API usage
+### API Usage
 
 Since the program makes use of Google Speech-To-Text API free tier, which can transcribe up to 60 minutes of audio per month at no cost,
 you might have to add an API key if you want an extensive use of this functionality.
