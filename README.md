@@ -43,7 +43,7 @@
 
 ## Table of Contents
 
-- [About The Project](#about-the-project)
+- [About the Project](#about-the-project)
     - [Project Structure](#project-structure)
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
@@ -63,7 +63,7 @@
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+## About the Project
 
 [![Main screenshot light][demo]](https://github.com/HenestrosaConH/audiotext)
 
@@ -240,7 +240,7 @@ Click on the `Select audio file` button and select a file from the file explorer
 
 Once you select the file, a green button named `Generate transcription` will show up. Click on it to start generating the transcription.
 
-If there is no error, you will see the audio's transcription in the text box, as shown in the [About the project gif](#about-the-project).
+If there is no error, you will see the audio's transcription in the text box, as shown in the [About the Project's gif](#about-the-project).
 
 Please bear in mind that this process may take some time to complete, depending on the length of the file and whether it is an audio or video file.
 
