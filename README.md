@@ -47,11 +47,18 @@
     - [Project Structure](#project-structure)
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
+    - [To Execute the Program](#to-execute-the-program)
+    - [To Open the Code](#to-open-the-code)
 - [Usage](#usage)
+    - [Select Audio File](#select-audio-file)
+    - [Transcribe From Microphone](#transcribe-from-microphone)
+    - [Save Transcription](#save-transcription)
+    - [Appearance Mode](#appearance-mode)
+    - [API Usage](#api-usage)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
-- [Contact](#contact)
+- [Authors](#authors)
 - [Acknowledgments](#acknowledgments)
 
 <!-- ABOUT THE PROJECT -->
@@ -199,7 +206,7 @@ Isizulu
 ### Important 
 You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. You can download FFmpeg from the [official site](https://ffmpeg.org/download.html).
 
-### To execute the program
+### To Execute the Program
 - Go to [releases](https://github.com/HenestrosaConH/audiotext/releases)
 - Download the latest release. 
 - Uncompress the downloaded file
@@ -208,7 +215,7 @@ You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwi
   - **Windows**: Open the `audiotext.exe` file
   - **GNU-Linux and macOS**: Open the `audiotext` file. 
 
-### To open the code
+### To Open the Code
 - Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command and then open it with your favourite IDE (mine is [PyCharm](https://www.jetbrains.com/pycharm/)).
 - Please bear in mind that you cannot generate a single .exe file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
 - It's crucial to note that I've had to comment out the line `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package. If it wasn't commented, the project would need to run a command line along with the GUI. Otherwise, the program wouldn't run when calling this function because the mentioned line throws an error that stops the function from running (in case that the program doesn't run on a console), which cannot be handled within the project code.
@@ -225,7 +232,7 @@ Once you open the audiotext executable file (explained in the [getting started](
 
 ![main-system][main-system]
 
-### Select audio file
+### Select Audio File
 
 Click on the `Select audio file` button and select a file from the file explorer. Please note that audio files are selected by default. To select video files, you'll have to click on the combo box in the bottom right corner of the file explorer to change the file type, as indicated in red in the following image.
 
@@ -237,14 +244,14 @@ If there is no error, you'll see the audio transcription in the text box, as sho
 
 Please bear in mind that this process may take some time to complete, depending on the length of the file and whether it is an audio or video file.
 
-### Transcribe from microphone
+### Transcribe From microphone
 
 You just have to click on the `Transcribe from microphone` button and say whatever you want to be transcribed.
 Please keep in mind that your Operating System needs to recognize an input source. Otherwise, an error will be shown in the textbox indicating that no microphone was detected.
 
 It's also worth noting that you have 3 seconds to speak from the moment you click the button to the timeout. In case that no input was received, you'll see an error in the text box notifying it.
 
-### Save transcription
+### Save Transcription
 
 Once the program has generated the transcription, you'll see a green button named `Save transcription` below the text box.
 
@@ -252,7 +259,7 @@ Once the program has generated the transcription, you'll see a green button name
 
 To save it, you just have to click on the mentioned button. A file explorer will be prompted. You have to give the file a name and select the path where you want to store it. By default, the extension of the file is `.txt`, but you can change it to any other file type you want
 
-### Appearance mode
+### Appearance Mode
 
 The program supports three appearance modes:
 
