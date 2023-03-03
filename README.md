@@ -293,7 +293,7 @@ Notwithstanding, I have the intention to move from **speech_recognition** packag
 
 ## Roadmap
 
-- [ ] Add an option to let the user insert their Google Speech-To-Text API key.
+- [ ] Move from **speech_recognition** package to [whisper](https://github.com/openai/whisper).
 - [ ] Add pre-commit config.
 - [ ] Add unit tests.
 - [ ] Generate `.srt` files with the text along with its timestamp. 
