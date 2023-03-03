@@ -283,8 +283,9 @@ The program supports three appearance modes:
 Since the program makes use of Google's Speech-To-Text API free tier, which can transcribe up to 60 minutes of audio per month at no cost,
 you might have to add an API key if you want to make extensive use of this functionality.
 
-I have the intention to add an option to the program to let the user insert an API key in order to store it without the need of accessing the source code.
-However, this has not been done yet, so you have to add it manually. This can be done by adding the `key=<ACTUAL API KEY>` argument to both `recognize_google()` methods in the file `src/controller/main_controller.py`. 
+However, there is no option in the GUI to add it, so you have to add it manually. This can be done by adding the `key=<ACTUAL API KEY>` argument to both `recognize_google()` methods in the file `src/controller/main_controller.py`.
+
+Notwithstanding, I have the intention to move from **speech_recognition** package to [whisper](https://github.com/openai/whisper). This change would allow the user to generate audio transcriptions unlimitedly and offline, which is a major step forward for the program. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -295,8 +296,8 @@ However, this has not been done yet, so you have to add it manually. This can be
 - [ ] Add an option to let the user insert their Google Speech-To-Text API key.
 - [ ] Add pre-commit config.
 - [ ] Add unit tests.
-- [ ] Add a percentage to the progress bar.
 - [ ] Generate `.srt` files with the text along with its timestamp. 
+- [ ] Add a percentage to the progress bar.
 
 You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues/new/choose).
 
