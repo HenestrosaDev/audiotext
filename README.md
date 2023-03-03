@@ -60,6 +60,7 @@
 - [License](#license)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgments)
+- [Support](#support)
 
 <!-- ABOUT THE PROJECT -->
 
@@ -341,6 +342,14 @@ I have made use of the following resources to make this project:
 - [How to Convert Speech to Text in Python](https://www.thepythoncode.com/article/using-speech-recognition-to-convert-speech-to-text-python)
 - [Best-README-Template](https://github.com/othneildrew/Best-README-Template/)
 - [Img Shields](https://shields.io)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- SUPPORT -->
+
+## Support
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U5J6COZ)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
