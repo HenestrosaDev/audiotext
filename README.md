@@ -13,7 +13,7 @@
 <br />
 <div align="center">
     <img src="docs/icon.png" alt="Logo" width="128" height="128" style="margin-bottom:-40px">
-    <h2 align="center">Audiotext</h2>
+    <h1 align="center">Audiotext</h1>
     <p align="center">
         A program that transcribes audio from a file or microphone to text in any language supported by Google's Speech-To-Text API.
         <br />
