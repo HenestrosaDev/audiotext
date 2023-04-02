@@ -15,7 +15,7 @@
     <img src="docs/icon.png" alt="Logo" width="128" height="128" style="margin-bottom:-40px">
     <h1 align="center">Audiotext</h1>
     <p align="center">
-        A program that transcribes audio from a file or microphone to text in any language supported by Google's Speech-To-Text API.
+        A program that transcribes audio from a file or microphone to text in almost any language.
         <br />
         <br />
         <a href="https://github.com/HenestrosaConH/audiotext/stargazers">
@@ -47,8 +47,9 @@
     - [Project Structure](#project-structure)
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
+    - [Notes](#notes) 
     - [To Execute the Program](#to-execute-the-program)
-    - [To Open the Code](#to-open-the-code)
+    - [To Get the Code](#to-get-the-code)
 - [Usage](#usage)
     - [Select Audio File](#select-audio-file)
     - [Transcribe From Microphone](#transcribe-from-microphone)
@@ -175,28 +176,88 @@ Isizulu
 
 ### Project Structure
 
-#### Root Directories
-- `docs`: Contains files related to the documentation of the project.
-- `res`: Contains all the static resources used by the app, which are the app icon (located in the `img` folder) and the i18n files (located in the `locales` folder).
-- `src`: Contains the source code files of the app.
+<details>
+  <summary>ASCII folder structure</summary>
 
-#### Root Files
+  ```
+  │   .gitignore
+  │   audiotext.spec
+  │   LICENSE
+  │   README.md
+  │   requirements.txt
+  │
+  ├───.github
+  │   │   CONTRIBUTING.md
+  │   │
+  │   ├───ISSUE_TEMPLATE
+  │   │       bug_report_template.md
+  │   │       feature_request_template.md
+  │   │
+  │   └───PULL_REQUEST_TEMPLATE
+  │           pull_request_template.md
+  │
+  ├───docs
+  │       demo.gif
+  │       file-explorer.png
+  │       generated-transcription.png
+  │       icon.png
+  │       main-light.png
+  │       main-system.png
+  │
+  ├───res
+  │   ├───img
+  │   │       icon.ico
+  │   │
+  │   └───locales
+  │       │   main_controller.pot
+  │       │   main_window.pot
+  │       │
+  │       ├───en
+  │       │   └───LC_MESSAGES
+  │       │           app.mo
+  │       │           app.po
+  │       │           main_controller.po
+  │       │           main_window.po
+  │       │
+  │       └───es
+  │           └───LC_MESSAGES
+  │                   app.mo
+  │                   app.po
+  │                   main_controller.po
+  │                   main_window.po
+  │
+  └───src
+      │   app.py
+      │
+      ├───controller
+      │       main_controller.py
+      │       __init__.py
+      │
+      ├───model
+      │       transcription.py
+      │       __init__.py
+      │
+      ├───utils
+      │       constants.py
+      │       i18n.py
+      │       path_helper.py
+      │       __init__.py
+      │
+      └───view
+              main_window.py
+              __init__.py   
+  ```
+</details>
 
-- `.gitignore`: File used by the version control system Git to specify files or directories that should be ignored by Git when tracking changes to a project.
-- `audiotext.spec`: Used to generate an executable file with [PyInstaller](https://pyinstaller.org/en/stable/). Notice that, inside the file, there is the annotation `PATH TO CUSTOMTKINTER`. You will have to replace it by the actual path in your computer. To get it, you can execute `pip show customtkinter`.  
-- `LICENSE`: Project license, which is [Creative Commons 1.0 License](https://creativecommons.org/publicdomain/zero/1.0/).
-- `README.md`: What you are reading right now.
-- `requirements.txt`: Lists the names and versions of each package used to build this project. To install the requirements, execute `pip install -r requirements.txt`.
- 
 <!-- BUILT WITH -->
 
 ### Built With
 
-- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)
-- [moviepy](https://pypi.org/project/moviepy/)
-- [PyAudio](https://pypi.org/project/PyAudio/)
-- [pydub](https://github.com/jiaaro/pydub)
-- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/)
+- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter): For the creation of the GUI.
+- [moviepy](https://pypi.org/project/moviepy/): For video processing, from which the program extracts the audio to be transcribed.
+- [PyAudio](https://pypi.org/project/PyAudio/): For recording microphone audio.
+- [pydub](https://github.com/jiaaro/pydub): For audio processing.
+- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/): For converting audio into text.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -204,24 +265,38 @@ Isizulu
 
 ## Getting Started
 
-### Important 
-You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. You can download FFmpeg from the [official site](https://ffmpeg.org/download.html).
+### Notes
+- Please bear in mind that you cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
+- For **Mac M1** users: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
+- You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. You can download it using the following commands:
+
+  ```
+  # on Ubuntu or Debian
+  sudo apt update && sudo apt install ffmpeg
+  
+  # on Arch Linux
+  sudo pacman -S ffmpeg
+  
+  # on MacOS using Homebrew (https://brew.sh/)
+  brew install ffmpeg
+  
+  # on Windows using Chocolatey (https://chocolatey.org/)
+  choco install ffmpeg
+  
+  # on Windows using Scoop (https://scoop.sh/)
+  scoop install ffmpeg
+  ```
 
 ### To Execute the Program
-- Go to [releases](https://github.com/HenestrosaConH/audiotext/releases)
-- Download the latest release. 
-- Uncompress the downloaded file
-- Open the `audiotext` folder 
-- Depending on the OS:
-  - **Windows**: Open the `audiotext.exe` file
+1. Go to [releases](https://github.com/HenestrosaConH/audiotext/releases).
+2. Download the latest release. 
+3. Uncompress the downloaded file.
+4. Open the `audiotext` folder.
+5. Open the `audiotext.exe` file if you use **Windows** or the `audiotext` file if you use **GNU-Linux** or **macOS**.
   - **GNU-Linux and macOS**: Open the `audiotext` file. 
 
-### To Open the Code
-- Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command and then open it in your favourite IDE (mine is [PyCharm](https://www.jetbrains.com/pycharm/)).
-- Please bear in mind that you cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
-- It is crucial to note that I have had to comment out the line `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package. If it was not commented, the project would need to run a command line along with the GUI. Otherwise, the program would not run when calling this function because the mentioned line throws an error that stops the function from running (in case that the program does not run on a console), which cannot be handled within the project code.
-- Similar to the point above, the lines 159, 160 and 176 of the file `ffmpeg_audiowriter` from the `moviepy` package are commented for the same reason stated above. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
-- For Mac M1 users: There is a problem installing the `pyaudio` library. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
+### To Get the Code
+1. Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -286,7 +361,7 @@ you might have to add an API key if you want to make extensive use of this funct
 
 However, there is no option in the GUI to add it, so you have to add it manually. This can be done by adding the `key=<ACTUAL API KEY>` argument to both `recognize_google()` methods in the file `src/controller/main_controller.py`.
 
-Notwithstanding, I have the intention to move from **speech_recognition** package to [whisper](https://github.com/openai/whisper). This change would allow the user to generate audio transcriptions unlimitedly and offline, which is a major step forward for the program. 
+Notwithstanding, I have the intention to move from **speech_recognition** package to [whispercpp](https://github.com/aarnphm/whispercpp). This change would allow the user to generate audio transcriptions unlimitedly and offline, which is a major step forward for the program. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -294,10 +369,10 @@ Notwithstanding, I have the intention to move from **speech_recognition** packag
 
 ## Roadmap
 
-- [ ] Move from **speech_recognition** package to [whisper](https://github.com/openai/whisper).
+- [ ] Move from **speech_recognition** package to [whispercpp](https://github.com/aarnphm/whispercpp).
 - [ ] Add pre-commit config.
 - [ ] Add unit tests.
-- [ ] Generate `.srt` files with the text along with its timestamp. 
+- [ ] Generate `.srt` files with the text along with timestamps. 
 - [ ] Add a percentage to the progress bar.
 
 You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues/new/choose).
@@ -348,6 +423,8 @@ I have made use of the following resources to make this project:
 <!-- SUPPORT -->
 
 ## Support
+
+Would you like to support the project? That's very kind of you! However, I would suggest you to consider supporting the packages that I've used to build this project first. If you still want to support this particular project, you can go to my Ko-Fi profile by clicking on the button down below!
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U5J6COZ)
 
