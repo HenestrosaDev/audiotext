@@ -146,6 +146,7 @@ MIC = "mic"
 AUDIO_FILE_EXTENSIONS = {
     "mp3": [".mp3", ".mpeg"],
     "wav": [".wav", "wma"],
+    "aac": [".aac"],
     "ogg": [".ogg", ".oga", ".opus"],
 }
 

@@ -187,6 +187,8 @@ class MainController:
                 video_audio_path = chunks_directory / f"{Path(filepath).stem}.wav"
                 clip.audio.write_audiofile(video_audio_path)
                 sound = AudioSegment.from_wav(video_audio_path)
+            else:
+                sound = AudioSegment.from_file(filepath, filepath.suffix[1:])
 
             # Split audio sound where silence is 500 milliseconds or more and get chunks
             chunks = split_on_silence(
