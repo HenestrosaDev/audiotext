@@ -293,7 +293,6 @@ Isizulu
 3. Uncompress the downloaded file.
 4. Open the `audiotext` folder.
 5. Open the `audiotext.exe` file if you use **Windows** or the `audiotext` file if you use **GNU-Linux** or **macOS**.
-  - **GNU-Linux and macOS**: Open the `audiotext` file. 
 
 ### To Get the Code
 1. Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command.
@@ -377,7 +376,7 @@ Notwithstanding, I have the intention to move from **speech_recognition** packag
 
 You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues/new/choose).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 
@@ -394,7 +393,7 @@ Please, read the [CONTRIBUTING.md](https://github.com/HenestrosaConH/audiotext/b
 
 Distributed under the Creative Commons 1.0 License. See `LICENSE` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- AUTHORS -->
 
