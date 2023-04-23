@@ -90,7 +90,8 @@ class MainController:
         if not self._is_file_valid(source):
             self.view.display_text(
                 _(
-                    "Error: No audio file selected, please select one before generating text."
+                    "Error: No audio file selected, please select one before "
+                    "generating text."
                 )
             )
         else:

@@ -55,7 +55,7 @@ class MainWindow(ctk.CTkFrame):
             self.frm_sidebar, values=list(c.AUDIO_LANGUAGES.values())
         )
         self.cbx_audio_language.grid(row=2, column=0, padx=20, pady=10)
-        self.cbx_audio_language.set(c.AUDIO_LANGUAGES[locale.getdefaultlocale()[0]])
+        self.cbx_audio_language.set(c.AUDIO_LANGUAGES[locale.getdefaultlocale()[0][:2]])
 
         # Select file button
         self.btn_select_file = ctk.CTkButton(
@@ -94,7 +94,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.omn_app_language.grid(row=8, column=0, padx=20, pady=10)
         self.omn_app_language.set(
-            c.APP_LANGUAGES.get(locale.getdefaultlocale()[0].split("_")[0], "English")
+            c.APP_LANGUAGES.get(locale.getdefaultlocale()[0][:2], "English")
         )
 
         # Appearance mode

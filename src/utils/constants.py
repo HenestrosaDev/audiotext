@@ -134,7 +134,7 @@ AUDIO_LANGUAGES = {
     "ur_IN": "(اردو (بھارت",
     "ur_PK": "(اردو (پاکستان",
     "vi": "Tiếng Việt",
-    "zh_CN": "中文（中国）",
+    "zh": "中文（中国）",
     "zh_HK": "中文（香港）",
     "zh_TW": "中文（台灣）",
     "zu": "Isizulu",
