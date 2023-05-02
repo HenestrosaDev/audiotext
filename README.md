@@ -14,10 +14,8 @@
 <div align="center">
     <img src="docs/icon.png" alt="Logo" width="128" height="128" style="margin-bottom:-40px">
     <h1 align="center">Audiotext</h1>
-    <p align="center">
-        A program that transcribes audio from a file or microphone to text in almost any language.
-        <br />
-        <br />
+    <p align="center">A program that transcribes audio from a file or microphone to text in almost any language.</p>
+    <p>
         <a href="https://github.com/HenestrosaConH/audiotext/stargazers">
           <img alt="GitHub Contributors" src="https://img.shields.io/github/stars/HenestrosaConH/audiotext" />
         </a>
@@ -33,8 +31,8 @@
         <a href="https://github.com/HenestrosaConH/audiotext/blob/main/LICENSE">
           <img alt="GitHub pull requests" src="https://img.shields.io/github/license/HenestrosaConH/audiotext" />
         </a>
-        <br />
-        <br />
+    </p>
+    <p>
         <a href="https://github.com/HenestrosaConH/audiotext/issues/new/choose">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues/new/choose">Request Feature</a> · <a href="https://github.com/HenestrosaConH/audiotext/discussions">Ask Question</a>
     </p>
 </div>
@@ -391,7 +389,7 @@ Please, read the [CONTRIBUTING.md](https://github.com/HenestrosaConH/audiotext/b
 
 ## License
 
-Distributed under the Creative Commons 1.0 License. See `LICENSE` for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
