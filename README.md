@@ -399,7 +399,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 - HenestrosaConH <henestrosaconh@gmail.com> (José Carlos López Henestrosa)
 
-See also the list of [contributors](https://github.com/HenestrosaConH/mobile-strings-converter/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/HenestrosaConH/audiotext/contributors) who participated in this project.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
