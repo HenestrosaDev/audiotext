@@ -9,7 +9,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[
-        ('c:\\users\\gunze\\appdata\\local\\programs\\python\\python310\\lib\\site-packages\\customtkinter', 'customtkinter/'),
+        (r'venv/Lib/site-packages/customtkinter', 'customtkinter/'),
         ('res', 'res/')
     ],
     hiddenimports=[],
