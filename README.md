@@ -73,101 +73,80 @@ You can also select the theme you like best. It can be dark, light or the one co
 <details>
   <summary>List of supported languages</summary>
 
-Afrikaans    
-አማርኛ    
-لعربية  
-(العربية (الإمارات  
-(العربية (البحرين  
-(العربية (الجزائر  
-(العربية (مصر  
-العربية (إسرائيل  
-(العربية (الأردن  
-(العربية (الكويت  
-(العربية (لبنان  
-(العربية (المغرب  
-(العربية (عُمان  
-(العربية (فلسطين  
-(العربية (قطر  
-(العربية (السعودية  
-(العربية (تونس  
-Azərbaycan  
-беларуская  
-Български  
-বাংলা  
-বাংলা (বাংলাদেশ)  
-বাংলা (ভারত)  
-Català  
-Čeština  
-Dansk  
-Deutsch  
-Schweizer Hochdeutsch  
-Ελληνικά  
-English  
-Español  
-Eesti  
-Euskara  
-فارسی  
-Suomi  
-Filipino  
-Français  
-Galego  
-ગુજરાતી  
-हिन्दी  
-Hrvatski  
-Magyar  
-հայերեն  
-Bahasa Indonesia  
-Íslenska  
-Italiano  
-עברית  
-日本語  
-Basa Jawa  
-ქართულად  
-Қазақ  
-ខ្មែរ  
-ಕನ್ನಡ  
-한국어  
-ລາວ  
-Lietuvių  
-Latviešu  
-മലയാളം  
-Монгол  
-मराठी  
-Bahasa Melayu  
-Malti  
-नेपाली  
-Nederlands  
-Norsk (Nynorsk)  
-Norsk (Bokmål)  
-ਪੰਜਾਬੀ  
-Polski  
-Português  
-Română  
-Русский  
-සිංහල  
-Slovenčina  
-Slovenščina  
-Српски  
-Basa Sunda  
-Svenska  
-Kiswahili  
-தமிழ்  
-தமிழ் (இந்தியா)  
-தமிழ் (இலங்கை)  
-தமிழ் (மலேஷியா)  
-தமிழ் (சிங்கப்பூர்)  
-తెలుగు  
-ไทย  
-Türkçe  
-Українська  
-اردو  
-(اردو (بھارت  
-(اردو (پاکستان  
-Tiếng Việt  
-中文（中国）  
-中文（香港）  
-中文（台灣）  
-Isizulu  
+  Afrikaans  
+  Amharic (አማርኛ)  
+  Arabic (لعربية)  
+  Armenian (հայերեն)  
+  Azerbaijan (Azərbaycan)  
+  Basque (Euskara)  
+  Belarusian (беларуская)  
+  Bengali (বাংলা)  
+  Bulgarian (Български)  
+  Catalan (Català)  
+  Chinese (China) (中文（中国）)  
+  Chinese (Hong Kong) (中文（香港)  
+  Chinese (Taiwan) (中文（台灣）)  
+  Croatian (Hrvatski)  
+  Czech (Čeština)  
+  Danish (Dansk)  
+  Dutch (Nederlands)  
+  English  
+  Estonian (Eesti keel)  
+  Farsi (فارسی)  
+  Filipino  
+  Finnish (Suomi)  
+  French (Français)  
+  Galician (Galego)  
+  Georgian (ქართული)  
+  German (Deutsch)  
+  German (Swiss Standard) (Schweizer Hochdeutsch)  
+  Greek (Ελληνικά)  
+  Gujarati (ગુજરાતી)  
+  Hebrew (עברית)  
+  Hindi (हिन्दी)  
+  Hungarian (Magyar)  
+  Icelandic (Íslenska)  
+  Indonesian (Bahasa Indonesia)  
+  Italian (Italiano)  
+  Swiss Italian (Italiano (Svizzera))  
+  Japanese (日本語)  
+  Javanese (Basa Jawa)  
+  Kannada (ಕನ್ನಡ)  
+  Kazakh (Қазақ)  
+  Khmer (ខ្មែរ)  
+  Korean (한국어)  
+  Lao (ລາວ)  
+  Latvian (Latviešu)  
+  Lithuanian (Lietuvių)  
+  Malay (Bahasa Melayu)  
+  Malayalam (മലയാളം)  
+  Maltese (Malti)  
+  Marathi (मराठी)  
+  Mongolian (Монгол)  
+  Nepali (नेपाली)  
+  Norwegian (Bokmål)  
+  Norwegian Nynorsk (Norsk (Nynorsk))  
+  Polish (Polski)  
+  Portuguese (Português)  
+  Punjabi (ਪੰਜਾਬੀ)  
+  Romanian (Română)  
+  Russian (Русский)  
+  Serbian (Српски)  
+  Sinhala (සිංහල)  
+  Slovak (Slovenčina)  
+  Slovenian (Slovenščina)  
+  Spanish (Español)  
+  Sundanese (Basa Sunda)  
+  Swahili (Kiswahili)  
+  Swedish (Svenska)  
+  Tamil (தமிழ்)  
+  Telugu (తెలుగు)  
+  Thai (ไทย)  
+  Turkish (Türkçe)  
+  Ukrainian (Українська)  
+  Urdu (اردو)  
+  Vietnamese (Tiếng Việt)  
+  Zulu (Isizulu)  
 </details>
 
 <!-- PROJECT STRUCTURE -->
