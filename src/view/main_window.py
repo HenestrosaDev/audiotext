@@ -39,7 +39,7 @@ class MainWindow(ctk.CTkFrame):
         # Sidebar frame
         self.frm_sidebar = ctk.CTkFrame(master=self, width=140, corner_radius=0)
         self.frm_sidebar.grid(row=0, column=0, rowspan=4, sticky="nsew")
-        self.frm_sidebar.grid_rowconfigure(6, weight=1)
+        self.frm_sidebar.grid_rowconfigure(10, weight=1)
 
         # Logo label
         self.logo_image = ctk.CTkImage(
@@ -69,7 +69,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_audio_language.grid(row=1, column=0, padx=20, pady=(20, 0))
 
-        self.cbx_audio_language = ctk.CTkComboBox(
+        self.cbx_audio_language = ctk.CTkOptionMenu(
             master=self.frm_shared_options, values=list(c.AUDIO_LANGUAGES.values())
         )
         self.cbx_audio_language.grid(row=2, column=0, padx=20, pady=10)
