@@ -37,7 +37,7 @@ class MainWindow(ctk.CTkFrame):
 
     def _init_sidebar(self):
         # Sidebar frame
-        self.frm_sidebar = ctk.CTkFrame(self, width=140, corner_radius=0)
+        self.frm_sidebar = ctk.CTkFrame(master=self, width=140, corner_radius=0)
         self.frm_sidebar.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.frm_sidebar.grid_rowconfigure(6, weight=1)
 
@@ -63,12 +63,14 @@ class MainWindow(ctk.CTkFrame):
 
         # Audio language
         self.lbl_audio_language = ctk.CTkLabel(
+            master=self.frm_shared_options,
+            text=f'{_("Audio language")}:',
             font=ctk.CTkFont(size=14, weight="bold"),
         )
         self.lbl_audio_language.grid(row=1, column=0, padx=20, pady=(20, 0))
 
         self.cbx_audio_language = ctk.CTkComboBox(
-            self.frm_sidebar, values=list(c.AUDIO_LANGUAGES.values())
+            master=self.frm_shared_options, values=list(c.AUDIO_LANGUAGES.values())
         )
         self.cbx_audio_language.grid(row=2, column=0, padx=20, pady=10)
         self.cbx_audio_language.set(c.AUDIO_LANGUAGES[locale.getdefaultlocale()[0][:2]])
@@ -81,7 +83,7 @@ class MainWindow(ctk.CTkFrame):
 
         # Transcribe from microphone button
         self.btn_transcribe_from_mic = ctk.CTkButton(
-            self.frm_sidebar,
+            master=self.frm_shared_options,
             text=_("Transcribe from microphone"),
             command=lambda: self._on_generate_transcription(c.MIC),
         )
@@ -89,7 +91,7 @@ class MainWindow(ctk.CTkFrame):
 
         # Generate text button
         self.btn_generate_transcription = ctk.CTkButton(
-            self.frm_sidebar,
+            master=self.frm_shared_options,
             fg_color="green",
             text=_("Generate transcription"),
             command=lambda: self._on_generate_transcription(c.FILE),
@@ -123,7 +125,7 @@ class MainWindow(ctk.CTkFrame):
         self.lbl_appearance_mode.grid(row=9, column=0, padx=20, pady=(10, 0))
 
         self.omn_appearance_mode = ctk.CTkOptionMenu(
-            self.frm_sidebar,
+            master=self.frm_sidebar,
             values=[_("System"), _("Light"), _("Dark")],
             command=self._change_appearance_mode_event,
         )
@@ -131,23 +133,23 @@ class MainWindow(ctk.CTkFrame):
 
     def _init_main_content(self):
         # Selected file entry
-        self.ent_selected_file = ctk.CTkEntry(self, state="disabled")
+        self.ent_selected_file = ctk.CTkEntry(master=self, state="disabled")
         self.ent_selected_file.grid(
             row=0, column=1, padx=20, pady=(20, 0), sticky="new"
         )
         self.ent_selected_file.grid_remove()  # hidden at start
 
         # Text audio textbox
-        self.tbx_transcription = ctk.CTkTextbox(self, wrap="word")
+        self.tbx_transcription = ctk.CTkTextbox(master=self, wrap="word")
         self.tbx_transcription.grid(row=1, column=1, padx=20, pady=20, sticky="nsew")
 
         # Progress bar
-        self.progress_bar = ctk.CTkProgressBar(self)
+        self.progress_bar = ctk.CTkProgressBar(master=self)
         self.progress_bar.configure(mode="indeterminnate")
 
         # Save text button
         self.btn_save = ctk.CTkButton(
-            self,
+            master=self,
             fg_color="green",
             text=_("Save transcription"),
             command=self._on_save_transcription,
