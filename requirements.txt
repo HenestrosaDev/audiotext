@@ -1,4 +1,4 @@
-customtkinter~=5.0.5
+customtkinter~=5.2.1
 pydub~=0.25.1
 SpeechRecognition~=3.9.0
 pyaudio~=0.2.13
