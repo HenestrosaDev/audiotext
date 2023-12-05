@@ -1,7 +1,10 @@
 import locale
+import tkinter
 
 import customtkinter as ctk
 import utils.constants as c
+import utils.path_helper as ph
+from PIL import Image
 from utils.i18n import _
 
 
@@ -60,6 +63,7 @@ class MainWindow(ctk.CTkFrame):
             font=ctk.CTkFont(size=22, weight="bold"),
         )
         self.lbl_logo.grid(row=0, column=0, padx=20, pady=(25, 0))
+
         # ------------------
 
         # Shared options frame
