@@ -42,7 +42,21 @@ class MainWindow(ctk.CTkFrame):
         self.frm_sidebar.grid_rowconfigure(6, weight=1)
 
         # Logo label
+        self.logo_image = ctk.CTkImage(
+            light_image=Image.open(
+                ph.ROOT_PATH / ph.IMG_RELATIVE_PATH / "icon-light.png"
+            ),
+            dark_image=Image.open(
+                ph.ROOT_PATH / ph.IMG_RELATIVE_PATH / "icon-dark.png"
+            ),
+            size=(32, 32),
+        )
+
         self.lbl_logo = ctk.CTkLabel(
+            master=self.frm_sidebar,
+            text=f" {c.APP_NAME}",
+            image=self.logo_image,
+            compound="left",
             font=ctk.CTkFont(size=22, weight="bold"),
         )
         self.lbl_logo.grid(row=0, column=0, padx=20, pady=(20, 10))
