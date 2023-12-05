@@ -3,6 +3,7 @@ import tkinter
 
 import customtkinter as ctk
 import utils.constants as c
+import utils.dict_utils as du
 import utils.path_helper as ph
 from model.transcription_method import TranscriptionMethod
 from PIL import Image
@@ -83,7 +84,12 @@ class MainWindow(ctk.CTkFrame):
             master=self.frm_shared_options, values=list(c.AUDIO_LANGUAGES.values())
         )
         self.omn_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky="ew")
+        try:
             self.omn_audio_language.set(
+                c.AUDIO_LANGUAGES[locale.getdefaultlocale()[0][:2]]
+            )
+        except Exception:
+            self.omn_audio_language.set("English")
 
         # Transcribe from microphone button
         self.btn_transcribe_from_mic = ctk.CTkButton(
