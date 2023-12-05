@@ -59,7 +59,11 @@ class MainWindow(ctk.CTkFrame):
             compound="left",
             font=ctk.CTkFont(size=22, weight="bold"),
         )
-        self.lbl_logo.grid(row=0, column=0, padx=20, pady=(20, 10))
+        # ------------------
+
+        # Shared options frame
+        self.frm_shared_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
+        self.frm_shared_options.grid(row=1, column=0, padx=20, pady=(20, 0))
 
         # Audio language
         self.lbl_audio_language = ctk.CTkLabel(
@@ -67,53 +71,113 @@ class MainWindow(ctk.CTkFrame):
             text=f'{_("Audio language")}:',
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_audio_language.grid(row=1, column=0, padx=20, pady=(20, 0))
+        self.lbl_audio_language.grid(row=0, column=0, padx=0, pady=10)
 
         self.cbx_audio_language = ctk.CTkOptionMenu(
             master=self.frm_shared_options, values=list(c.AUDIO_LANGUAGES.values())
         )
-        self.cbx_audio_language.grid(row=2, column=0, padx=20, pady=10)
+        self.cbx_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky="ew")
         self.cbx_audio_language.set(c.AUDIO_LANGUAGES[locale.getdefaultlocale()[0][:2]])
-
-        # Select file button
-        self.btn_select_file = ctk.CTkButton(
-            self.frm_sidebar, text=_("Select file"), command=self._on_select_file
-        )
-        self.btn_select_file.grid(row=3, column=0, padx=20, pady=(30, 20))
 
         # Transcribe from microphone button
         self.btn_transcribe_from_mic = ctk.CTkButton(
             master=self.frm_shared_options,
-            text=_("Transcribe from microphone"),
-            command=lambda: self._on_generate_transcription(c.MIC),
+            text=_("Transcribe from mic."),
+            command=lambda: self._on_generate_transcription(c.AudioSource.MIC),
         )
-        self.btn_transcribe_from_mic.grid(row=4, column=0, padx=20, pady=(20, 30))
+        self.btn_transcribe_from_mic.grid(
+            row=2, column=0, padx=20, pady=(30, 0), sticky="ew"
+        )
+        self.btn_transcribe_from_mic.configure(state="disabled")
+
+        # Select file button
+        self.btn_select_file = ctk.CTkButton(
+            master=self.frm_shared_options,
+            text=_("Select file"),
+            command=self._on_select_file,
+        )
+        self.btn_select_file.grid(row=3, column=0, padx=20, pady=(30, 0), sticky="ew")
 
         # Generate text button
         self.btn_generate_transcription = ctk.CTkButton(
             master=self.frm_shared_options,
             fg_color="green",
+            hover_color="darkgreen",
             text=_("Generate transcription"),
-            command=lambda: self._on_generate_transcription(c.FILE),
+            command=lambda: self._on_generate_transcription(c.AudioSource.FILE),
         )
-        self.btn_generate_transcription.grid(row=5, column=0, padx=20, pady=10)
-        self.btn_generate_transcription.grid_remove()  # hidden at start
+        self.btn_generate_transcription.grid(
+            row=4, column=0, padx=20, pady=20, sticky="ew"
+        )
+        self.btn_generate_transcription.configure(state="disabled")
 
-        # App language
-        self.lbl_app_language = ctk.CTkLabel(
-            self.frm_sidebar, text=f'{_("App language")}:', anchor="w"
-        )
-        self.lbl_app_language.grid(row=7, column=0, padx=20, pady=(20, 0))
+        # ------------------
 
-        self.omn_app_language = ctk.CTkOptionMenu(
-            self.frm_sidebar,
-            values=list(c.APP_LANGUAGES.values()),
-            command=self._on_change_app_language,
+        # 'Transcribe using' frame
+        self.frm_transcribe_using = ctk.CTkFrame(
+            master=self.frm_sidebar, border_width=2
         )
-        self.omn_app_language.grid(row=8, column=0, padx=20, pady=10)
-        self.omn_app_language.set(
-            c.APP_LANGUAGES.get(locale.getdefaultlocale()[0][:2], "English")
+        self.frm_transcribe_using.grid(row=2, column=0, padx=0, pady=(20, 0))
+
+        self.lbl_transcribe_using = ctk.CTkLabel(
+            master=self.frm_transcribe_using,
+            text=f'{_("Transcribe using")}:',
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
         )
+        self.lbl_transcribe_using.grid(row=0, column=0, padx=0, pady=(10, 12.5))
+
+        self.radio_var = tkinter.IntVar(value=-1)  # Don't select any by default
+        self.rbt_transcribe_using_google = ctk.CTkRadioButton(
+            master=self.frm_transcribe_using,
+            variable=self.radio_var,
+            value=0,
+            text="Google API (remote)",
+            command=self._on_transcribe_using_change,
+        )
+        self.rbt_transcribe_using_google.grid(
+            row=1, column=0, padx=20, pady=0, sticky="w"
+        )
+
+        self.rbt_transcribe_using_whisper = ctk.CTkRadioButton(
+            master=self.frm_transcribe_using,
+            variable=self.radio_var,
+            value=1,
+            text="WhisperX (local)",
+            command=self._on_transcribe_using_change,
+        )
+        self.rbt_transcribe_using_whisper.grid(
+            row=2, column=0, padx=20, pady=(7.5, 16), sticky="w"
+        )
+
+        # Whisper options frame
+        self.frm_whisper_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
+        self.frm_whisper_options.grid(row=3, column=0, padx=20, pady=(20, 0))
+        self.frm_whisper_options.grid_remove()  # hidden at start
+
+        self.lbl_whisper_options = ctk.CTkLabel(
+            master=self.frm_whisper_options,
+            text="WhisperX options:",
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
+        )
+        self.lbl_whisper_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
+
+        self.chk_whisper_options_translate = ctk.CTkCheckBox(
+            master=self.frm_whisper_options,
+            text="Translate to English",
+            command=self._on_chk_whisper_options_translate_change,
+        )
+        self.chk_whisper_options_translate.grid(
+            row=1, column=0, padx=20, pady=0, sticky="w"
+        )
+        self.chk_whisper_options_subtitles = ctk.CTkCheckBox(
+            master=self.frm_whisper_options,
+            text="Generate subtitles",
+        )
+        self.chk_whisper_options_subtitles.grid(
+            row=2, column=0, padx=20, pady=(10, 16), sticky="w"
+        )
+
+        # ------------------
 
         # Appearance mode
         self.lbl_appearance_mode = ctk.CTkLabel(
@@ -173,7 +237,25 @@ class MainWindow(ctk.CTkFrame):
     def _on_save_transcription(self):
         self._controller.save_transcription()
 
-    # WIDGET METHODS
+    def _on_transcribe_using_change(self):
+        should_show_whisper_options = self.radio_var.get() == 1
+        self._toggle_widget_visibility(
+            self.frm_whisper_options, should_show_whisper_options
+        )
+        self._toggle_widget_state(self.btn_transcribe_from_mic, should_enable=True)
+
+        if self.is_file_selected and not self.is_transcribing_from_mic:
+            self._toggle_widget_state(
+                self.btn_generate_transcription, should_enable=True
+            )
+
+    def _on_chk_whisper_options_translate_change(self):
+        if self.chk_whisper_options_translate.get():
+            self.chk_whisper_options_subtitles.deselect()
+            self._toggle_widget_state(self.chk_whisper_options_subtitles, False)
+        else:
+            self._toggle_widget_state(self.chk_whisper_options_subtitles, True)
+
 
     @staticmethod
     def _toggle_widget_state(widget, should_enable):
