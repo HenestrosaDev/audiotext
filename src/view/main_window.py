@@ -59,6 +59,7 @@ class MainWindow(ctk.CTkFrame):
             compound="left",
             font=ctk.CTkFont(size=22, weight="bold"),
         )
+        self.lbl_logo.grid(row=0, column=0, padx=20, pady=(25, 0))
         # ------------------
 
         # Shared options frame
@@ -186,14 +187,16 @@ class MainWindow(ctk.CTkFrame):
             anchor="w",
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_appearance_mode.grid(row=9, column=0, padx=20, pady=(10, 0))
+        self.lbl_appearance_mode.grid(row=12, column=0, padx=20, pady=(10, 0))
 
         self.omn_appearance_mode = ctk.CTkOptionMenu(
             master=self.frm_sidebar,
             values=[_("System"), _("Light"), _("Dark")],
             command=self._change_appearance_mode_event,
         )
-        self.omn_appearance_mode.grid(row=10, column=0, padx=20, pady=10)
+        self.omn_appearance_mode.grid(
+            row=13, column=0, padx=20, pady=(10, 20), sticky="ew"
+        )
 
     def _init_main_content(self):
         # Selected file entry
