@@ -79,11 +79,11 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_audio_language.grid(row=0, column=0, padx=0, pady=10)
 
-        self.cbx_audio_language = ctk.CTkOptionMenu(
+        self.omn_audio_language = ctk.CTkOptionMenu(
             master=self.frm_shared_options, values=list(c.AUDIO_LANGUAGES.values())
         )
-        self.cbx_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky="ew")
-        self.cbx_audio_language.set(c.AUDIO_LANGUAGES[locale.getdefaultlocale()[0][:2]])
+        self.omn_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky="ew")
+            self.omn_audio_language.set(
 
         # Transcribe from microphone button
         self.btn_transcribe_from_mic = ctk.CTkButton(
