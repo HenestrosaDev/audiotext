@@ -42,26 +42,7 @@ class MainController:
         self.transcription.filepath_to_transcribe = Path(filepath)
 
         if filepath:
-            self.view.toggle_ent_selected_file(should_show=True)
-            self.view.set_ent_selected_file_text(filepath)
-            self.view.toggle_btn_generate_transcription(should_show=True)
-
-    def change_app_language(self, language_name: str):
-        """
-        Change the language of the application.
-        The text properties of various GUI elements are then updated to reflect the
-        new language.
-
-        :param language_name: The name of the language to change to.
-        :type language_name: str
-        """
-        language_code = [
-            i for i in c.AUDIO_LANGUAGES if c.AUDIO_LANGUAGES[i] == language_name
-        ][0]
-
-        load_translation(language_code)
-
-        self.view.refresh_widgets()
+            self.view.handle_select_file_success(filepath)
 
     def _is_file_valid(self, source):
         filepath = self.transcription.filepath_to_transcribe

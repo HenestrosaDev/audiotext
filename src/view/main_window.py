@@ -326,6 +326,19 @@ class MainWindow(ctk.CTkFrame):
         self.tbx_transcription.delete("1.0", "end")
         self.tbx_transcription.insert("0.0", text)
 
+    # HANDLERS
+
+    def handle_select_file_success(self, filepath):
+        self.is_file_selected = True
+
+        self._toggle_widget_visibility(self.ent_selected_file, should_show=True)
+        self.ent_selected_file.configure(textvariable=ctk.StringVar(self, filepath))
+
+        if self.radio_var.get() != -1 and not self.is_transcribing_from_mic:
+            self._toggle_widget_state(
+                self.btn_generate_transcription, should_enable=True
+            )
+
     @staticmethod
     def _change_appearance_mode_event(new_appearance_mode: str):
         appearance_mode_map = {
