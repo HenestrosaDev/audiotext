@@ -191,20 +191,6 @@ class MainWindow(ctk.CTkFrame):
         self.tbx_transcription.delete("1.0", "end")
         self.tbx_transcription.insert("0.0", text)
 
-    def refresh_widgets(self):
-        from utils.i18n import _
-
-        self.lbl_audio_language.configure(text=f'{_("Audio language")}:')
-        self.btn_select_file.configure(text=_("Select file"))
-        self.btn_transcribe_from_mic.configure(text=_("Transcribe from microphone"))
-        self.btn_generate_transcription.configure(text=_("Generate transcription"))
-        self.lbl_app_language.configure(text=f'{_("App language")}:')
-        self.lbl_appearance_mode.configure(text=f'{_("Appearance mode")}:')
-        self.omn_appearance_mode.configure(values=[_("System"), _("Light"), _("Dark")])
-        self.omn_appearance_mode.set(_("System"))
-        self.btn_save.configure(text=_("Save transcription"))
-        ctk.set_appearance_mode(_(self.omn_appearance_mode.get()))
-
     @staticmethod
     def _change_appearance_mode_event(new_appearance_mode: str):
         appearance_mode_map = {
