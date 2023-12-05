@@ -4,6 +4,7 @@ import tkinter
 import customtkinter as ctk
 import utils.constants as c
 import utils.path_helper as ph
+from model.transcription_method import TranscriptionMethod
 from PIL import Image
 from utils.i18n import _
 
@@ -93,7 +94,6 @@ class MainWindow(ctk.CTkFrame):
         self.btn_transcribe_from_mic.grid(
             row=2, column=0, padx=20, pady=(30, 0), sticky="ew"
         )
-        self.btn_transcribe_from_mic.configure(state="disabled")
 
         # Select file button
         self.btn_select_file = ctk.CTkButton(
@@ -131,33 +131,33 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_transcribe_using.grid(row=0, column=0, padx=0, pady=(10, 12.5))
 
-        self.radio_var = tkinter.IntVar(value=-1)  # Don't select any by default
-        self.rbt_transcribe_using_google = ctk.CTkRadioButton(
-            master=self.frm_transcribe_using,
-            variable=self.radio_var,
-            value=0,
-            text="Google API (remote)",
-            command=self._on_transcribe_using_change,
-        )
-        self.rbt_transcribe_using_google.grid(
-            row=1, column=0, padx=20, pady=0, sticky="w"
-        )
+        self.radio_var = tkinter.IntVar(value=TranscriptionMethod.WHISPERX.value)
 
         self.rbt_transcribe_using_whisper = ctk.CTkRadioButton(
             master=self.frm_transcribe_using,
             variable=self.radio_var,
-            value=1,
+            value=TranscriptionMethod.WHISPERX.value,
             text="WhisperX (local)",
             command=self._on_transcribe_using_change,
         )
         self.rbt_transcribe_using_whisper.grid(
+            row=1, column=0, padx=20, pady=0, sticky="w"
+        )
+
+        self.rbt_transcribe_using_google = ctk.CTkRadioButton(
+            master=self.frm_transcribe_using,
+            variable=self.radio_var,
+            value=TranscriptionMethod.GOOGLE_API.value,
+            text="Google API (remote)",
+            command=self._on_transcribe_using_change,
+        )
+        self.rbt_transcribe_using_google.grid(
             row=2, column=0, padx=20, pady=(7.5, 16), sticky="w"
         )
 
         # Whisper options frame
         self.frm_whisper_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
         self.frm_whisper_options.grid(row=3, column=0, padx=20, pady=(20, 0))
-        self.frm_whisper_options.grid_remove()  # hidden at start
 
         self.lbl_whisper_options = ctk.CTkLabel(
             master=self.frm_whisper_options,
@@ -273,7 +273,9 @@ class MainWindow(ctk.CTkFrame):
         self._controller.save_transcription()
 
     def _on_transcribe_using_change(self):
-        should_show_whisper_options = self.radio_var.get() == 1
+        should_show_whisper_options = (
+            self.radio_var.get() == TranscriptionMethod.WHISPERX.value
+        )
         self._toggle_widget_visibility(
             self.frm_whisper_options, should_show_whisper_options
         )
@@ -338,7 +340,7 @@ class MainWindow(ctk.CTkFrame):
         self._toggle_widget_visibility(self.ent_selected_file, should_show=True)
         self.ent_selected_file.configure(textvariable=ctk.StringVar(self, filepath))
 
-        if self.radio_var.get() != -1 and not self.is_transcribing_from_mic:
+        if not self.is_transcribing_from_mic:
             self._toggle_widget_state(
                 self.btn_generate_transcription, should_enable=True
             )
