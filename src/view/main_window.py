@@ -20,6 +20,10 @@ class MainWindow(ctk.CTkFrame):
         # Init the controller
         self._controller = None
 
+        # State
+        self.is_transcribing_from_mic = False
+        self.is_file_selected = False
+
     def set_controller(self, controller):
         """
         Set the controller of the window.
