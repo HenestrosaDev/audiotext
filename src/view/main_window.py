@@ -43,9 +43,7 @@ class MainWindow(ctk.CTkFrame):
 
         # Logo label
         self.lbl_logo = ctk.CTkLabel(
-            self.frm_sidebar,
-            text=c.APP_NAME,
-            font=ctk.CTkFont(size=20, weight="bold"),
+            font=ctk.CTkFont(size=22, weight="bold"),
         )
         self.lbl_logo.grid(row=0, column=0, padx=20, pady=(20, 10))
 
