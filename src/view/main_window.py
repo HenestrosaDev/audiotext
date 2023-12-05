@@ -157,7 +157,7 @@ class MainWindow(ctk.CTkFrame):
     @staticmethod
     def _toggle_widget_state(widget, should_enable):
         if should_enable:
-            widget.configure(state="enabled")
+            widget.configure(state="normal")
         else:
             widget.configure(state="disabled")
 
