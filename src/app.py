@@ -20,12 +20,12 @@ class App(ctk.CTk):
 
         # Initial size of the window
         width = 1000
-        height = 700
+        height = 750
         self.geometry(f"{width}x{height}")
 
         # Min size of the window
         min_width = 750
-        min_height = 500
+        min_height = 750
         self.minsize(min_width, min_height)
 
         # Create the view and place it on the root window
