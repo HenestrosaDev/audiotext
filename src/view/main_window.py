@@ -187,15 +187,9 @@ class MainWindow(ctk.CTkFrame):
         else:
             self.progress_bar.grid_forget()
 
-    def toggle_btn_save(self, should_show):
-        self._toggle_widget_visibility(self.btn_save, should_show)
-
-    def set_ent_selected_file_text(self, text):
-        self.ent_selected_file.configure(textvariable=ctk.StringVar(self, text))
-
-    def display_text(self, message):
+    def display_text(self, text):
         self.tbx_transcription.delete("1.0", "end")
-        self.tbx_transcription.insert("0.0", message)
+        self.tbx_transcription.insert("0.0", text)
 
     def refresh_widgets(self):
         from utils.i18n import _
