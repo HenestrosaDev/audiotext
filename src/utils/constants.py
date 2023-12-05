@@ -1,3 +1,5 @@
+from enum import Enum
+
 APP_NAME = "Audiotext"
 APP_LANGUAGES = {"en": "English", "es": "Español"}
 
@@ -103,8 +105,6 @@ AUDIO_FILE_EXTENSIONS = {
     "aac": [".aac"],
     "ogg": [".ogg", ".oga", ".opus"],
 }
-
-ICON_RELATIVE_PATH = "res/img/icon.ico"
 
 # fmt: off
 VIDEO_FILE_EXTENSIONS = [

@@ -1,8 +1,8 @@
 import customtkinter as ctk
 import utils.constants as c
+import utils.path_helper as ph
 from controller.main_controller import MainController
 from model.transcription import Transcription
-from utils.path_helper import ROOT_PATH
 from view.main_window import MainWindow
 
 
@@ -16,7 +16,7 @@ class App(ctk.CTk):
         ctk.set_default_color_theme("blue")
 
         self.title(c.APP_NAME)
-        self.wm_iconbitmap(ROOT_PATH / c.ICON_RELATIVE_PATH)
+        self.wm_iconbitmap(ph.ROOT_PATH / ph.IMG_RELATIVE_PATH / "icon.ico")
 
         # Initial size of the window
         width = 1000

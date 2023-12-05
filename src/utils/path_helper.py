@@ -21,4 +21,6 @@ def get_path(relative_path: str = "") -> Path:
     return base_path / relative_path
 
 
+IMG_RELATIVE_PATH = "res/img"
+
 ROOT_PATH = get_path("")

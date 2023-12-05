@@ -2,7 +2,7 @@ import gettext
 import locale
 
 import utils.constants as c
-import utils.path_helper as rp
+import utils.path_helper as ph
 
 _ = None
 
@@ -30,7 +30,7 @@ def load_translation(language_code: str):
 
     translation = gettext.translation(
         "app",
-        localedir=rp.ROOT_PATH / "res/locales",
+        localedir=ph.ROOT_PATH / "res/locales",
         languages=[lang_code_without_territory],
         fallback=True,
     )
