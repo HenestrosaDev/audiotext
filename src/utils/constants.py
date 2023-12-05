@@ -99,12 +99,17 @@ class AudioSource(Enum):
     MIC = "mic"
 
 
-AUDIO_FILE_EXTENSIONS = {
-    "mp3": [".mp3", ".mpeg"],
-    "wav": [".wav", "wma"],
-    "aac": [".aac"],
-    "ogg": [".ogg", ".oga", ".opus"],
-}
+AUDIO_FILE_EXTENSIONS = [
+    ".mp3",
+    ".mpeg",
+    ".wav",
+    ".wma",
+    ".aac",
+    ".flac",
+    ".ogg",
+    ".oga",
+    ".opus",
+]
 
 # fmt: off
 VIDEO_FILE_EXTENSIONS = [

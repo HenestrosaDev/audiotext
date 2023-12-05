@@ -157,20 +157,15 @@ class MainController:
             # Get file extension
             content_type = Path(filepath).suffix
 
+            sound = None
             # Open the audio file using pydub
-            if content_type in c.AUDIO_FILE_EXTENSIONS["wav"]:
-                sound = AudioSegment.from_wav(filepath)
-            elif content_type in c.AUDIO_FILE_EXTENSIONS["ogg"]:
-                sound = AudioSegment.from_ogg(filepath)
-            elif content_type in c.AUDIO_FILE_EXTENSIONS["mp3"]:
-                sound = AudioSegment.from_mp3(filepath)
+            if content_type in c.AUDIO_FILE_EXTENSIONS:
+                sound = AudioSegment.from_file(filepath)
             elif content_type in c.VIDEO_FILE_EXTENSIONS:
                 clip = VideoFileClip(filepath)
                 video_audio_path = chunks_directory / f"{Path(filepath).stem}.wav"
                 clip.audio.write_audiofile(video_audio_path)
                 sound = AudioSegment.from_wav(video_audio_path)
-            else:
-                sound = AudioSegment.from_file(filepath, filepath.suffix[1:])
 
             # Split audio sound where silence is 500 milliseconds or more and get chunks
             chunks = split_on_silence(
