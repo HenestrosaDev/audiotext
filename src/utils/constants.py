@@ -79,8 +79,18 @@ AUDIO_LANGUAGES = {
     "zu": "Zulu",
 }
 
-FILE = "file"
-MIC = "mic"
+
+class Color(Enum):
+    LIGHT_RED = "#D30000"
+    DARK_RED = "#8b0000"
+    HOVER_LIGHT_RED = "#BF0000"
+    HOVER_DARK_RED = "#610000"
+
+    LIGHT_BLUE = "#3B8ED0"
+    DARK_BLUE = "#1F6AA5"
+    HOVER_LIGHT_BLUE = "#36719F"
+    HOVER_DARK_BLUE = "#144870"
+
 
 AUDIO_FILE_EXTENSIONS = {
     "mp3": [".mp3", ".mpeg"],
