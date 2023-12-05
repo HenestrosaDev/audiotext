@@ -287,6 +287,7 @@ class MainWindow(ctk.CTkFrame):
         else:
             self._toggle_widget_state(self.chk_whisper_options_subtitles, True)
 
+    # HELPER METHODS
 
     @staticmethod
     def _toggle_widget_state(widget, should_enable):
