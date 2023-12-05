@@ -47,7 +47,7 @@ class MainController:
     def _is_file_valid(self, source):
         filepath = self.transcription.filepath_to_transcribe
 
-        if source != c.FILE:
+        if source != c.AudioSource.FILE:
             return True
 
         audio_extensions = c.AUDIO_FILE_EXTENSIONS.values()
@@ -116,9 +116,9 @@ class MainController:
         self.view.toggle_btn_transcribe_from_mic_state(should_enable=False)
 
         # Get transcription
-        if self.transcription.source == c.FILE:
+        if self.transcription.source == c.AudioSource.FILE:
             await self.generate_file_transcription()
-        elif self.transcription.source == c.MIC:
+        elif self.transcription.source == c.AudioSource.MIC:
             await self.generate_mic_transcription()
 
         # Re-enable action buttons

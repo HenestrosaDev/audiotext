@@ -92,6 +92,11 @@ class Color(Enum):
     HOVER_DARK_BLUE = "#144870"
 
 
+class AudioSource(Enum):
+    FILE = "file"
+    MIC = "mic"
+
+
 AUDIO_FILE_EXTENSIONS = {
     "mp3": [".mp3", ".mpeg"],
     "wav": [".wav", "wma"],
