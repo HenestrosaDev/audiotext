@@ -63,7 +63,7 @@ class MainWindow(ctk.CTkFrame):
 
         # Audio language
         self.lbl_audio_language = ctk.CTkLabel(
-            self.frm_sidebar, text=f'{_("Audio language")}:', anchor="w"
+            font=ctk.CTkFont(size=14, weight="bold"),
         )
         self.lbl_audio_language.grid(row=1, column=0, padx=20, pady=(20, 0))
 
@@ -115,7 +115,10 @@ class MainWindow(ctk.CTkFrame):
 
         # Appearance mode
         self.lbl_appearance_mode = ctk.CTkLabel(
-            self.frm_sidebar, text=f'{_("Appearance mode")}:', anchor="w"
+            master=self.frm_sidebar,
+            text=f'{_("Appearance mode")}:',
+            anchor="w",
+            font=ctk.CTkFont(size=14, weight="bold"),
         )
         self.lbl_appearance_mode.grid(row=9, column=0, padx=20, pady=(10, 0))
 
