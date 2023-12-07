@@ -137,74 +137,81 @@ class MainController:
         """
         Splits a large audio file into chunks
         and applies speech recognition on each one.
-
-        :returns: Audio transcription.
-        :rtype: str
         """
-        filepath = self.transcription.filepath_to_transcribe
+        file_path = self.transcription.filepath_to_transcribe
 
         # Can be the transcription or an error text
-        text_to_return = ""
+        transcription_text = ""
 
         # Create a directory to store the audio chunks
         chunks_directory = ROOT_PATH / "audio-chunks"
         chunks_directory.mkdir(exist_ok=True)
 
         try:
-            # Create a speech recognition object
-            r = sr.Recognizer()
-
             # Get file extension
-            content_type = Path(filepath).suffix
+            content_type = Path(file_path).suffix
 
             sound = None
             # Open the audio file using pydub
             if content_type in c.AUDIO_FILE_EXTENSIONS:
-                sound = AudioSegment.from_file(filepath)
+                sound = AudioSegment.from_file(file_path)
+
             elif content_type in c.VIDEO_FILE_EXTENSIONS:
-                clip = VideoFileClip(filepath)
-                video_audio_path = chunks_directory / f"{Path(filepath).stem}.wav"
+                clip = VideoFileClip(str(file_path))
+                video_audio_path = chunks_directory / f"{Path(file_path).stem}.wav"
                 clip.audio.write_audiofile(video_audio_path)
                 sound = AudioSegment.from_wav(video_audio_path)
 
-            # Split audio sound where silence is 500 milliseconds or more and get chunks
-            chunks = split_on_silence(
+            audio_chunks = split_on_silence(
                 sound,
-                # Experiment with this value for your target audio file
+                # Minimum duration of silence required to consider a segment as a split point
                 min_silence_len=500,
-                # Adjust this per requirement
-                silence_thresh=sound.dBFS - 14,
-                # Keep the silence for 1 second, adjustable as well
-                keep_silence=500,
+                # Audio with a level -X decibels below the original audio level will be considered as silence
+                silence_thresh=sound.dBFS - 40,
+                # Adds a buffer of silence before and after each split point
+                keep_silence=100,
             )
 
+            # Create a speech recognition object
+            r = sr.Recognizer()
+
             # Process each chunk
-            for i, audio_chunk in enumerate(chunks, start=1):
+            for idx, audio_chunk in enumerate(audio_chunks):
                 # Export audio chunk and save it in the `chunks_directory` directory.
-                chunk_filename = os.path.join(chunks_directory, f"chunk{i}.wav")
-                audio_chunk.export(chunk_filename, format="wav")
+                chunk_filename = os.path.join(chunks_directory, f"chunk{idx}.wav")
+                audio_chunk.export(chunk_filename, bitrate="192k", format="wav")
 
                 # Recognize the chunk
                 with sr.AudioFile(chunk_filename) as source:
+                    r.adjust_for_ambient_noise(source)
                     audio_listened = r.record(source)
 
-                    # Try converting it to text
-                    text = r.recognize_google(
-                        audio_listened, language=self.transcription.language_code
-                    )
+                    try:
+                        # Try converting it to text
+                        text = r.recognize_google(
+                            audio_listened, language=self.transcription.language_code
+                        )
 
-                    text = f"{text.capitalize()}. "
-                    text_to_return += text
+                        text = f"{text.capitalize()}. "
+                        transcription_text += text
+                        print(f"text: {text}")
+                    except Exception:
+                        continue
 
-            self.transcription.text = text_to_return
+            self.transcription.text = transcription_text
+
         except Exception:
             print(traceback.format_exc())
             self.view.display_text(
                 _("Error generating the file transcription. Please try again.")
             )
+
         finally:
             # Delete temporal directory and files
             shutil.rmtree(chunks_directory)
+
+            # Hide progress bar
+            self.view.toggle_progress_bar_visibility(should_show=False)
 
             if self.transcription.text:
                 self.view.display_text(self.transcription.text)
