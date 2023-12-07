@@ -26,15 +26,15 @@ class MainController:
         Prompts a file explorer to determine the audio/video file path to transcribe.
         Stores the filepath in the class variable filepath_to_transcribe.
         """
-        audio_file_extensions_list = [
-            ext for value in c.AUDIO_FILE_EXTENSIONS.values() for ext in value
-        ]
-
         filepath = filedialog.askopenfilename(
             initialdir="/",
             title=_("Select a file"),
             filetypes=[
-                (_("Audio files"), audio_file_extensions_list),
+                (
+                    _("All supported files"),
+                    c.AUDIO_FILE_EXTENSIONS + c.VIDEO_FILE_EXTENSIONS,
+                ),
+                (_("Audio files"), c.AUDIO_FILE_EXTENSIONS),
                 (_("Video files"), c.VIDEO_FILE_EXTENSIONS),
             ],
         )
