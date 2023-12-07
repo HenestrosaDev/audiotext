@@ -45,13 +45,11 @@ class MainController:
             self.view.handle_select_file_success(filepath)
 
     def _is_file_valid(self, source):
-        filepath = self.transcription.filepath_to_transcribe
-
-        if source != c.AudioSource.FILE:
+        if source == c.AudioSource.MIC:
             return True
 
-        audio_extensions = c.AUDIO_FILE_EXTENSIONS.values()
-        is_audio = any(filepath.suffix in extensions for extensions in audio_extensions)
+        filepath = self.transcription.filepath_to_transcribe
+        is_audio = filepath.suffix in c.AUDIO_FILE_EXTENSIONS
         is_video = filepath.suffix in c.VIDEO_FILE_EXTENSIONS
 
         return filepath.is_file() and (is_audio or is_video)
