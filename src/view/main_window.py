@@ -345,12 +345,13 @@ class MainWindow(ctk.CTkFrame):
         self._controller.save_transcription()
 
     def _on_transcribe_using_change(self):
-        should_show_whisper_options = (
-            self.radio_var.get() == TranscriptionMethod.WHISPERX.value
-        )
-        self._toggle_widget_visibility(
-            self.frm_whisper_options, should_show_whisper_options
-        )
+        if self.radio_var.get() == TranscriptionMethod.WHISPERX.value:
+            self.frm_whisper_options.grid()
+            self.frm_google_api_options.grid_remove()
+        elif self.radio_var.get() == TranscriptionMethod.GOOGLE_API.value:
+            self.frm_whisper_options.grid_remove()
+            self.frm_google_api_options.grid()
+
 
     def _on_chk_whisper_options_translate_change(self):
         if self.chk_whisper_options_translate.get():
@@ -395,13 +396,6 @@ class MainWindow(ctk.CTkFrame):
             self.btn_save.grid()
 
     # HELPER METHODS
-
-    @staticmethod
-    def _toggle_widget_visibility(widget, should_show):
-        if should_show:
-            widget.grid()
-        else:
-            widget.grid_remove()
 
     def toggle_progress_bar_visibility(self, should_show):
         if should_show:
