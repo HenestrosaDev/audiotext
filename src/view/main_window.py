@@ -371,32 +371,13 @@ class MainWindow(ctk.CTkFrame):
     # HELPER METHODS
 
     @staticmethod
-    def _toggle_widget_state(widget, should_enable):
-        if should_enable:
-            widget.configure(state="normal")
-        else:
-            widget.configure(state="disabled")
-
-    def toggle_btn_generate_transcription_state(self, should_enable: bool):
-        self._toggle_widget_state(self.btn_generate_transcription, should_enable)
-
-    def toggle_btn_transcribe_from_mic_state(self, should_enable: bool):
-        self._toggle_widget_state(self.btn_transcribe_from_mic, should_enable)
-
-    @staticmethod
     def _toggle_widget_visibility(widget, should_show):
         if should_show:
             widget.grid()
         else:
             widget.grid_remove()
 
-    def toggle_ent_selected_file(self, should_show):
-        self._toggle_widget_visibility(self.ent_selected_file, should_show)
-
-    def toggle_btn_generate_transcription(self, should_show):
-        self._toggle_widget_visibility(self.btn_generate_transcription, should_show)
-
-    def toggle_progress_bar(self, should_show):
+    def toggle_progress_bar_visibility(self, should_show):
         if should_show:
             self.progress_bar.grid(row=1, column=1, padx=40, pady=0, sticky=ctk.EW)
             self.progress_bar.start()
@@ -406,19 +387,6 @@ class MainWindow(ctk.CTkFrame):
     def display_text(self, text):
         self.tbx_transcription.delete("1.0", ctk.END)
         self.tbx_transcription.insert("0.0", text)
-
-    # HANDLERS
-
-    def handle_select_file_success(self, filepath):
-        self.is_file_selected = True
-
-        self._toggle_widget_visibility(self.ent_selected_file, should_show=True)
-        self.ent_selected_file.configure(textvariable=ctk.StringVar(self, filepath))
-
-        if not self.is_transcribing_from_mic:
-            self._toggle_widget_state(
-                self.btn_generate_transcription, should_enable=True
-            )
 
     @staticmethod
     def _change_appearance_mode_event(new_appearance_mode: str):
