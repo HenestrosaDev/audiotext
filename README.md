@@ -69,7 +69,7 @@
     - [Select File](#select-file)
     - [Save Transcription](#save-transcription)
     - [Appearance Mode](#appearance-mode)
-		- [Transcription Translation](#transcription-translation)
+    - [Transcription Translation](#transcription-translation)
     - [Google's Speech-To-Text API Usage](#googles-speech-to-text-api-usage)
 - [Roadmap](#roadmap)
 - [Authors](#authors)
