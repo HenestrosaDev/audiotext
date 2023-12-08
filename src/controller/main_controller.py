@@ -303,7 +303,7 @@ class MainController:
 
             filename = "mic-output.wav"
             au.save_audio_data(audio_data, filename=filename)
-            self.transcription.file_path_to_transcribe = filename
+            self.transcription.file_path_to_transcribe = Path(filename)
 
             threading.Thread(
                 target=lambda loop: loop.run_until_complete(
