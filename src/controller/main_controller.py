@@ -106,30 +106,11 @@ class MainController:
         depending on the value of the source argument. It updates the transcription
         display, progress bar and action buttons accordingly.
         """
-        # Show progress bar
-        self.view.toggle_progress_bar(should_show=True)
-
-        # Disable action buttons to avoid multiple requests at the same time
-        self.view.toggle_btn_generate_transcription_state(should_enable=False)
-        self.view.toggle_btn_transcribe_from_mic_state(should_enable=False)
+        self.view.handle_processing_transcription()
 
         # Get transcription
-        if self.transcription.source == c.AudioSource.FILE:
-            await self.generate_file_transcription()
-        elif self.transcription.source == c.AudioSource.MIC:
-            await self.generate_mic_transcription()
+        self.view.handle_transcription_process_finish(is_transcription_empty)
 
-        # Re-enable action buttons
-        self.view.toggle_btn_generate_transcription_state(should_enable=True)
-        self.view.toggle_btn_transcribe_from_mic_state(should_enable=True)
-        self.view.toggle_btn_generate_transcription(should_show=False)
-
-        # Remove progress bar
-        self.view.toggle_progress_bar(should_show=False)
-
-        # Show save button if transcription is not empty
-        if self.transcription.text:
-            self.view.toggle_btn_save(should_show=True)
 
     async def generate_file_transcription(self):
         """

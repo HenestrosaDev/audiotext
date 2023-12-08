@@ -331,7 +331,41 @@ class MainWindow(ctk.CTkFrame):
             self.chk_whisper_options_subtitles.deselect()
             self._toggle_widget_state(self.chk_whisper_options_subtitles, False)
         else:
-            self._toggle_widget_state(self.chk_whisper_options_subtitles, True)
+
+    # PUBLIC HANDLERS
+
+    def handle_select_file_success(self, filepath):
+        self._is_file_selected = True
+
+        self.ent_selected_file.grid()
+        self.ent_selected_file.configure(textvariable=ctk.StringVar(self, filepath))
+
+        if not self._is_transcribing_from_mic:
+            self.btn_generate_transcription.configure(state=ctk.NORMAL)
+
+    def handle_processing_transcription(self):
+        # Show progress bar
+        self.toggle_progress_bar_visibility(should_show=True)
+
+        # Remove previous text
+        self.display_text("")
+
+        # Disable action buttons to avoid multiple requests at the same time
+        self.btn_generate_transcription.configure(state=ctk.DISABLED)
+        self.btn_transcribe_from_mic.configure(state=ctk.DISABLED)
+
+    def handle_transcription_process_finish(self, is_transcription_empty):
+        # Re-enable action buttons
+        self.btn_transcribe_from_mic.configure(state=ctk.NORMAL)
+        if self._is_file_selected:
+            self.btn_generate_transcription.configure(state=ctk.NORMAL)
+
+        # Remove progress bar
+        self.toggle_progress_bar_visibility(should_show=False)
+
+        # Show save button if transcription is not empty
+        if not is_transcription_empty:
+            self.btn_save.grid()
 
     # HELPER METHODS
 
