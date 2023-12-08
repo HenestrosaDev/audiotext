@@ -29,6 +29,8 @@ class MainController:
         self._is_mic_recording = False
         self._whisperx_result = None
 
+    # PUBLIC METHODS
+
     def select_file(self):
         """
         Prompts a file explorer to determine the audio/video file path to transcribe.
@@ -50,16 +52,6 @@ class MainController:
         if filepath:
             self.transcription.filepath_to_transcribe = Path(filepath)
             self.view.handle_select_file_success(filepath)
-
-    def _is_file_valid(self, source):
-        if source == c.AudioSource.MIC:
-            return True
-
-        filepath = self.transcription.filepath_to_transcribe
-        is_audio = filepath.suffix in c.AUDIO_FILE_EXTENSIONS
-        is_video = filepath.suffix in c.VIDEO_FILE_EXTENSIONS
-
-        return filepath.is_file() and (is_audio or is_video)
 
     def prepare_for_transcription(
         self,
@@ -131,6 +123,44 @@ class MainController:
 
         is_transcription_empty = not self.transcription.text
         self.view.handle_transcription_process_finish(is_transcription_empty)
+
+    def stop_recording_from_mic(self):
+        self._is_mic_recording = False
+
+    def save_transcription(self):
+        """
+        Prompts a file explorer to determine the file to save the
+        generated transcription.
+        """
+        file_path = Path(self.transcription.filepath_to_transcribe)
+
+        file = filedialog.asksaveasfile(
+            mode="w",
+            initialdir=file_path.parent,
+            initialfile=f"{file_path.stem}.txt",
+            title=_("Save as"),
+            defaultextension=".txt",
+            filetypes=[(_("Text file"), "*.txt"), (_("All Files"), "*.*")],
+        )
+
+        if file:
+            file.write(self.transcription.text)
+            file.close()
+
+            if self.transcription.should_subtitle:
+                self._generate_subtitles(Path(file.name))
+
+    # PRIVATE METHODS
+
+    def _is_file_valid(self, source):
+        if source == c.AudioSource.MIC:
+            return True
+
+        filepath = self.transcription.filepath_to_transcribe
+        is_audio = filepath.suffix in c.AUDIO_FILE_EXTENSIONS
+        is_video = filepath.suffix in c.VIDEO_FILE_EXTENSIONS
+
+        return filepath.is_file() and (is_audio or is_video)
 
     async def _transcribe_using_whisperx(self, batch_size=16):
         device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -282,32 +312,6 @@ class MainController:
                 ),
                 args=(asyncio.new_event_loop(),),
             ).start()
-
-    def stop_recording_from_mic(self):
-        self._is_mic_recording = False
-
-    def save_transcription(self):
-        """
-        Prompts a file explorer to determine the file to save the
-        generated transcription.
-        """
-        file_path = Path(self.transcription.filepath_to_transcribe)
-
-        file = filedialog.asksaveasfile(
-            mode="w",
-            initialdir=file_path.parent,
-            initialfile=f"{file_path.stem}.txt",
-            title=_("Save as"),
-            defaultextension=".txt",
-            filetypes=[(_("Text file"), "*.txt"), (_("All Files"), "*.*")],
-        )
-
-        if file:
-            file.write(self.transcription.text)
-            file.close()
-
-            if self.transcription.should_subtitle:
-                self._generate_subtitles(Path(file.name))
 
     def _generate_subtitles(self, file_path):
         output_formats = ["srt", "vtt"]
