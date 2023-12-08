@@ -117,8 +117,47 @@ class MainController:
         # Get transcription
         self.view.handle_transcription_process_finish(is_transcription_empty)
 
+    async def _transcribe_using_whisperx(self, batch_size=16):
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        compute_type = "float16" if "cuda" else "int8"
+        task = "translate" if self.transcription.should_translate else "transcribe"
 
-    async def generate_file_transcription(self):
+        try:
+            model = whisperx.load_model(
+                "large-v3",
+                device,
+                compute_type=compute_type,
+                task=task,
+                language=self.transcription.language_code,
+            )
+
+            audio_path = str(self.transcription.filepath_to_transcribe)
+            audio = whisperx.load_audio(audio_path)
+            self._whisperx_result = model.transcribe(audio, batch_size=batch_size)
+
+            text_combined = " ".join(
+                segment["text"].strip() for segment in self._whisperx_result["segments"]
+            )
+
+            # Align output if should subtitle
+            if self.transcription.should_subtitle:
+                model_aligned, metadata = whisperx.load_align_model(
+                    language_code=self.transcription.language_code, device=device
+                )
+                self._whisperx_result = whisperx.align(
+                    self._whisperx_result["segments"],
+                    model_aligned,
+                    metadata,
+                    audio,
+                    device,
+                    return_char_alignments=False,
+                )
+
+            self.transcription.text = text_combined
+            self.view.display_text(self.transcription.text)
+
+        except Exception:
+            self.view.display_text(traceback.format_exc())
         """
         Splits a large audio file into chunks
         and applies speech recognition on each one.
