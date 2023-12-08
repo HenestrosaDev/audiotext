@@ -120,6 +120,15 @@ class MainController:
         self.view.handle_processing_transcription()
 
         # Get transcription
+        if self.transcription.method == TranscriptionMethod.WHISPERX.value:
+            await self._transcribe_using_whisperx()
+        elif self.transcription.method == TranscriptionMethod.GOOGLE_API.value:
+            await self._transcribe_using_google_api()
+
+        if self.transcription.source == c.AudioSource.MIC:
+            self.transcription.filepath_to_transcribe.unlink()  # Remove tmp file
+
+        is_transcription_empty = not self.transcription.text
         self.view.handle_transcription_process_finish(is_transcription_empty)
 
     async def _transcribe_using_whisperx(self, batch_size=16):
