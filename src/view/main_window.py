@@ -228,6 +228,7 @@ class MainWindow(ctk.CTkFrame):
         self.btn_save = ctk.CTkButton(
             master=self,
             fg_color="green",
+            hover_color="darkgreen",
             text=_("Save transcription"),
             command=self._on_save_transcription,
         )
