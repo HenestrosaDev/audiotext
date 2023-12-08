@@ -39,9 +39,8 @@ class MainController:
             ],
         )
 
-        self.transcription.filepath_to_transcribe = Path(filepath)
-
         if filepath:
+            self.transcription.filepath_to_transcribe = Path(filepath)
             self.view.handle_select_file_success(filepath)
 
     def _is_file_valid(self, source):
