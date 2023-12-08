@@ -234,7 +234,7 @@ class MainWindow(ctk.CTkFrame):
         self.btn_save.grid(row=2, column=1, padx=20, pady=(0, 20), sticky="sew")
         self.btn_save.grid_remove()  # hidden at start
 
-    # EVENT HANDLER METHODS
+    # WIDGET EVENT HANDLER METHODS
 
     def _on_change_app_language(self, language_name: str):
         self._controller.change_app_language(language_name)
