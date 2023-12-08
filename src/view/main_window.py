@@ -4,10 +4,13 @@ import tkinter
 import customtkinter as ctk
 import utils.constants as c
 import utils.dict_utils as du
+import utils.google_api_key_helper as google_api_key_helper
 import utils.path_helper as ph
 from model.transcription_method import TranscriptionMethod
 from PIL import Image
 from utils.i18n import _
+
+from .ctk_input_dialog import CTkInputDialog
 
 
 class MainWindow(ctk.CTkFrame):
