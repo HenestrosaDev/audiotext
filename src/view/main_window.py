@@ -112,7 +112,7 @@ class MainWindow(ctk.CTkFrame):
         self.btn_transcribe_from_mic = ctk.CTkButton(
             master=self.frm_shared_options,
             text=_("Transcribe from mic."),
-            command=lambda: self._on_generate_transcription(c.AudioSource.MIC),
+            command=lambda: self._on_transcribe_from_mic(),
         )
         self.btn_transcribe_from_mic.grid(
             row=2, column=0, padx=20, pady=(30, 0), sticky="ew"
@@ -132,7 +132,7 @@ class MainWindow(ctk.CTkFrame):
             fg_color="green",
             hover_color="darkgreen",
             text=_("Generate transcription"),
-            command=lambda: self._on_generate_transcription(c.AudioSource.FILE),
+            command=lambda: self._on_generate_transcription(),
         )
         self.btn_generate_transcription.grid(
             row=4, column=0, padx=20, pady=20, sticky="ew"
@@ -260,38 +260,60 @@ class MainWindow(ctk.CTkFrame):
     def _on_select_file(self):
         self._controller.select_file()
 
-    def _on_generate_transcription(self, source):
+    def _on_transcribe_from_mic(self):
         is_recording = c.Color.LIGHT_RED.value in self.btn_transcribe_from_mic.cget(
             "fg_color"
         )
 
         if is_recording:
-            self.btn_transcribe_from_mic.configure(
-                fg_color=(c.Color.LIGHT_BLUE.value, c.Color.DARK_BLUE.value),
-                hover_color=(
-                    c.Color.HOVER_LIGHT_BLUE.value,
-                    c.Color.HOVER_DARK_BLUE.value,
-                ),
-                text=_("Transcribe from mic."),
-            )
-
-            # self._controller.generate_transcription(
-            #     source, self.cbx_audio_language.get().strip().lower()
-            # )
-
-            if self.is_file_selected:
-                self.toggle_btn_generate_transcription_state(should_enable=True)
+            self._stop_recording_from_mic()
         else:
-            self.btn_transcribe_from_mic.configure(
-                fg_color=(c.Color.LIGHT_RED.value, c.Color.DARK_RED.value),
-                hover_color=(
-                    c.Color.HOVER_LIGHT_RED.value,
-                    c.Color.HOVER_DARK_RED.value,
-                ),
-                text=_("Stop recording"),
-            )
-            self.is_transcribing_from_mic = True
-            self.toggle_btn_generate_transcription_state(should_enable=False)
+            self._start_recording_from_mic()
+
+    def _start_recording_from_mic(self):
+        self.btn_transcribe_from_mic.configure(
+            fg_color=(c.Color.LIGHT_RED.value, c.Color.DARK_RED.value),
+            hover_color=(
+                c.Color.HOVER_LIGHT_RED.value,
+                c.Color.HOVER_DARK_RED.value,
+            ),
+            text=_("Stop recording"),
+        )
+
+        self._controller.prepare_for_transcription(
+            source=c.AudioSource.MIC,
+            language_code=self._get_language_code(),
+            transcription_method=self.radio_var.get(),
+            **self._get_whisperx_args(),
+        )
+
+        self._is_transcribing_from_mic = True
+        self.btn_generate_transcription.configure(state=ctk.DISABLED)
+
+    def _stop_recording_from_mic(self):
+        self._is_transcribing_from_mic = False
+
+        self.btn_transcribe_from_mic.configure(
+            fg_color=(c.Color.LIGHT_BLUE.value, c.Color.DARK_BLUE.value),
+            hover_color=(
+                c.Color.HOVER_LIGHT_BLUE.value,
+                c.Color.HOVER_DARK_BLUE.value,
+            ),
+            text=_("Transcribe from mic."),
+        )
+
+        self._controller.stop_recording_from_mic()
+
+        if self._is_file_selected:
+            self.btn_generate_transcription.configure(state=ctk.NORMAL)
+
+    def _on_generate_transcription(self):
+        self._controller.prepare_for_transcription(
+            source=c.AudioSource.FILE,
+            language_code=self._get_language_code(),
+            transcription_method=self.radio_var.get(),
+            **self._get_whisperx_args(),
+        )
 
     def _on_save_transcription(self):
         self._controller.save_transcription()
@@ -303,12 +325,6 @@ class MainWindow(ctk.CTkFrame):
         self._toggle_widget_visibility(
             self.frm_whisper_options, should_show_whisper_options
         )
-        self._toggle_widget_state(self.btn_transcribe_from_mic, should_enable=True)
-
-        if self.is_file_selected and not self.is_transcribing_from_mic:
-            self._toggle_widget_state(
-                self.btn_generate_transcription, should_enable=True
-            )
 
     def _on_chk_whisper_options_translate_change(self):
         if self.chk_whisper_options_translate.get():
