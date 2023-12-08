@@ -228,13 +228,10 @@ class MainController:
 
                     try:
                         # Try converting it to text
-                        text = r.recognize_google(
-                            audio_listened, language=self.transcription.language_code
-                        )
-
-                        text = f"{text.capitalize()}. "
-                        transcription_text += text
-                        print(f"text: {text}")
+                        chunk_text = r.recognize_google(
+                        chunk_text = f"{chunk_text.capitalize()}. "
+                        transcription_text += chunk_text
+                        print(f"chunk text: {chunk_text}")
                     except Exception:
                         continue
 
