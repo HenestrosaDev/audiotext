@@ -20,6 +20,8 @@ class MainController:
     def __init__(self, transcription: Transcription, view):
         self.view = view
         self.transcription = transcription
+        self._is_mic_recording = False
+        self._whisperx_result = None
 
     def select_file(self):
         """
