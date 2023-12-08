@@ -158,6 +158,8 @@ class MainController:
 
         except Exception:
             self.view.display_text(traceback.format_exc())
+
+    async def _transcribe_using_google_api(self):
         """
         Splits a large audio file into chunks
         and applies speech recognition on each one.
