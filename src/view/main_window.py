@@ -365,10 +365,10 @@ class MainWindow(ctk.CTkFrame):
             entry_text=old_api_key,
         )
 
-        new_api_key = dialog.get_input().strip()
+        new_api_key = dialog.get_input()
 
         if new_api_key is not None and old_api_key != new_api_key:
-            google_api_key_helper.set_google_api_key(new_api_key)
+            google_api_key_helper.set_google_api_key(new_api_key.strip())
 
     def _on_chk_whisper_options_translate_change(self):
         if self.chk_whisper_options_translate.get():
