@@ -26,8 +26,8 @@ class MainWindow(ctk.CTkFrame):
         self._controller = None
 
         # State
-        self.is_transcribing_from_mic = False
-        self.is_file_selected = False
+        self._is_transcribing_from_mic = False
+        self._is_file_selected = False
 
     def set_controller(self, controller):
         """
