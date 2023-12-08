@@ -14,20 +14,20 @@
 <div align="center">
 	<picture>
 		<source 
-			srcset="docs/icon-light.png" 
+			srcset="docs/light/icon.png" 
 			alt="Logo"
 			width="128" 
 			height="128" 
 			media="(prefers-color-scheme: light)"
 		/>
 		<source 
-			srcset="docs/icon-dark.png" 
+			srcset="docs/dark/icon.png" 
 			alt="Logo"
 			width="128" 
 			height="128" 
 			media="(prefers-color-scheme: dark)"
 		/>
-		<img src="docs/icon-light.png" alt="Logo" width="128" height="128">
+		<img src="docs/light/icon.png" alt="Logo" width="128" height="128">
 	</picture>
 	<h1 align="center">Audiotext</h1>
 	<p align="center">A desktop application that transcribes audio from a file or microphone in any supported language using <strong>WhisperX</strong> or <strong>Google Speech-to-Text API</strong>.</p>
@@ -205,14 +205,6 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   │   └───PULL_REQUEST_TEMPLATE
   │           pull_request_template.md
   │
-  ├───docs
-  │       demo.gif
-  │       file-explorer.png
-  │       generated-transcription.png
-  │       icon.png
-  │       main-light.png
-  │       main-system.png
-  │
   ├───res
   │   ├───img
   │   │       icon.ico
@@ -252,6 +244,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       │       audio_utils.py
       │       constants.py
       │       dict_utils.py
+      │       google_api_key_helper.py
       │       i18n.py
       │       path_helper.py
       │
