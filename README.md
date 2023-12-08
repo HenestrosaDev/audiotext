@@ -320,7 +320,7 @@ Click on the `Transcribe from mic.` button and say whatever you want to be trans
 
 Once you click the button, the text changes to `Stop recording`. Until you click it again, everything you say will be recorded. Here is a video demonstrating this feature:
 
-https://github.com/HenestrosaDev/audiotext/tree/main/docs/videos/english.mp4
+https://github.com/HenestrosaDev/audiotext/assets/60482743/79bcb4f3-63c2-4626-bcbc-033ba21a0859
 
 ### Select File
 
@@ -418,13 +418,13 @@ The program supports three appearance modes:
 
 To translate the audio into English, simply check the `Translate to English` checkbox with **WhisperX** transcription as the transcription method, as shown in the video below.
 
-https://github.com/HenestrosaDev/audiotext/tree/main/docs/videos/spanish-to-english.mp4
+https://github.com/HenestrosaDev/audiotext/assets/60482743/61c67c38-a862-4b68-8502-4c30723950f4
 
 However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into German, you'd set the `Audio language` to "German".
 
 Here is a practical example using the microphone:
 
-https://github.com/HenestrosaDev/audiotext/tree/main/docs/videos/english-to-spanish.mp4
+https://github.com/HenestrosaDev/audiotext/assets/60482743/b70e351f-c275-4ffb-894d-187411bbf160
 
 ### Google's Speech-To-Text API Usage
 
