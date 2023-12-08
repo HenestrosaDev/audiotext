@@ -38,6 +38,23 @@ class MainWindow(ctk.CTkFrame):
         """
         self._controller = controller
 
+    def _get_language_code(self):
+        return du.find_key_by_value(
+            dictionary=c.AUDIO_LANGUAGES, target_value=self.omn_audio_language.get()
+        )
+
+    def _get_whisperx_args(self):
+        whisperx_args = {}
+        if self.radio_var.get() == TranscriptionMethod.WHISPERX.value:
+            whisperx_args["should_translate"] = (
+                self.chk_whisper_options_translate.get() == 1
+            )
+            whisperx_args["should_subtitle"] = (
+                self.chk_whisper_options_subtitles.get() == 1
+            )
+
+        return whisperx_args
+
     # WIDGETS INITIALIZATION
 
     def _init_sidebar(self):
