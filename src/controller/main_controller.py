@@ -117,11 +117,6 @@ class MainController:
             )
 
     async def handle_transcription_process(self):
-        """
-        Asynchronous function transcribes audio data from either a file or microphone,
-        depending on the value of the source argument. It updates the transcription
-        display, progress bar and action buttons accordingly.
-        """
         self.view.handle_processing_transcription()
 
         # Get transcription
