@@ -222,7 +222,7 @@ class MainWindow(ctk.CTkFrame):
 
         # Progress bar
         self.progress_bar = ctk.CTkProgressBar(master=self)
-        self.progress_bar.configure(mode="indeterminnate")
+        self.progress_bar.configure(mode="indeterminate")
 
         # Save text button
         self.btn_save = ctk.CTkButton(
