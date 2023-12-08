@@ -9,6 +9,7 @@ from tkinter import filedialog
 import speech_recognition as sr
 import torch
 import utils.audio_utils as au
+import utils.google_api_key_helper as google_api_key_helper
 from model.transcription import Transcription
 from model.transcription_method import TranscriptionMethod
 from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -229,6 +230,11 @@ class MainController:
                     try:
                         # Try converting it to text
                         chunk_text = r.recognize_google(
+                            audio_listened,
+                            language=self.transcription.language_code,
+                            key=google_api_key_helper.get_google_api_key(),
+                        )
+
                         chunk_text = f"{chunk_text.capitalize()}. "
                         transcription_text += chunk_text
                         print(f"chunk text: {chunk_text}")
