@@ -60,15 +60,28 @@ class MainController:
 
         return filepath.is_file() and (is_audio or is_video)
 
-    def generate_transcription(self, source: str, language_name: str):
+    def prepare_for_transcription(
+        self,
+        source: str,
+        language_code: str,
+        transcription_method: int,
+        should_translate: bool = False,
+        should_subtitle: bool = False,
+    ):
         """
-        Checks if the filepath is valid and executes an async task if it is.
-        If it is not, then it displays an error message in the textbox.
+        Prepares the transcription process based on provided parameters.
 
-        :param language_name: Language of the audio to transcribe.
-        :type language_name: str
         :param source: The source of the audio, either from a file or the microphone.
         :type source: str
+        :param language_code: Language code of the audio to transcribe.
+        :type language_code: str
+        :param transcription_method: Either WhisperX or Google API.
+        :type transcription_method: int
+        :param should_translate: If True, translates from X language to English.
+                                 Only for WhisperX.
+        :type should_translate: bool
+        :param should_subtitle: If True, generates .srt and .vtt files. Only for WhisperX.
+        :type should_subtitle: bool
 
         :raises: IndexError if the selected language code is not valid.
         """
@@ -79,32 +92,29 @@ class MainController:
                     "generating text."
                 )
             )
-        else:
-            try:
-                self.view.toggle_ent_selected_file(should_show=False)
+            return
 
-                self.transcription.language_code = [
-                    key
-                    for key, value in c.AUDIO_LANGUAGES.items()
-                    if value.lower() == language_name
-                ][0]
+        self.transcription.source = source
+        self.transcription.language_code = language_code
+        self.transcription.method = transcription_method
+        self.transcription.should_translate = should_translate
+        self.transcription.should_subtitle = should_subtitle
 
-                self.transcription.source = source
-
+        try:
+            if source == c.AudioSource.FILE:
                 threading.Thread(
                     target=lambda loop: loop.run_until_complete(
-                        self.async_get_transcription()
+                        self.handle_transcription_process()
                     ),
                     args=(asyncio.new_event_loop(),),
                 ).start()
-            except IndexError:
-                self.view.display_text(
-                    _("Error: The selected audio language is not valid.")
-                )
-            except Exception:
-                self.view.display_text(
-                    _("Error generating the file transcription. Please try again.")
-                )
+            elif source == c.AudioSource.MIC:
+                threading.Thread(target=self._record_from_mic).start()
+
+        except Exception:
+            self.view.display_text(
+                _("Error generating the file transcription. Please try again.")
+            )
 
     async def handle_transcription_process(self):
         """
