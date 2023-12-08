@@ -205,6 +205,32 @@ class MainWindow(ctk.CTkFrame):
             row=2, column=0, padx=20, pady=(10, 16), sticky=ctk.W
         )
 
+        # Google API options frame
+        self.frm_google_api_options = ctk.CTkFrame(
+            master=self.frm_sidebar, border_width=2
+        )
+        self.frm_google_api_options.grid(
+            row=3, column=0, padx=20, pady=(20, 0), sticky=ctk.EW
+        )
+        # Hidden at first because WhisperX is the default transcription method
+        self.frm_google_api_options.grid_remove()
+
+        self.lbl_google_api_options = ctk.CTkLabel(
+            master=self.frm_google_api_options,
+            text="Google API options:",
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
+        )
+        self.lbl_google_api_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
+
+        self.btn_set_google_api_key = ctk.CTkButton(
+            master=self.frm_google_api_options,
+            text=_("Set API key"),
+            command=self._on_set_google_api_key,
+        )
+        self.btn_set_google_api_key.grid(
+            row=1, column=0, padx=20, pady=(0, 20), sticky=ctk.EW
+        )
+
         # ------------------
 
         # Appearance mode
