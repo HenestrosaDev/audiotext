@@ -242,39 +242,32 @@ class MainController:
             if self.transcription.text:
                 self.view.display_text(self.transcription.text)
 
-    async def generate_mic_transcription(self):
-        """
-        Generates the transcription from a microphone as
-        the source of the audio.
+    def _record_from_mic(self):
+        self._is_mic_recording = True
+        audio_data = []
+        r = sr.Recognizer()
 
-        :returns: Transcription.
-        :rtype: str
-        """
         with sr.Microphone() as mic:
-            try:
-                r = sr.Recognizer()
-                r.adjust_for_ambient_noise(mic)
-                audio = r.listen(mic, timeout=3, phrase_time_limit=3)
+            while self._is_mic_recording:
+                audio_chunk = r.listen(mic)
+                audio_data.append(audio_chunk)
 
-                self.transcription.text = r.recognize_google(
-                    audio, language=self.transcription.language_code
-                )
+        if audio_data:
+            self.view.toggle_progress_bar_visibility(should_show=True)
 
-                self.view.display_text(self.transcription.text)
-                self.view.toggle_ent_selected_file(should_show=False)
-            except OSError:
-                self.view.display_text(_("Error: No microphone detected."))
-            except sr.WaitTimeoutError:
-                self.view.display_text(
-                    _("Error: Listening timed out while waiting for phrase to start.")
-                )
-            except sr.UnknownValueError:
-                self.view.display_text(
-                    _("Sorry, I cannot clarify what you are saying. Please try again.")
-                )
-            except Exception:
-                print(traceback.format_exc())
-                self.view.display_text(_("Unexpected error. Please try again."))
+            filename = "mic-output.wav"
+            au.save_audio_data(audio_data, filename=filename)
+            self.transcription.filepath_to_transcribe = filename
+
+            threading.Thread(
+                target=lambda loop: loop.run_until_complete(
+                    self.handle_transcription_process()
+                ),
+                args=(asyncio.new_event_loop(),),
+            ).start()
+
+    def stop_recording_from_mic(self):
+        self._is_mic_recording = False
 
     def save_transcription(self):
         """
