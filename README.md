@@ -331,7 +331,7 @@ Click on the `Select file` button and select a file from the file explorer. Note
 ![File explorer](docs/supported-files.png)
 
 <details>
-	<summary>Supported audio file formats:</summary>
+	<summary>Supported audio file formats</summary>
 
   - `.mp3`
   - `.mpeg`
@@ -345,7 +345,7 @@ Click on the `Select file` button and select a file from the file explorer. Note
 </details>
 
 <details>
-	<summary>Supported video file formats:</summary>
+	<summary>Supported video file formats</summary>
 
   - `.mp4`
   - `.m4a`
