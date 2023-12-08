@@ -10,6 +10,7 @@ import speech_recognition as sr
 import torch
 import utils.audio_utils as au
 import utils.google_api_key_helper as google_api_key_helper
+import whisperx
 from model.transcription import Transcription
 from model.transcription_method import TranscriptionMethod
 from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -18,8 +19,6 @@ from pydub.silence import split_on_silence
 from utils import constants as c
 from utils.i18n import _
 from utils.path_helper import ROOT_PATH
-
-import whisperx
 
 
 class MainController:
