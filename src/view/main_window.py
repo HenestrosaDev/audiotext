@@ -60,7 +60,7 @@ class MainWindow(ctk.CTkFrame):
     def _init_sidebar(self):
         # Sidebar frame
         self.frm_sidebar = ctk.CTkFrame(master=self, width=140, corner_radius=0)
-        self.frm_sidebar.grid(row=0, column=0, rowspan=4, sticky="nsew")
+        self.frm_sidebar.grid(row=0, column=0, rowspan=4, sticky=ctk.NSEW)
         self.frm_sidebar.grid_rowconfigure(10, weight=1)
 
         # Logo label
@@ -78,7 +78,7 @@ class MainWindow(ctk.CTkFrame):
             master=self.frm_sidebar,
             text=f" {c.APP_NAME}",
             image=self.logo_image,
-            compound="left",
+            compound=ctk.LEFT,
             font=ctk.CTkFont(size=22, weight="bold"),
         )
         self.lbl_logo.grid(row=0, column=0, padx=20, pady=(25, 0))
@@ -100,7 +100,7 @@ class MainWindow(ctk.CTkFrame):
         self.omn_audio_language = ctk.CTkOptionMenu(
             master=self.frm_shared_options, values=list(c.AUDIO_LANGUAGES.values())
         )
-        self.omn_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky="ew")
+        self.omn_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.EW)
         try:
             self.omn_audio_language.set(
                 c.AUDIO_LANGUAGES[locale.getdefaultlocale()[0][:2]]
@@ -115,7 +115,7 @@ class MainWindow(ctk.CTkFrame):
             command=lambda: self._on_transcribe_from_mic(),
         )
         self.btn_transcribe_from_mic.grid(
-            row=2, column=0, padx=20, pady=(30, 0), sticky="ew"
+            row=2, column=0, padx=20, pady=(30, 0), sticky=ctk.EW
         )
 
         # Select file button
@@ -124,7 +124,7 @@ class MainWindow(ctk.CTkFrame):
             text=_("Select file"),
             command=self._on_select_file,
         )
-        self.btn_select_file.grid(row=3, column=0, padx=20, pady=(30, 0), sticky="ew")
+        self.btn_select_file.grid(row=3, column=0, padx=20, pady=(30, 0), sticky=ctk.EW)
 
         # Generate text button
         self.btn_generate_transcription = ctk.CTkButton(
@@ -135,9 +135,9 @@ class MainWindow(ctk.CTkFrame):
             command=lambda: self._on_generate_transcription(),
         )
         self.btn_generate_transcription.grid(
-            row=4, column=0, padx=20, pady=20, sticky="ew"
+            row=4, column=0, padx=20, pady=20, sticky=ctk.EW
         )
-        self.btn_generate_transcription.configure(state="disabled")
+        self.btn_generate_transcription.configure(state=ctk.DISABLED)
 
         # ------------------
 
@@ -164,7 +164,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_transcribe_using_change,
         )
         self.rbt_transcribe_using_whisper.grid(
-            row=1, column=0, padx=20, pady=0, sticky="w"
+            row=1, column=0, padx=20, pady=0, sticky=ctk.W
         )
 
         self.rbt_transcribe_using_google = ctk.CTkRadioButton(
@@ -175,7 +175,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_transcribe_using_change,
         )
         self.rbt_transcribe_using_google.grid(
-            row=2, column=0, padx=20, pady=(7.5, 16), sticky="w"
+            row=2, column=0, padx=20, pady=(7.5, 16), sticky=ctk.W
         )
 
         # Whisper options frame
@@ -195,14 +195,14 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_chk_whisper_options_translate_change,
         )
         self.chk_whisper_options_translate.grid(
-            row=1, column=0, padx=20, pady=0, sticky="w"
+            row=1, column=0, padx=20, pady=0, sticky=ctk.W
         )
         self.chk_whisper_options_subtitles = ctk.CTkCheckBox(
             master=self.frm_whisper_options,
             text="Generate subtitles",
         )
         self.chk_whisper_options_subtitles.grid(
-            row=2, column=0, padx=20, pady=(10, 16), sticky="w"
+            row=2, column=0, padx=20, pady=(10, 16), sticky=ctk.W
         )
 
         # ------------------
@@ -211,7 +211,7 @@ class MainWindow(ctk.CTkFrame):
         self.lbl_appearance_mode = ctk.CTkLabel(
             master=self.frm_sidebar,
             text=f'{_("Appearance mode")}:',
-            anchor="w",
+            anchor=ctk.W,
             font=ctk.CTkFont(size=14, weight="bold"),
         )
         self.lbl_appearance_mode.grid(row=12, column=0, padx=20, pady=(10, 0))
@@ -222,20 +222,20 @@ class MainWindow(ctk.CTkFrame):
             command=self._change_appearance_mode_event,
         )
         self.omn_appearance_mode.grid(
-            row=13, column=0, padx=20, pady=(10, 20), sticky="ew"
+            row=13, column=0, padx=20, pady=(10, 20), sticky=ctk.EW
         )
 
     def _init_main_content(self):
         # Selected file entry
-        self.ent_selected_file = ctk.CTkEntry(master=self, state="disabled")
+        self.ent_selected_file = ctk.CTkEntry(master=self, state=ctk.DISABLED)
         self.ent_selected_file.grid(
-            row=0, column=1, padx=20, pady=(20, 0), sticky="new"
+            row=0, column=1, padx=20, pady=(20, 0), sticky=ctk.EW
         )
         self.ent_selected_file.grid_remove()  # hidden at start
 
         # Text audio textbox
-        self.tbx_transcription = ctk.CTkTextbox(master=self, wrap="word")
-        self.tbx_transcription.grid(row=1, column=1, padx=20, pady=20, sticky="nsew")
+        self.tbx_transcription = ctk.CTkTextbox(master=self, wrap=ctk.WORD)
+        self.tbx_transcription.grid(row=1, column=1, padx=20, pady=20, sticky=ctk.NSEW)
 
         # Progress bar
         self.progress_bar = ctk.CTkProgressBar(master=self)
@@ -249,7 +249,7 @@ class MainWindow(ctk.CTkFrame):
             text=_("Save transcription"),
             command=self._on_save_transcription,
         )
-        self.btn_save.grid(row=2, column=1, padx=20, pady=(0, 20), sticky="sew")
+        self.btn_save.grid(row=2, column=1, padx=20, pady=(0, 20), sticky=ctk.EW)
         self.btn_save.grid_remove()  # hidden at start
 
     # WIDGET EVENT HANDLER METHODS
@@ -329,8 +329,9 @@ class MainWindow(ctk.CTkFrame):
     def _on_chk_whisper_options_translate_change(self):
         if self.chk_whisper_options_translate.get():
             self.chk_whisper_options_subtitles.deselect()
-            self._toggle_widget_state(self.chk_whisper_options_subtitles, False)
+            self.chk_whisper_options_subtitles.configure(state=ctk.DISABLED)
         else:
+            self.chk_whisper_options_subtitles.configure(state=ctk.NORMAL)
 
     # PUBLIC HANDLERS
 
@@ -397,13 +398,13 @@ class MainWindow(ctk.CTkFrame):
 
     def toggle_progress_bar(self, should_show):
         if should_show:
-            self.progress_bar.grid(row=1, column=1, padx=40, pady=0, sticky="ew")
+            self.progress_bar.grid(row=1, column=1, padx=40, pady=0, sticky=ctk.EW)
             self.progress_bar.start()
         else:
             self.progress_bar.grid_forget()
 
     def display_text(self, text):
-        self.tbx_transcription.delete("1.0", "end")
+        self.tbx_transcription.delete("1.0", ctk.END)
         self.tbx_transcription.insert("0.0", text)
 
     # HANDLERS
