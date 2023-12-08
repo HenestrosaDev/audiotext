@@ -106,7 +106,7 @@ class MainController:
                     _("Error generating the file transcription. Please try again.")
                 )
 
-    async def async_get_transcription(self):
+    async def handle_transcription_process(self):
         """
         Asynchronous function transcribes audio data from either a file or microphone,
         depending on the value of the source argument. It updates the transcription
