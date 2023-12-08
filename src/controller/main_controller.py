@@ -274,12 +274,12 @@ class MainController:
         Prompts a file explorer to determine the file to save the
         generated transcription.
         """
-        filepath = self.transcription.filepath_to_transcribe
+        file_path = Path(self.transcription.filepath_to_transcribe)
 
         file = filedialog.asksaveasfile(
             mode="w",
-            initialdir=Path(filepath).parent,
-            initialfile=f"{Path(filepath).stem}.txt",
+            initialdir=file_path.parent,
+            initialfile=f"{file_path.stem}.txt",
             title=_("Save as"),
             defaultextension=".txt",
             filetypes=[(_("Text file"), "*.txt"), (_("All Files"), "*.*")],
@@ -288,3 +288,23 @@ class MainController:
         if file:
             file.write(self.transcription.text)
             file.close()
+
+            if self.transcription.should_subtitle:
+                self._generate_subtitles(Path(file.name))
+
+    def _generate_subtitles(self, file_path):
+        output_formats = ["srt", "vtt"]
+        output_dir = file_path.parent
+
+        for output_format in output_formats:
+            writer = whisperx.transcribe.get_writer(output_format, output_dir)
+            writer_args = {
+                "highlight_words": False,
+                "max_line_count": 2,
+                "max_line_width": 42,
+            }
+
+            # https://github.com/m-bain/whisperX/issues/455#issuecomment-1707547704
+            self._whisperx_result["language"] = "en"
+
+            writer(self._whisperx_result, file_path, writer_args)
