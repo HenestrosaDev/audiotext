@@ -352,6 +352,20 @@ class MainWindow(ctk.CTkFrame):
             self.frm_whisper_options.grid_remove()
             self.frm_google_api_options.grid()
 
+    @staticmethod
+    def _on_set_google_api_key():
+        old_api_key = google_api_key_helper.get_google_api_key()
+
+        dialog = CTkInputDialog(
+            title="Google API key",
+            label_text="Type in the API key:",
+            entry_text=old_api_key,
+        )
+
+        new_api_key = dialog.get_input().strip()
+
+        if new_api_key is not None and old_api_key != new_api_key:
+            google_api_key_helper.set_google_api_key(new_api_key)
 
     def _on_chk_whisper_options_translate_change(self):
         if self.chk_whisper_options_translate.get():
