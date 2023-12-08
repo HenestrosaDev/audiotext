@@ -12,29 +12,45 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <img src="docs/icon.png" alt="Logo" width="128" height="128" style="margin-bottom:-40px">
-    <h1 align="center">Audiotext</h1>
-    <p align="center">A program that transcribes audio from a file or microphone to text in almost any language.</p>
-    <p>
-        <a href="https://github.com/HenestrosaConH/audiotext/stargazers">
-          <img alt="GitHub Contributors" src="https://img.shields.io/github/stars/HenestrosaConH/audiotext" />
-        </a>
-        <a href="https://github.com/HenestrosaConH/audiotext/graphs/contributors">
-          <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/HenestrosaConH/audiotext" />
-        </a>
-        <a href="https://github.com/HenestrosaConH/audiotext/issues">
-          <img alt="Issues" src="https://img.shields.io/github/issues/HenestrosaConH/audiotext" />
-        </a>
-        <a href="https://github.com/HenestrosaConH/audiotext/pulls">
-          <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/HenestrosaConH/audiotext" />
-        </a>
-        <a href="https://github.com/HenestrosaConH/audiotext/blob/main/LICENSE">
-          <img alt="GitHub pull requests" src="https://img.shields.io/github/license/HenestrosaConH/audiotext" />
-        </a>
-    </p>
-    <p>
-        <a href="https://github.com/HenestrosaConH/audiotext/issues/new/choose">Report Bug</a> · <a href="https://github.com/HenestrosaConH/audiotext/issues/new/choose">Request Feature</a> · <a href="https://github.com/HenestrosaConH/audiotext/discussions">Ask Question</a>
-    </p>
+	<picture>
+		<source 
+			srcset="docs/icon-light.png" 
+			alt="Logo"
+			width="128" 
+			height="128" 
+			media="(prefers-color-scheme: light)"
+		/>
+		<source 
+			srcset="docs/icon-dark.png" 
+			alt="Logo"
+			width="128" 
+			height="128" 
+			media="(prefers-color-scheme: dark)"
+		/>
+		<img src="docs/icon-light.png" alt="Logo" width="128" height="128">
+	</picture>
+	<h1 align="center">Audiotext</h1>
+	<p align="center">A desktop application that transcribes audio from a file or microphone in any supported language using <strong>WhisperX</strong> or <strong>Google Speech-to-Text API</strong>.</p>
+	<p>
+		<a href="https://github.com/HenestrosaDev/audiotext/stargazers">
+			<img alt="GitHub Contributors" src="https://img.shields.io/github/stars/HenestrosaDev/audiotext" />
+		</a>
+		<a href="https://github.com/HenestrosaDev/audiotext/graphs/contributors">
+			<img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext" />
+		</a>
+		<a href="https://github.com/HenestrosaDev/audiotext/issues">
+			<img alt="Issues" src="https://img.shields.io/github/issues/HenestrosaDev/audiotext" />
+		</a>
+		<a href="https://github.com/HenestrosaDev/audiotext/pulls">
+			<img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext" />
+		</a>
+		<a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
+			<img alt="GitHub pull requests" src="https://img.shields.io/github/license/HenestrosaDev/audiotext" />
+		</a>
+	</p>
+	<p>
+		<a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">Report Bug</a> · <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">Request Feature</a> · <a href="https://github.com/HenestrosaDev/audiotext/discussions">Ask Question</a>
+	</p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -49,104 +65,120 @@
     - [To Execute the Program](#to-execute-the-program)
     - [To Get the Code](#to-get-the-code)
 - [Usage](#usage)
-    - [Select Audio File](#select-audio-file)
     - [Transcribe From Microphone](#transcribe-from-microphone)
+    - [Select File](#select-file)
     - [Save Transcription](#save-transcription)
     - [Appearance Mode](#appearance-mode)
-    - [API Usage](#api-usage)
+		- [Transcription Translation](#transcription-translation)
+    - [Google's Speech-To-Text API Usage](#googles-speech-to-text-api-usage)
 - [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
 - [Authors](#authors)
+- [Contributing](#contributing)
 - [Acknowledgments](#acknowledgments)
+- [License](#license)
 - [Support](#support)
 
 <!-- ABOUT THE PROJECT -->
 
 ## About the Project
 
-[![Main screenshot light][demo]](https://github.com/HenestrosaConH/audiotext)
+<picture>
+	<source 
+		srcset="docs/light/main.png" 
+		alt="Main"
+		media="(prefers-color-scheme: light)"
+	/>
+	<source 
+		srcset="docs/dark/main.png" 
+		alt="Main"
+		media="(prefers-color-scheme: dark)"
+	/>
+	<img src="docs/light/main.png" alt="Main">
+</picture>
 
-The project is available in Spanish and English. It supports 69 different languages, along with some of their dialects, and can take the audio from an audio file, video file or microphone. 
-You can also select the theme you like best. It can be dark, light or the one configured in the system.
+**Audiotext** transcribes the audio from an audio file, video file or microphone input into one of the 74 different languages it supports, along with some of their dialects. You can transcribe using [**WhisperX**](https://github.com/m-bain/whisperX) or the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text).
+
+If you use the **WhisperX** transcription method, you can translate the input audio into any other language you want (although, according to **OpenAI Whisper**, the only official language supported is English) and generate subtitles in `.srt` and `.vtt` format.
+
+You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
 
 <details>
   <summary>List of supported languages</summary>
 
-  Afrikaans  
-  Amharic (አማርኛ)  
-  Arabic (لعربية)  
-  Armenian (հայերեն)  
-  Azerbaijan (Azərbaycan)  
-  Basque (Euskara)  
-  Belarusian (беларуская)  
-  Bengali (বাংলা)  
-  Bulgarian (Български)  
-  Catalan (Català)  
-  Chinese (China) (中文（中国）)  
-  Chinese (Hong Kong) (中文（香港)  
-  Chinese (Taiwan) (中文（台灣）)  
-  Croatian (Hrvatski)  
-  Czech (Čeština)  
-  Danish (Dansk)  
-  Dutch (Nederlands)  
-  English  
-  Estonian (Eesti keel)  
-  Farsi (فارسی)  
-  Filipino  
-  Finnish (Suomi)  
-  French (Français)  
-  Galician (Galego)  
-  Georgian (ქართული)  
-  German (Deutsch)  
-  German (Swiss Standard) (Schweizer Hochdeutsch)  
-  Greek (Ελληνικά)  
-  Gujarati (ગુજરાતી)  
-  Hebrew (עברית)  
-  Hindi (हिन्दी)  
-  Hungarian (Magyar)  
-  Icelandic (Íslenska)  
-  Indonesian (Bahasa Indonesia)  
-  Italian (Italiano)  
-  Swiss Italian (Italiano (Svizzera))  
-  Japanese (日本語)  
-  Javanese (Basa Jawa)  
-  Kannada (ಕನ್ನಡ)  
-  Kazakh (Қазақ)  
-  Khmer (ខ្មែរ)  
-  Korean (한국어)  
-  Lao (ລາວ)  
-  Latvian (Latviešu)  
-  Lithuanian (Lietuvių)  
-  Malay (Bahasa Melayu)  
-  Malayalam (മലയാളം)  
-  Maltese (Malti)  
-  Marathi (मराठी)  
-  Mongolian (Монгол)  
-  Nepali (नेपाली)  
-  Norwegian (Bokmål)  
-  Norwegian Nynorsk (Norsk (Nynorsk))  
-  Polish (Polski)  
-  Portuguese (Português)  
-  Punjabi (ਪੰਜਾਬੀ)  
-  Romanian (Română)  
-  Russian (Русский)  
-  Serbian (Српски)  
-  Sinhala (සිංහල)  
-  Slovak (Slovenčina)  
-  Slovenian (Slovenščina)  
-  Spanish (Español)  
-  Sundanese (Basa Sunda)  
-  Swahili (Kiswahili)  
-  Swedish (Svenska)  
-  Tamil (தமிழ்)  
-  Telugu (తెలుగు)  
-  Thai (ไทย)  
-  Turkish (Türkçe)  
-  Ukrainian (Українська)  
-  Urdu (اردو)  
-  Vietnamese (Tiếng Việt)  
-  Zulu (Isizulu)  
+  - Afrikaans  
+  - Amharic (አማርኛ)  
+  - Arabic (لعربية)  
+  - Armenian (հայերեն)  
+  - Azerbaijan (Azərbaycan)  
+  - Basque (Euskara)  
+  - Belarusian (беларуская)  
+  - Bengali (বাংলা)  
+  - Bulgarian (Български)  
+  - Catalan (Català)  
+  - Chinese (China) (中文（中国）)  
+  - Chinese (Hong Kong) (中文（香港)  
+  - Chinese (Taiwan) (中文（台灣）)  
+  - Croatian (Hrvatski)  
+  - Czech (Čeština)  
+  - Danish (Dansk)  
+  - Dutch (Nederlands)  
+  - English  
+  - Estonian (Eesti keel)  
+  - Farsi (فارسی)  
+  - Filipino  
+  - Finnish (Suomi)  
+  - French (Français)  
+  - Galician (Galego)  
+  - Georgian (ქართული)  
+  - German (Deutsch)  
+  - German (Swiss Standard) (Schweizer Hochdeutsch)  
+  - Greek (Ελληνικά)  
+  - Gujarati (ગુજરાતી)  
+  - Hebrew (עברית)  
+  - Hindi (हिन्दी)  
+  - Hungarian (Magyar)  
+  - Icelandic (Íslenska)  
+  - Indonesian (Bahasa Indonesia)  
+  - Italian (Italiano)  
+  - Swiss Italian (Italiano (Svizzera))  
+  - Japanese (日本語)  
+  - Javanese (Basa Jawa)  
+  - Kannada (ಕನ್ನಡ)  
+  - Kazakh (Қазақ)  
+  - Khmer (ខ្មែរ)  
+  - Korean (한국어)  
+  - Lao (ລາວ)  
+  - Latvian (Latviešu)  
+  - Lithuanian (Lietuvių)  
+  - Malay (Bahasa Melayu)  
+  - Malayalam (മലയാളം)  
+  - Maltese (Malti)  
+  - Marathi (मराठी)  
+  - Mongolian (Монгол)  
+  - Nepali (नेपाली)  
+  - Norwegian (Bokmål)  
+  - Norwegian Nynorsk (Norsk (Nynorsk))  
+  - Polish (Polski)  
+  - Portuguese (Português)  
+  - Punjabi (ਪੰਜਾਬੀ)  
+  - Romanian (Română)  
+  - Russian (Русский)  
+  - Serbian (Српски)  
+  - Sinhala (සිංහල)  
+  - Slovak (Slovenčina)  
+  - Slovenian (Slovenščina)  
+  - Spanish (Español)  
+  - Sundanese (Basa Sunda)  
+  - Swahili (Kiswahili)  
+  - Swedish (Svenska)  
+  - Tamil (தமிழ்)  
+  - Telugu (తెలుగు)  
+  - Thai (ไทย)  
+  - Turkish (Türkçe)  
+  - Ukrainian (Українська)  
+  - Urdu (اردو)  
+  - Vietnamese (Tiếng Việt)  
+  - Zulu (Isizulu)  
 </details>
 
 <!-- PROJECT STRUCTURE -->
@@ -207,22 +239,25 @@ You can also select the theme you like best. It can be dark, light or the one co
       │   app.py
       │
       ├───controller
-      │       main_controller.py
       │       __init__.py
+      │       main_controller.py
       │
       ├───model
-      │       transcription.py
       │       __init__.py
+      │       transcription.py
+      │       transcription_method.py
       │
       ├───utils
+      │       __init__.py
+      │       audio_utils.py
       │       constants.py
+      │       dict_utils.py
       │       i18n.py
       │       path_helper.py
-      │       __init__.py
       │
       └───view
-              main_window.py
               __init__.py   
+              main_window.py
   ```
 </details>
 
@@ -230,11 +265,15 @@ You can also select the theme you like best. It can be dark, light or the one co
 
 ### Built With
 
-- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter): For the creation of the GUI.
-- [moviepy](https://pypi.org/project/moviepy/): For video processing, from which the program extracts the audio to be transcribed.
-- [PyAudio](https://pypi.org/project/PyAudio/): For recording microphone audio.
-- [pydub](https://github.com/jiaaro/pydub): For audio processing.
-- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/): For converting audio into text.
+- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the GUI.
+- [moviepy](https://pypi.org/project/moviepy/) for video processing, from which the program extracts the audio to be transcribed.
+- [PyAudio](https://pypi.org/project/PyAudio/) for recording microphone audio.
+- [pydub](https://github.com/jiaaro/pydub) for audio processing.
+- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for converting audio into text.
+- [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition. Uses Whisper, an ASR model [developed by OpenAI](https://github.com/openai/whisper).
+- [PyTorch](https://github.com/pytorch/pytorch) for building and training neural networks.
+- [Torchaudio](https://pytorch.org/audio/stable/index.html) for audio processing tasks, including speech recognition and audio classification.
+- [PyTorch-CUDA](https://pytorch.org/docs/stable/cuda.html) for enabling GPU support (CUDA) with PyTorch. CUDA is a parallel computing platform and application programming interface model created by NVIDIA.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -265,14 +304,14 @@ You can also select the theme you like best. It can be dark, light or the one co
   ```
 
 ### To Execute the Program
-1. Go to [releases](https://github.com/HenestrosaConH/audiotext/releases).
+1. Go to [releases](https://github.com/HenestrosaDev/audiotext/releases).
 2. Download the latest release. 
-3. Uncompress the downloaded file.
+3. Decompress the downloaded file.
 4. Open the `audiotext` folder.
-5. Open the `audiotext.exe` file if you use **Windows** or the `audiotext` file if you use **GNU-Linux** or **macOS**.
+5. Double-click the `audiotext.exe` file if you are using **Windows** or the `audiotext` file if you are using **GNU-Linux** or **macOS**.
 
 ### To Get the Code
-1. Clone the project with the `git clone https://github.com/HenestrosaConH/audiotext.git` command.
+1. Clone the project running `git clone https://github.com/HenestrosaDev/audiotext.git`.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -280,64 +319,155 @@ You can also select the theme you like best. It can be dark, light or the one co
 
 ## Usage
 
-Once you open the Audiotext executable file (explained in the [getting started](#getting-started) section), you will see something like this:
-
-![main-system][main-system]
-
-### Select Audio File
-
-Click on the `Select audio file` button and select a file from the file explorer. Please note that audio files are selected by default. To select video files, you will have to click on the combo box in the bottom right corner of the file explorer to change the file type, as indicated in red in the following image:
-
-![file-explorer][file-explorer]
-
-Once you select the file, a green button named `Generate transcription` will show up. Click on it to start generating the transcription.
-
-If there is no error, you will see the audio's transcription in the text box, as shown in the [About the Project's gif](#about-the-project).
-
-Please bear in mind that this process may take some time to complete, depending on the length of the file and whether it is an audio or video file.
+Once you open the Audiotext executable file (explained in the [getting started](#getting-started) section), you will see something like the image above.
 
 ### Transcribe From Microphone
 
-You just have to click on the `Transcribe from microphone` button and say whatever you want to be transcribed.
-Please keep in mind that your Operating System needs to recognize an input source. Otherwise, an error will be shown in the text box indicating that no microphone was detected.
+Click on the `Transcribe from mic.` button and say whatever you want to be transcribed. Keep in mind that your operating system needs to recognize an input source. Otherwise, an error will be shown in the text box indicating that no microphone was detected.
 
-It is also worth noting that you have 3 seconds to speak from the moment you click the button to the timeout. In case that no input was received, you will see an error in the text box notifying it. I might add a setting in the program to change it to let the user change it. 
+Once you click the button, the text changes to `Stop recording`. Until you click it again, everything you say will be recorded. Here is a video demonstrating this feature:
+
+https://github.com/HenestrosaDev/audiotext/tree/main/docs/videos/english.mp4
+
+### Select File
+
+Click on the `Select file` button and select a file from the file explorer. Note that `All supported files` are selected by default. To select only audio files or video files, you will have to click on the combo box in the bottom right corner of the file explorer to change the file type, as marked in red in the following image:
+
+![File explorer](docs/file-explorer.png)
+
+![File explorer](docs/supported-files.png)
+
+<details>
+	<summary>Supported audio file formats:</summary>
+
+  - `.mp3`
+  - `.mpeg`
+  - `.wav`
+  - `.wma`
+  - `.aac`
+  - `.flac`
+  - `.ogg`
+  - `.oga`
+  - `.opus`
+</details>
+
+<details>
+	<summary>Supported video file formats:</summary>
+
+  - `.mp4`
+  - `.m4a`
+  - `.m4v`
+  - `.f4v`
+  - `.f4a`
+  - `.m4b`
+  - `.m4r`
+  - `.f4b`
+  - `.mov`
+  - `.avi`
+  - `.webm`
+  - `.flv`
+  - `.mkv`
+  - `.3gp`
+  - `.3gp2`
+  - `.3g2`
+  - `.3gpp`
+  - `.3gpp2`
+  - `.ogv`
+  - `.ogx`
+  - `.wmv`
+  - `.asf`
+</details>
+
+Once you have selected the file, the green `Generate transcription` button will become enabled. Click it to start the transcription process. If there is no error, you will see the audio's transcription in the text box, like this:
+
+<picture>
+	<source 
+		srcset="docs/light/generated.png" 
+		alt="Main"
+		media="(prefers-color-scheme: light)"
+	/>
+	<source 
+		srcset="docs/dark/generated.png" 
+		alt="Main"
+		media="(prefers-color-scheme: dark)"
+	/>
+	<img src="docs/light/generated.png" alt="Main">
+</picture>
+
+Note that this process may take some time depending on the length of the file and whether it is an audio or video file. You will also notice that the first transcription with **WhisperX** will take a while. That's because **Audiotext** needs to load the model, which can take a while, even a few minutes, depending on the hardware the program is running on. However, once it's loaded, however, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
 
 ### Save Transcription
 
-Once the program has generated the transcription, you will see a green button named `Save transcription` below the text box.
+Once the program has generated the transcription, you will see a green `Save transcription` button below the text box. If you click on it, you'll be prompted for a file explorer where you can give the file a name and select the path where you want to save it. By default, the file extension is `.txt`, but you can change it to any other file type.
 
-![generated-transcription][generated-transcription]
-
-To save it, you just have to click on the mentioned button. A file explorer will be prompted. You have to give the file a name and select the path where you want to store it. By default, the extension of the file is `.txt`, but you can change it to any other file type you want.
+If you used **WhisperX** to generate the transcription and checked the `Generate subtitles` option, you'll notice that two files are also saved along with the `.txt` file: a `.vtt` file and a `.srt` file. Both contain the subtitles for the transcribed file.
 
 ### Appearance Mode
 
 The program supports three appearance modes:
 
 <details>
-  <summary>System</summary>
-  <img src="docs/main-system.png" alt="System theme">
+  <summary>System (default)</summary>
+  <img src="docs/main-system.png" alt="System">
 </details>
 
 <details>
   <summary>Dark</summary>
-  <img src="docs/main-system.png" alt="Dark theme">
+  <img src="docs/dark/main.png" alt="Dark theme">
 </details>
 
 <details>
   <summary>Light</summary>
-  <img src="docs/main-light.png" alt="Light theme">
+  <img src="docs/light/main.png" alt="Light theme">
 </details>
 
-### API Usage
+### Transcription Translation
 
-Since the program makes use of Google's Speech-To-Text API free tier, which can transcribe up to 60 minutes of audio per month at no cost,
-you might have to add an API key if you want to make extensive use of this functionality.
+To translate the audio into English, simply check the `Translate to English` checkbox with **WhisperX** transcription as the transcription method, as shown in the video below.
 
-However, there is no option in the GUI to add it, so you have to add it manually. This can be done by adding the `key=<ACTUAL API KEY>` argument to both `recognize_google()` methods in the file `src/controller/main_controller.py`.
+https://github.com/HenestrosaDev/audiotext/tree/main/docs/videos/spanish-to-english.mp4
 
-Notwithstanding, I have the intention to move from **speech_recognition** package to [whispercpp](https://github.com/aarnphm/whispercpp). This change would allow the user to generate audio transcriptions unlimitedly and offline, which is a major step forward for the program. 
+However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into German, you'd set the `Audio language` to "German".
+
+Here is a practical example using the microphone:
+
+https://github.com/HenestrosaDev/audiotext/tree/main/docs/videos/english-to-spanish.mp4
+
+### Google's Speech-To-Text API Usage
+
+Since the program uses **Google's Speech-To-Text API** free tier, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do this, click on the "Set API key" button with the Google API transcription method selected.
+
+<picture>
+	<source 
+		srcset="docs/light/google-api-options.png" 
+		alt="google-api-options"
+		media="(prefers-color-scheme: light)"
+	/>
+	<source 
+		srcset="docs/dark/google-api-options.png" 
+		alt="google-api-options"
+		media="(prefers-color-scheme: dark)"
+	/>
+	<img src="docs/light/google-api-options.png" alt="google-api-options">
+</picture>
+
+Once you click on the button, you'll be presented with a dialog box where you can enter your **Google Speech-To-Text API** key. The key will only be used to make requests to the API.
+
+<picture>
+	<source 
+		srcset="docs/light/google-api-key-dialog.png" 
+		alt="google-api-key-dialog"
+		media="(prefers-color-scheme: light)"
+	/>
+	<source 
+		srcset="docs/dark/google-api-key-dialog.png" 
+		alt="google-api-key-dialog"
+		media="(prefers-color-scheme: dark)"
+	/>
+	<img src="docs/light/google-api-key-dialog.png" alt="google-api-key-dialog">
+</picture>
+
+Remember that **WhisperX** offers fast, unlimited audio transcription that supports translation and subtitle generation. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -345,42 +475,30 @@ Notwithstanding, I have the intention to move from **speech_recognition** packag
 
 ## Roadmap
 
-- [ ] Move from **speech_recognition** package to [whispercpp](https://github.com/aarnphm/whispercpp).
-- [ ] Add pre-commit config.
-- [ ] Add unit tests.
-- [ ] Generate `.srt` files with the text along with timestamps. 
-- [ ] Add a percentage to the progress bar.
+- [x] Add support for [**WhisperX**](https://github.com/m-bain/whisperX).
+- [x] Generate `.srt` and `.vtt` files for subtitles (only for **WhisperX**).
+- [x] Add "Stop recording" button state when recording from the microphone.
+- [x] Add a dialogue to let users input their **Google Speech-To-Text API** key.
+- [ ] Generate executables for macOS and Linux.
+- [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
+- [ ] Add tests.
 
-You can propose a new feature creating an [issue](https://github.com/HenestrosaConH/audiotext/issues/new/choose).
+You can propose a new feature creating an [issue](https://github.com/HenestrosaDev/audiotext/issues/new/choose).
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<!-- AUTHORS -->
+
+## Authors
+
+- HenestrosaDev <henestrosadev@gmail.com> (José Carlos López Henestrosa)
+
+See also the list of [contributors](https://github.com/HenestrosaDev/audiotext/contributors) who participated in this project.
 
 <!-- CONTRIBUTING -->
 
 ## Contributing  
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-Please, read the [CONTRIBUTING.md](https://github.com/HenestrosaConH/audiotext/blob/main/.github/CONTRIBUTING.md) file, where you can find more detailed information about how to contribute to the project.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- LICENSE -->
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- AUTHORS -->
-
-## Authors
-
-- HenestrosaConH <henestrosaconh@gmail.com> (José Carlos López Henestrosa)
-
-See also the list of [contributors](https://github.com/HenestrosaConH/audiotext/contributors) who participated in this project.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+Please read the [CONTRIBUTING.md](https://github.com/HenestrosaDev/audiotext/blob/main/.github/CONTRIBUTING.md) file, where you can find more detailed information about how to contribute to the project.
 
 <!-- ACKNOWLEDGMENTS -->
 
@@ -388,13 +506,15 @@ See also the list of [contributors](https://github.com/HenestrosaConH/audiotext/
 
 I have made use of the following resources to make this project:
 
-- [Extracting Speech from Video using Python](https://towardsdatascience.com/extracting-speech-from-video-using-python-f0ec7e312d38)
-- [How to Translate Python Applications with the GNU gettext Module](https://phrase.com/blog/posts/translate-python-gnu-gettext/)
-- [How to Convert Speech to Text in Python](https://www.thepythoncode.com/article/using-speech-recognition-to-convert-speech-to-text-python)
-- [Best-README-Template](https://github.com/othneildrew/Best-README-Template/)
-- [Img Shields](https://shields.io)
+- [Extracting speech from video using Python](https://towardsdatascience.com/extracting-speech-from-video-using-python-f0ec7e312d38)
+- [How to translate Python applications with the GNU gettext module](https://phrase.com/blog/posts/translate-python-gnu-gettext/)
+- [Speech recognition on large audio files](https://www.geeksforgeeks.org/python-speech-recognition-on-large-audio-files/)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<!-- LICENSE -->
+
+## License
+
+Distributed under the MIT License. See [`LICENSE`](https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE) for more information.
 
 <!-- SUPPORT -->
 
@@ -402,16 +522,6 @@ I have made use of the following resources to make this project:
 
 Would you like to support the project? That's very kind of you! However, I would suggest you to consider supporting the packages that I've used to build this project first. If you still want to support this particular project, you can go to my Ko-Fi profile by clicking on the button down below!
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U5J6COZ)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/henestrosadev)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[demo]: docs/demo.gif
-[icon]: docs/icon.png
-[main-system]: docs/main-system.png
-[main-light]: docs/main-light.png
-[file-explorer]: docs/file-explorer.png
-[generated-transcription]: docs/generated-transcription.png
