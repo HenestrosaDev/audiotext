@@ -259,6 +259,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 ### Built With
 
 - [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the GUI.
+- [CTkScrollableDropdown](https://github.com/Akascape/CTkScrollableDropdown) for the scrollable option menu to display the full list of supported languages.
 - [moviepy](https://pypi.org/project/moviepy/) for video processing, from which the program extracts the audio to be transcribed.
 - [PyAudio](https://pypi.org/project/PyAudio/) for recording microphone audio.
 - [pydub](https://github.com/jiaaro/pydub) for audio processing.
