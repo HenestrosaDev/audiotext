@@ -387,7 +387,7 @@ Once you have selected the file, the green `Generate transcription` button will 
 	<img src="docs/light/generated.png" alt="Main">
 </picture>
 
-Note that this process may take some time depending on the length of the file and whether it is an audio or video file. You will also notice that the first transcription with **WhisperX** will take a while. That's because **Audiotext** needs to load the model, which can take a while, even a few minutes, depending on the hardware the program is running on. However, once it's loaded, however, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
+Note that this process may take some time depending on the length of the file and whether it is an audio or video file. You will also notice that the first transcription with **WhisperX** will take a while. That's because **Audiotext** needs to load the model, which can take a while, even a few minutes, depending on the hardware the program is running on. Nnce it's loaded, however, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
 
 ### Save Transcription
 
