@@ -217,7 +217,9 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                 height=self.button_height,
                 fg_color=self.button_color,
                 text_color=self.text_color,
-                image=self.image_values[i] if self.image_values is not None else None,
+                image=self.image_values[self.i]
+                if self.image_values is not None
+                else None,
                 anchor=self.justify,
                 command=lambda k=row: self._attach_key_press(k),
                 **button_kwargs
