@@ -11,6 +11,7 @@ from PIL import Image
 from utils.i18n import _
 
 from .custom_widgets.ctk_input_dialog import CTkInputDialog
+from .custom_widgets.ctk_scrollable_dropdown import CTkScrollableDropdown
 
 
 class MainWindow(ctk.CTkFrame):
@@ -100,8 +101,11 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_audio_language.grid(row=0, column=0, padx=0, pady=10)
 
-        self.omn_audio_language = ctk.CTkOptionMenu(
-            master=self.frm_shared_options, values=list(c.AUDIO_LANGUAGES.values())
+        self.omn_audio_language = ctk.CTkOptionMenu(master=self.frm_shared_options)
+        CTkScrollableDropdown(
+            attach=self.omn_audio_language,
+            values=list(c.AUDIO_LANGUAGES.values()),
+            alpha=1,
         )
         self.omn_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.EW)
         try:
