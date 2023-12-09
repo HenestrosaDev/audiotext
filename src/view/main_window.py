@@ -10,7 +10,7 @@ from model.transcription_method import TranscriptionMethod
 from PIL import Image
 from utils.i18n import _
 
-from .ctk_input_dialog import CTkInputDialog
+from .custom_widgets.ctk_input_dialog import CTkInputDialog
 
 
 class MainWindow(ctk.CTkFrame):
