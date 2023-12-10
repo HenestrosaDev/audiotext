@@ -378,12 +378,10 @@ Once you have selected the file, the green `Generate transcription` button will 
 <picture>
 	<source 
 		srcset="docs/light/generated.png" 
-		alt="Main"
 		media="(prefers-color-scheme: light)"
 	/>
 	<source 
 		srcset="docs/dark/generated.png" 
-		alt="Main"
 		media="(prefers-color-scheme: dark)"
 	/>
 	<img src="docs/light/generated.png" alt="Main">
@@ -435,12 +433,10 @@ Since the program uses **Google's Speech-To-Text API** free tier, which allows y
 <picture>
 	<source 
 		srcset="docs/light/google-api-options.png" 
-		alt="google-api-options"
 		media="(prefers-color-scheme: light)"
 	/>
 	<source 
 		srcset="docs/dark/google-api-options.png" 
-		alt="google-api-options"
 		media="(prefers-color-scheme: dark)"
 	/>
 	<img src="docs/light/google-api-options.png" alt="google-api-options">
@@ -451,12 +447,10 @@ Once you click on the button, you'll be presented with a dialog box where you ca
 <picture>
 	<source 
 		srcset="docs/light/google-api-key-dialog.png" 
-		alt="google-api-key-dialog"
 		media="(prefers-color-scheme: light)"
 	/>
 	<source 
 		srcset="docs/dark/google-api-key-dialog.png" 
-		alt="google-api-key-dialog"
 		media="(prefers-color-scheme: dark)"
 	/>
 	<img src="docs/light/google-api-key-dialog.png" alt="google-api-key-dialog">
