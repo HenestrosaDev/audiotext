@@ -61,7 +61,7 @@
 - [Getting Started](#getting-started)
     - [Notes](#notes) 
     - [To Run the Program](#to-run-the-program)
-    - [To Get the Code](#to-get-the-code)
+    - [To Set Up the Project Locally](#to-set-up-the-project-locally)
 - [Usage](#usage)
     - [Transcribe From Microphone](#transcribe-from-microphone)
     - [Select File](#select-file)
@@ -300,8 +300,11 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 4. Open the `audiotext` folder.
 5. Double-click the `Audiotext` executable file (`.exe` for Windows and `.app` for macOS).
 
-### To Get the Code
-- Clone the project running `git clone https://github.com/HenestrosaDev/audiotext.git`.
+### To Set Up the Project Locally 
+1. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
+2. (Optional but recommended) Create a Python virtual environment in the project root. If you are using `virtualenv`, you would run `virtualenv venv`.
+3. Run `pip install -r requirements.txt` to install the dependencies.
+4. Run `python src/app.py` to start the program.
 
 >**IMPORTANT NOTE**: I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
 
