@@ -298,7 +298,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 2. Download the latest release. 
 3. Decompress the downloaded file.
 4. Open the `audiotext` folder.
-5. Double-click the `audiotext.exe` file if you are using **Windows** or the `audiotext` file if you are using **GNU-Linux** or **macOS**.
+5. Double-click the `Audiotext` executable file (`.exe` for Windows and `.app` for macOS).
 
 ### To Get the Code
 - Clone the project running `git clone https://github.com/HenestrosaDev/audiotext.git`.
