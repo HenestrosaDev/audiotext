@@ -60,7 +60,7 @@
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
     - [Notes](#notes) 
-    - [To Execute the Program](#to-execute-the-program)
+    - [To Run the Program](#to-run-the-program)
     - [To Get the Code](#to-get-the-code)
 - [Usage](#usage)
     - [Transcribe From Microphone](#transcribe-from-microphone)
@@ -293,7 +293,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   scoop install ffmpeg
   ```
 
-### To Execute the Program
+### To Run the Program
 1. Go to [releases](https://github.com/HenestrosaDev/audiotext/releases).
 2. Download the latest release. 
 3. Decompress the downloaded file.
