@@ -301,7 +301,9 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 5. Double-click the `audiotext.exe` file if you are using **Windows** or the `audiotext` file if you are using **GNU-Linux** or **macOS**.
 
 ### To Get the Code
-1. Clone the project running `git clone https://github.com/HenestrosaDev/audiotext.git`.
+- Clone the project running `git clone https://github.com/HenestrosaDev/audiotext.git`.
+
+>**IMPORTANT NOTE**: I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
