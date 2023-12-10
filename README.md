@@ -15,14 +15,12 @@
 	<picture>
 		<source 
 			srcset="docs/light/icon.png" 
-			alt="Logo"
 			width="128" 
 			height="128" 
 			media="(prefers-color-scheme: light)"
 		/>
 		<source 
 			srcset="docs/dark/icon.png" 
-			alt="Logo"
 			width="128" 
 			height="128" 
 			media="(prefers-color-scheme: dark)"
@@ -85,12 +83,10 @@
 <picture>
 	<source 
 		srcset="docs/light/main.png" 
-		alt="Main"
 		media="(prefers-color-scheme: light)"
 	/>
 	<source 
 		srcset="docs/dark/main.png" 
-		alt="Main"
 		media="(prefers-color-scheme: dark)"
 	/>
 	<img src="docs/light/main.png" alt="Main">
