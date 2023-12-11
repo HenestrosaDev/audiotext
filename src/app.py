@@ -1,7 +1,10 @@
 import customtkinter as ctk
+import torch
+import utils.config_manager as cm
 import utils.constants as c
 import utils.path_helper as ph
 from controller.main_controller import MainController
+from model.config.config_whisperx import ConfigWhisperX
 from model.transcription import Transcription
 from view.main_window import MainWindow
 
@@ -28,11 +31,23 @@ class App(ctk.CTk):
         min_height = 250
         self.minsize(min_width, min_height)
 
+        # Check GPU
+        cm.ConfigManager.modify_value(
+            ConfigWhisperX.Key.SECTION,
+            ConfigWhisperX.Key.CAN_USE_GPU,
+            str(torch.cuda.is_available()),
+        )
+
+        # Initialize configs
+        config_whisperx = cm.ConfigManager.get_config_whisperx()
+        config_google_api = cm.ConfigManager.get_config_google_api()
+        config_subtitles = cm.ConfigManager.get_config_subtitles()
+
         # Create the view and place it on the root window
-        view = MainWindow(self)
+        view = MainWindow(self, config_whisperx, config_google_api, config_subtitles)
         view.pack(fill="both", expand=True)
 
-        # Create the model
+        # Create the model for the controller
         transcription = Transcription()
 
         # Create the controller

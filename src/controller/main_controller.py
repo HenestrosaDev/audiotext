@@ -9,7 +9,7 @@ from tkinter import filedialog
 import speech_recognition as sr
 import torch
 import utils.audio_utils as au
-import utils.google_api_key_helper as google_api_key_helper
+import utils.config_manager as cm
 import whisperx
 from model.transcription import Transcription
 from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -245,6 +245,11 @@ class MainController:
             # Create a speech recognition object
             r = sr.Recognizer()
 
+            # Get Google API key (if any)
+            config_google_api = cm.ConfigManager.get_config_google_api()
+            print(config_google_api)
+            api_key = config_google_api.api_key or None
+
             # Process each chunk
             for idx, audio_chunk in enumerate(audio_chunks):
                 # Export audio chunk and save it in the `chunks_directory` directory.
@@ -261,12 +266,13 @@ class MainController:
                         chunk_text = r.recognize_google(
                             audio_listened,
                             language=self.transcription.language_code,
-                            key=google_api_key_helper.get_google_api_key(),
+                            key=api_key,
                         )
 
                         chunk_text = f"{chunk_text.capitalize()}. "
                         transcription_text += chunk_text
                         print(f"chunk text: {chunk_text}")
+
                     except Exception:
                         continue
 

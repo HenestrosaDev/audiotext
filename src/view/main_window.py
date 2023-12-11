@@ -2,9 +2,9 @@ import locale
 import tkinter
 
 import customtkinter as ctk
+import utils.config_manager as cm
 import utils.constants as c
 import utils.dict_utils as du
-import utils.google_api_key_helper as google_api_key_helper
 import utils.path_helper as ph
 from PIL import Image
 from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
@@ -467,9 +467,8 @@ class MainWindow(ctk.CTkFrame):
             )
             self.frm_google_api_options.grid()
 
-    @staticmethod
-    def _on_set_google_api_key():
-        old_api_key = google_api_key_helper.get_google_api_key()
+    def _on_set_google_api_key(self):
+        old_api_key = self._config_google_api.api_key
 
         dialog = CTkInputDialog(
             title="Google API key",
