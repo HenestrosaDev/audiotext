@@ -279,12 +279,34 @@ class MainWindow(ctk.CTkFrame):
             row=0, column=0, padx=10, pady=(10, 5), sticky=ctk.EW
         )
 
+        # Model size
+        self.lbl_model_size = ctk.CTkLabel(
+            master=self.frm_whisperx_advanced_options,
+            text="Model size",
+        )
+        self.lbl_model_size.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.W)
+
+        self.omn_model_size = ctk.CTkOptionMenu(
+            master=self.frm_whisperx_advanced_options,
+            values=[
+                ModelSize.TINY.value,
+                ModelSize.BASE.value,
+                ModelSize.SMALL.value,
+                ModelSize.MEDIUM.value,
+                ModelSize.LARGE_V2.value,
+                ModelSize.LARGE_V3.value,
+            ],
+            command=self._change_appearance_mode_event,
+        )
+        self.omn_model_size.grid(row=2, column=0, padx=20, pady=(3, 10), sticky=ctk.EW)
+        self.omn_model_size.set(ModelSize.LARGE_V2.value)
+
         # Compute type
         self.lbl_compute_type = ctk.CTkLabel(
             master=self.frm_whisperx_advanced_options,
             text="Compute type",
         )
-        self.lbl_compute_type.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.W)
+        self.lbl_compute_type.grid(row=3, column=0, padx=20, pady=0, sticky=ctk.W)
 
         self.omn_compute_type = ctk.CTkOptionMenu(
             master=self.frm_whisperx_advanced_options,
@@ -296,7 +318,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._change_appearance_mode_event,
         )
         self.omn_compute_type.grid(
-            row=2, column=0, padx=20, pady=(3, 15), sticky=ctk.EW
+            row=4, column=0, padx=20, pady=(3, 17), sticky=ctk.EW
         )
         self.omn_compute_type.set(ComputeType.FLOAT16.value)
 
@@ -305,12 +327,12 @@ class MainWindow(ctk.CTkFrame):
             master=self.frm_whisperx_advanced_options,
             text="Batch size",
         )
-        self.lbl_batch_size.grid(row=3, column=0, padx=(50, 0), pady=0, sticky=ctk.W)
+        self.lbl_batch_size.grid(row=5, column=0, padx=(50, 0), pady=0, sticky=ctk.W)
 
         self.ent_batch_size = ctk.CTkEntry(
             master=self.frm_whisperx_advanced_options, width=28
         )
-        self.ent_batch_size.grid(row=3, column=0, padx=(18, 20), pady=0, sticky=ctk.W)
+        self.ent_batch_size.grid(row=5, column=0, padx=(18, 20), pady=0, sticky=ctk.W)
 
         # Use CPU
         self.chk_use_cpu = ctk.CTkCheckBox(
@@ -318,7 +340,7 @@ class MainWindow(ctk.CTkFrame):
             text="Use CPU",
             command=self._on_chk_whisper_options_translate_change,  # CHANGE
         )
-        self.chk_use_cpu.grid(row=4, column=0, padx=20, pady=(10, 16), sticky=ctk.W)
+        self.chk_use_cpu.grid(row=6, column=0, padx=20, pady=(10, 16), sticky=ctk.W)
 
         # ------------------
 
