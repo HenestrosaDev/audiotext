@@ -7,7 +7,6 @@ from pathlib import Path
 from tkinter import filedialog
 
 import speech_recognition as sr
-import torch
 import utils.audio_utils as au
 import utils.config_manager as cm
 import whisperx
