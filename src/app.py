@@ -6,6 +6,7 @@ import utils.path_helper as ph
 from controller.main_controller import MainController
 from model.config.config_whisperx import ConfigWhisperX
 from model.transcription import Transcription
+from utils.enums import ComputeType
 from view.main_window import MainWindow
 
 
@@ -33,10 +34,17 @@ class App(ctk.CTk):
 
         # Check GPU
         cm.ConfigManager.modify_value(
-            ConfigWhisperX.Key.SECTION,
-            ConfigWhisperX.Key.CAN_USE_GPU,
-            str(torch.cuda.is_available()),
+            section=ConfigWhisperX.Key.SECTION,
+            key=ConfigWhisperX.Key.CAN_USE_GPU,
+            new_value=str(torch.cuda.is_available()),
         )
+
+        if not torch.cuda.is_available():
+            cm.ConfigManager.modify_value(
+                section=ConfigWhisperX.Key.SECTION,
+                key=ConfigWhisperX.Key.COMPUTE_TYPE,
+                new_value=ComputeType.INT8.value,
+            )
 
         # Initialize configs
         config_whisperx = cm.ConfigManager.get_config_whisperx()
