@@ -468,6 +468,8 @@ The program supports three appearance modes:
 - [x] Generate `.srt` and `.vtt` files for subtitles (only for **WhisperX**).
 - [x] Add "Stop recording" button state when recording from the microphone.
 - [x] Add a dialogue to let users input their **Google Speech-To-Text API** key.
+- [x] Add subtitle options.
+- [x] Add advanced options for **WhisperX**.
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
 - [ ] Add tests.
