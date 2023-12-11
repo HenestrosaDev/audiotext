@@ -1,15 +1,16 @@
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
-from utils.constants import AudioSource
+from utils.enums import AudioSource
 
 
 @dataclass
 class Transcription:
-    text: str | None = None
-    language_code: str | None = None
-    source: AudioSource | None = None
+    text: Optional[str] = None
+    language_code: Optional[str] = None
+    source: Optional[AudioSource] = None
     file_path_to_transcribe: Path = Path("/")
-    method: int = None
+    method: Optional[int] = None
     should_translate: bool = False
     should_subtitle: bool = False
