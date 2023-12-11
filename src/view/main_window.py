@@ -6,8 +6,8 @@ import utils.constants as c
 import utils.dict_utils as du
 import utils.google_api_key_helper as google_api_key_helper
 import utils.path_helper as ph
-from model.transcription_method import TranscriptionMethod
 from PIL import Image
+from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
 from utils.i18n import _
 
 from .custom_widgets.ctk_input_dialog import CTkInputDialog
@@ -289,16 +289,16 @@ class MainWindow(ctk.CTkFrame):
         self.omn_compute_type = ctk.CTkOptionMenu(
             master=self.frm_whisperx_advanced_options,
             values=[
-                c.ComputeType.INT8.value,
-                c.ComputeType.FLOAT16.value,
-                c.ComputeType.FLOAT32.value,
+                ComputeType.INT8.value,
+                ComputeType.FLOAT16.value,
+                ComputeType.FLOAT32.value,
             ],
             command=self._change_appearance_mode_event,
         )
         self.omn_compute_type.grid(
             row=2, column=0, padx=20, pady=(3, 15), sticky=ctk.EW
         )
-        self.omn_compute_type.set(c.ComputeType.FLOAT16.value)
+        self.omn_compute_type.set(ComputeType.FLOAT16.value)
 
         # Batch size
         self.lbl_batch_size = ctk.CTkLabel(
@@ -376,7 +376,7 @@ class MainWindow(ctk.CTkFrame):
         self._controller.select_file()
 
     def _on_transcribe_from_mic(self):
-        is_recording = c.Color.LIGHT_RED.value in self.btn_transcribe_from_mic.cget(
+        is_recording = Color.LIGHT_RED.value in self.btn_transcribe_from_mic.cget(
             "fg_color"
         )
 
@@ -387,16 +387,16 @@ class MainWindow(ctk.CTkFrame):
 
     def _start_recording_from_mic(self):
         self.btn_transcribe_from_mic.configure(
-            fg_color=(c.Color.LIGHT_RED.value, c.Color.DARK_RED.value),
+            fg_color=(Color.LIGHT_RED.value, Color.DARK_RED.value),
             hover_color=(
-                c.Color.HOVER_LIGHT_RED.value,
-                c.Color.HOVER_DARK_RED.value,
+                Color.HOVER_LIGHT_RED.value,
+                Color.HOVER_DARK_RED.value,
             ),
             text=_("Stop recording"),
         )
 
         self._controller.prepare_for_transcription(
-            source=c.AudioSource.MIC,
+            source=AudioSource.MIC,
             language_code=self._get_language_code(),
             transcription_method=self.radio_var.get(),
             **self._get_whisperx_args(),
@@ -409,10 +409,10 @@ class MainWindow(ctk.CTkFrame):
         self._is_transcribing_from_mic = False
 
         self.btn_transcribe_from_mic.configure(
-            fg_color=(c.Color.LIGHT_BLUE.value, c.Color.DARK_BLUE.value),
+            fg_color=(Color.LIGHT_BLUE.value, Color.DARK_BLUE.value),
             hover_color=(
-                c.Color.HOVER_LIGHT_BLUE.value,
-                c.Color.HOVER_DARK_BLUE.value,
+                Color.HOVER_LIGHT_BLUE.value,
+                Color.HOVER_DARK_BLUE.value,
             ),
             text=_("Transcribe from mic."),
         )
@@ -424,7 +424,7 @@ class MainWindow(ctk.CTkFrame):
 
     def _on_generate_transcription(self):
         self._controller.prepare_for_transcription(
-            source=c.AudioSource.FILE,
+            source=AudioSource.FILE,
             language_code=self._get_language_code(),
             transcription_method=self.radio_var.get(),
             **self._get_whisperx_args(),

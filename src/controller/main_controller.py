@@ -12,11 +12,11 @@ import utils.audio_utils as au
 import utils.google_api_key_helper as google_api_key_helper
 import whisperx
 from model.transcription import Transcription
-from model.transcription_method import TranscriptionMethod
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 from utils import constants as c
+from utils.enums import AudioSource, TranscriptionMethod
 from utils.i18n import _
 from utils.path_helper import ROOT_PATH
 
@@ -93,14 +93,14 @@ class MainController:
         self.transcription.should_subtitle = should_subtitle
 
         try:
-            if source == c.AudioSource.FILE:
+            if source == AudioSource.FILE:
                 threading.Thread(
                     target=lambda loop: loop.run_until_complete(
                         self.handle_transcription_process()
                     ),
                     args=(asyncio.new_event_loop(),),
                 ).start()
-            elif source == c.AudioSource.MIC:
+            elif source == AudioSource.MIC:
                 threading.Thread(target=self._record_from_mic).start()
 
         except Exception:
@@ -117,7 +117,7 @@ class MainController:
         elif self.transcription.method == TranscriptionMethod.GOOGLE_API.value:
             await self._transcribe_using_google_api()
 
-        if self.transcription.source == c.AudioSource.MIC:
+        if self.transcription.source == AudioSource.MIC:
             self.transcription.file_path_to_transcribe.unlink()  # Remove tmp file
 
         is_transcription_empty = not self.transcription.text
