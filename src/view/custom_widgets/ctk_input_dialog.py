@@ -1,7 +1,7 @@
 from typing import Optional, Tuple, Union
 
 import customtkinter as ctk
-import utils.constants as c
+from utils.enums import Color
 
 
 class CTkInputDialog(ctk.CTkToplevel):
@@ -132,10 +132,10 @@ class CTkInputDialog(ctk.CTkToplevel):
             master=self,
             width=100,
             border_width=0,
-            fg_color=(c.Color.LIGHT_RED.value, c.Color.DARK_RED.value),
+            fg_color=(Color.LIGHT_RED.value, Color.DARK_RED.value),
             hover_color=(
-                c.Color.HOVER_LIGHT_RED.value,
-                c.Color.HOVER_DARK_RED.value,
+                Color.HOVER_LIGHT_RED.value,
+                Color.HOVER_DARK_RED.value,
             ),
             text_color=self._button_text_color,
             text="Cancel",
