@@ -66,9 +66,9 @@
     - [Transcribe From Microphone](#transcribe-from-microphone)
     - [Select File](#select-file)
     - [Save Transcription](#save-transcription)
-    - [Appearance Mode](#appearance-mode)
     - [Transcription Translation](#transcription-translation)
     - [Google's Speech-To-Text API Usage](#googles-speech-to-text-api-usage)
+    - [Appearance Mode](#appearance-mode)
 - [Roadmap](#roadmap)
 - [Authors](#authors)
 - [Contributing](#contributing)
@@ -395,25 +395,6 @@ Once the program has generated the transcription, you will see a green `Save tra
 
 If you used **WhisperX** to generate the transcription and checked the `Generate subtitles` option, you'll notice that two files are also saved along with the `.txt` file: a `.vtt` file and a `.srt` file. Both contain the subtitles for the transcribed file.
 
-### Appearance Mode
-
-The program supports three appearance modes:
-
-<details>
-  <summary>System (default)</summary>
-  <img src="docs/main-system.png" alt="System">
-</details>
-
-<details>
-  <summary>Dark</summary>
-  <img src="docs/dark/main.png" alt="Dark theme">
-</details>
-
-<details>
-  <summary>Light</summary>
-  <img src="docs/light/main.png" alt="Light theme">
-</details>
-
 ### Transcription Translation
 
 To translate the audio into English, simply check the `Translate to English` checkbox with **WhisperX** transcription as the transcription method, as shown in the video below.
@@ -457,6 +438,25 @@ Once you click on the button, you'll be presented with a dialog box where you ca
 </picture>
 
 Remember that **WhisperX** offers fast, unlimited audio transcription that supports translation and subtitle generation. 
+
+### Appearance Mode
+
+The program supports three appearance modes:
+
+<details>
+  <summary>System (default)</summary>
+  <img src="docs/main-system.png" alt="System">
+</details>
+
+<details>
+  <summary>Dark</summary>
+  <img src="docs/dark/main.png" alt="Dark theme">
+</details>
+
+<details>
+  <summary>Light</summary>
+  <img src="docs/light/main.png" alt="Light theme">
+</details>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
