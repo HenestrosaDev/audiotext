@@ -98,7 +98,7 @@ class MainWindow(ctk.CTkFrame):
         # Audio language
         self.lbl_audio_language = ctk.CTkLabel(
             master=self.frm_shared_options,
-            text=f'{_("Audio language")}:',
+            text=_("Audio language"),
             font=ctk.CTkFont(size=14, weight="bold"),
         )
         self.lbl_audio_language.grid(row=0, column=0, padx=0, pady=10)
@@ -158,7 +158,7 @@ class MainWindow(ctk.CTkFrame):
 
         self.lbl_transcribe_using = ctk.CTkLabel(
             master=self.frm_transcribe_using,
-            text=f'{_("Transcribe using")}:',
+            text=_("Transcribe using"),
             font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
         )
         self.lbl_transcribe_using.grid(row=0, column=0, padx=0, pady=(10, 12.5))
@@ -193,7 +193,7 @@ class MainWindow(ctk.CTkFrame):
 
         self.lbl_whisper_options = ctk.CTkLabel(
             master=self.frm_whisper_options,
-            text="WhisperX options:",
+            text="WhisperX options",
             font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
         )
         self.lbl_whisper_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
@@ -226,7 +226,7 @@ class MainWindow(ctk.CTkFrame):
 
         self.lbl_google_api_options = ctk.CTkLabel(
             master=self.frm_google_api_options,
-            text="Google API options:",
+            text="Google API options",
             font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
         )
         self.lbl_google_api_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
@@ -245,7 +245,7 @@ class MainWindow(ctk.CTkFrame):
         # Appearance mode
         self.lbl_appearance_mode = ctk.CTkLabel(
             master=self.frm_sidebar,
-            text=f'{_("Appearance mode")}:',
+            text=_("Appearance mode"),
             anchor=ctk.W,
             font=ctk.CTkFont(size=14, weight="bold"),
         )
