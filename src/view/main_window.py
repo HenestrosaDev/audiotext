@@ -63,7 +63,9 @@ class MainWindow(ctk.CTkFrame):
 
     def _init_sidebar(self):
         # Sidebar frame
-        self.frm_sidebar = ctk.CTkFrame(master=self, width=140, corner_radius=0)
+        self.frm_sidebar = ctk.CTkScrollableFrame(
+            master=self, width=230, corner_radius=0
+        )
         self.frm_sidebar.grid(row=0, column=0, rowspan=4, sticky=ctk.NSEW)
         self.frm_sidebar.grid_rowconfigure(10, weight=1)
 
