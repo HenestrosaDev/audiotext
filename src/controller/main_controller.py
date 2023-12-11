@@ -151,7 +151,7 @@ class MainController:
     # PRIVATE METHODS
 
     def _is_file_valid(self, source):
-        if source == c.AudioSource.MIC:
+        if source == AudioSource.MIC:
             return True
 
         filepath = self.transcription.file_path_to_transcribe
@@ -160,23 +160,26 @@ class MainController:
 
         return filepath.is_file() and (is_audio or is_video)
 
-    async def _transcribe_using_whisperx(self, batch_size=16):
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        compute_type = "float16" if "cuda" else "int8"
+    async def _transcribe_using_whisperx(self):
+        config_whisperx = cm.ConfigManager.get_config_whisperx()
+
+        device = "cpu" if config_whisperx.use_cpu else "cuda"
         task = "translate" if self.transcription.should_translate else "transcribe"
 
         try:
             model = whisperx.load_model(
-                "large-v3",
+                config_whisperx.model_size,
                 device,
-                compute_type=compute_type,
+                compute_type=config_whisperx.compute_type,
                 task=task,
                 language=self.transcription.language_code,
             )
 
             audio_path = str(self.transcription.file_path_to_transcribe)
             audio = whisperx.load_audio(audio_path)
-            self._whisperx_result = model.transcribe(audio, batch_size=batch_size)
+            self._whisperx_result = model.transcribe(
+                audio, batch_size=config_whisperx.batch_size
+            )
 
             text_combined = " ".join(
                 segment["text"].strip() for segment in self._whisperx_result["segments"]
@@ -246,7 +249,6 @@ class MainController:
 
             # Get Google API key (if any)
             config_google_api = cm.ConfigManager.get_config_google_api()
-            print(config_google_api)
             api_key = config_google_api.api_key or None
 
             # Process each chunk
@@ -318,6 +320,8 @@ class MainController:
             ).start()
 
     def _generate_subtitles(self, file_path):
+        config_subtitles = cm.ConfigManager.get_config_subtitles()
+
         output_formats = ["srt", "vtt"]
         output_dir = file_path.parent
 
@@ -325,8 +329,8 @@ class MainController:
             writer = whisperx.transcribe.get_writer(output_format, output_dir)
             writer_args = {
                 "highlight_words": False,
-                "max_line_count": 2,
-                "max_line_width": 42,
+                "max_line_count": config_subtitles.max_line_count,
+                "max_line_width": config_subtitles.max_line_width,
             }
 
             # https://github.com/m-bain/whisperX/issues/455#issuecomment-1707547704
