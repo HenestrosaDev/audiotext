@@ -99,6 +99,12 @@ class AudioSource(Enum):
     MIC = "mic"
 
 
+class ComputeType(Enum):
+    INT8 = "int8"
+    FLOAT16 = "float16"
+    FLOAT32 = "float32"
+
+
 AUDIO_FILE_EXTENSIONS = [
     ".mp3",
     ".mpeg",

@@ -187,10 +187,13 @@ class MainWindow(ctk.CTkFrame):
             row=2, column=0, padx=20, pady=(7.5, 16), sticky=ctk.W
         )
 
+        # ------------------
+
         # Whisper options frame
         self.frm_whisper_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
         self.frm_whisper_options.grid(row=3, column=0, padx=20, pady=(20, 0))
 
+        # Title label
         self.lbl_whisper_options = ctk.CTkLabel(
             master=self.frm_whisper_options,
             text="WhisperX options",
@@ -198,6 +201,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_whisper_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
 
+        # Translate
         self.chk_whisper_options_translate = ctk.CTkCheckBox(
             master=self.frm_whisper_options,
             text="Translate to English",
@@ -206,13 +210,27 @@ class MainWindow(ctk.CTkFrame):
         self.chk_whisper_options_translate.grid(
             row=1, column=0, padx=20, pady=0, sticky=ctk.W
         )
+
+        # Subtitles
         self.chk_whisper_options_subtitles = ctk.CTkCheckBox(
             master=self.frm_whisper_options,
             text="Generate subtitles",
         )
         self.chk_whisper_options_subtitles.grid(
-            row=2, column=0, padx=20, pady=(10, 16), sticky=ctk.W
+            row=2, column=0, padx=20, pady=(10, 0), sticky=ctk.W
         )
+
+        # Show advanced options
+        self.btn_whisperx_show_advanced_options = ctk.CTkButton(
+            master=self.frm_whisper_options,
+            text=_("Show advanced options"),
+            command=self._on_show_advanced_options,
+        )
+        self.btn_whisperx_show_advanced_options.grid(
+            row=3, column=0, padx=20, pady=16, sticky=ctk.EW
+        )
+
+        # ------------------
 
         # Google API options frame
         self.frm_google_api_options = ctk.CTkFrame(
@@ -242,6 +260,68 @@ class MainWindow(ctk.CTkFrame):
 
         # ------------------
 
+        # WhisperX advanced options frame
+        self.frm_whisperx_advanced_options = ctk.CTkFrame(
+            master=self.frm_sidebar, border_width=2
+        )
+        self.frm_whisperx_advanced_options.grid(
+            row=4, column=0, padx=20, pady=(20, 0), sticky=ctk.EW
+        )
+        self.frm_whisperx_advanced_options.grid_remove()  # Hidden by default
+
+        # Title label
+        self.lbl_advanced_options = ctk.CTkLabel(
+            master=self.frm_whisperx_advanced_options,
+            text="Advanced options",
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
+        )
+        self.lbl_advanced_options.grid(
+            row=0, column=0, padx=10, pady=(10, 5), sticky=ctk.EW
+        )
+
+        # Compute type
+        self.lbl_compute_type = ctk.CTkLabel(
+            master=self.frm_whisperx_advanced_options,
+            text="Compute type",
+        )
+        self.lbl_compute_type.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.W)
+
+        self.omn_compute_type = ctk.CTkOptionMenu(
+            master=self.frm_whisperx_advanced_options,
+            values=[
+                c.ComputeType.INT8.value,
+                c.ComputeType.FLOAT16.value,
+                c.ComputeType.FLOAT32.value,
+            ],
+            command=self._change_appearance_mode_event,
+        )
+        self.omn_compute_type.grid(
+            row=2, column=0, padx=20, pady=(3, 15), sticky=ctk.EW
+        )
+        self.omn_compute_type.set(c.ComputeType.FLOAT16.value)
+
+        # Batch size
+        self.lbl_batch_size = ctk.CTkLabel(
+            master=self.frm_whisperx_advanced_options,
+            text="Batch size",
+        )
+        self.lbl_batch_size.grid(row=3, column=0, padx=(50, 0), pady=0, sticky=ctk.W)
+
+        self.ent_batch_size = ctk.CTkEntry(
+            master=self.frm_whisperx_advanced_options, width=28
+        )
+        self.ent_batch_size.grid(row=3, column=0, padx=(18, 20), pady=0, sticky=ctk.W)
+
+        # Use CPU
+        self.chk_use_cpu = ctk.CTkCheckBox(
+            master=self.frm_whisperx_advanced_options,
+            text="Use CPU",
+            command=self._on_chk_whisper_options_translate_change,  # CHANGE
+        )
+        self.chk_use_cpu.grid(row=4, column=0, padx=20, pady=(10, 16), sticky=ctk.W)
+
+        # ------------------
+
         # Appearance mode
         self.lbl_appearance_mode = ctk.CTkLabel(
             master=self.frm_sidebar,
@@ -249,7 +329,7 @@ class MainWindow(ctk.CTkFrame):
             anchor=ctk.W,
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_appearance_mode.grid(row=12, column=0, padx=20, pady=(10, 0))
+        self.lbl_appearance_mode.grid(row=12, column=0, padx=20, pady=(50, 0))
 
         self.omn_appearance_mode = ctk.CTkOptionMenu(
             master=self.frm_sidebar,
@@ -359,6 +439,10 @@ class MainWindow(ctk.CTkFrame):
             self.frm_google_api_options.grid_remove()
         elif self.radio_var.get() == TranscriptionMethod.GOOGLE_API.value:
             self.frm_whisper_options.grid_remove()
+            self.frm_whisperx_advanced_options.grid_remove()
+            self.btn_whisperx_show_advanced_options.configure(
+                text=_("Show advanced options")
+            )
             self.frm_google_api_options.grid()
 
     @staticmethod
@@ -382,6 +466,18 @@ class MainWindow(ctk.CTkFrame):
             self.chk_whisper_options_subtitles.configure(state=ctk.DISABLED)
         else:
             self.chk_whisper_options_subtitles.configure(state=ctk.NORMAL)
+
+    def _on_show_advanced_options(self):
+        if self.frm_whisperx_advanced_options.winfo_ismapped():
+            self.frm_whisperx_advanced_options.grid_remove()
+            self.btn_whisperx_show_advanced_options.configure(
+                text=_("Show advanced options")
+            )
+        else:
+            self.frm_whisperx_advanced_options.grid()
+            self.btn_whisperx_show_advanced_options.configure(
+                text=_("Hide advanced options")
+            )
 
     # PUBLIC HANDLERS
 
