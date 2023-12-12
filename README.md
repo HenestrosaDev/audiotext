@@ -317,8 +317,16 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 2. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
 3. Change the current working directory to `audiotext` by running `cd audiotext`.
 4. (Optional but recommended) Create a Python virtual environment in the project root. If you are using `virtualenv`, you would run `virtualenv venv`.
-5. Run `pip install -r requirements.txt` to install the dependencies.
-6. Run `python src/app.py` to start the program.
+5. (Optional but recommended) Activate the virtual environment:
+   ```bash
+   # on Windows
+   . venv/Scripts/activate
+   
+   # on macOS and Linux
+   source venv/Scripts/activate
+   ```
+6. Run `pip install -r requirements.txt` to install the dependencies.
+7. Run `python src/app.py` to start the program.
 
 >**IMPORTANT NOTE**: I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
 
