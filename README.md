@@ -555,33 +555,37 @@ As noted in the [Compute Type](#compute-type) section, the default compute type 
 
 The **Google API** options appear when the selected transcription method is the **Google API**.
 
-<picture>
-	<source 
-		srcset="docs/light/google-api-options.png" 
-		media="(prefers-color-scheme: light)"
-	/>
-	<source 
-		srcset="docs/dark/google-api-options.png" 
-		media="(prefers-color-scheme: dark)"
-	/>
-	<img src="docs/light/google-api-options.png" alt="google-api-options">
-</picture>
+<p align="center">
+    <picture>
+        <source 
+            srcset="docs/light/google-api-options.png" 
+            media="(prefers-color-scheme: light)"
+        />
+        <source 
+            srcset="docs/dark/google-api-options.png" 
+            media="(prefers-color-scheme: dark)"
+        />
+        <img src="docs/light/google-api-options.png" alt="google-api-options">
+    </picture>
+</p>
 
 #### API Key
 
 Since the program uses **Google's Speech-To-Text API** free tier by default, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do this, click on the `Set API key` button. Once you click on it, you'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
 
-<picture>
-	<source 
-		srcset="docs/light/google-api-key-dialog.png" 
-		media="(prefers-color-scheme: light)"
-	/>
-	<source 
-		srcset="docs/dark/google-api-key-dialog.png" 
-		media="(prefers-color-scheme: dark)"
-	/>
-	<img src="docs/light/google-api-key-dialog.png" alt="google-api-key-dialog">
-</picture>
+<p align="center">
+    <picture>
+        <source 
+            srcset="docs/light/google-api-key-dialog.png" 
+            media="(prefers-color-scheme: light)"
+        />
+        <source 
+            srcset="docs/dark/google-api-key-dialog.png" 
+            media="(prefers-color-scheme: dark)"
+        />
+        <img src="docs/light/google-api-key-dialog.png" alt="google-api-key-dialog">
+    </picture>
+<p align="center">
 
 Remember that **WhisperX** offers fast, unlimited audio transcription that supports translation and subtitle generation for free. Also note that Google charges for the use of the API key, for which Audiotext is not responsible. 
 
