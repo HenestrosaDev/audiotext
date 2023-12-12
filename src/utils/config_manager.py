@@ -46,6 +46,9 @@ class ConfigManager:
         section = ConfigSubtitles.Key.SECTION
 
         return ConfigSubtitles(
+            highlight_words=ConfigManager.get_value(
+                section, ConfigSubtitles.Key.HIGHLIGHT_WORDS
+            ),
             max_line_count=ConfigManager.get_value(
                 section, ConfigSubtitles.Key.MAX_LINE_COUNT
             ),

@@ -296,8 +296,20 @@ class MainWindow(ctk.CTkFrame):
             font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
         )
         self.lbl_subtitle_options.grid(
-            row=0, column=0, padx=40, pady=(10, 9), sticky=ctk.EW
+            row=0, column=0, padx=40, pady=(10, 0), sticky=ctk.EW
         )
+
+        # Highlight words
+        self.chk_highlight_words = ctk.CTkCheckBox(
+            master=self.frm_subtitle_options,
+            text="Highlight words",
+            command=lambda: self._on_config_change(
+                section=ConfigSubtitles.Key.SECTION,
+                key=ConfigSubtitles.Key.HIGHLIGHT_WORDS,
+                new_value="True" if self.chk_highlight_words.get() else "False",
+            ),
+        )
+        self.chk_highlight_words.grid(row=1, column=0, padx=20, pady=10, sticky=ctk.W)
 
         # Max. line count
         self.lbl_max_line_count = ctk.CTkLabel(
@@ -305,7 +317,7 @@ class MainWindow(ctk.CTkFrame):
             text=_("Max. line count"),
         )
         self.lbl_max_line_count.grid(
-            row=1, column=0, padx=(52, 0), pady=0, sticky=ctk.W
+            row=2, column=0, padx=(52, 0), pady=0, sticky=ctk.W
         )
 
         self.max_line_count = ctk.StringVar(
@@ -324,7 +336,7 @@ class MainWindow(ctk.CTkFrame):
             textvariable=self.max_line_count,
         )
         self.ent_max_line_count.grid(
-            row=1, column=0, padx=(18, 20), pady=0, sticky=ctk.W
+            row=2, column=0, padx=(18, 20), pady=0, sticky=ctk.W
         )
 
         # Max. line width
@@ -333,7 +345,7 @@ class MainWindow(ctk.CTkFrame):
             text=_("Max. line width"),
         )
         self.lbl_max_line_width.grid(
-            row=2, column=0, padx=(52, 0), pady=(10, 14), sticky=ctk.W
+            row=3, column=0, padx=(52, 0), pady=(10, 14), sticky=ctk.W
         )
 
         self.max_line_width = ctk.StringVar(
@@ -352,7 +364,7 @@ class MainWindow(ctk.CTkFrame):
             textvariable=self.max_line_width,
         )
         self.ent_max_line_width.grid(
-            row=2, column=0, padx=(18, 20), pady=(10, 14), sticky=ctk.W
+            row=3, column=0, padx=(18, 20), pady=(10, 14), sticky=ctk.W
         )
 
         # ------------------

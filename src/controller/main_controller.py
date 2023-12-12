@@ -328,7 +328,7 @@ class MainController:
         for output_format in output_formats:
             writer = whisperx.transcribe.get_writer(output_format, output_dir)
             writer_args = {
-                "highlight_words": False,
+                "highlight_words": config_subtitles.highlight_words,
                 "max_line_count": config_subtitles.max_line_count,
                 "max_line_width": config_subtitles.max_line_width,
             }
