@@ -533,7 +533,7 @@ The higher the precision, the more resources will be needed and the better the t
 
 There are three possible values:
 - `int8`: Default if using CPU. It represents whole numbers without any fractional part. Its size is 8 bits (1 byte) and it can represent integer values from -128 to 127 (signed) or 0 to 255 (unsigned). in scenarios where memory efficiency is critical, such as in quantized neural networks or edge devices with limited computational resources.
-- `float16`: Default if using CUDA GPU. It's a half precision type representing 16-bit floating point numbers. Its size is 16 bits (2 bytes). It has a smaller range and precision compared to float32. It is often used in applications where memory is a critical resource, such as in deep learning models running on GPUs or TPUs.
+- `float16`: Default if using CUDA GPU. It's a half precision type representing 16-bit floating point numbers. Its size is 16 bits (2 bytes). It has a smaller range and precision compared to `float32`. It is often used in applications where memory is a critical resource, such as in deep learning models running on GPUs or TPUs.
 - `float32`: Recommended for CUDA GPUs with more than 8 GB of VRAM. It's a single precision type representing 32-bit floating point numbers, which is a standard for representing real numbers in computers. Its size is 32 bits (4 bytes). It can represent a wide range of real numbers with a reasonable level of precision. 
  
 #### Batch Size
@@ -549,7 +549,7 @@ For simplicity, let's divide the possible batch size values into two groups:
 
 Checked by default if there is no CUDA GPU. **WhisperX** will use the CPU for transcription if checked.
 
-As noted in the [Compute Type](#compute-type) section, the default compute type value for the CPU is `int8`, since many CPUs don't support efficient float16 or float32 computation, which would result in an error. Change it at your own risk. 
+As noted in the [Compute Type](#compute-type) section, the default compute type value for the CPU is `int8`, since many CPUs don't support efficient `float16` or `float32` computation, which would result in an error. Change it at your own risk. 
 
 ### Google Speech-To-Text API Options
 
