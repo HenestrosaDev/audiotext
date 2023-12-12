@@ -566,7 +566,7 @@ As noted in the [Compute Type](#compute-type) section, the default compute type 
 
 ### Google Speech-To-Text API Options
 
-The **Google API** options appear when the selected transcription method is the **Google API**.
+The "**Google API** options" frame appears when the selected transcription method is **Google API**.
 
 <p align="center">
     <picture>
