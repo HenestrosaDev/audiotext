@@ -91,17 +91,7 @@
 
 ## About the Project
 
-<picture>
-	<source 
-		srcset="docs/light/main.png" 
-		media="(prefers-color-scheme: light)"
-	/>
-	<source 
-		srcset="docs/dark/main.png" 
-		media="(prefers-color-scheme: dark)"
-	/>
-	<img src="docs/light/main.png" alt="Main">
-</picture>
+![Main](docs/main-system.png)
 
 **Audiotext** transcribes the audio from an audio file, video file or microphone input into one of the 74 different languages it supports, along with some of their dialects. You can transcribe using [**WhisperX**](https://github.com/m-bain/whisperX) or the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text).
 
@@ -338,7 +328,22 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ## Usage
 
-Once you open the Audiotext executable file (explained in the [getting started](#getting-started) section), you will see something like the image above.
+Once you open the Audiotext executable file (explained in the [getting started](#getting-started) section), you will see something like this:
+
+<picture>
+	<source 
+		srcset="docs/light/main.png"
+		media="(prefers-color-scheme: light)"
+	/>
+	<source 
+		srcset="docs/dark/main.png"
+		media="(prefers-color-scheme: dark)"
+	/>
+	<img 
+        src="docs/light/main.png"
+        alt="Main"
+    >
+</picture>
 
 ### Transcribe Using
 
