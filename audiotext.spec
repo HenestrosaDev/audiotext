@@ -3,6 +3,7 @@ from os.path import join
 from platform import system
 from PyInstaller.utils.hooks import copy_metadata
 from PyInstaller.utils.hooks import collect_data_files
+from shutil import copyfile
 
 datas = [
     (r'venv/Lib/site-packages/customtkinter', 'customtkinter'),
@@ -121,3 +122,5 @@ else:
         upx_exclude=[],
         name='audiotext',
     )
+
+copyfile('config.ini', '{0}/audiotext/config.ini'.format(DISTPATH))
