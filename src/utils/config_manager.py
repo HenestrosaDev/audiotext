@@ -5,10 +5,11 @@ from typing import Optional, Union
 from model.config.config_google_api import ConfigGoogleApi
 from model.config.config_subtitles import ConfigSubtitles
 from model.config.config_whisperx import ConfigWhisperX
+from utils.path_helper import ROOT_PATH
 
 
 class ConfigManager:
-    _FILE_PATH = Path("../config.ini")
+    _FILE_PATH = ROOT_PATH / "config.ini"
     KeyType = Union[ConfigWhisperX.Key, ConfigGoogleApi.Key, ConfigSubtitles.Key]
 
     @staticmethod
