@@ -584,7 +584,7 @@ The "**Google API** options" frame appears when the selected transcription metho
 
 #### API Key
 
-Since the program uses **Google's Speech-To-Text API** free tier by default, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do this, click on the `Set API key` button. Once you click on it, you'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
+Since the program uses **Google's Speech-To-Text API** free tier by default, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do this, click on the `Set API key` button. You'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
 
 <p align="center">
     <picture>
