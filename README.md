@@ -63,12 +63,23 @@
     - [To Run the Program](#to-run-the-program)
     - [To Set Up the Project Locally](#to-set-up-the-project-locally)
 - [Usage](#usage)
+    - [Transcribe Using](#transcribe-using)
     - [Transcribe From Microphone](#transcribe-from-microphone)
     - [Select File](#select-file)
+    - [Generate Transcription](#generate-transcription)
     - [Save Transcription](#save-transcription)
-    - [Transcription Translation](#transcription-translation)
-    - [Google's Speech-To-Text API Usage](#googles-speech-to-text-api-usage)
+    - [WhisperX Options](#whisperx-options)
+        - [Transcription Translation](#transcription-translation)
+        - [Generate Subtitles](#generate-subtitles)
+    - [WhisperX Advanced Options](#whisperx-advanced-options)
+        - [Model Size](#model-size)
+        - [Compute Type](#compute-type)
+        - [Batch Size](#batch-size)
+        - [Use CPU](#use-cpu)
+    - [Google Speech-To-Text API Options](#google-speech-to-text-api-options)
+        - [API Key](#api-key) 
     - [Appearance Mode](#appearance-mode)
+    - [Troubleshooting](#troubleshooting)
 - [Roadmap](#roadmap)
 - [Authors](#authors)
 - [Contributing](#contributing)
@@ -95,8 +106,6 @@
 **Audiotext** transcribes the audio from an audio file, video file or microphone input into one of the 74 different languages it supports, along with some of their dialects. You can transcribe using [**WhisperX**](https://github.com/m-bain/whisperX) or the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text).
 
 If you use the **WhisperX** transcription method, you can translate the input audio into any other language you want (although, according to **OpenAI Whisper**, the only official language supported is English) and generate subtitles in `.srt` and `.vtt` format.
-
-You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
 
 <details>
   <summary>List of supported languages</summary>
@@ -177,6 +186,8 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   - Zulu (Isizulu)  
 </details>
 
+You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
+
 <!-- PROJECT STRUCTURE -->
 
 ### Project Structure
@@ -231,22 +242,33 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       │       main_controller.py
       │
       ├───model
-      │       __init__.py
-      │       transcription.py
-      │       transcription_method.py
+      │   │   __init__.py
+      │   │   transcription.py
+      │   │     
+      │   └───config
+      │           __init__.py
+      │           config_google_api.py
+      │           config_subtitles.py
+      │           config_whisperx.py
       │
       ├───utils
       │       __init__.py
       │       audio_utils.py
+      │       config_manager.py
       │       constants.py
       │       dict_utils.py
-      │       google_api_key_helper.py
+      │       enums.py
       │       i18n.py
       │       path_helper.py
       │
       └───view
-              __init__.py   
-              main_window.py
+          │   __init__.py   
+          │   main_window.py
+          │    
+          └───custom_widgets
+                  __init__.py
+                  ctk_scrollable_dropdown/
+                  ctk_input_dialog.py
   ```
 </details>
 
@@ -301,10 +323,12 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 5. Double-click the `Audiotext` executable file (`.exe` for Windows and `.app` for macOS).
 
 ### To Set Up the Project Locally 
-1. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
-2. (Optional but recommended) Create a Python virtual environment in the project root. If you are using `virtualenv`, you would run `virtualenv venv`.
-3. Run `pip install -r requirements.txt` to install the dependencies.
-4. Run `python src/app.py` to start the program.
+1. Change the current working directory to the location where you want the cloned directory.
+2. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
+3. Change the current working directory to `audiotext` by running `cd audiotext`.
+4. (Optional but recommended) Create a Python virtual environment in the project root. If you are using `virtualenv`, you would run `virtualenv venv`.
+5. Run `pip install -r requirements.txt` to install the dependencies.
+6. Run `python src/app.py` to start the program.
 
 >**IMPORTANT NOTE**: I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
 
@@ -316,13 +340,21 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 Once you open the Audiotext executable file (explained in the [getting started](#getting-started) section), you will see something like the image above.
 
+### Transcribe Using
+
+Before you start transcribing, it is important to understand what each transcription method offers:
+
+- **WhisperX**: Selected by default. This method runs locally on your machine. It performs better on a CUDA GPU, although it can also run on a CPU. The transcriptions generated by **WhisperX** are generally **much more** accurate than those generated by the **Google API**, although it also depends on the [model size](#model-size) and the [computation type](#compute-type) selected. It also offers more features, such as generating subtitles and translating the input audio to any other supported language. It's also much faster, especially when transcribing large files. It has no usage restrictions and it's completely free.
+- **Google Speech-To-Text API** (abbreviated as "Google API"): **Audiotext** sends the audio to a remote API to get the transcription. It doesn't punctuate sentences, so you'll probably need to tweak the transcriptions it generates. It has a limited usage of 60 minutes per month in its free tier. However, you can add an [API key](#api-key) to extend its use.
+
 ### Transcribe From Microphone
 
 Click on the `Transcribe from mic.` button and say whatever you want to be transcribed. Keep in mind that your operating system needs to recognize an input source. Otherwise, an error will be shown in the text box indicating that no microphone was detected.
 
-Once you click the button, the text changes to `Stop recording`. Until you click it again, everything you say will be recorded. Here is a video demonstrating this feature:
+Once you click it, the text changes to `Stop recording`. Until you click it again, everything you say will be recorded. Here is a video that demonstrates this feature:
 
-https://github.com/HenestrosaDev/audiotext/assets/60482743/79bcb4f3-63c2-4626-bcbc-033ba21a0859
+<!-- english.mp4 -->
+https://github.com/HenestrosaDev/audiotext/assets/60482743/bd0323d7-ff54-4363-8b73-a2d56e7f783b
 
 ### Select File
 
@@ -373,43 +405,155 @@ Click on the `Select file` button and select a file from the file explorer. Note
   - `.asf`
 </details>
 
-Once you have selected the file, the green `Generate transcription` button will become enabled. Click it to start the transcription process. If there is no error, you will see the audio's transcription in the text box, like this:
+### Generate Transcription
 
-<picture>
-	<source 
-		srcset="docs/light/generated.png" 
-		media="(prefers-color-scheme: light)"
-	/>
-	<source 
-		srcset="docs/dark/generated.png" 
-		media="(prefers-color-scheme: dark)"
-	/>
-	<img src="docs/light/generated.png" alt="Main">
-</picture>
-
-Note that this process may take some time depending on the length of the file and whether it is an audio or video file. You will also notice that the first transcription with **WhisperX** will take a while. That's because **Audiotext** needs to load the model, which can take a while, even a few minutes, depending on the hardware the program is running on. Nnce it's loaded, however, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
+Once you have selected the file, the green `Generate transcription` button will become enabled. Click it to start the transcription process. If there are no errors, you will see the transcription of the audio in the text box, as shown in the image of the [About the Project](#about-the-project) section.
 
 ### Save Transcription
 
-Once the program has generated the transcription, you will see a green `Save transcription` button below the text box. If you click on it, you'll be prompted for a file explorer where you can give the file a name and select the path where you want to save it. By default, the file extension is `.txt`, but you can change it to any other file type.
+Once the program has generated the transcription, you will see a green `Save transcription` button below the text box. If you click on it, you'll be prompted for a file explorer where you can give the file a name and select the path where you want to save it. The file extension is `.txt` by default, but you can change it to any other text file type.
 
-If you used **WhisperX** to generate the transcription and checked the `Generate subtitles` option, you'll notice that two files are also saved along with the `.txt` file: a `.vtt` file and a `.srt` file. Both contain the subtitles for the transcribed file.
+If you used **WhisperX** to generate the transcription and checked the `Generate subtitles` option, you'll notice that two files are also saved along with the text file: a `.vtt` file and a `.srt` file. Both contain the subtitles for the transcribed file, as explained in the [Generate Subtitles](#generate-subtitles) section.
 
-### Transcription Translation
+### WhisperX Options
 
-To translate the audio into English, simply check the `Translate to English` checkbox with **WhisperX** transcription as the transcription method, as shown in the video below.
+The **WhisperX** options appear when the selected transcription method is **WhisperX**. You can choose whether to translate the audio into English and whether to generate subtitles from the transcription. 
 
-https://github.com/HenestrosaDev/audiotext/assets/60482743/61c67c38-a862-4b68-8502-4c30723950f4
+<p align="center">
+    <picture>
+        <source 
+            srcset="docs/light/whisperx-options.png" 
+            media="(prefers-color-scheme: light)"
+        />
+        <source 
+            srcset="docs/dark/whisperx-options.png" 
+            media="(prefers-color-scheme: dark)"
+        />
+        <img 
+            src="docs/light/whisperx-options.png" 
+            alt="WhisperX options"
+        >
+    </picture>
+</p>
 
-However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into German, you'd set the `Audio language` to "German".
+#### Transcription Translation
+
+To translate the audio into English, simply check the `Translate to English` checkbox before generating the transcription, as shown in the video below.
+
+<!-- french-to-english.mp4 -->
+https://github.com/HenestrosaDev/audiotext/assets/60482743/0aeeaa17-432f-445c-b29a-d76839be489b
+
+However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into Spanish, you'd set the `Audio language` to "Spanish".
 
 Here is a practical example using the microphone:
 
-https://github.com/HenestrosaDev/audiotext/assets/60482743/b70e351f-c275-4ffb-894d-187411bbf160
+<!-- english-to-spanish.mp4 -->
+https://github.com/HenestrosaDev/audiotext/assets/60482743/b346290f-4654-48c4-bf5a-2dcb75b136e9
 
-### Google's Speech-To-Text API Usage
+Make sure to double-check the generated translations.
 
-Since the program uses **Google's Speech-To-Text API** free tier, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do this, click on the "Set API key" button with the Google API transcription method selected.
+#### Generate Subtitles
+
+As with the `Translate to English` option, to generate subtitles you simply need to check the option `Generate subtitles` before generating the transcription.
+
+When you select this option, you'll see a "Subtitle options" frame like the one below with these two options:
+
+- **Highlight words**: Underline each word as it is spoken in `.srt` and `.vtt` subtitle files. Not checked by default.
+- **Max. line count**: The maximum number of lines in a segment. `2` by default.
+- **Max. line width**: The maximum number of characters in a line before breaking the line. `42` by default.
+
+<p align="center">
+    <picture>
+        <source 
+            srcset="docs/light/subtitle-options.png" 
+            media="(prefers-color-scheme: light)"
+        />
+        <source 
+            srcset="docs/dark/subtitle-options.png" 
+            media="(prefers-color-scheme: dark)"
+        />
+        <img 
+            src="docs/light/subtitle-options.png" 
+            alt="Subtitle options"
+        >
+    </picture>
+</p>
+
+To get the files after the audio is transcribed, click `Save transcription` and select the path where you want to save the files, as explained in the [Save Transcription](#save-transcription) section.
+
+The output formats are `.vtt` and `.srt`, which are two of the most common subtitle file formats. Unfortunately, there is no current support for the `.ass` file type at the moment, but it will be added as soon as **WhisperX** fixes a bug that prevented it from being created correctly.
+
+### WhisperX Advanced Options
+
+When you click the `Show advanced options` button from the "WhisperX options" frame, the "Advanced options" frame appears, as shown in the figure below.  
+
+<p align="center">
+    <picture>
+        <source 
+            srcset="docs/light/whisperx-advanced-options.png" 
+            media="(prefers-color-scheme: light)"
+        />
+        <source 
+            srcset="docs/dark/whisperx-advanced-options.png" 
+            media="(prefers-color-scheme: dark)"
+        />
+        <img src="docs/light/whisperx-advanced-options.png" alt="WhisperX advanced options">
+    </picture>
+</p>
+
+It's highly recommended that you don't change the default configuration unless you're having problems with **WhisperX** or you know exactly what you're doing, especially with the "Compute type" and "Batch size" options. Change them at your own risk and be aware that you may experience problems or even need to reboot the system if the GPU runs out of VRAM.
+
+#### Model Size
+
+There are five main model sizes that offer tradeoffs between speed and accuracy. The larger the model size, the more VRAM it uses and the longer it takes to transcribe. Below are the names of the available models and their approximate memory requirements. The speed may vary depending on many factors including the available hardware, and since there is no concrete data from **WhisperX** about the performance of each model, I can't provide an updated table from the one detailed in [OpenAI's Whisper README](https://github.com/openai/whisper) (see below). According to [WhisperX](https://github.com/m-bain/whisperX), the `large-v2` model requires <8GB of GPU memory and batches inference for 70x real-time transcription.
+
+>`large` is split into three versions: `large-v1`, `large-v2`, and `large-v3`. The default model size is `large-v2`, since `large-v3` presents some errors that weren't as common in `large-v2`, such as hallucination and repetition, especially for certain languages like Japanese. There are also more prevalent problems with missing punctuation and capitalization. See the announcements of the [`large-v2`](https://github.com/openai/whisper/discussions/661) and the [`large-v3`](https://github.com/openai/whisper/discussions/1762) models to have more insight into their differences.
+
+|  Model   | Parameters | Required VRAM  |
+|:--------:|:----------:|:--------------:|
+|  `tiny`  |    39 M    |     ~1 GB      |
+|  `base`  |    74 M    |     ~1 GB      |
+| `small`  |   244 M    |     ~2 GB      |
+| `medium` |   769 M    |     ~5 GB      |
+| `large`  |   1550 M   |     <8 GB      |
+
+The larger the model size, the lower the WER (Word Error Rate in %). The table below is taken from [this Medium article](https://blog.ml6.eu/fine-tuning-whisper-for-dutch-language-the-crucial-role-of-size-dd5a7012d45f), which analyzes the performance of pre-trained Whisper models on Dutch common voice.
+
+|  Model   |  WER  |
+|:--------:|:-----:|
+|   tiny   | 50.98 |
+|  small   | 17.90 |
+| large-v2 | 7.81  |
+
+#### Compute Type
+
+This term refers to different data types used in computing, particularly in the context of numerical representation. It determines how numbers are stored and represented in a computer's memory.
+
+The higher the precision, the more resources will be needed and the better the transcription will be.
+
+There are three possible values:
+- `int8`: Default if using CPU. It represents whole numbers without any fractional part. Its size is 8 bits (1 byte) and it can represent integer values from -128 to 127 (signed) or 0 to 255 (unsigned). in scenarios where memory efficiency is critical, such as in quantized neural networks or edge devices with limited computational resources.
+- `float16`: Default if using CUDA GPU. It's a half precision type representing 16-bit floating point numbers. Its size is 16 bits (2 bytes). It has a smaller range and precision compared to float32. It is often used in applications where memory is a critical resource, such as in deep learning models running on GPUs or TPUs.
+- `float32`: Recommended for CUDA GPUs with more than 8 GB of VRAM. It's a single precision type representing 32-bit floating point numbers, which is a standard for representing real numbers in computers. Its size is 32 bits (4 bytes). It can represent a wide range of real numbers with a reasonable level of precision. 
+ 
+#### Batch Size
+
+This option determines how many samples are processed together before the model parameters are updated. It doesn't affect the quality of the transcription, only the generation speed (the smaller, the slower).
+
+For simplicity, let's divide the possible batch size values into two groups:
+
+- Small batch size (<=8): Training with small batch sizes means that model weights are updated more frequently, potentially leading to more stable convergence. They use less memory, which can be important when working with limited resources. `8` is the default value.
+- Large batch size (>8): Speeds up in training, especially on hardware optimized for parallel processing such as GPUs. Max. recommended to `16`.
+
+#### Use CPU
+
+Checked by default if there is no CUDA GPU. **WhisperX** will use the CPU for transcription if checked.
+
+As noted in the [Compute Type](#compute-type) section, the default compute type value for the CPU is `int8`, since many CPUs don't support efficient float16 or float32 computation, which would result in an error. Change it at your own risk. 
+
+### Google Speech-To-Text API Options
+
+The **Google API** options appear when the selected transcription method is the **Google API**.
 
 <picture>
 	<source 
@@ -423,7 +567,9 @@ Since the program uses **Google's Speech-To-Text API** free tier, which allows y
 	<img src="docs/light/google-api-options.png" alt="google-api-options">
 </picture>
 
-Once you click on the button, you'll be presented with a dialog box where you can enter your **Google Speech-To-Text API** key. The key will only be used to make requests to the API.
+#### API Key
+
+Since the program uses **Google's Speech-To-Text API** free tier by default, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do this, click on the `Set API key` button. Once you click on it, you'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
 
 <picture>
 	<source 
@@ -437,7 +583,7 @@ Once you click on the button, you'll be presented with a dialog box where you ca
 	<img src="docs/light/google-api-key-dialog.png" alt="google-api-key-dialog">
 </picture>
 
-Remember that **WhisperX** offers fast, unlimited audio transcription that supports translation and subtitle generation. 
+Remember that **WhisperX** offers fast, unlimited audio transcription that supports translation and subtitle generation for free. Also note that Google charges for the use of the API key, for which Audiotext is not responsible. 
 
 ### Appearance Mode
 
@@ -457,6 +603,15 @@ The program supports three appearance modes:
   <summary>Light</summary>
   <img src="docs/light/main.png" alt="Light theme">
 </details>
+
+#### Troubleshooting
+
+- Generating a transcription may take some time depending on the length and size of the audio and whether it is extracted from an audio or video file. Do not close the program, even if it appears to be unresponsive.
+- The first transcription created by **WhisperX** will take a while. That's because **Audiotext** needs to load the model, which can take a while, even a few minutes, depending on the hardware the program is running on. Once it's loaded, however, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
+- If you get the error `RuntimeError: CUDA Out of memory` or want to reduce GPU memory requirements, try any of the following (2. & 3. can affect quality) (taken from [WhisperX README](https://github.com/m-bain/whisperX#technical-details-%EF%B8%8F)):
+  1. Reduce batch size, e.g. `--batch_size 4`
+  2. Use a smaller ASR model, e.g. `--model base`
+  3. Use lighter compute type, e.g. `--compute_type int8`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
