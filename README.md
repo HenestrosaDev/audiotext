@@ -93,9 +93,7 @@
 
 ![Main](docs/main-system.png)
 
-**Audiotext** transcribes the audio from an audio file, video file or microphone input into one of the 74 different languages it supports, along with some of their dialects. You can transcribe using [**WhisperX**](https://github.com/m-bain/whisperX) or the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text).
-
-If you use the **WhisperX** transcription method, you can translate the input audio into any other language you want (although, according to **OpenAI Whisper**, the only official language supported is English) and generate subtitles in `.srt` and `.vtt` format.
+**Audiotext** transcribes the audio from an audio file, video file or microphone input into one of the 74 different languages it supports, along with some of their dialects. You can transcribe using the the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text) or [**WhisperX**](https://github.com/m-bain/whisperX), which can even translate the transcription or generate subtitles!
 
 <details>
   <summary>List of supported languages</summary>
