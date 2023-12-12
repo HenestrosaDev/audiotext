@@ -336,7 +336,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ## Usage
 
-Once you open the Audiotext executable file (explained in the [getting started](#getting-started) section), you will see something like this:
+Once you open the **Audiotext** executable file (explained in the [getting started](#getting-started) section), you will see something like this:
 
 <picture>
 	<source 
@@ -600,7 +600,7 @@ Since the program uses **Google's Speech-To-Text API** free tier by default, whi
     </picture>
 <p align="center">
 
-Remember that **WhisperX** offers fast, unlimited audio transcription that supports translation and subtitle generation for free. Also note that Google charges for the use of the API key, for which Audiotext is not responsible. 
+Remember that **WhisperX** offers fast, unlimited audio transcription that supports translation and subtitle generation for free. Also note that Google charges for the use of the API key, for which **Audiotext** is not responsible. 
 
 ### Appearance Mode
 
