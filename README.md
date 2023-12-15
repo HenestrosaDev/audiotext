@@ -270,7 +270,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 - [PyAudio](https://pypi.org/project/PyAudio/) for recording microphone audio.
 - [pydub](https://github.com/jiaaro/pydub) for audio processing.
 - [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for converting audio into text.
-- [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition. Uses Whisper, an ASR model [developed by OpenAI](https://github.com/openai/whisper).
+- [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition. This product includes software developed by Max Bain. Uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper), which is a reimplementation of [OpenAI's Whisper](https://github.com/openai/whisper) model using [CTranslate2](https://github.com/OpenNMT/CTranslate2/).
 - [PyTorch](https://github.com/pytorch/pytorch) for building and training neural networks.
 - [Torchaudio](https://pytorch.org/audio/stable/index.html) for audio processing tasks, including speech recognition and audio classification.
 - [PyTorch-CUDA](https://pytorch.org/docs/stable/cuda.html) for enabling GPU support (CUDA) with PyTorch. CUDA is a parallel computing platform and application programming interface model created by NVIDIA.
