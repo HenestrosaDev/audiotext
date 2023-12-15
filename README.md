@@ -467,7 +467,7 @@ Make sure to double-check the generated translations.
 
 As with the `Translate to English` option, to generate subtitles you simply need to check the option `Generate subtitles` before generating the transcription.
 
-When you select this option, you'll see a "Subtitle options" frame like the one below with these two options:
+When you select this option, you'll see a "Subtitle options" frame like the one below with these three options:
 
 - **Highlight words**: Underline each word as it is spoken in `.srt` and `.vtt` subtitle files. Not checked by default.
 - **Max. line count**: The maximum number of lines in a segment. `2` by default.
@@ -543,7 +543,7 @@ This term refers to different data types used in computing, particularly in the 
 The higher the precision, the more resources will be needed and the better the transcription will be.
 
 There are three possible values:
-- `int8`: Default if using CPU. It represents whole numbers without any fractional part. Its size is 8 bits (1 byte) and it can represent integer values from -128 to 127 (signed) or 0 to 255 (unsigned). in scenarios where memory efficiency is critical, such as in quantized neural networks or edge devices with limited computational resources.
+- `int8`: Default if using CPU. It represents whole numbers without any fractional part. Its size is 8 bits (1 byte) and it can represent integer values from -128 to 127 (signed) or 0 to 255 (unsigned). It is used in scenarios where memory efficiency is critical, such as in quantized neural networks or edge devices with limited computational resources.
 - `float16`: Default if using CUDA GPU. It's a half precision type representing 16-bit floating point numbers. Its size is 16 bits (2 bytes). It has a smaller range and precision compared to `float32`. It is often used in applications where memory is a critical resource, such as in deep learning models running on GPUs or TPUs.
 - `float32`: Recommended for CUDA GPUs with more than 8 GB of VRAM. It's a single precision type representing 32-bit floating point numbers, which is a standard for representing real numbers in computers. Its size is 32 bits (4 bytes). It can represent a wide range of real numbers with a reasonable level of precision. 
  
