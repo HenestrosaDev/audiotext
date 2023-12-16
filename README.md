@@ -638,10 +638,11 @@ The program supports three appearance modes:
 
 - Generating a transcription may take some time depending on the length and size of the audio and whether it is extracted from an audio or video file. Do not close the program, even if it appears to be unresponsive.
 - The first transcription created by **WhisperX** will take a while. That's because **Audiotext** needs to load the model, which can take a while, even a few minutes, depending on the hardware the program is running on. Once it's loaded, however, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
-- If you get the error `RuntimeError: CUDA Out of memory` or want to reduce GPU memory requirements, try any of the following (2 and 3 can affect quality) (taken from [WhisperX README](https://github.com/m-bain/whisperX#technical-details-%EF%B8%8F)):
+- If you get the error `RuntimeError: CUDA Out of memory` or want to reduce GPU/CPU memory requirements, try any of the following (2 and 3 can affect quality) (taken from [WhisperX README](https://github.com/m-bain/whisperX#technical-details-%EF%B8%8F)):
   1. Reduce batch size, e.g. `4`
   2. Use a smaller ASR model, e.g. `base`
   3. Use lighter compute type, e.g. `int8`
+- If the program takes _too_ much time to generate the transcription, i.e. about x3 the time of the original audio length, try using a smaller ASR model and/or use a lighter computation type, as indicated in the point above. Keep in mind that the first WhisperX transcription will take some time to load the model. Also do not forget that the transcription process depends heavily on your system's hardware, so don't expect instant results on modest CPUs. Remember that you can also use the **Google API** transcription method, which is far less hardware demanding than **WhisperX**.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
