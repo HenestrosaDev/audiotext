@@ -691,7 +691,7 @@ I have made use of the following resources to make this project:
 
 ## License
 
-Distributed under the MIT License. See [`LICENSE`](https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE) for more information.
+Distributed under the CC BY-NC 4.0 License. See [`LICENSE`](https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE) for more information.
 
 <!-- SUPPORT -->
 
