@@ -284,8 +284,23 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 ### Notes
 - You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
 - For **Mac M1** users: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
-- You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. You can download it using the following commands:
+- You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. 
 
+	To check if you have it installed on your system, run `ffmpeg -version`. It should return something similar to this:
+  ```
+	ffmpeg version 5.1.2-essentials_build-www.gyan.dev Copyright (c) 2000-2022 the FFmpeg developers
+	built with gcc 12.1.0 (Rev2, Built by MSYS2 project)
+	configuration: --enable-gpl --enable-version3 --enable-static --disable-w32threads --disable-autodetect --enable-fontconfig --enable-iconv --enable-gnutls --enable-libxml2 --enable-gmp --enable-lzma --enable-zlib --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-sdl2 --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxvid --enable-libaom --enable-libopenjpeg --enable-libvpx --enable-libass --enable-libfreetype --enable-libfribidi --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-ffnvcodec --enable-nvdec --enable-nvenc --enable-d3d11va --enable-dxva2 --enable-libmfx --enable-libgme --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libtheora --enable-libvo-amrwbenc --enable-libgsm --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-librubberband
+	libavutil      57. 28.100 / 57. 28.100
+	libavcodec     59. 37.100 / 59. 37.100
+	libavformat    59. 27.100 / 59. 27.100
+	libavdevice    59.  7.100 / 59.  7.100
+	libavfilter     8. 44.100 /  8. 44.100
+	libswscale      6.  7.100 /  6.  7.100
+	libswresample   4.  7.100 /  4.  7.100
+	```
+
+	If the output is an error, it is because your system cannot find the `ffmpeg` system variable, which is probably because you don't have it installed on your system. To install `ffmpeg`, open a command prompt and run one of the following commands, depending on your operating system:
   ```
   # on Ubuntu or Debian
   sudo apt update && sudo apt install ffmpeg
