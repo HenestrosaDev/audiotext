@@ -28,7 +28,7 @@
 		<img src="docs/light/icon.png" alt="Logo" width="128" height="128">
 	</picture>
 	<h1 align="center">Audiotext</h1>
-	<p align="center">A desktop application that transcribes audio from a file or microphone in any supported language using <strong>WhisperX</strong> or <strong>Google Speech-to-Text API</strong>.</p>
+	<p align="center">A desktop application that transcribes and optionally translates audio from a file or microphone using <strong>WhisperX </strong>or the <strong>Google Speech-to-Text API</strong>.</p>
 	<p>
 		<a href="https://github.com/HenestrosaDev/audiotext/stargazers">
 			<img alt="GitHub Contributors" src="https://img.shields.io/github/stars/HenestrosaDev/audiotext" />
