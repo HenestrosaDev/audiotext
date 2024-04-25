@@ -30,23 +30,48 @@
   <p align="center">A desktop application that transcribes and optionally translates audio from a file or microphone using <strong>WhisperX </strong>or the <strong>Google Speech-to-Text API</strong>.</p>
   <p>
     <a href="https://github.com/HenestrosaDev/audiotext/stargazers">
-      <img alt="GitHub Contributors" src="https://img.shields.io/github/stars/HenestrosaDev/audiotext" />
+      <img 
+        src="https://img.shields.io/github/stars/HenestrosaDev/audiotext" 
+        alt="GitHub Contributors" 
+      />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/graphs/contributors">
-      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext" />
+      <img 
+        src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext" 
+        alt="GitHub Contributors" 
+      />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/issues">
-      <img alt="Issues" src="https://img.shields.io/github/issues/HenestrosaDev/audiotext" />
+      <img 
+        src="https://img.shields.io/github/issues/HenestrosaDev/audiotext" 
+        alt="Issues" 
+      />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/pulls">
-      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext" />
+      <img 
+        src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext" 
+        alt="GitHub pull requests" 
+      />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
-      <img alt="GitHub pull requests" src="https://img.shields.io/badge/license-BSD--4--Clause-lightgray" />
+      <img 
+        src="https://img.shields.io/badge/license-BSD--4--Clause-lightgray" 
+        alt="GitHub pull requests" 
+      />
     </a>
   </p>
   <p>
-    <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">Report Bug</a> · <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">Request Feature</a> · <a href="https://github.com/HenestrosaDev/audiotext/discussions">Ask Question</a>
+    <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">
+      Report Bug
+    </a> 
+    · 
+    <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">
+      Request Feature
+    </a> 
+    · 
+    <a href="https://github.com/HenestrosaDev/audiotext/discussions">
+      Ask Question
+    </a>
   </p>
 </div>
 
