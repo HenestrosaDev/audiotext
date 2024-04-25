@@ -269,6 +269,8 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         self.attach.focus()
 
     def _iconify(self):
+        if self.attach.cget("state") == "disabled":
+            return
         if self.disable:
             return
         if self.hide:

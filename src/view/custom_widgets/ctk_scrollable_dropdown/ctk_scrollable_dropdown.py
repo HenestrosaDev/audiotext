@@ -3,10 +3,11 @@ Advanced Scrollable Dropdown class for customtkinter widgets
 Author: Akash Bora
 """
 
-import customtkinter
+import difflib
 import sys
 import time
-import difflib
+
+import customtkinter
 
 
 class CTkScrollableDropdown(customtkinter.CTkToplevel):
@@ -35,6 +36,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         frame_border_color=None,
         text_color=None,
         autocomplete=False,
+        hover_color=None,
         **button_kwargs
     ):
         super().__init__(takefocus=1)
@@ -113,6 +115,11 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
             customtkinter.ThemeManager.theme["CTkLabel"]["text_color"]
             if text_color is None
             else text_color
+        )
+        self.hover_color = (
+            customtkinter.ThemeManager.theme["CTkButton"]["hover_color"]
+            if hover_color is None
+            else hover_color
         )
 
         if scrollbar is False:
@@ -259,7 +266,9 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
                 height=self.button_height,
                 fg_color=self.button_color,
                 text_color=self.text_color,
-                image=self.image_values[i] if self.image_values is not None else None,
+                image=self.image_values[self.i]
+                if self.image_values is not None
+                else None,
                 anchor=self.justify,
                 command=lambda k=row: self._attach_key_press(k),
                 **button_kwargs
@@ -304,6 +313,8 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         self.attach.focus()
 
     def _iconify(self):
+        if self.attach.cget("state") == "disabled":
+            return
         if self.disable:
             return
         if self.hide:
@@ -434,6 +445,9 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         if "button_color" in kwargs:
             for key in self.widgets.keys():
                 self.widgets[key].configure(fg_color=kwargs.pop("button_color"))
+
+        if "hover_color" not in kwargs:
+            kwargs["hover_color"] = self.hover_color
 
         for key in self.widgets.keys():
             self.widgets[key].configure(**kwargs)
