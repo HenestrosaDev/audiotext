@@ -42,7 +42,7 @@
       <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext" />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
-      <img alt="GitHub pull requests" src="https://img.shields.io/github/license/HenestrosaDev/audiotext" />
+      <img alt="GitHub pull requests" src="https://img.shields.io/badge/license-BSD--4--Clause-lightgray" />
     </a>
   </p>
   <p>
