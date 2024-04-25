@@ -677,6 +677,7 @@ The program supports three appearance modes:
 - [x] Add a dialogue to let users input their **Google Speech-To-Text API** key.
 - [x] Add subtitle options.
 - [x] Add advanced options for **WhisperX**.
+- [ ] Add the option to transcribe YouTube videos.
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
 - [ ] Add tests.
