@@ -1,5 +1,3 @@
-from enum import Enum
-
 APP_NAME = "Audiotext"
 APP_LANGUAGES = {"en": "English", "es": "Español"}
 
@@ -80,7 +78,6 @@ AUDIO_LANGUAGES = {
     "vi": "Vietnamese",
     "zu": "Zulu",
 }
-
 
 AUDIO_FILE_EXTENSIONS = [
     ".mp3",
