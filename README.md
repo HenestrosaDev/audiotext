@@ -10,45 +10,44 @@
 -->
 
 <!-- PROJECT LOGO -->
-<br />
 <div align="center">
-	<picture>
-		<source 
-			srcset="docs/light/icon.png" 
-			width="128" 
-			height="128" 
-			media="(prefers-color-scheme: light)"
-		/>
-		<source 
-			srcset="docs/dark/icon.png" 
-			width="128" 
-			height="128" 
-			media="(prefers-color-scheme: dark)"
-		/>
-		<img src="docs/light/icon.png" alt="Logo" width="128" height="128">
-	</picture>
-	<h1 align="center">Audiotext</h1>
-	<p align="center">A desktop application that transcribes and optionally translates audio from a file or microphone using <strong>WhisperX </strong>or the <strong>Google Speech-to-Text API</strong>.</p>
-	<p>
-		<a href="https://github.com/HenestrosaDev/audiotext/stargazers">
-			<img alt="GitHub Contributors" src="https://img.shields.io/github/stars/HenestrosaDev/audiotext" />
-		</a>
-		<a href="https://github.com/HenestrosaDev/audiotext/graphs/contributors">
-			<img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext" />
-		</a>
-		<a href="https://github.com/HenestrosaDev/audiotext/issues">
-			<img alt="Issues" src="https://img.shields.io/github/issues/HenestrosaDev/audiotext" />
-		</a>
-		<a href="https://github.com/HenestrosaDev/audiotext/pulls">
-			<img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext" />
-		</a>
-		<a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
-			<img alt="GitHub pull requests" src="https://img.shields.io/github/license/HenestrosaDev/audiotext" />
-		</a>
-	</p>
-	<p>
-		<a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">Report Bug</a> · <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">Request Feature</a> · <a href="https://github.com/HenestrosaDev/audiotext/discussions">Ask Question</a>
-	</p>
+  <picture>
+    <source 
+      srcset="docs/light/icon.png" 
+      width="128" 
+      height="128" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/icon.png" 
+      width="128" 
+      height="128" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img src="docs/light/icon.png" alt="Logo" width="128" height="128">
+  </picture>
+  <h1 align="center">Audiotext</h1>
+  <p align="center">A desktop application that transcribes and optionally translates audio from a file or microphone using <strong>WhisperX </strong>or the <strong>Google Speech-to-Text API</strong>.</p>
+  <p>
+    <a href="https://github.com/HenestrosaDev/audiotext/stargazers">
+      <img alt="GitHub Contributors" src="https://img.shields.io/github/stars/HenestrosaDev/audiotext" />
+    </a>
+    <a href="https://github.com/HenestrosaDev/audiotext/graphs/contributors">
+      <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext" />
+    </a>
+    <a href="https://github.com/HenestrosaDev/audiotext/issues">
+      <img alt="Issues" src="https://img.shields.io/github/issues/HenestrosaDev/audiotext" />
+    </a>
+    <a href="https://github.com/HenestrosaDev/audiotext/pulls">
+      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext" />
+    </a>
+    <a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
+      <img alt="GitHub pull requests" src="https://img.shields.io/github/license/HenestrosaDev/audiotext" />
+    </a>
+  </p>
+  <p>
+    <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">Report Bug</a> · <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">Request Feature</a> · <a href="https://github.com/HenestrosaDev/audiotext/discussions">Ask Question</a>
+  </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -264,16 +263,16 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ### Built With
 
-- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the GUI.
 - [CTkScrollableDropdown](https://github.com/Akascape/CTkScrollableDropdown) for the scrollable option menu to display the full list of supported languages.
+- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the GUI.
 - [moviepy](https://pypi.org/project/moviepy/) for video processing, from which the program extracts the audio to be transcribed.
 - [PyAudio](https://pypi.org/project/PyAudio/) for recording microphone audio.
 - [pydub](https://github.com/jiaaro/pydub) for audio processing.
-- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for converting audio into text.
-- [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition. This product includes software developed by Max Bain. Uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper), which is a reimplementation of [OpenAI's Whisper](https://github.com/openai/whisper) model using [CTranslate2](https://github.com/OpenNMT/CTranslate2/).
 - [PyTorch](https://github.com/pytorch/pytorch) for building and training neural networks.
-- [Torchaudio](https://pytorch.org/audio/stable/index.html) for audio processing tasks, including speech recognition and audio classification.
 - [PyTorch-CUDA](https://pytorch.org/docs/stable/cuda.html) for enabling GPU support (CUDA) with PyTorch. CUDA is a parallel computing platform and application programming interface model created by NVIDIA.
+- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for converting audio into text.
+- [Torchaudio](https://pytorch.org/audio/stable/index.html) for audio processing tasks, including speech recognition and audio classification.
+- [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition. This product includes software developed by Max Bain. Uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper), which is a reimplementation of [OpenAI's Whisper](https://github.com/openai/whisper) model using [CTranslate2](https://github.com/OpenNMT/CTranslate2/).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -286,21 +285,21 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 - For **Mac M1** users: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
 - You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. 
 
-	To check if you have it installed on your system, run `ffmpeg -version`. It should return something similar to this:
+  To check if you have it installed on your system, run `ffmpeg -version`. It should return something similar to this:
   ```
-	ffmpeg version 5.1.2-essentials_build-www.gyan.dev Copyright (c) 2000-2022 the FFmpeg developers
-	built with gcc 12.1.0 (Rev2, Built by MSYS2 project)
-	configuration: --enable-gpl --enable-version3 --enable-static --disable-w32threads --disable-autodetect --enable-fontconfig --enable-iconv --enable-gnutls --enable-libxml2 --enable-gmp --enable-lzma --enable-zlib --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-sdl2 --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxvid --enable-libaom --enable-libopenjpeg --enable-libvpx --enable-libass --enable-libfreetype --enable-libfribidi --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-ffnvcodec --enable-nvdec --enable-nvenc --enable-d3d11va --enable-dxva2 --enable-libmfx --enable-libgme --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libtheora --enable-libvo-amrwbenc --enable-libgsm --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-librubberband
-	libavutil      57. 28.100 / 57. 28.100
-	libavcodec     59. 37.100 / 59. 37.100
-	libavformat    59. 27.100 / 59. 27.100
-	libavdevice    59.  7.100 / 59.  7.100
-	libavfilter     8. 44.100 /  8. 44.100
-	libswscale      6.  7.100 /  6.  7.100
-	libswresample   4.  7.100 /  4.  7.100
-	```
+  ffmpeg version 5.1.2-essentials_build-www.gyan.dev Copyright (c) 2000-2022 the FFmpeg developers
+  built with gcc 12.1.0 (Rev2, Built by MSYS2 project)
+  configuration: --enable-gpl --enable-version3 --enable-static --disable-w32threads --disable-autodetect --enable-fontconfig --enable-iconv --enable-gnutls --enable-libxml2 --enable-gmp --enable-lzma --enable-zlib --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-sdl2 --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxvid --enable-libaom --enable-libopenjpeg --enable-libvpx --enable-libass --enable-libfreetype --enable-libfribidi --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-ffnvcodec --enable-nvdec --enable-nvenc --enable-d3d11va --enable-dxva2 --enable-libmfx --enable-libgme --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libtheora --enable-libvo-amrwbenc --enable-libgsm --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-librubberband
+  libavutil      57. 28.100 / 57. 28.100
+  libavcodec     59. 37.100 / 59. 37.100
+  libavformat    59. 27.100 / 59. 27.100
+  libavdevice    59.  7.100 / 59.  7.100
+  libavfilter     8. 44.100 /  8. 44.100
+  libswscale      6.  7.100 /  6.  7.100
+  libswresample   4.  7.100 /  4.  7.100
+  ```
 
-	If the output is an error, it is because your system cannot find the `ffmpeg` system variable, which is probably because you don't have it installed on your system. To install `ffmpeg`, open a command prompt and run one of the following commands, depending on your operating system:
+  If the output is an error, it is because your system cannot find the `ffmpeg` system variable, which is probably because you don't have it installed on your system. To install `ffmpeg`, open a command prompt and run one of the following commands, depending on your operating system:
   ```
   # on Ubuntu or Debian
   sudo apt update && sudo apt install ffmpeg
@@ -352,18 +351,18 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 Once you open the **Audiotext** executable file (explained in the [getting started](#getting-started) section), you will see something like this:
 
 <picture>
-	<source 
-		srcset="docs/light/main.png"
-		media="(prefers-color-scheme: light)"
-	/>
-	<source 
-		srcset="docs/dark/main.png"
-		media="(prefers-color-scheme: dark)"
-	/>
-	<img 
-        src="docs/light/main.png"
-        alt="Main"
-    >
+  <source 
+    srcset="docs/light/main.png"
+    media="(prefers-color-scheme: light)"
+  />
+  <source 
+    srcset="docs/dark/main.png"
+    media="(prefers-color-scheme: dark)"
+  />
+  <img 
+    src="docs/light/main.png"
+    alt="Main"
+  >
 </picture>
 
 ### Transcribe Using
@@ -391,7 +390,7 @@ Click on the `Select file` button and select a file from the file explorer. Note
 ![File explorer](docs/supported-files.png)
 
 <details>
-	<summary>Supported audio file formats</summary>
+  <summary>Supported audio file formats</summary>
 
   - `.mp3`
   - `.mpeg`
@@ -405,7 +404,7 @@ Click on the `Select file` button and select a file from the file explorer. Note
 </details>
 
 <details>
-	<summary>Supported video file formats</summary>
+  <summary>Supported video file formats</summary>
 
   - `.mp4`
   - `.m4a`
@@ -446,20 +445,20 @@ If you used **WhisperX** to generate the transcription and checked the `Generate
 The **WhisperX** options appear when the selected transcription method is **WhisperX**. You can choose whether to translate the audio into English and whether to generate subtitles from the transcription. 
 
 <p align="center">
-    <picture>
-        <source 
-            srcset="docs/light/whisperx-options.png" 
-            media="(prefers-color-scheme: light)"
-        />
-        <source 
-            srcset="docs/dark/whisperx-options.png" 
-            media="(prefers-color-scheme: dark)"
-        />
-        <img 
-            src="docs/light/whisperx-options.png" 
-            alt="WhisperX options"
-        >
-    </picture>
+  <picture>
+    <source 
+      srcset="docs/light/whisperx-options.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/whisperx-options.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img 
+      src="docs/light/whisperx-options.png" 
+      alt="WhisperX options"
+    >
+  </picture>
 </p>
 
 #### Transcription Translation
@@ -489,20 +488,20 @@ When you select this option, you'll see a "Subtitle options" frame like the one 
 - **Max. line width**: The maximum number of characters in a line before breaking the line. `42` by default.
 
 <p align="center">
-    <picture>
-        <source 
-            srcset="docs/light/subtitle-options.png" 
-            media="(prefers-color-scheme: light)"
-        />
-        <source 
-            srcset="docs/dark/subtitle-options.png" 
-            media="(prefers-color-scheme: dark)"
-        />
-        <img 
-            src="docs/light/subtitle-options.png" 
-            alt="Subtitle options"
-        >
-    </picture>
+  <picture>
+    <source 
+      srcset="docs/light/subtitle-options.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/subtitle-options.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img 
+      src="docs/light/subtitle-options.png" 
+      alt="Subtitle options"
+    >
+  </picture>
 </p>
 
 To get the files after the audio is transcribed, click `Save transcription` and select the path where you want to save the files, as explained in the [Save Transcription](#save-transcription) section.
@@ -514,17 +513,17 @@ The output formats are `.vtt` and `.srt`, which are two of the most common subti
 When you click the `Show advanced options` button from the "WhisperX options" frame, the "Advanced options" frame appears, as shown in the figure below.  
 
 <p align="center">
-    <picture>
-        <source 
-            srcset="docs/light/whisperx-advanced-options.png" 
-            media="(prefers-color-scheme: light)"
-        />
-        <source 
-            srcset="docs/dark/whisperx-advanced-options.png" 
-            media="(prefers-color-scheme: dark)"
-        />
-        <img src="docs/light/whisperx-advanced-options.png" alt="WhisperX advanced options">
-    </picture>
+  <picture>
+    <source 
+      srcset="docs/light/whisperx-advanced-options.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/whisperx-advanced-options.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img src="docs/light/whisperx-advanced-options.png" alt="WhisperX advanced options">
+  </picture>
 </p>
 
 It's highly recommended that you don't change the default configuration unless you're having problems with **WhisperX** or you know exactly what you're doing, especially with the "Compute type" and "Batch size" options. Change them at your own risk and be aware that you may experience problems or even need to reboot the system if the GPU runs out of VRAM.
@@ -582,17 +581,17 @@ As noted in the [Compute Type](#compute-type) section, the default compute type 
 The "**Google API** options" frame appears when the selected transcription method is **Google API**.
 
 <p align="center">
-    <picture>
-        <source 
-            srcset="docs/light/google-api-options.png" 
-            media="(prefers-color-scheme: light)"
-        />
-        <source 
-            srcset="docs/dark/google-api-options.png" 
-            media="(prefers-color-scheme: dark)"
-        />
-        <img src="docs/light/google-api-options.png" alt="google-api-options">
-    </picture>
+  <picture>
+    <source 
+      srcset="docs/light/google-api-options.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/google-api-options.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img src="docs/light/google-api-options.png" alt="google-api-options">
+  </picture>
 </p>
 
 #### API Key
@@ -600,18 +599,18 @@ The "**Google API** options" frame appears when the selected transcription metho
 Since the program uses **Google's Speech-To-Text API** free tier by default, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do this, click on the `Set API key` button. You'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
 
 <p align="center">
-    <picture>
-        <source 
-            srcset="docs/light/google-api-key-dialog.png" 
-            media="(prefers-color-scheme: light)"
-        />
-        <source 
-            srcset="docs/dark/google-api-key-dialog.png" 
-            media="(prefers-color-scheme: dark)"
-        />
-        <img src="docs/light/google-api-key-dialog.png" alt="google-api-key-dialog">
-    </picture>
-<p align="center">
+  <picture>
+    <source 
+      srcset="docs/light/google-api-key-dialog.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/google-api-key-dialog.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img src="docs/light/google-api-key-dialog.png" alt="google-api-key-dialog">
+  </picture>
+</p>
 
 Remember that **WhisperX** offers fast, unlimited audio transcription that supports translation and subtitle generation for free. Also note that Google charges for the use of the API key, for which **Audiotext** is not responsible. 
 
