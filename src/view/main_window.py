@@ -490,9 +490,15 @@ class MainWindow(ctk.CTkFrame):
             values=[_("System"), _("Light"), _("Dark")],
             command=self._change_appearance_mode_event,
         )
-        self.omn_appearance_mode.grid(
-            row=13, column=0, padx=20, pady=(10, 20), sticky=ctk.EW
+        self.omn_appearance_mode.grid(row=13, column=0, padx=20, pady=0, sticky=ctk.EW)
+
+        ## 'Version' label
+        self.lbl_version = ctk.CTkLabel(
+            master=self.frm_sidebar,
+            text="v2.2.0",
+            font=ctk.CTkFont(size=12),
         )
+        self.lbl_version.grid(row=14, column=0, padx=20, pady=(5, 10))
 
     def _init_main_content(self):
         # Selected file entry
