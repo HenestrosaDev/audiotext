@@ -114,7 +114,7 @@ class MainWindow(ctk.CTkFrame):
         self.frm_shared_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
         self.frm_shared_options.grid(row=1, column=0, padx=20, pady=(20, 0))
 
-        # Audio language
+        ## 'Audio language' option menu
         self.lbl_audio_language = ctk.CTkLabel(
             master=self.frm_shared_options,
             text=_("Audio language"),
@@ -136,7 +136,7 @@ class MainWindow(ctk.CTkFrame):
         except Exception:
             self.omn_audio_language.set("English")
 
-        # Transcribe from microphone button
+        ## 'Transcribe from' option menu
         self.btn_transcribe_from_mic = ctk.CTkButton(
             master=self.frm_shared_options,
             text=_("Transcribe from mic."),
@@ -154,7 +154,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.btn_select_file.grid(row=3, column=0, padx=20, pady=(30, 0), sticky=ctk.EW)
 
-        # Generate text button
+        ## 'Generate transcription' button
         self.btn_generate_transcription = ctk.CTkButton(
             master=self.frm_shared_options,
             fg_color="green",
@@ -175,6 +175,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.frm_transcribe_using.grid(row=2, column=0, padx=0, pady=(20, 0))
 
+				# 'Transcribe using' label
         self.lbl_transcribe_using = ctk.CTkLabel(
             master=self.frm_transcribe_using,
             text=_("Transcribe using"),
@@ -212,7 +213,7 @@ class MainWindow(ctk.CTkFrame):
         self.frm_whisper_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
         self.frm_whisper_options.grid(row=3, column=0, padx=20, pady=(20, 0))
 
-        # Title label
+        ## Title label
         self.lbl_whisper_options = ctk.CTkLabel(
             master=self.frm_whisper_options,
             text="WhisperX options",
@@ -220,7 +221,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_whisper_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
 
-        # Translate
+        ## 'Translate to English' checkbox
         self.chk_whisper_options_translate = ctk.CTkCheckBox(
             master=self.frm_whisper_options,
             text="Translate to English",
@@ -230,7 +231,7 @@ class MainWindow(ctk.CTkFrame):
             row=1, column=0, padx=20, pady=0, sticky=ctk.W
         )
 
-        # Subtitles
+        ## 'Subtitles' checkbox
         self.chk_whisper_options_subtitles = ctk.CTkCheckBox(
             master=self.frm_whisper_options,
             text="Generate subtitles",
@@ -240,7 +241,7 @@ class MainWindow(ctk.CTkFrame):
             row=2, column=0, padx=20, pady=(10, 0), sticky=ctk.W
         )
 
-        # Show advanced options
+				## 'Show advanced options' button
         self.btn_whisperx_show_advanced_options = ctk.CTkButton(
             master=self.frm_whisper_options,
             text=_("Show advanced options"),
@@ -252,7 +253,7 @@ class MainWindow(ctk.CTkFrame):
 
         # ------------------
 
-        # Google API options frame
+        # 'Google API options' frame
         self.frm_google_api_options = ctk.CTkFrame(
             master=self.frm_sidebar, border_width=2
         )
@@ -262,6 +263,7 @@ class MainWindow(ctk.CTkFrame):
         # Hidden at first because WhisperX is the default transcription method
         self.frm_google_api_options.grid_remove()
 
+				## Title label
         self.lbl_google_api_options = ctk.CTkLabel(
             master=self.frm_google_api_options,
             text="Google API options",
@@ -269,6 +271,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_google_api_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
 
+				## 'Set API key' button
         self.btn_set_google_api_key = ctk.CTkButton(
             master=self.frm_google_api_options,
             text=_("Set API key"),
@@ -289,7 +292,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.frm_subtitle_options.grid_remove()  # Hidden by default
 
-        # Title label
+        ## Title label
         self.lbl_subtitle_options = ctk.CTkLabel(
             master=self.frm_subtitle_options,
             text="Subtitle options",
@@ -299,7 +302,7 @@ class MainWindow(ctk.CTkFrame):
             row=0, column=0, padx=40, pady=(10, 0), sticky=ctk.EW
         )
 
-        # Highlight words
+        ## 'Highlight words' check box
         self.chk_highlight_words = ctk.CTkCheckBox(
             master=self.frm_subtitle_options,
             text="Highlight words",
@@ -311,7 +314,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.chk_highlight_words.grid(row=1, column=0, padx=20, pady=10, sticky=ctk.W)
 
-        # Max. line count
+        ## 'Max. line count' entry
         self.lbl_max_line_count = ctk.CTkLabel(
             master=self.frm_subtitle_options,
             text=_("Max. line count"),
@@ -339,7 +342,7 @@ class MainWindow(ctk.CTkFrame):
             row=2, column=0, padx=(18, 20), pady=0, sticky=ctk.W
         )
 
-        # Max. line width
+        ## 'Max. line width' entry
         self.lbl_max_line_width = ctk.CTkLabel(
             master=self.frm_subtitle_options,
             text=_("Max. line width"),
@@ -378,7 +381,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.frm_whisperx_advanced_options.grid_remove()  # Hidden by default
 
-        # Title label
+        ## Title label
         self.lbl_advanced_options = ctk.CTkLabel(
             master=self.frm_whisperx_advanced_options,
             text="Advanced options",
@@ -388,7 +391,7 @@ class MainWindow(ctk.CTkFrame):
             row=0, column=0, padx=10, pady=(10, 5), sticky=ctk.EW
         )
 
-        # Model size
+        ## 'Model size' option menu
         self.lbl_model_size = ctk.CTkLabel(
             master=self.frm_whisperx_advanced_options,
             text="Model size",
@@ -407,7 +410,7 @@ class MainWindow(ctk.CTkFrame):
         self.omn_model_size.grid(row=2, column=0, padx=20, pady=(3, 10), sticky=ctk.EW)
         self.omn_model_size.set(self._config_whisperx.model_size)
 
-        # Compute type
+        ## 'Compute type' option menu
         self.lbl_compute_type = ctk.CTkLabel(
             master=self.frm_whisperx_advanced_options,
             text="Compute type",
@@ -430,7 +433,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.omn_compute_type.set(self._config_whisperx.compute_type)
 
-        # Batch size
+        ## 'Batch size' entry
         self.lbl_batch_size = ctk.CTkLabel(
             master=self.frm_whisperx_advanced_options,
             text="Batch size",
@@ -452,7 +455,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.ent_batch_size.grid(row=5, column=0, padx=(18, 20), pady=0, sticky=ctk.W)
 
-        # Use CPU
+        ## 'Use CPU' checkbox
         self.chk_use_cpu = ctk.CTkCheckBox(
             master=self.frm_whisperx_advanced_options,
             text="Use CPU",
@@ -473,7 +476,7 @@ class MainWindow(ctk.CTkFrame):
 
         # ------------------
 
-        # Appearance mode
+        ## 'Appearance mode' option menu
         self.lbl_appearance_mode = ctk.CTkLabel(
             master=self.frm_sidebar,
             text=_("Appearance mode"),
@@ -503,11 +506,11 @@ class MainWindow(ctk.CTkFrame):
         self.tbx_transcription = ctk.CTkTextbox(master=self, wrap=ctk.WORD)
         self.tbx_transcription.grid(row=1, column=1, padx=20, pady=20, sticky=ctk.NSEW)
 
-        # Progress bar
+        ## Progress bar
         self.progress_bar = ctk.CTkProgressBar(master=self)
         self.progress_bar.configure(mode="indeterminate")
 
-        # Save text button
+        ## 'Save transcription' button
         self.btn_save = ctk.CTkButton(
             master=self,
             fg_color="green",
