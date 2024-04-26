@@ -547,7 +547,6 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_save_transcription,
         )
         self.btn_save.grid(row=3, column=1, padx=20, pady=(0, 20), sticky=ctk.EW)
-        self.btn_save.grid_remove()  # hidden at start
 
     # PUBLIC METHODS
 
@@ -577,9 +576,6 @@ class MainWindow(ctk.CTkFrame):
         self.btn_generate_transcription.configure(state=ctk.NORMAL)
 
         self._toggle_progress_bar_visibility(should_show=False)
-
-        if success:
-            self.btn_save.grid()
 
     # HELPER METHODS
 
