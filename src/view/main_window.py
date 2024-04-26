@@ -577,11 +577,7 @@ class MainWindow(ctk.CTkFrame):
         self._controller.select_file()
 
     def _on_transcribe_from_mic(self):
-        is_recording = Color.LIGHT_RED.value in self.btn_transcribe_from_mic.cget(
-            "fg_color"
-        )
-
-        if is_recording:
+        if self._is_transcribing_from_mic:
             self._stop_recording_from_mic()
         else:
             self._start_recording_from_mic()
