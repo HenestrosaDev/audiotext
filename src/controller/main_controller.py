@@ -281,7 +281,7 @@ class MainController:
 
         with sr.Microphone() as mic:
             while self._is_mic_recording:
-                audio_chunk = r.listen(mic)
+                    audio_chunk = r.listen(mic, timeout=5)
                 audio_data.append(audio_chunk)
 
         self.view.toggle_progress_bar_visibility(should_show=True)
