@@ -587,7 +587,7 @@ class MainWindow(ctk.CTkFrame):
             self._start_recording_from_mic()
 
     def _start_recording_from_mic(self):
-        self.btn_transcribe_from_mic.configure(
+        self.btn_generate_transcription.configure(
             fg_color=(Color.LIGHT_RED.value, Color.DARK_RED.value),
             hover_color=(
                 Color.HOVER_LIGHT_RED.value,
