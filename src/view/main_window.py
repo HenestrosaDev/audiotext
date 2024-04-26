@@ -50,8 +50,7 @@ class MainWindow(ctk.CTkFrame):
         self._is_transcribing_from_mic = False
 
         # To handle debouncing
-        self._debouncing_delay = 600  # In milliseconds
-        self._after_id = None  # To store the after method ID
+        self._after_id = None  # To store the `after()` method ID
 
     def set_controller(self, controller: MainController):
         """
@@ -558,14 +557,14 @@ class MainWindow(ctk.CTkFrame):
             ),
         )
 
-    def _on_change_debounced(self, section, key, variable, callback):
+    def _on_change_debounced(self, section, key, variable, callback, delay=600):
         # Cancel the previously scheduled after call
         if self._after_id is not None:
             self.after_cancel(self._after_id)
 
         # Schedule a new after call with the specified delay
         self._after_id = self.after(
-            self._debouncing_delay, lambda: callback(section, key, variable.get())
+            delay, lambda: callback(section, key, variable.get())
         )
 
     def _on_change_app_language(self, language_name: str):
