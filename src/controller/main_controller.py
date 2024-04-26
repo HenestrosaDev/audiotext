@@ -14,6 +14,8 @@ from model.transcription import Transcription
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
+from pytube import YouTube
+from pytube.exceptions import RegexMatchError
 from utils import constants as c
 from utils.enums import AudioSource, TranscriptionMethod
 from utils.i18n import _
@@ -308,3 +310,26 @@ class MainController:
             self._whisperx_result["language"] = "en"
 
             writer(self._whisperx_result, file_path, writer_args)
+
+    def _download_audio_from_yt_video(self):
+        try:
+            yt = YouTube(self.transcription.youtube_url)
+            stream = yt.streams.filter(only_audio=True).first()
+            output_file = stream.download(output_path=".", filename="yt-audio.mp3")
+
+            if output_file:
+                self.transcription.source_file_path = Path(output_file)
+
+                threading.Thread(
+                    target=lambda loop: loop.run_until_complete(
+                        self.handle_transcription_process()
+                    ),
+                    args=(asyncio.new_event_loop(),),
+                ).start()
+
+        except RegexMatchError:
+            e = ValueError("The URL is not correct.")
+            self._handle_exception(e)
+
+        except Exception as e:
+            self._handle_exception(e)
