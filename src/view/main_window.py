@@ -668,6 +668,7 @@ class MainWindow(ctk.CTkFrame):
         if self.chk_whisper_options_translate.get():
             self.chk_whisper_options_subtitles.deselect()
             self.chk_whisper_options_subtitles.configure(state=ctk.DISABLED)
+            self.frm_subtitle_options.grid_remove()
         else:
             self.chk_whisper_options_subtitles.configure(state=ctk.NORMAL)
 
