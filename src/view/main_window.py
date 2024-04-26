@@ -52,6 +52,8 @@ class MainWindow(ctk.CTkFrame):
         # To handle debouncing
         self._after_id = None  # To store the `after()` method ID
 
+    # GETTERS AND SETTERS
+
     def set_controller(self, controller: MainController):
         """
         Set the controller of the window.
@@ -547,7 +549,45 @@ class MainWindow(ctk.CTkFrame):
         self.btn_save.grid(row=3, column=1, padx=20, pady=(0, 20), sticky=ctk.EW)
         self.btn_save.grid_remove()  # hidden at start
 
-    # WIDGET EVENT HANDLER METHODS
+    # PUBLIC METHODS
+
+    def on_select_file_success(self, filepath):
+        self.ent_path.configure(textvariable=ctk.StringVar(self, filepath))
+
+    def on_processing_transcription(self):
+        # Disable action buttons to avoid multiple requests at the same time
+        self.ent_path.configure(state=ctk.DISABLED)
+        self.omn_transcribe_from.configure(state=ctk.DISABLED)
+        self.omn_audio_language.configure(state=ctk.DISABLED)
+
+        if not self._is_transcribing_from_mic:
+            self.btn_generate_transcription.configure(state=ctk.DISABLED)
+
+        # Show progress bar
+        self._toggle_progress_bar_visibility(should_show=True)
+
+        # Remove previous text
+        self.display_text("")
+
+    def on_processed_transcription(self, success: bool):
+        # Re-enable disabled widgets
+        self.ent_path.configure(state=ctk.NORMAL)
+        self.omn_transcribe_from.configure(state=ctk.NORMAL)
+        self.omn_audio_language.configure(state=ctk.NORMAL)
+        self.btn_generate_transcription.configure(state=ctk.NORMAL)
+
+        self._toggle_progress_bar_visibility(should_show=False)
+
+        if success:
+            self.btn_save.grid()
+
+    # HELPER METHODS
+
+    def display_text(self, text):
+        self.tbx_transcription.delete("1.0", ctk.END)
+        self.tbx_transcription.insert("0.0", text)
+
+    # PRIVATE METHODS
 
     def _setup_debounced_change(self, section, key, variable, callback, *unused):
         variable.trace_add(
@@ -572,6 +612,7 @@ class MainWindow(ctk.CTkFrame):
 
     def _on_change_transcribe_from_event(self, option: str):
         self._transcribe_from_source = AudioSource(option)
+        self.ent_path.configure(textvariable=ctk.StringVar(self, ""))
 
         if self._transcribe_from_source == AudioSource.FILE:
             self.btn_generate_transcription.configure(text="Generate transcription")
@@ -618,7 +659,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self._controller.prepare_for_transcription(transcription)
 
-    def _stop_recording_from_mic(self):
+    def stop_recording_from_mic(self):
         self._is_transcribing_from_mic = False
 
         self.btn_generate_transcription.configure(
@@ -715,51 +756,16 @@ class MainWindow(ctk.CTkFrame):
                 text=_("Hide advanced options")
             )
 
-    @staticmethod
-    def _on_config_change(section, key, new_value):
-        cm.ConfigManager.modify_value(section, key, new_value)
-
-    # PUBLIC HANDLERS
-
-    def handle_select_file_success(self, filepath):
-        self.ent_path.configure(textvariable=ctk.StringVar(self, filepath))
-
-    def handle_processing_transcription(self):
-        # Show progress bar
-        self.toggle_progress_bar_visibility(should_show=True)
-
-        # Remove previous text
-        self.display_text("")
-
-        # Disable action buttons to avoid multiple requests at the same time
-        self.btn_generate_transcription.configure(state=ctk.DISABLED)
-
-    def handle_transcription_process_finish(self, is_transcription_empty):
-        # Re-enable disabled widgets
-        self.ent_path.configure(state=ctk.NORMAL)
-        self.btn_generate_transcription.configure(state=ctk.NORMAL)
-        self.omn_transcribe_from.configure(state=ctk.NORMAL)
-        self.omn_audio_language.configure(state=ctk.NORMAL)
-
-        # Remove progress bar
-        self.toggle_progress_bar_visibility(should_show=False)
-
-        # Show save button if transcription is not empty
-        if not is_transcription_empty:
-            self.btn_save.grid()
-
-    # HELPER METHODS
-
-    def toggle_progress_bar_visibility(self, should_show):
+    def _toggle_progress_bar_visibility(self, should_show):
         if should_show:
             self.progress_bar.grid(row=2, column=1, padx=40, pady=0, sticky=ctk.EW)
             self.progress_bar.start()
         else:
             self.progress_bar.grid_forget()
 
-    def display_text(self, text):
-        self.tbx_transcription.delete("1.0", ctk.END)
-        self.tbx_transcription.insert("0.0", text)
+    @staticmethod
+    def _on_config_change(section, key, new_value):
+        cm.ConfigManager.modify_value(section, key, new_value)
 
     @staticmethod
     def _change_appearance_mode_event(new_appearance_mode: str):

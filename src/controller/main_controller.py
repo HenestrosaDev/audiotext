@@ -50,7 +50,7 @@ class MainController:
         )
 
         if filepath:
-            self.view.handle_select_file_success(filepath)
+            self.view.on_select_file_success(filepath)
 
     def prepare_for_transcription(self, transcription: Transcription):
         """
@@ -58,42 +58,38 @@ class MainController:
 
         :raises: IndexError if the selected language code is not valid.
         """
-        is_file_source = transcription.source == AudioSource.FILE
-        if is_file_source and not self._is_file_valid(transcription.source_file_path):
-            self.view.display_text("Error: No valid file selected.")
-            return
-
-        transcription.source_file_path = Path(transcription.source_file_path)
         self.transcription = transcription
 
         try:
+            self.view.on_processing_transcription()
+
             if transcription.source == AudioSource.FILE:
-                threading.Thread(
-                    target=lambda loop: loop.run_until_complete(
-                        self.handle_transcription_process()
-                    ),
-                    args=(asyncio.new_event_loop(),),
-                ).start()
+                self._prepare_for_file_transcription(transcription.source_file_path)
             elif transcription.source == AudioSource.MIC:
-                threading.Thread(target=self._record_from_mic).start()
+                self._prepare_for_mic_transcription()
+            elif transcription.source == AudioSource.YOUTUBE:
+                self._prepare_for_yt_transcription()
 
         except Exception as e:
             self._handle_exception(e)
 
     async def handle_transcription_process(self):
-        self.view.handle_processing_transcription()
+        try:
+            # Get transcription
+            if self.transcription.method == TranscriptionMethod.WHISPERX.value:
+                await self._transcribe_using_whisperx()
+            elif self.transcription.method == TranscriptionMethod.GOOGLE_API.value:
+                await self._transcribe_using_google_api()
 
-        # Get transcription
-        if self.transcription.method == TranscriptionMethod.WHISPERX.value:
-            await self._transcribe_using_whisperx()
-        elif self.transcription.method == TranscriptionMethod.GOOGLE_API.value:
-            await self._transcribe_using_google_api()
+            if self.transcription.source in (AudioSource.MIC, AudioSource.YOUTUBE):
+                self.transcription.source_file_path.unlink()  # Remove tmp file
 
-        if self.transcription.source == AudioSource.MIC:
-            self.transcription.source_file_path.unlink()  # Remove tmp file
+        except Exception as e:
+            self._handle_exception(e)
 
-        is_transcription_empty = not self.transcription.text
-        self.view.handle_transcription_process_finish(is_transcription_empty)
+        finally:
+            is_transcription_empty = not self.transcription.text
+            self.view.on_processed_transcription(success=is_transcription_empty)
 
     def stop_recording_from_mic(self):
         self._is_mic_recording = False
@@ -123,6 +119,24 @@ class MainController:
 
     # PRIVATE METHODS
 
+    def _prepare_for_file_transcription(self, source_file_path: str):
+        if self._is_file_valid(source_file_path):
+            self.transcription.source_file_path = Path(source_file_path)
+
+            threading.Thread(
+                target=lambda loop: loop.run_until_complete(
+                    self.handle_transcription_process()
+                ),
+                args=(asyncio.new_event_loop(),),
+            ).start()
+        else:
+            raise ValueError("Error: No valid file selected.")
+
+    def _prepare_for_mic_transcription(self):
+        threading.Thread(target=self._record_from_mic).start()
+
+    def _prepare_for_yt_transcription(self):
+        threading.Thread(target=self._download_audio_from_yt_video).start()
 
     def _handle_exception(self, e: Exception):
         print(traceback.format_exc())
@@ -262,9 +276,6 @@ class MainController:
         finally:
             # Delete temporal directory and files
             shutil.rmtree(chunks_directory)
-
-            # Hide progress bar
-            self.view.toggle_progress_bar_visibility(should_show=False)
 
             if self.transcription.text:
                 self.view.display_text(self.transcription.text)
