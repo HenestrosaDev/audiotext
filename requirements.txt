@@ -1,12 +1,12 @@
 customtkinter~=5.2.1
+moviepy~=1.0.3
+pyaudio~=0.2.13
 pydub~=0.25.1
 SpeechRecognition~=3.9.0
-pyaudio~=0.2.13
-moviepy~=1.0.3
 --index-url https://download.pytorch.org/whl/cu118
 torch==2.0.0
 --index-url https://download.pytorch.org/whl/cu118
-torchvision==0.15.1
---index-url https://download.pytorch.org/whl/cu118
 torchaudio==2.0.1
+--index-url https://download.pytorch.org/whl/cu118
+torchvision==0.15.1
 whisperx @ git+https://github.com/m-bain/whisperx.git
