@@ -50,55 +50,29 @@ class MainController:
         if filepath:
             self.view.handle_select_file_success(filepath)
 
-    def prepare_for_transcription(
-        self,
-        source: str,
-        language_code: str,
-        transcription_method: int,
-        should_translate: bool = False,
-        should_subtitle: bool = False,
-    ):
+    def prepare_for_transcription(self, transcription: Transcription):
         """
         Prepares the transcription process based on provided parameters.
 
-        :param source: The source of the audio, either from a file or the microphone.
-        :type source: str
-        :param language_code: Language code of the audio to transcribe.
-        :type language_code: str
-        :param transcription_method: Either WhisperX or Google API.
-        :type transcription_method: int
-        :param should_translate: If True, translates from X language to English.
-                                 Only for WhisperX.
-        :type should_translate: bool
-        :param should_subtitle: If True, generates .srt and .vtt files. Only for WhisperX.
-        :type should_subtitle: bool
-
         :raises: IndexError if the selected language code is not valid.
         """
-        if not self._is_file_valid(source):
-            self.view.display_text(
-                _(
-                    "Error: No audio file selected, please select one before "
-                    "generating text."
-                )
-            )
+        is_file_source = transcription.source == AudioSource.FILE
+        if is_file_source and not self._is_file_valid(transcription.source_file_path):
+            self.view.display_text("Error: No valid file selected.")
             return
 
-        self.transcription.source = source
-        self.transcription.language_code = language_code
-        self.transcription.method = transcription_method
-        self.transcription.should_translate = should_translate
-        self.transcription.should_subtitle = should_subtitle
+        transcription.source_file_path = Path(transcription.source_file_path)
+        self.transcription = transcription
 
         try:
-            if source == AudioSource.FILE:
+            if transcription.source == AudioSource.FILE:
                 threading.Thread(
                     target=lambda loop: loop.run_until_complete(
                         self.handle_transcription_process()
                     ),
                     args=(asyncio.new_event_loop(),),
                 ).start()
-            elif source == AudioSource.MIC:
+            elif transcription.source == AudioSource.MIC:
                 threading.Thread(target=self._record_from_mic).start()
 
         except Exception:

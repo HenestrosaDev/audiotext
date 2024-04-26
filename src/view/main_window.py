@@ -10,6 +10,7 @@ from controller.main_controller import MainController
 from model.config.config_google_api import ConfigGoogleApi
 from model.config.config_subtitles import ConfigSubtitles
 from model.config.config_whisperx import ConfigWhisperX
+from model.transcription import Transcription
 from PIL import Image
 from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
 from utils.i18n import _
@@ -599,6 +600,8 @@ class MainWindow(ctk.CTkFrame):
             self._start_recording_from_mic()
 
     def _start_recording_from_mic(self):
+        self._is_transcribing_from_mic = True
+
         self.btn_generate_transcription.configure(
             fg_color=(Color.LIGHT_RED.value, Color.DARK_RED.value),
             hover_color=(
@@ -608,15 +611,13 @@ class MainWindow(ctk.CTkFrame):
             text=_("Stop recording"),
         )
 
-        self._controller.prepare_for_transcription(
+        transcription = Transcription(
             source=AudioSource.MIC,
             language_code=self._get_language_code(),
-            transcription_method=self.radio_var.get(),
+            method=self.radio_var.get(),
             **self._get_whisperx_args(),
         )
-
-        self._is_transcribing_from_mic = True
-        self.btn_generate_transcription.configure(state=ctk.DISABLED)
+        self._controller.prepare_for_transcription(transcription)
 
     def _stop_recording_from_mic(self):
         self._is_transcribing_from_mic = False
@@ -630,12 +631,25 @@ class MainWindow(ctk.CTkFrame):
         self._controller.stop_recording_from_mic()
 
     def _on_generate_transcription(self):
-        self._controller.prepare_for_transcription(
-            source=AudioSource.FILE,
-            language_code=self._get_language_code(),
-            transcription_method=self.radio_var.get(),
-            **self._get_whisperx_args(),
-        )
+        self.ent_path.configure(state=ctk.DISABLED)
+        self.omn_transcribe_from.configure(state=ctk.DISABLED)
+        self.omn_audio_language.configure(state=ctk.DISABLED)
+
+        if self._transcribe_from_source == AudioSource.FILE:
+            transcription = Transcription(
+                source=AudioSource.FILE,
+                source_file_path=self.ent_path.get(),
+                language_code=self._get_language_code(),
+                method=self.radio_var.get(),
+                **self._get_whisperx_args(),
+            )
+            self._controller.prepare_for_transcription(transcription)
+
+        elif self._transcribe_from_source == AudioSource.MIC:
+            self._on_transcribe_from_mic()
+
+        elif self._transcribe_from_source == AudioSource.YOUTUBE:
+            print("TODO")
 
     def _on_save_transcription(self):
         self._controller.save_transcription()
