@@ -302,9 +302,9 @@ class MainController:
                 audio_chunk = r.listen(mic)
                 audio_data.append(audio_chunk)
 
-        if audio_data:
-            self.view.toggle_progress_bar_visibility(should_show=True)
+        self.view.toggle_progress_bar_visibility(should_show=True)
 
+        if audio_data:
             filename = "mic-output.wav"
             au.save_audio_data(audio_data, filename=filename)
             self.transcription.source_file_path = Path(filename)
