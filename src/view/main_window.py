@@ -697,13 +697,7 @@ class MainWindow(ctk.CTkFrame):
     # PUBLIC HANDLERS
 
     def handle_select_file_success(self, filepath):
-        self._is_file_selected = True
-
-        self.ent_selected_file.grid()
-        self.ent_selected_file.configure(textvariable=ctk.StringVar(self, filepath))
-
-        if not self._is_transcribing_from_mic:
-            self.btn_generate_transcription.configure(state=ctk.NORMAL)
+        self.ent_path.configure(textvariable=ctk.StringVar(self, filepath))
 
     def handle_processing_transcription(self):
         # Show progress bar
