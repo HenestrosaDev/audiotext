@@ -108,7 +108,7 @@ class MainWindow(ctk.CTkFrame):
             compound=ctk.LEFT,
             font=ctk.CTkFont(size=22, weight="bold"),
         )
-        self.lbl_logo.grid(row=0, column=0, padx=20, pady=(25, 0))
+        self.lbl_logo.grid(row=0, column=0, padx=20, pady=(19, 0))
 
         # ------------------
 
