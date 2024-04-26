@@ -30,7 +30,7 @@ class MainWindow(ctk.CTkFrame):
 
         # Configure grid of the window
         self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
 
         # Init the configs
         self._config_whisperx = config_whisperx
@@ -501,16 +501,39 @@ class MainWindow(ctk.CTkFrame):
         self.lbl_version.grid(row=14, column=0, padx=20, pady=(5, 10))
 
     def _init_main_content(self):
-        # Selected file entry
-        self.ent_selected_file = ctk.CTkEntry(master=self, state=ctk.DISABLED)
-        self.ent_selected_file.grid(
-            row=0, column=1, padx=20, pady=(20, 0), sticky=ctk.EW
-        )
-        self.ent_selected_file.grid_remove()  # hidden at start
+        # Main entry frame
+        self.frm_main_entry = ctk.CTkFrame(master=self, fg_color="transparent")
+        self.frm_main_entry.grid(row=0, column=1, padx=20, pady=(20, 0), sticky=ctk.EW)
+        self.frm_main_entry.grid_columnconfigure(1, weight=1)
 
-        # Text audio textbox
+        ## 'Path' entry
+        self.lbl_path = ctk.CTkLabel(
+            master=self.frm_main_entry,
+            text="File path",
+            font=ctk.CTkFont(size=14, weight="bold"),
+        )
+        self.lbl_path.grid(row=0, column=0, padx=(0, 15), sticky=ctk.W)
+
+        self.ent_path = ctk.CTkEntry(master=self.frm_main_entry)
+        self.ent_path.grid(row=0, column=1, padx=0, sticky=ctk.EW)
+
+        ## File explorer image button
+        self.img_file_explorer = ctk.CTkImage(
+            Image.open(ph.ROOT_PATH / ph.IMG_RELATIVE_PATH / "file-explorer.png"),
+            size=(24, 24),
+        )
+        self.btn_file_explorer = ctk.CTkButton(
+            self.frm_main_entry,
+            image=self.img_file_explorer,
+            text="",
+            width=32,
+            command=self._on_select_file,
+        )
+        self.btn_file_explorer.grid(row=0, column=2, padx=(15, 0), sticky=ctk.E)
+
+        ## Textbox
         self.tbx_transcription = ctk.CTkTextbox(master=self, wrap=ctk.WORD)
-        self.tbx_transcription.grid(row=1, column=1, padx=20, pady=20, sticky=ctk.NSEW)
+        self.tbx_transcription.grid(row=2, column=1, padx=20, pady=20, sticky=ctk.NSEW)
 
         ## Progress bar
         self.progress_bar = ctk.CTkProgressBar(master=self)
@@ -524,7 +547,7 @@ class MainWindow(ctk.CTkFrame):
             text=_("Save transcription"),
             command=self._on_save_transcription,
         )
-        self.btn_save.grid(row=2, column=1, padx=20, pady=(0, 20), sticky=ctk.EW)
+        self.btn_save.grid(row=3, column=1, padx=20, pady=(0, 20), sticky=ctk.EW)
         self.btn_save.grid_remove()  # hidden at start
 
     # WIDGET EVENT HANDLER METHODS
