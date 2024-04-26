@@ -625,6 +625,7 @@ class MainWindow(ctk.CTkFrame):
             fg_color="green",
             hover_color="darkgreen",
             text="Start recording",
+            state=ctk.DISABLED,
         )
 
         self._controller.stop_recording_from_mic()
