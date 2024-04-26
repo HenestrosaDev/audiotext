@@ -2,8 +2,9 @@ from enum import Enum
 
 
 class AudioSource(Enum):
-    FILE = "file"
-    MIC = "mic"
+    FILE = "File"
+    MIC = "Microphone"
+    YOUTUBE = "YouTube"
 
 
 class TranscriptionMethod(Enum):
