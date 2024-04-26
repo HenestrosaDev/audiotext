@@ -721,7 +721,7 @@ class MainWindow(ctk.CTkFrame):
 
     def toggle_progress_bar_visibility(self, should_show):
         if should_show:
-            self.progress_bar.grid(row=1, column=1, padx=40, pady=0, sticky=ctk.EW)
+            self.progress_bar.grid(row=2, column=1, padx=40, pady=0, sticky=ctk.EW)
             self.progress_bar.start()
         else:
             self.progress_bar.grid_forget()
