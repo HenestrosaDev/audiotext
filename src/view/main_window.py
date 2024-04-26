@@ -609,19 +609,13 @@ class MainWindow(ctk.CTkFrame):
     def _stop_recording_from_mic(self):
         self._is_transcribing_from_mic = False
 
-        self.btn_transcribe_from_mic.configure(
-            fg_color=(Color.LIGHT_BLUE.value, Color.DARK_BLUE.value),
-            hover_color=(
-                Color.HOVER_LIGHT_BLUE.value,
-                Color.HOVER_DARK_BLUE.value,
-            ),
-            text=_("Transcribe from mic."),
+        self.btn_generate_transcription.configure(
+            fg_color="green",
+            hover_color="darkgreen",
+            text="Start recording",
         )
 
         self._controller.stop_recording_from_mic()
-
-        if self._is_file_selected:
-            self.btn_generate_transcription.configure(state=ctk.NORMAL)
 
     def _on_generate_transcription(self):
         self._controller.prepare_for_transcription(
