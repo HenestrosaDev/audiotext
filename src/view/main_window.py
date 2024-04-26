@@ -733,8 +733,8 @@ class MainWindow(ctk.CTkFrame):
         # Re-enable disabled widgets
         self.ent_path.configure(state=ctk.NORMAL)
         self.btn_generate_transcription.configure(state=ctk.NORMAL)
-        self.omn_transcribe_from.configure(state=ctk.DISABLED)
-        self.omn_audio_language.configure(state=ctk.DISABLED)
+        self.omn_transcribe_from.configure(state=ctk.NORMAL)
+        self.omn_audio_language.configure(state=ctk.NORMAL)
 
         # Remove progress bar
         self.toggle_progress_bar_visibility(should_show=False)
