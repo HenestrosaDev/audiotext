@@ -83,9 +83,9 @@
     - [Project Structure](#project-structure)
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
-    - [Notes](#notes) 
-    - [To Run the Program](#to-run-the-program)
+    - [Installation](#installation)
     - [To Set Up the Project Locally](#to-set-up-the-project-locally)
+    - [Notes](#notes) 
 - [Usage](#usage)
     - [Transcribe From](#transcribe-from)
     - [Save Transcription](#save-transcription)
@@ -304,49 +304,45 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ## Getting Started
 
-### Notes
-- You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
-- For **Mac computers with Apple silicon**: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
-- You need to install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. 
+### Installation
 
-  To check if you have it installed on your system, run `ffmpeg -version`. It should return something similar to this:
-  ```
-  ffmpeg version 5.1.2-essentials_build-www.gyan.dev Copyright (c) 2000-2022 the FFmpeg developers
-  built with gcc 12.1.0 (Rev2, Built by MSYS2 project)
-  configuration: --enable-gpl --enable-version3 --enable-static --disable-w32threads --disable-autodetect --enable-fontconfig --enable-iconv --enable-gnutls --enable-libxml2 --enable-gmp --enable-lzma --enable-zlib --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-sdl2 --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxvid --enable-libaom --enable-libopenjpeg --enable-libvpx --enable-libass --enable-libfreetype --enable-libfribidi --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-ffnvcodec --enable-nvdec --enable-nvenc --enable-d3d11va --enable-dxva2 --enable-libmfx --enable-libgme --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libtheora --enable-libvo-amrwbenc --enable-libgsm --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-librubberband
-  libavutil      57. 28.100 / 57. 28.100
-  libavcodec     59. 37.100 / 59. 37.100
-  libavformat    59. 27.100 / 59. 27.100
-  libavdevice    59.  7.100 / 59.  7.100
-  libavfilter     8. 44.100 /  8. 44.100
-  libswscale      6.  7.100 /  6.  7.100
-  libswresample   4.  7.100 /  4.  7.100
-  ```
+1. Install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. 
 
-  If the output is an error, it is because your system cannot find the `ffmpeg` system variable, which is probably because you don't have it installed on your system. To install `ffmpeg`, open a command prompt and run one of the following commands, depending on your operating system:
-  ```
-  # on Ubuntu or Debian
-  sudo apt update && sudo apt install ffmpeg
-  
-  # on Arch Linux
-  sudo pacman -S ffmpeg
-  
-  # on MacOS using Homebrew (https://brew.sh/)
-  brew install ffmpeg
-  
-  # on Windows using Chocolatey (https://chocolatey.org/)
-  choco install ffmpeg
-  
-  # on Windows using Scoop (https://scoop.sh/)
-  scoop install ffmpeg
-  ```
+    To check if you have it installed on your system, run `ffmpeg -version`. It should return something similar to this:
+    ```
+    ffmpeg version 5.1.2-essentials_build-www.gyan.dev Copyright (c) 2000-2022 the FFmpeg developers
+    built with gcc 12.1.0 (Rev2, Built by MSYS2 project)
+    configuration: --enable-gpl --enable-version3 --enable-static --disable-w32threads --disable-autodetect --enable-fontconfig --enable-iconv --enable-gnutls --enable-libxml2 --enable-gmp --enable-lzma --enable-zlib --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-sdl2 --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxvid --enable-libaom --enable-libopenjpeg --enable-libvpx --enable-libass --enable-libfreetype --enable-libfribidi --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-ffnvcodec --enable-nvdec --enable-nvenc --enable-d3d11va --enable-dxva2 --enable-libmfx --enable-libgme --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libtheora --enable-libvo-amrwbenc --enable-libgsm --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-librubberband
+    libavutil      57. 28.100 / 57. 28.100
+    libavcodec     59. 37.100 / 59. 37.100
+    libavformat    59. 27.100 / 59. 27.100
+    libavdevice    59.  7.100 / 59.  7.100
+    libavfilter     8. 44.100 /  8. 44.100
+    libswscale      6.  7.100 /  6.  7.100
+    libswresample   4.  7.100 /  4.  7.100
+    ```
 
-### To Run the Program
-1. Go to [releases](https://github.com/HenestrosaDev/audiotext/releases).
-2. Download the latest release. 
+    If the output is an error, it is because your system cannot find the `ffmpeg` system variable, which is probably because you don't have it installed on your system. To install `ffmpeg`, open a command prompt and run one of the following commands, depending on your operating system:
+    ```
+    # on Ubuntu or Debian
+    sudo apt update && sudo apt install ffmpeg
+    
+    # on Arch Linux
+    sudo pacman -S ffmpeg
+    
+    # on MacOS using Homebrew (https://brew.sh/)
+    brew install ffmpeg
+    
+    # on Windows using Chocolatey (https://chocolatey.org/)
+    choco install ffmpeg
+    
+    # on Windows using Scoop (https://scoop.sh/)
+    scoop install ffmpeg
+    ```
+
+2. Go to [releases](https://github.com/HenestrosaDev/audiotext/releases) and download the latest.
 3. Decompress the downloaded file.
-4. Open the `audiotext` folder.
-5. Double-click the `Audiotext` executable file (`.exe` for Windows and `.app` for macOS).
+4. Open the `audiotext` folder and double-click the `Audiotext` executable file (`.exe` for Windows and `.app` for macOS).
 
 ### To Set Up the Project Locally 
 1. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
@@ -364,6 +360,10 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 6. Run `python src/app.py` to start the program.
 
 >**IMPORTANT NOTE**: I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
+
+### Notes
+- You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
+- For **Mac computers with Apple silicon**: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -394,76 +394,76 @@ You can transcribe from three audio sources:
 
 - **File** (see image above): Click on the file explorer icon to select the file you want to transcribe. You can also manually enter the path to the file into the input field. You can transcribe audio from both audio and video files. Note that the file explorer has the `All supported files` option selected by default. To select only audio files or video files, click the combo box in the lower right corner of the file explorer to change the file type, as marked in red in the following image:
 
-	![File explorer](docs/file-explorer.png)
+  ![File explorer](docs/file-explorer.png)
 
-	![Supported files](docs/supported-files.png)
+  ![Supported files](docs/supported-files.png)
 
-	<details>
-		<summary>Supported audio file formats</summary>
+  <details>
+    <summary>Supported audio file formats</summary>
 
-		- `.mp3`
-		- `.mpeg`
-		- `.wav`
-		- `.wma`
-		- `.aac`
-		- `.flac`
-		- `.ogg`
-		- `.oga`
-		- `.opus`
-	</details>
+    - `.mp3`
+    - `.mpeg`
+    - `.wav`
+    - `.wma`
+    - `.aac`
+    - `.flac`
+    - `.ogg`
+    - `.oga`
+    - `.opus`
+  </details>
 
-	<details>
-		<summary>Supported video file formats</summary>
+  <details>
+    <summary>Supported video file formats</summary>
 
-		- `.mp4`
-		- `.m4a`
-		- `.m4v`
-		- `.f4v`
-		- `.f4a`
-		- `.m4b`
-		- `.m4r`
-		- `.f4b`
-		- `.mov`
-		- `.avi`
-		- `.webm`
-		- `.flv`
-		- `.mkv`
-		- `.3gp`
-		- `.3gp2`
-		- `.3g2`
-		- `.3gpp`
-		- `.3gpp2`
-		- `.ogv`
-		- `.ogx`
-		- `.wmv`
-		- `.asf`
-	</details>
+    - `.mp4`
+    - `.m4a`
+    - `.m4v`
+    - `.f4v`
+    - `.f4a`
+    - `.m4b`
+    - `.m4r`
+    - `.f4b`
+    - `.mov`
+    - `.avi`
+    - `.webm`
+    - `.flv`
+    - `.mkv`
+    - `.3gp`
+    - `.3gp2`
+    - `.3g2`
+    - `.3gpp`
+    - `.3gpp2`
+    - `.ogv`
+    - `.ogx`
+    - `.wmv`
+    - `.asf`
+  </details>
 
 - **Microphone**: To start recording, simply click the `Start recording` button to begin the process. The text of the button will change to `Stop recording` and its color will change to red. Click it to stop recording and generate the transcription. 
 
-	Note that your operating system must recognize an input source, otherwise an error will appear in the text box indicating that no input source was detected.
+  Note that your operating system must recognize an input source, otherwise an error will appear in the text box indicating that no input source was detected.
 
-	Here is a video demonstrating this feature:
+  Here is a video demonstrating this feature:
 
-	<!-- english.mp4 -->
-	https://github.com/HenestrosaDev/audiotext/assets/60482743/bd0323d7-ff54-4363-8b73-a2d56e7f783b
+  <!-- english.mp4 -->
+  https://github.com/HenestrosaDev/audiotext/assets/60482743/bd0323d7-ff54-4363-8b73-a2d56e7f783b
 
 - **YouTube video**: Enter the video URL in the upper input field. When finished, click on the `Generate transcription` button.
 
-	<picture>
-		<source 
-			srcset="docs/light/from-youtube.png"
-			media="(prefers-color-scheme: light)"
-		/>
-		<source 
-			srcset="docs/dark/from-youtube.png"
-			media="(prefers-color-scheme: dark)"
-		/>
-		<img 
-			src="docs/light/from-youtube.png"
-			alt="From microphone"
-		>
-	</picture>
+  <picture>
+    <source 
+      srcset="docs/light/from-youtube.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/from-youtube.png"
+      media="(prefers-color-scheme: dark)"
+    />
+    <img 
+      src="docs/light/from-youtube.png"
+      alt="From microphone"
+    >
+  </picture>
 
 ### Save Transcription
 
