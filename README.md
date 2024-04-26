@@ -27,7 +27,7 @@
     <img src="docs/light/icon.png" alt="Logo" width="128" height="128">
   </picture>
   <h1 align="center">Audiotext</h1>
-  <p align="center">A desktop application that transcribes and optionally translates audio from a file, microphone, or YouTube video using <strong>WhisperX </strong>or the <strong>Google Speech-to-Text API</strong>.</p>
+  <p align="center">A desktop application that transcribes files, microphone input or YouTube videos. It offers the option to translate the content and generate subtitles.</p>
   <p>
     <a href="https://github.com/HenestrosaDev/audiotext/stargazers">
       <img 
@@ -87,11 +87,9 @@
     - [To Run the Program](#to-run-the-program)
     - [To Set Up the Project Locally](#to-set-up-the-project-locally)
 - [Usage](#usage)
-    - [Transcribe Using](#transcribe-using)
-    - [Transcribe From Microphone](#transcribe-from-microphone)
-    - [Select File](#select-file)
-    - [Generate Transcription](#generate-transcription)
+    - [Transcribe From](#transcribe-from)
     - [Save Transcription](#save-transcription)
+    - [Transcribe Using](#transcribe-using)
     - [WhisperX Options](#whisperx-options)
         - [Transcription Translation](#transcription-translation)
         - [Generate Subtitles](#generate-subtitles)
