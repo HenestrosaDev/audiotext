@@ -490,13 +490,13 @@ class MainWindow(ctk.CTkFrame):
         )
         self.omn_appearance_mode.grid(row=13, column=0, padx=20, pady=0, sticky=ctk.EW)
 
-        ## 'Version' label
-        self.lbl_version = ctk.CTkLabel(
+        ## Info label
+        self.lbl_info = ctk.CTkLabel(
             master=self.frm_sidebar,
-            text="v2.2.0",
+            text="v2.2.0 | Made by HenestrosaDev",
             font=ctk.CTkFont(size=12),
         )
-        self.lbl_version.grid(row=14, column=0, padx=20, pady=(5, 10))
+        self.lbl_info.grid(row=14, column=0, padx=20, pady=(5, 10))
 
     def _init_main_content(self):
         # Main entry frame
@@ -635,21 +635,26 @@ class MainWindow(ctk.CTkFrame):
         self.omn_transcribe_from.configure(state=ctk.DISABLED)
         self.omn_audio_language.configure(state=ctk.DISABLED)
 
+        transcription = Transcription(
+            language_code=self._get_language_code(),
+            method=self.radio_var.get(),
+            **self._get_whisperx_args(),
+        )
+
         if self._transcribe_from_source == AudioSource.FILE:
-            transcription = Transcription(
-                source=AudioSource.FILE,
-                source_file_path=self.ent_path.get(),
-                language_code=self._get_language_code(),
-                method=self.radio_var.get(),
-                **self._get_whisperx_args(),
-            )
+            transcription.source = AudioSource.FILE
+            transcription.source_file_path = self.ent_path.get()
+
             self._controller.prepare_for_transcription(transcription)
 
         elif self._transcribe_from_source == AudioSource.MIC:
             self._on_transcribe_from_mic()
 
         elif self._transcribe_from_source == AudioSource.YOUTUBE:
-            print("TODO")
+            transcription.source = AudioSource.YOUTUBE
+            transcription.youtube_url = self.ent_path.get()
+
+            self._controller.prepare_for_transcription(transcription)
 
     def _on_save_transcription(self):
         self._controller.save_transcription()
