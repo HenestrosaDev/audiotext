@@ -77,10 +77,8 @@ class MainController:
             elif transcription.source == AudioSource.MIC:
                 threading.Thread(target=self._record_from_mic).start()
 
-        except Exception:
-            self.view.display_text(
-                _("Error generating the file transcription. Please try again.")
-            )
+        except Exception as e:
+            self._handle_exception(e)
 
     async def handle_transcription_process(self):
         self.view.handle_processing_transcription()
@@ -181,8 +179,8 @@ class MainController:
             self.transcription.text = text_combined
             self.view.display_text(self.transcription.text)
 
-        except Exception:
-            self.view.display_text(traceback.format_exc())
+        except Exception as e:
+            self._handle_exception(e)
 
     async def _transcribe_using_google_api(self):
         """
@@ -259,10 +257,7 @@ class MainController:
             self.transcription.text = transcription_text
 
         except Exception:
-            print(traceback.format_exc())
-            self.view.display_text(
-                _("Error generating the file transcription. Please try again.")
-            )
+            self.view.display_text(traceback.format_exc())
 
         finally:
             # Delete temporal directory and files
@@ -277,26 +272,33 @@ class MainController:
     def _record_from_mic(self):
         self._is_mic_recording = True
         audio_data = []
-        r = sr.Recognizer()
 
-        with sr.Microphone() as mic:
-            while self._is_mic_recording:
+        try:
+            r = sr.Recognizer()
+
+            with sr.Microphone() as mic:
+                while self._is_mic_recording:
                     audio_chunk = r.listen(mic, timeout=5)
-                audio_data.append(audio_chunk)
+                    audio_data.append(audio_chunk)
 
-        self.view.toggle_progress_bar_visibility(should_show=True)
+            if audio_data:
+                filename = "mic-output.wav"
+                au.save_audio_data(audio_data, filename=filename)
+                self.transcription.source_file_path = Path(filename)
 
-        if audio_data:
-            filename = "mic-output.wav"
-            au.save_audio_data(audio_data, filename=filename)
-            self.transcription.source_file_path = Path(filename)
+                threading.Thread(
+                    target=lambda loop: loop.run_until_complete(
+                        self.handle_transcription_process()
+                    ),
+                    args=(asyncio.new_event_loop(),),
+                ).start()
+            else:
+                e = ValueError("No audio detected")
+                self._handle_exception(e)
 
-            threading.Thread(
-                target=lambda loop: loop.run_until_complete(
-                    self.handle_transcription_process()
-                ),
-                args=(asyncio.new_event_loop(),),
-            ).start()
+        except Exception as e:
+            self.view.stop_recording_from_mic()
+            self._handle_exception(e)
 
     def _generate_subtitles(self, file_path):
         config_subtitles = cm.ConfigManager.get_config_subtitles()
