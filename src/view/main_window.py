@@ -175,7 +175,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.frm_transcribe_using.grid(row=2, column=0, padx=0, pady=(20, 0))
 
-				# 'Transcribe using' label
+        # 'Transcribe using' label
         self.lbl_transcribe_using = ctk.CTkLabel(
             master=self.frm_transcribe_using,
             text=_("Transcribe using"),
@@ -241,7 +241,7 @@ class MainWindow(ctk.CTkFrame):
             row=2, column=0, padx=20, pady=(10, 0), sticky=ctk.W
         )
 
-				## 'Show advanced options' button
+        ## 'Show advanced options' button
         self.btn_whisperx_show_advanced_options = ctk.CTkButton(
             master=self.frm_whisper_options,
             text=_("Show advanced options"),
@@ -263,7 +263,7 @@ class MainWindow(ctk.CTkFrame):
         # Hidden at first because WhisperX is the default transcription method
         self.frm_google_api_options.grid_remove()
 
-				## Title label
+        ## Title label
         self.lbl_google_api_options = ctk.CTkLabel(
             master=self.frm_google_api_options,
             text="Google API options",
@@ -271,7 +271,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_google_api_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
 
-				## 'Set API key' button
+        ## 'Set API key' button
         self.btn_set_google_api_key = ctk.CTkButton(
             master=self.frm_google_api_options,
             text=_("Set API key"),
