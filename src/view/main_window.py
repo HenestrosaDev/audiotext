@@ -45,6 +45,7 @@ class MainWindow(ctk.CTkFrame):
         self._init_main_content()
 
         # State
+        self._transcribe_from_source = AudioSource.FILE
         self._is_transcribing_from_mic = False
         self._is_file_selected = False
 
