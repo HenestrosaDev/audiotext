@@ -2,6 +2,7 @@ customtkinter~=5.2.1
 moviepy~=1.0.3
 pyaudio~=0.2.13
 pydub~=0.25.1
+pytube~=15.0.0
 SpeechRecognition~=3.9.0
 --index-url https://download.pytorch.org/whl/cu118
 torch==2.0.0
