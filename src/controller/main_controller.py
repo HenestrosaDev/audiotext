@@ -48,7 +48,6 @@ class MainController:
         )
 
         if filepath:
-            self.transcription.file_path_to_transcribe = Path(filepath)
             self.view.handle_select_file_success(filepath)
 
     def prepare_for_transcription(
@@ -117,7 +116,7 @@ class MainController:
             await self._transcribe_using_google_api()
 
         if self.transcription.source == AudioSource.MIC:
-            self.transcription.file_path_to_transcribe.unlink()  # Remove tmp file
+            self.transcription.source_file_path.unlink()  # Remove tmp file
 
         is_transcription_empty = not self.transcription.text
         self.view.handle_transcription_process_finish(is_transcription_empty)
@@ -130,7 +129,7 @@ class MainController:
         Prompts a file explorer to determine the file to save the
         generated transcription.
         """
-        file_path = Path(self.transcription.file_path_to_transcribe)
+        file_path = Path(self.transcription.source_file_path)
 
         file = filedialog.asksaveasfile(
             mode="w",
@@ -150,11 +149,9 @@ class MainController:
 
     # PRIVATE METHODS
 
-    def _is_file_valid(self, source):
-        if source == AudioSource.MIC:
-            return True
-
-        filepath = self.transcription.file_path_to_transcribe
+    @staticmethod
+    def _is_file_valid(source_file_path: str):
+        filepath = Path(source_file_path)
         is_audio = filepath.suffix in c.AUDIO_FILE_EXTENSIONS
         is_video = filepath.suffix in c.VIDEO_FILE_EXTENSIONS
 
@@ -175,7 +172,7 @@ class MainController:
                 language=self.transcription.language_code,
             )
 
-            audio_path = str(self.transcription.file_path_to_transcribe)
+            audio_path = str(self.transcription.source_file_path)
             audio = whisperx.load_audio(audio_path)
             self._whisperx_result = model.transcribe(
                 audio, batch_size=config_whisperx.batch_size
@@ -210,7 +207,7 @@ class MainController:
         Splits a large audio file into chunks
         and applies speech recognition on each one.
         """
-        file_path = self.transcription.file_path_to_transcribe
+        file_path = self.transcription.source_file_path
 
         # Can be the transcription or an error text
         transcription_text = ""
@@ -310,7 +307,7 @@ class MainController:
 
             filename = "mic-output.wav"
             au.save_audio_data(audio_data, filename=filename)
-            self.transcription.file_path_to_transcribe = Path(filename)
+            self.transcription.source_file_path = Path(filename)
 
             threading.Thread(
                 target=lambda loop: loop.run_until_complete(
