@@ -47,7 +47,6 @@ class MainWindow(ctk.CTkFrame):
         # State
         self._transcribe_from_source = AudioSource.FILE
         self._is_transcribing_from_mic = False
-        self._is_file_selected = False
 
         # To handle debouncing
         self._debouncing_delay = 600  # In milliseconds
@@ -121,7 +120,7 @@ class MainWindow(ctk.CTkFrame):
             text=_("Audio language"),
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_audio_language.grid(row=0, column=0, padx=0, pady=10)
+        self.lbl_audio_language.grid(row=0, column=0, padx=0, pady=(10, 0))
 
         self.omn_audio_language = ctk.CTkOptionMenu(master=self.frm_shared_options)
         CTkScrollableDropdown(
@@ -138,22 +137,20 @@ class MainWindow(ctk.CTkFrame):
             self.omn_audio_language.set("English")
 
         ## 'Transcribe from' option menu
-        self.btn_transcribe_from_mic = ctk.CTkButton(
+        self.lbl_transcribe_from = ctk.CTkLabel(
             master=self.frm_shared_options,
-            text=_("Transcribe from mic."),
-            command=lambda: self._on_transcribe_from_mic(),
+            text="Transcribe from",
+            font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.btn_transcribe_from_mic.grid(
-            row=2, column=0, padx=20, pady=(30, 0), sticky=ctk.EW
-        )
+        self.lbl_transcribe_from.grid(row=2, column=0, padx=0, pady=(15, 0))
 
-        # Select file button
-        self.btn_select_file = ctk.CTkButton(
+        self.omn_transcribe_from = ctk.CTkOptionMenu(
             master=self.frm_shared_options,
-            text=_("Select file"),
-            command=self._on_select_file,
+            values=[e.value for e in AudioSource],
+            command=self._on_change_transcribe_from_event,
         )
-        self.btn_select_file.grid(row=3, column=0, padx=20, pady=(30, 0), sticky=ctk.EW)
+        self.omn_transcribe_from.grid(row=3, column=0, padx=20, pady=0, sticky=ctk.EW)
+        self.omn_transcribe_from.set(AudioSource.FILE.value)
 
         ## 'Generate transcription' button
         self.btn_generate_transcription = ctk.CTkButton(
@@ -164,9 +161,8 @@ class MainWindow(ctk.CTkFrame):
             command=lambda: self._on_generate_transcription(),
         )
         self.btn_generate_transcription.grid(
-            row=4, column=0, padx=20, pady=20, sticky=ctk.EW
+            row=4, column=0, padx=20, pady=(25, 20), sticky=ctk.EW
         )
-        self.btn_generate_transcription.configure(state=ctk.DISABLED)
 
         # ------------------
 
@@ -574,6 +570,25 @@ class MainWindow(ctk.CTkFrame):
     def _on_change_app_language(self, language_name: str):
         self._controller.change_app_language(language_name)
 
+    def _on_change_transcribe_from_event(self, option: str):
+        self._transcribe_from_source = AudioSource(option)
+
+        if self._transcribe_from_source == AudioSource.FILE:
+            self.btn_generate_transcription.configure(text="Generate transcription")
+            self.lbl_path.configure(text="File path")
+            self.btn_file_explorer.grid()
+            self.frm_main_entry.grid()
+
+        elif self._transcribe_from_source == AudioSource.MIC:
+            self.btn_generate_transcription.configure(text="Start recording")
+            self.frm_main_entry.grid_remove()
+
+        elif self._transcribe_from_source == AudioSource.YOUTUBE:
+            self.btn_generate_transcription.configure(text="Generate transcription")
+            self.lbl_path.configure(text="YouTube video URL")
+            self.btn_file_explorer.grid_remove()
+            self.frm_main_entry.grid()
+
     def _on_select_file(self):
         self._controller.select_file()
 
@@ -699,13 +714,13 @@ class MainWindow(ctk.CTkFrame):
 
         # Disable action buttons to avoid multiple requests at the same time
         self.btn_generate_transcription.configure(state=ctk.DISABLED)
-        self.btn_transcribe_from_mic.configure(state=ctk.DISABLED)
 
     def handle_transcription_process_finish(self, is_transcription_empty):
-        # Re-enable action buttons
-        self.btn_transcribe_from_mic.configure(state=ctk.NORMAL)
-        if self._is_file_selected:
-            self.btn_generate_transcription.configure(state=ctk.NORMAL)
+        # Re-enable disabled widgets
+        self.ent_path.configure(state=ctk.NORMAL)
+        self.btn_generate_transcription.configure(state=ctk.NORMAL)
+        self.omn_transcribe_from.configure(state=ctk.DISABLED)
+        self.omn_audio_language.configure(state=ctk.DISABLED)
 
         # Remove progress bar
         self.toggle_progress_bar_visibility(should_show=False)
