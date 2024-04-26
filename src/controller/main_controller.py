@@ -125,6 +125,12 @@ class MainController:
 
     # PRIVATE METHODS
 
+
+    def _handle_exception(self, e: Exception):
+        print(traceback.format_exc())
+        self.view.on_processed_transcription(success=False)
+        self.view.display_text(repr(e))
+
     @staticmethod
     def _is_file_valid(source_file_path: str):
         filepath = Path(source_file_path)
