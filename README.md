@@ -27,7 +27,7 @@
     <img src="docs/light/icon.png" alt="Logo" width="128" height="128">
   </picture>
   <h1 align="center">Audiotext</h1>
-  <p align="center">A desktop application that transcribes files, microphone input or YouTube videos. It offers the option to translate the content and generate subtitles.</p>
+  <p align="center">A desktop application that transcribes files, microphone input or YouTube videos with the option to translate the content and create subtitles.</p>
   <p>
     <a href="https://github.com/HenestrosaDev/audiotext/stargazers">
       <img 
