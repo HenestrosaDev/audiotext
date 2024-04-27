@@ -631,7 +631,7 @@ class MainWindow(ctk.CTkFrame):
 
     def _on_transcribe_from_mic(self):
         if self._is_transcribing_from_mic:
-            self._stop_recording_from_mic()
+            self.stop_recording_from_mic()
         else:
             self._start_recording_from_mic()
 
