@@ -339,10 +339,9 @@ You can also choose the theme you like best. It can be dark, light, or the one c
     # on Windows using Scoop (https://scoop.sh/)
     scoop install ffmpeg
     ```
-
 2. Go to [releases](https://github.com/HenestrosaDev/audiotext/releases) and download the latest.
 3. Decompress the downloaded file.
-4. Open the `audiotext` folder and double-click the `Audiotext` executable file (`.exe` for Windows and `.app` for macOS).
+4. Open the `audiotext` folder and double-click the `Audiotext` executable file.
 
 ### To Set Up the Project Locally 
 1. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
@@ -352,18 +351,21 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    ```bash
    # on Windows
    . venv/Scripts/activate
+   # if you get the error `FullyQualifiedErrorId : UnauthorizedAccess`, run this:
+   Set-ExecutionPolicy Unrestricted -Scope Process
+   # and then . venv/Scripts/activate
    
    # on macOS and Linux
    source venv/Scripts/activate
    ```
-5. Run `pip install -r requirements.txt` to install the dependencies.
+5. Run `cat requirements.txt | xargs -n 1 pip install` to install the dependencies.
+   >For some reason, `pip install -r requirements.txt` throws the error "Could not find a version that satisfies the requirement [PACKAGE_NAME]==[PACKAGE_VERSION] (from version: none)"
 6. Run `python src/app.py` to start the program.
-
->**IMPORTANT NOTE**: I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
 
 ### Notes
 - You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
 - For **Mac computers with Apple silicon**: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
+- I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
