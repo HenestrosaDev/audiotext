@@ -455,7 +455,6 @@ You can transcribe from three audio sources:
   <!-- english.mp4 -->
   https://github.com/HenestrosaDev/audiotext/assets/60482743/bd0323d7-ff54-4363-8b73-a2d56e7f783b
   
-  > [!NOTE]
   >Video from v2.1.0
 
 - **YouTube video**: Enter the video URL in the upper input field. When finished, click on the `Generate transcription` button.
