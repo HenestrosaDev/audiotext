@@ -80,6 +80,7 @@
 ## Table of Contents
 
 - [About the Project](#about-the-project)
+    - [Supported Languages](#supported-languages)
     - [Project Structure](#project-structure)
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
@@ -117,8 +118,14 @@
 
 **Audiotext** transcribes the audio from an audio file, video file, microphone input, or YouTube video into one of the 74 different languages it supports, along with some of their dialects. You can transcribe using the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text) or [**WhisperX**](https://github.com/m-bain/whisperX), which can even translate the transcription or generate subtitles!
 
+You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
+
+<!-- SUPPORTED LANGUAGES -->
+
+### Supported languages
+
 <details>
-  <summary>List of supported languages</summary>
+  <summary>Click here to display</summary>
 
   - Afrikaans  
   - Amharic (አማርኛ)  
@@ -195,8 +202,6 @@
   - Vietnamese (Tiếng Việt)  
   - Zulu (Isizulu)  
 </details>
-
-You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
 
 <!-- PROJECT STRUCTURE -->
 
