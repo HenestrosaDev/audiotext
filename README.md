@@ -364,6 +364,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    source venv/Scripts/activate
    ```
 5. Run `cat requirements.txt | xargs -n 1 pip install` to install the dependencies.
+   > [!WARNING]
    >For some reason, `pip install -r requirements.txt` throws the error "Could not find a version that satisfies the requirement [PACKAGE_NAME]==[PACKAGE_VERSION] (from version: none)"
 6. Run `python src/app.py` to start the program.
 
@@ -593,6 +594,7 @@ There are five main model sizes that offer tradeoffs between speed and accuracy.
 | `medium` |   769 M    |     ~5 GB      |
 | `large`  |   1550 M   |     <8 GB      |
 
+> [!NOTE]
 >`large` is divided into three versions: `large-v1`, `large-v2`, and `large-v3`. The default model size is `large-v2`, since `large-v3` has some bugs that weren't as common in `large-v2`, such as hallucination and repetition, especially for certain languages like Japanese. There are also more prevalent problems with missing punctuation and capitalization. See the announcements for the [`large-v2`](https://github.com/openai/whisper/discussions/661) and the [`large-v3`](https://github.com/openai/whisper/discussions/1762) models for more insight into their differences and the issues encountered with each.
 
 The larger the model size, the lower the WER (Word Error Rate in %). The table below is taken from [this Medium article](https://blog.ml6.eu/fine-tuning-whisper-for-dutch-language-the-crucial-role-of-size-dd5a7012d45f), which analyzes the performance of pre-trained Whisper models on common Dutch speech.
