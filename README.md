@@ -694,6 +694,7 @@ The program supports three appearance modes:
 - [x] Add subtitle options.
 - [x] Add advanced options for **WhisperX**.
 - [x] Add the option to transcribe YouTube videos.
+- [ ] Change the "Generate transcription" button to "Cancel transcription" when a transcription is in progress.
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
 - [ ] Add tests.
