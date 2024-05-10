@@ -85,7 +85,7 @@
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
     - [Installation](#installation)
-    - [To Set Up the Project Locally](#to-set-up-the-project-locally)
+    - [Set Up the Project Locally](#set-up-the-project-locally)
     - [Notes](#notes) 
 - [Usage](#usage)
     - [Transcribe From](#transcribe-from)
@@ -348,7 +348,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 3. Decompress the downloaded file.
 4. Open the `audiotext` folder and double-click the `Audiotext` executable file.
 
-### To Set Up the Project Locally 
+### Set Up the Project Locally 
 1. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
 2. Change the current working directory to `audiotext` by running `cd audiotext`.
 3. (Optional but recommended) Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`.
