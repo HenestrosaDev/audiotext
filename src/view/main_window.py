@@ -127,7 +127,7 @@ class MainWindow(ctk.CTkFrame):
         self.omn_audio_language = ctk.CTkOptionMenu(master=self.frm_shared_options)
         CTkScrollableDropdown(
             attach=self.omn_audio_language,
-            values=list(c.AUDIO_LANGUAGES.values()),
+            values=sorted(list(c.AUDIO_LANGUAGES.values())),
             alpha=1,
         )
         self.omn_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.EW)
