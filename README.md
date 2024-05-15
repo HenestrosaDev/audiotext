@@ -116,7 +116,7 @@
 
 ![Main](docs/main-system.png)
 
-**Audiotext** transcribes the audio from an audio file, video file, microphone input, or YouTube video into one of the 74 different languages it supports, along with some of their dialects. You can transcribe using the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text) or [**WhisperX**](https://github.com/m-bain/whisperX), which can even translate the transcription or generate subtitles!
+**Audiotext** transcribes the audio from an audio file, video file, microphone input, or YouTube video into one of the 99 different languages it supports. You can transcribe using the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text) or [**WhisperX**](https://github.com/m-bain/whisperX), which can even translate the transcription or generate subtitles!
 
 You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
 
@@ -127,80 +127,106 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 <details>
   <summary>Click here to display</summary>
 
-  - Afrikaans  
-  - Amharic (አማርኛ)  
-  - Arabic (لعربية)  
-  - Armenian (հայերեն)  
-  - Azerbaijan (Azərbaycan)  
-  - Basque (Euskara)  
-  - Belarusian (беларуская)  
-  - Bengali (বাংলা)  
-  - Bulgarian (Български)  
-  - Catalan (Català)  
-  - Chinese (China) (中文（中国）)  
-  - Chinese (Hong Kong) (中文（香港)  
-  - Chinese (Taiwan) (中文（台灣）)  
-  - Croatian (Hrvatski)  
-  - Czech (Čeština)  
-  - Danish (Dansk)  
-  - Dutch (Nederlands)  
-  - English  
-  - Estonian (Eesti keel)  
-  - Farsi (فارسی)  
-  - Filipino  
-  - Finnish (Suomi)  
-  - French (Français)  
-  - Galician (Galego)  
-  - Georgian (ქართული)  
-  - German (Deutsch)  
-  - German (Swiss Standard) (Schweizer Hochdeutsch)  
-  - Greek (Ελληνικά)  
-  - Gujarati (ગુજરાતી)  
-  - Hebrew (עברית)  
-  - Hindi (हिन्दी)  
-  - Hungarian (Magyar)  
-  - Icelandic (Íslenska)  
-  - Indonesian (Bahasa Indonesia)  
-  - Italian (Italiano)  
-  - Swiss Italian (Italiano (Svizzera))  
-  - Japanese (日本語)  
-  - Javanese (Basa Jawa)  
-  - Kannada (ಕನ್ನಡ)  
-  - Kazakh (Қазақ)  
-  - Khmer (ខ្មែរ)  
-  - Korean (한국어)  
-  - Lao (ລາວ)  
-  - Latvian (Latviešu)  
-  - Lithuanian (Lietuvių)  
-  - Malay (Bahasa Melayu)  
-  - Malayalam (മലയാളം)  
-  - Maltese (Malti)  
-  - Marathi (मराठी)  
-  - Mongolian (Монгол)  
-  - Nepali (नेपाली)  
-  - Norwegian (Bokmål)  
-  - Norwegian Nynorsk (Norsk (Nynorsk))  
-  - Polish (Polski)  
-  - Portuguese (Português)  
-  - Punjabi (ਪੰਜਾਬੀ)  
-  - Romanian (Română)  
-  - Russian (Русский)  
-  - Serbian (Српски)  
-  - Sinhala (සිංහල)  
-  - Slovak (Slovenčina)  
-  - Slovenian (Slovenščina)  
-  - Spanish (Español)  
-  - Sundanese (Basa Sunda)  
-  - Swahili (Kiswahili)  
-  - Swedish (Svenska)  
-  - Tamil (தமிழ்)  
-  - Telugu (తెలుగు)  
-  - Thai (ไทย)  
-  - Turkish (Türkçe)  
-  - Ukrainian (Українська)  
-  - Urdu (اردو)  
-  - Vietnamese (Tiếng Việt)  
-  - Zulu (Isizulu)  
+  - Afrikaans
+  - Albanian
+  - Amharic
+  - Arabic
+  - Armenian
+  - Assamese
+  - Azerbaijan
+  - Bashkir
+  - Basque
+  - Belarusian
+  - Bengali
+  - Bosnian
+  - Breton
+  - Bulgarian
+  - Burmese
+  - Catalan
+  - Chinese
+  - Chinese (Yue)
+  - Croatian
+  - Czech
+  - Danish
+  - Dutch
+  - English
+  - Estonian
+  - Faroese
+  - Farsi
+  - Finnish
+  - French
+  - Galician
+  - Georgian
+  - German
+  - Greek
+  - Gujarati
+  - Haitian
+  - Hausa
+  - Hawaiian
+  - Hebrew
+  - Hindi
+  - Hungarian
+  - Icelandic
+  - Indonesian
+  - Italian
+  - Japanese
+  - Javanese
+  - Kannada
+  - Kazakh
+  - Khmer
+  - Korean
+  - Lao
+  - Latin
+  - Latvian
+  - Lingala
+  - Lithuanian
+  - Luxembourgish
+  - Macedonian
+  - Malagasy
+  - Malay
+  - Malayalam
+  - Maltese
+  - Maori
+  - Marathi
+  - Mongolian
+  - Nepali
+  - Norwegian
+  - Norwegian Nynorsk
+  - Occitan
+  - Pashto
+  - Polish
+  - Português
+  - Punjabi
+  - Romanian
+  - Russian
+  - Sanskrit
+  - Serbian
+  - Shona
+  - Sindhi
+  - Sinhala
+  - Slovak
+  - Slovenian
+  - Somali
+  - Spanish
+  - Sundanese
+  - Swahili
+  - Swedish
+  - Tagalog
+  - Tajik
+  - Tamil
+  - Tatar
+  - Telugu
+  - Thai
+  - Tibetan
+  - Turkish
+  - Turkmen
+  - Ukrainian
+  - Urdu
+  - Uzbek
+  - Vietnamese
+  - Welsh
+  - Yiddish
+  - Yoruba
 </details>
 
 <!-- PROJECT STRUCTURE -->
