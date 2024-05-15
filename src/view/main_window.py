@@ -494,7 +494,7 @@ class MainWindow(ctk.CTkFrame):
         ## Info label
         self.lbl_info = ctk.CTkLabel(
             master=self.frm_sidebar,
-            text="v2.2.0 | Made by HenestrosaDev",
+            text="v2.2.1 | Made by HenestrosaDev",
             font=ctk.CTkFont(size=12),
         )
         self.lbl_info.grid(row=14, column=0, padx=20, pady=(5, 10))
