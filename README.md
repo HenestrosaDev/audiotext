@@ -725,7 +725,9 @@ Remember that **WhisperX** provides fast, unlimited audio transcription that sup
 - [x] Add subtitle options.
 - [x] Add advanced options for **WhisperX**.
 - [x] Add the option to transcribe YouTube videos.
+- [ ] Add checkbox to automatically save the generated transcription [(#17)](https://github.com/HenestrosaDev/audiotext/issues/17).
 - [ ] Change the "Generate transcription" button to "Cancel transcription" when a transcription is in progress.
+- [ ] Allow transcription of multiple files at once [(#17)](https://github.com/HenestrosaDev/audiotext/issues/17).
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
 - [ ] Add tests.
