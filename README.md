@@ -100,8 +100,7 @@
         - [Batch Size](#batch-size)
         - [Use CPU](#use-cpu)
     - [Google Speech-To-Text API Options](#google-speech-to-text-api-options)
-        - [API Key](#api-key) 
-    - [Appearance Mode](#appearance-mode)
+        - [API Key](#api-key)
     - [Troubleshooting](#troubleshooting)
 - [Roadmap](#roadmap)
 - [Authors](#authors)
@@ -119,6 +118,16 @@
 **Audiotext** transcribes the audio from an audio file, video file, microphone input, or YouTube video into one of the 99 different languages it supports. You can transcribe using the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text) or [**WhisperX**](https://github.com/m-bain/whisperX), which can even translate the transcription or generate subtitles!
 
 You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
+
+<details>
+  <summary>Dark</summary>
+  <img src="docs/dark/main.png" alt="Dark theme">
+</details>
+
+<details>
+  <summary>Light</summary>
+  <img src="docs/light/main.png" alt="Light theme">
+</details>
 
 <!-- SUPPORTED LANGUAGES -->
 
@@ -692,25 +701,6 @@ Since the program uses the free **Google API** tier by default, which allows you
 </p>
 
 Remember that **WhisperX** provides fast, unlimited audio transcription that supports translation and subtitle generation for free, unlike the **Google API**. Also note that Google charges for the use of the API key, for which **Audiotext** is not responsible.
-
-### Appearance Mode
-
-The program supports three appearance modes:
-
-<details>
-  <summary>System (default)</summary>
-  <img src="docs/main-system.png" alt="System">
-</details>
-
-<details>
-  <summary>Dark</summary>
-  <img src="docs/dark/main.png" alt="Dark theme">
-</details>
-
-<details>
-  <summary>Light</summary>
-  <img src="docs/light/main.png" alt="Light theme">
-</details>
 
 ### Troubleshooting
 
