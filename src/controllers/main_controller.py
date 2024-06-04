@@ -81,8 +81,14 @@ class MainController:
             elif self.transcription.method == TranscriptionMethod.GOOGLE_API.value:
                 await self._transcribe_using_google_api()
 
-            if self.transcription.source in (AudioSource.MIC, AudioSource.YOUTUBE):
+            if self.transcription.source in [AudioSource.MIC, AudioSource.YOUTUBE]:
                 self.transcription.source_file_path.unlink()  # Remove tmp file
+
+            if self.transcription.should_autosave:
+                self.save_transcription(
+                    should_autosave=True,
+                    should_overwrite=self.transcription.should_overwrite,
+                )
 
         except Exception as e:
             self._handle_exception(e)
@@ -94,28 +100,35 @@ class MainController:
     def stop_recording_from_mic(self):
         self._is_mic_recording = False
 
-    def save_transcription(self):
+    def save_transcription(self, should_autosave: bool, should_overwrite: bool):
         """
         Prompts a file explorer to determine the file to save the
         generated transcription.
         """
         file_path = Path(self.transcription.source_file_path)
+        file_dir = file_path.parent
+        txt_file_name = f"{file_path.stem}.txt"
 
-        file = filedialog.asksaveasfile(
-            mode="w",
-            initialdir=file_path.parent,
-            initialfile=f"{file_path.stem}.txt",
-            title=_("Save as"),
-            defaultextension=".txt",
-            filetypes=[(_("Text file"), "*.txt"), (_("All Files"), "*.*")],
-        )
+        if should_autosave:
+            txt_file_path = file_path.parent / txt_file_name
+        else:
+            txt_file_path = filedialog.asksaveasfilename(
+                initialdir=file_dir,
+                initialfile=txt_file_name,
+                title=_("Save as"),
+                defaultextension=".txt",
+                filetypes=[(_("Text file"), "*.txt"), (_("All Files"), "*.*")],
+            )
 
-        if file:
-            file.write(self.transcription.text)
-            file.close()
+        if not txt_file_path:
+            return
 
-            if self.transcription.should_subtitle:
-                self._generate_subtitles(Path(file.name))
+        if should_overwrite or not os.path.exists(txt_file_path):
+            with open(txt_file_path, "w") as txt_file:
+                txt_file.write(self.transcription.text)
+
+        if self.transcription.should_subtitle:
+            self._generate_subtitles(Path(txt_file_path), should_overwrite)
 
     # PRIVATE METHODS
 
@@ -311,24 +324,27 @@ class MainController:
             self.view.stop_recording_from_mic()
             self._handle_exception(e)
 
-    def _generate_subtitles(self, file_path):
+    def _generate_subtitles(self, file_path: Path, should_overwrite: bool):
         config_subtitles = cm.ConfigManager.get_config_subtitles()
 
         output_formats = ["srt", "vtt"]
         output_dir = file_path.parent
 
         for output_format in output_formats:
-            writer = whisperx.transcribe.get_writer(output_format, output_dir)
-            writer_args = {
-                "highlight_words": config_subtitles.highlight_words,
-                "max_line_count": config_subtitles.max_line_count,
-                "max_line_width": config_subtitles.max_line_width,
-            }
+            path_to_check = file_path.parent / f"{file_path.stem}.{output_format}"
 
-            # https://github.com/m-bain/whisperX/issues/455#issuecomment-1707547704
-            self._whisperx_result["language"] = "en"
+            if should_overwrite or not os.path.exists(path_to_check):
+                writer = whisperx.transcribe.get_writer(output_format, str(output_dir))
+                writer_args = {
+                    "highlight_words": config_subtitles.highlight_words,
+                    "max_line_count": config_subtitles.max_line_count,
+                    "max_line_width": config_subtitles.max_line_width,
+                }
 
-            writer(self._whisperx_result, file_path, writer_args)
+                # https://github.com/m-bain/whisperX/issues/455#issuecomment-1707547704
+                self._whisperx_result["language"] = "en"
+
+                writer(self._whisperx_result, file_path, writer_args)
 
     def _download_audio_from_yt_video(self):
         try:
