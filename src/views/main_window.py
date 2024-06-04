@@ -538,15 +538,38 @@ class MainWindow(ctk.CTkFrame):
         self.progress_bar = ctk.CTkProgressBar(master=self)
         self.progress_bar.configure(mode="indeterminate")
 
+        # Save options frame
+        self.frm_save_options = ctk.CTkFrame(master=self, fg_color="transparent")
+        self.frm_save_options.grid(
+            row=3, column=1, padx=20, pady=(0, 20), sticky=ctk.EW
+        )
+        self.frm_save_options.grid_columnconfigure(0, weight=1)
+
         ## 'Save transcription' button
         self.btn_save = ctk.CTkButton(
-            master=self,
+            master=self.frm_save_options,
             fg_color="green",
             hover_color="darkgreen",
             text=_("Save transcription"),
             command=self._on_save_transcription,
         )
-        self.btn_save.grid(row=3, column=1, padx=20, pady=(0, 20), sticky=ctk.EW)
+        self.btn_save.grid(row=0, column=0, padx=0, pady=0, sticky=ctk.EW)
+
+        ## 'Autosave' checkbox
+        self.chk_autosave = ctk.CTkCheckBox(
+            master=self.frm_save_options,
+            text="Autosave",
+            command=self._on_autosave_change,
+        )
+        self.chk_autosave.grid(row=0, column=1, padx=(20, 10), pady=0)
+
+        ## 'Overwrite files' checkbox
+        self.chk_overwrite_files = ctk.CTkCheckBox(
+            master=self.frm_save_options,
+            text="Overwrite existing files",
+        )
+        self.chk_overwrite_files.grid(row=0, column=2, padx=0, pady=0)
+        self.chk_overwrite_files.configure(state=ctk.DISABLED)
 
     # PUBLIC METHODS
 
@@ -658,6 +681,8 @@ class MainWindow(ctk.CTkFrame):
             source=AudioSource.MIC,
             language_code=self._get_language_code(),
             method=self.radio_var.get(),
+            should_autosave=self.chk_autosave.get() == 1,
+            should_overwrite=self.chk_overwrite_files.get() == 1,
             **self._get_whisperx_args(),
         )
         self._controller.prepare_for_transcription(transcription)
@@ -670,6 +695,8 @@ class MainWindow(ctk.CTkFrame):
         transcription = Transcription(
             language_code=self._get_language_code(),
             method=self.radio_var.get(),
+            should_autosave=self.chk_autosave.get() == 1,
+            should_overwrite=self.chk_overwrite_files.get() == 1,
             **self._get_whisperx_args(),
         )
 
@@ -689,7 +716,9 @@ class MainWindow(ctk.CTkFrame):
             self._controller.prepare_for_transcription(transcription)
 
     def _on_save_transcription(self):
-        self._controller.save_transcription()
+        self._controller.save_transcription(
+            should_autosave=False, should_overwrite=False
+        )
 
     def _on_transcribe_using_change(self):
         if self.radio_var.get() == TranscriptionMethod.WHISPERX.value:
@@ -746,6 +775,13 @@ class MainWindow(ctk.CTkFrame):
             self.btn_whisperx_show_advanced_options.configure(
                 text=_("Hide advanced options")
             )
+
+    def _on_autosave_change(self):
+        if self.chk_autosave.get():
+            self.chk_overwrite_files.configure(state=ctk.NORMAL)
+        else:
+            self.chk_overwrite_files.deselect()
+            self.chk_overwrite_files.configure(state=ctk.DISABLED)
 
     def _toggle_progress_bar_visibility(self, should_show):
         if should_show:

@@ -14,4 +14,6 @@ class Transcription:
     method: Optional[int] = None
     should_translate: bool = False
     should_subtitle: bool = False
+    should_autosave: bool = False
+    should_overwrite: bool = False
     youtube_url: str = None
