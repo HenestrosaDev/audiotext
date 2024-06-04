@@ -577,7 +577,17 @@ class MainWindow(ctk.CTkFrame):
 
         self._toggle_progress_bar_visibility(should_show=False)
 
-    # HELPER METHODS
+    def stop_recording_from_mic(self):
+        self._is_transcribing_from_mic = False
+
+        self.btn_generate_transcription.configure(
+            fg_color="green",
+            hover_color="darkgreen",
+            text="Start recording",
+            state=ctk.DISABLED,
+        )
+
+        self._controller.stop_recording_from_mic()
 
     def display_text(self, text):
         self.tbx_transcription.delete("1.0", ctk.END)
@@ -651,18 +661,6 @@ class MainWindow(ctk.CTkFrame):
             **self._get_whisperx_args(),
         )
         self._controller.prepare_for_transcription(transcription)
-
-    def stop_recording_from_mic(self):
-        self._is_transcribing_from_mic = False
-
-        self.btn_generate_transcription.configure(
-            fg_color="green",
-            hover_color="darkgreen",
-            text="Start recording",
-            state=ctk.DISABLED,
-        )
-
-        self._controller.stop_recording_from_mic()
 
     def _on_generate_transcription(self):
         self.ent_path.configure(state=ctk.DISABLED)
