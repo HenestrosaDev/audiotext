@@ -34,9 +34,8 @@ class MainController:
     def select_file(self):
         """
         Prompts a file explorer to determine the audio/video file path to transcribe.
-        Stores the filepath in the class variable filepath_to_transcribe.
         """
-        filepath = filedialog.askopenfilename(
+        file_path = filedialog.askopenfilename(
             initialdir="/",
             title=_("Select a file"),
             filetypes=[
@@ -49,8 +48,17 @@ class MainController:
             ],
         )
 
-        if filepath:
-            self.view.on_select_file_success(filepath)
+        if file_path:
+            self.view.on_select_path_success(file_path)
+
+    def select_directory(self):
+        """
+        Prompts a file explorer to determine the folder path to transcribe.
+        """
+        dir_path = filedialog.askdirectory()
+
+        if dir_path:
+            self.view.on_select_path_success(dir_path)
 
     def prepare_for_transcription(self, transcription: Transcription):
         """
@@ -64,7 +72,11 @@ class MainController:
             self.view.on_processing_transcription()
 
             if transcription.source == AudioSource.FILE:
-                self._prepare_for_file_transcription(transcription.source_file_path)
+                self._prepare_for_file_transcription(transcription.source_path)
+            elif transcription.source == AudioSource.DIRECTORY:
+                self._prepare_for_directory_files_transcription(
+                    transcription.source_path
+                )
             elif transcription.source == AudioSource.MIC:
                 self._prepare_for_mic_transcription()
             elif transcription.source == AudioSource.YOUTUBE:
@@ -73,22 +85,28 @@ class MainController:
         except Exception as e:
             self._handle_exception(e)
 
-    async def handle_transcription_process(self):
+    async def _handle_transcription_process(self):
         try:
-            # Get transcription
-            if self.transcription.method == TranscriptionMethod.WHISPERX.value:
-                await self._transcribe_using_whisperx()
-            elif self.transcription.method == TranscriptionMethod.GOOGLE_API.value:
-                await self._transcribe_using_google_api()
+            path = self.transcription.source_path
 
-            if self.transcription.source in [AudioSource.MIC, AudioSource.YOUTUBE]:
-                self.transcription.source_file_path.unlink()  # Remove tmp file
+            if self.transcription.source == AudioSource.DIRECTORY:
+                if files := self._get_transcribable_files_from_dir(path):
+                    # Create a list of coroutines for each file transcription task
+                    tasks = [self._transcribe_file(file) for file in files]
 
-            if self.transcription.should_autosave:
-                self.save_transcription(
-                    should_autosave=True,
-                    should_overwrite=self.transcription.should_overwrite,
-                )
+                    # Run all tasks concurrently
+                    await asyncio.gather(*tasks)
+
+                    self.view.display_text(
+                        f"Files from '{path}' successfully " f"transcribed."
+                    )
+                else:
+                    raise ValueError(
+                        "Error: The directory path is invalid or doesn't contain valid "
+                        "file types to transcribe. Please choose another one."
+                    )
+            else:
+                await self._transcribe_file(path)
 
         except Exception as e:
             self._handle_exception(e)
@@ -97,15 +115,32 @@ class MainController:
             is_transcription_empty = not self.transcription.text
             self.view.on_processed_transcription(success=is_transcription_empty)
 
+    async def _transcribe_file(self, file_path: Path):
+        if self.transcription.method == TranscriptionMethod.WHISPERX.value:
+            await self._transcribe_using_whisperx(file_path)
+        elif self.transcription.method == TranscriptionMethod.GOOGLE_API.value:
+            await self._transcribe_using_google_api(file_path)
+
+        if self.transcription.source in [AudioSource.MIC, AudioSource.YOUTUBE]:
+            self.transcription.source_path.unlink()  # Remove tmp file
+
+        if self.transcription.should_autosave:
+            self.save_transcription(
+                file_path,
+                should_autosave=True,
+                should_overwrite=self.transcription.should_overwrite,
+            )
+
     def stop_recording_from_mic(self):
         self._is_mic_recording = False
 
-    def save_transcription(self, should_autosave: bool, should_overwrite: bool):
+    def save_transcription(
+        self, file_path: Path, should_autosave: bool, should_overwrite: bool
+    ):
         """
         Prompts a file explorer to determine the file to save the
         generated transcription.
         """
-        file_path = Path(self.transcription.source_file_path)
         file_dir = file_path.parent
         txt_file_name = f"{file_path.stem}.txt"
 
@@ -132,18 +167,28 @@ class MainController:
 
     # PRIVATE METHODS
 
-    def _prepare_for_file_transcription(self, source_file_path: str):
+    def _prepare_for_file_transcription(self, source_file_path: Path):
         if self._is_file_valid(source_file_path):
-            self.transcription.source_file_path = Path(source_file_path)
+            self.transcription.source_path = source_file_path
 
             threading.Thread(
                 target=lambda loop: loop.run_until_complete(
-                    self.handle_transcription_process()
+                    self._handle_transcription_process()
                 ),
                 args=(asyncio.new_event_loop(),),
             ).start()
         else:
             raise ValueError("Error: No valid file selected.")
+
+    def _prepare_for_directory_files_transcription(self, dir_path: Path):
+        self.transcription.source_path = dir_path
+
+        threading.Thread(
+            target=lambda loop: loop.run_until_complete(
+                self._handle_transcription_process()
+            ),
+            args=(asyncio.new_event_loop(),),
+        ).start()
 
     def _prepare_for_mic_transcription(self):
         threading.Thread(target=self._record_from_mic).start()
@@ -157,14 +202,24 @@ class MainController:
         self.view.display_text(repr(e))
 
     @staticmethod
-    def _is_file_valid(source_file_path: str):
-        filepath = Path(source_file_path)
-        is_audio = filepath.suffix in c.AUDIO_FILE_EXTENSIONS
-        is_video = filepath.suffix in c.VIDEO_FILE_EXTENSIONS
+    def _is_file_valid(file_path: Path) -> bool:
+        is_audio = file_path.suffix in c.AUDIO_FILE_EXTENSIONS
+        is_video = file_path.suffix in c.VIDEO_FILE_EXTENSIONS
 
-        return filepath.is_file() and (is_audio or is_video)
+        return file_path.is_file() and (is_audio or is_video)
 
-    async def _transcribe_using_whisperx(self):
+    @staticmethod
+    def _get_transcribable_files_from_dir(dir_path: Path) -> list[Path]:
+        matching_extensions = c.AUDIO_FILE_EXTENSIONS + c.VIDEO_FILE_EXTENSIONS
+        matching_files = []
+        for root, _, files in os.walk(dir_path):
+            for file in files:
+                if any(file.endswith(ext) for ext in matching_extensions):
+                    matching_files.append(Path(root) / file)
+
+        return matching_files
+
+    async def _transcribe_using_whisperx(self, file_path: Path):
         config_whisperx = cm.ConfigManager.get_config_whisperx()
 
         device = "cpu" if config_whisperx.use_cpu else "cuda"
@@ -179,7 +234,7 @@ class MainController:
                 language=self.transcription.language_code,
             )
 
-            audio_path = str(self.transcription.source_file_path)
+            audio_path = str(file_path)
             audio = whisperx.load_audio(audio_path)
             self._whisperx_result = model.transcribe(
                 audio, batch_size=config_whisperx.batch_size
@@ -204,18 +259,18 @@ class MainController:
                 )
 
             self.transcription.text = text_combined
-            self.view.display_text(self.transcription.text)
+
+            if self.transcription.source != AudioSource.DIRECTORY:
+                self.view.display_text(self.transcription.text)
 
         except Exception as e:
             self._handle_exception(e)
 
-    async def _transcribe_using_google_api(self):
+    async def _transcribe_using_google_api(self, file_path: Path):
         """
         Splits a large audio file into chunks
         and applies speech recognition on each one.
         """
-        file_path = self.transcription.source_file_path
-
         # Can be the transcription or an error text
         transcription_text = ""
 
@@ -290,7 +345,8 @@ class MainController:
             # Delete temporal directory and files
             shutil.rmtree(chunks_directory)
 
-            if self.transcription.text:
+            is_not_dir = self.transcription.source != AudioSource.DIRECTORY
+            if self.transcription.text and is_not_dir:
                 self.view.display_text(self.transcription.text)
 
     def _record_from_mic(self):
@@ -308,11 +364,11 @@ class MainController:
             if audio_data:
                 filename = "mic-output.wav"
                 au.save_audio_data(audio_data, filename=filename)
-                self.transcription.source_file_path = Path(filename)
+                self.transcription.source_path = Path(filename)
 
                 threading.Thread(
                     target=lambda loop: loop.run_until_complete(
-                        self.handle_transcription_process()
+                        self._handle_transcription_process()
                     ),
                     args=(asyncio.new_event_loop(),),
                 ).start()
@@ -353,11 +409,11 @@ class MainController:
             output_file = stream.download(output_path=".", filename="yt-audio.mp3")
 
             if output_file:
-                self.transcription.source_file_path = Path(output_file)
+                self.transcription.source_path = Path(output_file)
 
                 threading.Thread(
                     target=lambda loop: loop.run_until_complete(
-                        self.handle_transcription_process()
+                        self._handle_transcription_process()
                     ),
                     args=(asyncio.new_event_loop(),),
                 ).start()
