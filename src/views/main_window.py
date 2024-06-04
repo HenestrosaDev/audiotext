@@ -149,7 +149,7 @@ class MainWindow(ctk.CTkFrame):
         self.omn_transcribe_from = ctk.CTkOptionMenu(
             master=self.frm_shared_options,
             values=[e.value for e in AudioSource],
-            command=self._on_change_transcribe_from_event,
+            command=self._on_transcribe_from_change,
         )
         self.omn_transcribe_from.grid(row=3, column=0, padx=20, pady=0, sticky=ctk.EW)
         self.omn_transcribe_from.set(AudioSource.FILE.value)
@@ -224,7 +224,7 @@ class MainWindow(ctk.CTkFrame):
         self.chk_whisper_options_translate = ctk.CTkCheckBox(
             master=self.frm_whisper_options,
             text="Translate to English",
-            command=self._on_chk_whisper_options_translate_change,
+            command=self._on_whisper_options_translate_change,
         )
         self.chk_whisper_options_translate.grid(
             row=1, column=0, padx=20, pady=0, sticky=ctk.W
@@ -274,7 +274,7 @@ class MainWindow(ctk.CTkFrame):
         self.btn_set_google_api_key = ctk.CTkButton(
             master=self.frm_google_api_options,
             text=_("Set API key"),
-            command=self._on_set_google_api_key,
+            command=self._on_google_api_key_set,
         )
         self.btn_set_google_api_key.grid(
             row=1, column=0, padx=20, pady=(0, 20), sticky=ctk.EW
@@ -603,10 +603,7 @@ class MainWindow(ctk.CTkFrame):
             delay, lambda: callback(section, key, variable.get())
         )
 
-    def _on_change_app_language(self, language_name: str):
-        self._controller.change_app_language(language_name)
-
-    def _on_change_transcribe_from_event(self, option: str):
+    def _on_transcribe_from_change(self, option: str):
         self._transcribe_from_source = AudioSource(option)
         self.ent_path.configure(textvariable=ctk.StringVar(self, ""))
 
@@ -708,7 +705,7 @@ class MainWindow(ctk.CTkFrame):
             )
             self.frm_google_api_options.grid()
 
-    def _on_set_google_api_key(self):
+    def _on_google_api_key_set(self):
         old_api_key = self._config_google_api.api_key
 
         dialog = CTkInputDialog(
@@ -726,7 +723,7 @@ class MainWindow(ctk.CTkFrame):
                 new_value=new_api_key.strip(),
             )
 
-    def _on_chk_whisper_options_translate_change(self):
+    def _on_whisper_options_translate_change(self):
         if self.chk_whisper_options_translate.get():
             self.chk_whisper_options_subtitles.deselect()
             self.chk_whisper_options_subtitles.configure(state=ctk.DISABLED)
