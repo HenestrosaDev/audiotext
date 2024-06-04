@@ -1,5 +1,6 @@
 import locale
 import tkinter
+from pathlib import Path
 
 import customtkinter as ctk
 import utils.config_manager as cm
@@ -494,7 +495,7 @@ class MainWindow(ctk.CTkFrame):
         ## Info label
         self.lbl_info = ctk.CTkLabel(
             master=self.frm_sidebar,
-            text="v2.2.1 | Made by HenestrosaDev",
+            text="v2.2.2 | Made by HenestrosaDev",
             font=ctk.CTkFont(size=12),
         )
         self.lbl_info.grid(row=14, column=0, padx=20, pady=(5, 10))
@@ -508,7 +509,7 @@ class MainWindow(ctk.CTkFrame):
         ## 'Path' entry
         self.lbl_path = ctk.CTkLabel(
             master=self.frm_main_entry,
-            text="File path",
+            text="Path",
             font=ctk.CTkFont(size=14, weight="bold"),
         )
         self.lbl_path.grid(row=0, column=0, padx=(0, 15), sticky=ctk.W)
@@ -526,7 +527,7 @@ class MainWindow(ctk.CTkFrame):
             image=self.img_file_explorer,
             text="",
             width=32,
-            command=self._on_select_file,
+            command=self._on_select_path,
         )
         self.btn_file_explorer.grid(row=0, column=2, padx=(15, 0), sticky=ctk.E)
 
@@ -573,7 +574,7 @@ class MainWindow(ctk.CTkFrame):
 
     # PUBLIC METHODS
 
-    def on_select_file_success(self, filepath):
+    def on_select_path_success(self, filepath):
         self.ent_path.configure(textvariable=ctk.StringVar(self, filepath))
 
     def on_processing_transcription(self):
@@ -640,11 +641,19 @@ class MainWindow(ctk.CTkFrame):
         self._transcribe_from_source = AudioSource(option)
         self.ent_path.configure(textvariable=ctk.StringVar(self, ""))
 
-        if self._transcribe_from_source == AudioSource.FILE:
+        if self._transcribe_from_source != AudioSource.DIRECTORY:
+            self.chk_autosave.configure(state=ctk.NORMAL)
+
+        if self._transcribe_from_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
             self.btn_generate_transcription.configure(text="Generate transcription")
-            self.lbl_path.configure(text="File path")
+            self.lbl_path.configure(text="Path")
             self.btn_file_explorer.grid()
             self.frm_main_entry.grid()
+
+            if self._transcribe_from_source == AudioSource.DIRECTORY:
+                self.chk_autosave.select()
+                self.chk_autosave.configure(state=ctk.DISABLED)
+                self.chk_overwrite_files.configure(state=ctk.NORMAL)
 
         elif self._transcribe_from_source == AudioSource.MIC:
             self.btn_generate_transcription.configure(text="Start recording")
@@ -656,8 +665,11 @@ class MainWindow(ctk.CTkFrame):
             self.btn_file_explorer.grid_remove()
             self.frm_main_entry.grid()
 
-    def _on_select_file(self):
-        self._controller.select_file()
+    def _on_select_path(self):
+        if self._transcribe_from_source == AudioSource.FILE:
+            self._controller.select_file()
+        elif self._transcribe_from_source == AudioSource.DIRECTORY:
+            self._controller.select_directory()
 
     def _on_transcribe_from_mic(self):
         if self._is_transcribing_from_mic:
@@ -702,8 +714,12 @@ class MainWindow(ctk.CTkFrame):
 
         if self._transcribe_from_source == AudioSource.FILE:
             transcription.source = AudioSource.FILE
-            transcription.source_file_path = self.ent_path.get()
+            transcription.source_path = Path(self.ent_path.get())
+            self._controller.prepare_for_transcription(transcription)
 
+        elif self._transcribe_from_source == AudioSource.DIRECTORY:
+            transcription.source = AudioSource.DIRECTORY
+            transcription.source_path = Path(self.ent_path.get())
             self._controller.prepare_for_transcription(transcription)
 
         elif self._transcribe_from_source == AudioSource.MIC:
@@ -712,7 +728,6 @@ class MainWindow(ctk.CTkFrame):
         elif self._transcribe_from_source == AudioSource.YOUTUBE:
             transcription.source = AudioSource.YOUTUBE
             transcription.youtube_url = self.ent_path.get()
-
             self._controller.prepare_for_transcription(transcription)
 
     def _on_save_transcription(self):
