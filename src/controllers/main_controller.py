@@ -159,7 +159,7 @@ class MainController:
             return
 
         if should_overwrite or not os.path.exists(txt_file_path):
-            with open(txt_file_path, "w") as txt_file:
+            with open(txt_file_path, "w", encoding="utf-8") as txt_file:
                 txt_file.write(self.transcription.text)
 
         if self.transcription.should_subtitle:
