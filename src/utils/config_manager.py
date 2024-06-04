@@ -2,9 +2,9 @@ from configparser import ConfigParser
 from pathlib import Path
 from typing import Optional, Union
 
-from model.config.config_google_api import ConfigGoogleApi
-from model.config.config_subtitles import ConfigSubtitles
-from model.config.config_whisperx import ConfigWhisperX
+from models.config.config_google_api import ConfigGoogleApi
+from models.config.config_subtitles import ConfigSubtitles
+from models.config.config_whisperx import ConfigWhisperX
 from utils.path_helper import ROOT_PATH
 
 

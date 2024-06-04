@@ -6,11 +6,11 @@ import utils.config_manager as cm
 import utils.constants as c
 import utils.dict_utils as du
 import utils.path_helper as ph
-from controller.main_controller import MainController
-from model.config.config_google_api import ConfigGoogleApi
-from model.config.config_subtitles import ConfigSubtitles
-from model.config.config_whisperx import ConfigWhisperX
-from model.transcription import Transcription
+from controllers.main_controller import MainController
+from models.config.config_google_api import ConfigGoogleApi
+from models.config.config_subtitles import ConfigSubtitles
+from models.config.config_whisperx import ConfigWhisperX
+from models.transcription import Transcription
 from PIL import Image
 from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
 from utils.i18n import _

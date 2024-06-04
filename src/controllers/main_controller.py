@@ -10,7 +10,7 @@ import speech_recognition as sr
 import utils.audio_utils as au
 import utils.config_manager as cm
 import whisperx
-from model.transcription import Transcription
+from models.transcription import Transcription
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
