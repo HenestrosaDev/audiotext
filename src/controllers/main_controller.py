@@ -72,6 +72,7 @@ class MainController:
                 self.transcription.source_path = transcription.source_path
             elif transcription.source_type == AudioSource.MIC:
                 threading.Thread(target=self._start_recording_from_mic).start()
+                return
             elif transcription.source_type == AudioSource.YOUTUBE:
                 self._prepare_for_youtube_video_transcription()
 
@@ -285,6 +286,13 @@ class MainController:
                 filename = "mic-output.wav"
                 au.save_audio_data(audio_data, filename=filename)
                 self.transcription.source_path = Path(filename)
+
+                threading.Thread(
+                    target=lambda loop: loop.run_until_complete(
+                        self._handle_transcription_process()
+                    ),
+                    args=(asyncio.new_event_loop(),),
+                ).start()
             else:
                 e = ValueError("No audio detected")
                 self._handle_exception(e)
