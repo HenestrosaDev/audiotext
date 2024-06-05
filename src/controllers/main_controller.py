@@ -13,7 +13,6 @@ from handlers.youtube_handler import YouTubeHandler
 from models.transcription import Transcription
 from utils import constants as c
 from utils.enums import AudioSource, TranscriptionMethod
-from utils.i18n import _
 
 
 class MainController:
@@ -32,11 +31,11 @@ class MainController:
         """
         file_path = filedialog.askopenfilename(
             initialdir="/",
-            title=_("Select a file"),
+            title="Select a file",
             filetypes=[
-                (_("All supported files"), c.SUPPORTED_FILE_EXTENSIONS),
-                (_("Audio files"), c.AUDIO_FILE_EXTENSIONS),
-                (_("Video files"), c.VIDEO_FILE_EXTENSIONS),
+                ("All supported files", c.SUPPORTED_FILE_EXTENSIONS),
+                ("Audio files", c.AUDIO_FILE_EXTENSIONS),
+                ("Video files", c.VIDEO_FILE_EXTENSIONS),
             ],
         )
 
@@ -105,9 +104,9 @@ class MainController:
             txt_file_path = filedialog.asksaveasfilename(
                 initialdir=file_dir,
                 initialfile=txt_file_name,
-                title=_("Save as"),
+                title="Save as",
                 defaultextension=".txt",
-                filetypes=[(_("Text file"), "*.txt"), (_("All Files"), "*.*")],
+                filetypes=[("Text file", "*.txt"), ("All Files", "*.*")],
             )
 
         if not txt_file_path:

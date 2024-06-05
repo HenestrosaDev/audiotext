@@ -14,7 +14,6 @@ from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
 from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
-from utils.i18n import _
 
 from .custom_widgets.ctk_input_dialog import CTkInputDialog
 from .custom_widgets.ctk_scrollable_dropdown import CTkScrollableDropdown
@@ -120,7 +119,7 @@ class MainWindow(ctk.CTkFrame):
         ## 'Audio language' option menu
         self.lbl_audio_language = ctk.CTkLabel(
             master=self.frm_shared_options,
-            text=_("Audio language"),
+            text="Audio language",
             font=ctk.CTkFont(size=14, weight="bold"),
         )
         self.lbl_audio_language.grid(row=0, column=0, padx=0, pady=(10, 0))
@@ -160,7 +159,7 @@ class MainWindow(ctk.CTkFrame):
             master=self.frm_shared_options,
             fg_color="green",
             hover_color="darkgreen",
-            text=_("Generate transcription"),
+            text="Generate transcription",
             command=lambda: self._on_generate_transcription(),
         )
         self.btn_generate_transcription.grid(
@@ -178,7 +177,7 @@ class MainWindow(ctk.CTkFrame):
         # 'Transcribe using' label
         self.lbl_transcribe_using = ctk.CTkLabel(
             master=self.frm_transcribe_using,
-            text=_("Transcribe using"),
+            text="Transcribe using",
             font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
         )
         self.lbl_transcribe_using.grid(row=0, column=0, padx=0, pady=(10, 12.5))
@@ -244,7 +243,7 @@ class MainWindow(ctk.CTkFrame):
         ## 'Show advanced options' button
         self.btn_whisperx_show_advanced_options = ctk.CTkButton(
             master=self.frm_whisper_options,
-            text=_("Show advanced options"),
+            text="Show advanced options",
             command=self._on_show_advanced_options,
         )
         self.btn_whisperx_show_advanced_options.grid(
@@ -274,7 +273,7 @@ class MainWindow(ctk.CTkFrame):
         ## 'Set API key' button
         self.btn_set_google_api_key = ctk.CTkButton(
             master=self.frm_google_api_options,
-            text=_("Set API key"),
+            text="Set API key",
             command=self._on_google_api_key_set,
         )
         self.btn_set_google_api_key.grid(
@@ -317,7 +316,7 @@ class MainWindow(ctk.CTkFrame):
         ## 'Max. line count' entry
         self.lbl_max_line_count = ctk.CTkLabel(
             master=self.frm_subtitle_options,
-            text=_("Max. line count"),
+            text="Max. line count",
         )
         self.lbl_max_line_count.grid(
             row=2, column=0, padx=(52, 0), pady=0, sticky=ctk.W
@@ -345,7 +344,7 @@ class MainWindow(ctk.CTkFrame):
         ## 'Max. line width' entry
         self.lbl_max_line_width = ctk.CTkLabel(
             master=self.frm_subtitle_options,
-            text=_("Max. line width"),
+            text="Max. line width",
         )
         self.lbl_max_line_width.grid(
             row=3, column=0, padx=(52, 0), pady=(10, 14), sticky=ctk.W
@@ -479,7 +478,7 @@ class MainWindow(ctk.CTkFrame):
         ## 'Appearance mode' option menu
         self.lbl_appearance_mode = ctk.CTkLabel(
             master=self.frm_sidebar,
-            text=_("Appearance mode"),
+            text="Appearance mode",
             anchor=ctk.W,
             font=ctk.CTkFont(size=14, weight="bold"),
         )
@@ -487,7 +486,7 @@ class MainWindow(ctk.CTkFrame):
 
         self.omn_appearance_mode = ctk.CTkOptionMenu(
             master=self.frm_sidebar,
-            values=[_("System"), _("Light"), _("Dark")],
+            values=["System", "Light", "Dark"],
             command=self._change_appearance_mode_event,
         )
         self.omn_appearance_mode.grid(row=13, column=0, padx=20, pady=0, sticky=ctk.EW)
@@ -551,7 +550,7 @@ class MainWindow(ctk.CTkFrame):
             master=self.frm_save_options,
             fg_color="green",
             hover_color="darkgreen",
-            text=_("Save transcription"),
+            text="Save transcription",
             command=self._on_save_transcription,
         )
         self.btn_save.grid(row=0, column=0, padx=0, pady=0, sticky=ctk.EW)
@@ -686,7 +685,7 @@ class MainWindow(ctk.CTkFrame):
                 Color.HOVER_LIGHT_RED.value,
                 Color.HOVER_DARK_RED.value,
             ),
-            text=_("Stop recording"),
+            text="Stop recording",
         )
 
         transcription = Transcription(
@@ -745,7 +744,7 @@ class MainWindow(ctk.CTkFrame):
             self.frm_whisper_options.grid_remove()
             self.frm_whisperx_advanced_options.grid_remove()
             self.btn_whisperx_show_advanced_options.configure(
-                text=_("Show advanced options")
+                text="Show advanced options"
             )
             self.frm_google_api_options.grid()
 
@@ -785,12 +784,12 @@ class MainWindow(ctk.CTkFrame):
         if self.frm_whisperx_advanced_options.winfo_ismapped():
             self.frm_whisperx_advanced_options.grid_remove()
             self.btn_whisperx_show_advanced_options.configure(
-                text=_("Show advanced options")
+                text="Show advanced options"
             )
         else:
             self.frm_whisperx_advanced_options.grid()
             self.btn_whisperx_show_advanced_options.configure(
-                text=_("Hide advanced options")
+                text="Hide advanced options"
             )
 
     def _on_autosave_change(self):
@@ -813,10 +812,4 @@ class MainWindow(ctk.CTkFrame):
 
     @staticmethod
     def _change_appearance_mode_event(new_appearance_mode: str):
-        appearance_mode_map = {
-            _("Dark"): "Dark",
-            _("Light"): "Light",
-            _("System"): "System",
-        }
-        appearance_mode = appearance_mode_map.get(new_appearance_mode, "System")
-        ctk.set_appearance_mode(appearance_mode)
+        ctk.set_appearance_mode(new_appearance_mode)
