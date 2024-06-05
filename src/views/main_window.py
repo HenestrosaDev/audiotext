@@ -690,7 +690,7 @@ class MainWindow(ctk.CTkFrame):
         )
 
         transcription = Transcription(
-            source=AudioSource.MIC,
+            source_type=AudioSource.MIC,
             language_code=self._get_language_code(),
             method=self.radio_var.get(),
             should_autosave=self.chk_autosave.get() == 1,
@@ -713,12 +713,12 @@ class MainWindow(ctk.CTkFrame):
         )
 
         if self._transcribe_from_source == AudioSource.FILE:
-            transcription.source = AudioSource.FILE
+            transcription.source_type = AudioSource.FILE
             transcription.source_path = Path(self.ent_path.get())
             self._controller.prepare_for_transcription(transcription)
 
         elif self._transcribe_from_source == AudioSource.DIRECTORY:
-            transcription.source = AudioSource.DIRECTORY
+            transcription.source_type = AudioSource.DIRECTORY
             transcription.source_path = Path(self.ent_path.get())
             self._controller.prepare_for_transcription(transcription)
 
@@ -726,13 +726,15 @@ class MainWindow(ctk.CTkFrame):
             self._on_transcribe_from_mic()
 
         elif self._transcribe_from_source == AudioSource.YOUTUBE:
-            transcription.source = AudioSource.YOUTUBE
+            transcription.source_type = AudioSource.YOUTUBE
             transcription.youtube_url = self.ent_path.get()
             self._controller.prepare_for_transcription(transcription)
 
     def _on_save_transcription(self):
         self._controller.save_transcription(
-            should_autosave=False, should_overwrite=False
+            file_path=Path(self.ent_path.get()),
+            should_autosave=False,
+            should_overwrite=False,
         )
 
     def _on_transcribe_using_change(self):
