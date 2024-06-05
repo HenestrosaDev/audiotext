@@ -3,6 +3,7 @@ from enum import Enum
 
 class AudioSource(Enum):
     FILE = "File"
+    DIRECTORY = "Directory"
     MIC = "Microphone"
     YOUTUBE = "YouTube"
 
