@@ -643,6 +643,7 @@ class MainWindow(ctk.CTkFrame):
 
         if self._transcribe_from_source != AudioSource.DIRECTORY:
             self.chk_autosave.configure(state=ctk.NORMAL)
+            self.btn_save.configure(state=ctk.NORMAL)
 
         if self._transcribe_from_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
             self.btn_generate_transcription.configure(text="Generate transcription")
@@ -654,6 +655,7 @@ class MainWindow(ctk.CTkFrame):
                 self.chk_autosave.select()
                 self.chk_autosave.configure(state=ctk.DISABLED)
                 self.chk_overwrite_files.configure(state=ctk.NORMAL)
+                self.btn_save.configure(state=ctk.DISABLED)
 
         elif self._transcribe_from_source == AudioSource.MIC:
             self.btn_generate_transcription.configure(text="Start recording")
