@@ -488,6 +488,21 @@ You can transcribe from four sources:
 
 - **Directory**: Click on the file explorer icon to select the directory with the files you want to transcribe. You can also manually enter the path to the directory into the input field. All supported video and audio files from the root of the directory and its subdirectories will be transcribed. Note that the `Autosave` option is checked and cannot be unchecked because each file's transcription will automatically be saved in the same path as the source file. 
 
+<picture>
+  <source 
+    srcset="docs/light/from-directory.png"
+    media="(prefers-color-scheme: light)"
+  />
+  <source 
+    srcset="docs/dark/from-directory.png"
+    media="(prefers-color-scheme: dark)"
+  />
+  <img 
+    src="docs/light/from-directory.png"
+    alt="Main"
+  >
+</picture>
+
 For example, let's use this directory as a reference:
 
 ```
@@ -533,8 +548,6 @@ After transcribing the `files-to-transcribe` directory with subtitles, the folde
   <!-- english.mp4 -->
   https://github.com/HenestrosaDev/audiotext/assets/60482743/bd0323d7-ff54-4363-8b73-a2d56e7f783b
   
-  >Video from v2.1.0
-
 - **YouTube video**: Enter the video URL in the upper input field. When finished, click on the `Generate transcription` button.
 
   <picture>
@@ -613,21 +626,15 @@ The **WhisperX** options appear when the selected transcription method is **Whis
 
 To translate the audio into English, simply check the `Translate to English` checkbox before generating the transcription, as shown in the video below.
 
-<!-- french-to-english.mp4 -->
+<!-- spanish-to-english.mp4 -->
 https://github.com/HenestrosaDev/audiotext/assets/60482743/0aeeaa17-432f-445c-b29a-d76839be489b
-
-> [!NOTE]
->Video from v2.1.0
 
 However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into Spanish, you would set the `Audio language` to "Spanish".
 
 Here is a practical example using the microphone:
 
-<!-- english-to-spanish.mp4 -->
+<!-- english-to-french.mp4 -->
 https://github.com/HenestrosaDev/audiotext/assets/60482743/b346290f-4654-48c4-bf5a-2dcb75b136e9
-
-> [!NOTE]  
->Video from v2.1.0
 
 Make sure to double-check the generated translations.
 
