@@ -81,6 +81,7 @@
 
 - [About the Project](#about-the-project)
     - [Supported Languages](#supported-languages)
+    - [Supported File Types](#supported-file-types)
     - [Project Structure](#project-structure)
     - [Built With](#built-with)
 - [Getting Started](#getting-started)
@@ -90,6 +91,8 @@
 - [Usage](#usage)
     - [Transcribe From](#transcribe-from)
     - [Save Transcription](#save-transcription)
+        - [Autosave](#autosave)
+        - [Overwrite Existing Files](#overwrite-existing-files)
     - [Transcribe Using](#transcribe-using)
     - [WhisperX Options](#whisperx-options)
         - [Transcription Translation](#transcription-translation)
@@ -236,6 +239,49 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   - Welsh
   - Yiddish
   - Yoruba
+</details>
+
+### Supported File Types
+
+<details>
+  <summary>Audio file formats</summary>
+
+  - `.mp3`
+  - `.mpeg`
+  - `.wav`
+  - `.wma`
+  - `.aac`
+  - `.flac`
+  - `.ogg`
+  - `.oga`
+  - `.opus`
+</details>
+
+<details>
+  <summary>Video file formats</summary>
+
+  - `.mp4`
+  - `.m4a`
+  - `.m4v`
+  - `.f4v`
+  - `.f4a`
+  - `.m4b`
+  - `.m4r`
+  - `.f4b`
+  - `.mov`
+  - `.avi`
+  - `.webm`
+  - `.flv`
+  - `.mkv`
+  - `.3gp`
+  - `.3gp2`
+  - `.3g2`
+  - `.3gpp`
+  - `.3gpp2`
+  - `.ogv`
+  - `.ogx`
+  - `.wmv`
+  - `.asf`
 </details>
 
 <!-- PROJECT STRUCTURE -->
@@ -399,7 +445,6 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    source venv/Scripts/activate
    ```
 5. Run `cat requirements.txt | xargs -n 1 pip install` to install the dependencies.
-   > [!WARNING]
    >For some reason, `pip install -r requirements.txt` throws the error "Could not find a version that satisfies the requirement [PACKAGE_NAME]==[PACKAGE_VERSION] (from version: none)"
 6. Run `python src/app.py` to start the program.
 
@@ -433,7 +478,7 @@ Once you open the **Audiotext** executable file (explained in the [getting start
 
 ### Transcribe From
 
-You can transcribe from three audio sources:
+You can transcribe from four sources:
 
 - **File** (see image above): Click on the file explorer icon to select the file you want to transcribe. You can also manually enter the path to the file into the input field. You can transcribe audio from both audio and video files. Note that the file explorer has the `All supported files` option selected by default. To select only audio files or video files, click the combo box in the lower right corner of the file explorer to change the file type, as marked in red in the following image:
 
@@ -441,46 +486,43 @@ You can transcribe from three audio sources:
 
   ![Supported files](docs/supported-files.png)
 
-  <details>
-    <summary>Supported audio file formats</summary>
+- **Directory**: Click on the file explorer icon to select the directory with the files you want to transcribe. You can also manually enter the path to the directory into the input field. All supported video and audio files from the root of the directory and its subdirectories will be transcribed. Note that the `Autosave` option is checked and cannot be unchecked because each file's transcription will automatically be saved in the same path as the source file. 
 
-    - `.mp3`
-    - `.mpeg`
-    - `.wav`
-    - `.wma`
-    - `.aac`
-    - `.flac`
-    - `.ogg`
-    - `.oga`
-    - `.opus`
-  </details>
+For example, let's use this directory as a reference:
 
-  <details>
-    <summary>Supported video file formats</summary>
+```
+└───files-to-transcribe
+    │   paranoid-android.mp3
+    │   the-past-recedes.flac
+    │
+    └───movies
+            seul-contre-tous.mp4
+            mulholland-dr.avi
+```
 
-    - `.mp4`
-    - `.m4a`
-    - `.m4v`
-    - `.f4v`
-    - `.f4a`
-    - `.m4b`
-    - `.m4r`
-    - `.f4b`
-    - `.mov`
-    - `.avi`
-    - `.webm`
-    - `.flv`
-    - `.mkv`
-    - `.3gp`
-    - `.3gp2`
-    - `.3g2`
-    - `.3gpp`
-    - `.3gpp2`
-    - `.ogv`
-    - `.ogx`
-    - `.wmv`
-    - `.asf`
-  </details>
+After transcribing the `files-to-transcribe` directory with subtitles, the folder structure will look like this:
+
+```
+└───files-to-transcribe
+    │   paranoid-android.mp3
+    │   paranoid-android.srt
+    │   paranoid-android.txt
+    │   paranoid-android.vtt
+    │   the-past-recedes.flac
+    │   the-past-recedes.srt
+    │   the-past-recedes.txt
+    │   the-past-recedes.vtt
+    │
+    └───movies
+            seul-contre-tous-1998.mp4
+            seul-contre-tous-1998.srt
+            seul-contre-tous-1998.txt
+            seul-contre-tous-1998.vtt
+            mulholland-dr-2001.avi
+            mulholland-dr-2001.srt
+            mulholland-dr-2001.txt
+            mulholland-dr-2001.vtt
+```
 
 - **Microphone**: To start recording, simply click the `Start recording` button to begin the process. The text of the button will change to `Stop recording` and its color will change to red. Click it to stop recording and generate the transcription. 
 
@@ -512,9 +554,32 @@ You can transcribe from three audio sources:
 
 ### Save Transcription
 
-Once the program has generated the transcription, you'll see a green `Save transcription` button below the text box. If you click on it, you'll be prompted for a file explorer where you can give the file a name and select the path where you want to save it. The file extension is `.txt` by default, but you can change it to any other text file type.
+When you click on the `Save transcription` button, you'll be prompted for a file explorer where you can name the transcription file and select the path where you want to save it. The file extension is `.txt` by default, but you can change it to any other text file type.
 
-If you used **WhisperX** to generate the transcription and checked the `Generate subtitles` option, you'll notice that two files are also saved along with the text file: a `.vtt` file and a `.srt` file. Both contain the subtitles for the transcribed file, as explained in the [Generate Subtitles](#generate-subtitles) section.
+If you use **WhisperX** to generate a transcription and check the `Generate subtitles` option, two files will also be saved along with the text file: a `.vtt` file and a `.srt` file. Both contain the subtitles for the transcribed file, as explained in the [Generate Subtitles](#generate-subtitles) section.
+
+Please note that any text entered or modified in the textbox **WILL NOT** be included in the saved transcription.
+
+#### Autosave
+
+If checked, the transcription will automatically be saved in the root of the folder where the transcribed file is stored. If you check the `Generate subtitles` option, the subtitle files will also be saved automatically. If there are already existing files with the same name, they won't be overwritten. To do that, you'll need to check the `Overwrite existing files` option (see below).
+
+#### Overwrite Existing Files 
+
+This option can only be checked if the `Autosave` option is checked. If `Overwrite existing files` is checked, existing transcriptions in the root directory of the file to be transcribed will be overwritten when saving.
+
+For example, let's use this directory as a reference:
+
+```
+└───audios
+        foo.mp3
+        foo.srt
+        foo.txt
+```
+
+If we transcribe the audio file `foo.mp3` with the `Generate subtitles`, `Autosave` and `Overwrite existing files` options checked, the files `foo.srt` and `foo.txt` will be overwritten and the file `foo.vtt` will be created.
+
+On the other hand, if we transcribe the audio file `foo.mp3` with the options `Generate subtitles` and `Autosave` checked and the option `Overwrite existing files` unchecked, the file `foo.vtt` will still be created, but the files `foo.srt` and `foo.txt` will remain unchanged.
 
 ### Transcribe Using
 
@@ -725,9 +790,9 @@ Remember that **WhisperX** provides fast, unlimited audio transcription that sup
 - [x] Add subtitle options.
 - [x] Add advanced options for **WhisperX**.
 - [x] Add the option to transcribe YouTube videos.
-- [ ] Add checkbox to automatically save the generated transcription [(#17)](https://github.com/HenestrosaDev/audiotext/issues/17).
+- [x] Add checkbox to automatically save the generated transcription [(#17)](https://github.com/HenestrosaDev/audiotext/issues/17).
+- [x] Allow transcription of multiple files from a directory.
 - [ ] Change the "Generate transcription" button to "Cancel transcription" when a transcription is in progress.
-- [ ] Allow transcription of multiple files at once [(#17)](https://github.com/HenestrosaDev/audiotext/issues/17).
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
 - [ ] Add tests.
