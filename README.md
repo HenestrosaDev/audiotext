@@ -488,56 +488,56 @@ You can transcribe from four sources:
 
 - **Directory**: Click on the file explorer icon to select the directory with the files you want to transcribe. You can also manually enter the path to the directory into the input field. All supported video and audio files from the root of the directory and its subdirectories will be transcribed. Note that the `Autosave` option is checked and cannot be unchecked because each file's transcription will automatically be saved in the same path as the source file. 
 
-<picture>
-  <source 
-    srcset="docs/light/from-directory.png"
-    media="(prefers-color-scheme: light)"
-  />
-  <source 
-    srcset="docs/dark/from-directory.png"
-    media="(prefers-color-scheme: dark)"
-  />
-  <img 
-    src="docs/light/from-directory.png"
-    alt="Main"
-  >
-</picture>
+  <picture>
+    <source 
+      srcset="docs/light/from-directory.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/from-directory.png"
+      media="(prefers-color-scheme: dark)"
+    />
+    <img 
+      src="docs/light/from-directory.png"
+      alt="Main"
+    >
+  </picture>
 
-For example, let's use this directory as a reference:
+  For example, let's use this directory as a reference:
 
-```
-└───files-to-transcribe
-    │   paranoid-android.mp3
-    │   the-past-recedes.flac
-    │
-    └───movies
-            seul-contre-tous.mp4
-            mulholland-dr.avi
-```
+  ```
+  └───files-to-transcribe
+      │   paranoid-android.mp3
+      │   the-past-recedes.flac
+      │
+      └───movies
+              seul-contre-tous.mp4
+              mulholland-dr.avi
+  ```
 
-After transcribing the `files-to-transcribe` directory with subtitles, the folder structure will look like this:
+  After transcribing the `files-to-transcribe` directory with subtitles, the folder structure will look like this:
 
-```
-└───files-to-transcribe
-    │   paranoid-android.mp3
-    │   paranoid-android.srt
-    │   paranoid-android.txt
-    │   paranoid-android.vtt
-    │   the-past-recedes.flac
-    │   the-past-recedes.srt
-    │   the-past-recedes.txt
-    │   the-past-recedes.vtt
-    │
-    └───movies
-            seul-contre-tous-1998.mp4
-            seul-contre-tous-1998.srt
-            seul-contre-tous-1998.txt
-            seul-contre-tous-1998.vtt
-            mulholland-dr-2001.avi
-            mulholland-dr-2001.srt
-            mulholland-dr-2001.txt
-            mulholland-dr-2001.vtt
-```
+  ```
+  └───files-to-transcribe
+      │   paranoid-android.mp3
+      │   paranoid-android.srt
+      │   paranoid-android.txt
+      │   paranoid-android.vtt
+      │   the-past-recedes.flac
+      │   the-past-recedes.srt
+      │   the-past-recedes.txt
+      │   the-past-recedes.vtt
+      │
+      └───movies
+              seul-contre-tous-1998.mp4
+              seul-contre-tous-1998.srt
+              seul-contre-tous-1998.txt
+              seul-contre-tous-1998.vtt
+              mulholland-dr-2001.avi
+              mulholland-dr-2001.srt
+              mulholland-dr-2001.txt
+              mulholland-dr-2001.vtt
+  ```
 
 - **Microphone**: To start recording, simply click the `Start recording` button to begin the process. The text of the button will change to `Stop recording` and its color will change to red. Click it to stop recording and generate the transcription. 
 
@@ -546,9 +546,9 @@ After transcribing the `files-to-transcribe` directory with subtitles, the folde
   Here is a video demonstrating this feature:
 
   <!-- english.mp4 -->
-  https://github.com/HenestrosaDev/audiotext/assets/60482743/bd0323d7-ff54-4363-8b73-a2d56e7f783b
+  https://github.com/HenestrosaDev/audiotext/assets/60482743/33b9f5e2-e0bf-48f4-bfe2-363173665903
   
-- **YouTube video**: Enter the video URL in the upper input field. When finished, click on the `Generate transcription` button.
+- **YouTube video**: Enter the video URL in the `YouTube video URL` input field. When finished, click on the `Generate transcription` button.
 
   <picture>
     <source 
@@ -627,14 +627,14 @@ The **WhisperX** options appear when the selected transcription method is **Whis
 To translate the audio into English, simply check the `Translate to English` checkbox before generating the transcription, as shown in the video below.
 
 <!-- spanish-to-english.mp4 -->
-https://github.com/HenestrosaDev/audiotext/assets/60482743/0aeeaa17-432f-445c-b29a-d76839be489b
+https://github.com/HenestrosaDev/audiotext/assets/60482743/dceb68e6-398f-46c5-9a9e-1dd2e4ee8e74
 
 However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into Spanish, you would set the `Audio language` to "Spanish".
 
 Here is a practical example using the microphone:
 
 <!-- english-to-french.mp4 -->
-https://github.com/HenestrosaDev/audiotext/assets/60482743/b346290f-4654-48c4-bf5a-2dcb75b136e9
+https://github.com/HenestrosaDev/audiotext/assets/60482743/a40c959b-1f7c-494a-8319-66fcc5729dc5
 
 Make sure to double-check the generated translations.
 
