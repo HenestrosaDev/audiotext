@@ -2,7 +2,15 @@ import speech_recognition as sr
 from pydub import AudioSegment
 
 
-def save_audio_data(audio_data, filename):
+def save_audio_data(audio_data: list[sr.AudioData], filename: str):
+    """
+    Save recorded audio data to a WAV file.
+
+    :param audio_data: A list of recorded audio chunks.
+    :type audio_data: list[sr.AudioData]
+    :param filename: The name of the file to save the audio data to.
+    :type filename: str
+    """
     if audio_data:
         raw_audio_data = b"".join(
             [

@@ -52,6 +52,15 @@ class MainController:
             self.view.on_select_path_success(dir_path)
 
     def prepare_for_transcription(self, transcription: Transcription):
+        """
+        Prepares to transcribe based on the specified source type of the transcription
+        object provided. It sets up the necessary configurations and starts the
+        transcription process.
+
+        :param transcription: An instance of the Transcription class containing
+                              information about the audio to transcribe.
+        :type transcription: Transcription
+        """
         self.transcription = transcription
 
         try:
@@ -63,7 +72,6 @@ class MainController:
                 self.transcription.source_path = transcription.source_path
             elif transcription.source_type == AudioSource.MIC:
                 threading.Thread(target=self._start_recording_from_mic).start()
-                return
             elif transcription.source_type == AudioSource.YOUTUBE:
                 self._prepare_for_youtube_video_transcription()
 
@@ -84,7 +92,7 @@ class MainController:
         self, file_path: Path, should_autosave: bool, should_overwrite: bool
     ):
         """
-        Save the transcription to a text file and optionally generate the subtitles.
+        Saves the transcription to a text file and optionally generate subtitles.
 
         :param file_path: The path where the text file will be saved.
         :type file_path: Path
@@ -124,6 +132,15 @@ class MainController:
     # PRIVATE METHODS
 
     def _prepare_for_file_transcription(self, file_path: Path):
+        """
+        Prepares the system for transcription from a file by verifying if the file
+        exists and is supported for transcription. If the file is valid, it updates the
+        source path in the transcription object; otherwise, it raises a ValueError.
+
+        :param file_path: The path to the file for transcription.
+        :raises ValueError: If the provided file path does not exist or is not supported
+                            for transcription.
+        """
         is_file_supported = file_path.suffix in c.SUPPORTED_FILE_EXTENSIONS
         if file_path.is_file() and is_file_supported:
             self.transcription.source_path = file_path
@@ -131,6 +148,14 @@ class MainController:
             raise ValueError("Error: No valid file selected.")
 
     def _prepare_for_youtube_video_transcription(self):
+        """
+        Prepares the system for transcription from a YouTube video by downloading
+        the audio from the video using the YouTubeHandler. It updates the source path
+        in the transcription object with the downloaded audio file path. If the source
+        path is not obtained successfully, it raises a ValueError.
+
+        :raises ValueError: If the YouTube video URL is incorrect or the audio download fails.
+        """
         self.transcription.source_path = YouTubeHandler.download_audio_from_video(
             self.transcription.youtube_url
         )
@@ -139,6 +164,12 @@ class MainController:
             raise ValueError("Please make sure the URL you entered is correct.")
 
     async def _handle_transcription_process(self):
+        """
+        Handles the transcription process based on the type of source specified in the
+        transcription object. It asynchronously transcribes either a single file or
+        multiple files in a directory. Upon completion or error, it notifies the view
+        that the transcription process has been processed.
+        """
         try:
             path = self.transcription.source_path
 
@@ -151,12 +182,11 @@ class MainController:
             self._handle_exception(e)
 
         finally:
-            is_transcription_empty = not self.transcription.text
-            self.view.on_processed_transcription(success=is_transcription_empty)
+            self.view.on_processed_transcription()
 
     async def _transcribe_directory(self, dir_path: Path):
         """
-        Transcribe supported files from a directory.
+        Transcribes supported files from a directory.
 
         :param dir_path: The path to the directory containing the audio files.
         :type dir_path: Path
@@ -181,10 +211,13 @@ class MainController:
 
     async def _transcribe_file(self, file_path: Path):
         """
-        Transcribe audio from a file using the specified transcription method.
+        Transcribes audio from a file based on the specified transcription method.
+        It updates the transcription object with the transcribed text. If the source
+        type is microphone or YouTube, it removes the temporary file after
+        transcription. It also displays the transcribed text and saves it if autosave
+        is enabled.
 
-        :param file_path: The path to the audio file to transcribe.
-        :type file_path: Path
+        :param file_path: The path of the audio file for transcription.
         """
         transcription = self.transcription
         transcription.source_path = file_path
@@ -214,7 +247,7 @@ class MainController:
     @staticmethod
     def _get_transcribable_files_from_dir(dir_path: Path) -> list[Path]:
         """
-        Retrieve a list of transcribable files from a directory.
+        Retrieves a list of transcribable files from a directory.
 
         :param dir_path: The path to the directory containing the files.
         :type dir_path: Path
@@ -231,7 +264,8 @@ class MainController:
 
     def _start_recording_from_mic(self):
         """
-        Record audio from the microphone and initiate transcription process.
+        Records the audio from the microphone and starts the transcription process when
+        finished recording.
 
         This function continuously records audio from the microphone until stopped.
         The recorded audio is then saved to a WAV file and used for transcription.
@@ -251,13 +285,6 @@ class MainController:
                 filename = "mic-output.wav"
                 au.save_audio_data(audio_data, filename=filename)
                 self.transcription.source_path = Path(filename)
-
-                threading.Thread(
-                    target=lambda loop: loop.run_until_complete(
-                        self._handle_transcription_process()
-                    ),
-                    args=(asyncio.new_event_loop(),),
-                ).start()
             else:
                 e = ValueError("No audio detected")
                 self._handle_exception(e)
@@ -267,6 +294,13 @@ class MainController:
             self._handle_exception(e)
 
     def _handle_exception(self, e: Exception):
+        """
+        Prints the traceback of the exception, notifies the view that the transcription
+        process has been processed, and displays a representation of the exception.
+
+        :param e: The exception that occurred during the transcription process.
+        :type e: Exception
+        """
         print(traceback.format_exc())
-        self.view.on_processed_transcription(success=False)
+        self.view.on_processed_transcription()
         self.view.display_text(repr(e))
