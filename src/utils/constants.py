@@ -128,3 +128,6 @@ VIDEO_FILE_EXTENSIONS = [
     ".ogv", ".ogx",  # OGG
     ".wmv", ".asf"  # AIFF / ASF
 ]
+# fmt: on
+
+SUPPORTED_FILE_EXTENSIONS = AUDIO_FILE_EXTENSIONS + VIDEO_FILE_EXTENSIONS

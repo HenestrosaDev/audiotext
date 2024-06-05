@@ -9,11 +9,11 @@ from utils.path_helper import ROOT_PATH
 
 
 class ConfigManager:
-    _FILE_PATH = ROOT_PATH / "config.ini"
+    _CONFIG_FILE_PATH = ROOT_PATH / "config.ini"
     KeyType = Union[ConfigWhisperX.Key, ConfigGoogleApi.Key, ConfigSubtitles.Key]
 
     @staticmethod
-    def read_config(file_path: Path = _FILE_PATH) -> Optional[ConfigParser]:
+    def read_config(file_path: Path = _CONFIG_FILE_PATH) -> Optional[ConfigParser]:
         config = ConfigParser()
         config.read(file_path)
         return config
@@ -62,7 +62,7 @@ class ConfigManager:
     def get_value(
         section: KeyType,
         key: KeyType,
-        file_path: Path = _FILE_PATH,
+        file_path: Path = _CONFIG_FILE_PATH,
     ) -> Optional[Union[str, bool, int, float]]:
         config = ConfigManager.read_config(file_path)
 
@@ -91,7 +91,7 @@ class ConfigManager:
         section: KeyType,
         key: KeyType,
         new_value: str,
-        file_path: Path = _FILE_PATH,
+        file_path: Path = _CONFIG_FILE_PATH,
     ):
         config = ConfigManager.read_config(file_path)
 
