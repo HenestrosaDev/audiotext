@@ -29,12 +29,25 @@
   <h1 align="center">Audiotext</h1>
   <p align="center">A desktop application that transcribes audio from files, microphone input or YouTube videos with the option to translate the content and create subtitles.</p>
   <p>
+    <a href="https://github.com/HenestrosaDev/audiotext/releases/latest">
+      <img 
+        src="https://img.shields.io/badge/version-2.2.2-blue" 
+        alt="Version" 
+      />
+    </a>
     <a href="https://github.com/HenestrosaDev/audiotext/stargazers">
       <img 
         src="https://img.shields.io/github/stars/HenestrosaDev/audiotext" 
         alt="GitHub Contributors" 
       />
     </a>
+    <a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
+      <img 
+        src="https://img.shields.io/badge/license-BSD--4--Clause-lightgray" 
+        alt="License" 
+      />
+    </a>
+    <br>
     <a href="https://github.com/HenestrosaDev/audiotext/graphs/contributors">
       <img 
         src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext" 
@@ -50,12 +63,6 @@
     <a href="https://github.com/HenestrosaDev/audiotext/pulls">
       <img 
         src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext" 
-        alt="GitHub pull requests" 
-      />
-    </a>
-    <a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
-      <img 
-        src="https://img.shields.io/badge/license-BSD--4--Clause-lightgray" 
         alt="GitHub pull requests" 
       />
     </a>
@@ -459,7 +466,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ## Usage
 
-Once you open the **Audiotext** executable file (explained in the [getting started](#getting-started) section), you'll see something like this:
+Once you open the **Audiotext** executable file (explained in the [Getting Started](#getting-started) section), you'll see something like this:
 
 <picture>
   <source 
@@ -797,9 +804,11 @@ Remember that **WhisperX** provides fast, unlimited audio transcription that sup
 - [x] Add subtitle options.
 - [x] Add advanced options for **WhisperX**.
 - [x] Add the option to transcribe YouTube videos.
-- [x] Add checkbox to automatically save the generated transcription [(#17)](https://github.com/HenestrosaDev/audiotext/issues/17).
+- [x] Add checkbox to automatically save the generated transcription ([#17](https://github.com/HenestrosaDev/audiotext/issues/17)).
 - [x] Allow transcription of multiple files from a directory.
-- [ ] Change the "Generate transcription" button to "Cancel transcription" when a transcription is in progress.
+- [ ] Add `appearance_mode` to `config.ini`.
+- [ ] Add the `Skip transcribed files` checkbox to the save options when the selected `Transcribe from` option is "Directory" ([#13](https://github.com/HenestrosaDev/audiotext/issues/13)).
+- [ ] Change the `Generate transcription` button to `Cancel transcription` when a transcription is in progress.
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
 - [ ] Add tests.
