@@ -363,9 +363,6 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_output_file_types_change,
         )
         self.chk_output_file_srt.grid(row=0, column=0, pady=0)
-        if "srt" in self._config_subtitles.output_file_types:
-            self.chk_output_file_srt.select()
-            self.frm_subtitle_options.grid()
 
         ### '.vtt' check box
         self.chk_output_file_vtt = ctk.CTkCheckBox(
@@ -375,9 +372,8 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_output_file_types_change,
         )
         self.chk_output_file_vtt.grid(row=0, column=1, pady=0, sticky=ctk.W)
-        if "vtt" in self._config_subtitles.output_file_types:
-            self.chk_output_file_vtt.select()
-            self.frm_subtitle_options.grid()
+
+        self._toggle_frm_subtitle_options_visibility()
 
         ### '.txt' check box
         self.chk_output_file_txt = ctk.CTkCheckBox(
@@ -965,10 +961,12 @@ class MainWindow(ctk.CTkFrame):
         """
         if self.radio_var.get() == TranscriptionMethod.WHISPERX.value:
             self.frm_whisper_options.grid()
+            self._toggle_frm_subtitle_options_visibility()
             self.frm_google_api_options.grid_remove()
         elif self.radio_var.get() == TranscriptionMethod.GOOGLE_API.value:
             self.frm_whisper_options.grid_remove()
             self.frm_whisperx_advanced_options.grid_remove()
+            self.frm_subtitle_options.grid_remove()
             self.btn_whisperx_show_advanced_options.configure(
                 text="Show advanced options"
             )
@@ -1083,6 +1081,20 @@ class MainWindow(ctk.CTkFrame):
             self.progress_bar.start()
         else:
             self.progress_bar.grid_forget()
+
+    def _toggle_frm_subtitle_options_visibility(self):
+        if (
+            "srt" in self._config_subtitles.output_file_types
+            or "vtt" in self._config_subtitles.output_file_types
+        ):
+            if "srt" in self._config_subtitles.output_file_types:
+                self.chk_output_file_srt.select()
+            if "vtt" in self._config_subtitles.output_file_types:
+                self.chk_output_file_vtt.select()
+
+            self.frm_subtitle_options.grid()
+        else:
+            self.frm_subtitle_options.grid_remove()
 
     @staticmethod
     def _on_config_change(section: str, key: str, new_value: str):
