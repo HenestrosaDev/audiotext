@@ -64,6 +64,11 @@ class MainController:
         self.transcription = transcription
 
         try:
+            if not transcription.output_file_types:
+                raise ValueError(
+                    "No output file types selected. Please select at least one."
+                )
+
             self.view.on_processing_transcription()
 
             if transcription.source_type == AudioSource.FILE:
@@ -121,13 +126,22 @@ class MainController:
         if not txt_file_path:
             return
 
-        if should_overwrite or not os.path.exists(txt_file_path):
+        if "txt" in self.transcription.output_file_types and (
+            should_overwrite or not os.path.exists(txt_file_path)
+        ):
             with open(txt_file_path, "w", encoding="utf-8") as txt_file:
                 txt_file.write(self.transcription.text)
 
-        if self.transcription.should_subtitle:
+        whisperx_file_types = {"srt", "vtt", "json", "tsv", "aud"}
+        selected_whisperx_file_types = [
+            output_file_type
+            for output_file_type in self.transcription.output_file_types
+            if output_file_type in whisperx_file_types
+        ]
+
+        if selected_whisperx_file_types:
             self._whisperx_handler.generate_subtitles(
-                Path(txt_file_path), should_overwrite
+                Path(txt_file_path), selected_whisperx_file_types, should_overwrite
             )
 
     # PRIVATE METHODS

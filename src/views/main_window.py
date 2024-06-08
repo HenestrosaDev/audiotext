@@ -91,12 +91,12 @@ class MainWindow(ctk.CTkFrame):
         """
         whisperx_args = {}
         if self.radio_var.get() == TranscriptionMethod.WHISPERX.value:
-            whisperx_args["should_translate"] = (
-                self.chk_whisper_options_translate.get() == 1
+            whisperx_args["should_translate"] = bool(
+                self.chk_whisper_options_translate.get()
             )
-            whisperx_args["should_subtitle"] = (
-                self.chk_whisper_options_subtitles.get() == 1
-            )
+            whisperx_args[
+                "output_file_types"
+            ] = self._config_subtitles.output_file_types.split(",")
 
         return whisperx_args
 
@@ -228,79 +228,9 @@ class MainWindow(ctk.CTkFrame):
 
         # ------------------
 
-        # Whisper options frame
-        self.frm_whisper_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
-        self.frm_whisper_options.grid(row=3, column=0, padx=20, pady=(20, 0))
-
-        ## Title label
-        self.lbl_whisper_options = ctk.CTkLabel(
-            master=self.frm_whisper_options,
-            text="WhisperX options",
-            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
-        )
-        self.lbl_whisper_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
-
-        ## 'Translate to English' checkbox
-        self.chk_whisper_options_translate = ctk.CTkCheckBox(
-            master=self.frm_whisper_options,
-            text="Translate to English",
-            command=self._on_whisper_options_translate_change,
-        )
-        self.chk_whisper_options_translate.grid(
-            row=1, column=0, padx=20, pady=0, sticky=ctk.W
-        )
-
-        ## 'Subtitles' checkbox
-        self.chk_whisper_options_subtitles = ctk.CTkCheckBox(
-            master=self.frm_whisper_options,
-            text="Generate subtitles",
-            command=self._on_whisper_options_subtitles_change,
-        )
-        self.chk_whisper_options_subtitles.grid(
-            row=2, column=0, padx=20, pady=(10, 0), sticky=ctk.W
-        )
-
-        ## 'Show advanced options' button
-        self.btn_whisperx_show_advanced_options = ctk.CTkButton(
-            master=self.frm_whisper_options,
-            text="Show advanced options",
-            command=self._on_show_advanced_options,
-        )
-        self.btn_whisperx_show_advanced_options.grid(
-            row=3, column=0, padx=20, pady=16, sticky=ctk.EW
-        )
-
-        # ------------------
-
-        # 'Google API options' frame
-        self.frm_google_api_options = ctk.CTkFrame(
-            master=self.frm_sidebar, border_width=2
-        )
-        self.frm_google_api_options.grid(
-            row=3, column=0, padx=20, pady=(20, 0), sticky=ctk.EW
-        )
-        # Hidden at first because WhisperX is the default transcription method
-        self.frm_google_api_options.grid_remove()
-
-        ## Title label
-        self.lbl_google_api_options = ctk.CTkLabel(
-            master=self.frm_google_api_options,
-            text="Google API options",
-            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
-        )
-        self.lbl_google_api_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
-
-        ## 'Set API key' button
-        self.btn_set_google_api_key = ctk.CTkButton(
-            master=self.frm_google_api_options,
-            text="Set API key",
-            command=self._on_google_api_key_set,
-        )
-        self.btn_set_google_api_key.grid(
-            row=1, column=0, padx=20, pady=(0, 20), sticky=ctk.EW
-        )
-
-        # ------------------
+        # The "Subtitle options" comes before "Whisper options" to conditionally grid
+        # `frm_subtitle_options` if the config.ini has a subtitle file in the
+        # `output_file_types` key.
 
         # Subtitle options frame
         self.frm_subtitle_options = ctk.CTkFrame(
@@ -312,7 +242,7 @@ class MainWindow(ctk.CTkFrame):
         # Hidden at first because subtitles are unchecked by default
         self.frm_subtitle_options.grid_remove()
 
-        ## Title label
+        ## 'Subtitle options' label
         self.lbl_subtitle_options = ctk.CTkLabel(
             master=self.frm_subtitle_options,
             text="Subtitle options",
@@ -387,7 +317,157 @@ class MainWindow(ctk.CTkFrame):
             textvariable=self.max_line_width,
         )
         self.ent_max_line_width.grid(
-            row=3, column=0, padx=(18, 20), pady=(10, 14), sticky=ctk.W
+            row=3, column=0, padx=(18, 20), pady=10, sticky=ctk.W
+        )
+
+        ## 'Only applicable to .srt and .vtt files' label
+        self.lbl_subtitle_options_footnote = ctk.CTkLabel(
+            master=self.frm_subtitle_options,
+            text="Only applicable to \n.srt and .vtt files",
+            font=ctk.CTkFont(size=12),
+        )
+        self.lbl_subtitle_options_footnote.grid(row=4, column=0, padx=20, pady=(0, 10))
+
+        # ------------------
+
+        # Whisper options frame
+        self.frm_whisper_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
+        self.frm_whisper_options.grid(row=3, column=0, padx=20, pady=(20, 0))
+
+        ## 'WhisperX options' label
+        self.lbl_whisper_options = ctk.CTkLabel(
+            master=self.frm_whisper_options,
+            text="WhisperX options",
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
+        )
+        self.lbl_whisper_options.grid(row=0, column=0, padx=10, pady=(10, 5))
+
+        ## 'Output file types' label
+        self.lbl_output_file_types = ctk.CTkLabel(
+            master=self.frm_whisper_options,
+            text="Output file types",
+        )
+        self.lbl_output_file_types.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.W)
+
+        ## 'Output file types' frame
+        self.frm_output_file_types = ctk.CTkFrame(
+            master=self.frm_whisper_options,
+            fg_color="transparent",
+        )
+        self.frm_output_file_types.grid(row=2, column=0, padx=20, pady=(3, 17))
+
+        ### '.srt' check box
+        self.chk_output_file_srt = ctk.CTkCheckBox(
+            master=self.frm_output_file_types,
+            text=".srt",
+            command=self._on_output_file_types_change,
+        )
+        self.chk_output_file_srt.grid(row=0, column=0, pady=0)
+        if "srt" in self._config_subtitles.output_file_types:
+            self.chk_output_file_srt.select()
+            self.frm_subtitle_options.grid()
+
+        ### '.vtt' check box
+        self.chk_output_file_vtt = ctk.CTkCheckBox(
+            master=self.frm_output_file_types,
+            text=".vtt",
+            width=25,
+            command=self._on_output_file_types_change,
+        )
+        self.chk_output_file_vtt.grid(row=0, column=1, pady=0, sticky=ctk.W)
+        if "vtt" in self._config_subtitles.output_file_types:
+            self.chk_output_file_vtt.select()
+            self.frm_subtitle_options.grid()
+
+        ### '.txt' check box
+        self.chk_output_file_txt = ctk.CTkCheckBox(
+            master=self.frm_output_file_types,
+            text=".txt",
+            command=self._on_output_file_types_change,
+        )
+        self.chk_output_file_txt.grid(row=1, column=0, pady=(5, 0))
+        if "txt" in self._config_subtitles.output_file_types:
+            self.chk_output_file_txt.select()
+
+        ### '.json' check box
+        self.chk_output_file_json = ctk.CTkCheckBox(
+            master=self.frm_output_file_types,
+            text=".json",
+            width=25,
+            command=self._on_output_file_types_change,
+        )
+        self.chk_output_file_json.grid(row=1, column=1, pady=(5, 0), sticky=ctk.W)
+        if "json" in self._config_subtitles.output_file_types:
+            self.chk_output_file_json.select()
+
+        ### '.tsv' check box
+        self.chk_output_file_tsv = ctk.CTkCheckBox(
+            master=self.frm_output_file_types,
+            text=".tsv",
+            command=self._on_output_file_types_change,
+        )
+        self.chk_output_file_tsv.grid(row=2, column=0, pady=(5, 0))
+        if "tsv" in self._config_subtitles.output_file_types:
+            self.chk_output_file_tsv.select()
+
+        ### '.aud' check box
+        self.chk_output_file_aud = ctk.CTkCheckBox(
+            master=self.frm_output_file_types,
+            text=".aud",
+            width=25,
+            command=self._on_output_file_types_change,
+        )
+        self.chk_output_file_aud.grid(row=2, column=1, pady=(5, 0), sticky=ctk.W)
+        if "aud" in self._config_subtitles.output_file_types:
+            self.chk_output_file_aud.select()
+
+        ## 'Translate to English' checkbox
+        self.chk_whisper_options_translate = ctk.CTkCheckBox(
+            master=self.frm_whisper_options,
+            text="Translate to English",
+        )
+        self.chk_whisper_options_translate.grid(
+            row=3, column=0, padx=20, pady=0, sticky=ctk.W
+        )
+
+        ## 'Show advanced options' button
+        self.btn_whisperx_show_advanced_options = ctk.CTkButton(
+            master=self.frm_whisper_options,
+            text="Show advanced options",
+            command=self._on_show_advanced_options,
+        )
+        self.btn_whisperx_show_advanced_options.grid(
+            row=4, column=0, padx=20, pady=16, sticky=ctk.EW
+        )
+
+        # ------------------
+
+        # 'Google API options' frame
+        self.frm_google_api_options = ctk.CTkFrame(
+            master=self.frm_sidebar, border_width=2
+        )
+        self.frm_google_api_options.grid(
+            row=3, column=0, padx=20, pady=(20, 0), sticky=ctk.EW
+        )
+        # Hidden at first because WhisperX is the default transcription method
+        self.frm_google_api_options.grid_remove()
+
+        ## 'Google API options' label
+        self.lbl_google_api_options = ctk.CTkLabel(
+            master=self.frm_google_api_options,
+            text="Google API options",
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
+        )
+        self.lbl_google_api_options.grid(row=0, column=0, padx=10, pady=(10, 12.5))
+
+        ## 'Set API key' button
+        self.btn_set_google_api_key = ctk.CTkButton(
+            master=self.frm_google_api_options,
+            text="Set API key",
+            command=self._on_google_api_key_set,
+        )
+        self.btn_set_google_api_key.grid(
+            row=1, column=0, padx=20, pady=(0, 20), sticky=ctk.EW
         )
 
         # ------------------
@@ -401,7 +481,7 @@ class MainWindow(ctk.CTkFrame):
         )
         self.frm_whisperx_advanced_options.grid_remove()  # Hidden by default
 
-        ## Title label
+        ## 'Advanced options' label
         self.lbl_advanced_options = ctk.CTkLabel(
             master=self.frm_whisperx_advanced_options,
             text="Advanced options",
@@ -515,7 +595,7 @@ class MainWindow(ctk.CTkFrame):
         ## Info label
         self.lbl_info = ctk.CTkLabel(
             master=self.frm_sidebar,
-            text="v2.2.2 | Made by HenestrosaDev",
+            text="v2.2.3 | Made by HenestrosaDev",
             font=ctk.CTkFont(size=12),
         )
         self.lbl_info.grid(row=14, column=0, padx=20, pady=(5, 10))
@@ -919,36 +999,6 @@ class MainWindow(ctk.CTkFrame):
                 new_value=new_api_key.strip(),
             )
 
-    def _on_whisper_options_translate_change(self):
-        """
-        Handles changes to `chk_whisper_options_translate`.
-
-        Adjusts the user interface based on whether the translation option for WhisperX
-        transcription is selected or deselected. If translation is selected, it
-        deselects the subtitles option and disables the subtitles checkbox.
-        If translation is deselected, it enables the subtitles checkbox.
-        """
-        if self.chk_whisper_options_translate.get():
-            self.chk_whisper_options_subtitles.deselect()
-            self.chk_whisper_options_subtitles.configure(state=ctk.DISABLED)
-            self.frm_subtitle_options.grid_remove()
-        else:
-            self.chk_whisper_options_subtitles.configure(state=ctk.NORMAL)
-
-    def _on_whisper_options_subtitles_change(self):
-        """
-        Handle changes to `chk_whisper_options_subtitles`.
-
-        Adjusts the visibility of subtitle options based on whether the subtitles option
-        for WhisperX transcription is selected or deselected. If subtitles are selected,
-        it displays the subtitle options. If subtitles are deselected, it hides the
-        subtitle options.
-        """
-        if self.chk_whisper_options_subtitles.get():
-            self.frm_subtitle_options.grid()
-        else:
-            self.frm_subtitle_options.grid_remove()
-
     def _on_show_advanced_options(self):
         """
         Handle clicks on `btn_whisperx_show_advanced_options`.
@@ -984,6 +1034,43 @@ class MainWindow(ctk.CTkFrame):
         else:
             self.chk_overwrite_files.deselect()
             self.chk_overwrite_files.configure(state=ctk.DISABLED)
+
+    def _on_output_file_types_change(self):
+        """
+        Handles changes to the output file types by updating the configuration and
+        displaying the appropriate subtitle options.
+        """
+        # Dictionary mapping checkboxes to their corresponding file types
+        checkbox_to_file_type = {
+            self.chk_output_file_vtt: "vtt",
+            self.chk_output_file_srt: "srt",
+            self.chk_output_file_txt: "txt",
+            self.chk_output_file_json: "json",
+            self.chk_output_file_tsv: "tsv",
+            self.chk_output_file_aud: "aud",
+        }
+
+        # List comprehension to gather selected file types
+        output_file_types = [
+            file_type for chk, file_type in checkbox_to_file_type.items() if chk.get()
+        ]
+
+        # Show or hide the subtitle options frame based on the selected subtitle file types
+        if any(file_type in output_file_types for file_type in {"vtt", "srt"}):
+            self.frm_subtitle_options.grid()
+        else:
+            self.frm_subtitle_options.grid_remove()
+
+        # Convert the list to a comma-separated string and update the configuration
+        output_file_types_str = ",".join(output_file_types)
+        self._config_subtitles.output_file_types = output_file_types_str
+
+        # Notify the config change
+        self._on_config_change(
+            section=ConfigSubtitles.Key.SECTION,
+            key=ConfigSubtitles.Key.OUTPUT_FILE_TYPES,
+            new_value=output_file_types_str,
+        )
 
     def _toggle_progress_bar_visibility(self, should_show):
         """

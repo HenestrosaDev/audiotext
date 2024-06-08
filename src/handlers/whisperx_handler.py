@@ -64,13 +64,19 @@ class WhisperXHandler:
         except Exception:
             return traceback.format_exc()
 
-    def generate_subtitles(self, file_path: Path, should_overwrite: bool):
+    def generate_subtitles(
+        self, file_path: Path, output_file_types: list[str], should_overwrite: bool
+    ):
         """
         Generate subtitles for a video or audio file.
 
         :param file_path: The path to the video or audio file for which subtitles are
                           to be generated.
         :type file_path: Path
+        :param output_file_types: A list of strings representing the desired output
+                                    file types for the generated subtitles. Subtitles
+                                    will be generated in each of the specified formats.
+        :type output_file_types: list[str]
         :param should_overwrite: Indicates whether existing subtitle files should be
                                 overwritten if they exist. If False, subtitles will
                                 only be generated if no subtitle file exists for
@@ -78,11 +84,9 @@ class WhisperXHandler:
         :type should_overwrite: bool
         """
         config_subtitles = cm.ConfigManager.get_config_subtitles()
-
-        output_formats = ["srt", "vtt"]
         output_dir = file_path.parent
 
-        for output_format in output_formats:
+        for output_type in output_file_types:
             path_to_check = file_path.parent / f"{file_path.stem}.{output_format}"
 
             if should_overwrite or not os.path.exists(path_to_check):
