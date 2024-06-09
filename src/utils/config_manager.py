@@ -56,6 +56,9 @@ class ConfigManager:
             max_line_width=ConfigManager.get_value(
                 section, ConfigSubtitles.Key.MAX_LINE_WIDTH
             ),
+            output_file_types=ConfigManager.get_value(
+                section, ConfigSubtitles.Key.OUTPUT_FILE_TYPES
+            ),
         )
 
     @staticmethod

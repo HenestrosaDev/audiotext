@@ -24,7 +24,7 @@ class App(ctk.CTk):
 
         # Initial size of the window
         width = 1000
-        height = 760
+        height = 851
         self.geometry(f"{width}x{height}")
 
         # Min size of the window
