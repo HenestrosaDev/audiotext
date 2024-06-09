@@ -265,13 +265,9 @@ class MainController:
             for file in files:
                 if any(file.endswith(ext) for ext in c.SUPPORTED_FILE_EXTENSIONS):
                     file_path = Path(root) / file
-                    if (
-                        not self.transcription.should_overwrite
-                        and self.transcription.output_file_types
-                        and any(
-                            (file_path.with_suffix(f".{ext}")).exists()
-                            for ext in self.transcription.output_file_types
-                        )
+                    if not self.transcription.should_overwrite and any(
+                        (file_path.with_suffix(f".{ext}")).exists()
+                        for ext in self.transcription.output_file_types
                     ):
                         print(f"{file_path} already has transcription(s). Skipping.")
                         continue
