@@ -46,7 +46,10 @@ class WhisperXHandler:
             )
 
             # Align output if should subtitle
-            if transcription.should_subtitle:
+            if (
+                "srt" in transcription.output_file_types
+                or "vtt" in transcription.output_file_types
+            ):
                 model_aligned, metadata = whisperx.load_align_model(
                     language_code=transcription.language_code, device=device
                 )
@@ -87,10 +90,10 @@ class WhisperXHandler:
         output_dir = file_path.parent
 
         for output_type in output_file_types:
-            path_to_check = file_path.parent / f"{file_path.stem}.{output_format}"
+            path_to_check = file_path.parent / f"{file_path.stem}.{output_type}"
 
             if should_overwrite or not os.path.exists(path_to_check):
-                writer = whisperx.transcribe.get_writer(output_format, str(output_dir))
+                writer = whisperx.transcribe.get_writer(output_type, str(output_dir))
                 writer_args = {
                     "highlight_words": config_subtitles.highlight_words,
                     "max_line_count": config_subtitles.max_line_count,
