@@ -10,6 +10,7 @@ import utils.path_helper as ph
 from controllers.main_controller import MainController
 from models.config.config_google_api import ConfigGoogleApi
 from models.config.config_subtitles import ConfigSubtitles
+from models.config.config_system import ConfigSystem
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
@@ -26,6 +27,7 @@ class MainWindow(ctk.CTkFrame):
         config_whisperx: ConfigWhisperX,
         config_google_api: ConfigGoogleApi,
         config_subtitles: ConfigSubtitles,
+        config_system: ConfigSystem,
     ):
         super().__init__(parent)
 
@@ -37,6 +39,7 @@ class MainWindow(ctk.CTkFrame):
         self._config_whisperx = config_whisperx
         self._config_google_api = config_google_api
         self._config_subtitles = config_subtitles
+        self._config_system = config_system
 
         # Init the controller
         self._controller = None
@@ -586,6 +589,7 @@ class MainWindow(ctk.CTkFrame):
             values=["System", "Light", "Dark"],
             command=self._change_appearance_mode_event,
         )
+        self.omn_appearance_mode.set(self._config_system.appearance_mode)
         self.omn_appearance_mode.grid(row=13, column=0, padx=20, pady=0, sticky=ctk.EW)
 
         ## Info label
@@ -1096,6 +1100,23 @@ class MainWindow(ctk.CTkFrame):
         else:
             self.frm_subtitle_options.grid_remove()
 
+    def _change_appearance_mode_event(self, new_appearance_mode: str):
+        """
+        Changes the appearance mode of the application and stores it in the
+        configuration file.
+
+        :param new_appearance_mode: The new appearance mode to set for the application.
+                                    It can be "Light", "Dark" or "System".
+        :type new_appearance_mode: str
+        """
+        ctk.set_appearance_mode(new_appearance_mode)
+
+        self._on_config_change(
+            section=ConfigSystem.Key.SECTION,
+            key=ConfigSystem.Key.APPEARANCE_MODE,
+            new_value=new_appearance_mode,
+        )
+
     @staticmethod
     def _on_config_change(section: str, key: str, new_value: str):
         """
@@ -1110,14 +1131,3 @@ class MainWindow(ctk.CTkFrame):
         :type new_value: str
         """
         cm.ConfigManager.modify_value(section, key, new_value)
-
-    @staticmethod
-    def _change_appearance_mode_event(new_appearance_mode: str):
-        """
-        Changes the appearance mode of the application.
-
-        :param new_appearance_mode: The new appearance mode to set for the application.
-                                    It can be "Light", "Dark" or "System".
-        :type new_appearance_mode: str
-        """
-        ctk.set_appearance_mode(new_appearance_mode)
