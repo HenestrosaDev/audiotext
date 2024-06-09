@@ -46,7 +46,10 @@ class WhisperXHandler:
             )
 
             # Align output if should subtitle
-            if transcription.should_subtitle:
+            if (
+                "srt" in transcription.output_file_types
+                or "vtt" in transcription.output_file_types
+            ):
                 model_aligned, metadata = whisperx.load_align_model(
                     language_code=transcription.language_code, device=device
                 )
@@ -64,13 +67,19 @@ class WhisperXHandler:
         except Exception:
             return traceback.format_exc()
 
-    def generate_subtitles(self, file_path: Path, should_overwrite: bool):
+    def generate_subtitles(
+        self, file_path: Path, output_file_types: list[str], should_overwrite: bool
+    ):
         """
         Generate subtitles for a video or audio file.
 
         :param file_path: The path to the video or audio file for which subtitles are
                           to be generated.
         :type file_path: Path
+        :param output_file_types: A list of strings representing the desired output
+                                    file types for the generated subtitles. Subtitles
+                                    will be generated in each of the specified formats.
+        :type output_file_types: list[str]
         :param should_overwrite: Indicates whether existing subtitle files should be
                                 overwritten if they exist. If False, subtitles will
                                 only be generated if no subtitle file exists for
@@ -78,15 +87,13 @@ class WhisperXHandler:
         :type should_overwrite: bool
         """
         config_subtitles = cm.ConfigManager.get_config_subtitles()
-
-        output_formats = ["srt", "vtt"]
         output_dir = file_path.parent
 
-        for output_format in output_formats:
-            path_to_check = file_path.parent / f"{file_path.stem}.{output_format}"
+        for output_type in output_file_types:
+            path_to_check = file_path.parent / f"{file_path.stem}.{output_type}"
 
             if should_overwrite or not os.path.exists(path_to_check):
-                writer = whisperx.transcribe.get_writer(output_format, str(output_dir))
+                writer = whisperx.transcribe.get_writer(output_type, str(output_dir))
                 writer_args = {
                     "highlight_words": config_subtitles.highlight_words,
                     "max_line_count": config_subtitles.max_line_count,

@@ -61,15 +61,17 @@ class MainController:
                               information about the audio to transcribe.
         :type transcription: Transcription
         """
-        self.transcription = transcription
-
         try:
+            if not transcription.output_file_types:
+                raise ValueError(
+                    "No output file types selected. Please select at least one."
+                )
+
+            self.transcription = transcription
             self.view.on_processing_transcription()
 
             if transcription.source_type == AudioSource.FILE:
                 self._prepare_for_file_transcription(transcription.source_path)
-            elif transcription.source_type == AudioSource.DIRECTORY:
-                self.transcription.source_path = transcription.source_path
             elif transcription.source_type == AudioSource.MIC:
                 threading.Thread(target=self._start_recording_from_mic).start()
                 return
@@ -121,13 +123,22 @@ class MainController:
         if not txt_file_path:
             return
 
-        if should_overwrite or not os.path.exists(txt_file_path):
+        if "txt" in self.transcription.output_file_types and (
+            should_overwrite or not os.path.exists(txt_file_path)
+        ):
             with open(txt_file_path, "w", encoding="utf-8") as txt_file:
                 txt_file.write(self.transcription.text)
 
-        if self.transcription.should_subtitle:
+        whisperx_file_types = {"srt", "vtt", "json", "tsv", "aud"}
+        selected_whisperx_file_types = [
+            output_file_type
+            for output_file_type in self.transcription.output_file_types
+            if output_file_type in whisperx_file_types
+        ]
+
+        if selected_whisperx_file_types:
             self._whisperx_handler.generate_subtitles(
-                Path(txt_file_path), should_overwrite
+                Path(txt_file_path), selected_whisperx_file_types, should_overwrite
             )
 
     # PRIVATE METHODS
@@ -172,29 +183,23 @@ class MainController:
         that the transcription process has been processed.
         """
         try:
-            path = self.transcription.source_path
-
             if self.transcription.source_type == AudioSource.DIRECTORY:
-                await self._transcribe_directory(path)
+                await self._transcribe_directory()
             else:
-                await self._transcribe_file(path)
-
+                await self._transcribe_file(self.transcription.source_path)
         except Exception as e:
             self._handle_exception(e)
-
         finally:
             self.view.on_processed_transcription()
 
-    async def _transcribe_directory(self, dir_path: Path):
+    async def _transcribe_directory(self):
         """
         Transcribes supported files from a directory.
 
-        :param dir_path: The path to the directory containing the audio files.
-        :type dir_path: Path
         :raises ValueError: If the directory path is invalid or doesn't contain valid
                             file types to transcribe.
         """
-        if files := self._get_transcribable_files_from_dir(dir_path):
+        if files := self._get_files_to_transcribe_from_directory():
             # Create a list of coroutines for each file transcription task
             tasks = [self._transcribe_file(file) for file in files]
 
@@ -202,7 +207,8 @@ class MainController:
             await asyncio.gather(*tasks)
 
             self.view.display_text(
-                f"Files from '{dir_path}' successfully " f"transcribed."
+                f"Files from '{self.transcription.source_path}' successfully "
+                "transcribed."
             )
         else:
             raise ValueError(
@@ -245,21 +251,28 @@ class MainController:
                 should_overwrite=self.transcription.should_overwrite,
             )
 
-    @staticmethod
-    def _get_transcribable_files_from_dir(dir_path: Path) -> list[Path]:
+    def _get_files_to_transcribe_from_directory(self) -> list[Path]:
         """
-        Retrieves a list of transcribable files from a directory.
+        Retrieves a list of files to transcribe from a directory.
 
-        :param dir_path: The path to the directory containing the files.
-        :type dir_path: Path
-        :return: A list of paths to transcribable files found in the directory.
+        :return: A list of file paths to transcribe in the directory.
         :rtype: list[Path]
         """
         matching_files = []
-        for root, _, files in os.walk(dir_path):
+
+        for root, _, files in os.walk(self.transcription.source_path):
             for file in files:
                 if any(file.endswith(ext) for ext in c.SUPPORTED_FILE_EXTENSIONS):
-                    matching_files.append(Path(root) / file)
+                    file_path = Path(root) / file
+                    if not self.transcription.should_overwrite and any(
+                        (file_path.with_suffix(f".{ext}")).exists()
+                        for ext in self.transcription.output_file_types
+                    ):
+                        print(f"{file_path} already has transcription(s). Skipping.")
+                        continue
+
+                    matching_files.append(file_path)
+                    print(f"{file_path} added to the list of files to transcribe!")
 
         return matching_files
 

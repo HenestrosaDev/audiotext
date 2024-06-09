@@ -14,8 +14,11 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # Modes: "System" (standard), "Dark", "Light"
-        ctk.set_appearance_mode("System")
+        # Get config_system to set the initial appearance mode
+        config_system = cm.ConfigManager.get_config_system()
+
+        # Modes: "System", "Dark", "Light"
+        ctk.set_appearance_mode(config_system.appearance_mode)
         # Themes: "blue" (standard), "green", "dark-blue"
         ctk.set_default_color_theme("blue")
 
@@ -24,7 +27,7 @@ class App(ctk.CTk):
 
         # Initial size of the window
         width = 1000
-        height = 760
+        height = 851
         self.geometry(f"{width}x{height}")
 
         # Min size of the window
@@ -52,7 +55,9 @@ class App(ctk.CTk):
         config_subtitles = cm.ConfigManager.get_config_subtitles()
 
         # Create the view and place it on the root window
-        view = MainWindow(self, config_whisperx, config_google_api, config_subtitles)
+        view = MainWindow(
+            self, config_whisperx, config_google_api, config_subtitles, config_system
+        )
         view.pack(fill="both", expand=True)
 
         # Create the model for the controller

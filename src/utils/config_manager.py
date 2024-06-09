@@ -4,6 +4,7 @@ from typing import Optional, Union
 
 from models.config.config_google_api import ConfigGoogleApi
 from models.config.config_subtitles import ConfigSubtitles
+from models.config.config_system import ConfigSystem
 from models.config.config_whisperx import ConfigWhisperX
 from utils.path_helper import ROOT_PATH
 
@@ -55,6 +56,19 @@ class ConfigManager:
             ),
             max_line_width=ConfigManager.get_value(
                 section, ConfigSubtitles.Key.MAX_LINE_WIDTH
+            ),
+            output_file_types=ConfigManager.get_value(
+                section, ConfigSubtitles.Key.OUTPUT_FILE_TYPES
+            ),
+        )
+
+    @staticmethod
+    def get_config_system() -> ConfigSystem:
+        section = ConfigSystem.Key.SECTION
+
+        return ConfigSystem(
+            appearance_mode=ConfigManager.get_value(
+                section, ConfigSystem.Key.APPEARANCE_MODE
             ),
         )
 
