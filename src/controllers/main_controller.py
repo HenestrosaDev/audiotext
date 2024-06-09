@@ -61,14 +61,13 @@ class MainController:
                               information about the audio to transcribe.
         :type transcription: Transcription
         """
-        self.transcription = transcription
-
         try:
             if not transcription.output_file_types:
                 raise ValueError(
                     "No output file types selected. Please select at least one."
                 )
 
+            self.transcription = transcription
             self.view.on_processing_transcription()
 
             if transcription.source_type == AudioSource.FILE:
