@@ -99,7 +99,7 @@ class MainWindow(ctk.CTkFrame):
             )
             whisperx_args[
                 "output_file_types"
-            ] = self._config_subtitles.output_file_types.split(",")
+            ] = self._config_whisperx.output_file_types.split(",")
 
         return whisperx_args
 
@@ -385,7 +385,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_output_file_types_change,
         )
         self.chk_output_file_txt.grid(row=1, column=0, pady=(5, 0))
-        if "txt" in self._config_subtitles.output_file_types:
+        if "txt" in self._config_whisperx.output_file_types:
             self.chk_output_file_txt.select()
 
         ### '.json' check box
@@ -396,7 +396,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_output_file_types_change,
         )
         self.chk_output_file_json.grid(row=1, column=1, pady=(5, 0), sticky=ctk.W)
-        if "json" in self._config_subtitles.output_file_types:
+        if "json" in self._config_whisperx.output_file_types:
             self.chk_output_file_json.select()
 
         ### '.tsv' check box
@@ -406,7 +406,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_output_file_types_change,
         )
         self.chk_output_file_tsv.grid(row=2, column=0, pady=(5, 0))
-        if "tsv" in self._config_subtitles.output_file_types:
+        if "tsv" in self._config_whisperx.output_file_types:
             self.chk_output_file_tsv.select()
 
         ### '.aud' check box
@@ -417,7 +417,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_output_file_types_change,
         )
         self.chk_output_file_aud.grid(row=2, column=1, pady=(5, 0), sticky=ctk.W)
-        if "aud" in self._config_subtitles.output_file_types:
+        if "aud" in self._config_whisperx.output_file_types:
             self.chk_output_file_aud.select()
 
         ## 'Translate to English' checkbox
@@ -1065,12 +1065,12 @@ class MainWindow(ctk.CTkFrame):
 
         # Convert the list to a comma-separated string and update the configuration
         output_file_types_str = ",".join(output_file_types)
-        self._config_subtitles.output_file_types = output_file_types_str
+        self._config_whisperx.output_file_types = output_file_types_str
 
         # Notify the config change
         self._on_config_change(
             section=ConfigSubtitles.Key.SECTION,
-            key=ConfigSubtitles.Key.OUTPUT_FILE_TYPES,
+            key=ConfigWhisperX.Key.OUTPUT_FILE_TYPES,
             new_value=output_file_types_str,
         )
 
@@ -1088,12 +1088,12 @@ class MainWindow(ctk.CTkFrame):
 
     def _toggle_frm_subtitle_options_visibility(self):
         if (
-            "srt" in self._config_subtitles.output_file_types
-            or "vtt" in self._config_subtitles.output_file_types
+            "srt" in self._config_whisperx.output_file_types
+            or "vtt" in self._config_whisperx.output_file_types
         ):
-            if "srt" in self._config_subtitles.output_file_types:
+            if "srt" in self._config_whisperx.output_file_types:
                 self.chk_output_file_srt.select()
-            if "vtt" in self._config_subtitles.output_file_types:
+            if "vtt" in self._config_whisperx.output_file_types:
                 self.chk_output_file_vtt.select()
 
             self.frm_subtitle_options.grid()

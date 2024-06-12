@@ -10,6 +10,7 @@ class ConfigWhisperX:
     compute_type: str
     use_cpu: bool
     can_use_gpu: bool
+    output_file_types: str
 
     class Key(Enum):
         """
@@ -22,6 +23,7 @@ class ConfigWhisperX:
         COMPUTE_TYPE = "compute_type"
         USE_CPU = "use_cpu"
         CAN_USE_GPU = "can_use_gpu"
+        OUTPUT_FILE_TYPES = "output_file_types"
 
         def value_type(self) -> Optional[str]:
             """
@@ -36,6 +38,7 @@ class ConfigWhisperX:
                 self.COMPUTE_TYPE: "str",
                 self.USE_CPU: "bool",
                 self.CAN_USE_GPU: "bool",
+                self.OUTPUT_FILE_TYPES: "str",
             }
 
             return type_mapping.get(self, None)
