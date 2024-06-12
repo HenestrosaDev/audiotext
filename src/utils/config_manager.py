@@ -33,6 +33,9 @@ class ConfigManager:
             can_use_gpu=ConfigManager.get_value(
                 section, ConfigWhisperX.Key.CAN_USE_GPU
             ),
+            output_file_types=ConfigManager.get_value(
+                section, ConfigWhisperX.Key.OUTPUT_FILE_TYPES
+            ),
         )
 
     @staticmethod
@@ -56,9 +59,6 @@ class ConfigManager:
             ),
             max_line_width=ConfigManager.get_value(
                 section, ConfigSubtitles.Key.MAX_LINE_WIDTH
-            ),
-            output_file_types=ConfigManager.get_value(
-                section, ConfigSubtitles.Key.OUTPUT_FILE_TYPES
             ),
         )
 

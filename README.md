@@ -308,6 +308,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   │
   ├───.github
   │   │   CONTRIBUTING.md
+  │   │   FUNDING.yml
   │   │
   │   ├───ISSUE_TEMPLATE
   │   │       bug_report_template.md
@@ -315,6 +316,8 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   │   │
   │   └───PULL_REQUEST_TEMPLATE
   │           pull_request_template.md
+  │
+  ├───docs/
   │
   ├───res
   │   ├───img
@@ -341,11 +344,16 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   └───src
       │   app.py
       │
-      ├───controller
+      ├───controllers
       │       __init__.py
       │       main_controller.py
       │
-      ├───model
+      ├───handlers
+      │       google_api_handler.py
+      │       whisperx_handler.py
+      │       youtube_handler.py
+      │
+      ├───models
       │   │   __init__.py
       │   │   transcription.py
       │   │     
@@ -353,6 +361,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       │           __init__.py
       │           config_google_api.py
       │           config_subtitles.py
+      │           config_system.py
       │           config_whisperx.py
       │
       ├───utils
@@ -362,10 +371,9 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       │       constants.py
       │       dict_utils.py
       │       enums.py
-      │       i18n.py
       │       path_helper.py
       │
-      └───view
+      └───views
           │   __init__.py   
           │   main_window.py
           │    
