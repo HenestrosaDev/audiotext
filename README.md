@@ -467,7 +467,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 ### Notes
 - You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
 - For **Apple Silicon Macs**: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
-- I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169. `logger=logger` has been changed to `logger=None` to avoid more errors related to opening the console.
+- I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169 that changes `logger=logger` to `logger=None` to avoid more errors related to opening the console.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -560,18 +560,18 @@ You can transcribe from four different sources:
               seul-contre-tous-1998.vtt
   ```
 
-  If we transcribe the directory again with the **Google API** and the `Overwrite existing files` option unchecked, **Audiotext** won't process any files because there are already `.txt` files corresponding to all the files in the directory. However, if we added the file `endors-toi.wav` to the root of `files-to-transcribe`, it would be the only file that would be processed because it doesn't have a `.txt` attached to it. The same would happen in the `WhisperX` scenario, since `endors-toi-wav` has no transcription files generated.
+  If we transcribe the directory again with the **Google API** and the `Overwrite existing files` option unchecked, **Audiotext** won't process any files because there are already `.txt` files corresponding to all the files in the directory. However, if we added the file `endors-toi.wav` to the root of `files-to-transcribe`, it would be the only file that would be processed because it doesn't have a `.txt` attached to it. The same would happen in the `WhisperX` scenario, since `endors-toi.wav` has no transcription files generated.
 
   Note that if we check the `Overwrite existing files` option, all files will be processed again and the existing transcription files will be overwritten.
 
 - **Microphone**: To start recording, simply click the `Start recording` button to begin the process. The text of the button will change to `Stop recording` and its color will change to red. Click it to stop recording and generate the transcription. 
 
-  Note that your operating system must recognize an input source, otherwise an error will appear in the text box indicating that no input source was detected.
-
   Here is a video demonstrating this feature:
 
   <!-- english.mp4 -->
   https://github.com/HenestrosaDev/audiotext/assets/60482743/33b9f5e2-e0bf-48f4-bfe2-363173665903
+
+  Note that your operating system must recognize an input source, otherwise an error will appear in the text box indicating that no input source was detected.
   
 - **YouTube video**: Requires an Internet connection to get the audio of the video. To generate the transcription, simply enter the URL of the video in the `YouTube video URL` field and click the `Generate transcription` button when you are finished adjusting the settings.
 
@@ -658,7 +658,7 @@ To translate the audio into English, simply check the `Translate to English` che
 <!-- spanish-to-english.mp4 -->
 https://github.com/HenestrosaDev/audiotext/assets/60482743/dceb68e6-398f-46c5-9a9e-1dd2e4ee8e74
 
-However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into Spanish, you would set the `Audio language` to "Spanish".
+However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into French, you would set the `Audio language` to "French".
 
 Here is a practical example using the microphone:
 
@@ -691,8 +691,8 @@ When you select the `.srt` and/or the `.vtt` output file type(s), the `Subtitle 
 You can change these three parameters:
 
 - **Highlight words**: Underline each word as it's spoken in `.srt` and `.vtt` subtitle files. Not checked by default.
-- **Max. line count**: The maximum number of lines in a segment. `2` by default.
-- **Max. line width**: The maximum number of characters in a line before breaking the line. `42` by default.
+- **Max. line count**: The maximum number of lines in a segment. `42` by default.
+- **Max. line width**: The maximum number of characters in a line before breaking the line. `2` by default.
 
 To get the subtitle file(s) after the audio is transcribed, you can either check the `Autosave` option before generating the transcription or click `Save transcription` and select the path where you want to save them as explained in the [Save Transcription](#save-transcription) section
 
