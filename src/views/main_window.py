@@ -1069,7 +1069,7 @@ class MainWindow(ctk.CTkFrame):
 
         # Notify the config change
         self._on_config_change(
-            section=ConfigSubtitles.Key.SECTION,
+            section=ConfigWhisperX.Key.SECTION,
             key=ConfigWhisperX.Key.OUTPUT_FILE_TYPES,
             new_value=output_file_types_str,
         )
