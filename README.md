@@ -691,8 +691,8 @@ When you select the `.srt` and/or the `.vtt` output file type(s), the `Subtitle 
 You can change these three parameters:
 
 - **Highlight words**: Underline each word as it's spoken in `.srt` and `.vtt` subtitle files. Not checked by default.
-- **Max. line count**: The maximum number of lines in a segment. `42` by default.
-- **Max. line width**: The maximum number of characters in a line before breaking the line. `2` by default.
+- **Max. line count**: The maximum number of lines in a segment. `2` by default.
+- **Max. line width**: The maximum number of characters in a line before breaking the line. `42` by default.
 
 To get the subtitle file(s) after the audio is transcribed, you can either check the `Autosave` option before generating the transcription or click `Save transcription` and select the path where you want to save them as explained in the [Save Transcription](#save-transcription) section
 
