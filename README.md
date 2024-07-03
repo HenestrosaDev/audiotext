@@ -619,7 +619,7 @@ On the other hand, if we transcribe the audio file `foo.mp3` with the same outpu
 
 ### WhisperX Options
 
-The **WhisperX** options appear when the selected transcription method is **WhisperX**. You can select the output file types of the transcription and whether to translate the audio into English.
+The **WhisperX** options appear when the selected transcription method is **WhisperX**. You can select the output file types of the transcription and whether to translate the transcription into English.
 
 <p align="center">
   <picture>
@@ -653,7 +653,7 @@ If you select one of the two subtitle file types (`.vtt` and `.srt`), the `Subti
 
 #### Transcription Translation
 
-To translate the audio into English, simply check the `Translate to English` checkbox before generating the transcription, as shown in the video below.
+To translate the transcription into English, simply check the `Translate to English` checkbox before generating the transcription, as shown in the video below.
 
 <!-- spanish-to-english.mp4 -->
 https://github.com/HenestrosaDev/audiotext/assets/60482743/dceb68e6-398f-46c5-9a9e-1dd2e4ee8e74
