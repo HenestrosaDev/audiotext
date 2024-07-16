@@ -536,8 +536,8 @@ You can transcribe from four different sources:
       │   the-past-recedes.flac
       │
       └───movies
-              seul-contre-tous.mp4
-              mulholland-dr.avi
+              mulholland-dr-2001.avi
+              seul-contre-tous-1998.mp4
   ```
 
   After transcribing the `files-to-transcribe` directory using **WhisperX**, with the `Overwrite existing files` option unchecked and the output file types `.vtt` and `.txt` selected, the folder structure will look like this:
@@ -560,7 +560,7 @@ You can transcribe from four different sources:
               seul-contre-tous-1998.vtt
   ```
 
-  If we transcribe the directory again with the **Google API** and the `Overwrite existing files` option unchecked, **Audiotext** won't process any files because there are already `.txt` files corresponding to all the files in the directory. However, if we added the file `endors-toi.wav` to the root of `files-to-transcribe`, it would be the only file that would be processed because it doesn't have a `.txt` attached to it. The same would happen in the `WhisperX` scenario, since `endors-toi.wav` has no transcription files generated.
+  If we transcribe the directory again with the **Google API** and the `Overwrite existing files` option unchecked, **Audiotext** won't process any files because there are already `.txt` files corresponding to all the files in the directory. However, if we added the file `endors-toi.wav` to the root of `files-to-transcribe`, it would be the only file that would be processed because it doesn't have a `.txt` attached to it. The same would happen in the **WhisperX** scenario, since `endors-toi.wav` has no transcription files generated.
 
   Note that if we check the `Overwrite existing files` option, all files will be processed again and the existing transcription files will be overwritten.
 
@@ -571,7 +571,7 @@ You can transcribe from four different sources:
   <!-- english.mp4 -->
   https://github.com/HenestrosaDev/audiotext/assets/60482743/33b9f5e2-e0bf-48f4-bfe2-363173665903
 
-  Note that your operating system must recognize an input source, otherwise an error will appear in the text box indicating that no input source was detected.
+  Note that your operating system must recognize an input source, otherwise an error message will appear in the text box indicating that no input source was detected.
   
 - **YouTube video**: Requires an Internet connection to get the audio of the video. To generate the transcription, simply enter the URL of the video in the `YouTube video URL` field and click the `Generate transcription` button when you are finished adjusting the settings.
 
