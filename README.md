@@ -831,6 +831,7 @@ Remember that **WhisperX** provides fast, unlimited audio transcription that sup
 - [x] Add `Output file types` option to `WhisperX options`.
 - [x] Add support for `.json`, `.tsv` and `.aud` output file types when using WhisperX as transcription method.
 - [x] Add `appearance_mode` to `config.ini`.
+- [ ] Add support for **Whisper's API** ([#42](https://github.com/HenestrosaDev/audiotext/discussions/42)).
 - [ ] Change the `Generate transcription` button to `Cancel transcription` when a transcription is in progress.
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
