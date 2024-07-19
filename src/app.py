@@ -49,6 +49,12 @@ class App(ctk.CTk):
                 new_value=ComputeType.INT8.value,
             )
 
+            cm.ConfigManager.modify_value(
+                section=ConfigWhisperX.Key.SECTION,
+                key=ConfigWhisperX.Key.USE_CPU,
+                new_value="True",
+            )
+
         # Initialize configs
         config_whisperx = cm.ConfigManager.get_config_whisperx()
         config_google_api = cm.ConfigManager.get_config_google_api()
