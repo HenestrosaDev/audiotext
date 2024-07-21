@@ -76,7 +76,8 @@ class MainWindow(ctk.CTkFrame):
         :rtype: str
         """
         return du.find_key_by_value(
-            dictionary=c.AUDIO_LANGUAGES, target_value=self.omn_audio_language.get()
+            dictionary=c.AUDIO_LANGUAGES,
+            target_value=self.omn_transcription_language.get(),
         )
 
     def _get_whisperx_args(self):
@@ -137,27 +138,25 @@ class MainWindow(ctk.CTkFrame):
         self.frm_shared_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
         self.frm_shared_options.grid(row=1, column=0, padx=20, pady=(20, 0))
 
-        ## 'Audio language' option menu
-        self.lbl_audio_language = ctk.CTkLabel(
+        ## 'Transcription language' option menu
+        self.lbl_transcription_language = ctk.CTkLabel(
             master=self.frm_shared_options,
-            text="Audio language",
+            text="Transcription language",
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_audio_language.grid(row=0, column=0, padx=0, pady=(10, 0))
+        self.lbl_transcription_language.grid(row=0, column=0, padx=0, pady=(10, 0))
 
-        self.omn_audio_language = ctk.CTkOptionMenu(master=self.frm_shared_options)
+        self.omn_transcription_language = ctk.CTkOptionMenu(
+            master=self.frm_shared_options
+        )
         CTkScrollableDropdown(
-            attach=self.omn_audio_language,
+            attach=self.omn_transcription_language,
             values=sorted(list(c.AUDIO_LANGUAGES.values())),
             alpha=1,
         )
-        self.omn_audio_language.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.EW)
-        try:
-            self.omn_audio_language.set(
-                c.AUDIO_LANGUAGES[locale.getdefaultlocale()[0][:2]]
-            )
-        except Exception:
-            self.omn_audio_language.set("English")
+        self.omn_transcription_language.grid(
+            row=1, column=0, padx=20, pady=0, sticky=ctk.EW
+        )
 
         ## 'Audio source' option menu
         self.lbl_audio_source = ctk.CTkLabel(
@@ -670,7 +669,7 @@ class MainWindow(ctk.CTkFrame):
         # Disable action buttons to avoid multiple requests at the same time
         self.ent_path.configure(state=ctk.DISABLED)
         self.omn_audio_source.configure(state=ctk.DISABLED)
-        self.omn_audio_language.configure(state=ctk.DISABLED)
+        self.omn_transcription_language.configure(state=ctk.DISABLED)
 
         if not self._is_transcribing_from_mic:
             self.btn_main_action.configure(state=ctk.DISABLED)
@@ -687,7 +686,7 @@ class MainWindow(ctk.CTkFrame):
         """
         self.ent_path.configure(state=ctk.NORMAL)
         self.omn_audio_source.configure(state=ctk.NORMAL)
-        self.omn_audio_language.configure(state=ctk.NORMAL)
+        self.omn_transcription_language.configure(state=ctk.NORMAL)
         self.btn_main_action.configure(state=ctk.NORMAL)
 
         self._toggle_progress_bar_visibility(should_show=False)
@@ -892,7 +891,7 @@ class MainWindow(ctk.CTkFrame):
         """
         self.ent_path.configure(state=ctk.DISABLED)
         self.omn_audio_source.configure(state=ctk.DISABLED)
-        self.omn_audio_language.configure(state=ctk.DISABLED)
+        self.omn_transcription_language.configure(state=ctk.DISABLED)
 
         transcription = Transcription(
             language_code=self._get_language_code(),
