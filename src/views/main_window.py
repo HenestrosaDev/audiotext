@@ -565,7 +565,7 @@ class MainWindow(ctk.CTkFrame):
             anchor=ctk.W,
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_appearance_mode.grid(row=12, column=0, padx=20, pady=(50, 0))
+        self.lbl_appearance_mode.grid(row=6, column=0, padx=20, pady=(20, 0))
 
         self.omn_appearance_mode = ctk.CTkOptionMenu(
             master=self.frm_sidebar,
@@ -573,7 +573,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._change_appearance_mode_event,
         )
         self.omn_appearance_mode.set(self._config_system.appearance_mode)
-        self.omn_appearance_mode.grid(row=13, column=0, padx=20, pady=0, sticky=ctk.EW)
+        self.omn_appearance_mode.grid(row=7, column=0, padx=20, pady=0, sticky=ctk.EW)
 
         ## Info label
         self.lbl_info = ctk.CTkLabel(
@@ -581,7 +581,7 @@ class MainWindow(ctk.CTkFrame):
             text="v2.2.3 | Made by HenestrosaDev",
             font=ctk.CTkFont(size=12),
         )
-        self.lbl_info.grid(row=14, column=0, padx=20, pady=(5, 10))
+        self.lbl_info.grid(row=8, column=0, padx=20, pady=(5, 10))
 
     def _init_main_content(self):
         # Main entry frame
