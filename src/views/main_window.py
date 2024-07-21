@@ -688,26 +688,6 @@ class MainWindow(ctk.CTkFrame):
         """
         self.ent_path.configure(textvariable=ctk.StringVar(self, filepath))
 
-    def on_processing_transcription(self):
-        """
-        Prepares the UI for processing a transcription. Disables action buttons to avoid
-        multiple requests at the same time. It also shows a progress bar and removes any
-        previous text from the display.
-        """
-        # Disable action buttons to avoid multiple requests at the same time
-        self.ent_path.configure(state=ctk.DISABLED)
-        self.omn_audio_source.configure(state=ctk.DISABLED)
-        self.omn_transcription_language.configure(state=ctk.DISABLED)
-
-        if not self._is_transcribing_from_mic:
-            self.btn_main_action.configure(state=ctk.DISABLED)
-
-        # Show progress bar
-        self._toggle_progress_bar_visibility(should_show=True)
-
-        # Remove previous text
-        self.display_text("")
-
     def on_processed_transcription(self):
         """
         Re-enables disabled widgets after transcription processing is complete.
@@ -922,6 +902,23 @@ class MainWindow(ctk.CTkFrame):
         )
         self._controller.prepare_for_transcription(transcription)
 
+    def _prepare_ui_for_transcription(self):
+        """
+        Disables fields, shows the progress bar and removes the text of the previous
+        transcription.
+        """
+        self.ent_path.configure(state=ctk.DISABLED)
+        self.omn_transcription_language.configure(state=ctk.DISABLED)
+        self.omn_audio_source.configure(state=ctk.DISABLED)
+        self.omn_transcription_method.configure(state=ctk.DISABLED)
+
+        if not self._is_transcribing_from_mic:
+            self.btn_main_action.configure(state=ctk.DISABLED)
+
+        self._toggle_progress_bar_visibility(should_show=True)
+
+        self.display_text("")
+
     def _on_main_action(self):
         """
         Triggers when `btn_main_action` is clicked.
@@ -931,9 +928,7 @@ class MainWindow(ctk.CTkFrame):
         transcription process to prevent further user input until the transcription
         is complete.
         """
-        self.ent_path.configure(state=ctk.DISABLED)
-        self.omn_audio_source.configure(state=ctk.DISABLED)
-        self.omn_transcription_language.configure(state=ctk.DISABLED)
+        self._prepare_ui_for_transcription()
 
         transcription = Transcription(
             language_code=self._get_language_code(),

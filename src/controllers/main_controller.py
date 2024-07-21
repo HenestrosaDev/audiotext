@@ -68,7 +68,6 @@ class MainController:
                 )
 
             self.transcription = transcription
-            self.view.on_processing_transcription()
 
             if transcription.source_type == AudioSource.FILE:
                 self._prepare_for_file_transcription(transcription.source_path)
