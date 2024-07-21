@@ -459,6 +459,118 @@ class MainWindow(ctk.CTkFrame):
 
         # ------------------
 
+        # 'Whisper API options' frame
+        self.frm_whisper_api_options = ctk.CTkFrame(
+            master=self.frm_sidebar, border_width=2
+        )
+        self.frm_whisper_api_options.grid(
+            row=3, column=0, padx=20, pady=(20, 0), sticky=ctk.EW
+        )
+
+        if self._config_transcription.method != TranscriptionMethod.WHISPER_API.value:
+            self.frm_whisper_api_options.grid_remove()
+
+        ## 'Whisper API options' label
+        self.lbl_whisper_api_options = ctk.CTkLabel(
+            master=self.frm_whisper_api_options,
+            text="Whisper API options",
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
+        )
+        self.lbl_whisper_api_options.grid(row=0, column=0, padx=10, pady=(10, 5))
+
+        ## 'Response format' option menu
+        self.lbl_response_format = ctk.CTkLabel(
+            master=self.frm_whisper_api_options,
+            text="Response format",
+        )
+        self.lbl_response_format.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.W)
+
+        self.omn_response_format = ctk.CTkOptionMenu(
+            master=self.frm_whisper_api_options,
+            values=c.WHISPER_API_RESPONSE_FORMATS,
+            command=self._on_response_format_change,
+        )
+        self.omn_response_format.grid(
+            row=2, column=0, padx=20, pady=(3, 18), sticky=ctk.EW
+        )
+        self.omn_response_format.set(self._config_whisper_api.response_format)
+
+        ## 'Temperature' entry
+        self.lbl_temperature = ctk.CTkLabel(
+            master=self.frm_whisper_api_options,
+            text="Temperature",
+        )
+        self.lbl_temperature.grid(row=3, column=0, padx=(65, 0), pady=0, sticky=ctk.W)
+
+        self.temperature = ctk.StringVar(
+            self, str(self._config_whisper_api.temperature)
+        )
+        self._setup_debounced_change(
+            section=ConfigWhisperAPI.Key.SECTION,
+            key=ConfigWhisperAPI.Key.TEMPERATURE,
+            variable=self.temperature,
+            callback=self._on_config_change,
+        )
+
+        self.ent_temperature = ctk.CTkEntry(
+            master=self.frm_whisper_api_options,
+            width=40,
+            textvariable=self.temperature,
+        )
+        command = self.ent_temperature.register(self._validate_temperature)
+        self.ent_temperature.configure(
+            validate="key",
+            validatecommand=(command, "%P"),
+        )
+        self.ent_temperature.grid(row=3, column=0, padx=(18, 20), pady=0, sticky=ctk.W)
+
+        ## 'Timestamp granularities' radio button
+        self.lbl_timestamp_granularities = ctk.CTkLabel(
+            master=self.frm_whisper_api_options,
+            text="Timestamp granularities",
+        )
+        self.lbl_timestamp_granularities.grid(row=4, column=0, padx=0, pady=(10, 5))
+
+        self.chk_timestamp_granularities_segment = ctk.CTkCheckBox(
+            master=self.frm_whisper_api_options,
+            text="Segment",
+            command=self._on_timestamp_granularities_change,
+        )
+        self.chk_timestamp_granularities_segment.grid(
+            row=5, column=0, padx=20, pady=0, sticky=ctk.W
+        )
+        if "segment" in self._config_whisper_api.timestamp_granularities:
+            self.chk_timestamp_granularities_segment.select()
+
+        self.chk_timestamp_granularities_word = ctk.CTkCheckBox(
+            master=self.frm_whisper_api_options,
+            text="Word",
+            command=self._on_timestamp_granularities_change,
+        )
+        self.chk_timestamp_granularities_word.grid(
+            row=6, column=0, padx=20, pady=(5, 0), sticky=ctk.W
+        )
+        if "word" in self._config_whisper_api.timestamp_granularities:
+            self.chk_timestamp_granularities_word.select()
+
+        ## Disable if response format is not `verbose_json`
+        self._toggle_chk_timestamp_granularities()
+
+        ## 'Set OpenAI API key' button
+        self.btn_set_openai_api_key = ctk.CTkButton(
+            master=self.frm_whisper_api_options,
+            text="Set OpenAI API key",
+            command=lambda: self._on_set_api_key(
+                env_key=EnvKeys.OPENAI_API_KEY, title="OpenAI API key"
+            ),
+        )
+
+        self.btn_set_openai_api_key.grid(
+            row=7, column=0, padx=20, pady=(16, 20), sticky=ctk.EW
+        )
+
+        # ------------------
+
         # WhisperX advanced options frame
         self.frm_whisperx_advanced_options = ctk.CTkFrame(
             master=self.frm_sidebar, border_width=2
@@ -693,8 +805,9 @@ class MainWindow(ctk.CTkFrame):
         Re-enables disabled widgets after transcription processing is complete.
         """
         self.ent_path.configure(state=ctk.NORMAL)
-        self.omn_audio_source.configure(state=ctk.NORMAL)
         self.omn_transcription_language.configure(state=ctk.NORMAL)
+        self.omn_audio_source.configure(state=ctk.NORMAL)
+        self.omn_transcription_method.configure(state=ctk.NORMAL)
         self.btn_main_action.configure(state=ctk.NORMAL)
 
         self._toggle_progress_bar_visibility(should_show=False)
@@ -876,6 +989,17 @@ class MainWindow(ctk.CTkFrame):
         else:
             self._start_recording_from_mic()
 
+    @staticmethod
+    def _validate_temperature(temperature):
+        if temperature == "":
+            return True
+
+        try:
+            value = float(temperature)
+            return 0 <= value <= 1
+        except ValueError:
+            return False
+
     def _start_recording_from_mic(self):
         """
         Updates the UI and notifies the controller that the user has clicked the
@@ -986,6 +1110,8 @@ class MainWindow(ctk.CTkFrame):
             self.frm_whisper_options.grid()
             self._toggle_frm_subtitle_options_visibility()
             self.frm_google_api_options.grid_remove()
+            self.frm_whisper_api_options.grid_remove()
+
         elif option == TranscriptionMethod.GOOGLE_API.value:
             self.frm_whisper_options.grid_remove()
             self.frm_whisperx_advanced_options.grid_remove()
@@ -994,6 +1120,18 @@ class MainWindow(ctk.CTkFrame):
                 text="Show advanced options"
             )
             self.frm_google_api_options.grid()
+            self.frm_whisper_api_options.grid_remove()
+
+        elif option == TranscriptionMethod.WHISPER_API.value:
+            self.frm_whisper_options.grid_remove()
+            self.frm_whisperx_advanced_options.grid_remove()
+            self.frm_subtitle_options.grid_remove()
+            self.btn_whisperx_show_advanced_options.configure(
+                text="Show advanced options"
+            )
+            self.frm_google_api_options.grid_remove()
+            self.frm_whisper_api_options.grid()
+
     @staticmethod
     def _on_set_api_key(env_key: EnvKeys, title: str):
         """
@@ -1093,6 +1231,71 @@ class MainWindow(ctk.CTkFrame):
             section=ConfigWhisperX.Key.SECTION,
             key=ConfigWhisperX.Key.OUTPUT_FILE_TYPES,
             new_value=output_file_types_str,
+        )
+
+    def _toggle_chk_timestamp_granularities(self):
+        """
+        Toggles timestamp granularities checkboxes visibility depending on the selected
+        response format.
+        """
+        if self.omn_response_format.get() != "verbose_json":
+            self.chk_timestamp_granularities_segment.configure(state=ctk.DISABLED)
+            self.chk_timestamp_granularities_word.configure(state=ctk.DISABLED)
+
+            self.chk_timestamp_granularities_segment.deselect()
+            self.chk_timestamp_granularities_word.deselect()
+        else:
+            self.chk_timestamp_granularities_segment.configure(state=ctk.NORMAL)
+            self.chk_timestamp_granularities_word.configure(state=ctk.NORMAL)
+
+            if "segment" in self._config_whisper_api.timestamp_granularities:
+                self.chk_timestamp_granularities_segment.select()
+            if "word" in self._config_whisper_api.timestamp_granularities:
+                self.chk_timestamp_granularities_word.select()
+
+    def _on_response_format_change(self, option: str):
+        """
+        Handles changes to the response format by updating the configuration and
+        toggling the timestamp granularities checkboxes.
+        """
+        self._on_config_change(
+            section=ConfigWhisperAPI.Key.SECTION,
+            key=ConfigWhisperAPI.Key.RESPONSE_FORMAT,
+            new_value=option,
+        )
+
+        self._toggle_chk_timestamp_granularities()
+
+    def _on_timestamp_granularities_change(self):
+        """
+        Handles changes to the timestamp granularities by updating the configuration.
+        """
+        # Dictionary mapping checkboxes to their corresponding file types
+        chk_to_timestamp_granularity = {
+            self.chk_timestamp_granularities_segment: "segment",
+            self.chk_timestamp_granularities_word: "word",
+        }
+
+        # List comprehension to gather selected file types
+        selected_timestamp_granularities = [
+            timestamp_granularity
+            for chk, timestamp_granularity in chk_to_timestamp_granularity.items()
+            if chk.get()
+        ]
+
+        # Convert the list to a comma-separated string and update the configuration
+        selected_timestamp_granularities_str = ",".join(
+            selected_timestamp_granularities
+        )
+        self._config_whisper_api.timestamp_granularities = (
+            selected_timestamp_granularities_str
+        )
+
+        # Notify the config change
+        self._on_config_change(
+            section=ConfigWhisperAPI.Key.SECTION,
+            key=ConfigWhisperAPI.Key.TIMESTAMP_GRANULARITIES,
+            new_value=selected_timestamp_granularities_str,
         )
 
     def _toggle_progress_bar_visibility(self, should_show):
