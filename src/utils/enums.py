@@ -9,8 +9,8 @@ class AudioSource(Enum):
 
 
 class TranscriptionMethod(Enum):
-    WHISPERX = 0
-    GOOGLE_API = 1
+    GOOGLE_API = "Google API"
+    WHISPERX = "WhisperX"
 
 
 class Color(Enum):

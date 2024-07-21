@@ -1,5 +1,3 @@
-import locale
-import tkinter
 from pathlib import Path
 
 import customtkinter as ctk
@@ -10,6 +8,7 @@ import utils.path_helper as ph
 from controllers.main_controller import MainController
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
+from models.config.config_transcription import ConfigTranscription
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
@@ -27,6 +26,7 @@ class MainWindow(ctk.CTkFrame):
         config_whisperx: ConfigWhisperX,
         config_subtitles: ConfigSubtitles,
         config_system: ConfigSystem,
+        config_transcription: ConfigTranscription,
     ):
         super().__init__(parent)
 
@@ -38,6 +38,7 @@ class MainWindow(ctk.CTkFrame):
         self._config_whisperx = config_whisperx
         self._config_subtitles = config_subtitles
         self._config_system = config_system
+        self._config_transcription = config_transcription
 
         # Init the controller
         self._controller = None
@@ -153,10 +154,12 @@ class MainWindow(ctk.CTkFrame):
             attach=self.omn_transcription_language,
             values=sorted(list(c.AUDIO_LANGUAGES.values())),
             alpha=1,
+            command=self._on_transcription_language_change,
         )
         self.omn_transcription_language.grid(
             row=1, column=0, padx=20, pady=0, sticky=ctk.EW
         )
+        self.omn_transcription_language.set(self._config_transcription.language)
 
         ## 'Audio source' option menu
         self.lbl_audio_source = ctk.CTkLabel(
@@ -172,7 +175,7 @@ class MainWindow(ctk.CTkFrame):
             command=self._on_audio_source_change,
         )
         self.omn_audio_source.grid(row=3, column=0, padx=20, pady=0, sticky=ctk.EW)
-        self.omn_audio_source.set(AudioSource.FILE.value)
+        self.omn_audio_source.set(self._config_transcription.audio_source)
 
         ## 'Transcription method' option menu
 
@@ -191,7 +194,7 @@ class MainWindow(ctk.CTkFrame):
         self.omn_transcription_method.grid(
             row=5, column=0, padx=20, pady=0, sticky=ctk.EW
         )
-        self.omn_transcription_method.set(self._config_system.transcription_method)
+        self.omn_transcription_method.set(self._config_transcription.method)
 
         ## 'Generate transcription' button
         self.btn_main_action = ctk.CTkButton(
@@ -313,6 +316,9 @@ class MainWindow(ctk.CTkFrame):
         self.frm_whisper_options = ctk.CTkFrame(master=self.frm_sidebar, border_width=2)
         self.frm_whisper_options.grid(row=3, column=0, padx=20, pady=(20, 0))
 
+        if self._config_transcription.method != TranscriptionMethod.WHISPERX.value:
+            self.frm_whisper_options.grid_remove()
+
         ## 'WhisperX options' label
         self.lbl_whisper_options = ctk.CTkLabel(
             master=self.frm_whisper_options,
@@ -424,8 +430,9 @@ class MainWindow(ctk.CTkFrame):
         self.frm_google_api_options.grid(
             row=3, column=0, padx=20, pady=(20, 0), sticky=ctk.EW
         )
-        # Hidden at first because WhisperX is the default transcription method
-        self.frm_google_api_options.grid_remove()
+
+        if self._config_transcription.method != TranscriptionMethod.GOOGLE_API.value:
+            self.frm_google_api_options.grid_remove()
 
         ## 'Google API options' label
         self.lbl_google_api_options = ctk.CTkLabel(
@@ -640,13 +647,29 @@ class MainWindow(ctk.CTkFrame):
         )
         self.chk_autosave.grid(row=0, column=1, padx=(20, 10), pady=0)
 
+        if self._config_transcription.autosave:
+            self.chk_autosave.select()
+
+            if self._config_transcription.audio_source == AudioSource.DIRECTORY.value:
+                self.chk_autosave.configure(state=ctk.DISABLED)
+
         ## 'Overwrite files' checkbox
         self.chk_overwrite_files = ctk.CTkCheckBox(
             master=self.frm_save_options,
             text="Overwrite existing files",
+            command=lambda: self._on_config_change(
+                section=ConfigTranscription.Key.SECTION,
+                key=ConfigTranscription.Key.OVERWRITE_FILES,
+                new_value=str(bool(self.chk_overwrite_files.get())),
+            ),
         )
         self.chk_overwrite_files.grid(row=0, column=2, padx=0, pady=0)
-        self.chk_overwrite_files.configure(state=ctk.DISABLED)
+
+        if not self._config_transcription.autosave:
+            self.chk_overwrite_files.configure(state=ctk.DISABLED)
+
+        if self._config_transcription.overwrite_files:
+            self.chk_overwrite_files.select()
 
     # PUBLIC METHODS (called by the controller)
 
@@ -793,6 +816,14 @@ class MainWindow(ctk.CTkFrame):
             delay, lambda: callback(section, key, variable.get())
         )
 
+    def _on_transcription_language_change(self, option: str):
+        self._on_config_change(
+            section=ConfigTranscription.Key.SECTION,
+            key=ConfigTranscription.Key.LANGUAGE,
+            new_value=option,
+        )
+        self.omn_transcription_language.set(option)
+
     def _on_audio_source_change(self, option: str):
         """
         Handles changes to `omn_transcribe_from`.
@@ -806,6 +837,11 @@ class MainWindow(ctk.CTkFrame):
         """
         self._audio_source = AudioSource(option)
         self.ent_path.configure(textvariable=ctk.StringVar(self, ""))
+        self._on_config_change(
+            section=ConfigTranscription.Key.SECTION,
+            key=ConfigTranscription.Key.AUDIO_SOURCE,
+            new_value=option,
+        )
 
         if self._audio_source != AudioSource.DIRECTORY:
             self.chk_autosave.configure(state=ctk.NORMAL)
@@ -819,6 +855,7 @@ class MainWindow(ctk.CTkFrame):
 
             if self._audio_source == AudioSource.DIRECTORY:
                 self.chk_autosave.select()
+                self._on_autosave_change()
                 self.chk_autosave.configure(state=ctk.DISABLED)
                 self.chk_overwrite_files.configure(state=ctk.NORMAL)
                 self.btn_save.configure(state=ctk.DISABLED)
@@ -939,6 +976,12 @@ class MainWindow(ctk.CTkFrame):
         or hides specific options depending on whether WhisperX or Google API
         transcription method is selected.
         """
+        self._on_config_change(
+            section=ConfigTranscription.Key.SECTION,
+            key=ConfigTranscription.Key.METHOD,
+            new_value=option,
+        )
+
         if option == TranscriptionMethod.WHISPERX.value:
             self.frm_whisper_options.grid()
             self._toggle_frm_subtitle_options_visibility()
@@ -1003,6 +1046,12 @@ class MainWindow(ctk.CTkFrame):
         enables `chk_overwrite_files`. If `chk_autosave` is deselected, it deselects
         and disables `chk_overwrite_files`.
         """
+        self._on_config_change(
+            section=ConfigTranscription.Key.SECTION,
+            key=ConfigTranscription.Key.AUTOSAVE,
+            new_value=str(bool(self.chk_autosave.get())),
+        )
+
         if self.chk_autosave.get():
             self.chk_overwrite_files.configure(state=ctk.NORMAL)
         else:

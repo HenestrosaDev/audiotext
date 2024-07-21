@@ -11,7 +11,7 @@ class Transcription:
     language_code: Optional[str] = None
     source_type: Optional[AudioSource] = None
     source_path: Path = Path("/")
-    method: Optional[int] = None
+    method: Optional[str] = None
     output_file_types: list[str] = field(default_factory=lambda: ["txt"])
     should_translate: bool = False
     should_autosave: bool = False

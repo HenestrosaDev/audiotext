@@ -4,6 +4,7 @@ from typing import Optional, Union
 
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
+from models.config.config_transcription import ConfigTranscription
 from models.config.config_whisperx import ConfigWhisperX
 from utils.path_helper import ROOT_PATH
 
@@ -60,6 +61,22 @@ class ConfigManager:
         return ConfigSystem(
             appearance_mode=ConfigManager.get_value(
                 section, ConfigSystem.Key.APPEARANCE_MODE
+            ),
+        )
+
+    @staticmethod
+    def get_config_transcription() -> ConfigTranscription:
+        section = ConfigTranscription.Key.SECTION
+
+        return ConfigTranscription(
+            language=ConfigManager.get_value(section, ConfigTranscription.Key.LANGUAGE),
+            audio_source=ConfigManager.get_value(
+                section, ConfigTranscription.Key.AUDIO_SOURCE
+            ),
+            method=ConfigManager.get_value(section, ConfigTranscription.Key.METHOD),
+            autosave=ConfigManager.get_value(section, ConfigTranscription.Key.AUTOSAVE),
+            overwrite_files=ConfigManager.get_value(
+                section, ConfigTranscription.Key.OVERWRITE_FILES
             ),
         )
 
