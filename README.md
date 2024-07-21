@@ -96,7 +96,7 @@
     - [Set Up the Project Locally](#set-up-the-project-locally)
     - [Notes](#notes) 
 - [Usage](#usage)
-    - [Transcribe Using](#transcribe-using)
+    - [Transcription Method](#transcription-method)
     - [Audio Source](#audio-source)
     - [Save Transcription](#save-transcription)
         - [Autosave](#autosave)
@@ -492,7 +492,7 @@ Once you open the **Audiotext** executable file (explained in the [Getting Start
   >
 </picture>
 
-### Transcribe Using
+### Transcription Method
 
 Before you start transcribing, it's important to understand what each transcription method offers:
 

@@ -91,7 +91,7 @@ class MainWindow(ctk.CTkFrame):
         :rtype: dict
         """
         whisperx_args = {}
-        if self.radio_var.get() == TranscriptionMethod.WHISPERX.value:
+        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPERX.value:
             whisperx_args["should_translate"] = bool(
                 self.chk_whisper_options_translate.get()
             )
@@ -175,6 +175,25 @@ class MainWindow(ctk.CTkFrame):
         self.omn_audio_source.grid(row=3, column=0, padx=20, pady=0, sticky=ctk.EW)
         self.omn_audio_source.set(AudioSource.FILE.value)
 
+        ## 'Transcription method' option menu
+
+        self.lbl_transcription_method = ctk.CTkLabel(
+            master=self.frm_shared_options,
+            text="Transcription method",
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
+        )
+        self.lbl_transcription_method.grid(row=4, column=0, padx=0, pady=(15, 0))
+
+        self.omn_transcription_method = ctk.CTkOptionMenu(
+            master=self.frm_shared_options,
+            values=[e.value for e in TranscriptionMethod],
+            command=self._on_transcription_method_change,
+        )
+        self.omn_transcription_method.grid(
+            row=5, column=0, padx=20, pady=0, sticky=ctk.EW
+        )
+        self.omn_transcription_method.set(self._config_system.transcription_method)
+
         ## 'Generate transcription' button
         self.btn_main_action = ctk.CTkButton(
             master=self.frm_shared_options,
@@ -184,47 +203,7 @@ class MainWindow(ctk.CTkFrame):
             command=lambda: self._on_main_action(),
         )
         self.btn_main_action.grid(
-            row=4, column=0, padx=20, pady=(25, 20), sticky=ctk.EW
-        )
-
-        # ------------------
-
-        # 'Transcribe using' frame
-        self.frm_transcribe_using = ctk.CTkFrame(
-            master=self.frm_sidebar, border_width=2
-        )
-        self.frm_transcribe_using.grid(row=2, column=0, padx=0, pady=(20, 0))
-
-        # 'Transcribe using' label
-        self.lbl_transcribe_using = ctk.CTkLabel(
-            master=self.frm_transcribe_using,
-            text="Transcribe using",
-            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
-        )
-        self.lbl_transcribe_using.grid(row=0, column=0, padx=0, pady=(10, 12.5))
-
-        self.radio_var = tkinter.IntVar(value=TranscriptionMethod.WHISPERX.value)
-
-        self.rbt_transcribe_using_whisper = ctk.CTkRadioButton(
-            master=self.frm_transcribe_using,
-            variable=self.radio_var,
-            value=TranscriptionMethod.WHISPERX.value,
-            text="WhisperX (local)",
-            command=self._on_transcribe_using_change,
-        )
-        self.rbt_transcribe_using_whisper.grid(
-            row=1, column=0, padx=20, pady=0, sticky=ctk.W
-        )
-
-        self.rbt_transcribe_using_google = ctk.CTkRadioButton(
-            master=self.frm_transcribe_using,
-            variable=self.radio_var,
-            value=TranscriptionMethod.GOOGLE_API.value,
-            text="Google API (remote)",
-            command=self._on_transcribe_using_change,
-        )
-        self.rbt_transcribe_using_google.grid(
-            row=2, column=0, padx=20, pady=(7.5, 16), sticky=ctk.W
+            row=6, column=0, padx=20, pady=(25, 20), sticky=ctk.EW
         )
 
         # ------------------
@@ -895,7 +874,7 @@ class MainWindow(ctk.CTkFrame):
         transcription = Transcription(
             source_type=AudioSource.MIC,
             language_code=self._get_language_code(),
-            method=self.radio_var.get(),
+            method=self.omn_transcription_method.get(),
             should_autosave=self.chk_autosave.get() == 1,
             should_overwrite=self.chk_overwrite_files.get() == 1,
             **self._get_whisperx_args(),
@@ -917,7 +896,7 @@ class MainWindow(ctk.CTkFrame):
 
         transcription = Transcription(
             language_code=self._get_language_code(),
-            method=self.radio_var.get(),
+            method=self.omn_transcription_method.get(),
             should_autosave=self.chk_autosave.get() == 1,
             should_overwrite=self.chk_overwrite_files.get() == 1,
             **self._get_whisperx_args(),
@@ -953,7 +932,7 @@ class MainWindow(ctk.CTkFrame):
             should_overwrite=False,
         )
 
-    def _on_transcribe_using_change(self):
+    def _on_transcription_method_change(self, option: str):
         """
         Handles changes to the radio buttons of the "Transcribe using" option.
 
@@ -961,11 +940,11 @@ class MainWindow(ctk.CTkFrame):
         or hides specific options depending on whether WhisperX or Google API
         transcription method is selected.
         """
-        if self.radio_var.get() == TranscriptionMethod.WHISPERX.value:
+        if option == TranscriptionMethod.WHISPERX.value:
             self.frm_whisper_options.grid()
             self._toggle_frm_subtitle_options_visibility()
             self.frm_google_api_options.grid_remove()
-        elif self.radio_var.get() == TranscriptionMethod.GOOGLE_API.value:
+        elif option == TranscriptionMethod.GOOGLE_API.value:
             self.frm_whisper_options.grid_remove()
             self.frm_whisperx_advanced_options.grid_remove()
             self.frm_subtitle_options.grid_remove()
