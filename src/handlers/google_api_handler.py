@@ -3,12 +3,12 @@ import shutil
 import traceback
 
 import speech_recognition as sr
-import utils.config_manager as cm
 from models.transcription import Transcription
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 from utils import constants as c
+from utils.env_manager import EnvManager
 from utils.path_helper import ROOT_PATH
 
 
@@ -60,8 +60,7 @@ class GoogleApiHandler:
             r = sr.Recognizer()
 
             # Get Google API key (if any)
-            config_google_api = cm.ConfigManager.get_config_google_api()
-            api_key = config_google_api.api_key or None
+            api_key = EnvManager.GOOGLE_API_KEY.get_value()
 
             # Process each chunk
             for idx, audio_chunk in enumerate(audio_chunks):

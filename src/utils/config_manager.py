@@ -2,7 +2,6 @@ from configparser import ConfigParser
 from pathlib import Path
 from typing import Optional, Union
 
-from models.config.config_google_api import ConfigGoogleApi
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_whisperx import ConfigWhisperX
@@ -11,7 +10,7 @@ from utils.path_helper import ROOT_PATH
 
 class ConfigManager:
     _CONFIG_FILE_PATH = ROOT_PATH / "config.ini"
-    KeyType = Union[ConfigWhisperX.Key, ConfigGoogleApi.Key, ConfigSubtitles.Key]
+    KeyType = Union[ConfigWhisperX.Key, ConfigSubtitles.Key]
 
     @staticmethod
     def read_config(file_path: Path = _CONFIG_FILE_PATH) -> Optional[ConfigParser]:
@@ -36,14 +35,6 @@ class ConfigManager:
             output_file_types=ConfigManager.get_value(
                 section, ConfigWhisperX.Key.OUTPUT_FILE_TYPES
             ),
-        )
-
-    @staticmethod
-    def get_config_google_api() -> ConfigGoogleApi:
-        section = ConfigGoogleApi.Key.SECTION
-
-        return ConfigGoogleApi(
-            api_key=ConfigManager.get_value(section, ConfigGoogleApi.Key.API_KEY),
         )
 
     @staticmethod

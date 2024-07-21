@@ -8,13 +8,13 @@ import utils.constants as c
 import utils.dict_utils as du
 import utils.path_helper as ph
 from controllers.main_controller import MainController
-from models.config.config_google_api import ConfigGoogleApi
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
 from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
+from utils.env_manager import EnvManager
 
 from .custom_widgets.ctk_input_dialog import CTkInputDialog
 from .custom_widgets.ctk_scrollable_dropdown import CTkScrollableDropdown
@@ -25,7 +25,6 @@ class MainWindow(ctk.CTkFrame):
         self,
         parent,
         config_whisperx: ConfigWhisperX,
-        config_google_api: ConfigGoogleApi,
         config_subtitles: ConfigSubtitles,
         config_system: ConfigSystem,
     ):
@@ -37,7 +36,6 @@ class MainWindow(ctk.CTkFrame):
 
         # Init the configs
         self._config_whisperx = config_whisperx
-        self._config_google_api = config_google_api
         self._config_subtitles = config_subtitles
         self._config_system = config_system
 
@@ -984,7 +982,7 @@ class MainWindow(ctk.CTkFrame):
         API key is provided, and it differs from the existing one, it updates the
         configuration with the new API key.
         """
-        old_api_key = self._config_google_api.api_key
+        old_api_key = EnvManager.GOOGLE_API_KEY.get_value()
 
         dialog = CTkInputDialog(
             title="Google API key",
@@ -994,12 +992,8 @@ class MainWindow(ctk.CTkFrame):
 
         new_api_key = dialog.get_input()
 
-        if new_api_key is not None and old_api_key != new_api_key:
-            self._on_config_change(
-                section=ConfigGoogleApi.Key.SECTION,
-                key=ConfigGoogleApi.Key.API_KEY,
-                new_value=new_api_key.strip(),
-            )
+        if new_api_key and old_api_key != new_api_key:
+            EnvManager.GOOGLE_API_KEY.set_value(new_api_key.strip())
 
     def _on_show_advanced_options(self):
         """

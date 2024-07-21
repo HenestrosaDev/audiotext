@@ -124,3 +124,4 @@ else:
     )
 
 copyfile('config.ini', '{0}/audiotext/config.ini'.format(DISTPATH))
+copyfile('.env', '{0}/audiotext/.env'.format(DISTPATH))
