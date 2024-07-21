@@ -5,6 +5,7 @@ from typing import Optional
 
 class EnvKeys(Enum):
     GOOGLE_API_KEY = "GOOGLE_API_KEY"
+    OPENAI_API_KEY = "OPENAI_API_KEY"
 
     @property
     def value(self) -> Optional[str]:
