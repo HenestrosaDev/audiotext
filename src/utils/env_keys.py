@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Optional
 
 
-class EnvManager(Enum):
+class EnvKeys(Enum):
     GOOGLE_API_KEY = "GOOGLE_API_KEY"
 
     @property

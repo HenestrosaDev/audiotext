@@ -13,7 +13,7 @@ from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
 from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
-from utils.env_manager import EnvManager
+from utils.env_keys import EnvKeys
 
 from .custom_widgets.ctk_input_dialog import CTkInputDialog
 from .custom_widgets.ctk_scrollable_dropdown import CTkScrollableDropdown
@@ -446,7 +446,9 @@ class MainWindow(ctk.CTkFrame):
         self.btn_set_google_api_key = ctk.CTkButton(
             master=self.frm_google_api_options,
             text="Set API key",
-            command=self._on_google_api_key_set,
+            command=lambda: self._on_set_api_key(
+                env_key=EnvKeys.GOOGLE_API_KEY, title="Google API key"
+            ),
         )
         self.btn_set_google_api_key.grid(
             row=1, column=0, padx=20, pady=(0, 20), sticky=ctk.EW
@@ -994,19 +996,19 @@ class MainWindow(ctk.CTkFrame):
                 text="Show advanced options"
             )
             self.frm_google_api_options.grid()
-
-    def _on_google_api_key_set(self):
+    @staticmethod
+    def _on_set_api_key(env_key: EnvKeys, title: str):
         """
-        Handles the setting of the Google API key.
+        Handles the setting of an API key depending on .
 
         Prompts the user to input a new Google API key through a dialog window. If a new
         API key is provided, and it differs from the existing one, it updates the
         configuration with the new API key.
         """
-        old_api_key = EnvManager.GOOGLE_API_KEY.get_value()
+        old_api_key = env_key.get_value()
 
         dialog = CTkInputDialog(
-            title="Google API key",
+            title=title,
             label_text="Type in the API key:",
             entry_text=old_api_key,
         )
@@ -1014,7 +1016,7 @@ class MainWindow(ctk.CTkFrame):
         new_api_key = dialog.get_input()
 
         if new_api_key and old_api_key != new_api_key:
-            EnvManager.GOOGLE_API_KEY.set_value(new_api_key.strip())
+            env_key.set_value(new_api_key.strip())
 
     def _on_show_advanced_options(self):
         """
