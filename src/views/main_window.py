@@ -205,7 +205,7 @@ class MainWindow(ctk.CTkFrame):
             command=lambda: self._on_main_action(),
         )
         self.btn_main_action.grid(
-            row=6, column=0, padx=20, pady=(25, 20), sticky=ctk.EW
+            row=6, column=0, padx=20, pady=(30, 20), sticky=ctk.EW
         )
 
         # ------------------
