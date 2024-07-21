@@ -9,6 +9,7 @@ from controllers.main_controller import MainController
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_transcription import ConfigTranscription
+from models.config.config_whisper_api import ConfigWhisperAPI
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
@@ -23,10 +24,11 @@ class MainWindow(ctk.CTkFrame):
     def __init__(
         self,
         parent,
-        config_whisperx: ConfigWhisperX,
         config_subtitles: ConfigSubtitles,
         config_system: ConfigSystem,
         config_transcription: ConfigTranscription,
+        config_whisper_api: ConfigWhisperAPI,
+        config_whisperx: ConfigWhisperX,
     ):
         super().__init__(parent)
 
@@ -35,10 +37,11 @@ class MainWindow(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)
 
         # Init the configs
-        self._config_whisperx = config_whisperx
         self._config_subtitles = config_subtitles
         self._config_system = config_system
         self._config_transcription = config_transcription
+        self._config_whisper_api = config_whisper_api
+        self._config_whisperx = config_whisperx
 
         # Init the controller
         self._controller = None

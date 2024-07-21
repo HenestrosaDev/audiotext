@@ -56,13 +56,19 @@ class App(ctk.CTk):
             )
 
         # Initialize configs
-        config_whisperx = cm.ConfigManager.get_config_whisperx()
         config_subtitles = cm.ConfigManager.get_config_subtitles()
         config_transcription = cm.ConfigManager.get_config_transcription()
+        config_whisper_api = cm.ConfigManager.get_config_whisper_api()
+        config_whisperx = cm.ConfigManager.get_config_whisperx()
 
         # Create the view and place it on the root window
         view = MainWindow(
-            self, config_whisperx, config_subtitles, config_system, config_transcription
+            self,
+            config_subtitles,
+            config_system,
+            config_transcription,
+            config_whisper_api,
+            config_whisperx,
         )
         view.pack(fill="both", expand=True)
 
