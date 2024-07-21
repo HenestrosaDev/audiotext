@@ -10,6 +10,7 @@ class AudioSource(Enum):
 
 class TranscriptionMethod(Enum):
     GOOGLE_API = "Google API"
+    WHISPER_API = "Whisper API"
     WHISPERX = "WhisperX"
 
 
