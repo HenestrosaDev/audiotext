@@ -47,7 +47,7 @@ class MainWindow(ctk.CTkFrame):
         self._init_main_content()
 
         # State
-        self._transcribe_from_source = AudioSource.FILE
+        self._audio_source = AudioSource.FILE
         self._is_transcribing_from_mic = False
 
         # To handle debouncing
@@ -159,21 +159,21 @@ class MainWindow(ctk.CTkFrame):
         except Exception:
             self.omn_audio_language.set("English")
 
-        ## 'Transcribe from' option menu
-        self.lbl_transcribe_from = ctk.CTkLabel(
+        ## 'Audio source' option menu
+        self.lbl_audio_source = ctk.CTkLabel(
             master=self.frm_shared_options,
-            text="Transcribe from",
+            text="Audio source",
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_transcribe_from.grid(row=2, column=0, padx=0, pady=(15, 0))
+        self.lbl_audio_source.grid(row=2, column=0, padx=0, pady=(15, 0))
 
-        self.omn_transcribe_from = ctk.CTkOptionMenu(
+        self.omn_audio_source = ctk.CTkOptionMenu(
             master=self.frm_shared_options,
             values=[e.value for e in AudioSource],
-            command=self._on_transcribe_from_change,
+            command=self._on_audio_source_change,
         )
-        self.omn_transcribe_from.grid(row=3, column=0, padx=20, pady=0, sticky=ctk.EW)
-        self.omn_transcribe_from.set(AudioSource.FILE.value)
+        self.omn_audio_source.grid(row=3, column=0, padx=20, pady=0, sticky=ctk.EW)
+        self.omn_audio_source.set(AudioSource.FILE.value)
 
         ## 'Generate transcription' button
         self.btn_main_action = ctk.CTkButton(
@@ -690,7 +690,7 @@ class MainWindow(ctk.CTkFrame):
         """
         # Disable action buttons to avoid multiple requests at the same time
         self.ent_path.configure(state=ctk.DISABLED)
-        self.omn_transcribe_from.configure(state=ctk.DISABLED)
+        self.omn_audio_source.configure(state=ctk.DISABLED)
         self.omn_audio_language.configure(state=ctk.DISABLED)
 
         if not self._is_transcribing_from_mic:
@@ -707,7 +707,7 @@ class MainWindow(ctk.CTkFrame):
         Re-enables disabled widgets after transcription processing is complete.
         """
         self.ent_path.configure(state=ctk.NORMAL)
-        self.omn_transcribe_from.configure(state=ctk.NORMAL)
+        self.omn_audio_source.configure(state=ctk.NORMAL)
         self.omn_audio_language.configure(state=ctk.NORMAL)
         self.btn_main_action.configure(state=ctk.NORMAL)
 
@@ -815,7 +815,7 @@ class MainWindow(ctk.CTkFrame):
             delay, lambda: callback(section, key, variable.get())
         )
 
-    def _on_transcribe_from_change(self, option: str):
+    def _on_audio_source_change(self, option: str):
         """
         Handles changes to `omn_transcribe_from`.
 
@@ -826,30 +826,30 @@ class MainWindow(ctk.CTkFrame):
         :param option: The selected transcription source option.
         :type option: str
         """
-        self._transcribe_from_source = AudioSource(option)
+        self._audio_source = AudioSource(option)
         self.ent_path.configure(textvariable=ctk.StringVar(self, ""))
 
-        if self._transcribe_from_source != AudioSource.DIRECTORY:
+        if self._audio_source != AudioSource.DIRECTORY:
             self.chk_autosave.configure(state=ctk.NORMAL)
             self.btn_save.configure(state=ctk.NORMAL)
 
-        if self._transcribe_from_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
+        if self._audio_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
             self.btn_main_action.configure(text="Generate transcription")
             self.lbl_path.configure(text="Path")
             self.btn_file_explorer.grid()
             self.frm_main_entry.grid()
 
-            if self._transcribe_from_source == AudioSource.DIRECTORY:
+            if self._audio_source == AudioSource.DIRECTORY:
                 self.chk_autosave.select()
                 self.chk_autosave.configure(state=ctk.DISABLED)
                 self.chk_overwrite_files.configure(state=ctk.NORMAL)
                 self.btn_save.configure(state=ctk.DISABLED)
 
-        elif self._transcribe_from_source == AudioSource.MIC:
+        elif self._audio_source == AudioSource.MIC:
             self.btn_main_action.configure(text="Start recording")
             self.frm_main_entry.grid_remove()
 
-        elif self._transcribe_from_source == AudioSource.YOUTUBE:
+        elif self._audio_source == AudioSource.YOUTUBE:
             self.btn_main_action.configure(text="Generate transcription")
             self.lbl_path.configure(text="YouTube video URL")
             self.btn_file_explorer.grid_remove()
@@ -860,9 +860,9 @@ class MainWindow(ctk.CTkFrame):
         Triggers when `btn_file_explorer` is clicked to select the path of the file or
         directory to transcribe.
         """
-        if self._transcribe_from_source == AudioSource.FILE:
+        if self._audio_source == AudioSource.FILE:
             self._controller.select_file()
-        elif self._transcribe_from_source == AudioSource.DIRECTORY:
+        elif self._audio_source == AudioSource.DIRECTORY:
             self._controller.select_directory()
 
     def _on_transcribe_from_mic(self):
@@ -912,7 +912,7 @@ class MainWindow(ctk.CTkFrame):
         is complete.
         """
         self.ent_path.configure(state=ctk.DISABLED)
-        self.omn_transcribe_from.configure(state=ctk.DISABLED)
+        self.omn_audio_source.configure(state=ctk.DISABLED)
         self.omn_audio_language.configure(state=ctk.DISABLED)
 
         transcription = Transcription(
@@ -923,20 +923,20 @@ class MainWindow(ctk.CTkFrame):
             **self._get_whisperx_args(),
         )
 
-        if self._transcribe_from_source == AudioSource.FILE:
+        if self._audio_source == AudioSource.FILE:
             transcription.source_type = AudioSource.FILE
             transcription.source_path = Path(self.ent_path.get())
             self._controller.prepare_for_transcription(transcription)
 
-        elif self._transcribe_from_source == AudioSource.DIRECTORY:
+        elif self._audio_source == AudioSource.DIRECTORY:
             transcription.source_type = AudioSource.DIRECTORY
             transcription.source_path = Path(self.ent_path.get())
             self._controller.prepare_for_transcription(transcription)
 
-        elif self._transcribe_from_source == AudioSource.MIC:
+        elif self._audio_source == AudioSource.MIC:
             self._on_transcribe_from_mic()
 
-        elif self._transcribe_from_source == AudioSource.YOUTUBE:
+        elif self._audio_source == AudioSource.YOUTUBE:
             transcription.source_type = AudioSource.YOUTUBE
             transcription.youtube_url = self.ent_path.get()
             self._controller.prepare_for_transcription(transcription)
