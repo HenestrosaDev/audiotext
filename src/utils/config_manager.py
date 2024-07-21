@@ -5,6 +5,7 @@ from typing import Optional, Union
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_transcription import ConfigTranscription
+from models.config.config_whisper_api import ConfigWhisperAPI
 from models.config.config_whisperx import ConfigWhisperX
 from utils.path_helper import ROOT_PATH
 
@@ -35,6 +36,22 @@ class ConfigManager:
             ),
             output_file_types=ConfigManager.get_value(
                 section, ConfigWhisperX.Key.OUTPUT_FILE_TYPES
+            ),
+        )
+
+    @staticmethod
+    def get_config_whisper_api() -> ConfigWhisperX:
+        section = ConfigWhisperAPI.Key.SECTION
+
+        return ConfigWhisperAPI(
+            response_format=ConfigManager.get_value(
+                section, ConfigWhisperAPI.Key.RESPONSE_FORMAT
+            ),
+            temperature=ConfigManager.get_value(
+                section, ConfigWhisperAPI.Key.TEMPERATURE
+            ),
+            timestamp_granularities=ConfigManager.get_value(
+                section, ConfigWhisperAPI.Key.TIMESTAMP_GRANULARITIES
             ),
         )
 
