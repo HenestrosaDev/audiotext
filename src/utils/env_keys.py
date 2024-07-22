@@ -2,6 +2,10 @@ import os
 from enum import Enum
 from typing import Optional
 
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv())
+
 
 class EnvKeys(Enum):
     GOOGLE_API_KEY = "GOOGLE_API_KEY"
