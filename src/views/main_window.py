@@ -1312,8 +1312,11 @@ class MainWindow(ctk.CTkFrame):
 
     def _toggle_frm_subtitle_options_visibility(self):
         if (
-            "srt" in self._config_whisperx.output_file_types
-            or "vtt" in self._config_whisperx.output_file_types
+            self._config_transcription.method == TranscriptionMethod.WHISPERX.value
+            and (
+                "srt" in self._config_whisperx.output_file_types
+                or "vtt" in self._config_whisperx.output_file_types
+            )
         ):
             if "srt" in self._config_whisperx.output_file_types:
                 self.chk_output_file_srt.select()
