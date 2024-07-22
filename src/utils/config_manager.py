@@ -40,7 +40,7 @@ class ConfigManager:
         )
 
     @staticmethod
-    def get_config_whisper_api() -> ConfigWhisperX:
+    def get_config_whisper_api() -> ConfigWhisperAPI:
         section = ConfigWhisperAPI.Key.SECTION
 
         return ConfigWhisperAPI(
