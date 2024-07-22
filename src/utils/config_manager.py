@@ -12,7 +12,13 @@ from utils.path_helper import ROOT_PATH
 
 class ConfigManager:
     _CONFIG_FILE_PATH = ROOT_PATH / "config.ini"
-    KeyType = Union[ConfigWhisperX.Key, ConfigSubtitles.Key]
+    KeyType = Union[
+        ConfigSubtitles.Key,
+        ConfigSystem.Key,
+        ConfigTranscription.Key,
+        ConfigWhisperAPI.Key,
+        ConfigWhisperX.Key,
+    ]
 
     @staticmethod
     def read_config(file_path: Path = _CONFIG_FILE_PATH) -> Optional[ConfigParser]:
