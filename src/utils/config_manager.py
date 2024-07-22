@@ -27,41 +27,6 @@ class ConfigManager:
         return config
 
     @staticmethod
-    def get_config_whisperx() -> ConfigWhisperX:
-        section = ConfigWhisperX.Key.SECTION
-
-        return ConfigWhisperX(
-            model_size=ConfigManager.get_value(section, ConfigWhisperX.Key.MODEL_SIZE),
-            batch_size=ConfigManager.get_value(section, ConfigWhisperX.Key.BATCH_SIZE),
-            compute_type=ConfigManager.get_value(
-                section, ConfigWhisperX.Key.COMPUTE_TYPE
-            ),
-            use_cpu=ConfigManager.get_value(section, ConfigWhisperX.Key.USE_CPU),
-            can_use_gpu=ConfigManager.get_value(
-                section, ConfigWhisperX.Key.CAN_USE_GPU
-            ),
-            output_file_types=ConfigManager.get_value(
-                section, ConfigWhisperX.Key.OUTPUT_FILE_TYPES
-            ),
-        )
-
-    @staticmethod
-    def get_config_whisper_api() -> ConfigWhisperAPI:
-        section = ConfigWhisperAPI.Key.SECTION
-
-        return ConfigWhisperAPI(
-            response_format=ConfigManager.get_value(
-                section, ConfigWhisperAPI.Key.RESPONSE_FORMAT
-            ),
-            temperature=ConfigManager.get_value(
-                section, ConfigWhisperAPI.Key.TEMPERATURE
-            ),
-            timestamp_granularities=ConfigManager.get_value(
-                section, ConfigWhisperAPI.Key.TIMESTAMP_GRANULARITIES
-            ),
-        )
-
-    @staticmethod
     def get_config_subtitles() -> ConfigSubtitles:
         section = ConfigSubtitles.Key.SECTION
 
@@ -100,6 +65,41 @@ class ConfigManager:
             autosave=ConfigManager.get_value(section, ConfigTranscription.Key.AUTOSAVE),
             overwrite_files=ConfigManager.get_value(
                 section, ConfigTranscription.Key.OVERWRITE_FILES
+            ),
+        )
+
+    @staticmethod
+    def get_config_whisper_api() -> ConfigWhisperAPI:
+        section = ConfigWhisperAPI.Key.SECTION
+
+        return ConfigWhisperAPI(
+            response_format=ConfigManager.get_value(
+                section, ConfigWhisperAPI.Key.RESPONSE_FORMAT
+            ),
+            temperature=ConfigManager.get_value(
+                section, ConfigWhisperAPI.Key.TEMPERATURE
+            ),
+            timestamp_granularities=ConfigManager.get_value(
+                section, ConfigWhisperAPI.Key.TIMESTAMP_GRANULARITIES
+            ),
+        )
+
+    @staticmethod
+    def get_config_whisperx() -> ConfigWhisperX:
+        section = ConfigWhisperX.Key.SECTION
+
+        return ConfigWhisperX(
+            model_size=ConfigManager.get_value(section, ConfigWhisperX.Key.MODEL_SIZE),
+            batch_size=ConfigManager.get_value(section, ConfigWhisperX.Key.BATCH_SIZE),
+            compute_type=ConfigManager.get_value(
+                section, ConfigWhisperX.Key.COMPUTE_TYPE
+            ),
+            use_cpu=ConfigManager.get_value(section, ConfigWhisperX.Key.USE_CPU),
+            can_use_gpu=ConfigManager.get_value(
+                section, ConfigWhisperX.Key.CAN_USE_GPU
+            ),
+            output_file_types=ConfigManager.get_value(
+                section, ConfigWhisperX.Key.OUTPUT_FILE_TYPES
             ),
         )
 
