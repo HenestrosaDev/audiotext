@@ -18,6 +18,7 @@ from utils.enums import (
     Color,
     ComputeType,
     ModelSize,
+    TimestampGranularities,
     TranscriptionMethod,
     WhisperApiResponseFormats,
 )
@@ -540,28 +541,33 @@ class MainWindow(ctk.CTkFrame):
 
         self.chk_timestamp_granularities_segment = ctk.CTkCheckBox(
             master=self.frm_whisper_api_options,
-            text="Segment",
+            text=TimestampGranularities.SEGMENT.value.capitalize(),
             command=self._on_timestamp_granularities_change,
         )
         self.chk_timestamp_granularities_segment.grid(
             row=5, column=0, padx=20, pady=0, sticky=ctk.W
         )
-        if "segment" in self._config_whisper_api.timestamp_granularities:
+        if (
+            TimestampGranularities.SEGMENT.value
+            in self._config_whisper_api.timestamp_granularities
+        ):
             self.chk_timestamp_granularities_segment.select()
 
         self.chk_timestamp_granularities_word = ctk.CTkCheckBox(
             master=self.frm_whisper_api_options,
-            text="Word",
+            text=TimestampGranularities.WORD.value.capitalize(),
             command=self._on_timestamp_granularities_change,
         )
         self.chk_timestamp_granularities_word.grid(
             row=6, column=0, padx=20, pady=(5, 0), sticky=ctk.W
         )
-        if "word" in self._config_whisper_api.timestamp_granularities:
+        if (
+            TimestampGranularities.WORD.value
+            in self._config_whisper_api.timestamp_granularities
+        ):
             self.chk_timestamp_granularities_word.select()
 
-        ## Disable if response format is not `verbose_json`
-        self._toggle_chk_timestamp_granularities()
+        self._toggle_chk_timestamp_granularities()  # Disable if response format is not `verbose_json`
 
         ## 'Set OpenAI API key' button
         self.btn_set_openai_api_key = ctk.CTkButton(
@@ -1255,9 +1261,16 @@ class MainWindow(ctk.CTkFrame):
             self.chk_timestamp_granularities_segment.configure(state=ctk.NORMAL)
             self.chk_timestamp_granularities_word.configure(state=ctk.NORMAL)
 
-            if "segment" in self._config_whisper_api.timestamp_granularities:
+            if (
+                TimestampGranularities.SEGMENT.value
+                in self._config_whisper_api.timestamp_granularities
+            ):
                 self.chk_timestamp_granularities_segment.select()
-            if "word" in self._config_whisper_api.timestamp_granularities:
+
+            if (
+                TimestampGranularities.WORD.value
+                in self._config_whisper_api.timestamp_granularities
+            ):
                 self.chk_timestamp_granularities_word.select()
 
     def _on_response_format_change(self, option: str):
@@ -1279,8 +1292,8 @@ class MainWindow(ctk.CTkFrame):
         """
         # Dictionary mapping checkboxes to their corresponding file types
         chk_to_timestamp_granularity = {
-            self.chk_timestamp_granularities_segment: "segment",
-            self.chk_timestamp_granularities_word: "word",
+            self.chk_timestamp_granularities_segment: TimestampGranularities.SEGMENT.value,
+            self.chk_timestamp_granularities_word: TimestampGranularities.WORD.value,
         }
 
         # List comprehension to gather selected file types
