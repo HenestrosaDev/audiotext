@@ -4,7 +4,7 @@ from typing import Optional
 
 
 @dataclass
-class ConfigWhisperAPI:
+class ConfigWhisperApi:
     response_format: str
     temperature: float
     timestamp_granularities: str

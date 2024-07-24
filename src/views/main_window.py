@@ -9,11 +9,18 @@ from controllers.main_controller import MainController
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_transcription import ConfigTranscription
-from models.config.config_whisper_api import ConfigWhisperAPI
+from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
-from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
+from utils.enums import (
+    AudioSource,
+    Color,
+    ComputeType,
+    ModelSize,
+    TranscriptionMethod,
+    WhisperApiResponseFormats,
+)
 from utils.env_keys import EnvKeys
 
 from .custom_widgets.ctk_input_dialog import CTkInputDialog
@@ -27,7 +34,7 @@ class MainWindow(ctk.CTkFrame):
         config_subtitles: ConfigSubtitles,
         config_system: ConfigSystem,
         config_transcription: ConfigTranscription,
-        config_whisper_api: ConfigWhisperAPI,
+        config_whisper_api: ConfigWhisperApi,
         config_whisperx: ConfigWhisperX,
     ):
         super().__init__(parent)
@@ -506,8 +513,8 @@ class MainWindow(ctk.CTkFrame):
             self, str(self._config_whisper_api.temperature)
         )
         self._setup_debounced_change(
-            section=ConfigWhisperAPI.Key.SECTION,
-            key=ConfigWhisperAPI.Key.TEMPERATURE,
+            section=ConfigWhisperApi.Key.SECTION,
+            key=ConfigWhisperApi.Key.TEMPERATURE,
             variable=self.temperature,
             callback=self._on_config_change,
         )
@@ -1259,8 +1266,8 @@ class MainWindow(ctk.CTkFrame):
         toggling the timestamp granularities checkboxes.
         """
         self._on_config_change(
-            section=ConfigWhisperAPI.Key.SECTION,
-            key=ConfigWhisperAPI.Key.RESPONSE_FORMAT,
+            section=ConfigWhisperApi.Key.SECTION,
+            key=ConfigWhisperApi.Key.RESPONSE_FORMAT,
             new_value=option,
         )
 
@@ -1293,8 +1300,8 @@ class MainWindow(ctk.CTkFrame):
 
         # Notify the config change
         self._on_config_change(
-            section=ConfigWhisperAPI.Key.SECTION,
-            key=ConfigWhisperAPI.Key.TIMESTAMP_GRANULARITIES,
+            section=ConfigWhisperApi.Key.SECTION,
+            key=ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES,
             new_value=selected_timestamp_granularities_str,
         )
 

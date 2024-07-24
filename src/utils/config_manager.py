@@ -5,7 +5,7 @@ from typing import Optional, Union
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_transcription import ConfigTranscription
-from models.config.config_whisper_api import ConfigWhisperAPI
+from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
 from utils.path_helper import ROOT_PATH
 
@@ -16,7 +16,7 @@ class ConfigManager:
         ConfigSubtitles.Key,
         ConfigSystem.Key,
         ConfigTranscription.Key,
-        ConfigWhisperAPI.Key,
+        ConfigWhisperApi.Key,
         ConfigWhisperX.Key,
     ]
 
@@ -69,18 +69,18 @@ class ConfigManager:
         )
 
     @staticmethod
-    def get_config_whisper_api() -> ConfigWhisperAPI:
-        section = ConfigWhisperAPI.Key.SECTION
+    def get_config_whisper_api() -> ConfigWhisperApi:
+        section = ConfigWhisperApi.Key.SECTION
 
-        return ConfigWhisperAPI(
+        return ConfigWhisperApi(
             response_format=ConfigManager.get_value(
-                section, ConfigWhisperAPI.Key.RESPONSE_FORMAT
+                section, ConfigWhisperApi.Key.RESPONSE_FORMAT
             ),
             temperature=ConfigManager.get_value(
-                section, ConfigWhisperAPI.Key.TEMPERATURE
+                section, ConfigWhisperApi.Key.TEMPERATURE
             ),
             timestamp_granularities=ConfigManager.get_value(
-                section, ConfigWhisperAPI.Key.TIMESTAMP_GRANULARITIES
+                section, ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES
             ),
         )
 
