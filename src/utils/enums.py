@@ -36,6 +36,11 @@ class ModelSize(Enum):
     LARGE_V3 = "large-v3"
 
 
+class TimestampGranularities(Enum):
+    SEGMENT = "segment"
+    WORD = "word"
+
+
 class TranscriptionMethod(Enum):
     GOOGLE_API = "Google API"
     WHISPER_API = "Whisper API"
