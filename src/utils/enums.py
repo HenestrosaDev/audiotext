@@ -48,3 +48,12 @@ class WhisperApiResponseFormats(Enum):
     TEXT = "text"
     VERBOSE_JSON = "verbose_json"
     VTT = "vtt"
+
+
+class WhisperXFileTypes(Enum):
+    AUD = "aud"
+    JSON = "json"
+    SRT = "srt"
+    TEXT = "txt"
+    TSV = "tsv"
+    VTT = "vtt"
