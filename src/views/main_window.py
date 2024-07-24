@@ -487,7 +487,7 @@ class MainWindow(ctk.CTkFrame):
 
         self.omn_response_format = ctk.CTkOptionMenu(
             master=self.frm_whisper_api_options,
-            values=c.WHISPER_API_RESPONSE_FORMATS,
+            values=[rf.value for rf in WhisperApiResponseFormats],
             command=self._on_response_format_change,
         )
         self.omn_response_format.grid(
