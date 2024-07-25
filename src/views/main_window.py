@@ -1065,9 +1065,8 @@ class MainWindow(ctk.CTkFrame):
 
     def _on_save_transcription(self):
         """
-        Triggers when `btn_save_transcription` is clicked. Prompts the user with the
-        file explorer to select a directory and enter the name of the transcription
-        file.
+        Triggers when `btn_save` is clicked. Prompts the user with the file explorer to
+        select a directory and enter the name of the transcription file.
         """
         self._controller.save_transcription(
             file_path=Path(self.ent_path.get()),
