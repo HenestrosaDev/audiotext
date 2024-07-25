@@ -229,12 +229,20 @@ class MainController:
         transcription = self.transcription
         transcription.audio_source_path = file_path
 
-        if self.transcription.method == TranscriptionMethod.WHISPERX.value:
-            self.transcription.text = await self._whisperx_handler.transcribe_file(
-                transcription
+        if self.transcription.method == TranscriptionMethod.GOOGLE_API:
+            self.transcription.text = AudioHandler.get_transcription(
+                transcription=transcription,
+                transcription_func=GoogleApiHandler.transcribe,
+                should_split_on_silence=True,
             )
-        elif self.transcription.method == TranscriptionMethod.GOOGLE_API.value:
-            self.transcription.text = await GoogleApiHandler.transcribe_file(
+        elif self.transcription.method == TranscriptionMethod.WHISPER_API:
+            self.transcription.text = AudioHandler.get_transcription(
+                transcription=transcription,
+                transcription_func=OpenAiApiHandler.transcribe,
+                should_split_on_silence=False,
+            )
+        elif self.transcription.method == TranscriptionMethod.WHISPERX:
+            self.transcription.text = await self._whisperx_handler.transcribe_file(
                 transcription
             )
 
