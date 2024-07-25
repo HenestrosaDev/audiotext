@@ -60,7 +60,7 @@ class MainWindow(ctk.CTkFrame):
         self._init_main_content()
 
         # State
-        self._audio_source = AudioSource.FILE
+        self._audio_source = AudioSource(self._config_transcription.audio_source)
         self._is_transcribing_from_mic = False
 
         # To handle debouncing
