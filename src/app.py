@@ -27,7 +27,7 @@ class App(ctk.CTk):
 
         # Initial size of the window
         width = 1000
-        height = 851
+        height = 755
         self.geometry(f"{width}x{height}")
 
         # Min size of the window
@@ -49,14 +49,26 @@ class App(ctk.CTk):
                 new_value=ComputeType.INT8.value,
             )
 
+            cm.ConfigManager.modify_value(
+                section=ConfigWhisperX.Key.SECTION,
+                key=ConfigWhisperX.Key.USE_CPU,
+                new_value="True",
+            )
+
         # Initialize configs
-        config_whisperx = cm.ConfigManager.get_config_whisperx()
-        config_google_api = cm.ConfigManager.get_config_google_api()
         config_subtitles = cm.ConfigManager.get_config_subtitles()
+        config_transcription = cm.ConfigManager.get_config_transcription()
+        config_whisper_api = cm.ConfigManager.get_config_whisper_api()
+        config_whisperx = cm.ConfigManager.get_config_whisperx()
 
         # Create the view and place it on the root window
         view = MainWindow(
-            self, config_whisperx, config_google_api, config_subtitles, config_system
+            self,
+            config_subtitles,
+            config_system,
+            config_transcription,
+            config_whisper_api,
+            config_whisperx,
         )
         view.pack(fill="both", expand=True)
 

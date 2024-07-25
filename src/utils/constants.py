@@ -117,6 +117,17 @@ AUDIO_FILE_EXTENSIONS = [
     ".opus",
 ]
 
+FORMATS_TO_FILE_TYPES = {
+    "aud": "aud",
+    "json": "json",
+    "srt": "srt",
+    "text": "txt",
+    "txt": "txt",
+    "tsv": "tsv",
+    "verbose_json": "json",
+    "vtt": "vtt",
+}
+
 # fmt: off
 VIDEO_FILE_EXTENSIONS = [
     ".mp4", ".m4a", ".m4v", ".f4v", ".f4a", ".m4b", ".m4r", ".f4b", ".mov",  # MP4

@@ -2,49 +2,29 @@ from configparser import ConfigParser
 from pathlib import Path
 from typing import Optional, Union
 
-from models.config.config_google_api import ConfigGoogleApi
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
+from models.config.config_transcription import ConfigTranscription
+from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
 from utils.path_helper import ROOT_PATH
 
 
 class ConfigManager:
     _CONFIG_FILE_PATH = ROOT_PATH / "config.ini"
-    KeyType = Union[ConfigWhisperX.Key, ConfigGoogleApi.Key, ConfigSubtitles.Key]
+    KeyType = Union[
+        ConfigSubtitles.Key,
+        ConfigSystem.Key,
+        ConfigTranscription.Key,
+        ConfigWhisperApi.Key,
+        ConfigWhisperX.Key,
+    ]
 
     @staticmethod
     def read_config(file_path: Path = _CONFIG_FILE_PATH) -> Optional[ConfigParser]:
         config = ConfigParser()
         config.read(file_path)
         return config
-
-    @staticmethod
-    def get_config_whisperx() -> ConfigWhisperX:
-        section = ConfigWhisperX.Key.SECTION
-
-        return ConfigWhisperX(
-            model_size=ConfigManager.get_value(section, ConfigWhisperX.Key.MODEL_SIZE),
-            batch_size=ConfigManager.get_value(section, ConfigWhisperX.Key.BATCH_SIZE),
-            compute_type=ConfigManager.get_value(
-                section, ConfigWhisperX.Key.COMPUTE_TYPE
-            ),
-            use_cpu=ConfigManager.get_value(section, ConfigWhisperX.Key.USE_CPU),
-            can_use_gpu=ConfigManager.get_value(
-                section, ConfigWhisperX.Key.CAN_USE_GPU
-            ),
-            output_file_types=ConfigManager.get_value(
-                section, ConfigWhisperX.Key.OUTPUT_FILE_TYPES
-            ),
-        )
-
-    @staticmethod
-    def get_config_google_api() -> ConfigGoogleApi:
-        section = ConfigGoogleApi.Key.SECTION
-
-        return ConfigGoogleApi(
-            api_key=ConfigManager.get_value(section, ConfigGoogleApi.Key.API_KEY),
-        )
 
     @staticmethod
     def get_config_subtitles() -> ConfigSubtitles:
@@ -69,6 +49,57 @@ class ConfigManager:
         return ConfigSystem(
             appearance_mode=ConfigManager.get_value(
                 section, ConfigSystem.Key.APPEARANCE_MODE
+            ),
+        )
+
+    @staticmethod
+    def get_config_transcription() -> ConfigTranscription:
+        section = ConfigTranscription.Key.SECTION
+
+        return ConfigTranscription(
+            language=ConfigManager.get_value(section, ConfigTranscription.Key.LANGUAGE),
+            audio_source=ConfigManager.get_value(
+                section, ConfigTranscription.Key.AUDIO_SOURCE
+            ),
+            method=ConfigManager.get_value(section, ConfigTranscription.Key.METHOD),
+            autosave=ConfigManager.get_value(section, ConfigTranscription.Key.AUTOSAVE),
+            overwrite_files=ConfigManager.get_value(
+                section, ConfigTranscription.Key.OVERWRITE_FILES
+            ),
+        )
+
+    @staticmethod
+    def get_config_whisper_api() -> ConfigWhisperApi:
+        section = ConfigWhisperApi.Key.SECTION
+
+        return ConfigWhisperApi(
+            response_format=ConfigManager.get_value(
+                section, ConfigWhisperApi.Key.RESPONSE_FORMAT
+            ),
+            temperature=ConfigManager.get_value(
+                section, ConfigWhisperApi.Key.TEMPERATURE
+            ),
+            timestamp_granularities=ConfigManager.get_value(
+                section, ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES
+            ),
+        )
+
+    @staticmethod
+    def get_config_whisperx() -> ConfigWhisperX:
+        section = ConfigWhisperX.Key.SECTION
+
+        return ConfigWhisperX(
+            model_size=ConfigManager.get_value(section, ConfigWhisperX.Key.MODEL_SIZE),
+            batch_size=ConfigManager.get_value(section, ConfigWhisperX.Key.BATCH_SIZE),
+            compute_type=ConfigManager.get_value(
+                section, ConfigWhisperX.Key.COMPUTE_TYPE
+            ),
+            use_cpu=ConfigManager.get_value(section, ConfigWhisperX.Key.USE_CPU),
+            can_use_gpu=ConfigManager.get_value(
+                section, ConfigWhisperX.Key.CAN_USE_GPU
+            ),
+            output_file_types=ConfigManager.get_value(
+                section, ConfigWhisperX.Key.OUTPUT_FILE_TYPES
             ),
         )
 

@@ -1,7 +1,8 @@
+import traceback
 from pathlib import Path
 from typing import Optional
 
-from pytube import YouTube
+from pytubefix import YouTube
 
 
 class YouTubeHandler:
@@ -32,4 +33,4 @@ class YouTubeHandler:
             return Path(output_file) if output_file else None
 
         except Exception:
-            return None
+            print(traceback.format_exc())
