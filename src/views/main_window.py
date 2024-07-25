@@ -59,6 +59,9 @@ class MainWindow(ctk.CTkFrame):
         self._init_sidebar()
         self._init_main_content()
 
+        # Update the state of the UI based on the configuration after setup
+        self._on_audio_source_change(self._config_transcription.audio_source)
+
         # State
         self._audio_source = AudioSource(self._config_transcription.audio_source)
         self._is_transcribing_from_mic = False
