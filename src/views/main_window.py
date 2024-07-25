@@ -1017,6 +1017,7 @@ class MainWindow(ctk.CTkFrame):
                 Color.HOVER_DARK_RED.value,
             ),
             text="Stop recording",
+            state=ctk.NORMAL,
         )
 
     def _prepare_ui_for_transcription(self):
