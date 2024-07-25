@@ -2,25 +2,21 @@ import sys
 from pathlib import Path
 
 
-def get_path(relative_path: str = "") -> Path:
+def get_root_path() -> Path:
     """
     Gets absolute path of the project.
 
-    :param relative_path: The relative path to the application's base path.
-    Default is an empty string.
-    :type relative_path: str
+    Taken from the [PyInstaller docs](https://pyinstaller.org/en/stable/runtime-information.html)
+
     :return: The absolute path to the file or directory specified by the relative path.
     :rtype: Path
     """
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = Path(sys._MEIPASS)
-    except (Exception,):
-        base_path = Path(__file__).parent.parent.parent
-
-    return base_path / relative_path
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        return Path(sys._MEIPASS)
+    else:
+        return Path(__file__).parent.parent.parent
 
 
 IMG_RELATIVE_PATH = "res/img"
 
-ROOT_PATH = get_path("")
+ROOT_PATH = get_root_path()
