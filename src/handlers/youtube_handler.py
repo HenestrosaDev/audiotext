@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
-from pytube import YouTube
+from pytubefix import YouTube
 
 
 class YouTubeHandler:
