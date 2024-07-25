@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 import customtkinter as ctk
 import utils.config_manager as cm
@@ -76,43 +77,42 @@ class MainWindow(ctk.CTkFrame):
         """
         self._controller = controller
 
-    def _get_language_code(self):
+    def _get_transcription_properties(self) -> dict[str, Any]:
         """
-        Retrieve the language code for the selected audio language.
+        Checks the current state of user interface elements to determine the
+        transcription properties.
 
-        This function uses a helper function to find the corresponding language code
-        from a dictionary of audio languages based on the currently selected audio
-        language in the user interface.
-
-        :return: The language code corresponding to the selected audio language.
-        :rtype: str
+        :return: A dictionary containing the transcription properties.
+        :rtype: dict
         """
-        return du.find_key_by_value(
+        language_code = du.find_key_by_value(
             dictionary=c.AUDIO_LANGUAGES,
             target_value=self.omn_transcription_language.get(),
         )
 
-    def _get_whisperx_args(self):
-        """
-        Retrieve arguments for WhisperX transcription options.
+        properties = {
+            "audio_source": self._audio_source,
+            "language_code": language_code,
+            "method": TranscriptionMethod(self.omn_transcription_method.get()),
+            "should_autosave": self.chk_autosave.get() == 1,
+            "should_overwrite": self.chk_overwrite_files.get() == 1,
+        }
 
-        This function checks the current state of user interface elements to determine
-        if translation and subtitle options should be enabled for WhisperX transcription.
-        It returns a dictionary with these options.
-
-        :return: A dictionary containing WhisperX transcription options.
-        :rtype: dict
-        """
-        whisperx_args = {}
+        if self.omn_transcription_method.get() == TranscriptionMethod.GOOGLE_API.value:
+            properties["should_translate"] = False
+            properties["output_file_types"] = ["txt"]
+        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPER_API.value:
+            properties["should_translate"] = False
+            properties["output_file_types"] = [self.omn_response_format.get()]
         if self.omn_transcription_method.get() == TranscriptionMethod.WHISPERX.value:
-            whisperx_args["should_translate"] = bool(
+            properties["should_translate"] = bool(
                 self.chk_whisper_options_translate.get()
             )
-            whisperx_args[
+            properties[
                 "output_file_types"
             ] = self._config_whisperx.output_file_types.split(",")
 
-        return whisperx_args
+        return properties
 
     # WIDGETS INITIALIZATION
 
@@ -1067,13 +1067,7 @@ class MainWindow(ctk.CTkFrame):
         """
         self._prepare_ui_for_transcription()
 
-        transcription = Transcription(
-            language_code=self._get_language_code(),
-            method=self.omn_transcription_method.get(),
-            should_autosave=self.chk_autosave.get() == 1,
-            should_overwrite=self.chk_overwrite_files.get() == 1,
-            **self._get_whisperx_args(),
-        )
+        transcription = Transcription(**self._get_transcription_properties())
 
         if self._audio_source == AudioSource.FILE:
             transcription.source_type = AudioSource.FILE
