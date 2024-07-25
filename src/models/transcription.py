@@ -2,17 +2,17 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
-from utils.enums import AudioSource
+from utils.enums import AudioSource, TranscriptionMethod
 
 
 @dataclass
 class Transcription:
     text: Optional[str] = None
     language_code: Optional[str] = None
-    source_type: Optional[AudioSource] = None
-    source_path: Path = Path("/")
-    method: Optional[str] = None
-    output_file_types: list[str] = field(default_factory=lambda: ["txt"])
+    audio_source: Optional[AudioSource] = None
+    audio_source_path: Path = Path("/")
+    method: Optional[TranscriptionMethod] = None
+    output_file_types: Optional[list[str]] = None
     should_translate: bool = False
     should_autosave: bool = False
     should_overwrite: bool = False

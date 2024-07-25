@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 import customtkinter as ctk
 import utils.config_manager as cm
@@ -9,10 +10,19 @@ from controllers.main_controller import MainController
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_transcription import ConfigTranscription
+from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
-from utils.enums import AudioSource, Color, ComputeType, ModelSize, TranscriptionMethod
+from utils.enums import (
+    AudioSource,
+    Color,
+    ComputeType,
+    ModelSize,
+    TimestampGranularities,
+    TranscriptionMethod,
+    WhisperApiResponseFormats,
+)
 from utils.env_keys import EnvKeys
 
 from .custom_widgets.ctk_input_dialog import CTkInputDialog
@@ -23,10 +33,11 @@ class MainWindow(ctk.CTkFrame):
     def __init__(
         self,
         parent,
-        config_whisperx: ConfigWhisperX,
         config_subtitles: ConfigSubtitles,
         config_system: ConfigSystem,
         config_transcription: ConfigTranscription,
+        config_whisper_api: ConfigWhisperApi,
+        config_whisperx: ConfigWhisperX,
     ):
         super().__init__(parent)
 
@@ -35,10 +46,11 @@ class MainWindow(ctk.CTkFrame):
         self.grid_rowconfigure(2, weight=1)
 
         # Init the configs
-        self._config_whisperx = config_whisperx
         self._config_subtitles = config_subtitles
         self._config_system = config_system
         self._config_transcription = config_transcription
+        self._config_whisper_api = config_whisper_api
+        self._config_whisperx = config_whisperx
 
         # Init the controller
         self._controller = None
@@ -65,43 +77,42 @@ class MainWindow(ctk.CTkFrame):
         """
         self._controller = controller
 
-    def _get_language_code(self):
+    def _get_transcription_properties(self) -> dict[str, Any]:
         """
-        Retrieve the language code for the selected audio language.
+        Checks the current state of user interface elements to determine the
+        transcription properties.
 
-        This function uses a helper function to find the corresponding language code
-        from a dictionary of audio languages based on the currently selected audio
-        language in the user interface.
-
-        :return: The language code corresponding to the selected audio language.
-        :rtype: str
+        :return: A dictionary containing the transcription properties.
+        :rtype: dict
         """
-        return du.find_key_by_value(
+        language_code = du.find_key_by_value(
             dictionary=c.AUDIO_LANGUAGES,
             target_value=self.omn_transcription_language.get(),
         )
 
-    def _get_whisperx_args(self):
-        """
-        Retrieve arguments for WhisperX transcription options.
+        properties = {
+            "audio_source": self._audio_source,
+            "language_code": language_code,
+            "method": TranscriptionMethod(self.omn_transcription_method.get()),
+            "should_autosave": self.chk_autosave.get() == 1,
+            "should_overwrite": self.chk_overwrite_files.get() == 1,
+        }
 
-        This function checks the current state of user interface elements to determine
-        if translation and subtitle options should be enabled for WhisperX transcription.
-        It returns a dictionary with these options.
-
-        :return: A dictionary containing WhisperX transcription options.
-        :rtype: dict
-        """
-        whisperx_args = {}
+        if self.omn_transcription_method.get() == TranscriptionMethod.GOOGLE_API.value:
+            properties["should_translate"] = False
+            properties["output_file_types"] = ["txt"]
+        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPER_API.value:
+            properties["should_translate"] = False
+            properties["output_file_types"] = [self.omn_response_format.get()]
         if self.omn_transcription_method.get() == TranscriptionMethod.WHISPERX.value:
-            whisperx_args["should_translate"] = bool(
+            properties["should_translate"] = bool(
                 self.chk_whisper_options_translate.get()
             )
-            whisperx_args[
+            properties[
                 "output_file_types"
             ] = self._config_whisperx.output_file_types.split(",")
 
-        return whisperx_args
+        return properties
 
     # WIDGETS INITIALIZATION
 
@@ -456,6 +467,123 @@ class MainWindow(ctk.CTkFrame):
 
         # ------------------
 
+        # 'Whisper API options' frame
+        self.frm_whisper_api_options = ctk.CTkFrame(
+            master=self.frm_sidebar, border_width=2
+        )
+        self.frm_whisper_api_options.grid(
+            row=3, column=0, padx=20, pady=(20, 0), sticky=ctk.EW
+        )
+
+        if self._config_transcription.method != TranscriptionMethod.WHISPER_API.value:
+            self.frm_whisper_api_options.grid_remove()
+
+        ## 'Whisper API options' label
+        self.lbl_whisper_api_options = ctk.CTkLabel(
+            master=self.frm_whisper_api_options,
+            text="Whisper API options",
+            font=ctk.CTkFont(size=14, weight="bold"),  # 14 is the default size
+        )
+        self.lbl_whisper_api_options.grid(row=0, column=0, padx=10, pady=(10, 5))
+
+        ## 'Response format' option menu
+        self.lbl_response_format = ctk.CTkLabel(
+            master=self.frm_whisper_api_options,
+            text="Response format",
+        )
+        self.lbl_response_format.grid(row=1, column=0, padx=20, pady=0, sticky=ctk.W)
+
+        self.omn_response_format = ctk.CTkOptionMenu(
+            master=self.frm_whisper_api_options,
+            values=[rf.value for rf in WhisperApiResponseFormats],
+            command=self._on_response_format_change,
+        )
+        self.omn_response_format.grid(
+            row=2, column=0, padx=20, pady=(3, 18), sticky=ctk.EW
+        )
+        self.omn_response_format.set(self._config_whisper_api.response_format)
+
+        ## 'Temperature' entry
+        self.lbl_temperature = ctk.CTkLabel(
+            master=self.frm_whisper_api_options,
+            text="Temperature",
+        )
+        self.lbl_temperature.grid(row=3, column=0, padx=(65, 0), pady=0, sticky=ctk.W)
+
+        self.temperature = ctk.StringVar(
+            self, str(self._config_whisper_api.temperature)
+        )
+        self._setup_debounced_change(
+            section=ConfigWhisperApi.Key.SECTION,
+            key=ConfigWhisperApi.Key.TEMPERATURE,
+            variable=self.temperature,
+            callback=self._on_config_change,
+        )
+
+        self.ent_temperature = ctk.CTkEntry(
+            master=self.frm_whisper_api_options,
+            width=40,
+            textvariable=self.temperature,
+        )
+        command = self.ent_temperature.register(self._validate_temperature)
+        self.ent_temperature.configure(
+            validate="key",
+            validatecommand=(command, "%P"),
+        )
+        self.ent_temperature.grid(row=3, column=0, padx=(18, 20), pady=0, sticky=ctk.W)
+
+        ## 'Timestamp granularities' radio button
+        self.lbl_timestamp_granularities = ctk.CTkLabel(
+            master=self.frm_whisper_api_options,
+            text="Timestamp granularities",
+        )
+        self.lbl_timestamp_granularities.grid(row=4, column=0, padx=0, pady=(10, 5))
+
+        self.chk_timestamp_granularities_segment = ctk.CTkCheckBox(
+            master=self.frm_whisper_api_options,
+            text=TimestampGranularities.SEGMENT.value.capitalize(),
+            command=self._on_timestamp_granularities_change,
+        )
+        self.chk_timestamp_granularities_segment.grid(
+            row=5, column=0, padx=20, pady=0, sticky=ctk.W
+        )
+        if (
+            TimestampGranularities.SEGMENT.value
+            in self._config_whisper_api.timestamp_granularities
+        ):
+            self.chk_timestamp_granularities_segment.select()
+
+        self.chk_timestamp_granularities_word = ctk.CTkCheckBox(
+            master=self.frm_whisper_api_options,
+            text=TimestampGranularities.WORD.value.capitalize(),
+            command=self._on_timestamp_granularities_change,
+        )
+        self.chk_timestamp_granularities_word.grid(
+            row=6, column=0, padx=20, pady=(5, 0), sticky=ctk.W
+        )
+        if (
+            TimestampGranularities.WORD.value
+            in self._config_whisper_api.timestamp_granularities
+        ):
+            self.chk_timestamp_granularities_word.select()
+
+        self._toggle_chk_timestamp_granularities()  # Disable if response format is not `verbose_json`
+
+        ## 'Set OpenAI API key' button
+        self.btn_set_openai_api_key = ctk.CTkButton(
+            master=self.frm_whisper_api_options,
+            text="Set OpenAI API key",
+            command=lambda: self._on_set_api_key(
+                env_key=EnvKeys.OPENAI_API_KEY, title="OpenAI API key"
+            ),
+        )
+
+        self.btn_set_openai_api_key.grid(
+            row=7, column=0, padx=20, pady=(16, 20), sticky=ctk.EW
+        )
+
+        # ------------------
+
         # WhisperX advanced options frame
         self.frm_whisperx_advanced_options = ctk.CTkFrame(
             master=self.frm_sidebar, border_width=2
@@ -685,38 +813,19 @@ class MainWindow(ctk.CTkFrame):
         """
         self.ent_path.configure(textvariable=ctk.StringVar(self, filepath))
 
-    def on_processing_transcription(self):
-        """
-        Prepares the UI for processing a transcription. Disables action buttons to avoid
-        multiple requests at the same time. It also shows a progress bar and removes any
-        previous text from the display.
-        """
-        # Disable action buttons to avoid multiple requests at the same time
-        self.ent_path.configure(state=ctk.DISABLED)
-        self.omn_audio_source.configure(state=ctk.DISABLED)
-        self.omn_transcription_language.configure(state=ctk.DISABLED)
-
-        if not self._is_transcribing_from_mic:
-            self.btn_main_action.configure(state=ctk.DISABLED)
-
-        # Show progress bar
-        self._toggle_progress_bar_visibility(should_show=True)
-
-        # Remove previous text
-        self.display_text("")
-
     def on_processed_transcription(self):
         """
         Re-enables disabled widgets after transcription processing is complete.
         """
         self.ent_path.configure(state=ctk.NORMAL)
-        self.omn_audio_source.configure(state=ctk.NORMAL)
         self.omn_transcription_language.configure(state=ctk.NORMAL)
+        self.omn_audio_source.configure(state=ctk.NORMAL)
+        self.omn_transcription_method.configure(state=ctk.NORMAL)
         self.btn_main_action.configure(state=ctk.NORMAL)
 
         self._toggle_progress_bar_visibility(should_show=False)
 
-    def stop_recording_from_mic(self):
+    def on_stop_recording_from_mic(self):
         """
         Updates the state to indicate that recording from the microphone has
         stopped, notified by the controller. It also updates the button appearance to
@@ -732,8 +841,6 @@ class MainWindow(ctk.CTkFrame):
             text="Start recording",
             state=ctk.DISABLED,
         )
-
-        self._controller.stop_recording_from_mic()
 
     def display_text(self, text):
         """
@@ -882,21 +989,21 @@ class MainWindow(ctk.CTkFrame):
         elif self._audio_source == AudioSource.DIRECTORY:
             self._controller.select_directory()
 
-    def _on_transcribe_from_mic(self):
-        """
-        Triggers when `btn_main_action` is clicked and the value of
-        `omn_transcribe_from` is "Microphone". Depending on the value of the
-        `_is_transcribing_from_mic` flag, it will stop or start the recording.
-        """
-        if self._is_transcribing_from_mic:
-            self.stop_recording_from_mic()
-        else:
-            self._start_recording_from_mic()
+    @staticmethod
+    def _validate_temperature(temperature):
+        if temperature == "":
+            return True
 
-    def _start_recording_from_mic(self):
+        try:
+            value = float(temperature)
+            return 0 <= value <= 1
+        except ValueError:
+            return False
+
+    def _on_start_recording_from_mic(self):
         """
-        Updates the UI and notifies the controller that the user has clicked the
-        `btn_main_action` with the value of `omn_transcribe_from` to Microphone.
+        Updates the UI when the user has clicked the `btn_main_action` with the audio
+        source set to Microphone.
         """
         self._is_transcribing_from_mic = True
 
@@ -909,15 +1016,22 @@ class MainWindow(ctk.CTkFrame):
             text="Stop recording",
         )
 
-        transcription = Transcription(
-            source_type=AudioSource.MIC,
-            language_code=self._get_language_code(),
-            method=self.omn_transcription_method.get(),
-            should_autosave=self.chk_autosave.get() == 1,
-            should_overwrite=self.chk_overwrite_files.get() == 1,
-            **self._get_whisperx_args(),
-        )
-        self._controller.prepare_for_transcription(transcription)
+    def _prepare_ui_for_transcription(self):
+        """
+        Disables fields, shows the progress bar and removes the text of the previous
+        transcription.
+        """
+        self.ent_path.configure(state=ctk.DISABLED)
+        self.omn_transcription_language.configure(state=ctk.DISABLED)
+        self.omn_audio_source.configure(state=ctk.DISABLED)
+        self.omn_transcription_method.configure(state=ctk.DISABLED)
+
+        if not self._is_transcribing_from_mic:
+            self.btn_main_action.configure(state=ctk.DISABLED)
+
+        self._toggle_progress_bar_visibility(should_show=True)
+
+        self.display_text("")
 
     def _on_main_action(self):
         """
@@ -928,35 +1042,22 @@ class MainWindow(ctk.CTkFrame):
         transcription process to prevent further user input until the transcription
         is complete.
         """
-        self.ent_path.configure(state=ctk.DISABLED)
-        self.omn_audio_source.configure(state=ctk.DISABLED)
-        self.omn_transcription_language.configure(state=ctk.DISABLED)
+        self._prepare_ui_for_transcription()
 
-        transcription = Transcription(
-            language_code=self._get_language_code(),
-            method=self.omn_transcription_method.get(),
-            should_autosave=self.chk_autosave.get() == 1,
-            should_overwrite=self.chk_overwrite_files.get() == 1,
-            **self._get_whisperx_args(),
-        )
+        transcription = Transcription(**self._get_transcription_properties())
 
-        if self._audio_source == AudioSource.FILE:
-            transcription.source_type = AudioSource.FILE
-            transcription.source_path = Path(self.ent_path.get())
-            self._controller.prepare_for_transcription(transcription)
-
-        elif self._audio_source == AudioSource.DIRECTORY:
-            transcription.source_type = AudioSource.DIRECTORY
-            transcription.source_path = Path(self.ent_path.get())
-            self._controller.prepare_for_transcription(transcription)
-
+        if self._audio_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
+            transcription.audio_source_path = Path(self.ent_path.get())
         elif self._audio_source == AudioSource.MIC:
-            self._on_transcribe_from_mic()
-
+            if self._is_transcribing_from_mic:
+                self._controller.stop_recording_from_mic()
+                return
+            else:
+                self._on_start_recording_from_mic()
         elif self._audio_source == AudioSource.YOUTUBE:
-            transcription.source_type = AudioSource.YOUTUBE
             transcription.youtube_url = self.ent_path.get()
-            self._controller.prepare_for_transcription(transcription)
+
+        self._controller.prepare_for_transcription(transcription)
 
     def _on_save_transcription(self):
         """
@@ -988,6 +1089,8 @@ class MainWindow(ctk.CTkFrame):
             self.frm_whisper_options.grid()
             self._toggle_frm_subtitle_options_visibility()
             self.frm_google_api_options.grid_remove()
+            self.frm_whisper_api_options.grid_remove()
+
         elif option == TranscriptionMethod.GOOGLE_API.value:
             self.frm_whisper_options.grid_remove()
             self.frm_whisperx_advanced_options.grid_remove()
@@ -996,6 +1099,18 @@ class MainWindow(ctk.CTkFrame):
                 text="Show advanced options"
             )
             self.frm_google_api_options.grid()
+            self.frm_whisper_api_options.grid_remove()
+
+        elif option == TranscriptionMethod.WHISPER_API.value:
+            self.frm_whisper_options.grid_remove()
+            self.frm_whisperx_advanced_options.grid_remove()
+            self.frm_subtitle_options.grid_remove()
+            self.btn_whisperx_show_advanced_options.configure(
+                text="Show advanced options"
+            )
+            self.frm_google_api_options.grid_remove()
+            self.frm_whisper_api_options.grid()
+
     @staticmethod
     def _on_set_api_key(env_key: EnvKeys, title: str):
         """
@@ -1097,6 +1212,78 @@ class MainWindow(ctk.CTkFrame):
             new_value=output_file_types_str,
         )
 
+    def _toggle_chk_timestamp_granularities(self):
+        """
+        Toggles timestamp granularities checkboxes visibility depending on the selected
+        response format.
+        """
+        if self.omn_response_format.get() != "verbose_json":
+            self.chk_timestamp_granularities_segment.configure(state=ctk.DISABLED)
+            self.chk_timestamp_granularities_word.configure(state=ctk.DISABLED)
+
+            self.chk_timestamp_granularities_segment.deselect()
+            self.chk_timestamp_granularities_word.deselect()
+        else:
+            self.chk_timestamp_granularities_segment.configure(state=ctk.NORMAL)
+            self.chk_timestamp_granularities_word.configure(state=ctk.NORMAL)
+
+            if (
+                TimestampGranularities.SEGMENT.value
+                in self._config_whisper_api.timestamp_granularities
+            ):
+                self.chk_timestamp_granularities_segment.select()
+
+            if (
+                TimestampGranularities.WORD.value
+                in self._config_whisper_api.timestamp_granularities
+            ):
+                self.chk_timestamp_granularities_word.select()
+
+    def _on_response_format_change(self, option: str):
+        """
+        Handles changes to the response format by updating the configuration and
+        toggling the timestamp granularities checkboxes.
+        """
+        self._on_config_change(
+            section=ConfigWhisperApi.Key.SECTION,
+            key=ConfigWhisperApi.Key.RESPONSE_FORMAT,
+            new_value=option,
+        )
+
+        self._toggle_chk_timestamp_granularities()
+
+    def _on_timestamp_granularities_change(self):
+        """
+        Handles changes to the timestamp granularities by updating the configuration.
+        """
+        # Dictionary mapping checkboxes to their corresponding file types
+        chk_to_timestamp_granularity = {
+            self.chk_timestamp_granularities_segment: TimestampGranularities.SEGMENT.value,
+            self.chk_timestamp_granularities_word: TimestampGranularities.WORD.value,
+        }
+
+        # List comprehension to gather selected file types
+        selected_timestamp_granularities = [
+            timestamp_granularity
+            for chk, timestamp_granularity in chk_to_timestamp_granularity.items()
+            if chk.get()
+        ]
+
+        # Convert the list to a comma-separated string and update the configuration
+        selected_timestamp_granularities_str = ",".join(
+            selected_timestamp_granularities
+        )
+        self._config_whisper_api.timestamp_granularities = (
+            selected_timestamp_granularities_str
+        )
+
+        # Notify the config change
+        self._on_config_change(
+            section=ConfigWhisperApi.Key.SECTION,
+            key=ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES,
+            new_value=selected_timestamp_granularities_str,
+        )
+
     def _toggle_progress_bar_visibility(self, should_show):
         """
         Toggles the visibility of the progress bar based on the specified parameter.
@@ -1111,8 +1298,11 @@ class MainWindow(ctk.CTkFrame):
 
     def _toggle_frm_subtitle_options_visibility(self):
         if (
-            "srt" in self._config_whisperx.output_file_types
-            or "vtt" in self._config_whisperx.output_file_types
+            self._config_transcription.method == TranscriptionMethod.WHISPERX.value
+            and (
+                "srt" in self._config_whisperx.output_file_types
+                or "vtt" in self._config_whisperx.output_file_types
+            )
         ):
             if "srt" in self._config_whisperx.output_file_types:
                 self.chk_output_file_srt.select()

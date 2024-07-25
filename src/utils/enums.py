@@ -8,11 +8,6 @@ class AudioSource(Enum):
     YOUTUBE = "YouTube"
 
 
-class TranscriptionMethod(Enum):
-    GOOGLE_API = "Google API"
-    WHISPERX = "WhisperX"
-
-
 class Color(Enum):
     LIGHT_RED = "#D30000"
     DARK_RED = "#8b0000"
@@ -39,3 +34,31 @@ class ModelSize(Enum):
     LARGE_V1 = "large-v1"
     LARGE_V2 = "large-v2"
     LARGE_V3 = "large-v3"
+
+
+class TimestampGranularities(Enum):
+    SEGMENT = "segment"
+    WORD = "word"
+
+
+class TranscriptionMethod(Enum):
+    GOOGLE_API = "Google API"
+    WHISPER_API = "Whisper API"
+    WHISPERX = "WhisperX"
+
+
+class WhisperApiResponseFormats(Enum):
+    JSON = "json"
+    SRT = "srt"
+    TEXT = "text"
+    VERBOSE_JSON = "verbose_json"
+    VTT = "vtt"
+
+
+class WhisperXFileTypes(Enum):
+    AUD = "aud"
+    JSON = "json"
+    SRT = "srt"
+    TEXT = "txt"
+    TSV = "tsv"
+    VTT = "vtt"

@@ -87,32 +87,41 @@
 ## Table of Contents
 
 - [About the Project](#about-the-project)
-    - [Supported Languages](#supported-languages)
-    - [Supported File Types](#supported-file-types)
-    - [Project Structure](#project-structure)
-    - [Built With](#built-with)
+  - [Supported Languages](#supported-languages)
+  - [Supported File Types](#supported-file-types)
+  - [Project Structure](#project-structure)
+  - [Built With](#built-with)
 - [Getting Started](#getting-started)
-    - [Installation](#installation)
-    - [Set Up the Project Locally](#set-up-the-project-locally)
-    - [Notes](#notes) 
+  - [Installation](#installation)
+  - [Set Up the Project Locally](#set-up-the-project-locally)
+  - [Notes](#notes) 
 - [Usage](#usage)
-    - [Transcription Method](#transcription-method)
-    - [Audio Source](#audio-source)
-    - [Save Transcription](#save-transcription)
-        - [Autosave](#autosave)
-        - [Overwrite Existing Files](#overwrite-existing-files)
-    - [WhisperX Options](#whisperx-options)
-        - [Output File Types](#output-file-types)
-        - [Transcription Translation](#transcription-translation)
+  - [Transcription Language](#transcription-language)
+  - [Transcription Method](#transcription-method)
+  - [Audio Source](#audio-source)
+  - [Save Transcription](#save-transcription)
+    - [Autosave](#autosave)
+    - [Overwrite Existing Files](#overwrite-existing-files)
+  - [Google Speech-To-Text API Options](#google-speech-to-text-api-options)
+    - [Google API Key](#google-api-key)
+  - [Whisper API Options](#whisper-api-options)
+    - [Whisper API Key](#whisper-api-key)
+    - [Response Format](#response-format)
+    - [Temperature](#temperature)
+    - [Timestamp Granularities](#timestamp-granularities)
+  - [WhisperX Options](#whisperx-options)
+    - [Output File Types](#output-file-types)
+    - [Translate to English](#translate-to-english)
     - [Subtitle Options](#subtitle-options)
-    - [WhisperX Advanced Options](#whisperx-advanced-options)
-        - [Model Size](#model-size)
-        - [Compute Type](#compute-type)
-        - [Batch Size](#batch-size)
-        - [Use CPU](#use-cpu)
-    - [Google Speech-To-Text API Options](#google-speech-to-text-api-options)
-        - [API Key](#api-key)
-    - [Troubleshooting](#troubleshooting)
+      - [Highlight Words](#highlight-words)
+      - [Max. Line Width](#max-line-width)
+      - [Max. Line Count](#max-line-count)
+    - [Advanced Options](#advanced-options)
+      - [Model Size](#model-size)
+      - [Compute Type](#compute-type)
+      - [Batch Size](#batch-size)
+      - [Use CPU](#use-cpu)
+- [Troubleshooting](#troubleshooting)
 - [Roadmap](#roadmap)
 - [Authors](#authors)
 - [Contributing](#contributing)
@@ -254,42 +263,42 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 <details>
   <summary>Audio file formats</summary>
 
-  - `.mp3`
-  - `.mpeg`
-  - `.wav`
-  - `.wma`
   - `.aac`
   - `.flac`
-  - `.ogg`
+  - `.mp3`
+  - `.mpeg`
   - `.oga`
+  - `.ogg`
   - `.opus`
+  - `.wav`
+  - `.wma`
 </details>
 
 <details>
   <summary>Video file formats</summary>
 
-  - `.mp4`
-  - `.m4a`
-  - `.m4v`
-  - `.f4v`
+  - `.3g2`
+  - `.3gp2`
+  - `.3gp`
+  - `.3gpp2`
+  - `.3gpp`
+  - `.asf`
+  - `.avi`
   - `.f4a`
+  - `.f4b`
+  - `.f4v`
+  - `.flv`
+  - `.m4a`
   - `.m4b`
   - `.m4r`
-  - `.f4b`
-  - `.mov`
-  - `.avi`
-  - `.webm`
-  - `.flv`
+  - `.m4v`
   - `.mkv`
-  - `.3gp`
-  - `.3gp2`
-  - `.3g2`
-  - `.3gpp`
-  - `.3gpp2`
+  - `.mov`
+  - `.mp4`
   - `.ogv`
   - `.ogx`
+  - `.webm`
   - `.wmv`
-  - `.asf`
 </details>
 
 <!-- PROJECT STRUCTURE -->
@@ -349,9 +358,14 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       │       main_controller.py
       │
       ├───handlers
+      │       file_handler.py
       │       google_api_handler.py
+      │       openai_api_handler.py
       │       whisperx_handler.py
       │       youtube_handler.py
+      │
+      ├───interfaces
+      │       transcribable.py
       │
       ├───models
       │   │   __init__.py
@@ -359,9 +373,10 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       │   │     
       │   └───config
       │           __init__.py
-      │           config_google_api.py
       │           config_subtitles.py
       │           config_system.py
+      │           config_transcription.py
+      │           config_whisper_api.py
       │           config_whisperx.py
       │
       ├───utils
@@ -371,6 +386,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       │       constants.py
       │       dict_utils.py
       │       enums.py
+      │       env_keys.py
       │       path_helper.py
       │
       └───views
@@ -391,12 +407,14 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 - [CTkScrollableDropdown](https://github.com/Akascape/CTkScrollableDropdown) for the scrollable option menu to display the full list of supported languages.
 - [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the GUI.
 - [moviepy](https://pypi.org/project/moviepy/) for video processing, from which the program extracts the audio to be transcribed.
+- [OpenAI Python API library](https://pypi.org/project/openai/) for using the **Whisper API**.
 - [PyAudio](https://pypi.org/project/PyAudio/) for recording microphone audio.
 - [pydub](https://github.com/jiaaro/pydub) for audio processing.
+- [python-dotenv](https://pypi.org/project/python-dotenv/) for handling environment variables.
 - [PyTorch](https://github.com/pytorch/pytorch) for building and training neural networks.
 - [PyTorch-CUDA](https://pytorch.org/docs/stable/cuda.html) for enabling GPU support (CUDA) with PyTorch. CUDA is a parallel computing platform and application programming interface model created by NVIDIA.
 - [pytube](https://github.com/pytube/pytube) for audio download of YouTube videos.
-- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for converting audio into text.
+- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for using the **Google Speech-To-Text API**.
 - [Torchaudio](https://pytorch.org/audio/stable/index.html) for audio processing tasks, including speech recognition and audio classification.
 - [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition. This product includes software developed by Max Bain. Uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper), which is a reimplementation of [OpenAI's Whisper](https://github.com/openai/whisper) model using [CTranslate2](https://github.com/OpenNMT/CTranslate2/).
 
@@ -492,12 +510,26 @@ Once you open the **Audiotext** executable file (explained in the [Getting Start
   >
 </picture>
 
+### Transcription Language
+
+The target language for the transcription. If you use the **Whisper API** or the **WhisperX** transcription methods, you can set this to a language other than the one spoken in the audio in order to translate it to the selected language.
+
+For example, to translate an English audio into French, you would set `Transcription language` to French, as shown in the video below:
+
+<!-- english-to-french.mp4 -->
+https://github.com/user-attachments/assets/e68d9b90-3978-4ffb-9b62-bd3d57a1a33d
+
+This is an unofficial way to perform translations, so be sure to double-check the generated transcription for errors.
+
 ### Transcription Method
 
-Before you start transcribing, it's important to understand what each transcription method offers:
+There are three transcription methods available in **Audiotext**:
 
-- **WhisperX**: Selected by default. This method does not require an Internet connection because it runs locally on your computer. It can run on CPUs and CUDA GPUs, although it performs better on the latter. The transcriptions generated by **WhisperX** are generally **much more** accurate than those generated by the **Google API**, although this may vary depending on the [model size](#model-size) and [computation type](#compute-type) selected. In addition, **WhisperX** offers a wider range of features, including subtitle generation and translation into any other supported language. It's fast, especially when transcribing large files, and has no usage restrictions while remaining completely free.
-- **Google Speech-To-Text API** (hereafter referred to as **Google API**): **Audiotext** sends the audio to the remote **Google API** to get the transcription. It doesn't punctuate sentences, and the quality of the resulting transcriptions often requires manual adjustment due to lower quality compared to **WhisperX**. In its free tier, usage is limited to 60 minutes per month, but this limit can be extended by adding an [API key](#api-key). Unlike **WhisperX**, the **Google API** is much less demanding on hardware resources because the transcription process is handled entirely on remote servers.
+- **Google Speech-To-Text API** (hereafter referred to as **Google API**): Requires an Internet connection. It doesn't punctuate sentences (the punctuation is produced by **Audiotext**), and the quality of the resulting transcriptions often requires manual adjustment due to lower quality compared to the **Whisper API** or **WhisperX**. In its free tier, usage is limited to 60 minutes per month, but this limit can be extended by adding an [API key](#google-api-key).
+
+- **Whisper API**: Requires an Internet connection. This method is intended for people whose machines are not powerful enough to run **WhisperX** gracefully. It has fewer options than **WhisperX**, but the quality of the transcriptions is similar to those generated by the `large-v2` model of **Whisper X**. However, you need to set an OpenAI API key to use this method. See the [Whisper API Key](#whisper-api-key) section for more information.
+
+- **WhisperX**: Selected by default. It doesn't require an Internet connection because the entire transcription process takes place locally on your computer. As a result, it's much more demanding of hardware resources than the other remote transcription methods. **WhisperX** can run on CPUs and CUDA GPUs, although it performs better on the latter. The quality of the transcription depends on the selected [model size](#model-size) and [computation type](#compute-type). In addition, **WhisperX** offers a wider range of features, including a more customizable subtitle generation process than the **Whisper API** and more output file types. It has no usage restrictions while remaining completely free.
 
 ### Audio Source
 
@@ -569,7 +601,7 @@ You can transcribe from four different audio sources:
   Here is a video demonstrating this feature:
 
   <!-- english.mp4 -->
-  https://github.com/HenestrosaDev/audiotext/assets/60482743/33b9f5e2-e0bf-48f4-bfe2-363173665903
+  https://github.com/user-attachments/assets/61f2173b-bcfb-4251-a910-0cf6b37598c6
 
   Note that your operating system must recognize an input source, otherwise an error message will appear in the text box indicating that no input source was detected.
   
@@ -592,13 +624,13 @@ You can transcribe from four different audio sources:
 
 ### Save Transcription
 
-When you click on the `Save transcription` button, you'll be prompted for a file explorer where you can name the transcription file and select the path where you want to save it. The file extension is `.txt` by default, but you can change it to any other text file type. Note that if you transcribe a file with **WhisperX** and don't select the `.txt` output file type, the `.txt` won't be saved. The route you enter will only be used to know where to save the output file types you have checked.
-
-Please note that any text entered or modified in the textbox **WILL NOT** be included in the saved transcription.
+When you click on the `Save transcription` button, you'll be prompted for a file explorer where you can name the transcription file and select the path where you want to save it. Please note that any text entered or modified in the textbox **WILL NOT** be included in the saved transcription.
 
 #### Autosave
 
 If checked, the transcription will automatically be saved in the root of the folder where the file to transcribe is stored. If there are already existing files with the same name, they won't be overwritten. To do that, you'll need to check the `Overwrite existing files` option (see below).
+
+Note that if you create a transcription using the `Microphone` or `YouTube` audio sources with the `Autosave` action enabled, the transcription files will be saved in the root of the `audiotext-vX.X.X` directory.
 
 #### Overwrite Existing Files 
 
@@ -616,6 +648,110 @@ For example, let's use this directory as a reference:
 If we transcribe the audio file `foo.mp3` with the output file types `.json`, `.txt` and `.srt` and the `Autosave` and `Overwrite existing files` options checked, the files `foo.srt` and `foo.txt` will be overwritten and the file `foo.json` will be created.
 
 On the other hand, if we transcribe the audio file `foo.mp3` with the same output file types, with the option `Autosave` checked but without the option `Overwrite existing files`, the file `foo.json` will still be created, but the files `foo.srt` and `foo.txt` will remain unchanged.
+
+### Google Speech-To-Text API Options
+
+The `Google API options` frame appears if the selected transcription method is **Google API**. See the [Transcription Method](#transcription-method) section to know more about the **Google API**.
+
+<p align="center">
+  <picture>
+    <source 
+      srcset="docs/light/google-api-options.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/google-api-options.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img src="docs/light/google-api-options.png" alt="google-api-options">
+  </picture>
+</p>
+
+#### Google API Key
+
+Since the program uses the free **Google API** tier by default, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do so, click the `Set API key` button. You'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
+
+<p align="center">
+  <picture>
+    <source 
+      srcset="docs/light/google-api-key-dialog.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/google-api-key-dialog.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img src="docs/light/google-api-key-dialog.png" alt="Google API key dialog">
+  </picture>
+</p>
+
+Remember that **WhisperX** provides fast, unlimited audio transcription that supports translation and subtitle generation for free, unlike the **Google API**. Also note that Google charges for the use of the API key, for which **Audiotext** is not responsible.
+
+### Whisper API Options
+
+The `Whisper API options` frame appears if the selected transcription method is **Whisper API**. See the [Transcription Method](#transcription-method) section to know more about the **Whisper API**.
+
+<p align="center">
+  <picture>
+    <source 
+      srcset="docs/light/whisper-api-options.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/whisper-api-options.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img src="docs/light/whisper-api-options.png" alt="Whisper API options">
+  </picture>
+</p>
+
+#### Whisper API Key
+
+As noted in the [Transcription Method](#transcription-method) section, an [OpenAI API key]((https://platform.openai.com/api-keys)) is required to use this transcription method. Otherwise, you won't be able to use it.
+
+To add it, click the `Set OpenAI API key` button. You'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
+
+<p align="center">
+  <picture>
+    <source 
+      srcset="docs/light/open-ai-api-key-dialog.png" 
+      media="(prefers-color-scheme: light)"
+    />
+    <source 
+      srcset="docs/dark/open-ai-api-key-dialog.png" 
+      media="(prefers-color-scheme: dark)"
+    />
+    <img src="docs/light/open-ai-api-key-dialog.png" alt="OpenAI API key dialog">
+  </picture>
+</p>
+
+OpenAI charges for the use of the API key, for which **Audiotext** is not responsible. See the [Troubleshooting](#troubleshooting) section if you get error `429` on your first request with an API key.
+
+#### Response Format
+
+The format of the transcript output, in one of these options: 
+
+- `json` 
+- `srt` (subtitle file type)
+- `text` 
+- `verbose_json`
+- `vtt` (subtitle file type)
+
+Defaults to `text`.
+
+#### Temperature
+
+The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.
+
+Defaults to 0.
+
+#### Timestamp Granularities
+
+The timestamp granularities to populate for this transcription. `Response format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`. 
+
+**Note**: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
+
+Defaults to `segment`.
 
 ### WhisperX Options
 
@@ -642,34 +778,27 @@ The **WhisperX** options appear when the selected transcription method is **Whis
 
 You can select one or more of the following transcription output file types: 
 
-- `.srt` (subtitle file type)
-- `.vtt` (subtitle file type)
-- `.txt`
-- `.json`
-- `.tsv`
 - `.aud`
+- `.json`
+- `.srt` (subtitle file type)
+- `.tsv`
+- `.txt`
+- `.vtt` (subtitle file type)
 
 If you select one of the two subtitle file types (`.vtt` and `.srt`), the `Subtitle options` frame will be displayed with more options (read more [here](#subtitle-options)).
 
-#### Transcription Translation
+#### Translate to English
 
-To translate the transcription into English, simply check the `Translate to English` checkbox before generating the transcription, as shown in the video below.
+To translate the transcription to English, simply check the `Translate to English` checkbox before generating the transcription, as shown in the video below.
 
 <!-- spanish-to-english.mp4 -->
-https://github.com/HenestrosaDev/audiotext/assets/60482743/dceb68e6-398f-46c5-9a9e-1dd2e4ee8e74
+https://github.com/user-attachments/assets/e614201c-25f2-4ec7-8478-3b63aade0c44
 
-However, there is another unofficial way to translate audio into any supported language by setting the `Audio language` to the target translation language. For example, if the audio is in English and you want to translate it into French, you would set the `Audio language` to "French".
-
-Here is a practical example using the microphone:
-
-<!-- english-to-french.mp4 -->
-https://github.com/HenestrosaDev/audiotext/assets/60482743/a40c959b-1f7c-494a-8319-66fcc5729dc5
-
-Make sure to double-check the generated translations.
+If you want to translate the audio to another language, check the [Transcription Language](#transcription-language) section.
 
 ### Subtitle Options
 
-When you select the `.srt` and/or the `.vtt` output file type(s), the `Subtitle options` frame will be displayed:
+When you select the `.srt` and/or the `.vtt` output file type(s), the `Subtitle options` frame will be displayed. Note that the input options only apply to the `.srt` and `.vtt` files:
 
 <p align="center">
   <picture>
@@ -688,17 +817,21 @@ When you select the `.srt` and/or the `.vtt` output file type(s), the `Subtitle 
   </picture>
 </p>
 
-You can change these three parameters:
+To get the subtitle file(s) after the audio is transcribed, you can either check the `Autosave` option before generating the transcription or click `Save transcription` and select the path where you want to save them as explained in the [Save Transcription](#save-transcription) section.
 
-- **Highlight words**: Underline each word as it's spoken in `.srt` and `.vtt` subtitle files. Not checked by default.
-- **Max. line count**: The maximum number of lines in a segment. `2` by default.
-- **Max. line width**: The maximum number of characters in a line before breaking the line. `42` by default.
+#### Highlight Words
 
-To get the subtitle file(s) after the audio is transcribed, you can either check the `Autosave` option before generating the transcription or click `Save transcription` and select the path where you want to save them as explained in the [Save Transcription](#save-transcription) section
+Underline each word as it's spoken in `.srt` and `.vtt` subtitle files. Not checked by default.
 
-As the footnote in the screenshot says, the input options only apply to the `.srt` and `.vtt` files.
+#### Max. Line Count
 
-### WhisperX Advanced Options
+The maximum number of lines in a segment. `2` by default.
+
+#### Max. Line Width 
+
+The maximum number of characters in a line before breaking the line. `42` by default.
+
+### Advanced Options
 
 When you click the `Show advanced options` button in the `WhisperX options` frame, the `Advanced options` frame appears, as shown in the figure below.
 
@@ -716,11 +849,11 @@ When you click the `Show advanced options` button in the `WhisperX options` fram
   </picture>
 </p>
 
-It's highly recommended that you don't change the default configuration unless you're having problems with **WhisperX** or you know exactly what you're doing, especially the "Compute type" and "Batch size" options. Change them at your own risk and be aware that you may experience problems, such as having to reboot your system if the GPU runs out of VRAM.
+It's highly recommended that you don't change the default configuration unless you're having problems with **WhisperX** or you know exactly what you're doing, especially the `Compute type` and `Batch size` options. Change them at your own risk and be aware that you may experience problems, such as having to reboot your system if the GPU runs out of VRAM.
 
 #### Model Size
 
-There are five main model sizes that offer tradeoffs between speed and accuracy. The larger the model size, the more VRAM it uses and the longer it takes to transcribe. Unfortunately, **WhisperX** hasn't provided specific performance data for each model, so the table below is based on the one detailed in [OpenAI's Whisper README](https://github.com/openai/whisper). According to **WhisperX**, the `large-v2` model requires <8GB of GPU memory and batches inference for 70x real-time transcription (taken from the project's [README](https://github.com/m-bain/whisperX)).
+There are five main ASR (Automatic Speech Recognition) model sizes that offer tradeoffs between speed and accuracy. The larger the model size, the more VRAM it uses and the longer it takes to transcribe. Unfortunately, **WhisperX** hasn't provided specific performance data for each model, so the table below is based on the one detailed in [OpenAI's Whisper README](https://github.com/openai/whisper). According to **WhisperX**, the `large-v2` model requires <8GB of GPU memory and batches inference for 70x real-time transcription (taken from the project's [README](https://github.com/m-bain/whisperX)).
 
 |  Model   | Parameters | Required VRAM  |
 |:--------:|:----------:|:--------------:|
@@ -756,62 +889,51 @@ This option determines how many samples are processed together before the model 
 
 For simplicity, let's divide the possible batch size values into two groups:
 
-- **Small batch size (<=8)**: Training with small batch sizes means that model weights are updated more frequently, potentially leading to more stable convergence. They use less memory, which can be important when working with limited resources. `8` is the default value.
+- **Small batch size (0<x<=8)**: Training with small batch sizes means that model weights are updated more frequently, potentially leading to more stable convergence. They use less memory, which can be important when working with limited resources. `8` is the default value.
 - **Large batch size (>8)**: Speeds up in training, especially on hardware optimized for parallel processing such as GPUs. Max. recommended to `16`.
 
 #### Use CPU
 
-Checked by default if there is no CUDA GPU. **WhisperX** will use the CPU for transcription if checked.
+**WhisperX** will use the CPU for transcription if checked. Checked by default if there is no CUDA GPU.
 
 As noted in the [Compute Type](#compute-type) section, the default compute type value for the CPU is `int8`, since many CPUs don't support efficient `float16` or `float32` computation, which would result in an error. Change it at your own risk. 
 
-### Google Speech-To-Text API Options
+## Troubleshooting
 
-The `Google API options` frame appears if the selected transcription method is **Google API**.
+### The program is unresponsive when using WhisperX
 
-<p align="center">
-  <picture>
-    <source 
-      srcset="docs/light/google-api-options.png" 
-      media="(prefers-color-scheme: light)"
-    />
-    <source 
-      srcset="docs/dark/google-api-options.png" 
-      media="(prefers-color-scheme: dark)"
-    />
-    <img src="docs/light/google-api-options.png" alt="google-api-options">
-  </picture>
-</p>
+The first transcription created by **WhisperX** will take longer than subsequent ones. That's because **Audiotext** needs to load the model, which can take a few minutes, depending on the hardware the program is running on. It may appear to be unresponsive, but do not close it, as it will eventually return to a normal state.
 
-#### API Key
+Once the model is loaded, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
 
-Since the program uses the free **Google API** tier by default, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do so, click the `Set API key` button. You'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
+### I get the error `RuntimeError: CUDA Out of memory` when using WhisperX
 
-<p align="center">
-  <picture>
-    <source 
-      srcset="docs/light/google-api-key-dialog.png" 
-      media="(prefers-color-scheme: light)"
-    />
-    <source 
-      srcset="docs/dark/google-api-key-dialog.png" 
-      media="(prefers-color-scheme: dark)"
-    />
-    <img src="docs/light/google-api-key-dialog.png" alt="google-api-key-dialog">
-  </picture>
-</p>
+Try any of the following (2 and 3 can affect quality) (taken from [WhisperX README](https://github.com/m-bain/whisperX#technical-details-%EF%B8%8F)):
+1. Reduce batch size, e.g. `4`
+2. Use a smaller ASR model, e.g. `base`
+3. Use lighter compute type, e.g. `int8`
 
-Remember that **WhisperX** provides fast, unlimited audio transcription that supports translation and subtitle generation for free, unlike the **Google API**. Also note that Google charges for the use of the API key, for which **Audiotext** is not responsible.
+### Is it possible to use less GPU/CPU memory requirements when using WhisperX?
 
-### Troubleshooting
+You can follow the steps above. See the [Model Size](#model-size) section for how much memory you need for each model.
 
-- Generating a transcription may take some time, depending on the length and size of the audio and whether it's extracted from a video file. Do not close the program, even if it appears to be unresponsive.
-- The first transcription created by **WhisperX** will take a while. That's because **Audiotext** needs to load the model, which can take a while, even a few minutes, depending on the hardware the program is running on. Once it's loaded, however, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
-- If you get the error `RuntimeError: CUDA Out of memory` or want to reduce GPU/CPU memory requirements, try any of the following (2 and 3 can affect quality) (taken from [WhisperX README](https://github.com/m-bain/whisperX#technical-details-%EF%B8%8F)):
-  1. Reduce batch size, e.g. `4`
-  2. Use a smaller ASR model, e.g. `base`
-  3. Use lighter compute type, e.g. `int8`
-- If the program takes _too_ much time to generate the transcription, i.e. about x3 the time of the original audio length, try using a smaller ASR model and/or use a lighter computation type, as indicated in the point above. Keep in mind that the first WhisperX transcription will take some time to load the model. Also remember that the transcription process depends heavily on your system's hardware, so don't expect instant results on modest CPUs. Remember that you can also use the **Google API** transcription method, which is much less hardware demanding than **WhisperX**.
+### The program takes _too_ much time to generate a transcription
+
+Try using a smaller ASR model and/or a lighter computation type, as indicated in the point above. Keep in mind that the first **WhisperX** transcription will take some time to load the model. Also remember that the transcription process depends heavily on your system's hardware, so don't expect instant results on modest CPUs. Alternatively, you can use the **Whisper API** or **Google API** transcription methods, which are much less hardware intensive than **WhisperX** because the transcriptions are generated remotely, but you'll be dependent on the speed of your Internet connection.
+
+### When I try to generate a transcription using the Whisper API method, I get the error `429`
+
+You'll be prompted with an error like this:
+
+```
+RateLimitError("Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}")
+``` 
+
+This is either because your account run out of credits or because you need to fund your account before you can use the API for the first time (even if you have free credits available). To fix this, you need to purchase credits for your account (starting at $5) with a credit or debit card by going to the [Billing](https://platform.openai.com/settings/organization/billing/overview) section of your OpenAI account settings.
+
+After funds are added to your account, it may take up to 10 minutes for your account to become active.
+
+If you are using an API key that was created before you funded your account for the first time, and the error still persists after about 10 minutes, you'll need to create a new API key and change it in **Audiotext** (see the [Whisper API Key](#whisper-api-key) section to change it).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -831,7 +953,7 @@ Remember that **WhisperX** provides fast, unlimited audio transcription that sup
 - [x] Add `Output file types` option to `WhisperX options`.
 - [x] Add support for `.json`, `.tsv` and `.aud` output file types when using WhisperX as transcription method.
 - [x] Add `appearance_mode` to `config.ini`.
-- [ ] Add support for **Whisper's API** ([#42](https://github.com/HenestrosaDev/audiotext/discussions/42)).
+- [x] Add support for **Whisper's API** ([#42](https://github.com/HenestrosaDev/audiotext/discussions/42)).
 - [ ] Change the `Generate transcription` button to `Cancel transcription` when a transcription is in progress.
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
@@ -851,14 +973,13 @@ See also the list of [contributors](https://github.com/HenestrosaDev/audiotext/c
 
 ## Contributing  
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-Please read the [CONTRIBUTING.md](https://github.com/HenestrosaDev/audiotext/blob/main/.github/CONTRIBUTING.md) file, where you can find more detailed information about how to contribute to the project.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. Please read the [CONTRIBUTING.md](https://github.com/HenestrosaDev/audiotext/blob/main/.github/CONTRIBUTING.md) file, where you can find more detailed information about how to contribute to the project.
 
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
 
-I have made use of the following resources to make this project:
+I used the following resources to create this project:
 
 - [Extracting speech from video using Python](https://towardsdatascience.com/extracting-speech-from-video-using-python-f0ec7e312d38)
 - [How to translate Python applications with the GNU gettext module](https://phrase.com/blog/posts/translate-python-gnu-gettext/)
