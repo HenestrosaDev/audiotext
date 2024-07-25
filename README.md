@@ -478,8 +478,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    # on macOS and Linux
    source venv/Scripts/activate
    ```
-5. Run `cat requirements.txt | xargs -n 1 pip install` to install the dependencies.
-   >For some reason, `pip install -r requirements.txt` throws the error "Could not find a version that satisfies the requirement [PACKAGE_NAME]==[PACKAGE_VERSION] (from version: none)"
+5. Run `pip install -r requirements.txt` to install the dependencies.
 6. Run `python src/app.py` to start the program.
 
 ### Notes

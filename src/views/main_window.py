@@ -59,8 +59,11 @@ class MainWindow(ctk.CTkFrame):
         self._init_sidebar()
         self._init_main_content()
 
+        # Update the state of the UI based on the configuration after setup
+        self._on_audio_source_change(self._config_transcription.audio_source)
+
         # State
-        self._audio_source = AudioSource.FILE
+        self._audio_source = AudioSource(self._config_transcription.audio_source)
         self._is_transcribing_from_mic = False
 
         # To handle debouncing
@@ -256,6 +259,9 @@ class MainWindow(ctk.CTkFrame):
             ),
         )
         self.chk_highlight_words.grid(row=1, column=0, padx=20, pady=10, sticky=ctk.W)
+
+        if self._config_subtitles.highlight_words:
+            self.chk_highlight_words.select()
 
         ## 'Max. line count' entry
         self.lbl_max_line_count = ctk.CTkLabel(
@@ -708,7 +714,7 @@ class MainWindow(ctk.CTkFrame):
         ## Info label
         self.lbl_info = ctk.CTkLabel(
             master=self.frm_sidebar,
-            text="v2.2.3 | Made by HenestrosaDev",
+            text="v2.3.0 | Made by HenestrosaDev",
             font=ctk.CTkFont(size=12),
         )
         self.lbl_info.grid(row=8, column=0, padx=20, pady=(5, 10))
@@ -1014,6 +1020,7 @@ class MainWindow(ctk.CTkFrame):
                 Color.HOVER_DARK_RED.value,
             ),
             text="Stop recording",
+            state=ctk.NORMAL,
         )
 
     def _prepare_ui_for_transcription(self):
@@ -1061,9 +1068,8 @@ class MainWindow(ctk.CTkFrame):
 
     def _on_save_transcription(self):
         """
-        Triggers when `btn_save_transcription` is clicked. Prompts the user with the
-        file explorer to select a directory and enter the name of the transcription
-        file.
+        Triggers when `btn_save` is clicked. Prompts the user with the file explorer to
+        select a directory and enter the name of the transcription file.
         """
         self._controller.save_transcription(
             file_path=Path(self.ent_path.get()),
@@ -1172,6 +1178,13 @@ class MainWindow(ctk.CTkFrame):
         if self.chk_autosave.get():
             self.chk_overwrite_files.configure(state=ctk.NORMAL)
         else:
+            if self.chk_overwrite_files.get():
+                self._on_config_change(
+                    section=ConfigTranscription.Key.SECTION,
+                    key=ConfigTranscription.Key.OVERWRITE_FILES,
+                    new_value="False",
+                )
+
             self.chk_overwrite_files.deselect()
             self.chk_overwrite_files.configure(state=ctk.DISABLED)
 
