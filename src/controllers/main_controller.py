@@ -175,7 +175,7 @@ class MainController:
         """
         try:
             if self.transcription.audio_source == AudioSource.DIRECTORY:
-                await self._transcribe_directory()
+                await self._transcribe_directory(self.transcription.audio_source_path)
             else:
                 await self._transcribe_file(self.transcription.audio_source_path)
         except Exception as e:
@@ -183,9 +183,12 @@ class MainController:
         finally:
             self.view.on_processed_transcription()
 
-    async def _transcribe_directory(self):
+    async def _transcribe_directory(self, dir_path: Path):
         """
         Transcribes supported files from a directory.
+
+        :param dir_path: The directory path selected by the user.
+        :type dir_path: Path
 
         :raises ValueError: If the directory path is invalid or doesn't contain valid
                             file types to transcribe.
@@ -197,10 +200,7 @@ class MainController:
             # Run all tasks concurrently
             await asyncio.gather(*tasks)
 
-            self.view.display_text(
-                f"Files from '{self.transcription.audio_source_path}' successfully "
-                "transcribed."
-            )
+            self.view.display_text(f"Files from '{dir_path}' successfully transcribed.")
         else:
             raise ValueError(
                 "Error: The directory path is invalid or doesn't contain valid "
