@@ -714,7 +714,7 @@ class MainWindow(ctk.CTkFrame):
         ## Info label
         self.lbl_info = ctk.CTkLabel(
             master=self.frm_sidebar,
-            text="v2.2.3 | Made by HenestrosaDev",
+            text="v2.3.0 | Made by HenestrosaDev",
             font=ctk.CTkFont(size=12),
         )
         self.lbl_info.grid(row=8, column=0, padx=20, pady=(5, 10))
@@ -1178,6 +1178,13 @@ class MainWindow(ctk.CTkFrame):
         if self.chk_autosave.get():
             self.chk_overwrite_files.configure(state=ctk.NORMAL)
         else:
+            if self.chk_overwrite_files.get():
+                self._on_config_change(
+                    section=ConfigTranscription.Key.SECTION,
+                    key=ConfigTranscription.Key.OVERWRITE_FILES,
+                    new_value="False",
+                )
+
             self.chk_overwrite_files.deselect()
             self.chk_overwrite_files.configure(state=ctk.DISABLED)
 
