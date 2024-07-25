@@ -257,6 +257,9 @@ class MainWindow(ctk.CTkFrame):
         )
         self.chk_highlight_words.grid(row=1, column=0, padx=20, pady=10, sticky=ctk.W)
 
+        if self._config_subtitles.highlight_words:
+            self.chk_highlight_words.select()
+
         ## 'Max. line count' entry
         self.lbl_max_line_count = ctk.CTkLabel(
             master=self.frm_subtitle_options,
