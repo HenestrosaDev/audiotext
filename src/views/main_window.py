@@ -825,7 +825,7 @@ class MainWindow(ctk.CTkFrame):
 
         self._toggle_progress_bar_visibility(should_show=False)
 
-    def stop_recording_from_mic(self):
+    def on_stop_recording_from_mic(self):
         """
         Updates the state to indicate that recording from the microphone has
         stopped, notified by the controller. It also updates the button appearance to
@@ -841,8 +841,6 @@ class MainWindow(ctk.CTkFrame):
             text="Start recording",
             state=ctk.DISABLED,
         )
-
-        self._controller.stop_recording_from_mic()
 
     def display_text(self, text):
         """
@@ -991,17 +989,6 @@ class MainWindow(ctk.CTkFrame):
         elif self._audio_source == AudioSource.DIRECTORY:
             self._controller.select_directory()
 
-    def _on_transcribe_from_mic(self):
-        """
-        Triggers when `btn_main_action` is clicked and the value of
-        `omn_transcribe_from` is "Microphone". Depending on the value of the
-        `_is_transcribing_from_mic` flag, it will stop or start the recording.
-        """
-        if self._is_transcribing_from_mic:
-            self.stop_recording_from_mic()
-        else:
-            self._start_recording_from_mic()
-
     @staticmethod
     def _validate_temperature(temperature):
         if temperature == "":
@@ -1013,10 +1000,10 @@ class MainWindow(ctk.CTkFrame):
         except ValueError:
             return False
 
-    def _start_recording_from_mic(self):
+    def _on_start_recording_from_mic(self):
         """
-        Updates the UI and notifies the controller that the user has clicked the
-        `btn_main_action` with the value of `omn_transcribe_from` to Microphone.
+        Updates the UI when the user has clicked the `btn_main_action` with the audio
+        source set to Microphone.
         """
         self._is_transcribing_from_mic = True
 
@@ -1028,16 +1015,6 @@ class MainWindow(ctk.CTkFrame):
             ),
             text="Stop recording",
         )
-
-        transcription = Transcription(
-            source_type=AudioSource.MIC,
-            language_code=self._get_language_code(),
-            method=self.omn_transcription_method.get(),
-            should_autosave=self.chk_autosave.get() == 1,
-            should_overwrite=self.chk_overwrite_files.get() == 1,
-            **self._get_whisperx_args(),
-        )
-        self._controller.prepare_for_transcription(transcription)
 
     def _prepare_ui_for_transcription(self):
         """
@@ -1069,23 +1046,18 @@ class MainWindow(ctk.CTkFrame):
 
         transcription = Transcription(**self._get_transcription_properties())
 
-        if self._audio_source == AudioSource.FILE:
-            transcription.source_type = AudioSource.FILE
-            transcription.source_path = Path(self.ent_path.get())
-            self._controller.prepare_for_transcription(transcription)
-
-        elif self._audio_source == AudioSource.DIRECTORY:
-            transcription.source_type = AudioSource.DIRECTORY
-            transcription.source_path = Path(self.ent_path.get())
-            self._controller.prepare_for_transcription(transcription)
-
+        if self._audio_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
+            transcription.audio_source_path = Path(self.ent_path.get())
         elif self._audio_source == AudioSource.MIC:
-            self._on_transcribe_from_mic()
-
+            if self._is_transcribing_from_mic:
+                self._controller.stop_recording_from_mic()
+                return
+            else:
+                self._on_start_recording_from_mic()
         elif self._audio_source == AudioSource.YOUTUBE:
-            transcription.source_type = AudioSource.YOUTUBE
             transcription.youtube_url = self.ent_path.get()
-            self._controller.prepare_for_transcription(transcription)
+
+        self._controller.prepare_for_transcription(transcription)
 
     def _on_save_transcription(self):
         """

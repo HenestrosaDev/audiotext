@@ -89,6 +89,7 @@ class MainController:
 
     def stop_recording_from_mic(self):
         self._is_mic_recording = False
+        self.view.on_stop_recording_from_mic()
 
     def save_transcription(
         self, file_path: Path, should_autosave: bool, should_overwrite: bool
@@ -310,7 +311,7 @@ class MainController:
                 self._handle_exception(e)
 
         except Exception as e:
-            self.view.stop_recording_from_mic()
+            self.stop_recording_from_mic()
             self._handle_exception(e)
 
     def _handle_exception(self, e: Exception):
