@@ -7,7 +7,9 @@ from tkinter import filedialog
 
 import speech_recognition as sr
 import utils.audio_utils as au
+from handlers.audio_handler import AudioHandler
 from handlers.google_api_handler import GoogleApiHandler
+from handlers.openai_api_handler import OpenAiApiHandler
 from handlers.whisperx_handler import WhisperXHandler
 from handlers.youtube_handler import YouTubeHandler
 from models.transcription import Transcription
@@ -106,40 +108,29 @@ class MainController:
                                  if they exist.
         :type should_overwrite: bool
         """
-        file_dir = file_path.parent
-        txt_file_name = f"{file_path.stem}.txt"
+        save_file_path = self._get_save_path(file_path, should_autosave)
 
-        if should_autosave:
-            txt_file_path = file_path.parent / txt_file_name
-        else:
-            txt_file_path = filedialog.asksaveasfilename(
-                initialdir=file_dir,
-                initialfile=txt_file_name,
-                title="Save as",
-                defaultextension=".txt",
-                filetypes=[("Text file", "*.txt"), ("All Files", "*.*")],
-            )
-
-        if not txt_file_path:
+        if not save_file_path:
             return
 
-        if "txt" in self.transcription.output_file_types and (
-            should_overwrite or not os.path.exists(txt_file_path)
-        ):
-            with open(txt_file_path, "w", encoding="utf-8") as txt_file:
-                txt_file.write(self.transcription.text)
-
-        whisperx_file_types = {"srt", "vtt", "json", "tsv", "aud"}
-        selected_whisperx_file_types = [
-            output_file_type
-            for output_file_type in self.transcription.output_file_types
-            if output_file_type in whisperx_file_types
-        ]
-
-        if selected_whisperx_file_types:
-            self._whisperx_handler.generate_subtitles(
-                Path(txt_file_path), selected_whisperx_file_types, should_overwrite
+        if self.transcription.method == TranscriptionMethod.WHISPERX:
+            self._whisperx_handler.save_transcription(
+                file_path=Path(save_file_path),
+                output_file_types=self.transcription.output_file_types,
+                should_overwrite=should_overwrite,
             )
+        elif self.transcription.method in [
+            TranscriptionMethod.GOOGLE_API,
+            TranscriptionMethod.WHISPER_API,
+        ]:
+            if should_overwrite or not os.path.exists(save_file_path):
+                with open(save_file_path, "w", encoding="utf-8") as file:
+                    file.write(self.transcription.text)
+        else:
+            exception = ValueError(
+                "Incorrect transcription method. Please check the `config.ini` file."
+            )
+            self._handle_exception(exception)
 
     # PRIVATE METHODS
 
@@ -321,6 +312,53 @@ class MainController:
         except Exception as e:
             self.stop_recording_from_mic()
             self._handle_exception(e)
+
+    def _get_save_path(self, file_path: Path, should_autosave: bool) -> Path:
+        """
+        Determines the save path for a file, either automatically or via a save dialog.
+
+        :param file_path: The initial file path.
+        :type file_path: Path
+
+        :param should_autosave: If True, saves the file automatically with a generated
+                                name.
+        :type should_autosave: bool
+
+        :return: The path where the file should be saved.
+        :rtype: Path
+        """
+        file_dir = file_path.parent
+        file_type = ""
+        initial_file_name = file_path.stem
+        is_one_output_file_type = len(self.transcription.output_file_types) == 1
+
+        if is_one_output_file_type:
+            file_type = c.FORMATS_TO_FILE_TYPES.get(
+                self.transcription.output_file_types[0]
+            )
+            initial_file_name += f".{file_type}"
+
+        if should_autosave:
+            return file_dir / initial_file_name
+        else:
+            default_extension = (
+                f".{file_type}" if self.transcription.output_file_types else None
+            )
+
+            file_types = [("All Files", "*.*")]
+
+            if is_one_output_file_type:
+                file_types.insert(0, (f"{file_type.upper()} file", f"*.{file_type}"))
+
+            return Path(
+                filedialog.asksaveasfilename(
+                    initialdir=file_dir,
+                    initialfile=initial_file_name,
+                    title="Save as",
+                    defaultextension=default_extension,
+                    filetypes=file_types,
+                )
+            )
 
     def _handle_exception(self, e: Exception):
         """

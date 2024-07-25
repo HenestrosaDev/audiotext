@@ -67,11 +67,11 @@ class WhisperXHandler:
         except Exception:
             return traceback.format_exc()
 
-    def generate_subtitles(
+    def save_transcription(
         self, file_path: Path, output_file_types: list[str], should_overwrite: bool
     ):
         """
-        Generate subtitles for a video or audio file.
+        Save the transcription as the specified file types.
 
         :param file_path: The path to the video or audio file for which subtitles are
                           to be generated.
@@ -94,13 +94,8 @@ class WhisperXHandler:
 
             if should_overwrite or not os.path.exists(path_to_check):
                 writer = whisperx.transcribe.get_writer(output_type, str(output_dir))
-                writer_args = {
-                    "highlight_words": config_subtitles.highlight_words,
-                    "max_line_count": config_subtitles.max_line_count,
-                    "max_line_width": config_subtitles.max_line_width,
-                }
 
                 # https://github.com/m-bain/whisperX/issues/455#issuecomment-1707547704
                 self._whisperx_result["language"] = "en"
 
-                writer(self._whisperx_result, file_path, writer_args)
+                writer(self._whisperx_result, file_path, vars(config_subtitles))
