@@ -35,7 +35,7 @@ class WhisperXHandler:
                 language=transcription.language_code,
             )
 
-            audio_path = str(transcription.source_path)
+            audio_path = str(transcription.audio_source_path)
             audio = whisperx.load_audio(audio_path)
             self._whisperx_result = model.transcribe(
                 audio, batch_size=config_whisperx.batch_size

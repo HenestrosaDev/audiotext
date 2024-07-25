@@ -69,12 +69,12 @@ class MainController:
 
             self.transcription = transcription
 
-            if transcription.source_type == AudioSource.FILE:
-                self._prepare_for_file_transcription(transcription.source_path)
-            elif transcription.source_type == AudioSource.MIC:
+            if transcription.audio_source == AudioSource.FILE:
+                self._prepare_for_file_transcription(transcription.audio_source_path)
+            elif transcription.audio_source == AudioSource.MIC:
                 threading.Thread(target=self._start_recording_from_mic).start()
                 return
-            elif transcription.source_type == AudioSource.YOUTUBE:
+            elif transcription.audio_source == AudioSource.YOUTUBE:
                 self._prepare_for_youtube_video_transcription()
 
             threading.Thread(
@@ -155,7 +155,7 @@ class MainController:
         """
         is_file_supported = file_path.suffix in c.SUPPORTED_FILE_EXTENSIONS
         if file_path.is_file() and is_file_supported:
-            self.transcription.source_path = file_path
+            self.transcription.audio_source_path = file_path
         else:
             raise ValueError("Error: No valid file selected.")
 
@@ -168,11 +168,11 @@ class MainController:
 
         :raises ValueError: If the YouTube video URL is incorrect or the audio download fails.
         """
-        self.transcription.source_path = YouTubeHandler.download_audio_from_video(
+        self.transcription.audio_source_path = YouTubeHandler.download_audio_from_video(
             self.transcription.youtube_url
         )
 
-        if not self.transcription.source_path:
+        if not self.transcription.audio_source_path:
             raise ValueError("Please make sure the URL you entered is correct.")
 
     async def _handle_transcription_process(self):
@@ -183,10 +183,10 @@ class MainController:
         that the transcription process has been processed.
         """
         try:
-            if self.transcription.source_type == AudioSource.DIRECTORY:
+            if self.transcription.audio_source == AudioSource.DIRECTORY:
                 await self._transcribe_directory()
             else:
-                await self._transcribe_file(self.transcription.source_path)
+                await self._transcribe_file(self.transcription.audio_source_path)
         except Exception as e:
             self._handle_exception(e)
         finally:
@@ -207,7 +207,7 @@ class MainController:
             await asyncio.gather(*tasks)
 
             self.view.display_text(
-                f"Files from '{self.transcription.source_path}' successfully "
+                f"Files from '{self.transcription.audio_source_path}' successfully "
                 "transcribed."
             )
         else:
@@ -227,7 +227,7 @@ class MainController:
         :param file_path: The path of the audio file for transcription.
         """
         transcription = self.transcription
-        transcription.source_path = file_path
+        transcription.audio_source_path = file_path
 
         if self.transcription.method == TranscriptionMethod.WHISPERX.value:
             self.transcription.text = await self._whisperx_handler.transcribe_file(
@@ -238,10 +238,10 @@ class MainController:
                 transcription
             )
 
-        if self.transcription.source_type in [AudioSource.MIC, AudioSource.YOUTUBE]:
-            self.transcription.source_path.unlink()  # Remove tmp file
+        if self.transcription.audio_source in [AudioSource.MIC, AudioSource.YOUTUBE]:
+            self.transcription.audio_source_path.unlink()  # Remove tmp file
 
-        if self.transcription.source_type != AudioSource.DIRECTORY:
+        if self.transcription.audio_source != AudioSource.DIRECTORY:
             self.view.display_text(self.transcription.text)
 
         if self.transcription.should_autosave:
@@ -260,7 +260,7 @@ class MainController:
         """
         matching_files = []
 
-        for root, _, files in os.walk(self.transcription.source_path):
+        for root, _, files in os.walk(self.transcription.audio_source_path):
             for file in files:
                 if any(file.endswith(ext) for ext in c.SUPPORTED_FILE_EXTENSIONS):
                     file_path = Path(root) / file
@@ -298,7 +298,7 @@ class MainController:
             if audio_data:
                 filename = "mic-output.wav"
                 au.save_audio_data(audio_data, filename=filename)
-                self.transcription.source_path = Path(filename)
+                self.transcription.audio_source_path = Path(filename)
 
                 threading.Thread(
                     target=lambda loop: loop.run_until_complete(
