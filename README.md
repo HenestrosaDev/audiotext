@@ -135,7 +135,7 @@
 
 ![Main](docs/main-system.png)
 
-**Audiotext** transcribes the audio from an audio file, video file, microphone input, directory, or YouTube video into one of the 99 different languages it supports. You can transcribe using the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text) or [**WhisperX**](https://github.com/m-bain/whisperX), which can even translate the transcription or generate subtitles!
+**Audiotext** transcribes the audio from an audio file, video file, microphone input, directory, or YouTube video into any of the 99 different languages it supports. You can transcribe using the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text), the [**Whisper API**](https://platform.openai.com/docs/guides/speech-to-text), or [**WhisperX**](https://github.com/m-bain/whisperX). The last two methods can even translate the transcription or generate subtitles!
 
 You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
 
@@ -479,7 +479,8 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    source venv/Scripts/activate
    ```
 5. Run `pip install -r requirements.txt` to install the dependencies.
-6. Run `python src/app.py` to start the program.
+6. Copy and paste the `.env.example` file as `.env` to the root of the directory.
+7. Run `python src/app.py` to start the program.
 
 ### Notes
 - You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
