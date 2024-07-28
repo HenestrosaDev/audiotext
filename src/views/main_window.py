@@ -111,9 +111,9 @@ class MainWindow(ctk.CTkFrame):
             properties["should_translate"] = bool(
                 self.chk_whisper_options_translate.get()
             )
-            properties[
-                "output_file_types"
-            ] = self._config_whisperx.output_file_types.split(",")
+            properties["output_file_types"] = (
+                self._config_whisperx.output_file_types.split(",")
+            )
 
         return properties
 
@@ -1310,12 +1310,9 @@ class MainWindow(ctk.CTkFrame):
             self.progress_bar.grid_forget()
 
     def _toggle_frm_subtitle_options_visibility(self):
-        if (
-            self._config_transcription.method == TranscriptionMethod.WHISPERX.value
-            and (
-                "srt" in self._config_whisperx.output_file_types
-                or "vtt" in self._config_whisperx.output_file_types
-            )
+        if self._config_transcription.method == TranscriptionMethod.WHISPERX.value and (
+            "srt" in self._config_whisperx.output_file_types
+            or "vtt" in self._config_whisperx.output_file_types
         ):
             if "srt" in self._config_whisperx.output_file_types:
                 self.chk_output_file_srt.select()
@@ -1344,7 +1341,9 @@ class MainWindow(ctk.CTkFrame):
         )
 
     @staticmethod
-    def _on_config_change(section: str, key: str, new_value: str):
+    def _on_config_change(
+        section: cm.ConfigManager.KeyType, key: cm.ConfigManager.KeyType, new_value: str
+    ):
         """
         Updates a configuration value. It modifies the specified value in the
         configuration file using the `ConfigManager.modify_value` method.
