@@ -2,6 +2,7 @@ import os
 import shutil
 import traceback
 from io import BytesIO
+from pathlib import Path
 from typing import Callable, Optional
 
 import speech_recognition as sr
@@ -107,18 +108,25 @@ class AudioHandler:
 
     @staticmethod
     def process_audio_chunks(
-        audio_chunks, transcription, transcription_func, chunks_directory
-    ):
+        audio_chunks: list[AudioSegment],
+        transcription: Transcription,
+        transcription_func: Callable[[sr.AudioData, Transcription], str],
+        chunks_directory: Path,
+    ) -> str:
         """
         Process each audio chunk for transcription.
 
         :param audio_chunks: List of audio chunks.
+        :type audio_chunks: list[AudioSegment]
         :param transcription: Transcription object containing transcription details.
+        :type transcription: Transcription
         :param transcription_func: The function to use for transcription.
+        :type transcription_func: Callable[[sr.AudioData, Transcription], str]
         :param chunks_directory: Directory to store intermediate audio files.
+        :type chunks_directory: Path
         :return: The combined transcribed text.
+        :rtype: str
         """
-        text = ""
         recognizer = sr.Recognizer()
 
         for idx, audio_chunk in enumerate(audio_chunks):
@@ -131,16 +139,16 @@ class AudioHandler:
 
                 try:
                     chunk_text = transcription_func(
-                        audio_data=audio_data,
-                        transcription=transcription,
+                        audio_data,
+                        transcription,
                     )
-                    text += chunk_text
                     print(f"chunk text: {chunk_text}")
+                    return chunk_text
 
                 except Exception:
                     return traceback.format_exc()
 
-        return text
+        return ""
 
     @staticmethod
     def cleanup(chunks_directory):
