@@ -151,11 +151,13 @@ class AudioHandler:
         return ""
 
     @staticmethod
-    def cleanup(chunks_directory):
+    def cleanup(chunks_directory: Path) -> None:
         """
         Clean up the `chunks` directory.
 
         :param chunks_directory: Directory to be deleted.
+        :type chunks_directory: Path
+        :rtype: None
         """
         shutil.rmtree(chunks_directory)
 
