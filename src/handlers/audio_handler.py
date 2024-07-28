@@ -2,7 +2,7 @@ import os
 import shutil
 import traceback
 from io import BytesIO
-from typing import Callable
+from typing import Callable, Optional
 
 import speech_recognition as sr
 from models.transcription import Transcription
@@ -66,7 +66,7 @@ class AudioHandler:
         return text
 
     @staticmethod
-    def load_audio_file(file_path, chunks_directory):
+    def load_audio_file(file_path, chunks_directory) -> Optional[AudioSegment]:
         """
         Load the audio from the file or extract it from the video.
 
