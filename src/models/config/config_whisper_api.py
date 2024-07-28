@@ -27,9 +27,9 @@ class ConfigWhisperApi:
             :rtype: str
             """
             type_mapping = {
-                self.RESPONSE_FORMAT: "str",
-                self.TEMPERATURE: "float",
-                self.TIMESTAMP_GRANULARITIES: "str",
+                ConfigWhisperApi.Key.RESPONSE_FORMAT: "str",
+                ConfigWhisperApi.Key.TEMPERATURE: "float",
+                ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES: "str",
             }
 
             return str(type_mapping.get(self, None))

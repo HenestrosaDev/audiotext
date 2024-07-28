@@ -31,11 +31,11 @@ class ConfigTranscription:
             :rtype: str
             """
             type_mapping = {
-                self.LANGUAGE: "str",
-                self.AUDIO_SOURCE: "str",
-                self.METHOD: "str",
-                self.AUTOSAVE: "bool",
-                self.OVERWRITE_FILES: "bool",
+                ConfigTranscription.Key.LANGUAGE: "str",
+                ConfigTranscription.Key.AUDIO_SOURCE: "str",
+                ConfigTranscription.Key.METHOD: "str",
+                ConfigTranscription.Key.AUTOSAVE: "bool",
+                ConfigTranscription.Key.OVERWRITE_FILES: "bool",
             }
 
             return str(type_mapping.get(self, None))

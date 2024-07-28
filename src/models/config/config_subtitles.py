@@ -27,9 +27,9 @@ class ConfigSubtitles:
             :rtype: str
             """
             type_mapping = {
-                self.HIGHLIGHT_WORDS: "bool",
-                self.MAX_LINE_COUNT: "int",
-                self.MAX_LINE_WIDTH: "int",
+                ConfigSubtitles.Key.HIGHLIGHT_WORDS: "bool",
+                ConfigSubtitles.Key.MAX_LINE_COUNT: "int",
+                ConfigSubtitles.Key.MAX_LINE_WIDTH: "int",
             }
 
             return str(type_mapping.get(self, None))

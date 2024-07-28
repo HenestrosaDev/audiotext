@@ -22,6 +22,6 @@ class ConfigSystem:
             :return: The type of the value as a string, or None if the key is not found.
             :rtype: str
             """
-            type_mapping = {self.APPEARANCE_MODE: "str"}
+            type_mapping = {ConfigSystem.Key.APPEARANCE_MODE: "str"}
 
             return str(type_mapping.get(self, None))

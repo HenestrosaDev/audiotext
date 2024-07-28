@@ -33,12 +33,12 @@ class ConfigWhisperX:
             :rtype: str
             """
             type_mapping = {
-                self.MODEL_SIZE: "str",
-                self.BATCH_SIZE: "int",
-                self.COMPUTE_TYPE: "str",
-                self.USE_CPU: "bool",
-                self.CAN_USE_GPU: "bool",
-                self.OUTPUT_FILE_TYPES: "str",
+                ConfigWhisperX.Key.MODEL_SIZE: "str",
+                ConfigWhisperX.Key.BATCH_SIZE: "int",
+                ConfigWhisperX.Key.COMPUTE_TYPE: "str",
+                ConfigWhisperX.Key.USE_CPU: "bool",
+                ConfigWhisperX.Key.CAN_USE_GPU: "bool",
+                ConfigWhisperX.Key.OUTPUT_FILE_TYPES: "str",
             }
 
             return str(type_mapping.get(self, None))
