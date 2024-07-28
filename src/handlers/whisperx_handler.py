@@ -8,7 +8,7 @@ from models.transcription import Transcription
 
 
 class WhisperXHandler:
-    def __init__(self):
+    def __init__(self) -> None:
         self._whisperx_result = None
 
     async def transcribe_file(self, transcription: Transcription) -> str:
@@ -41,6 +41,9 @@ class WhisperXHandler:
                 audio, batch_size=config_whisperx.batch_size
             )
 
+            if self._whisperx_result is None:
+                raise ValueError("Something went wrong while transcribing.")
+
             text_combined = " ".join(
                 segment["text"].strip() for segment in self._whisperx_result["segments"]
             )
@@ -69,7 +72,7 @@ class WhisperXHandler:
 
     def save_transcription(
         self, file_path: Path, output_file_types: list[str], should_overwrite: bool
-    ):
+    ) -> None:
         """
         Save the transcription as the specified file types.
 
@@ -86,6 +89,9 @@ class WhisperXHandler:
                                 the given format.
         :type should_overwrite: bool
         """
+        if self._whisperx_result is None:
+            raise ValueError("Please generate the transcription again to save it.")
+
         config_subtitles = cm.ConfigManager.get_config_subtitles()
         output_dir = file_path.parent
 
