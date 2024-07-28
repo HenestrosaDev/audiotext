@@ -4,7 +4,7 @@ import customtkinter as ctk
 from utils.enums import Color
 
 
-class CTkInputDialog(ctk.CTkToplevel):
+class CTkInputDialog(ctk.CTkToplevel):  # type: ignore
     """
     Dialog with extra window, message, entry widget, cancel and ok button.
     For detailed information check out the documentation.
@@ -21,7 +21,7 @@ class CTkInputDialog(ctk.CTkToplevel):
         entry_border_color: Optional[Union[str, Tuple[str, str]]] = None,
         entry_text_color: Optional[Union[str, Tuple[str, str]]] = None,
         title: str = "CTkDialog",
-        font: Optional[Union[tuple, ctk.CTkFont]] = None,
+        font: Optional[Union[Tuple[int, str], ctk.CTkFont]] = None,
         label_text: str = "CTkDialog",
         entry_text: Optional[str] = None,
     ):
