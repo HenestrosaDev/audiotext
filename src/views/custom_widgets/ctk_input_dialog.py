@@ -85,7 +85,7 @@ class CTkInputDialog(ctk.CTkToplevel):  # type: ignore
         self.resizable(False, False)
         self.grab_set()  # make other windows not clickable
 
-    def _create_widgets(self):
+    def _create_widgets(self) -> None:
         self.grid_columnconfigure((0, 1), weight=1)
         self.rowconfigure(0, weight=1)
 
@@ -150,19 +150,19 @@ class CTkInputDialog(ctk.CTkToplevel):  # type: ignore
         self.after(150, lambda: self._entry.focus())
         self._entry.bind("<Return>", self._ok_event)
 
-    def _ok_event(self):
+    def _ok_event(self) -> None:
         self._user_input = self._entry.get()
         self.grab_release()
         self.destroy()
 
-    def _on_closing(self):
+    def _on_closing(self) -> None:
         self.grab_release()
         self.destroy()
 
-    def _cancel_event(self):
+    def _cancel_event(self) -> None:
         self.grab_release()
         self.destroy()
 
-    def get_input(self):
+    def get_input(self) -> Union[str, None]:
         self.master.wait_window(self)
         return self._user_input
