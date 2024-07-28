@@ -67,13 +67,18 @@ class AudioHandler:
         return text
 
     @staticmethod
-    def load_audio_file(file_path, chunks_directory) -> Optional[AudioSegment]:
+    def load_audio_file(
+        file_path: Path, chunks_directory: Path
+    ) -> Optional[AudioSegment]:
         """
         Load the audio from the file or extract it from the video.
 
         :param file_path: Path to the file to be loaded.
+        :type file_path: Path
         :param chunks_directory: Directory to store intermediate audio files.
+        :type chunks_directory: Path
         :return: Loaded AudioSegment object or None if unsupported file type.
+        :rtype: Optional[AudioSegment]
         """
         content_type = file_path.suffix
 
