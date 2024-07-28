@@ -24,7 +24,12 @@ class ConfigTranscription:
         OVERWRITE_FILES = "overwrite_files"
 
         def value_type(self) -> Optional[str]:
-            """Get the value type associated with the ConfigKey."""
+            """
+            Get the value type associated with the ConfigKey.
+
+            :return: The type of the value as a string, or None if the key is not found.
+            :rtype: str
+            """
             type_mapping = {
                 self.LANGUAGE: "str",
                 self.AUDIO_SOURCE: "str",
@@ -33,4 +38,4 @@ class ConfigTranscription:
                 self.OVERWRITE_FILES: "bool",
             }
 
-            return type_mapping.get(self, None)
+            return str(type_mapping.get(self, None))

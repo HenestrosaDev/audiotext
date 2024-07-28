@@ -29,7 +29,7 @@ class ConfigWhisperX:
             """
             Get the value type associated with the ConfigKey.
 
-            :return
+            :return: The type of the value as a string, or None if the key is not found.
             :rtype: str
             """
             type_mapping = {
@@ -41,4 +41,4 @@ class ConfigWhisperX:
                 self.OUTPUT_FILE_TYPES: "str",
             }
 
-            return type_mapping.get(self, None)
+            return str(type_mapping.get(self, None))
