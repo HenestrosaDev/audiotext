@@ -88,12 +88,14 @@ class AudioHandler:
         return None
 
     @staticmethod
-    def split_audio_into_chunks(sound):
+    def split_audio_into_chunks(sound: AudioSegment) -> AudioSegment:
         """
         Split the audio into chunks based on silence.
 
         :param sound: The AudioSegment object to be split.
+        :type sound: AudioSegment
         :return: List of audio chunks.
+        :rtype: AudioSegment
         """
         return split_on_silence(
             sound,
