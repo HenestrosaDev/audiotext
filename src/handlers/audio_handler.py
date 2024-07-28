@@ -2,6 +2,7 @@ import os
 import shutil
 import traceback
 from io import BytesIO
+from typing import Callable
 
 import speech_recognition as sr
 from models.transcription import Transcription
@@ -15,21 +16,27 @@ from utils.path_helper import ROOT_PATH
 class AudioHandler:
     @staticmethod
     def get_transcription(
-        transcription: Transcription, should_split_on_silence: bool, transcription_func
+        transcription: Transcription,
+        should_split_on_silence: bool,
+        transcription_func: Callable[[sr.AudioData, Transcription], str],
     ) -> str:
         """
         Transcribes audio from a file using the Google Speech-to-Text API.
 
         :param transcription: An instance of Transcription containing information
                               about the audio file.
+        :type transcription: Transcription
         :param should_split_on_silence: A boolean flag indicating whether the audio
                                         should be split into chunks based on silence.
                                         If True, the audio will be split on silence
                                         and each chunk will be transcribed separately.
                                         If False, the entire audio will be transcribed
                                         as a single segment.
+        :type should_split_on_silence: bool
         :param transcription_func: The function to use for transcription.
+        :type transcription_func: Callable[[sr.AudioData, Transcription], str]
         :return: The transcribed text or an error message if transcription fails.
+        :rtype: str
         """
         chunks_directory = ROOT_PATH / "audio-chunks"
         chunks_directory.mkdir(exist_ok=True)
