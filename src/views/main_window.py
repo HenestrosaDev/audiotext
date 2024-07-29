@@ -32,7 +32,7 @@ from .custom_widgets.ctk_scrollable_dropdown import CTkScrollableDropdown
 class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def __init__(
         self,
-        parent,
+        parent: Any,
         config_subtitles: ConfigSubtitles,
         config_system: ConfigSystem,
         config_transcription: ConfigTranscription,
