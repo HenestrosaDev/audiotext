@@ -815,7 +815,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             state=ctk.DISABLED,
         )
 
-    def display_text(self, text) -> None:
+    def display_text(self, text: str) -> None:
         """
         Clears any existing text in the transcription text box to display the provided
         text.
