@@ -83,7 +83,10 @@ class MainController:
                 threading.Thread(target=self._start_recording_from_mic).start()
                 return
             elif transcription.audio_source == AudioSource.YOUTUBE:
-                self._prepare_for_youtube_video_transcription()
+                if url := transcription.youtube_url:
+                    self._prepare_for_youtube_video_transcription(url)
+                else:
+                    raise ValueError("No YouTube video URL provided. Please enter one.")
 
             threading.Thread(
                 target=lambda loop: loop.run_until_complete(
@@ -181,23 +184,26 @@ class MainController:
         else:
             raise ValueError("Error: No valid file selected.")
 
-    def _prepare_for_youtube_video_transcription(self) -> None:
+    def _prepare_for_youtube_video_transcription(self, url: str) -> None:
         """
         Prepares the system for transcription from a YouTube video by downloading
         the audio from the video using the YouTubeHandler. It updates the source path
         in the transcription object with the downloaded audio file path. If the source
         path is not obtained successfully, it raises a ValueError.
 
+        :param url: URL of the YouTube video to transcribe.
+        :type url: str
         :raises ValueError: If the YouTube video URL is incorrect or the audio download
                             fails.
         :return: None
         """
-        audio_source_path = YouTubeHandler.download_audio_from_video(
-            self.transcription.youtube_url
-        )
+        audio_source_path = YouTubeHandler.download_audio_from_video(url)
 
         if not audio_source_path:
-            raise ValueError("Please make sure the URL you entered is correct.")
+            raise ValueError(
+                "Something went wrong with the YouTube video audio download. Please "
+                "make sure the URL you entered is correct."
+            )
 
         self.transcription.audio_source_path = audio_source_path
 
