@@ -130,11 +130,18 @@ class MainController:
             return
 
         if self.transcription.method == TranscriptionMethod.WHISPERX:
-            self._whisperx_handler.save_transcription(
-                file_path=Path(save_file_path),
-                output_file_types=self.transcription.output_file_types,
-                should_overwrite=should_overwrite,
-            )
+            if self.transcription.output_file_types:
+                self._whisperx_handler.save_transcription(
+                    file_path=Path(save_file_path),
+                    output_file_types=self.transcription.output_file_types,
+                    should_overwrite=should_overwrite,
+                )
+            else:
+                exception = ValueError(
+                    "There are no output file types selected. Please select at least "
+                    "one."
+                )
+                self._handle_exception(exception)
         elif self.transcription.method in [
             TranscriptionMethod.GOOGLE_API,
             TranscriptionMethod.WHISPER_API,
