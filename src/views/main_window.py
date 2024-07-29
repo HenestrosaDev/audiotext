@@ -587,7 +587,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             command=lambda *args: self._on_config_change(
                 section=ConfigWhisperX.Key.SECTION,
                 key=ConfigWhisperX.Key.MODEL_SIZE,
-                new_value=self.omn_model_size.get(),
+                new_value=args[0],
             ),
         )
         self.omn_model_size.grid(row=2, column=0, padx=20, pady=(3, 10), sticky=ctk.EW)
@@ -608,7 +608,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             command=lambda *args: self._on_config_change(
                 section=ConfigWhisperX.Key.SECTION,
                 key=ConfigWhisperX.Key.COMPUTE_TYPE,
-                new_value=self.omn_compute_type.get(),
+                new_value=args[0],
             ),
         )
         self.omn_compute_type.grid(
