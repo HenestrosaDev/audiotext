@@ -872,7 +872,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         key: ConfigManager.KeyType,
         variable: ctk.Variable,
         callback: Callable[[ConfigManager.KeyType, ConfigManager.KeyType, str], None],
-        *unused: tuple,
+        *unused: tuple,  # type: ignore[type-arg]
     ) -> None:
         """
         Sets up a debounced callback for a variable change.
