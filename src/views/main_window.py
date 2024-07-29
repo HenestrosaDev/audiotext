@@ -759,11 +759,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.chk_overwrite_files = ctk.CTkCheckBox(
             master=self.frm_save_options,
             text="Overwrite existing files",
-            command=lambda: self._on_config_change(
-                section=ConfigTranscription.Key.SECTION,
-                key=ConfigTranscription.Key.OVERWRITE_FILES,
-                new_value=str(bool(self.chk_overwrite_files.get())),
-            ),
+            command=self._on_overwrite_files_change,
         )
         self.chk_overwrite_files.grid(row=0, column=2, padx=0, pady=0)
 
@@ -1247,6 +1243,15 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
             self.chk_overwrite_files.deselect()
             self.chk_overwrite_files.configure(state=ctk.DISABLED)
+
+    def _on_overwrite_files_change(self) -> None:
+        new_value = "True" if self.chk_overwrite_files.get() else "False"
+
+        self._on_config_change(
+            section=ConfigTranscription.Key.SECTION,
+            key=ConfigTranscription.Key.OVERWRITE_FILES,
+            new_value=new_value,
+        )
 
     def _on_output_file_types_change(self) -> None:
         """
