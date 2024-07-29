@@ -378,14 +378,18 @@ class MainController:
         :return: The path where the file should be saved.
         :rtype: Path
         """
+        if self.transcription.output_file_types:
+            is_one_output_file_type = len(self.transcription.output_file_types) == 1
+        else:
+            is_one_output_file_type = False
+
         file_dir = file_path.parent
         file_type = ""
         initial_file_name = file_path.stem
-        is_one_output_file_type = len(self.transcription.output_file_types) == 1
 
         if is_one_output_file_type:
-            file_type = c.FORMATS_TO_FILE_TYPES.get(
-                self.transcription.output_file_types[0]
+            file_type = c.FORMATS_TO_FILE_TYPES.get(  # type: ignore[assignment]
+                self.transcription.output_file_types[0]  # type: ignore[index]
             )
             initial_file_name += f".{file_type}"
 
