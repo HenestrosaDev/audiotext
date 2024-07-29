@@ -29,7 +29,7 @@ from .custom_widgets.ctk_input_dialog import CTkInputDialog
 from .custom_widgets.ctk_scrollable_dropdown import CTkScrollableDropdown
 
 
-class MainWindow(ctk.CTkFrame):
+class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def __init__(
         self,
         parent,
