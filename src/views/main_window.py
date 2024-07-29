@@ -642,11 +642,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.chk_use_cpu = ctk.CTkCheckBox(
             master=self.frm_whisperx_advanced_options,
             text="Use CPU",
-            command=lambda: self._on_config_change(
-                section=ConfigWhisperX.Key.SECTION,
-                key=ConfigWhisperX.Key.USE_CPU,
-                new_value="True" if self.chk_use_cpu.get() else "False",
-            ),
+            command=self._on_use_cpu_change,
         )
         self.chk_use_cpu.grid(row=6, column=0, padx=20, pady=(10, 16), sticky=ctk.W)
 
@@ -1409,6 +1405,15 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             self.frm_subtitle_options.grid()
         else:
             self.frm_subtitle_options.grid_remove()
+
+    def _on_use_cpu_change(self) -> None:
+        new_value = "True" if self.chk_use_cpu.get() else "False"
+
+        self._on_config_change(
+            section=ConfigWhisperX.Key.SECTION,
+            key=ConfigWhisperX.Key.USE_CPU,
+            new_value=new_value,
+        )
 
     def _change_appearance_mode_event(self, new_appearance_mode: str) -> None:
         """
