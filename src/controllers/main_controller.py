@@ -146,9 +146,15 @@ class MainController:
             TranscriptionMethod.GOOGLE_API,
             TranscriptionMethod.WHISPER_API,
         ]:
-            if should_overwrite or not os.path.exists(save_file_path):
-                with open(save_file_path, "w", encoding="utf-8") as file:
-                    file.write(self.transcription.text)
+            if self.transcription.text:
+                if should_overwrite or not os.path.exists(save_file_path):
+                    with open(save_file_path, "w", encoding="utf-8") as file:
+                        file.write(self.transcription.text)
+            else:
+                exception = ValueError(
+                    "There is no transcription available. Please generate it again."
+                )
+                self._handle_exception(exception)
         else:
             exception = ValueError(
                 "Incorrect transcription method. Please check the `config.ini` file."
