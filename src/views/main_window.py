@@ -221,11 +221,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.chk_highlight_words = ctk.CTkCheckBox(
             master=self.frm_subtitle_options,
             text="Highlight words",
-            command=lambda: self._on_config_change(
-                section=ConfigSubtitles.Key.SECTION,
-                key=ConfigSubtitles.Key.HIGHLIGHT_WORDS,
-                new_value="True" if self.chk_highlight_words.get() else "False",
-            ),
+            command=self._on_highlight_words_change,
         )
         self.chk_highlight_words.grid(row=1, column=0, padx=20, pady=10, sticky=ctk.W)
 
@@ -1045,6 +1041,15 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             return 0 <= value <= 1
         except ValueError:
             return False
+
+    def _on_highlight_words_change(self) -> None:
+        new_value = "True" if self.chk_highlight_words.get() else "False"
+
+        self._on_config_change(
+            section=ConfigSubtitles.Key.SECTION,
+            key=ConfigSubtitles.Key.HIGHLIGHT_WORDS,
+            new_value=new_value,
+        )
 
     def _on_start_recording_from_mic(self) -> None:
         """
