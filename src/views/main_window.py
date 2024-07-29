@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any
+from typing import Any, Union
 
 import customtkinter as ctk
 import utils.config_manager as cm
@@ -53,7 +53,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self._config_whisperx = config_whisperx
 
         # Init the controller
-        self._controller = None
+        self._controller: Union[MainController, None] = None
 
         # Init the components of the window
         self._init_sidebar()
