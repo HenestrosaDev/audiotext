@@ -1,8 +1,7 @@
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Callable, Union
 
 import customtkinter as ctk
-import utils.config_manager as cm
 import utils.constants as c
 import utils.dict_utils as du
 import utils.path_helper as ph
@@ -14,6 +13,7 @@ from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcription import Transcription
 from PIL import Image
+from utils.config_manager import ConfigManager
 from utils.enums import (
     AudioSource,
     Color,
@@ -880,10 +880,10 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     def _setup_debounced_change(
         self,
-        section: cm.ConfigManager.KeyType,
-        key: cm.ConfigManager.KeyType,
+        section: ConfigManager.KeyType,
+        key: ConfigManager.KeyType,
         variable: ctk.Variable,
-        callback: callable,
+        callback: Callable[[ConfigManager.KeyType, ConfigManager.KeyType, str], None],
         *unused: tuple,
     ) -> None:
         """
@@ -900,7 +900,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :param variable: The tkinter variable to watch for changes.
         :type variable: tkinter.Variable
         :param callback: The callback function to be executed after the debounce delay.
-        :type callback: function
+        :type callback: Callable[[cm.ConfigManager.KeyType, cm.ConfigManager.KeyType, str], None]
         :param unused: Additional unused arguments that must be kept to prevent
                         exceptions.
         :type unused: tuple
@@ -915,10 +915,10 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     def _on_change_debounced(
         self,
-        section: cm.ConfigManager.KeyType,
-        key: cm.ConfigManager.KeyType,
+        section: ConfigManager.KeyType,
+        key: ConfigManager.KeyType,
         variable: ctk.Variable,
-        callback: callable,
+        callback: Callable[[ConfigManager.KeyType, ConfigManager.KeyType, str], None],
         delay: int = 600,
     ) -> None:
         """
@@ -936,7 +936,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :param variable: The tkinter variable being monitored for changes.
         :type variable: tkinter.Variable
         :param callback: The function to be executed after the debounce delay.
-        :type callback: callable
+        :type callback: Callable[[cm.ConfigManager.KeyType, cm.ConfigManager.KeyType, str], None]
         :param delay: Debounce delay in milliseconds before executing the callback.
         :type delay: int, optional
         :return: None
@@ -1425,7 +1425,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     @staticmethod
     def _on_config_change(
-        section: cm.ConfigManager.KeyType, key: cm.ConfigManager.KeyType, new_value: str
+        section: ConfigManager.KeyType, key: ConfigManager.KeyType, new_value: str
     ) -> None:
         """
         Updates a configuration value. It modifies the specified value in the
@@ -1439,4 +1439,4 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :type new_value: str
         :return: None
         """
-        cm.ConfigManager.modify_value(section, key, new_value)
+        ConfigManager.modify_value(section, key, new_value)
