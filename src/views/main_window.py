@@ -880,8 +880,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     def _setup_debounced_change(
         self,
-        section: str,
-        key: str,
+        section: cm.ConfigManager.KeyType,
+        key: cm.ConfigManager.KeyType,
         variable: ctk.Variable,
         callback: callable,
         *unused: tuple,
@@ -915,8 +915,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     def _on_change_debounced(
         self,
-        section: str,
-        key: str,
+        section: cm.ConfigManager.KeyType,
+        key: cm.ConfigManager.KeyType,
         variable: ctk.Variable,
         callback: callable,
         delay: int = 600,
