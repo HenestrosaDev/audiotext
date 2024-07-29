@@ -11,6 +11,11 @@ from utils.env_keys import EnvKeys
 class OpenAiApiHandler(Transcribable):
     @staticmethod
     def transcribe(audio_data: sr.AudioData, transcription: Transcription) -> str:
+        if not transcription.language_code:
+            raise ValueError(
+                "The language provided is not correct. Please select one of the list."
+            )
+
         config = cm.ConfigManager.get_config_whisper_api()
         compressed_audio = AudioHandler.compress_audio(audio_data)
         timestamp_granularities = (
