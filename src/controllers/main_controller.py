@@ -302,12 +302,18 @@ class MainController:
         :return: A list of file paths to transcribe in the directory.
         :rtype: list[Path]
         """
+        if not self.transcription.output_file_types:
+            raise ValueError(
+                "No output file types selected. Please select at least one."
+            )
+
         matching_files = []
 
         for root, _, files in os.walk(self.transcription.audio_source_path):
             for file in files:
                 if any(file.endswith(ext) for ext in c.SUPPORTED_FILE_EXTENSIONS):
                     file_path = Path(root) / file
+
                     if not self.transcription.should_overwrite and any(
                         (file_path.with_suffix(f".{ext}")).exists()
                         for ext in self.transcription.output_file_types
