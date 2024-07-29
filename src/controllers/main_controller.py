@@ -15,11 +15,11 @@ from handlers.youtube_handler import YouTubeHandler
 from models.transcription import Transcription
 from utils import constants as c
 from utils.enums import AudioSource, TranscriptionMethod
-from views.main_window import MainWindow
 
 
 class MainController:
-    def __init__(self, transcription: Transcription, view: MainWindow):
+    # Don't add type annotation to `view` to avoid circular imports
+    def __init__(self, transcription: Transcription, view):  # type: ignore[no-untyped-def]
         self.view = view
         self.transcription = transcription
         self._is_mic_recording = False
