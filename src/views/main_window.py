@@ -81,43 +81,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         """
         self._controller = controller
 
-    def _get_transcription_properties(self) -> dict[str, Any]:
-        """
-        Checks the current state of user interface elements to determine the
-        transcription properties.
-
-        :return: A dictionary containing the transcription properties.
-        :rtype: dict[str, Any]
-        """
-        language_code = du.find_key_by_value(
-            dictionary=c.AUDIO_LANGUAGES,
-            target_value=self.omn_transcription_language.get(),
-        )
-
-        properties = {
-            "audio_source": self._audio_source,
-            "language_code": language_code,
-            "method": TranscriptionMethod(self.omn_transcription_method.get()),
-            "should_autosave": self.chk_autosave.get() == 1,
-            "should_overwrite": self.chk_overwrite_files.get() == 1,
-        }
-
-        if self.omn_transcription_method.get() == TranscriptionMethod.GOOGLE_API.value:
-            properties["should_translate"] = False
-            properties["output_file_types"] = ["txt"]
-        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPER_API.value:
-            properties["should_translate"] = False
-            properties["output_file_types"] = [self.omn_response_format.get()]
-        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPERX.value:
-            properties["should_translate"] = bool(
-                self.chk_whisper_options_translate.get()
-            )
-            properties[
-                "output_file_types"
-            ] = self._config_whisperx.output_file_types.split(",")
-
-        return properties
-
     # WIDGETS INITIALIZATION
 
     def _init_sidebar(self) -> None:
@@ -877,6 +840,43 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.tbx_transcription.insert("0.0", text)
 
     # PRIVATE METHODS
+
+    def _get_transcription_properties(self) -> dict[str, Any]:
+        """
+        Checks the current state of user interface elements to determine the
+        transcription properties.
+
+        :return: A dictionary containing the transcription properties.
+        :rtype: dict[str, Any]
+        """
+        language_code = du.find_key_by_value(
+            dictionary=c.AUDIO_LANGUAGES,
+            target_value=self.omn_transcription_language.get(),
+        )
+
+        properties = {
+            "audio_source": self._audio_source,
+            "language_code": language_code,
+            "method": TranscriptionMethod(self.omn_transcription_method.get()),
+            "should_autosave": self.chk_autosave.get() == 1,
+            "should_overwrite": self.chk_overwrite_files.get() == 1,
+        }
+
+        if self.omn_transcription_method.get() == TranscriptionMethod.GOOGLE_API.value:
+            properties["should_translate"] = False
+            properties["output_file_types"] = ["txt"]
+        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPER_API.value:
+            properties["should_translate"] = False
+            properties["output_file_types"] = [self.omn_response_format.get()]
+        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPERX.value:
+            properties["should_translate"] = bool(
+                self.chk_whisper_options_translate.get()
+            )
+            properties[
+                "output_file_types"
+            ] = self._config_whisperx.output_file_types.split(",")
+
+        return properties
 
     def _setup_debounced_change(
         self,
