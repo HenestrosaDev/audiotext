@@ -1009,6 +1009,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         :return: None
         """
+        assert self._controller
+
         if self._audio_source == AudioSource.FILE:
             self._controller.select_file()
         elif self._audio_source == AudioSource.DIRECTORY:
@@ -1092,6 +1094,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         :return: None
         """
+        assert self._controller
+
         self._prepare_ui_for_transcription()
 
         transcription = Transcription(**self._get_transcription_properties())
@@ -1116,6 +1120,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         :return: None
         """
+        assert self._controller
+
         self._controller.save_transcription(
             file_path=Path(self.ent_path.get()),
             should_autosave=False,
