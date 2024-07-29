@@ -192,12 +192,14 @@ class MainController:
                             fails.
         :return: None
         """
-        self.transcription.audio_source_path = YouTubeHandler.download_audio_from_video(
+        audio_source_path = YouTubeHandler.download_audio_from_video(
             self.transcription.youtube_url
         )
 
-        if not self.transcription.audio_source_path:
+        if not audio_source_path:
             raise ValueError("Please make sure the URL you entered is correct.")
+
+        self.transcription.audio_source_path = audio_source_path
 
     async def _handle_transcription_process(self) -> None:
         """
