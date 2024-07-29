@@ -10,7 +10,7 @@ from utils.enums import ComputeType
 from views.main_window import MainWindow
 
 
-class App(ctk.CTk):
+class App(ctk.CTk):  # type: ignore[misc]
     def __init__(self):
         super().__init__()
 
