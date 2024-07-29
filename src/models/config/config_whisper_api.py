@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Literal, Optional
 
 
 @dataclass
 class ConfigWhisperApi:
-    response_format: str
+    response_format: Literal["json", "text", "srt", "verbose_json", "vtt"]
     temperature: float
     timestamp_granularities: str
 
