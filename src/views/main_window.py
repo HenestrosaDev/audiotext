@@ -1405,12 +1405,9 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         :return: None
         """
-        if (
-            self._config_transcription.method == TranscriptionMethod.WHISPERX.value
-            and (
-                "srt" in self._config_whisperx.output_file_types
-                or "vtt" in self._config_whisperx.output_file_types
-            )
+        if self._config_transcription.method == TranscriptionMethod.WHISPERX.value and (
+            "srt" in self._config_whisperx.output_file_types
+            or "vtt" in self._config_whisperx.output_file_types
         ):
             if "srt" in self._config_whisperx.output_file_types:
                 self.chk_output_file_srt.select()

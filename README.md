@@ -12,16 +12,16 @@
 <!-- PROJECT LOGO -->
 <div align="center">
   <picture>
-    <source 
-      srcset="docs/light/icon.png" 
-      width="128" 
-      height="128" 
+    <source
+      srcset="docs/light/icon.png"
+      width="128"
+      height="128"
       media="(prefers-color-scheme: light)"
     />
-    <source 
-      srcset="docs/dark/icon.png" 
-      width="128" 
-      height="128" 
+    <source
+      srcset="docs/dark/icon.png"
+      width="128"
+      height="128"
       media="(prefers-color-scheme: dark)"
     />
     <img src="docs/light/icon.png" alt="Logo" width="128" height="128">
@@ -30,52 +30,52 @@
   <p align="center">A desktop application that transcribes audio from files, microphone input or YouTube videos with the option to translate the content and create subtitles.</p>
   <p>
     <a href="https://github.com/HenestrosaDev/audiotext/releases/latest">
-      <img 
-        src="https://img.shields.io/github/v/release/HenestrosaDev/audiotext" 
-        alt="Version" 
+      <img
+        src="https://img.shields.io/github/v/release/HenestrosaDev/audiotext"
+        alt="Version"
       />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/stargazers">
-      <img 
-        src="https://img.shields.io/github/stars/HenestrosaDev/audiotext" 
-        alt="GitHub Contributors" 
+      <img
+        src="https://img.shields.io/github/stars/HenestrosaDev/audiotext"
+        alt="GitHub Contributors"
       />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
-      <img 
-        src="https://img.shields.io/badge/license-BSD--4--Clause-lightgray" 
-        alt="License" 
+      <img
+        src="https://img.shields.io/badge/license-BSD--4--Clause-lightgray"
+        alt="License"
       />
     </a>
     <br>
     <a href="https://github.com/HenestrosaDev/audiotext/graphs/contributors">
-      <img 
-        src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext" 
-        alt="GitHub Contributors" 
+      <img
+        src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext"
+        alt="GitHub Contributors"
       />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/issues">
-      <img 
-        src="https://img.shields.io/github/issues/HenestrosaDev/audiotext" 
-        alt="Issues" 
+      <img
+        src="https://img.shields.io/github/issues/HenestrosaDev/audiotext"
+        alt="Issues"
       />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/pulls">
-      <img 
-        src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext" 
-        alt="GitHub pull requests" 
+      <img
+        src="https://img.shields.io/github/issues-pr/HenestrosaDev/audiotext"
+        alt="GitHub pull requests"
       />
     </a>
   </p>
   <p>
     <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">
       Report Bug
-    </a> 
-    · 
+    </a>
+    ·
     <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">
       Request Feature
-    </a> 
-    · 
+    </a>
+    ·
     <a href="https://github.com/HenestrosaDev/audiotext/discussions">
       Ask Question
     </a>
@@ -93,8 +93,8 @@
   - [Built With](#built-with)
 - [Getting Started](#getting-started)
   - [Installation](#installation)
-  - [Set Up the Project Locally](#set-up-the-project-locally)
-  - [Notes](#notes) 
+  - [Setting Up the Project Locally](#setting-up-the-project-locally)
+  - [Notes](#notes)
 - [Usage](#usage)
   - [Transcription Language](#transcription-language)
   - [Transcription Method](#transcription-method)
@@ -370,7 +370,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       ├───models
       │   │   __init__.py
       │   │   transcription.py
-      │   │     
+      │   │
       │   └───config
       │           __init__.py
       │           config_subtitles.py
@@ -390,9 +390,9 @@ You can also choose the theme you like best. It can be dark, light, or the one c
       │       path_helper.py
       │
       └───views
-          │   __init__.py   
+          │   __init__.py
           │   main_window.py
-          │    
+          │
           └───custom_widgets
                   __init__.py
                   ctk_scrollable_dropdown/
@@ -426,7 +426,7 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ### Installation
 
-1. Install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files. 
+1. Install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files.
 
     To check if you have it installed on your system, run `ffmpeg -version`. It should return something similar to this:
     ```
@@ -446,16 +446,16 @@ You can also choose the theme you like best. It can be dark, light, or the one c
     ```
     # on Ubuntu or Debian
     sudo apt update && sudo apt install ffmpeg
-    
+
     # on Arch Linux
     sudo pacman -S ffmpeg
-    
+
     # on MacOS using Homebrew (https://brew.sh/)
     brew install ffmpeg
-    
+
     # on Windows using Chocolatey (https://chocolatey.org/)
     choco install ffmpeg
-    
+
     # on Windows using Scoop (https://scoop.sh/)
     scoop install ffmpeg
     ```
@@ -463,7 +463,8 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 3. Decompress the downloaded file.
 4. Open the `audiotext` folder and double-click the `Audiotext` executable file.
 
-### Set Up the Project Locally 
+### Setting Up the Project Locally
+
 1. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
 2. Change the current working directory to `audiotext` by running `cd audiotext`.
 3. (Optional but recommended) Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`.
@@ -474,15 +475,18 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    # if you get the error `FullyQualifiedErrorId : UnauthorizedAccess`, run this:
    Set-ExecutionPolicy Unrestricted -Scope Process
    # and then . venv/Scripts/activate
-   
+
    # on macOS and Linux
    source venv/Scripts/activate
    ```
 5. Run `pip install -r requirements.txt` to install the dependencies.
-6. Copy and paste the `.env.example` file as `.env` to the root of the directory.
-7. Run `python src/app.py` to start the program.
+6. (Optional) If you want to contribute to the project, run `pip install -r requirements-dev.txt` to install the development dependencies.
+7. (Optional) If you followed step 6, run `pre-commit` to install the pre-commit hooks in your `.git/` directory.
+8. Copy and paste the `.env.example` file as `.env` to the root of the directory.
+9. Run `python src/app.py` to start the program.
 
 ### Notes
+
 - You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
 - For **Apple Silicon Macs**: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
 - I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169 that changes `logger=logger` to `logger=None` to avoid more errors related to opening the console.
@@ -496,15 +500,15 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 Once you open the **Audiotext** executable file (explained in the [Getting Started](#getting-started) section), you'll see something like this:
 
 <picture>
-  <source 
+  <source
     srcset="docs/light/main.png"
     media="(prefers-color-scheme: light)"
   />
-  <source 
+  <source
     srcset="docs/dark/main.png"
     media="(prefers-color-scheme: dark)"
   />
-  <img 
+  <img
     src="docs/light/main.png"
     alt="Main"
   >
@@ -535,7 +539,7 @@ There are three transcription methods available in **Audiotext**:
 
 You can transcribe from four different audio sources:
 
-- **File** (see image above): Click the file explorer icon to select the file you want to transcribe, or manually enter the path to the file in the `Path` input field. You can transcribe audio from both audio and video files. 
+- **File** (see image above): Click the file explorer icon to select the file you want to transcribe, or manually enter the path to the file in the `Path` input field. You can transcribe audio from both audio and video files.
 
   Note that the file explorer has the `All supported files` option selected by default. To select only audio files or video files, click the combo box in the lower right corner of the file explorer to change the file type, as marked in red in the following image:
 
@@ -543,18 +547,18 @@ You can transcribe from four different audio sources:
 
   ![Supported files](docs/supported-files.png)
 
-- **Directory**: Click the file explorer icon to select the directory containing the files you want to transcribe, or manually enter the path to the directory in the `Path` input field. Note that the `Autosave` option is checked and cannot be unchecked because each file's transcription will automatically be saved in the same path as the source file. 
+- **Directory**: Click the file explorer icon to select the directory containing the files you want to transcribe, or manually enter the path to the directory in the `Path` input field. Note that the `Autosave` option is checked and cannot be unchecked because each file's transcription will automatically be saved in the same path as the source file.
 
   <picture>
-    <source 
+    <source
       srcset="docs/light/from-directory.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
+    <source
       srcset="docs/dark/from-directory.png"
       media="(prefers-color-scheme: dark)"
     />
-    <img 
+    <img
       src="docs/light/from-directory.png"
       alt="Main"
     >
@@ -596,7 +600,7 @@ You can transcribe from four different audio sources:
 
   Note that if we check the `Overwrite existing files` option, all files will be processed again and the existing transcription files will be overwritten.
 
-- **Microphone**: To start recording, simply click the `Start recording` button to begin the process. The text of the button will change to `Stop recording` and its color will change to red. Click it to stop recording and generate the transcription. 
+- **Microphone**: To start recording, simply click the `Start recording` button to begin the process. The text of the button will change to `Stop recording` and its color will change to red. Click it to stop recording and generate the transcription.
 
   Here is a video demonstrating this feature:
 
@@ -604,19 +608,19 @@ You can transcribe from four different audio sources:
   https://github.com/user-attachments/assets/61f2173b-bcfb-4251-a910-0cf6b37598c6
 
   Note that your operating system must recognize an input source, otherwise an error message will appear in the text box indicating that no input source was detected.
-  
+
 - **YouTube video**: Requires an Internet connection to get the audio of the video. To generate the transcription, simply enter the URL of the video in the `YouTube video URL` field and click the `Generate transcription` button when you are finished adjusting the settings.
 
   <picture>
-    <source 
+    <source
       srcset="docs/light/from-youtube.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
+    <source
       srcset="docs/dark/from-youtube.png"
       media="(prefers-color-scheme: dark)"
     />
-    <img 
+    <img
       src="docs/light/from-youtube.png"
       alt="From microphone"
     >
@@ -632,7 +636,7 @@ If checked, the transcription will automatically be saved in the root of the fol
 
 Note that if you create a transcription using the `Microphone` or `YouTube` audio sources with the `Autosave` action enabled, the transcription files will be saved in the root of the `audiotext-vX.X.X` directory.
 
-#### Overwrite Existing Files 
+#### Overwrite Existing Files
 
 This option can only be checked if the `Autosave` option is checked. If `Overwrite existing files` is checked, existing transcriptions in the root directory of the file to be transcribed will be overwritten when saving.
 
@@ -655,12 +659,12 @@ The `Google API options` frame appears if the selected transcription method is *
 
 <p align="center">
   <picture>
-    <source 
-      srcset="docs/light/google-api-options.png" 
+    <source
+      srcset="docs/light/google-api-options.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
-      srcset="docs/dark/google-api-options.png" 
+    <source
+      srcset="docs/dark/google-api-options.png"
       media="(prefers-color-scheme: dark)"
     />
     <img src="docs/light/google-api-options.png" alt="google-api-options">
@@ -673,12 +677,12 @@ Since the program uses the free **Google API** tier by default, which allows you
 
 <p align="center">
   <picture>
-    <source 
-      srcset="docs/light/google-api-key-dialog.png" 
+    <source
+      srcset="docs/light/google-api-key-dialog.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
-      srcset="docs/dark/google-api-key-dialog.png" 
+    <source
+      srcset="docs/dark/google-api-key-dialog.png"
       media="(prefers-color-scheme: dark)"
     />
     <img src="docs/light/google-api-key-dialog.png" alt="Google API key dialog">
@@ -693,12 +697,12 @@ The `Whisper API options` frame appears if the selected transcription method is 
 
 <p align="center">
   <picture>
-    <source 
-      srcset="docs/light/whisper-api-options.png" 
+    <source
+      srcset="docs/light/whisper-api-options.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
-      srcset="docs/dark/whisper-api-options.png" 
+    <source
+      srcset="docs/dark/whisper-api-options.png"
       media="(prefers-color-scheme: dark)"
     />
     <img src="docs/light/whisper-api-options.png" alt="Whisper API options">
@@ -713,12 +717,12 @@ To add it, click the `Set OpenAI API key` button. You'll be presented with a dia
 
 <p align="center">
   <picture>
-    <source 
-      srcset="docs/light/open-ai-api-key-dialog.png" 
+    <source
+      srcset="docs/light/open-ai-api-key-dialog.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
-      srcset="docs/dark/open-ai-api-key-dialog.png" 
+    <source
+      srcset="docs/dark/open-ai-api-key-dialog.png"
       media="(prefers-color-scheme: dark)"
     />
     <img src="docs/light/open-ai-api-key-dialog.png" alt="OpenAI API key dialog">
@@ -729,11 +733,11 @@ OpenAI charges for the use of the API key, for which **Audiotext** is not respon
 
 #### Response Format
 
-The format of the transcript output, in one of these options: 
+The format of the transcript output, in one of these options:
 
-- `json` 
+- `json`
 - `srt` (subtitle file type)
-- `text` 
+- `text`
 - `verbose_json`
 - `vtt` (subtitle file type)
 
@@ -747,7 +751,7 @@ Defaults to 0.
 
 #### Timestamp Granularities
 
-The timestamp granularities to populate for this transcription. `Response format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`. 
+The timestamp granularities to populate for this transcription. `Response format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`.
 
 **Note**: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
 
@@ -759,16 +763,16 @@ The **WhisperX** options appear when the selected transcription method is **Whis
 
 <p align="center">
   <picture>
-    <source 
-      srcset="docs/light/whisperx-options.png" 
+    <source
+      srcset="docs/light/whisperx-options.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
-      srcset="docs/dark/whisperx-options.png" 
+    <source
+      srcset="docs/dark/whisperx-options.png"
       media="(prefers-color-scheme: dark)"
     />
-    <img 
-      src="docs/light/whisperx-options.png" 
+    <img
+      src="docs/light/whisperx-options.png"
       alt="WhisperX options"
     >
   </picture>
@@ -776,7 +780,7 @@ The **WhisperX** options appear when the selected transcription method is **Whis
 
 #### Output File Types
 
-You can select one or more of the following transcription output file types: 
+You can select one or more of the following transcription output file types:
 
 - `.aud`
 - `.json`
@@ -802,16 +806,16 @@ When you select the `.srt` and/or the `.vtt` output file type(s), the `Subtitle 
 
 <p align="center">
   <picture>
-    <source 
-      srcset="docs/light/subtitle-options.png" 
+    <source
+      srcset="docs/light/subtitle-options.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
-      srcset="docs/dark/subtitle-options.png" 
+    <source
+      srcset="docs/dark/subtitle-options.png"
       media="(prefers-color-scheme: dark)"
     />
-    <img 
-      src="docs/light/subtitle-options.png" 
+    <img
+      src="docs/light/subtitle-options.png"
       alt="Subtitle options"
     >
   </picture>
@@ -827,7 +831,7 @@ Underline each word as it's spoken in `.srt` and `.vtt` subtitle files. Not chec
 
 The maximum number of lines in a segment. `2` by default.
 
-#### Max. Line Width 
+#### Max. Line Width
 
 The maximum number of characters in a line before breaking the line. `42` by default.
 
@@ -837,12 +841,12 @@ When you click the `Show advanced options` button in the `WhisperX options` fram
 
 <p align="center">
   <picture>
-    <source 
-      srcset="docs/light/whisperx-advanced-options.png" 
+    <source
+      srcset="docs/light/whisperx-advanced-options.png"
       media="(prefers-color-scheme: light)"
     />
-    <source 
-      srcset="docs/dark/whisperx-advanced-options.png" 
+    <source
+      srcset="docs/dark/whisperx-advanced-options.png"
       media="(prefers-color-scheme: dark)"
     />
     <img src="docs/light/whisperx-advanced-options.png" alt="WhisperX advanced options">
@@ -881,8 +885,8 @@ This term refers to different data types used in computing, particularly in the 
 There are three possible values for **Audiotext**:
 - `int8`: Default if using CPU. It represents whole numbers without any fractional part. Its size is 8 bits (1 byte) and it can represent integer values from -128 to 127 (signed) or 0 to 255 (unsigned). It is used in scenarios where memory efficiency is critical, such as in quantized neural networks or edge devices with limited computational resources.
 - `float16`: Default if using CUDA GPU. It's a half precision type representing 16-bit floating point numbers. Its size is 16 bits (2 bytes). It has a smaller range and precision compared to `float32`. It's often used in applications where memory is a critical resource, such as in deep learning models running on GPUs or TPUs.
-- `float32`: Recommended for CUDA GPUs with more than 8 GB of VRAM. It's a single precision type representing 32-bit floating point numbers, which is a standard for representing real numbers in computers. Its size is 32 bits (4 bytes). It can represent a wide range of real numbers with a reasonable level of precision. 
- 
+- `float32`: Recommended for CUDA GPUs with more than 8 GB of VRAM. It's a single precision type representing 32-bit floating point numbers, which is a standard for representing real numbers in computers. Its size is 32 bits (4 bytes). It can represent a wide range of real numbers with a reasonable level of precision.
+
 #### Batch Size
 
 This option determines how many samples are processed together before the model parameters are updated. It doesn't affect the quality of the transcription, only the generation speed (the smaller, the slower).
@@ -896,7 +900,7 @@ For simplicity, let's divide the possible batch size values into two groups:
 
 **WhisperX** will use the CPU for transcription if checked. Checked by default if there is no CUDA GPU.
 
-As noted in the [Compute Type](#compute-type) section, the default compute type value for the CPU is `int8`, since many CPUs don't support efficient `float16` or `float32` computation, which would result in an error. Change it at your own risk. 
+As noted in the [Compute Type](#compute-type) section, the default compute type value for the CPU is `int8`, since many CPUs don't support efficient `float16` or `float32` computation, which would result in an error. Change it at your own risk.
 
 ## Troubleshooting
 
@@ -927,7 +931,7 @@ You'll be prompted with an error like this:
 
 ```
 RateLimitError("Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}")
-``` 
+```
 
 This is either because your account run out of credits or because you need to fund your account before you can use the API for the first time (even if you have free credits available). To fix this, you need to purchase credits for your account (starting at $5) with a credit or debit card by going to the [Billing](https://platform.openai.com/settings/organization/billing/overview) section of your OpenAI account settings.
 
@@ -954,9 +958,9 @@ If you are using an API key that was created before you funded your account for 
 - [x] Add support for `.json`, `.tsv` and `.aud` output file types when using WhisperX as transcription method.
 - [x] Add `appearance_mode` to `config.ini`.
 - [x] Add support for **Whisper's API** ([#42](https://github.com/HenestrosaDev/audiotext/discussions/42)).
+- [x] Add pre-commit configuration for using `ruff` and `mypy`.
 - [ ] Change the `Generate transcription` button to `Cancel transcription` when a transcription is in progress.
 - [ ] Generate executables for macOS and Linux.
-- [ ] Add pre-commit config for using `Black`, `isort`, and `mypy`.
 - [ ] Add tests.
 
 You can propose a new feature creating an [issue](https://github.com/HenestrosaDev/audiotext/issues/new/choose).
@@ -971,7 +975,7 @@ See also the list of [contributors](https://github.com/HenestrosaDev/audiotext/c
 
 <!-- CONTRIBUTING -->
 
-## Contributing  
+## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. Please read the [CONTRIBUTING.md](https://github.com/HenestrosaDev/audiotext/blob/main/.github/CONTRIBUTING.md) file, where you can find more detailed information about how to contribute to the project.
 
