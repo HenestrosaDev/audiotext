@@ -114,7 +114,27 @@ class ConfigManager:
         section: KeyType,
         key: KeyType,
         file_path: Path = _CONFIG_FILE_PATH,
-    ) -> Optional[Union[str, bool, int, float]]:
+    ) -> Union[str, bool, int, float, list[Any]]:
+        """
+        Retrieve the value of a specified key within a section of a configuration file.
+
+        This method reads a configuration file, checks if the given section and key exist,
+        and if they do, returns the value of the key in its appropriate type. If the
+        section or key does not exist, it raises a ValueError.
+
+        :param section: The section in the configuration file where the key is located.
+        :type section: KeyType
+        :param key: The key within the section whose value is to be retrieved.
+        :type key: KeyType
+        :param file_path: The path to the configuration file. Defaults to
+            _CONFIG_FILE_PATH.
+        :type file_path: Path
+        :raises FileNotFoundError: If the specified configuration file does not exist.
+        :raises ValueError: If the section or key is not found in the config. file.
+        :return: The value of the specified key in its appropriate type (str, bool, int,
+            float, or list).
+        :rtype: Union[str, bool, int, float, list[Any]]
+        """
         config = ConfigManager.read_config(file_path)
 
         section_name = section.value
@@ -134,6 +154,9 @@ class ConfigManager:
             elif key_value_type == "list":
                 return config.getlist(section_name, key_name)  # type: ignore
 
+        raise ValueError(
+            f"Section [{section}] or Key [{key_name}] not found in the config"
+        )
 
     @staticmethod
     def modify_value(
@@ -141,7 +164,27 @@ class ConfigManager:
         key: KeyType,
         new_value: str,
         file_path: Path = _CONFIG_FILE_PATH,
-    ):
+    ) -> None:
+        """
+        Modify the value of a specified key within a section of a configuration file.
+
+        This method reads a configuration file, checks if the given section and key
+        exist, and if they do, updates the value of the key to the new value provided.
+        If the section or key does not exist, it prints an error message.
+
+        :param section: The section in the configuration file where the key is located.
+        :type section: KeyType
+        :param key: The key within the section whose value is to be modified.
+        :type key: KeyType
+        :param new_value: The new value to be set for the specified key.
+        :type new_value: str
+        :param file_path: The path to the configuration file. Defaults to
+            _CONFIG_FILE_PATH.
+        :type file_path: Path
+        :raises FileNotFoundError: If the specified configuration file does not exist.
+        :raises ValueError: If the section or key is not found in the config. file.
+        :return: None
+        """
         config = ConfigManager.read_config(file_path)
 
         section_name = section.value
