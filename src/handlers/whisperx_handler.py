@@ -93,9 +93,6 @@ class WhisperXHandler:
                                 the given format.
         :type should_overwrite: bool
         """
-        if self._whisperx_result is None:
-            raise ValueError("Please generate the transcription again to save it.")
-
         config_subtitles = cm.ConfigManager.get_config_subtitles()
         output_dir = file_path.parent
 
