@@ -15,24 +15,14 @@ repos:
       - id: no-commit-to-branch
         args: [ --branch, main ]
       - id: trailing-whitespace
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.0
+  - repo: local
     hooks:
-      - id: mypy
-        args: ["--strict"]
-        additional_dependencies:
-          - customtkinter==5.2.1
-          - moviepy==1.0.3
-          - openai==1.36.0
-          - pyaudio==0.2.13
-          - pydub==0.25.1
-          - python-dotenv==1.0.1
-          - pytubefix==6.5.2
-          - SpeechRecognition==3.9.0
-          - torch==2.2.1
-          - torchaudio==2.2.1
-          - torchvision==0.17.1
-          - whisperx==3.1.5
+      - id: mypy-local
+        name: Run mypy with all dev dependencies present
+        language: system
+        types:
+          - python
+        entry: mypy --strict
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.5
     hooks:
