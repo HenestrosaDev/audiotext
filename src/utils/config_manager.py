@@ -37,13 +37,13 @@ class ConfigManager:
         section = ConfigSubtitles.Key.SECTION
 
         return ConfigSubtitles(
-            highlight_words=ConfigManager.get_value(
+            highlight_words=ConfigManager.get_value(  # type: ignore
                 section, ConfigSubtitles.Key.HIGHLIGHT_WORDS
             ),
-            max_line_count=ConfigManager.get_value(
+            max_line_count=ConfigManager.get_value(  # type: ignore
                 section, ConfigSubtitles.Key.MAX_LINE_COUNT
             ),
-            max_line_width=ConfigManager.get_value(
+            max_line_width=ConfigManager.get_value(  # type: ignore
                 section, ConfigSubtitles.Key.MAX_LINE_WIDTH
             ),
         )
@@ -53,7 +53,7 @@ class ConfigManager:
         section = ConfigSystem.Key.SECTION
 
         return ConfigSystem(
-            appearance_mode=ConfigManager.get_value(
+            appearance_mode=ConfigManager.get_value(  # type: ignore
                 section, ConfigSystem.Key.APPEARANCE_MODE
             ),
         )
@@ -63,13 +63,19 @@ class ConfigManager:
         section = ConfigTranscription.Key.SECTION
 
         return ConfigTranscription(
-            language=ConfigManager.get_value(section, ConfigTranscription.Key.LANGUAGE),
-            audio_source=ConfigManager.get_value(
+            language=ConfigManager.get_value(  # type: ignore
+                section, ConfigTranscription.Key.LANGUAGE
+            ),
+            audio_source=ConfigManager.get_value(  # type: ignore
                 section, ConfigTranscription.Key.AUDIO_SOURCE
             ),
-            method=ConfigManager.get_value(section, ConfigTranscription.Key.METHOD),
-            autosave=ConfigManager.get_value(section, ConfigTranscription.Key.AUTOSAVE),
-            overwrite_files=ConfigManager.get_value(
+            method=ConfigManager.get_value(  # type: ignore
+                section, ConfigTranscription.Key.METHOD
+            ),
+            autosave=ConfigManager.get_value(  # type: ignore
+                section, ConfigTranscription.Key.AUTOSAVE
+            ),
+            overwrite_files=ConfigManager.get_value(  # type: ignore
                 section, ConfigTranscription.Key.OVERWRITE_FILES
             ),
         )
@@ -79,13 +85,13 @@ class ConfigManager:
         section = ConfigWhisperApi.Key.SECTION
 
         return ConfigWhisperApi(
-            response_format=ConfigManager.get_value(
+            response_format=ConfigManager.get_value(  # type: ignore
                 section, ConfigWhisperApi.Key.RESPONSE_FORMAT
             ),
-            temperature=ConfigManager.get_value(
+            temperature=ConfigManager.get_value(  # type: ignore
                 section, ConfigWhisperApi.Key.TEMPERATURE
             ),
-            timestamp_granularities=ConfigManager.get_value(
+            timestamp_granularities=ConfigManager.get_value(  # type: ignore
                 section, ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES
             ),
         )
@@ -95,16 +101,22 @@ class ConfigManager:
         section = ConfigWhisperX.Key.SECTION
 
         return ConfigWhisperX(
-            model_size=ConfigManager.get_value(section, ConfigWhisperX.Key.MODEL_SIZE),
-            batch_size=ConfigManager.get_value(section, ConfigWhisperX.Key.BATCH_SIZE),
-            compute_type=ConfigManager.get_value(
+            model_size=ConfigManager.get_value(  # type: ignore
+                section, ConfigWhisperX.Key.MODEL_SIZE
+            ),
+            batch_size=ConfigManager.get_value(  # type: ignore
+                section, ConfigWhisperX.Key.BATCH_SIZE
+            ),
+            compute_type=ConfigManager.get_value(  # type: ignore
                 section, ConfigWhisperX.Key.COMPUTE_TYPE
             ),
-            use_cpu=ConfigManager.get_value(section, ConfigWhisperX.Key.USE_CPU),
-            can_use_gpu=ConfigManager.get_value(
+            use_cpu=ConfigManager.get_value(  # type: ignore
+                section, ConfigWhisperX.Key.USE_CPU
+            ),
+            can_use_gpu=ConfigManager.get_value(  # type: ignore
                 section, ConfigWhisperX.Key.CAN_USE_GPU
             ),
-            output_file_types=ConfigManager.get_value(
+            output_file_types=ConfigManager.get_value(  # type: ignore
                 section, ConfigWhisperX.Key.OUTPUT_FILE_TYPES
             ),
         )
