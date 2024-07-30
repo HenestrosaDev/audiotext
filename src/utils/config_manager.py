@@ -137,8 +137,8 @@ class ConfigManager:
         """
         config = ConfigManager.read_config(file_path)
 
-        section_name = section.value
-        key_name = key.value
+        section_name = str(section.value)
+        key_name = str(key.value)
         key_value_type = key.value_type()
 
         # Check if the section and key exist before getting the value
@@ -187,8 +187,8 @@ class ConfigManager:
         """
         config = ConfigManager.read_config(file_path)
 
-        section_name = section.value
-        key_name = key.value
+        section_name = str(section.value)
+        key_name = str(key.value)
 
         # Check if the section and option exist before modifying
         if section_name in config and key_name in config[section_name]:
@@ -197,6 +197,8 @@ class ConfigManager:
             with open(file_path, "w") as config_file:
                 config.write(config_file)
 
-            print(f"Value for [{section}][{key_name}] modified to {new_value}")
+            print(f"Value for [{section_name}][{key_name}] modified to {new_value}")
         else:
-            print(f"Section [{section}] or Key [{key_name}] not found in the config")
+            print(
+                f"Section [{section_name}] or Key [{key_name}] not found in the config"
+            )
