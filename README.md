@@ -959,6 +959,7 @@ If you are using an API key that was created before you funded your account for 
 - [x] Add `appearance_mode` to `config.ini`.
 - [x] Add support for **Whisper's API** ([#42](https://github.com/HenestrosaDev/audiotext/discussions/42)).
 - [x] Add pre-commit configuration for using `ruff` and `mypy`.
+- [x] Set up a CI pipeline to apply the pre-commit hooks.
 - [ ] Change the `Generate transcription` button to `Cancel transcription` when a transcription is in progress.
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add tests.
