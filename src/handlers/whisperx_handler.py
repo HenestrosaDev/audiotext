@@ -102,6 +102,6 @@ class WhisperXHandler:
                 writer = whisperx.transcribe.get_writer(output_type, str(output_dir))
 
                 # https://github.com/m-bain/whisperX/issues/455#issuecomment-1707547704
-                self._whisperx_result["language"] = "en"
+                self._whisperx_result["language"] = "en"  # type: ignore[index]
 
                 writer(self._whisperx_result, file_path, vars(config_subtitles))
