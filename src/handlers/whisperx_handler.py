@@ -25,6 +25,12 @@ class WhisperXHandler:
         :return: The transcribed text or an error message if transcription fails.
         :rtype: str
         """
+        if not transcription.output_file_types:
+            raise ValueError(
+                "No output file types specified. Please make sure to select at least "
+                "one."
+            )
+
         config_whisperx = cm.ConfigManager.get_config_whisperx()
 
         device = "cpu" if config_whisperx.use_cpu else "cuda"
