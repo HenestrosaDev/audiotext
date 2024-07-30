@@ -112,9 +112,9 @@ This section guides you through submitting an enhancement suggestion for audiote
 <!-- omit in toc -->
 #### How Do I Submit a Good Enhancement Suggestion?
 
-Enhancement suggestions are tracked as [GitHub issues](https://github.com/HenestrosaConH/audiotext/issues). This is the [issue template](https://github.com/HenestrosaConH/audiotext/tree/main/.github/workflows/ISSUE_TEMPLATE.md). 
+Enhancement suggestions are tracked as [GitHub issues](https://github.com/HenestrosaConH/audiotext/issues). This is the [issue template](https://github.com/HenestrosaConH/audiotext/tree/main/.github/workflows/ISSUE_TEMPLATE.md).
 
-Don't forget to follow these principles: 
+Don't forget to follow these principles:
 
 - Use a **clear and descriptive title** for the issue to identify the suggestion.
 - Provide a **step-by-step description of the suggested enhancement** in as many details as possible.

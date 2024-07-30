@@ -9,10 +9,12 @@ class GoogleApiHandler(Transcribable):
     def transcribe(audio_data: sr.AudioData, transcription: Transcription) -> str:
         r = sr.Recognizer()
 
-        text = r.recognize_google(
-            audio_data,
-            language=transcription.language_code,
-            key=EnvKeys.GOOGLE_API_KEY.get_value() or None,
+        text = str(
+            r.recognize_google(
+                audio_data,
+                language=transcription.language_code,
+                key=EnvKeys.GOOGLE_API_KEY.get_value() or None,
+            )
         )
         text = f"{text}. "
 

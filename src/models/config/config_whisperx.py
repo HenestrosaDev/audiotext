@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Literal
+
+OutputFileTypes = Literal["aud", "json", "srt", "tsv", "txt", "vtt"]
 
 
 @dataclass
@@ -10,7 +12,7 @@ class ConfigWhisperX:
     compute_type: str
     use_cpu: bool
     can_use_gpu: bool
-    output_file_types: str
+    output_file_types: list[OutputFileTypes]
 
     class Key(Enum):
         """
@@ -25,20 +27,20 @@ class ConfigWhisperX:
         CAN_USE_GPU = "can_use_gpu"
         OUTPUT_FILE_TYPES = "output_file_types"
 
-        def value_type(self) -> Optional[str]:
+        def value_type(self) -> str:
             """
             Get the value type associated with the ConfigKey.
 
-            :return
+            :return: The type of the value as a string, or None if the key is not found.
             :rtype: str
             """
             type_mapping = {
-                self.MODEL_SIZE: "str",
-                self.BATCH_SIZE: "int",
-                self.COMPUTE_TYPE: "str",
-                self.USE_CPU: "bool",
-                self.CAN_USE_GPU: "bool",
-                self.OUTPUT_FILE_TYPES: "str",
+                ConfigWhisperX.Key.MODEL_SIZE: "str",
+                ConfigWhisperX.Key.BATCH_SIZE: "int",
+                ConfigWhisperX.Key.COMPUTE_TYPE: "str",
+                ConfigWhisperX.Key.USE_CPU: "bool",
+                ConfigWhisperX.Key.CAN_USE_GPU: "bool",
+                ConfigWhisperX.Key.OUTPUT_FILE_TYPES: "list",
             }
 
-            return type_mapping.get(self, None)
+            return str(type_mapping.get(self))

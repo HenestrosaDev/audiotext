@@ -1,8 +1,7 @@
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable, Union
 
 import customtkinter as ctk
-import utils.config_manager as cm
 import utils.constants as c
 import utils.dict_utils as du
 import utils.path_helper as ph
@@ -10,10 +9,14 @@ from controllers.main_controller import MainController
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_transcription import ConfigTranscription
-from models.config.config_whisper_api import ConfigWhisperApi
-from models.config.config_whisperx import ConfigWhisperX
+from models.config.config_whisper_api import (
+    ConfigWhisperApi,
+    TimestampGranularitiesType,
+)
+from models.config.config_whisperx import ConfigWhisperX, OutputFileTypes
 from models.transcription import Transcription
 from PIL import Image
+from utils.config_manager import ConfigManager
 from utils.enums import (
     AudioSource,
     Color,
@@ -22,6 +25,7 @@ from utils.enums import (
     TimestampGranularities,
     TranscriptionMethod,
     WhisperApiResponseFormats,
+    WhisperXFileTypes,
 )
 from utils.env_keys import EnvKeys
 
@@ -29,10 +33,10 @@ from .custom_widgets.ctk_input_dialog import CTkInputDialog
 from .custom_widgets.ctk_scrollable_dropdown import CTkScrollableDropdown
 
 
-class MainWindow(ctk.CTkFrame):
+class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def __init__(
         self,
-        parent,
+        parent: Any,
         config_subtitles: ConfigSubtitles,
         config_system: ConfigSystem,
         config_transcription: ConfigTranscription,
@@ -53,7 +57,7 @@ class MainWindow(ctk.CTkFrame):
         self._config_whisperx = config_whisperx
 
         # Init the controller
-        self._controller = None
+        self._controller: Union[MainController, None] = None
 
         # Init the components of the window
         self._init_sidebar()
@@ -71,55 +75,24 @@ class MainWindow(ctk.CTkFrame):
 
     # GETTERS AND SETTERS
 
-    def set_controller(self, controller: MainController):
+    def set_controller(self, controller: MainController) -> None:
         """
         Set the controller of the window.
 
         :param controller: View controller
         :type controller: MainController
+        :return: None
         """
         self._controller = controller
 
-    def _get_transcription_properties(self) -> dict[str, Any]:
-        """
-        Checks the current state of user interface elements to determine the
-        transcription properties.
-
-        :return: A dictionary containing the transcription properties.
-        :rtype: dict
-        """
-        language_code = du.find_key_by_value(
-            dictionary=c.AUDIO_LANGUAGES,
-            target_value=self.omn_transcription_language.get(),
-        )
-
-        properties = {
-            "audio_source": self._audio_source,
-            "language_code": language_code,
-            "method": TranscriptionMethod(self.omn_transcription_method.get()),
-            "should_autosave": self.chk_autosave.get() == 1,
-            "should_overwrite": self.chk_overwrite_files.get() == 1,
-        }
-
-        if self.omn_transcription_method.get() == TranscriptionMethod.GOOGLE_API.value:
-            properties["should_translate"] = False
-            properties["output_file_types"] = ["txt"]
-        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPER_API.value:
-            properties["should_translate"] = False
-            properties["output_file_types"] = [self.omn_response_format.get()]
-        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPERX.value:
-            properties["should_translate"] = bool(
-                self.chk_whisper_options_translate.get()
-            )
-            properties[
-                "output_file_types"
-            ] = self._config_whisperx.output_file_types.split(",")
-
-        return properties
-
     # WIDGETS INITIALIZATION
 
-    def _init_sidebar(self):
+    def _init_sidebar(self) -> None:
+        """
+        Initializes the sidebar widgets.
+
+        :return: None
+        """
         # Sidebar frame
         self.frm_sidebar = ctk.CTkScrollableFrame(
             master=self, width=230, corner_radius=0
@@ -252,11 +225,7 @@ class MainWindow(ctk.CTkFrame):
         self.chk_highlight_words = ctk.CTkCheckBox(
             master=self.frm_subtitle_options,
             text="Highlight words",
-            command=lambda: self._on_config_change(
-                section=ConfigSubtitles.Key.SECTION,
-                key=ConfigSubtitles.Key.HIGHLIGHT_WORDS,
-                new_value="True" if self.chk_highlight_words.get() else "False",
-            ),
+            command=self._on_highlight_words_change,
         )
         self.chk_highlight_words.grid(row=1, column=0, padx=20, pady=10, sticky=ctk.W)
 
@@ -622,7 +591,7 @@ class MainWindow(ctk.CTkFrame):
             command=lambda *args: self._on_config_change(
                 section=ConfigWhisperX.Key.SECTION,
                 key=ConfigWhisperX.Key.MODEL_SIZE,
-                new_value=self.omn_model_size.get(),
+                new_value=args[0],
             ),
         )
         self.omn_model_size.grid(row=2, column=0, padx=20, pady=(3, 10), sticky=ctk.EW)
@@ -643,7 +612,7 @@ class MainWindow(ctk.CTkFrame):
             command=lambda *args: self._on_config_change(
                 section=ConfigWhisperX.Key.SECTION,
                 key=ConfigWhisperX.Key.COMPUTE_TYPE,
-                new_value=self.omn_compute_type.get(),
+                new_value=args[0],
             ),
         )
         self.omn_compute_type.grid(
@@ -677,11 +646,7 @@ class MainWindow(ctk.CTkFrame):
         self.chk_use_cpu = ctk.CTkCheckBox(
             master=self.frm_whisperx_advanced_options,
             text="Use CPU",
-            command=lambda: self._on_config_change(
-                section=ConfigWhisperX.Key.SECTION,
-                key=ConfigWhisperX.Key.USE_CPU,
-                new_value="True" if self.chk_use_cpu.get() else "False",
-            ),
+            command=self._on_use_cpu_change,
         )
         self.chk_use_cpu.grid(row=6, column=0, padx=20, pady=(10, 16), sticky=ctk.W)
 
@@ -719,7 +684,12 @@ class MainWindow(ctk.CTkFrame):
         )
         self.lbl_info.grid(row=8, column=0, padx=20, pady=(5, 10))
 
-    def _init_main_content(self):
+    def _init_main_content(self) -> None:
+        """
+        Initializes the widgets on the right side of the main window.
+
+        :return: None
+        """
         # Main entry frame
         self.frm_main_entry = ctk.CTkFrame(master=self, fg_color="transparent")
         self.frm_main_entry.grid(row=0, column=1, padx=20, pady=(20, 0), sticky=ctk.EW)
@@ -793,11 +763,7 @@ class MainWindow(ctk.CTkFrame):
         self.chk_overwrite_files = ctk.CTkCheckBox(
             master=self.frm_save_options,
             text="Overwrite existing files",
-            command=lambda: self._on_config_change(
-                section=ConfigTranscription.Key.SECTION,
-                key=ConfigTranscription.Key.OVERWRITE_FILES,
-                new_value=str(bool(self.chk_overwrite_files.get())),
-            ),
+            command=self._on_overwrite_files_change,
         )
         self.chk_overwrite_files.grid(row=0, column=2, padx=0, pady=0)
 
@@ -809,19 +775,22 @@ class MainWindow(ctk.CTkFrame):
 
     # PUBLIC METHODS (called by the controller)
 
-    def on_select_path_success(self, filepath: str):
+    def on_select_path_success(self, path: str) -> None:
         """
         Handles the successful selection of a file or directory path by updating the
         entry field with the selected file or directory path.
 
-        :param filepath: The selected file or directory path.
-        :type filepath: str
+        :param path: The selected file or directory path.
+        :type path: str
+        :return: None
         """
-        self.ent_path.configure(textvariable=ctk.StringVar(self, filepath))
+        self.ent_path.configure(textvariable=ctk.StringVar(self, path))
 
-    def on_processed_transcription(self):
+    def on_processed_transcription(self) -> None:
         """
         Re-enables disabled widgets after transcription processing is complete.
+
+        :return: None
         """
         self.ent_path.configure(state=ctk.NORMAL)
         self.omn_transcription_language.configure(state=ctk.NORMAL)
@@ -831,13 +800,15 @@ class MainWindow(ctk.CTkFrame):
 
         self._toggle_progress_bar_visibility(should_show=False)
 
-    def on_stop_recording_from_mic(self):
+    def on_stop_recording_from_mic(self) -> None:
         """
         Updates the state to indicate that recording from the microphone has
         stopped, notified by the controller. It also updates the button appearance to
         indicate that recording can be started again.
 
         Additionally, it delegates the task of stopping the recording to the controller.
+
+        :return: None
         """
         self._is_transcribing_from_mic = False
 
@@ -848,27 +819,63 @@ class MainWindow(ctk.CTkFrame):
             state=ctk.DISABLED,
         )
 
-    def display_text(self, text):
+    def display_text(self, text: str) -> None:
         """
         Clears any existing text in the transcription text box to display the provided
         text.
 
         :param text: The text to be displayed in the transcription text box.
         :type text: str
+        :return: None
         """
         self.tbx_transcription.delete("1.0", ctk.END)
         self.tbx_transcription.insert("0.0", text)
 
     # PRIVATE METHODS
 
+    def _get_transcription_properties(self) -> dict[str, Any]:
+        """
+        Checks the current state of user interface elements to determine the
+        transcription properties.
+
+        :return: A dictionary containing the transcription properties.
+        :rtype: dict[str, Any]
+        """
+        language_code = du.find_key_by_value(
+            dictionary=c.AUDIO_LANGUAGES,
+            target_value=self.omn_transcription_language.get(),
+        )
+
+        properties = {
+            "audio_source": self._audio_source,
+            "language_code": language_code,
+            "method": TranscriptionMethod(self.omn_transcription_method.get()),
+            "should_autosave": self.chk_autosave.get() == 1,
+            "should_overwrite": self.chk_overwrite_files.get() == 1,
+        }
+
+        if self.omn_transcription_method.get() == TranscriptionMethod.GOOGLE_API.value:
+            properties["should_translate"] = False
+            properties["output_file_types"] = ["txt"]
+        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPER_API.value:
+            properties["should_translate"] = False
+            properties["output_file_types"] = [self.omn_response_format.get()]
+        if self.omn_transcription_method.get() == TranscriptionMethod.WHISPERX.value:
+            properties["should_translate"] = bool(
+                self.chk_whisper_options_translate.get()
+            )
+            properties["output_file_types"] = self._config_whisperx.output_file_types
+
+        return properties
+
     def _setup_debounced_change(
         self,
-        section: str,
-        key: str,
+        section: ConfigManager.KeyType,
+        key: ConfigManager.KeyType,
         variable: ctk.Variable,
-        callback: callable,
-        *unused: tuple,
-    ):
+        callback: Callable[[ConfigManager.KeyType, ConfigManager.KeyType, str], None],
+        *unused: tuple,  # type: ignore[type-arg]
+    ) -> None:
         """
         Sets up a debounced callback for a variable change.
 
@@ -883,10 +890,11 @@ class MainWindow(ctk.CTkFrame):
         :param variable: The tkinter variable to watch for changes.
         :type variable: tkinter.Variable
         :param callback: The callback function to be executed after the debounce delay.
-        :type callback: function
+        :type callback: Callable[[cm.ConfigManager.KeyType, cm.ConfigManager.KeyType, str], None]
         :param unused: Additional unused arguments that must be kept to prevent
                         exceptions.
         :type unused: tuple
+        :return: None
         """
         variable.trace_add(
             mode="write",
@@ -897,12 +905,12 @@ class MainWindow(ctk.CTkFrame):
 
     def _on_change_debounced(
         self,
-        section: str,
-        key: str,
+        section: ConfigManager.KeyType,
+        key: ConfigManager.KeyType,
         variable: ctk.Variable,
-        callback: callable,
+        callback: Callable[[ConfigManager.KeyType, ConfigManager.KeyType, str], None],
         delay: int = 600,
-    ):
+    ) -> None:
         """
         Handles debounced changes to a variable.
 
@@ -918,9 +926,10 @@ class MainWindow(ctk.CTkFrame):
         :param variable: The tkinter variable being monitored for changes.
         :type variable: tkinter.Variable
         :param callback: The function to be executed after the debounce delay.
-        :type callback: callable
-        :param delay: The debounce delay in milliseconds before executing the callback.
+        :type callback: Callable[[cm.ConfigManager.KeyType, cm.ConfigManager.KeyType, str], None]
+        :param delay: Debounce delay in milliseconds before executing the callback.
         :type delay: int, optional
+        :return: None
         """
         # Cancel the previously scheduled after call
         if self._after_id is not None:
@@ -931,7 +940,17 @@ class MainWindow(ctk.CTkFrame):
             delay, lambda: callback(section, key, variable.get())
         )
 
-    def _on_transcription_language_change(self, option: str):
+    def _on_transcription_language_change(self, option: str) -> None:
+        """
+        Handles changes to `omn_transcription_language`.
+
+        Updates the configuration entry for the transcription language and sets the
+        value in the `omn_transcription_language`.
+
+        :param option: The selected transcription language.
+        :type option: str
+        :return: None
+        """
         self._on_config_change(
             section=ConfigTranscription.Key.SECTION,
             key=ConfigTranscription.Key.LANGUAGE,
@@ -939,9 +958,9 @@ class MainWindow(ctk.CTkFrame):
         )
         self.omn_transcription_language.set(option)
 
-    def _on_audio_source_change(self, option: str):
+    def _on_audio_source_change(self, option: str) -> None:
         """
-        Handles changes to `omn_transcribe_from`.
+        Handles changes to `omn_audio_source`.
 
         Updates the transcription source based on the selected option. It also adjusts
         the GUI elements accordingly, such as configuring buttons, labels, and entry
@@ -985,18 +1004,31 @@ class MainWindow(ctk.CTkFrame):
             self.btn_file_explorer.grid_remove()
             self.frm_main_entry.grid()
 
-    def _on_select_path(self):
+    def _on_select_path(self) -> None:
         """
         Triggers when `btn_file_explorer` is clicked to select the path of the file or
         directory to transcribe.
+
+        :return: None
         """
+        assert self._controller
+
         if self._audio_source == AudioSource.FILE:
             self._controller.select_file()
         elif self._audio_source == AudioSource.DIRECTORY:
             self._controller.select_directory()
 
     @staticmethod
-    def _validate_temperature(temperature):
+    def _validate_temperature(temperature: str) -> bool:
+        """
+        Validates the input value of temperature to ensure that it is within the correct
+        range (0.0 and 1.0).
+
+        :param temperature: The input temperature to validate.
+        :type temperature: str
+        :return: True if the temperature is valid or False if it is not.
+        :rtype: bool
+        """
         if temperature == "":
             return True
 
@@ -1006,10 +1038,21 @@ class MainWindow(ctk.CTkFrame):
         except ValueError:
             return False
 
-    def _on_start_recording_from_mic(self):
+    def _on_highlight_words_change(self) -> None:
+        new_value = "True" if self.chk_highlight_words.get() else "False"
+
+        self._on_config_change(
+            section=ConfigSubtitles.Key.SECTION,
+            key=ConfigSubtitles.Key.HIGHLIGHT_WORDS,
+            new_value=new_value,
+        )
+
+    def _on_start_recording_from_mic(self) -> None:
         """
         Updates the UI when the user has clicked the `btn_main_action` with the audio
         source set to Microphone.
+
+        :return: None
         """
         self._is_transcribing_from_mic = True
 
@@ -1023,10 +1066,12 @@ class MainWindow(ctk.CTkFrame):
             state=ctk.NORMAL,
         )
 
-    def _prepare_ui_for_transcription(self):
+    def _prepare_ui_for_transcription(self) -> None:
         """
         Disables fields, shows the progress bar and removes the text of the previous
         transcription.
+
+        :return: None
         """
         self.ent_path.configure(state=ctk.DISABLED)
         self.omn_transcription_language.configure(state=ctk.DISABLED)
@@ -1040,7 +1085,7 @@ class MainWindow(ctk.CTkFrame):
 
         self.display_text("")
 
-    def _on_main_action(self):
+    def _on_main_action(self) -> None:
         """
         Triggers when `btn_main_action` is clicked.
 
@@ -1048,7 +1093,11 @@ class MainWindow(ctk.CTkFrame):
         selections in the user interface. It disables certain UI elements during the
         transcription process to prevent further user input until the transcription
         is complete.
+
+        :return: None
         """
+        assert self._controller
+
         self._prepare_ui_for_transcription()
 
         transcription = Transcription(**self._get_transcription_properties())
@@ -1066,24 +1115,32 @@ class MainWindow(ctk.CTkFrame):
 
         self._controller.prepare_for_transcription(transcription)
 
-    def _on_save_transcription(self):
+    def _on_save_transcription(self) -> None:
         """
         Triggers when `btn_save` is clicked. Prompts the user with the file explorer to
         select a directory and enter the name of the transcription file.
+
+        :return: None
         """
+        assert self._controller
+
         self._controller.save_transcription(
             file_path=Path(self.ent_path.get()),
             should_autosave=False,
             should_overwrite=False,
         )
 
-    def _on_transcription_method_change(self, option: str):
+    def _on_transcription_method_change(self, option: str) -> None:
         """
-        Handles changes to the radio buttons of the "Transcribe using" option.
+        Handles changes to `omn_transcription_method`.
 
         Updates the user interface based on the chosen transcription method. It displays
         or hides specific options depending on whether WhisperX or Google API
         transcription method is selected.
+
+        :param option: Selected transcription method.
+        :type option: str
+        :return: None
         """
         self._on_config_change(
             section=ConfigTranscription.Key.SECTION,
@@ -1118,13 +1175,16 @@ class MainWindow(ctk.CTkFrame):
             self.frm_whisper_api_options.grid()
 
     @staticmethod
-    def _on_set_api_key(env_key: EnvKeys, title: str):
+    def _on_set_api_key(env_key: EnvKeys, title: str) -> None:
         """
-        Handles the setting of an API key depending on .
+        Opens a dialog window to store the API key in the environment variables, if
+        applicable.
 
-        Prompts the user to input a new Google API key through a dialog window. If a new
-        API key is provided, and it differs from the existing one, it updates the
-        configuration with the new API key.
+        :param env_key: Environment key to set the value.
+        :type env_key: EnvKeys
+        :param title: Title of the dialog window.
+        :type title: str
+        :return: None
         """
         old_api_key = env_key.get_value()
 
@@ -1139,7 +1199,7 @@ class MainWindow(ctk.CTkFrame):
         if new_api_key and old_api_key != new_api_key:
             env_key.set_value(new_api_key.strip())
 
-    def _on_show_advanced_options(self):
+    def _on_show_advanced_options(self) -> None:
         """
         Handle clicks on `btn_whisperx_show_advanced_options`.
 
@@ -1148,6 +1208,8 @@ class MainWindow(ctk.CTkFrame):
         the button text to "Show advanced options". If the advanced options frame is
         currently hidden, it displays the frame and updates the button text to
         "Hide advanced options".
+
+        :return: None
         """
         if self.frm_whisperx_advanced_options.winfo_ismapped():
             self.frm_whisperx_advanced_options.grid_remove()
@@ -1160,7 +1222,7 @@ class MainWindow(ctk.CTkFrame):
                 text="Hide advanced options"
             )
 
-    def _on_autosave_change(self):
+    def _on_autosave_change(self) -> None:
         """
         Handles changes to `chk_autosave`.
 
@@ -1168,6 +1230,8 @@ class MainWindow(ctk.CTkFrame):
         autosave option is selected or deselected. If `chk_autosave` is selected, it
         enables `chk_overwrite_files`. If `chk_autosave` is deselected, it deselects
         and disables `chk_overwrite_files`.
+
+        :return: None
         """
         self._on_config_change(
             section=ConfigTranscription.Key.SECTION,
@@ -1188,47 +1252,61 @@ class MainWindow(ctk.CTkFrame):
             self.chk_overwrite_files.deselect()
             self.chk_overwrite_files.configure(state=ctk.DISABLED)
 
-    def _on_output_file_types_change(self):
+    def _on_overwrite_files_change(self) -> None:
+        new_value = "True" if self.chk_overwrite_files.get() else "False"
+
+        self._on_config_change(
+            section=ConfigTranscription.Key.SECTION,
+            key=ConfigTranscription.Key.OVERWRITE_FILES,
+            new_value=new_value,
+        )
+
+    def _on_output_file_types_change(self) -> None:
         """
         Handles changes to the output file types by updating the configuration and
-        displaying the appropriate subtitle options.
+        displaying the appropriate subtitle options if any of the selected output file
+        types is a subtitle file type.
+
+        :return: None
         """
         # Dictionary mapping checkboxes to their corresponding file types
-        checkbox_to_file_type = {
-            self.chk_output_file_vtt: "vtt",
-            self.chk_output_file_srt: "srt",
-            self.chk_output_file_txt: "txt",
-            self.chk_output_file_json: "json",
-            self.chk_output_file_tsv: "tsv",
-            self.chk_output_file_aud: "aud",
+        chk_to_output_file_type: dict[ctk.CTkCheckBox, OutputFileTypes] = {
+            self.chk_output_file_aud: WhisperXFileTypes.AUD.value,
+            self.chk_output_file_json: WhisperXFileTypes.JSON.value,
+            self.chk_output_file_srt: WhisperXFileTypes.SRT.value,
+            self.chk_output_file_tsv: WhisperXFileTypes.TSV.value,
+            self.chk_output_file_txt: WhisperXFileTypes.TXT.value,
+            self.chk_output_file_vtt: WhisperXFileTypes.VTT.value,
         }
 
         # List comprehension to gather selected file types
-        output_file_types = [
-            file_type for chk, file_type in checkbox_to_file_type.items() if chk.get()
+        selected_output_file_types = [
+            file_type for chk, file_type in chk_to_output_file_type.items() if chk.get()
         ]
 
         # Show or hide the subtitle options frame based on the selected subtitle file types
-        if any(file_type in output_file_types for file_type in {"vtt", "srt"}):
+        if any(file_type in selected_output_file_types for file_type in {"vtt", "srt"}):
             self.frm_subtitle_options.grid()
         else:
             self.frm_subtitle_options.grid_remove()
 
         # Convert the list to a comma-separated string and update the configuration
-        output_file_types_str = ",".join(output_file_types)
-        self._config_whisperx.output_file_types = output_file_types_str
+        selected_output_file_types_str = ",".join(selected_output_file_types)
+        self._config_whisperx.output_file_types = selected_output_file_types
 
         # Notify the config change
         self._on_config_change(
             section=ConfigWhisperX.Key.SECTION,
             key=ConfigWhisperX.Key.OUTPUT_FILE_TYPES,
-            new_value=output_file_types_str,
+            new_value=selected_output_file_types_str,
         )
 
-    def _toggle_chk_timestamp_granularities(self):
+    def _toggle_chk_timestamp_granularities(self) -> None:
         """
         Toggles timestamp granularities checkboxes visibility depending on the selected
         response format.
+
+        :return: None
         """
         if self.omn_response_format.get() != "verbose_json":
             self.chk_timestamp_granularities_segment.configure(state=ctk.DISABLED)
@@ -1252,10 +1330,14 @@ class MainWindow(ctk.CTkFrame):
             ):
                 self.chk_timestamp_granularities_word.select()
 
-    def _on_response_format_change(self, option: str):
+    def _on_response_format_change(self, option: str) -> None:
         """
         Handles changes to the response format by updating the configuration and
         toggling the timestamp granularities checkboxes.
+
+        :param option: Selected response format.
+        :type option: str
+        :return: None
         """
         self._on_config_change(
             section=ConfigWhisperApi.Key.SECTION,
@@ -1265,12 +1347,16 @@ class MainWindow(ctk.CTkFrame):
 
         self._toggle_chk_timestamp_granularities()
 
-    def _on_timestamp_granularities_change(self):
+    def _on_timestamp_granularities_change(self) -> None:
         """
         Handles changes to the timestamp granularities by updating the configuration.
+
+        :return: None
         """
         # Dictionary mapping checkboxes to their corresponding file types
-        chk_to_timestamp_granularity = {
+        chk_to_timestamp_granularity: dict[
+            ctk.CTkCheckBox, TimestampGranularitiesType
+        ] = {
             self.chk_timestamp_granularities_segment: TimestampGranularities.SEGMENT.value,
             self.chk_timestamp_granularities_word: TimestampGranularities.WORD.value,
         }
@@ -1287,7 +1373,7 @@ class MainWindow(ctk.CTkFrame):
             selected_timestamp_granularities
         )
         self._config_whisper_api.timestamp_granularities = (
-            selected_timestamp_granularities_str
+            selected_timestamp_granularities
         )
 
         # Notify the config change
@@ -1297,11 +1383,13 @@ class MainWindow(ctk.CTkFrame):
             new_value=selected_timestamp_granularities_str,
         )
 
-    def _toggle_progress_bar_visibility(self, should_show):
+    def _toggle_progress_bar_visibility(self, should_show: bool) -> None:
         """
         Toggles the visibility of the progress bar based on the specified parameter.
 
         :param should_show: A boolean indicating whether to show or hide the bar.
+        :type should_show: bool
+        :return: None
         """
         if should_show:
             self.progress_bar.grid(row=2, column=1, padx=40, pady=0, sticky=ctk.EW)
@@ -1309,13 +1397,17 @@ class MainWindow(ctk.CTkFrame):
         else:
             self.progress_bar.grid_forget()
 
-    def _toggle_frm_subtitle_options_visibility(self):
-        if (
-            self._config_transcription.method == TranscriptionMethod.WHISPERX.value
-            and (
-                "srt" in self._config_whisperx.output_file_types
-                or "vtt" in self._config_whisperx.output_file_types
-            )
+    def _toggle_frm_subtitle_options_visibility(self) -> None:
+        """
+        Toggle the visibility of `frm_subtitle_options` depending on whether the
+        transcription method allows to configure subtitle generation and whether
+        any of the selected output file types is a subtitle file type.
+
+        :return: None
+        """
+        if self._config_transcription.method == TranscriptionMethod.WHISPERX.value and (
+            "srt" in self._config_whisperx.output_file_types
+            or "vtt" in self._config_whisperx.output_file_types
         ):
             if "srt" in self._config_whisperx.output_file_types:
                 self.chk_output_file_srt.select()
@@ -1326,7 +1418,16 @@ class MainWindow(ctk.CTkFrame):
         else:
             self.frm_subtitle_options.grid_remove()
 
-    def _change_appearance_mode_event(self, new_appearance_mode: str):
+    def _on_use_cpu_change(self) -> None:
+        new_value = "True" if self.chk_use_cpu.get() else "False"
+
+        self._on_config_change(
+            section=ConfigWhisperX.Key.SECTION,
+            key=ConfigWhisperX.Key.USE_CPU,
+            new_value=new_value,
+        )
+
+    def _change_appearance_mode_event(self, new_appearance_mode: str) -> None:
         """
         Changes the appearance mode of the application and stores it in the
         configuration file.
@@ -1334,6 +1435,7 @@ class MainWindow(ctk.CTkFrame):
         :param new_appearance_mode: The new appearance mode to set for the application.
                                     It can be "Light", "Dark" or "System".
         :type new_appearance_mode: str
+        :return: None
         """
         ctk.set_appearance_mode(new_appearance_mode)
 
@@ -1344,7 +1446,9 @@ class MainWindow(ctk.CTkFrame):
         )
 
     @staticmethod
-    def _on_config_change(section: str, key: str, new_value: str):
+    def _on_config_change(
+        section: ConfigManager.KeyType, key: ConfigManager.KeyType, new_value: str
+    ) -> None:
         """
         Updates a configuration value. It modifies the specified value in the
         configuration file using the `ConfigManager.modify_value` method.
@@ -1355,5 +1459,6 @@ class MainWindow(ctk.CTkFrame):
         :type key: str
         :param new_value: The new value to replace the existing one.
         :type new_value: str
+        :return: None
         """
-        cm.ConfigManager.modify_value(section, key, new_value)
+        ConfigManager.modify_value(section, key, new_value)

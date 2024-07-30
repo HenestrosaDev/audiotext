@@ -12,7 +12,7 @@ Overview
 In this section, provide a brief overview of the enhancement you are proposing.
 
 
-Motivation 
+Motivation
 ------------------
 
 In this section, describe the motivation behind the enhancement. What problem are you trying to solve? How will this enhancement benefit users of the project?

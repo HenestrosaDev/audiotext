@@ -34,7 +34,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         frame_border_color=None,
         text_color=None,
         autocomplete=False,
-        **button_kwargs
+        **button_kwargs,
     ):
         super().__init__(
             master=attach.winfo_toplevel(), bg_color=attach.cget("bg_color")
@@ -53,6 +53,11 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         )
         self.attach.winfo_toplevel().bind(
             "<ButtonPress>",
+            lambda e: self._withdraw() if not self.disable else None,
+            add="+",
+        )
+        self.bind(
+            "<Escape>",
             lambda e: self._withdraw() if not self.disable else None,
             add="+",
         )
@@ -192,7 +197,9 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
     def _update(self, a, b, c):
         self.live_update(self.attach._entry.get())
 
-    def bind_autocomplete(self):
+    def bind_autocomplete(
+        self,
+    ):
         def appear(x):
             self.appear = True
 
@@ -222,7 +229,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                 else None,
                 anchor=self.justify,
                 command=lambda k=row: self._attach_key_press(k),
-                **button_kwargs
+                **button_kwargs,
             )
             self.widgets[self.i].pack(fill="x", pady=2, padx=(self.padding, 0))
             self.i += 1
@@ -259,6 +266,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                 self.height_new = self.height
 
         self.frame.configure(width=self.width_new, height=self.height_new)
+        self.frame._scrollbar.configure(height=self.height_new)
         self.place(x=self.x_pos, y=self.y_pos)
 
         if sys.platform.startswith("darwin"):
@@ -340,7 +348,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
             text_color=self.text_color,
             anchor=self.justify,
             command=lambda k=value: self._attach_key_press(k),
-            **kwargs
+            **kwargs,
         )
         self.widgets[self.i].pack(fill="x", pady=2, padx=(self.padding, 0))
         self.i += 1
@@ -392,8 +400,14 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                     i += 1
 
         if "button_color" in kwargs:
+            button_color = kwargs.pop("button_color")
             for key in self.widgets.keys():
-                self.widgets[key].configure(fg_color=kwargs.pop("button_color"))
+                self.widgets[key].configure(fg_color=button_color)
+
+        if "font" in kwargs:
+            font = kwargs.pop("font")
+            for key in self.widgets.keys():
+                self.widgets[key].configure(font=font)
 
         for key in self.widgets.keys():
             self.widgets[key].configure(**kwargs)

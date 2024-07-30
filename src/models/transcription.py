@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -16,4 +16,4 @@ class Transcription:
     should_translate: bool = False
     should_autosave: bool = False
     should_overwrite: bool = False
-    youtube_url: str = None
+    youtube_url: Optional[str] = None

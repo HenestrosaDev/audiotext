@@ -14,7 +14,9 @@ datas = [
     (r'venv/Lib/site-packages/pyannote', 'pyannote'),
     (r'venv/Lib/site-packages/asteroid_filterbanks', 'asteroid_filterbanks'),
     (r'venv/Lib/site-packages/whisperx', 'whisperx'),
-    ('res', 'res')
+    ('res', 'res'),
+    ('config.ini', '.'),
+    ('.env', '.'),
 ]
 
 datas += copy_metadata('torch')
@@ -122,6 +124,3 @@ else:
         upx_exclude=[],
         name='audiotext',
     )
-
-copyfile('config.ini', '{0}/audiotext/config.ini'.format(DISTPATH))
-copyfile('.env', '{0}/audiotext/.env'.format(DISTPATH))

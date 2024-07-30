@@ -4,7 +4,7 @@ import customtkinter as ctk
 from utils.enums import Color
 
 
-class CTkInputDialog(ctk.CTkToplevel):
+class CTkInputDialog(ctk.CTkToplevel):  # type: ignore
     """
     Dialog with extra window, message, entry widget, cancel and ok button.
     For detailed information check out the documentation.
@@ -21,7 +21,7 @@ class CTkInputDialog(ctk.CTkToplevel):
         entry_border_color: Optional[Union[str, Tuple[str, str]]] = None,
         entry_text_color: Optional[Union[str, Tuple[str, str]]] = None,
         title: str = "CTkDialog",
-        font: Optional[Union[tuple, ctk.CTkFont]] = None,
+        font: Optional[Union[Tuple[int, str], ctk.CTkFont]] = None,
         label_text: str = "CTkDialog",
         entry_text: Optional[str] = None,
     ):
@@ -85,7 +85,7 @@ class CTkInputDialog(ctk.CTkToplevel):
         self.resizable(False, False)
         self.grab_set()  # make other windows not clickable
 
-    def _create_widgets(self):
+    def _create_widgets(self) -> None:
         self.grid_columnconfigure((0, 1), weight=1)
         self.rowconfigure(0, weight=1)
 
@@ -150,19 +150,19 @@ class CTkInputDialog(ctk.CTkToplevel):
         self.after(150, lambda: self._entry.focus())
         self._entry.bind("<Return>", self._ok_event)
 
-    def _ok_event(self):
+    def _ok_event(self) -> None:
         self._user_input = self._entry.get()
         self.grab_release()
         self.destroy()
 
-    def _on_closing(self):
+    def _on_closing(self) -> None:
         self.grab_release()
         self.destroy()
 
-    def _cancel_event(self):
+    def _cancel_event(self) -> None:
         self.grab_release()
         self.destroy()
 
-    def get_input(self):
+    def get_input(self) -> Union[str, None]:
         self.master.wait_window(self)
         return self._user_input

@@ -2,6 +2,8 @@ import os
 import shutil
 import traceback
 from io import BytesIO
+from pathlib import Path
+from typing import Callable, Optional
 
 import speech_recognition as sr
 from models.transcription import Transcription
@@ -15,21 +17,27 @@ from utils.path_helper import ROOT_PATH
 class AudioHandler:
     @staticmethod
     def get_transcription(
-        transcription: Transcription, should_split_on_silence: bool, transcription_func
+        transcription: Transcription,
+        should_split_on_silence: bool,
+        transcription_func: Callable[[sr.AudioData, Transcription], str],
     ) -> str:
         """
         Transcribes audio from a file using the Google Speech-to-Text API.
 
         :param transcription: An instance of Transcription containing information
                               about the audio file.
+        :type transcription: Transcription
         :param should_split_on_silence: A boolean flag indicating whether the audio
                                         should be split into chunks based on silence.
                                         If True, the audio will be split on silence
                                         and each chunk will be transcribed separately.
                                         If False, the entire audio will be transcribed
                                         as a single segment.
+        :type should_split_on_silence: bool
         :param transcription_func: The function to use for transcription.
+        :type transcription_func: Callable[[sr.AudioData, Transcription], str]
         :return: The transcribed text or an error message if transcription fails.
+        :rtype: str
         """
         chunks_directory = ROOT_PATH / "audio-chunks"
         chunks_directory.mkdir(exist_ok=True)
@@ -59,13 +67,18 @@ class AudioHandler:
         return text
 
     @staticmethod
-    def load_audio_file(file_path, chunks_directory):
+    def load_audio_file(
+        file_path: Path, chunks_directory: Path
+    ) -> Optional[AudioSegment]:
         """
         Load the audio from the file or extract it from the video.
 
         :param file_path: Path to the file to be loaded.
+        :type file_path: Path
         :param chunks_directory: Directory to store intermediate audio files.
+        :type chunks_directory: Path
         :return: Loaded AudioSegment object or None if unsupported file type.
+        :rtype: Optional[AudioSegment]
         """
         content_type = file_path.suffix
 
@@ -81,12 +94,14 @@ class AudioHandler:
         return None
 
     @staticmethod
-    def split_audio_into_chunks(sound):
+    def split_audio_into_chunks(sound: AudioSegment) -> AudioSegment:
         """
         Split the audio into chunks based on silence.
 
         :param sound: The AudioSegment object to be split.
+        :type sound: AudioSegment
         :return: List of audio chunks.
+        :rtype: AudioSegment
         """
         return split_on_silence(
             sound,
@@ -98,18 +113,25 @@ class AudioHandler:
 
     @staticmethod
     def process_audio_chunks(
-        audio_chunks, transcription, transcription_func, chunks_directory
-    ):
+        audio_chunks: list[AudioSegment],
+        transcription: Transcription,
+        transcription_func: Callable[[sr.AudioData, Transcription], str],
+        chunks_directory: Path,
+    ) -> str:
         """
         Process each audio chunk for transcription.
 
         :param audio_chunks: List of audio chunks.
+        :type audio_chunks: list[AudioSegment]
         :param transcription: Transcription object containing transcription details.
+        :type transcription: Transcription
         :param transcription_func: The function to use for transcription.
+        :type transcription_func: Callable[[sr.AudioData, Transcription], str]
         :param chunks_directory: Directory to store intermediate audio files.
+        :type chunks_directory: Path
         :return: The combined transcribed text.
+        :rtype: str
         """
-        text = ""
         recognizer = sr.Recognizer()
 
         for idx, audio_chunk in enumerate(audio_chunks):
@@ -122,23 +144,25 @@ class AudioHandler:
 
                 try:
                     chunk_text = transcription_func(
-                        audio_data=audio_data,
-                        transcription=transcription,
+                        audio_data,
+                        transcription,
                     )
-                    text += chunk_text
                     print(f"chunk text: {chunk_text}")
+                    return chunk_text
 
                 except Exception:
                     return traceback.format_exc()
 
-        return text
+        return ""
 
     @staticmethod
-    def cleanup(chunks_directory):
+    def cleanup(chunks_directory: Path) -> None:
         """
         Clean up the `chunks` directory.
 
         :param chunks_directory: Directory to be deleted.
+        :type chunks_directory: Path
+        :rtype: None
         """
         shutil.rmtree(chunks_directory)
 

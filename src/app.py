@@ -10,8 +10,8 @@ from utils.enums import ComputeType
 from views.main_window import MainWindow
 
 
-class App(ctk.CTk):
-    def __init__(self):
+class App(ctk.CTk):  # type: ignore[misc]
+    def __init__(self) -> None:
         super().__init__()
 
         # Get config_system to set the initial appearance mode

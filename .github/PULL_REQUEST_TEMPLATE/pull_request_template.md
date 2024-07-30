@@ -28,6 +28,3 @@ Put an x in the boxes that apply.
 
 ## Additional Notes
 Please provide any additional information or context about your changes here.
-
-
-
