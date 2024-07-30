@@ -25,7 +25,8 @@ class OpenAiApiHandler(Transcribable):
         )
 
         client = OpenAI(
-            api_key=EnvKeys.OPENAI_API_KEY.get_value(), timeout=120.0  # 2 minutes
+            api_key=EnvKeys.OPENAI_API_KEY.get_value(),
+            timeout=120.0,  # 2 minutes
         )
 
         if timestamp_granularities:

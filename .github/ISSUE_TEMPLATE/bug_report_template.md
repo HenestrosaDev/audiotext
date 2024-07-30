@@ -1,5 +1,5 @@
 ---
-name: Bug Report 
+name: Bug Report
 about: Create a report to help us improve
 title: "[Bug] "
 labels: ''
@@ -34,7 +34,7 @@ System information
 
 - **System**: (For example, "Ubuntu 20.04 LTS x64", "Windows 11 x64", or "macOS Monterey")
 - **System language**: (Please, indicate the region as well)
-- **Audiotext version**: 
+- **Audiotext version**:
 
 
 Code To Duplicate
