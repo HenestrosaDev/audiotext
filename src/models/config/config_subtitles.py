@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 
 @dataclass
@@ -19,7 +18,7 @@ class ConfigSubtitles:
         MAX_LINE_COUNT = "max_line_count"
         MAX_LINE_WIDTH = "max_line_width"
 
-        def value_type(self) -> Optional[str]:
+        def value_type(self) -> str:
             """
             Get the value type associated with the ConfigKey.
 
@@ -32,4 +31,4 @@ class ConfigSubtitles:
                 ConfigSubtitles.Key.MAX_LINE_WIDTH: "int",
             }
 
-            return str(type_mapping.get(self, None))
+            return str(type_mapping.get(self))

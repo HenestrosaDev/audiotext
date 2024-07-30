@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Literal
 
 
 @dataclass
@@ -25,7 +25,7 @@ class ConfigWhisperX:
         CAN_USE_GPU = "can_use_gpu"
         OUTPUT_FILE_TYPES = "output_file_types"
 
-        def value_type(self) -> Optional[str]:
+        def value_type(self) -> str:
             """
             Get the value type associated with the ConfigKey.
 
@@ -41,4 +41,4 @@ class ConfigWhisperX:
                 ConfigWhisperX.Key.OUTPUT_FILE_TYPES: "str",
             }
 
-            return str(type_mapping.get(self, None))
+            return str(type_mapping.get(self))

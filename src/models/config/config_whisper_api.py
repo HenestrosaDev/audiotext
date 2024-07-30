@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Literal, Optional
+from typing import Literal
 
 
 @dataclass
@@ -19,7 +19,7 @@ class ConfigWhisperApi:
         TEMPERATURE = "temperature"
         TIMESTAMP_GRANULARITIES = "timestamp_granularities"
 
-        def value_type(self) -> Optional[str]:
+        def value_type(self) -> str:
             """
             Get the value type associated with the ConfigKey.
 
@@ -32,4 +32,4 @@ class ConfigWhisperApi:
                 ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES: "str",
             }
 
-            return str(type_mapping.get(self, None))
+            return str(type_mapping.get(self))
