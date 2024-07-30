@@ -2,12 +2,14 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Literal
 
+TimestampGranularitiesType = Literal["word", "segment"]
+
 
 @dataclass
 class ConfigWhisperApi:
     response_format: Literal["json", "text", "srt", "verbose_json", "vtt"]
     temperature: float
-    timestamp_granularities: str
+    timestamp_granularities: list[TimestampGranularitiesType]
 
     class Key(Enum):
         """
@@ -29,7 +31,7 @@ class ConfigWhisperApi:
             type_mapping = {
                 ConfigWhisperApi.Key.RESPONSE_FORMAT: "str",
                 ConfigWhisperApi.Key.TEMPERATURE: "float",
-                ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES: "str",
+                ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES: "list",
             }
 
             return str(type_mapping.get(self))

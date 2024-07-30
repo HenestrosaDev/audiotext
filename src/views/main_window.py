@@ -9,8 +9,10 @@ from controllers.main_controller import MainController
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.config.config_transcription import ConfigTranscription
-from models.config.config_whisper_api import ConfigWhisperApi
-from models.config.config_whisperx import ConfigWhisperX
+from models.config.config_whisper_api import (
+    ConfigWhisperApi,
+    TimestampGranularitiesType,
+)
 from models.transcription import Transcription
 from PIL import Image
 from utils.config_manager import ConfigManager
@@ -1352,7 +1354,9 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :return: None
         """
         # Dictionary mapping checkboxes to their corresponding file types
-        chk_to_timestamp_granularity = {
+        chk_to_timestamp_granularity: dict[
+            ctk.CTkCheckBox, TimestampGranularitiesType
+        ] = {
             self.chk_timestamp_granularities_segment: TimestampGranularities.SEGMENT.value,
             self.chk_timestamp_granularities_word: TimestampGranularities.WORD.value,
         }
@@ -1369,7 +1373,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             selected_timestamp_granularities
         )
         self._config_whisper_api.timestamp_granularities = (
-            selected_timestamp_granularities_str
+            selected_timestamp_granularities
         )
 
         # Notify the config change
