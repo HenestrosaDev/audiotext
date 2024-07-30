@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 from pathlib import Path
-from typing import Optional, Union
+from typing import Any, Union
 
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
@@ -21,7 +21,7 @@ class ConfigManager:
     ]
 
     @staticmethod
-    def read_config(file_path: Path = _CONFIG_FILE_PATH) -> Optional[ConfigParser]:
+    def read_config(file_path: Path = _CONFIG_FILE_PATH) -> ConfigParser:
         config = ConfigParser(
             converters={
                 "list": lambda x: [i.strip() for i in x.split(",")]
