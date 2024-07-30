@@ -81,7 +81,10 @@ class WhisperXHandler:
             return traceback.format_exc()
 
     def save_transcription(
-        self, file_path: Path, output_file_types: list[str], should_overwrite: bool
+        self,
+        file_path: Path,
+        output_file_types: list[str],
+        should_overwrite: bool,
     ) -> None:
         """
         Save the transcription as the specified file types.
