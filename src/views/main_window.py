@@ -13,6 +13,7 @@ from models.config.config_whisper_api import (
     ConfigWhisperApi,
     TimestampGranularitiesType,
 )
+from models.config.config_whisperx import ConfigWhisperX, OutputFileTypes
 from models.transcription import Transcription
 from PIL import Image
 from utils.config_manager import ConfigManager
@@ -24,6 +25,7 @@ from utils.enums import (
     TimestampGranularities,
     TranscriptionMethod,
     WhisperApiResponseFormats,
+    WhisperXFileTypes,
 )
 from utils.env_keys import EnvKeys
 
@@ -862,9 +864,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             properties["should_translate"] = bool(
                 self.chk_whisper_options_translate.get()
             )
-            properties[
-                "output_file_types"
-            ] = self._config_whisperx.output_file_types.split(",")
+            properties["output_file_types"] = self._config_whisperx.output_file_types
 
         return properties
 
@@ -1270,35 +1270,35 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :return: None
         """
         # Dictionary mapping checkboxes to their corresponding file types
-        checkbox_to_file_type = {
-            self.chk_output_file_vtt: "vtt",
-            self.chk_output_file_srt: "srt",
-            self.chk_output_file_txt: "txt",
-            self.chk_output_file_json: "json",
-            self.chk_output_file_tsv: "tsv",
-            self.chk_output_file_aud: "aud",
+        chk_to_output_file_type: dict[ctk.CTkCheckBox, OutputFileTypes] = {
+            self.chk_output_file_aud: WhisperXFileTypes.AUD.value,
+            self.chk_output_file_json: WhisperXFileTypes.JSON.value,
+            self.chk_output_file_srt: WhisperXFileTypes.SRT.value,
+            self.chk_output_file_tsv: WhisperXFileTypes.TSV.value,
+            self.chk_output_file_txt: WhisperXFileTypes.TXT.value,
+            self.chk_output_file_vtt: WhisperXFileTypes.VTT.value,
         }
 
         # List comprehension to gather selected file types
-        output_file_types = [
-            file_type for chk, file_type in checkbox_to_file_type.items() if chk.get()
+        selected_output_file_types = [
+            file_type for chk, file_type in chk_to_output_file_type.items() if chk.get()
         ]
 
         # Show or hide the subtitle options frame based on the selected subtitle file types
-        if any(file_type in output_file_types for file_type in {"vtt", "srt"}):
+        if any(file_type in selected_output_file_types for file_type in {"vtt", "srt"}):
             self.frm_subtitle_options.grid()
         else:
             self.frm_subtitle_options.grid_remove()
 
         # Convert the list to a comma-separated string and update the configuration
-        output_file_types_str = ",".join(output_file_types)
-        self._config_whisperx.output_file_types = output_file_types_str
+        selected_output_file_types_str = ",".join(selected_output_file_types)
+        self._config_whisperx.output_file_types = selected_output_file_types
 
         # Notify the config change
         self._on_config_change(
             section=ConfigWhisperX.Key.SECTION,
             key=ConfigWhisperX.Key.OUTPUT_FILE_TYPES,
-            new_value=output_file_types_str,
+            new_value=selected_output_file_types_str,
         )
 
     def _toggle_chk_timestamp_granularities(self) -> None:
