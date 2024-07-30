@@ -100,7 +100,7 @@
   - [Built With](#built-with)
 - [Getting Started](#getting-started)
   - [Installation](#installation)
-  - [Set Up the Project Locally](#set-up-the-project-locally)
+  - [Setting Up the Project Locally](#setting-up-the-project-locally)
   - [Notes](#notes)
 - [Usage](#usage)
   - [Transcription Language](#transcription-language)
@@ -470,7 +470,8 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 3. Decompress the downloaded file.
 4. Open the `audiotext` folder and double-click the `Audiotext` executable file.
 
-### Set Up the Project Locally
+### Setting Up the Project Locally
+
 1. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
 2. Change the current working directory to `audiotext` by running `cd audiotext`.
 3. (Optional but recommended) Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`.
@@ -486,10 +487,13 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    source venv/Scripts/activate
    ```
 5. Run `pip install -r requirements.txt` to install the dependencies.
-6. Copy and paste the `.env.example` file as `.env` to the root of the directory.
-7. Run `python src/app.py` to start the program.
+6. (Optional) If you want to contribute to the project, run `pip install -r requirements-dev.txt` to install the development dependencies.
+7. (Optional) If you followed step 6, run `pre-commit` to install the pre-commit hooks in your `.git/` directory.
+8. Copy and paste the `.env.example` file as `.env` to the root of the directory.
+9. Run `python src/app.py` to start the program.
 
 ### Notes
+
 - You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
 - For **Apple Silicon Macs**: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
 - I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169 that changes `logger=logger` to `logger=None` to avoid more errors related to opening the console.
