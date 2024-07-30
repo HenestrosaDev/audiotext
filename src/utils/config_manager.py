@@ -22,7 +22,13 @@ class ConfigManager:
 
     @staticmethod
     def read_config(file_path: Path = _CONFIG_FILE_PATH) -> Optional[ConfigParser]:
-        config = ConfigParser()
+        config = ConfigParser(
+            converters={
+                "list": lambda x: [i.strip() for i in x.split(",")]
+                if len(x) > 0
+                else []
+            }
+        )
         config.read(file_path)
         return config
 
@@ -125,11 +131,9 @@ class ConfigManager:
                 return config.getint(section_name, key_name)
             elif key_value_type == "float":
                 return config.getfloat(section_name, key_name)
-        else:
-            print(
-                f"Section [{section_name}] or Key [{key_name}] not found in the config"
-            )
-            return None
+            elif key_value_type == "list":
+                return config.getlist(section_name, key_name)  # type: ignore
+
 
     @staticmethod
     def modify_value(
