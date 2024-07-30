@@ -1,15 +1,19 @@
 import os
 import traceback
 from pathlib import Path
+from typing import Optional, Union
 
 import utils.config_manager as cm
 import whisperx
 from models.transcription import Transcription
+from whisperx.types import AlignedTranscriptionResult, TranscriptionResult
 
 
 class WhisperXHandler:
-    def __init__(self):
-        self._whisperx_result = None
+    def __init__(self) -> None:
+        self._whisperx_result: Optional[
+            Union[TranscriptionResult, AlignedTranscriptionResult]
+        ] = None
 
     async def transcribe_file(self, transcription: Transcription) -> str:
         """
@@ -21,6 +25,12 @@ class WhisperXHandler:
         :return: The transcribed text or an error message if transcription fails.
         :rtype: str
         """
+        if not transcription.output_file_types:
+            raise ValueError(
+                "No output file types specified. Please make sure to select at least "
+                "one."
+            )
+
         config_whisperx = cm.ConfigManager.get_config_whisperx()
 
         device = "cpu" if config_whisperx.use_cpu else "cuda"
@@ -40,6 +50,9 @@ class WhisperXHandler:
             self._whisperx_result = model.transcribe(
                 audio, batch_size=config_whisperx.batch_size
             )
+
+            if self._whisperx_result is None:
+                raise ValueError("Something went wrong while transcribing.")
 
             text_combined = " ".join(
                 segment["text"].strip() for segment in self._whisperx_result["segments"]
@@ -68,8 +81,11 @@ class WhisperXHandler:
             return traceback.format_exc()
 
     def save_transcription(
-        self, file_path: Path, output_file_types: list[str], should_overwrite: bool
-    ):
+        self,
+        file_path: Path,
+        output_file_types: list[str],
+        should_overwrite: bool,
+    ) -> None:
         """
         Save the transcription as the specified file types.
 
@@ -96,6 +112,6 @@ class WhisperXHandler:
                 writer = whisperx.transcribe.get_writer(output_type, str(output_dir))
 
                 # https://github.com/m-bain/whisperX/issues/455#issuecomment-1707547704
-                self._whisperx_result["language"] = "en"
+                self._whisperx_result["language"] = "en"  # type: ignore[index]
 
                 writer(self._whisperx_result, file_path, vars(config_subtitles))

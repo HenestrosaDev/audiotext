@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 
 @dataclass
@@ -15,8 +14,13 @@ class ConfigSystem:
         SECTION = "system"
         APPEARANCE_MODE = "appearance_mode"
 
-        def value_type(self) -> Optional[str]:
-            """Get the value type associated with the ConfigKey."""
-            type_mapping = {self.APPEARANCE_MODE: "str"}
+        def value_type(self) -> str:
+            """
+            Get the value type associated with the ConfigKey.
 
-            return type_mapping.get(self, None)
+            :return: The type of the value as a string, or None if the key is not found.
+            :rtype: str
+            """
+            type_mapping = {ConfigSystem.Key.APPEARANCE_MODE: "str"}
+
+            return str(type_mapping.get(self))

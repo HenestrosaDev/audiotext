@@ -59,6 +59,6 @@ class WhisperXFileTypes(Enum):
     AUD = "aud"
     JSON = "json"
     SRT = "srt"
-    TEXT = "txt"
+    TXT = "txt"
     TSV = "tsv"
     VTT = "vtt"
