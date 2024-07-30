@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Literal
 
+OutputFileTypes = Literal["aud", "json", "srt", "tsv", "txt", "vtt"]
+
 
 @dataclass
 class ConfigWhisperX:
@@ -10,7 +12,7 @@ class ConfigWhisperX:
     compute_type: str
     use_cpu: bool
     can_use_gpu: bool
-    output_file_types: str
+    output_file_types: list[OutputFileTypes]
 
     class Key(Enum):
         """
@@ -38,7 +40,7 @@ class ConfigWhisperX:
                 ConfigWhisperX.Key.COMPUTE_TYPE: "str",
                 ConfigWhisperX.Key.USE_CPU: "bool",
                 ConfigWhisperX.Key.CAN_USE_GPU: "bool",
-                ConfigWhisperX.Key.OUTPUT_FILE_TYPES: "str",
+                ConfigWhisperX.Key.OUTPUT_FILE_TYPES: "list",
             }
 
             return str(type_mapping.get(self))
