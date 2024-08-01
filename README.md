@@ -29,6 +29,13 @@
   <h1 align="center">Audiotext</h1>
   <p align="center">A desktop application that transcribes audio from files, microphone input or YouTube videos with the option to translate the content and create subtitles.</p>
   <p>
+    <a href="https://github.com/HenestrosaDev/audiotext/actions/workflows/code-quality.yml">
+      <img
+        src="https://github.com/HenestrosaDev/audiotext/actions/workflows/code-quality.yml/badge.svg"
+        alt="Code Quality badge status"
+      />
+    </a>
+    <br>
     <a href="https://github.com/HenestrosaDev/audiotext/releases/latest">
       <img
         src="https://img.shields.io/github/v/release/HenestrosaDev/audiotext"
