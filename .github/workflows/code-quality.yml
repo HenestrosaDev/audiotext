@@ -31,4 +31,4 @@ jobs:
         pip install -r requirements.txt -r requirements-dev.txt
     - name: Run pre-commit
       run: |
-        pre-commit run --all-files --show-diff-on-failure
+        SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
