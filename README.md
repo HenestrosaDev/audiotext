@@ -29,6 +29,13 @@
   <h1 align="center">Audiotext</h1>
   <p align="center">A desktop application that transcribes audio from files, microphone input or YouTube videos with the option to translate the content and create subtitles.</p>
   <p>
+    <a href="https://github.com/HenestrosaDev/audiotext/actions/workflows/code-quality.yml">
+      <img
+        src="https://github.com/HenestrosaDev/audiotext/actions/workflows/code-quality.yml/badge.svg"
+        alt="Code Quality badge status"
+      />
+    </a>
+    <br>
     <a href="https://github.com/HenestrosaDev/audiotext/releases/latest">
       <img
         src="https://img.shields.io/github/v/release/HenestrosaDev/audiotext"
@@ -480,15 +487,15 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    source venv/Scripts/activate
    ```
 5. Run `pip install -r requirements.txt` to install the dependencies.
-6. (Optional) If you want to contribute to the project, run `pip install -r requirements-dev.txt` to install the development dependencies.
-7. (Optional) If you followed step 6, run `pre-commit` to install the pre-commit hooks in your `.git/` directory.
+6. (Optional) If you intend to contribute to the project, run `pip install -r requirements-dev.txt` to install the development dependencies.
+7. (Optional) If you followed step 6, run `pre-commit install` to install the pre-commit hooks in your `.git/` directory.
 8. Copy and paste the `.env.example` file as `.env` to the root of the directory.
 9. Run `python src/app.py` to start the program.
 
 ### Notes
 
 - You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
-- For **Apple Silicon Macs**: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
+- For **Apple Silicon Macs** and **Ubuntu** users: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
 - I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169 that changes `logger=logger` to `logger=None` to avoid more errors related to opening the console.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -958,8 +965,8 @@ If you are using an API key that was created before you funded your account for 
 - [x] Add support for `.json`, `.tsv` and `.aud` output file types when using WhisperX as transcription method.
 - [x] Add `appearance_mode` to `config.ini`.
 - [x] Add support for **Whisper's API** ([#42](https://github.com/HenestrosaDev/audiotext/discussions/42)).
-- [x] Add pre-commit configuration for using `ruff` and `mypy`.
-- [x] Set up a CI pipeline to apply the pre-commit hooks.
+- [x] Add `pre-commit` to use the `ruff` and `mypy` hooks.
+- [x] Set up a CI pipeline to check code quality on pull requests and pushes to main by running the pre-commit hooks.
 - [ ] Change the `Generate transcription` button to `Cancel transcription` when a transcription is in progress.
 - [ ] Generate executables for macOS and Linux.
 - [ ] Add tests.
