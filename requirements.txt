@@ -3,7 +3,7 @@
 customtkinter==5.2.1
 moviepy==1.0.3
 openai==1.36.0
-pyaudio==0.2.13
+pyaudio==0.2.14
 pydub==0.25.1
 python-dotenv==1.0.1
 pytubefix==6.5.2
