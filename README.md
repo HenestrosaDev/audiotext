@@ -639,7 +639,7 @@ When you click on the `Save transcription` button, you'll be prompted for a file
 
 #### Autosave
 
-If checked, the transcription will automatically be saved in the root of the folder where the file to transcribe is stored. If there are already existing files with the same name, they won't be overwritten. To do that, you'll need to check the `Overwrite existing files` option (see below).
+Unchecked by default. If checked, the transcription will automatically be saved in the root of the folder where the file to transcribe is stored. If there are already existing files with the same name, they won't be overwritten. To do that, you'll need to check the `Overwrite existing files` option (see below).
 
 Note that if you create a transcription using the `Microphone` or `YouTube` audio sources with the `Autosave` action enabled, the transcription files will be saved in the root of the `audiotext-vX.X.X` directory.
 
