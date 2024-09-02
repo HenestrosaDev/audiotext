@@ -23,7 +23,7 @@ class App(ctk.CTk):  # type: ignore[misc]
         ctk.set_default_color_theme("blue")
 
         self.title(c.APP_NAME)
-        self.wm_iconbitmap(ph.ROOT_PATH / ph.IMG_RELATIVE_PATH / "icon.ico")
+        self.wm_iconbitmap(ph.ROOT_PATH / "res/windows/icon.ico")
 
         # Initial size of the window
         width = 1000
