@@ -952,26 +952,9 @@ If you are using an API key that was created before you funded your account for 
 
 ## Roadmap
 
-- [x] Add support for [**WhisperX**](https://github.com/m-bain/whisperX).
-- [x] Generate `.srt` and `.vtt` files for subtitles (only for **WhisperX**).
-- [x] Add "Stop recording" button state when recording from the microphone.
-- [x] Add a dialogue to let users input their **Google Speech-To-Text API** key.
-- [x] Add subtitle options.
-- [x] Add advanced options for **WhisperX**.
-- [x] Add the option to transcribe YouTube videos.
-- [x] Add checkbox to automatically save the generated transcription ([#17](https://github.com/HenestrosaDev/audiotext/issues/17)).
-- [x] Allow transcription of multiple files from a directory.
-- [x] Add `Output file types` option to `WhisperX options`.
-- [x] Add support for `.json`, `.tsv` and `.aud` output file types when using WhisperX as transcription method.
-- [x] Add `appearance_mode` to `config.ini`.
-- [x] Add support for **Whisper's API** ([#42](https://github.com/HenestrosaDev/audiotext/discussions/42)).
-- [x] Add `pre-commit` to use the `ruff` and `mypy` hooks.
-- [x] Set up a CI pipeline to check code quality on pull requests and pushes to main by running the pre-commit hooks.
-- [ ] Change the `Generate transcription` button to `Cancel transcription` when a transcription is in progress.
-- [ ] Generate executables for macOS and Linux.
-- [ ] Add tests.
+See the [project backlog](https://github.com/users/HenestrosaDev/projects/1).
 
-You can propose a new feature creating an [issue](https://github.com/HenestrosaDev/audiotext/issues/new/choose).
+You can propose a new feature by creating a [discussion](https://github.com/HenestrosaDev/audiotext/discussions/new?category=ideas)!
 
 <!-- AUTHORS -->
 
