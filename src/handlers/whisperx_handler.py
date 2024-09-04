@@ -113,6 +113,6 @@ class WhisperXHandler:
 
                 # https://github.com/m-bain/whisperX/issues/455#issuecomment-1707547704
                 if self._whisperx_result:
-                    self._whisperx_result["language"] = "en"  # type: ignore[index]
+                    self._whisperx_result["language"] = "en"
 
                 writer(self._whisperx_result, file_path, vars(config_subtitles))

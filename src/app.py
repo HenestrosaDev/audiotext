@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import torch
 import utils.config_manager as cm
 import utils.constants as c
 import utils.path_helper as ph
@@ -34,6 +33,9 @@ class App(ctk.CTk):  # type: ignore[misc]
         min_width = 500
         min_height = 250
         self.minsize(min_width, min_height)
+
+        # Place the torch import here to avoid the "No ffmpeg exe could be found" error
+        import torch
 
         # Check GPU
         cm.ConfigManager.modify_value(
