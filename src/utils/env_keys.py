@@ -2,9 +2,10 @@ import os
 from enum import Enum
 from typing import Optional
 
-from dotenv import find_dotenv, load_dotenv
+import utils.path_helper as ph
+from dotenv import load_dotenv
 
-load_dotenv(find_dotenv())
+load_dotenv(ph.ROOT_PATH / ".env")
 
 
 class EnvKeys(Enum):

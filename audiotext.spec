@@ -1,46 +1,65 @@
 # -*- mode: python ; coding: utf-8 -*-
-from os.path import join
-from platform import system
-from PyInstaller.utils.hooks import copy_metadata
-from PyInstaller.utils.hooks import collect_data_files
-from shutil import copyfile
+from pathlib import Path
+from PyInstaller.compat import is_darwin, is_win
+import shutil
+
+import sys ; sys.setrecursionlimit(sys.getrecursionlimit() * 5)
+
+def find_site_packages(venv_dir = "venv"):
+    venv_path = Path(venv_dir)
+    for site_packages in venv_path.rglob("site-packages"):
+        if site_packages.is_dir():
+            return site_packages
+
+    return None
+
+site_packages_path = find_site_packages()
 
 datas = [
-    (r'venv/Lib/site-packages/customtkinter', 'customtkinter'),
-    (r'venv/Lib/site-packages/transformers', 'transformers'),
-    (r'venv/Lib/site-packages/lightning', 'lightning'),
-    (r'venv/Lib/site-packages/lightning_fabric', 'lightning_fabric'),
-    (r'venv/Lib/site-packages/speechbrain', 'speechbrain'),
-    (r'venv/Lib/site-packages/pyannote', 'pyannote'),
-    (r'venv/Lib/site-packages/asteroid_filterbanks', 'asteroid_filterbanks'),
-    (r'venv/Lib/site-packages/whisperx', 'whisperx'),
-    ('res', 'res'),
-    ('config.ini', '.'),
-    ('.env', '.'),
+    (f"{site_packages_path}/customtkinter", "customtkinter"),
+    (f"{site_packages_path}/transformers", "transformers"),
+    (f"{site_packages_path}/lightning", "lightning"),
+    (f"{site_packages_path}/lightning_fabric", "lightning_fabric"),
+    (f"{site_packages_path}/speechbrain", "speechbrain"),
+    (f"{site_packages_path}/pyannote", "pyannote"),
+    (f"{site_packages_path}/asteroid_filterbanks", "asteroid_filterbanks"),
+    (f"{site_packages_path}/whisperx", "whisperx"),
+    (f"{site_packages_path}/librosa", "librosa"),
+    ("res", "res"),
+    ("config.ini", "."),
+    (".env", "."),
 ]
 
-datas += copy_metadata('torch')
-datas += copy_metadata('tqdm', recursive=True)
-datas += copy_metadata('regex')
-datas += copy_metadata('requests')
-datas += copy_metadata('packaging')
-datas += copy_metadata('filelock')
-datas += copy_metadata('numpy')
-datas += copy_metadata('tokenizers')
-datas += copy_metadata('pillow')
-datas += copy_metadata('huggingface_hub')
-datas += copy_metadata('safetensors')
-datas += copy_metadata('pyyaml')
-datas += collect_data_files('librosa')
+hiddenimports = [
+    "huggingface_hub.repository",
+    "sklearn.utils._cython_blas",
+    "sklearn.neighbors.quad_tree",
+    "sklearn.tree",
+    "sklearn.tree._utils",
+]
 
 block_cipher = None
 
+is_debug = False
+if is_debug:
+    options = [("v", None, "OPTION")]
+else:
+    options = []
+
+binaries = [
+    (shutil.which("ffmpeg"), "."),
+    (shutil.which("ffprobe"), "."),
+]
+
+if flac_path := shutil.which("flac"):
+    binaries += [(flac_path, ".")]
+
 a = Analysis(
-    ['src/app.py'],
-    pathex=[],
-    binaries=[],
+    ["src/app.py"],
+    pathex=[site_packages_path],
+    binaries=binaries,
     datas=datas,
-    hiddenimports=['huggingface_hub.repository', 'pytorch', 'sklearn.utils._cython_blas', 'sklearn.neighbors.typedefs', 'sklearn.neighbors.quad_tree', 'sklearn.tree', 'sklearn.tree._utils'],
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -51,76 +70,53 @@ a = Analysis(
     noarchive=False,
 )
 
-# Filter out unused and/or duplicate shared libs
-torch_lib_paths = {
-    join('torch', 'lib', 'libtorch_cuda.so'),
-    join('torch', 'lib', 'libtorch_cpu.so'),
-}
-a.datas = [entry for entry in a.datas if not entry[0] in torch_lib_paths]
-
-os_path_separator = '\\' if system() == 'Windows' else '/'
-a.datas = [entry for entry in a.datas if not f'torch{os_path_separator}_C.cp' in entry[0]]
-a.datas = [entry for entry in a.datas if not f'torch{os_path_separator}_dl.cp' in entry[0]]
-
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
-if system() == 'Darwin':  # macOS
-    exe = EXE(
-        pyz,
-        a.scripts,
-        a.binaries,
-        a.zipfiles,
-        a.datas,
-        [],
-        name='Audiotext',
-        debug=False,
-        bootloader_ignore_signals=False,
-        strip=False,
-        upx=True,
-        upx_exclude=[],
-        runtime_tmpdir=None,
-        console=False,
-        disable_windowed_traceback=False,
-        argv_emulation=False,
-        target_arch='x86_64',
-        codesign_identity=None,
-        entitlements_file=None,
-        icon=['res/img/icon.icns'],
-    )
+macos_icon = "res/macos/icon.icns"
+windows_icon = "res/windows/icon.ico"
 
-    # BUNDLE statement is used to create a macOS application bundle (.app) for the program
-    app = BUNDLE(
-        exe,
-        name='Audiotext.app',
-        icon=['res/img/icon.icns'],
-        bundle_identifier=None,
-    )
-else:
-    exe = EXE(
-        pyz,
-        a.scripts,
-        [],
-        exclude_binaries=True,
-        name='Audiotext',
-        debug=False,
-        bootloader_ignore_signals=False,
-        strip=False,
-        upx=True,
-        console=False,
-        disable_windowed_traceback=False,
-        argv_emulation=False,
-        target_arch='x86_64',
-        codesign_identity=None,
-        entitlements_file=None,
-        icon=['res/img/icon.ico'],
-    )
-    coll = COLLECT(
-        exe,
-        a.binaries,
-        a.zipfiles,
-        a.datas,
-        strip=False,
-        upx=True,
-        upx_exclude=[],
-        name='audiotext',
-    )
+exe = EXE(
+    pyz,
+    a.scripts,
+    options,
+    exclude_binaries=True,
+    name="Audiotext",
+    debug=is_debug,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    runtime_tmpdir=None,
+    console=is_debug,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file="res/macos/entitlements.plist" if is_darwin else None,
+    icon=windows_icon if is_win else macos_icon,
+)
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name="Audiotext",
+)
+
+app = BUNDLE(
+    coll,
+    name="Audiotext.app",
+    icon=macos_icon,
+    bundle_identifier="com.henestrosadev.audiotext",
+    version="2.3.0",
+    info_plist={
+        "NSPrincipalClass": "NSApplication",
+        "NSAppleScriptEnabed": False,
+        "NSHighResolutionCapable": True,
+        "NSMicrophoneUsageDescription": "Allow Audiotext to record audio from your microphone to generate transcriptions.",
+    }
+)

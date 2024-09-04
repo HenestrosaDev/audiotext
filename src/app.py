@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import torch
 import utils.config_manager as cm
 import utils.constants as c
 import utils.path_helper as ph
@@ -23,7 +22,7 @@ class App(ctk.CTk):  # type: ignore[misc]
         ctk.set_default_color_theme("blue")
 
         self.title(c.APP_NAME)
-        self.wm_iconbitmap(ph.ROOT_PATH / ph.IMG_RELATIVE_PATH / "icon.ico")
+        self.wm_iconbitmap(ph.ROOT_PATH / "res/windows/icon.ico")
 
         # Initial size of the window
         width = 1000
@@ -34,6 +33,9 @@ class App(ctk.CTk):  # type: ignore[misc]
         min_width = 500
         min_height = 250
         self.minsize(min_width, min_height)
+
+        # Place the torch import here to avoid the "No ffmpeg exe could be found" error
+        import torch
 
         # Check GPU
         cm.ConfigManager.modify_value(
