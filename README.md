@@ -864,7 +864,7 @@ It's highly recommended that you don't change the default configuration unless y
 
 #### Model Size
 
-There are five main ASR (Automatic Speech Recognition) model sizes that offer tradeoffs between speed and accuracy. The larger the model size, the more VRAM it uses and the longer it takes to transcribe. Unfortunately, **WhisperX** hasn't provided specific performance data for each model, so the table below is based on the one detailed in [OpenAI's Whisper README](https://github.com/openai/whisper). According to **WhisperX**, the `large-v2` model requires <8GB of GPU memory and batches inference for 70x real-time transcription (taken from the project's [README](https://github.com/m-bain/whisperX)).
+There are five main ASR (Automatic Speech Recognition) model sizes that offer tradeoffs between speed and accuracy. The larger the model size, the better the quality of the transcription, the more VRAM it uses, and the longer it takes to transcribe. Unfortunately, **WhisperX** hasn't provided specific performance data for each model, so the table below is based on the one detailed in [OpenAI's Whisper README](https://github.com/openai/whisper). According to **WhisperX**, the `large-v2` model requires <8GB of GPU memory and batches inference for 70x real-time transcription (taken from the project's [README](https://github.com/m-bain/whisperX)). `small` by default.
 
 |  Model   | Parameters | Required VRAM  |
 |:--------:|:----------:|:--------------:|
