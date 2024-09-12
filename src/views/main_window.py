@@ -726,7 +726,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         )
 
         ## 'Output path' entry
-        pady_output_path = 0 if self._audio_source == AudioSource.MIC else (10, 0)
+        pady_output_path = (10, 0)
 
         self.lbl_output_path = ctk.CTkLabel(
             master=self.frm_main_entry,
