@@ -718,7 +718,53 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             width=32,
             command=self._on_select_path,
         )
-        self.btn_file_explorer.grid(row=0, column=2, padx=(15, 0), sticky=ctk.E)
+
+        ## 'Output path' entry
+        pady_output_path = 0 if self._audio_source == AudioSource.MIC else (10, 0)
+
+        self.lbl_output_path = ctk.CTkLabel(
+            master=self.frm_main_entry,
+            text="Output path",
+            font=ctk.CTkFont(size=14, weight="bold"),
+        )
+        self.lbl_output_path.grid(
+            row=1,
+            column=0,
+            padx=(0, 15),
+            pady=pady_output_path,
+            sticky=ctk.W,
+        )
+        if not self._config_transcription.autosave:
+            self.lbl_output_path.grid_remove()
+
+        self.ent_output_path = ctk.CTkEntry(master=self.frm_main_entry)
+        self.ent_output_path.grid(
+            row=1,
+            column=1,
+            padx=0,
+            pady=pady_output_path,
+            sticky=ctk.EW,
+        )
+        if not self._config_transcription.autosave:
+            self.ent_output_path.grid_remove()
+
+        ## Output file explorer image button
+        self.btn_output_path_file_explorer = ctk.CTkButton(
+            self.frm_main_entry,
+            image=self.img_file_explorer,
+            text="",
+            width=32,
+            command=self._on_select_path,
+        )
+        self.btn_output_path_file_explorer.grid(
+            row=1,
+            column=2,
+            padx=(15, 0),
+            pady=pady_output_path,
+            sticky=ctk.E,
+        )
+        if not self._config_transcription.autosave:
+            self.btn_output_path_file_explorer.grid_remove()
 
         ## Textbox
         self.tbx_transcription = ctk.CTkTextbox(master=self, wrap=ctk.WORD)
