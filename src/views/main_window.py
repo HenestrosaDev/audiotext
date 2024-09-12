@@ -695,28 +695,34 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.frm_main_entry.grid(row=0, column=1, padx=20, pady=(20, 0), sticky=ctk.EW)
         self.frm_main_entry.grid_columnconfigure(1, weight=1)
 
-        ## 'Path' entry
-        self.lbl_path = ctk.CTkLabel(
+        ## 'Input path' entry
+        self.lbl_input_path = ctk.CTkLabel(
             master=self.frm_main_entry,
-            text="Path",
+            text="Input path",
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_path.grid(row=0, column=0, padx=(0, 15), sticky=ctk.W)
+        self.lbl_input_path.grid(row=0, column=0, padx=(0, 15), sticky=ctk.W)
 
-        self.ent_path = ctk.CTkEntry(master=self.frm_main_entry)
-        self.ent_path.grid(row=0, column=1, padx=0, sticky=ctk.EW)
+        self.ent_input_path = ctk.CTkEntry(master=self.frm_main_entry)
+        self.ent_input_path.grid(row=0, column=1, padx=0, sticky=ctk.EW)
 
-        ## File explorer image button
+        ## Input file explorer image button
         self.img_file_explorer = ctk.CTkImage(
             Image.open(ph.ROOT_PATH / ph.IMG_RELATIVE_PATH / "file-explorer.png"),
             size=(24, 24),
         )
-        self.btn_file_explorer = ctk.CTkButton(
+        self.btn_input_path_file_explorer = ctk.CTkButton(
             self.frm_main_entry,
             image=self.img_file_explorer,
             text="",
             width=32,
             command=self._on_select_path,
+        )
+        self.btn_input_path_file_explorer.grid(
+            row=0,
+            column=2,
+            padx=(15, 0),
+            sticky=ctk.E,
         )
 
         ## 'Output path' entry
@@ -830,7 +836,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :type path: str
         :return: None
         """
-        self.ent_path.configure(textvariable=ctk.StringVar(self, path))
+        self.ent_input_path.configure(textvariable=ctk.StringVar(self, path))
 
     def on_processed_transcription(self) -> None:
         """
@@ -838,7 +844,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         :return: None
         """
-        self.ent_path.configure(state=ctk.NORMAL)
+        self.ent_input_path.configure(state=ctk.NORMAL)
         self.omn_transcription_language.configure(state=ctk.NORMAL)
         self.omn_audio_source.configure(state=ctk.NORMAL)
         self.omn_transcription_method.configure(state=ctk.NORMAL)
@@ -1016,7 +1022,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :type option: str
         """
         self._audio_source = AudioSource(option)
-        self.ent_path.configure(textvariable=ctk.StringVar(self, ""))
+        self.ent_input_path.configure(textvariable=ctk.StringVar(self, ""))
         self._on_config_change(
             section=ConfigTranscription.Key.SECTION,
             key=ConfigTranscription.Key.AUDIO_SOURCE,
@@ -1046,9 +1052,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         elif self._audio_source == AudioSource.YOUTUBE:
             self.btn_main_action.configure(text="Generate transcription")
-            self.lbl_path.configure(text="YouTube video URL")
-            self.btn_file_explorer.grid_remove()
-            self.frm_main_entry.grid()
+            self.lbl_input_path.configure(text="YouTube video URL")
+            self.btn_input_path_file_explorer.grid_remove()
 
     def _on_select_path(self) -> None:
         """
@@ -1119,7 +1124,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         :return: None
         """
-        self.ent_path.configure(state=ctk.DISABLED)
+        self.ent_input_path.configure(state=ctk.DISABLED)
         self.omn_transcription_language.configure(state=ctk.DISABLED)
         self.omn_audio_source.configure(state=ctk.DISABLED)
         self.omn_transcription_method.configure(state=ctk.DISABLED)
@@ -1149,7 +1154,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         transcription = Transcription(**self._get_transcription_properties())
 
         if self._audio_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
-            transcription.audio_source_path = Path(self.ent_path.get())
+            transcription.audio_source_path = Path(self.ent_input_path.get())
         elif self._audio_source == AudioSource.MIC:
             if self._is_transcribing_from_mic:
                 self._controller.stop_recording_from_mic()
@@ -1157,7 +1162,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             else:
                 self._on_start_recording_from_mic()
         elif self._audio_source == AudioSource.YOUTUBE:
-            transcription.youtube_url = self.ent_path.get()
+            transcription.youtube_url = self.ent_input_path.get()
 
         self._controller.prepare_for_transcription(transcription)
 
@@ -1171,7 +1176,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         assert self._controller
 
         self._controller.save_transcription(
-            file_path=Path(self.ent_path.get()),
+            file_path=Path(self.ent_input_path.get()),
             should_autosave=False,
             should_overwrite=False,
         )
