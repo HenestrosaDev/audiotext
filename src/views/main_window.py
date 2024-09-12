@@ -1303,6 +1303,52 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             self.chk_overwrite_files.deselect()
             self.chk_overwrite_files.configure(state=ctk.DISABLED)
 
+    def _toggle_input_path_fields(self, should_show: bool) -> None:
+        """
+        Toggles the visibility of the input path fields based on the provided flag.
+
+        This function controls the display of the input path-related widgets
+        (`ent_input_path`, `lbl_input_path`, `btn_input_path_file_explorer`) by either
+        placing them on the grid or removing them, depending on the value of
+        `should_show`.
+
+        :param should_show: If True, the input path fields will be displayed. If False,
+            the fields will be hidden from the layout.
+        :type should_show: bool
+        :return: None
+        """
+        if should_show:
+            self.ent_input_path.grid()
+            self.lbl_input_path.grid()
+            self.btn_input_path_file_explorer.grid()
+        else:
+            self.lbl_input_path.grid_remove()
+            self.ent_input_path.grid_remove()
+            self.btn_input_path_file_explorer.grid_remove()
+
+    def _toggle_output_path_fields(self, should_show: bool) -> None:
+        """
+        Toggles the visibility of the output path fields based on the provided flag.
+
+        This function controls the display of the input path-related widgets
+        (`ent_output_path`, `lbl_output_path`, `btn_output_path_file_explorer`) by
+        either placing them on the grid or removing them, depending on the value of
+        `should_show`.
+
+        :param should_show: If True, the input path fields will be displayed. If False,
+            the fields will be hidden from the layout.
+        :type should_show: bool
+        :return: None
+        """
+        if should_show:
+            self.ent_output_path.grid()
+            self.lbl_output_path.grid()
+            self.btn_output_path_file_explorer.grid()
+        else:
+            self.lbl_output_path.grid_remove()
+            self.ent_output_path.grid_remove()
+            self.btn_output_path_file_explorer.grid_remove()
+
     def _on_overwrite_files_change(self) -> None:
         new_value = "True" if self.chk_overwrite_files.get() else "False"
 
