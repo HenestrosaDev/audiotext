@@ -56,6 +56,10 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self._config_whisper_api = config_whisper_api
         self._config_whisperx = config_whisperx
 
+        # State
+        self._audio_source = AudioSource(self._config_transcription.audio_source)
+        self._is_transcribing_from_mic = False
+
         # Init the controller
         self._controller: Union[MainController, None] = None
 
@@ -65,10 +69,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         # Update the state of the UI based on the configuration after setup
         self._on_audio_source_change(self._config_transcription.audio_source)
-
-        # State
-        self._audio_source = AudioSource(self._config_transcription.audio_source)
-        self._is_transcribing_from_mic = False
 
         # To handle debouncing
         self._after_id = None  # To store the `after()` method ID
