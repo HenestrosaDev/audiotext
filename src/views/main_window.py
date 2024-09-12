@@ -1029,26 +1029,35 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             new_value=option,
         )
 
+        # `frm_main_entry` might be hidden if autosave is not activated
+        if self._audio_source != AudioSource.MIC:
+            self._toggle_input_path_fields(should_show=True)
+            self.frm_main_entry.grid()
+
         if self._audio_source != AudioSource.DIRECTORY:
             self.chk_autosave.configure(state=ctk.NORMAL)
             self.btn_save.configure(state=ctk.NORMAL)
 
         if self._audio_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
             self.btn_main_action.configure(text="Generate transcription")
-            self.lbl_path.configure(text="Path")
-            self.btn_file_explorer.grid()
-            self.frm_main_entry.grid()
+            self.lbl_input_path.configure(text="Input path")
+            self.btn_input_path_file_explorer.grid()
 
             if self._audio_source == AudioSource.DIRECTORY:
                 self.chk_autosave.select()
                 self._on_autosave_change()
                 self.chk_autosave.configure(state=ctk.DISABLED)
-                self.chk_overwrite_files.configure(state=ctk.NORMAL)
                 self.btn_save.configure(state=ctk.DISABLED)
 
         elif self._audio_source == AudioSource.MIC:
             self.btn_main_action.configure(text="Start recording")
-            self.frm_main_entry.grid_remove()
+            self._toggle_input_path_fields(should_show=False)
+
+            if self.chk_autosave.get():
+                self._toggle_output_path_fields(should_show=True)
+                self.frm_main_entry.grid()
+            else:
+                self.frm_main_entry.grid_remove()
 
         elif self._audio_source == AudioSource.YOUTUBE:
             self.btn_main_action.configure(text="Generate transcription")
@@ -1057,8 +1066,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     def _on_select_path(self) -> None:
         """
-        Triggers when `btn_file_explorer` is clicked to select the path of the file or
-        directory to transcribe.
+        Triggers when `btn_input_path_file_explorer` or `btn_output_file_explorer` is
+        clicked to select the path of the file or directory to transcribe.
 
         :return: None
         """
@@ -1292,6 +1301,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         if self.chk_autosave.get():
             self.chk_overwrite_files.configure(state=ctk.NORMAL)
+            self._toggle_output_path_fields(should_show=True)
+            self.frm_main_entry.grid()  # in case self._audio_source is MIC
         else:
             if self.chk_overwrite_files.get():
                 self._on_config_change(
@@ -1299,6 +1310,11 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
                     key=ConfigTranscription.Key.OVERWRITE_FILES,
                     new_value="False",
                 )
+
+            self._toggle_output_path_fields(should_show=False)
+
+            if self._audio_source == AudioSource.MIC:
+                self.frm_main_entry.grid_remove()
 
             self.chk_overwrite_files.deselect()
             self.chk_overwrite_files.configure(state=ctk.DISABLED)
