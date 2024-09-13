@@ -10,7 +10,7 @@ class Transcription:
     text: Optional[str] = None
     language_code: Optional[str] = None
     audio_source: Optional[AudioSource] = None
-    audio_source_path: Path = Path("/")
+    audio_source_path: Optional[Path] = None
     method: Optional[TranscriptionMethod] = None
     output_file_types: Optional[list[str]] = None
     output_path: Optional[Path] = None

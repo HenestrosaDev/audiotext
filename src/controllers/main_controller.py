@@ -55,7 +55,9 @@ class MainController:
 
         :return: None
         """
-        dir_path = filedialog.askdirectory()
+        dir_path = filedialog.askdirectory(
+            initialdir=self.transcription.audio_source_path
+        )
 
         if dir_path:
             self.view.on_select_path_success(dir_path)
@@ -82,6 +84,7 @@ class MainController:
             self.transcription = transcription
 
             if transcription.audio_source == AudioSource.FILE:
+                assert transcription.audio_source_path
                 self._prepare_for_file_transcription(transcription.audio_source_path)
             elif transcription.audio_source == AudioSource.MIC:
                 threading.Thread(target=self._start_recording_from_mic).start()
@@ -248,6 +251,8 @@ class MainController:
 
         :return: None
         """
+        assert self.transcription.audio_source_path
+
         try:
             if self.transcription.audio_source == AudioSource.DIRECTORY:
                 await self._transcribe_directory(self.transcription.audio_source_path)
@@ -327,6 +332,7 @@ class MainController:
             )
 
         if self.transcription.audio_source in [AudioSource.MIC, AudioSource.YOUTUBE]:
+            assert self.transcription.audio_source_path
             self.transcription.audio_source_path.unlink()  # Remove tmp file
 
         if self.transcription.audio_source != AudioSource.DIRECTORY:
@@ -346,6 +352,8 @@ class MainController:
         :return: A list of file paths to transcribe in the directory.
         :rtype: list[Path]
         """
+        assert self.transcription.audio_source_path
+
         if not self.transcription.output_file_types:
             raise ValueError(
                 "No output file types selected. Please select at least one."
