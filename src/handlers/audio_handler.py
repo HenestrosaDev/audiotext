@@ -43,6 +43,8 @@ class AudioHandler:
         chunks_directory.mkdir(exist_ok=True)
 
         try:
+            assert transcription.audio_source_path
+
             audio = AudioHandler.load_audio_file(
                 transcription.audio_source_path, chunks_directory
             )

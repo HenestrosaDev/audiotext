@@ -56,6 +56,10 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self._config_whisper_api = config_whisper_api
         self._config_whisperx = config_whisperx
 
+        # State
+        self._audio_source = AudioSource(self._config_transcription.audio_source)
+        self._is_transcribing_from_mic = False
+
         # Init the controller
         self._controller: Union[MainController, None] = None
 
@@ -65,10 +69,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         # Update the state of the UI based on the configuration after setup
         self._on_audio_source_change(self._config_transcription.audio_source)
-
-        # State
-        self._audio_source = AudioSource(self._config_transcription.audio_source)
-        self._is_transcribing_from_mic = False
 
         # To handle debouncing
         self._after_id = None  # To store the `after()` method ID
@@ -695,30 +695,81 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.frm_main_entry.grid(row=0, column=1, padx=20, pady=(20, 0), sticky=ctk.EW)
         self.frm_main_entry.grid_columnconfigure(1, weight=1)
 
-        ## 'Path' entry
-        self.lbl_path = ctk.CTkLabel(
+        ## 'Input path' entry
+        self.lbl_input_path = ctk.CTkLabel(
             master=self.frm_main_entry,
-            text="Path",
+            text="Input path",
             font=ctk.CTkFont(size=14, weight="bold"),
         )
-        self.lbl_path.grid(row=0, column=0, padx=(0, 15), sticky=ctk.W)
+        self.lbl_input_path.grid(row=0, column=0, padx=(0, 15), sticky=ctk.W)
 
-        self.ent_path = ctk.CTkEntry(master=self.frm_main_entry)
-        self.ent_path.grid(row=0, column=1, padx=0, sticky=ctk.EW)
+        self.ent_input_path = ctk.CTkEntry(master=self.frm_main_entry)
+        self.ent_input_path.grid(row=0, column=1, padx=0, sticky=ctk.EW)
 
-        ## File explorer image button
+        ## Input file explorer image button
         self.img_file_explorer = ctk.CTkImage(
             Image.open(ph.ROOT_PATH / ph.IMG_RELATIVE_PATH / "file-explorer.png"),
             size=(24, 24),
         )
-        self.btn_file_explorer = ctk.CTkButton(
+        self.btn_input_path_file_explorer = ctk.CTkButton(
             self.frm_main_entry,
             image=self.img_file_explorer,
             text="",
             width=32,
             command=self._on_select_path,
         )
-        self.btn_file_explorer.grid(row=0, column=2, padx=(15, 0), sticky=ctk.E)
+        self.btn_input_path_file_explorer.grid(
+            row=0,
+            column=2,
+            padx=(15, 0),
+            sticky=ctk.E,
+        )
+
+        ## 'Output path' entry
+        pady_output_path = (10, 0)
+
+        self.lbl_output_path = ctk.CTkLabel(
+            master=self.frm_main_entry,
+            text="Output path",
+            font=ctk.CTkFont(size=14, weight="bold"),
+        )
+        self.lbl_output_path.grid(
+            row=1,
+            column=0,
+            padx=(0, 15),
+            pady=pady_output_path,
+            sticky=ctk.W,
+        )
+        if not self._config_transcription.autosave:
+            self.lbl_output_path.grid_remove()
+
+        self.ent_output_path = ctk.CTkEntry(master=self.frm_main_entry)
+        self.ent_output_path.grid(
+            row=1,
+            column=1,
+            padx=0,
+            pady=pady_output_path,
+            sticky=ctk.EW,
+        )
+        if not self._config_transcription.autosave:
+            self.ent_output_path.grid_remove()
+
+        ## Output file explorer image button
+        self.btn_output_path_file_explorer = ctk.CTkButton(
+            self.frm_main_entry,
+            image=self.img_file_explorer,
+            text="",
+            width=32,
+        )
+        self.btn_output_path_file_explorer.grid(
+            row=1,
+            column=2,
+            padx=(15, 0),
+            pady=pady_output_path,
+            sticky=ctk.E,
+        )
+        if not self._config_transcription.autosave:
+            self.btn_output_path_file_explorer.grid_remove()
 
         ## Textbox
         self.tbx_transcription = ctk.CTkTextbox(master=self, wrap=ctk.WORD)
@@ -775,6 +826,11 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     # PUBLIC METHODS (called by the controller)
 
+    ## Bindings
+
+    def bind_btn_output_path_file_explorer(self, callback: Callable[..., Any]) -> None:
+        self.btn_output_path_file_explorer.configure(command=callback)
+
     def on_select_path_success(self, path: str) -> None:
         """
         Handles the successful selection of a file or directory path by updating the
@@ -784,7 +840,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :type path: str
         :return: None
         """
-        self.ent_path.configure(textvariable=ctk.StringVar(self, path))
+        self.ent_input_path.configure(textvariable=ctk.StringVar(self, path))
 
     def on_processed_transcription(self) -> None:
         """
@@ -792,7 +848,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         :return: None
         """
-        self.ent_path.configure(state=ctk.NORMAL)
+        self.ent_input_path.configure(state=ctk.NORMAL)
         self.omn_transcription_language.configure(state=ctk.NORMAL)
         self.omn_audio_source.configure(state=ctk.NORMAL)
         self.omn_transcription_method.configure(state=ctk.NORMAL)
@@ -832,6 +888,9 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.tbx_transcription.insert("0.0", text)
 
     # PRIVATE METHODS
+
+    def display_output_path(self, path: str) -> None:
+        self.ent_output_path.configure(textvariable=ctk.StringVar(self, path))
 
     def _get_transcription_properties(self) -> dict[str, Any]:
         """
@@ -970,12 +1029,17 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         :type option: str
         """
         self._audio_source = AudioSource(option)
-        self.ent_path.configure(textvariable=ctk.StringVar(self, ""))
+        self.ent_input_path.configure(textvariable=ctk.StringVar(self, ""))
         self._on_config_change(
             section=ConfigTranscription.Key.SECTION,
             key=ConfigTranscription.Key.AUDIO_SOURCE,
             new_value=option,
         )
+
+        # `frm_main_entry` might be hidden if autosave is not activated
+        if self._audio_source != AudioSource.MIC:
+            self._toggle_input_path_fields(should_show=True)
+            self.frm_main_entry.grid()
 
         if self._audio_source != AudioSource.DIRECTORY:
             self.chk_autosave.configure(state=ctk.NORMAL)
@@ -983,31 +1047,34 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         if self._audio_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
             self.btn_main_action.configure(text="Generate transcription")
-            self.lbl_path.configure(text="Path")
-            self.btn_file_explorer.grid()
-            self.frm_main_entry.grid()
+            self.lbl_input_path.configure(text="Input path")
+            self.btn_input_path_file_explorer.grid()
 
             if self._audio_source == AudioSource.DIRECTORY:
                 self.chk_autosave.select()
                 self._on_autosave_change()
                 self.chk_autosave.configure(state=ctk.DISABLED)
-                self.chk_overwrite_files.configure(state=ctk.NORMAL)
                 self.btn_save.configure(state=ctk.DISABLED)
 
         elif self._audio_source == AudioSource.MIC:
             self.btn_main_action.configure(text="Start recording")
-            self.frm_main_entry.grid_remove()
+            self._toggle_input_path_fields(should_show=False)
+
+            if self.chk_autosave.get():
+                self._toggle_output_path_fields(should_show=True)
+                self.frm_main_entry.grid()
+            else:
+                self.frm_main_entry.grid_remove()
 
         elif self._audio_source == AudioSource.YOUTUBE:
             self.btn_main_action.configure(text="Generate transcription")
-            self.lbl_path.configure(text="YouTube video URL")
-            self.btn_file_explorer.grid_remove()
-            self.frm_main_entry.grid()
+            self.lbl_input_path.configure(text="YouTube video URL")
+            self.btn_input_path_file_explorer.grid_remove()
 
     def _on_select_path(self) -> None:
         """
-        Triggers when `btn_file_explorer` is clicked to select the path of the file or
-        directory to transcribe.
+        Triggers when `btn_input_path_file_explorer` or `btn_output_file_explorer` is
+        clicked to select the path of the file or directory to transcribe.
 
         :return: None
         """
@@ -1073,7 +1140,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         :return: None
         """
-        self.ent_path.configure(state=ctk.DISABLED)
+        self.ent_input_path.configure(state=ctk.DISABLED)
         self.omn_transcription_language.configure(state=ctk.DISABLED)
         self.omn_audio_source.configure(state=ctk.DISABLED)
         self.omn_transcription_method.configure(state=ctk.DISABLED)
@@ -1103,7 +1170,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         transcription = Transcription(**self._get_transcription_properties())
 
         if self._audio_source in [AudioSource.FILE, AudioSource.DIRECTORY]:
-            transcription.audio_source_path = Path(self.ent_path.get())
+            transcription.audio_source_path = Path(self.ent_input_path.get())
         elif self._audio_source == AudioSource.MIC:
             if self._is_transcribing_from_mic:
                 self._controller.stop_recording_from_mic()
@@ -1111,7 +1178,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             else:
                 self._on_start_recording_from_mic()
         elif self._audio_source == AudioSource.YOUTUBE:
-            transcription.youtube_url = self.ent_path.get()
+            transcription.youtube_url = self.ent_input_path.get()
 
         self._controller.prepare_for_transcription(transcription)
 
@@ -1125,7 +1192,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         assert self._controller
 
         self._controller.save_transcription(
-            file_path=Path(self.ent_path.get()),
+            output_path=Path(self.ent_input_path.get()),
             should_autosave=False,
             should_overwrite=False,
         )
@@ -1241,6 +1308,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         if self.chk_autosave.get():
             self.chk_overwrite_files.configure(state=ctk.NORMAL)
+            self._toggle_output_path_fields(should_show=True)
+            self.frm_main_entry.grid()  # in case self._audio_source is MIC
         else:
             if self.chk_overwrite_files.get():
                 self._on_config_change(
@@ -1249,8 +1318,59 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
                     new_value="False",
                 )
 
+            self._toggle_output_path_fields(should_show=False)
+
+            if self._audio_source == AudioSource.MIC:
+                self.frm_main_entry.grid_remove()
+
             self.chk_overwrite_files.deselect()
             self.chk_overwrite_files.configure(state=ctk.DISABLED)
+
+    def _toggle_input_path_fields(self, should_show: bool) -> None:
+        """
+        Toggles the visibility of the input path fields based on the provided flag.
+
+        This function controls the display of the input path-related widgets
+        (`ent_input_path`, `lbl_input_path`, `btn_input_path_file_explorer`) by either
+        placing them on the grid or removing them, depending on the value of
+        `should_show`.
+
+        :param should_show: If True, the input path fields will be displayed. If False,
+            the fields will be hidden from the layout.
+        :type should_show: bool
+        :return: None
+        """
+        if should_show:
+            self.ent_input_path.grid()
+            self.lbl_input_path.grid()
+            self.btn_input_path_file_explorer.grid()
+        else:
+            self.lbl_input_path.grid_remove()
+            self.ent_input_path.grid_remove()
+            self.btn_input_path_file_explorer.grid_remove()
+
+    def _toggle_output_path_fields(self, should_show: bool) -> None:
+        """
+        Toggles the visibility of the output path fields based on the provided flag.
+
+        This function controls the display of the input path-related widgets
+        (`ent_output_path`, `lbl_output_path`, `btn_output_path_file_explorer`) by
+        either placing them on the grid or removing them, depending on the value of
+        `should_show`.
+
+        :param should_show: If True, the input path fields will be displayed. If False,
+            the fields will be hidden from the layout.
+        :type should_show: bool
+        :return: None
+        """
+        if should_show:
+            self.ent_output_path.grid()
+            self.lbl_output_path.grid()
+            self.btn_output_path_file_explorer.grid()
+        else:
+            self.lbl_output_path.grid_remove()
+            self.ent_output_path.grid_remove()
+            self.btn_output_path_file_explorer.grid_remove()
 
     def _on_overwrite_files_change(self) -> None:
         new_value = "True" if self.chk_overwrite_files.get() else "False"

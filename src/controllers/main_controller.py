@@ -26,6 +26,8 @@ class MainController:
 
         self._whisperx_handler = WhisperXHandler()
 
+        self._bind_views()
+
     # PUBLIC METHODS
 
     def select_file(self) -> None:
@@ -53,7 +55,9 @@ class MainController:
 
         :return: None
         """
-        dir_path = filedialog.askdirectory()
+        dir_path = filedialog.askdirectory(
+            initialdir=self.transcription.audio_source_path
+        )
 
         if dir_path:
             self.view.on_select_path_success(dir_path)
@@ -75,9 +79,12 @@ class MainController:
                     "No output file types selected. Please select at least one."
                 )
 
+            # TMP UNTIL REFACTOR
+            transcription.output_path = self.transcription.output_path
             self.transcription = transcription
 
             if transcription.audio_source == AudioSource.FILE:
+                assert transcription.audio_source_path
                 self._prepare_for_file_transcription(transcription.audio_source_path)
             elif transcription.audio_source == AudioSource.MIC:
                 threading.Thread(target=self._start_recording_from_mic).start()
@@ -112,13 +119,16 @@ class MainController:
         self.view.on_stop_recording_from_mic()
 
     def save_transcription(
-        self, file_path: Path, should_autosave: bool, should_overwrite: bool
+        self,
+        output_path: Path,
+        should_autosave: bool,
+        should_overwrite: bool,
     ) -> None:
         """
         Saves the transcription to a text file and optionally generate subtitles.
 
-        :param file_path: The path where the text file will be saved.
-        :type file_path: Path
+        :param output_path: The path where the text file will be saved.
+        :type output_path: Path
         :param should_autosave: Indicates whether the text file should be saved
                                 automatically without showing a file dialog.
         :type should_autosave: bool
@@ -127,7 +137,7 @@ class MainController:
         :type should_overwrite: bool
         :return: None
         """
-        save_file_path = self._get_save_path(file_path, should_autosave)
+        save_file_path = self._get_save_path(output_path, should_autosave)
 
         if not save_file_path:
             return
@@ -165,6 +175,31 @@ class MainController:
             self._handle_exception(exception)
 
     # PRIVATE METHODS
+
+    def _bind_views(self) -> None:
+        """
+        Bind the widgets in the view to the methods of the controller.
+
+        :return: None
+        """
+        self.view.bind_btn_output_path_file_explorer(self._select_output_path)
+
+    def _select_output_path(self) -> None:
+        """
+        Opens a directory selection dialog for the user to choose an output path,
+        and updates the transcription object's output path and view if a valid directory
+        is selected.
+
+        :return: None
+        """
+        output_path = filedialog.askdirectory(
+            initialdir=self.transcription.output_path
+            or self.transcription.audio_source_path
+        )
+
+        if output_path:
+            self.transcription.output_path = Path(output_path)
+            self.view.display_output_path(output_path)
 
     def _prepare_for_file_transcription(self, file_path: Path) -> None:
         """
@@ -216,6 +251,8 @@ class MainController:
 
         :return: None
         """
+        assert self.transcription.audio_source_path
+
         try:
             if self.transcription.audio_source == AudioSource.DIRECTORY:
                 await self._transcribe_directory(self.transcription.audio_source_path)
@@ -243,7 +280,10 @@ class MainController:
             # Run all tasks concurrently
             await asyncio.gather(*tasks)
 
-            self.view.display_text(f"Files from '{dir_path}' successfully transcribed.")
+            self.view.display_text(
+                f"Files from '{dir_path}' successfully transcribed  and stored in "
+                f"{self.transcription.output_path}."
+            )
         else:
             raise ValueError(
                 "Error: The directory path is invalid or doesn't contain valid "
@@ -265,6 +305,15 @@ class MainController:
         transcription = self.transcription
         transcription.audio_source_path = file_path
 
+        output_path = file_path
+        if self.transcription.should_autosave:
+            if (path := self.transcription.output_path) and path.exists():
+                output_path = path / f"{file_path.stem}{file_path.suffix}"
+            else:
+                raise ValueError(
+                    "The specified output path is invalid. Please enter a valid one."
+                )
+
         if self.transcription.method == TranscriptionMethod.GOOGLE_API:
             self.transcription.text = AudioHandler.get_transcription(
                 transcription=transcription,
@@ -283,6 +332,7 @@ class MainController:
             )
 
         if self.transcription.audio_source in [AudioSource.MIC, AudioSource.YOUTUBE]:
+            assert self.transcription.audio_source_path
             self.transcription.audio_source_path.unlink()  # Remove tmp file
 
         if self.transcription.audio_source != AudioSource.DIRECTORY:
@@ -290,7 +340,7 @@ class MainController:
 
         if self.transcription.should_autosave:
             self.save_transcription(
-                file_path,
+                output_path,
                 should_autosave=True,
                 should_overwrite=self.transcription.should_overwrite,
             )
@@ -302,6 +352,8 @@ class MainController:
         :return: A list of file paths to transcribe in the directory.
         :rtype: list[Path]
         """
+        assert self.transcription.audio_source_path
+
         if not self.transcription.output_file_types:
             raise ValueError(
                 "No output file types selected. Please select at least one."
@@ -394,7 +446,14 @@ class MainController:
             initial_file_name += f".{file_type}"
 
         if should_autosave:
-            return file_dir / initial_file_name
+            if self.transcription.output_path:
+                return self.transcription.output_path / initial_file_name
+
+            raise ValueError(
+                "Something went wrong during autosave. Please report the issue in the "
+                "project GitHub "
+                "(https://github.com/HenestrosaDev/audiotext/issues/new/choose)"
+            )
         else:
             default_extension = (
                 f".{file_type}" if self.transcription.output_file_types else None
