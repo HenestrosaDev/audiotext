@@ -760,7 +760,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             image=self.img_file_explorer,
             text="",
             width=32,
-            command=self._on_select_path,
         )
         self.btn_output_path_file_explorer.grid(
             row=1,
@@ -827,6 +826,11 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     # PUBLIC METHODS (called by the controller)
 
+    ## Bindings
+
+    def bind_btn_output_path_file_explorer(self, callback: Callable[..., Any]) -> None:
+        self.btn_output_path_file_explorer.configure(command=callback)
+
     def on_select_path_success(self, path: str) -> None:
         """
         Handles the successful selection of a file or directory path by updating the
@@ -884,6 +888,9 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.tbx_transcription.insert("0.0", text)
 
     # PRIVATE METHODS
+
+    def display_output_path(self, path: str) -> None:
+        self.ent_output_path.configure(textvariable=ctk.StringVar(self, path))
 
     def _get_transcription_properties(self) -> dict[str, Any]:
         """

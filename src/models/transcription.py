@@ -13,6 +13,7 @@ class Transcription:
     audio_source_path: Path = Path("/")
     method: Optional[TranscriptionMethod] = None
     output_file_types: Optional[list[str]] = None
+    output_path: Optional[Path] = None
     should_translate: bool = False
     should_autosave: bool = False
     should_overwrite: bool = False

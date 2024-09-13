@@ -26,6 +26,8 @@ class MainController:
 
         self._whisperx_handler = WhisperXHandler()
 
+        self._bind_views()
+
     # PUBLIC METHODS
 
     def select_file(self) -> None:
@@ -165,6 +167,31 @@ class MainController:
             self._handle_exception(exception)
 
     # PRIVATE METHODS
+
+    def _bind_views(self) -> None:
+        """
+        Bind the widgets in the view to the methods of the controller.
+
+        :return: None
+        """
+        self.view.bind_btn_output_path_file_explorer(self._select_output_path)
+
+    def _select_output_path(self) -> None:
+        """
+        Opens a directory selection dialog for the user to choose an output path,
+        and updates the transcription object's output path and view if a valid directory
+        is selected.
+
+        :return: None
+        """
+        output_path = filedialog.askdirectory(
+            initialdir=self.transcription.output_path
+            or self.transcription.audio_source_path
+        )
+
+        if output_path:
+            self.transcription.output_path = Path(output_path)
+            self.view.display_output_path(output_path)
 
     def _prepare_for_file_transcription(self, file_path: Path) -> None:
         """
