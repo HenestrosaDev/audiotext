@@ -1192,7 +1192,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         assert self._controller
 
         self._controller.save_transcription(
-            file_path=Path(self.ent_input_path.get()),
+            output_path=Path(self.ent_input_path.get()),
             should_autosave=False,
             should_overwrite=False,
         )

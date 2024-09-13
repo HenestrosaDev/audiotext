@@ -77,6 +77,8 @@ class MainController:
                     "No output file types selected. Please select at least one."
                 )
 
+            # TMP UNTIL REFACTOR
+            transcription.output_path = self.transcription.output_path
             self.transcription = transcription
 
             if transcription.audio_source == AudioSource.FILE:
@@ -114,13 +116,16 @@ class MainController:
         self.view.on_stop_recording_from_mic()
 
     def save_transcription(
-        self, file_path: Path, should_autosave: bool, should_overwrite: bool
+        self,
+        output_path: Path,
+        should_autosave: bool,
+        should_overwrite: bool,
     ) -> None:
         """
         Saves the transcription to a text file and optionally generate subtitles.
 
-        :param file_path: The path where the text file will be saved.
-        :type file_path: Path
+        :param output_path: The path where the text file will be saved.
+        :type output_path: Path
         :param should_autosave: Indicates whether the text file should be saved
                                 automatically without showing a file dialog.
         :type should_autosave: bool
@@ -129,7 +134,7 @@ class MainController:
         :type should_overwrite: bool
         :return: None
         """
-        save_file_path = self._get_save_path(file_path, should_autosave)
+        save_file_path = self._get_save_path(output_path, should_autosave)
 
         if not save_file_path:
             return
@@ -270,7 +275,10 @@ class MainController:
             # Run all tasks concurrently
             await asyncio.gather(*tasks)
 
-            self.view.display_text(f"Files from '{dir_path}' successfully transcribed.")
+            self.view.display_text(
+                f"Files from '{dir_path}' successfully transcribed  and stored in "
+                f"{self.transcription.output_path}."
+            )
         else:
             raise ValueError(
                 "Error: The directory path is invalid or doesn't contain valid "
@@ -291,6 +299,15 @@ class MainController:
         """
         transcription = self.transcription
         transcription.audio_source_path = file_path
+
+        output_path = file_path
+        if self.transcription.should_autosave:
+            if (path := self.transcription.output_path) and path.exists():
+                output_path = path / f"{file_path.stem}{file_path.suffix}"
+            else:
+                raise ValueError(
+                    "The specified output path is invalid. Please enter a valid one."
+                )
 
         if self.transcription.method == TranscriptionMethod.GOOGLE_API:
             self.transcription.text = AudioHandler.get_transcription(
@@ -317,7 +334,7 @@ class MainController:
 
         if self.transcription.should_autosave:
             self.save_transcription(
-                file_path,
+                output_path,
                 should_autosave=True,
                 should_overwrite=self.transcription.should_overwrite,
             )
@@ -421,7 +438,14 @@ class MainController:
             initial_file_name += f".{file_type}"
 
         if should_autosave:
-            return file_dir / initial_file_name
+            if self.transcription.output_path:
+                return self.transcription.output_path / initial_file_name
+
+            raise ValueError(
+                "Something went wrong during autosave. Please report the issue in the "
+                "project GitHub "
+                "(https://github.com/HenestrosaDev/audiotext/issues/new/choose)"
+            )
         else:
             default_extension = (
                 f".{file_type}" if self.transcription.output_file_types else None
