@@ -178,7 +178,7 @@ class MainController:
                             for transcription.
         :return: None
         """
-        is_file_supported = file_path.suffix in c.SUPPORTED_FILE_EXTENSIONS
+        is_file_supported = file_path.suffix.lower() in c.SUPPORTED_FILE_EXTENSIONS
         if file_path.is_file() and is_file_supported:
             self.transcription.audio_source_path = file_path
         else:
