@@ -47,6 +47,8 @@ hiddenimports = [
     "sklearn.neighbors.quad_tree",
     "sklearn.tree",
     "sklearn.tree._utils",
+    # Imported by PIL.ImageTk on Linux when Tk doesn't find its image command
+    "PIL._tkinter_finder",
     # The credential stores of each system, which keyring imports dynamically
     *collect_submodules("keyring.backends"),
 ]
