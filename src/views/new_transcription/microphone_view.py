@@ -475,7 +475,11 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
 
     @staticmethod
     def _device_label(device: InputDevice) -> str:
-        return f"{device.name} ({_('default')})" if device.is_default else device.name
+        if not device.is_default:
+            return device.name
+        # Outside the f-string, so pybabel finds it on Python 3.10 and 3.11
+        default = _("default")
+        return f"{device.name} ({default})"
 
     def _selected_device_index(self) -> int | None:
         selected = self.omn_device.get()

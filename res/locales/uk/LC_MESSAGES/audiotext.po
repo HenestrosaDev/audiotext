@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-04 04:28+0200\n"
+"POT-Creation-Date: 2026-10-04 13:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -766,7 +766,7 @@ msgid "New transcription:"
 msgstr "Нова транскрипція:"
 
 #: src/views/main_window/top_bar.py:156
-#: src/views/settings/preferences_dialog.py:669
+#: src/views/settings/preferences_dialog.py:678
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "Доступна версія {version}"
@@ -925,7 +925,7 @@ msgstr "Уточнення"
 msgid "No microphone found"
 msgstr "Мікрофон не знайдено"
 
-#: src/views/new_transcription/microphone_view.py:478
+#: src/views/new_transcription/microphone_view.py:481
 msgid "default"
 msgstr "типовий"
 
@@ -1330,27 +1330,27 @@ msgstr "Автор: {author}"
 msgid "Documentation"
 msgstr "Документація"
 
-#: src/views/settings/preferences_dialog.py:614
+#: src/views/settings/preferences_dialog.py:618
 msgid "Donate"
 msgstr "Підтримати"
 
-#: src/views/settings/preferences_dialog.py:624
+#: src/views/settings/preferences_dialog.py:630
 msgid "Check for updates"
 msgstr "Перевірити оновлення"
 
-#: src/views/settings/preferences_dialog.py:646
+#: src/views/settings/preferences_dialog.py:654
 msgid "Checking for updates…"
 msgstr "Перевірка оновлень…"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:666
 msgid "Could not check for updates."
 msgstr "Не вдалося перевірити оновлення."
 
-#: src/views/settings/preferences_dialog.py:663
+#: src/views/settings/preferences_dialog.py:671
 msgid "Download"
 msgstr "Завантажити"
 
-#: src/views/settings/preferences_dialog.py:676
+#: src/views/settings/preferences_dialog.py:685
 msgid "You have the latest version."
 msgstr "У вас остання версія."
 
