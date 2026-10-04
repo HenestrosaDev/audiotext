@@ -79,6 +79,8 @@ def config_file(
     shutil.copy(PROJECT_ROOT / "config.ini", path)
     monkeypatch.setattr(ConfigManager, "defaults_file_path", path)
     monkeypatch.setattr(ConfigManager, "user_file_path", user_config_file)
+    # The formats of the dates are read again from these settings
+    monkeypatch.setattr("views.history.formatting._formats", None)
 
     return path
 

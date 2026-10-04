@@ -55,6 +55,8 @@ def join_segments(segments: list[TranscriptSegment]) -> str:
     :param segments: The segments of the transcription.
     :return: The text of the transcription.
     """
+    # Segments without text (e.g. not translated yet) are skipped
+    segments = [segment for segment in segments if segment.text]
     if not any(segment.speaker for segment in segments):
         return " ".join(segment.text for segment in segments)
 

@@ -23,6 +23,7 @@ from views.settings.cards.options_card import OptionsCard
 from views.settings.cards.output_card import OutputCard
 from views.settings.option_labels import save_config
 from views.widgets.option_menu import skip_scrollbar_forced_layout
+from views.widgets.scrollable_frame import CTkScrollableFrame
 
 SUBTITLE_FILE_TYPES = {"srt", "vtt"}
 
@@ -34,7 +35,7 @@ class FormMode(Enum):
     MIC = "mic"
 
 
-class SettingsForm(ctk.CTkScrollableFrame):  # type: ignore[misc]
+class SettingsForm(CTkScrollableFrame):
     """
     The options to transcribe an audio source, grouped in cards. The choices are
     stored in the configuration, so they're the defaults of the next

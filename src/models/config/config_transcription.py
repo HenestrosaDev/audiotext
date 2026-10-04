@@ -21,6 +21,9 @@ class ConfigTranscription:
     prompt: str = ""
     # Names, terms or acronyms said in the audio, separated by commas
     keywords: str = ""
+    # Name of the last input device chosen for the microphone, or "" for the
+    # default one of the system
+    mic_device: str = ""
 
     class Key(Enum):
         """
@@ -41,3 +44,4 @@ class ConfigTranscription:
         WATCH_FOLDER = "watch_folder"
         PROMPT = "prompt"
         KEYWORDS = "keywords"
+        MIC_DEVICE = "mic_device"

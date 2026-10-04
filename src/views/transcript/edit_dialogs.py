@@ -7,7 +7,14 @@ from typing import Any
 import customtkinter as ctk
 
 from utils.i18n import _
+from utils.time_format import format_subtitle_time, parse_segment_time
 from views.style import theme
+
+
+@dataclass(frozen=True)
+class Timing:
+    start: float
+    end: float
 
 
 @dataclass(frozen=True)
@@ -202,4 +209,89 @@ class SpeakersDialog(_Dialog):
             for speaker, variable in self._variables.items()
             if variable.get().strip() and variable.get().strip() != speaker
         }
+        self._close()
+
+
+class TimingDialog(_Dialog):
+    """Sets when a segment starts and ends, precise to the millisecond."""
+
+    def __init__(
+        self, master: Any, title: str, ok_text: str, message: str, timing: Timing
+    ) -> None:
+        """
+        :param message: Explains what the segment is, e.g. its text.
+        :param timing: The current timing of the segment, or the suggested one.
+        """
+        super().__init__(master, title, ok_text)
+        self._result: Timing | None = None
+
+        ctk.CTkLabel(
+            self.frm_body,
+            text=message,
+            font=theme.font(13),
+            wraplength=380,
+            justify=ctk.LEFT,
+        ).grid(row=0, column=0, columnspan=2, pady=(0, 8), sticky=ctk.W)
+
+        self._variables: list[ctk.StringVar] = []
+        self._entries: list[ctk.CTkEntry] = []
+        for row, (label, seconds) in enumerate(
+            [(_("Start:"), timing.start), (_("End:"), timing.end)], start=1
+        ):
+            ctk.CTkLabel(self.frm_body, text=label, font=theme.font(13)).grid(
+                row=row, column=0, padx=(0, 10), pady=4, sticky=ctk.W
+            )
+            variable = ctk.StringVar(self, format_subtitle_time(seconds, ","))
+            variable.trace_add("write", lambda *_args: self._refresh())
+            entry = ctk.CTkEntry(
+                self.frm_body,
+                width=160,
+                textvariable=variable,
+                font=theme.font(13, family=theme.MONOSPACE_FAMILY),
+            )
+            entry.grid(row=row, column=1, pady=4, sticky=ctk.W)
+            self._variables.append(variable)
+            self._entries.append(entry)
+
+        self.lbl_error = ctk.CTkLabel(
+            self.frm_body,
+            text="",
+            font=theme.font(12),
+            text_color=theme.ERROR_TEXT,
+            anchor=ctk.W,
+            justify=ctk.LEFT,
+            wraplength=380,
+        )
+        self.lbl_error.grid(row=3, column=0, columnspan=2, pady=(6, 0), sticky=ctk.W)
+        self._refresh()
+
+    def get_result(self) -> Timing | None:
+        """Waits until the dialog is closed. :return: None if it was cancelled."""
+        self.wait()
+        return self._result
+
+    def _parse(self) -> tuple[Timing | None, str]:
+        """:return: The timing, or None and why it isn't valid."""
+        try:
+            start, end = (parse_segment_time(v.get()) for v in self._variables)
+        except ValueError:
+            return None, _("Type the times as 00:01:05,900, 01:05,9 or 65.9.")
+        if end <= start:
+            return None, _("The segment must end after it starts.")
+        return Timing(start, end), ""
+
+    def _refresh(self) -> None:
+        timing, error = self._parse()
+        self.lbl_error.configure(text=error)
+        self.btn_ok.configure(state=ctk.NORMAL if timing else ctk.DISABLED)
+
+    def _focus_first(self) -> None:
+        self._entries[0].focus_set()
+        self._entries[0].select_range(0, ctk.END)
+
+    def _ok(self) -> None:
+        timing, _error = self._parse()
+        if timing is None:
+            return
+        self._result = timing
         self._close()

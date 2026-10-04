@@ -5,7 +5,7 @@ from collections.abc import Callable
 from dataclasses import replace
 from functools import partial
 from pathlib import Path
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from typing import Any
 
 import customtkinter as ctk
@@ -13,7 +13,9 @@ import numpy as np
 
 from handlers.ai_providers import PROVIDERS, get_provider, has_api_key
 from handlers.summary_handler import format_summary
+from handlers.translation_handler import MANUAL
 from models.config.config_ai import ConfigAi
+from models.config.config_system import ConfigSystem
 from models.history import HistoryEntry
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment, join_segments
@@ -29,8 +31,12 @@ from utils.media import (
     probe_media,
 )
 from utils.subtitle_cues import CueTrack, build_cues
-from utils.time_format import format_timestamp
+from utils.time_format import format_segment_time
 from utils.transcript_editing import (
+    delete_segment,
+    insert_segment,
+    overlapping_segments,
+    set_segment_timing,
     speakers,
 )
 from views.entries.delegates import TranscriptDelegate
@@ -40,6 +46,7 @@ from views.settings.option_labels import save_config
 from views.settings.preferences_dialog import AI_TAB
 from views.style import icons, theme
 from views.transcript.corrections import TranscriptCorrectionsMixin
+from views.transcript.edit_dialogs import Timing, TimingDialog
 from views.transcript.media_layout import MediaLayout
 from views.transcript.player_bar import PlayerBar
 from views.transcript.summary_panel import SummaryPanel
@@ -51,8 +58,8 @@ from views.transcript.transcript_text import (
 from views.transcript.translation_panel import (
     TranslateDialog,
     TranslationPanel,
+    has_timed_texts,
     language_name,
-    translated_segments,
 )
 from views.transcript.video_pane import VideoPane
 from views.widgets.button import set_button_state
@@ -67,6 +74,9 @@ SUMMARY_MODE = "summary"
 DEFAULT_TRANSLATION_RATIO = 0.5
 MIN_TRANSLATION_RATIO = 0.2
 TRANSLATION_SPLITTER_THICKNESS = 16
+# How long a segment added to the translation lasts by default, if there is no gap
+# to fill until the next one
+NEW_SEGMENT_SECONDS = 2.0
 
 
 def build_cue_track(segments: list[TranscriptSegment]) -> CueTrack:
@@ -112,6 +122,12 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._mode = TRANSCRIPT_MODE if entry.segments else PLAIN_TEXT_MODE
         # What the text shows, to render it again only when it changes
         self._shown_content: tuple[list[TranscriptSegment], str, bool] | None = None
+        # The language and the segments of the translation that the subtitles of
+        # the video can show, to build them again only when they change
+        self._subtitled_translation: tuple[str, tuple[TranscriptSegment, ...]] = (
+            "",
+            (),
+        )
         self._is_translation_visible = bool(entry.translation) or (
             delegate.is_translating(entry.id)
         )
@@ -120,6 +136,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._translation_ratio = DEFAULT_TRANSLATION_RATIO
 
         self._config_system = ConfigManager.get_config_system()
+        self._precise_variable: tk.BooleanVar | None = None
+        self._subtitles_variable: tk.BooleanVar | None = None
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -137,10 +155,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
         self.translation_panel = TranslationPanel(
             self.frm_texts,
-            on_segment_click=self._on_segment_click,
+            on_segment_click=self._on_translation_segment_click,
             on_segment_menu=self._show_translation_segment_menu,
             on_text_edit=self._on_translation_text_edit,
             on_copy=self._copy_translation,
+            on_export=self.show_translation_export_menu,
             on_translate=self._open_translate_dialog,
             on_close=lambda: self._set_translation_visible(False),
         )
@@ -166,11 +185,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_subtitle_menu=self.video.show_subtitle_menu,
         )
         self.player.grid(row=2, column=0, sticky=ctk.EW)
+        self._apply_precise_timestamps()
 
         self.layout.layout()
         self._show_content()
         self._layout_texts()
         self._refresh_translation()
+        self._refresh_translation_subtitles()
         self._apply_mode()
         self._load_media()
 
@@ -188,6 +209,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.header.update_entry(entry)
         self._show_content()
         self._refresh_translation()
+        self._refresh_translation_subtitles()
         if self._mode == SUMMARY_MODE:
             self._refresh_summary()
 
@@ -204,33 +226,50 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         return self.text.contains_widget(widget)
 
     def show_export_menu(self) -> None:
+        """
+        The formats to export the transcription to and, if it has a translation,
+        the ones to export the translation to.
+        """
         menu = tk.Menu(self, tearoff=False)
-        labels = export_labels()
-        for file_type in available_formats(bool(self._entry.segments)):
-            menu.add_command(
-                label=labels[file_type], command=partial(self.export, file_type)
+        self._add_export_commands(menu, bool(self._entry.segments), self.export)
+
+        if translation := TranscriptTranslation.from_dict(self._entry.translation):
+            submenu = tk.Menu(menu, tearoff=False)
+            self._add_export_commands(
+                submenu, has_timed_texts(translation), self.export_translation
+            )
+            menu.add_separator()
+            menu.add_cascade(
+                label=_("Translation into {language}").format(
+                    language=language_name(translation.language)
+                ),
+                menu=submenu,
             )
         self._popup_below(menu, self.btn_export)
+
+    def show_translation_export_menu(self, anchor: Any) -> None:
+        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        if translation is None:
+            return
+        menu = tk.Menu(self, tearoff=False)
+        self._add_export_commands(
+            menu, has_timed_texts(translation), self.export_translation
+        )
+        self._popup_below(menu, anchor)
+
+    @staticmethod
+    def _add_export_commands(
+        menu: tk.Menu, has_segments: bool, command: Callable[[str], None]
+    ) -> None:
+        labels = export_labels()
+        for file_type in available_formats(has_segments):
+            menu.add_command(
+                label=labels[file_type], command=partial(command, file_type)
+            )
 
     def export(self, file_type: str) -> None:
         self.text.save_pending_text()
         entry = self._entry
-        source_path = entry.source_path
-        initial_dir = str(source_path.parent) if source_path else str(Path.home())
-        stem = (
-            source_path.stem if source_path and source_path.is_file() else entry.title
-        )
-
-        selected = filedialog.asksaveasfilename(
-            title=_("Export transcription"),
-            initialdir=initial_dir,
-            initialfile=f"{sanitize_file_name(stem)}.{file_type}",
-            defaultextension=f".{file_type}",
-            filetypes=[(f".{file_type}", f"*.{file_type}"), (_("All files"), "*.*")],
-        )
-        if not selected:
-            return
-
         document = ExportDocument(
             title=entry.title,
             text=self.text.get_text(),
@@ -238,6 +277,61 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             summary=TranscriptSummary.from_dict(entry.summary),
             is_text_edited=entry.is_text_edited,
         )
+        self._export(file_type, document, _("Export transcription"))
+
+    def export_translation(self, file_type: str) -> None:
+        self.translation_panel.save_pending_text()
+        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        if translation is None:
+            return
+
+        language = language_name(translation.language)
+        document = ExportDocument(
+            title=f"{self._entry.title} ({language})",
+            text=translation.text,
+            # The segments not translated yet are left out of the subtitles
+            segments=[segment for segment in translation.segments if segment.text],
+            is_text_edited=translation.is_text_edited,
+        )
+        self._export(
+            file_type,
+            document,
+            _("Export translation into {language}").format(language=language),
+            # Like `video.es.srt`, which the video players load with the video
+            language_code=translation.language,
+        )
+
+    def _export(
+        self,
+        file_type: str,
+        document: ExportDocument,
+        title: str,
+        language_code: str = "",
+    ) -> None:
+        """
+        Asks where to export a document, next to the source file by default.
+
+        :param language_code: Added to the name of the file, if given.
+        """
+        entry = self._entry
+        source_path = entry.source_path
+        initial_dir = str(source_path.parent) if source_path else str(Path.home())
+        stem = sanitize_file_name(
+            source_path.stem if source_path and source_path.is_file() else entry.title
+        )
+        if language_code:
+            stem += f".{language_code}"
+
+        selected = filedialog.asksaveasfilename(
+            title=title,
+            initialdir=initial_dir,
+            initialfile=f"{stem}.{file_type}",
+            defaultextension=f".{file_type}",
+            filetypes=[(f".{file_type}", f"*.{file_type}"), (_("All files"), "*.*")],
+        )
+        if not selected:
+            return
+
         try:
             path = export(Path(selected), file_type, document)
         except (OSError, ValueError) as e:
@@ -433,6 +527,22 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
         self._apply_mode()
 
+    def _toggle_precise_timestamps(self) -> None:
+        is_precise = not self._config_system.precise_timestamps
+        self._config_system.precise_timestamps = is_precise
+        save_config(ConfigSystem.Key.PRECISE_TIMESTAMPS, str(is_precise))
+        self._apply_precise_timestamps()
+        self._refresh_match_widgets()
+
+    def _apply_precise_timestamps(self) -> None:
+        is_precise = self._config_system.precise_timestamps
+        self.text.set_precise_timestamps(is_precise)
+        self.translation_panel.set_precise_timestamps(is_precise)
+
+    def _format_time(self, seconds: float) -> str:
+        """Formats the start of a segment as the user chose to show them."""
+        return format_segment_time(seconds, self._config_system.precise_timestamps)
+
     # SEARCH
 
     def _search(self) -> None:
@@ -563,7 +673,6 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.translation_panel.save_pending_text()
         self.translation_panel.show(
             TranscriptTranslation.from_dict(self._entry.translation),
-            self._entry.segments,
             is_loading=is_loading,
             error=error,
             pending_language=self._pending_translation_language,
@@ -596,6 +705,18 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 else tk.NORMAL
             ),
         )
+        if self.layout.has_video and self.video.has_translation_subtitles:
+            # Kept while the menu is shown, like the one of the precise timestamps
+            self._subtitles_variable = tk.BooleanVar(
+                menu,
+                value=self.video.is_showing_subtitles
+                and self.video.is_showing_translation,
+            )
+            menu.add_checkbutton(
+                label=_("Show it as the subtitles of the video"),
+                variable=self._subtitles_variable,
+                command=self._toggle_translation_subtitles,
+            )
         if translation is not None:
             menu.add_separator()
             menu.add_command(
@@ -603,6 +724,31 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 command=self._delete_translation,
             )
         self._popup_below(menu, self.btn_translate)
+
+    def _toggle_translation_subtitles(self) -> None:
+        if self.video.is_showing_subtitles and self.video.is_showing_translation:
+            self.video.toggle_subtitles()
+        else:
+            self.video.show_translation(True)
+
+    def _refresh_translation_subtitles(self) -> None:
+        """Gives the video the subtitles of the translation, if it has one."""
+        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        subtitled = (
+            (translation.language, translation.segments) if translation else ("", ())
+        )
+        if subtitled == self._subtitled_translation:
+            return
+
+        self._subtitled_translation = subtitled
+        language, segments = subtitled
+        self.video.set_translation_track(
+            build_cue_track(list(segments)) if segments else None,
+            language_name(language) if language else "",
+        )
+        # The buttons of the subtitles are shown once the video has some
+        if self.layout.has_video and self.video.has_subtitles:
+            self.player.show_subtitle_buttons(self.video.is_showing_subtitles)
 
     def _open_translate_dialog(self) -> None:
         if self._delegate.is_translating(self.entry_id):
@@ -617,6 +763,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if request is None or self._is_destroyed:
             return
 
+        save_config(ConfigAi.Key.TRANSLATION_LANGUAGE, request.language)
+        if request.provider == MANUAL:
+            self._delegate.start_manual_translation(self.entry_id, request.language)
+            self._set_translation_visible(True)
+            self._refresh_translation()
+            return
+
         config = ConfigManager.get_config_ai()
         # The configured model only applies to its provider
         model = (
@@ -627,7 +780,6 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if request.provider != config.translation_provider:
             save_config(ConfigAi.Key.TRANSLATION_PROVIDER, request.provider)
             save_config(ConfigAi.Key.TRANSLATION_MODEL, "")
-        save_config(ConfigAi.Key.TRANSLATION_LANGUAGE, request.language)
 
         self._pending_translation_language = request.language
         self._delegate.translate_entry(
@@ -642,14 +794,33 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self._delegate.save_translation_text(self.entry_id, text)
 
     def _show_translation_segment_menu(self, event: Any, idx: int) -> str:
-        segment = self._entry.segments[idx]
+        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        if translation is None or idx >= len(translation.segments):
+            return "break"
+
+        segment = translation.segments[idx]
         menu = tk.Menu(self, tearoff=False)
         menu.add_command(
             label=_("Play from here"), command=lambda: self._play_from(segment.start)
         )
         menu.add_command(
-            label=_("Edit the text…"),
+            label=_("Edit the text…") if segment.text else _("Translate the text…"),
             command=lambda: self._edit_translation_segment(idx),
+        )
+        menu.add_command(
+            label=_("Edit the timing…"),
+            command=lambda: self._edit_translation_timing(idx),
+        )
+        menu.add_command(
+            label=_("Add a segment after…"),
+            command=lambda: self._add_translation_segment(idx),
+        )
+        menu.add_separator()
+        menu.add_command(
+            label=_("Delete the segment"),
+            command=lambda: self._delete_translation_segment(idx),
+            # Without segments, the translation would have no timestamps
+            state=tk.NORMAL if len(translation.segments) > 1 else tk.DISABLED,
         )
         try:
             menu.tk_popup(event.x_root, event.y_root)
@@ -657,35 +828,127 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             menu.grab_release()
         return "break"
 
-    def _edit_translation_segment(self, idx: int) -> None:
+    def _translation_segments(self) -> list[TranscriptSegment] | None:
+        """The segments of the translation, after saving the edits of its text."""
         self.translation_panel.save_pending_text()
         translation = TranscriptTranslation.from_dict(self._entry.translation)
-        if translation is None or idx >= len(translation.segments):
+        return list(translation.segments) if translation else None
+
+    def _save_translation_segments(self, segments: list[TranscriptSegment]) -> None:
+        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        if translation is None:
+            return
+        # The edited text keeps the changes of the user, so only the segments change
+        text = (
+            translation.text if translation.is_text_edited else join_segments(segments)
+        )
+        self._delegate.update_translation(self.entry_id, segments, text)
+
+    def _edit_translation_segment(self, idx: int) -> None:
+        segments = self._translation_segments()
+        if segments is None or idx >= len(segments):
             return
 
-        segment = self._entry.segments[idx]
-        current_text = translation.segments[idx]
+        segment = segments[idx]
+        # The original text said meanwhile is shown, to translate it
+        original = " ".join(
+            s.text
+            for s in overlapping_segments(
+                self._entry.segments, segment.start, segment.end
+            )
+        )
+        start, end = self._format_time(segment.start), self._format_time(segment.end)
         text = TextDialog(
             self,
-            _("Edit the text"),
-            _("Text said at {time}:").format(time=format_timestamp(segment.start)),
-            current_text,
+            _("Edit the text") if segment.text else _("Translate the text"),
+            _("Translation of “{text}”, said from {start} to {end}:").format(
+                text=original, start=start, end=end
+            )
+            if original
+            else _("Translation of the segment from {start} to {end}:").format(
+                start=start, end=end
+            ),
+            segment.text,
             is_multiline=True,
             allow_empty=False,
         ).get_input()
-        if not text or not text.strip() or text == current_text:
+        if not text or not text.strip() or text == segment.text:
             return
 
-        texts = list(translation.segments)
-        texts[idx] = text.strip()
-        translation = replace(translation, segments=tuple(texts))
-        # The edited text keeps the changes of the user, so only the segment changes
-        self._delegate.update_translation(
-            self.entry_id,
-            translation.segments,
-            translation.text
-            if translation.is_text_edited
-            else join_segments(translated_segments(translation, self._entry.segments)),
+        segments[idx] = replace(segment, text=text.strip())
+        self._save_translation_segments(segments)
+
+    def _edit_translation_timing(self, idx: int) -> None:
+        segments = self._translation_segments()
+        if segments is None or idx >= len(segments):
+            return
+
+        segment = segments[idx]
+        timing = TimingDialog(
+            self,
+            _("Edit the timing"),
+            _("Save"),
+            self._describe_translation_segment(segment),
+            Timing(segment.start, segment.end),
+        ).get_result()
+        if timing is None or (timing.start, timing.end) == (segment.start, segment.end):
+            return
+
+        self._save_translation_segments(
+            set_segment_timing(segments, idx, timing.start, timing.end)
+        )
+
+    def _add_translation_segment(self, idx: int) -> None:
+        segments = self._translation_segments()
+        if segments is None or idx >= len(segments):
+            return
+
+        # By default, it fills the gap until the next segment
+        previous = segments[idx]
+        start = previous.end
+        following = segments[idx + 1].start if idx + 1 < len(segments) else start
+        end = following if following > start else start + NEW_SEGMENT_SECONDS
+        timing = TimingDialog(
+            self,
+            _("Add a segment"),
+            _("Add"),
+            _("The new segment goes after the one at {time}:").format(
+                time=self._format_time(previous.start)
+            ),
+            Timing(start, end),
+        ).get_result()
+        if timing is None:
+            return
+
+        added = TranscriptSegment(timing.start, timing.end, "", previous.speaker)
+        segments = insert_segment(segments, added)
+        self._save_translation_segments(segments)
+        # It's translated right away, or it's left to translate later
+        self._edit_translation_segment(
+            next(i for i, segment in enumerate(segments) if segment is added)
+        )
+
+    def _delete_translation_segment(self, idx: int) -> None:
+        segments = self._translation_segments()
+        if segments is None or idx >= len(segments) or len(segments) <= 1:
+            return
+
+        segment = segments[idx]
+        if segment.text and not messagebox.askyesno(
+            _("Delete the segment"),
+            _("Delete the segment “{text}”?").format(text=segment.text),
+            icon=messagebox.WARNING,
+            parent=self.winfo_toplevel(),
+        ):
+            return
+        self._save_translation_segments(delete_segment(segments, idx))
+
+    def _describe_translation_segment(self, segment: TranscriptSegment) -> str:
+        """Its text, or the time it starts if it isn't translated yet."""
+        if segment.text:
+            return f"“{segment.text}”"
+        return _("The segment at {time}, not translated yet.").format(
+            time=self._format_time(segment.start)
         )
 
     def _delete_translation(self) -> None:
@@ -783,6 +1046,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _on_segment_click(self, idx: int) -> None:
         self._play_from(self._entry.segments[idx].start)
 
+    def _on_translation_segment_click(self, idx: int) -> None:
+        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        if translation and idx < len(translation.segments):
+            self._play_from(translation.segments[idx].start)
+
     # MENUS
 
     def _show_segment_menu(self, event: Any, idx: int) -> str:
@@ -811,6 +1079,17 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             command=self._rename_speakers,
             state=tk.NORMAL if speakers(entry.segments) else tk.DISABLED,
         )
+        # Kept while the menu is shown: a variable that is garbage collected is
+        # unset in Tk, so the check mark wouldn't be shown
+        self._precise_variable = tk.BooleanVar(
+            menu, value=self._config_system.precise_timestamps
+        )
+        menu.add_checkbutton(
+            label=_("Precise timestamps (00:00:01,000)"),
+            command=self._toggle_precise_timestamps,
+            variable=self._precise_variable,
+            state=tk.NORMAL if entry.segments else tk.DISABLED,
+        )
         menu.add_separator()
 
         source_path = entry.source_path
@@ -836,6 +1115,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             label=_("Edit note…") if entry.note else _("Add note…"),
             command=lambda: self._delegate.edit_note(self.entry_id),
         )
+        if entry.note:
+            menu.add_command(
+                label=_("Delete note…"),
+                command=lambda: self._delegate.delete_note(self.entry_id),
+            )
         menu.add_command(
             label=_("Edit tag…"), command=lambda: self._delegate.edit_tag(self.entry_id)
         )

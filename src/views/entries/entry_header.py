@@ -125,10 +125,29 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
                 anchor=ctk.W,
                 justify=ctk.LEFT,
             )
-            lbl_note.grid(row=0, column=1, padx=(0, 12), pady=10, sticky=ctk.EW)
+            lbl_note.grid(row=0, column=1, padx=(0, 4), pady=10, sticky=ctk.EW)
             bind_wraplength(lbl_note, margin=10, minimum=200)
             for widget in (note, lbl_note):
                 widget.bind("<Button-1>", lambda _event: delegate.edit_note(entry.id))
+
+            note_actions = ctk.CTkFrame(note, fg_color="transparent")
+            note_actions.grid(row=0, column=2, padx=(0, 8), pady=11, sticky=ctk.N)
+            for column, (icon_name, command) in enumerate(
+                (
+                    ("pencil", lambda: delegate.edit_note(entry.id)),
+                    ("trash", lambda: delegate.delete_note(entry.id)),
+                )
+            ):
+                ctk.CTkButton(
+                    note_actions,
+                    text="",
+                    image=icons.icon(icon_name, 14, theme.ICON_MUTED),
+                    width=26,
+                    height=26,
+                    fg_color="transparent",
+                    hover_color=theme.NOTE_BORDER,
+                    command=command,
+                ).grid(row=0, column=column)
 
     @staticmethod
     def _meta_label(master: Any, icon_name: str, text: str = "") -> ctk.CTkLabel:

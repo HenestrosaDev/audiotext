@@ -3,7 +3,7 @@ Translates transcriptions into another language with DeepL, Google Translate or 
 language model of the providers of `AiProvider`.
 
 The segments of the transcription are translated one by one, so the translation
-keeps their timestamps and can be followed while playing the audio.
+starts with their timestamps and can be followed while playing the audio.
 """
 
 import json
@@ -31,6 +31,8 @@ from utils.i18n import _, sort_key
 
 DEEPL = "deepl"
 GOOGLE_TRANSLATE = "google"
+# Not a provider: the user translates the transcription from scratch
+MANUAL = "manual"
 
 # The translations are requested in chunks, which keeps the replies of the models
 # short and within the limits of the APIs
@@ -370,13 +372,11 @@ class TranslationHandler:
             translated = translate_texts(
                 [segment.text for segment in segments], language, provider, model
             )
-            translated_segments = tuple(translated)
-            translated_text = join_segments(
-                [
-                    replace(segment, text=segment_text, words=())
-                    for segment, segment_text in zip(segments, translated, strict=True)
-                ]
+            translated_segments = tuple(
+                replace(segment, text=segment_text, words=())
+                for segment, segment_text in zip(segments, translated, strict=True)
             )
+            translated_text = join_segments(list(translated_segments))
         else:
             # Line by line, which keeps the paragraphs
             translated_segments = ()
