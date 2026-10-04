@@ -90,22 +90,7 @@
   </p>
 </div>
 
-<picture>
-  <source
-    srcset="docs/light/main.png"
-    media="(prefers-color-scheme: light)"
-  />
-  <source
-    srcset="docs/dark/main.png"
-    width="128"
-    height="128"
-    media="(prefers-color-scheme: dark)"
-  />
-  <img
-    src="docs/dark/main.png"
-    alt="The Audiotext window with a transcription open"
-  >
-</picture>
+https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
 
 <!-- TABLE OF CONTENTS -->
 
@@ -149,7 +134,7 @@
 
 ## About the Project
 
-**Audiotext** transcribes the audio of files, videos, YouTube videos, links to media files, microphone recordings and whole folders into any of the 100 languages it supports. It transcribes with [**WhisperX**](https://github.com/m-bain/whisperX) on your computer, for free and without sending your audio anywhere, or with the [**Whisper API**](https://platform.openai.com/docs/guides/speech-to-text) and the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text). Then you can play the transcription sentence by sentence, correct it, translate it, summarize it and export it, for example as subtitles.
+**Audiotext** transcribes the audio of files, videos, YouTube videos, links to media files, microphone recordings and whole folders into any of the 100 languages it supports. It transcribes with [**WhisperX**](https://github.com/m-bain/whisperX) on your computer, for free and without sending your audio anywhere, or with the [**Whisper API**](https://platform.openai.com/docs/guides/speech-to-text) and the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text). Then you can play the transcription segment by segment, correct it, translate it, summarize it and export it, for example as subtitles.
 
 ### Features
 
@@ -157,7 +142,7 @@
 - **Private and offline**: WhisperX runs on your computer, on the CPU or, much faster, on an NVIDIA GPU with CUDA.
 - **Speaker identification**, word-level timings, speech extraction (to reduce music and background noise), and keywords and context to spell names and terms right.
 - **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL or Google Translate.
-- **A transcript you can play**: click a sentence to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps.
+- **A transcript you can play**: click a segment to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps.
 - **Summaries** with the key points and the chapters of the transcription.
 - **Export** to plain text, Markdown, Word, SRT, VTT, TSV and JSON.
 - **History** of all your transcriptions, with search, groups, pins, tags and notes, and a queue to transcribe while you keep working, with a notification when each transcription is ready (or, in a watched folder, each new file).
@@ -665,7 +650,7 @@ You can also drop a file or a folder anywhere on the window to transcribe it. Se
 
 - **File**: an audio or video file (see the [supported file types](#supported-file-types)).
 - **URL**: a YouTube video or a direct link to an audio or video file, e.g. the episode of a podcast. The audio is downloaded first.
-- **Microphone**: records you or a meeting and transcribes it. The recording is kept in the history. With WhisperX, `Show the text while recording` shows a draft written by a fast model while you speak, which is replaced by the transcription of the whole recording when you stop.
+- **Microphone**: records you or a meeting and transcribes it. The recording is kept in the history. With WhisperX, `Show the text while recording` shows a draft written by a fast model while you speak, which is replaced by the transcription of the whole recording when you stop. To transcribe what your computer plays (e.g. a video call), record it from a loopback device such as Stereo Mix or VB-CABLE on Windows, BlackHole on macOS or the monitor of your speakers on Linux; see [record the audio of your computer](https://getaudiotext.com/en/guides/sources/#record-the-audio-of-your-computer).
 - **Folder**: transcribes the audio and video files of a folder and its subfolders, and saves the transcription of each file next to it (or in another folder) in the chosen file types. Files that already have a transcription are skipped unless `Overwrite existing files` is on. With `Watch the folder`, it keeps transcribing the files added to the folder until you stop it.
 
 While a transcription is in progress, you can keep using the app and set up the next ones, which are added to a queue. See [audio sources](https://getaudiotext.com/en/guides/sources/).
@@ -702,15 +687,15 @@ See [engines](https://getaudiotext.com/en/reference/engines/).
 
 Select a transcription of the history to open it. It has three modes:
 
-- **Transcript**: each sentence with its timestamp and its speaker. Click a sentence to play the audio from there, change the speed from `0.5×` to `2×`, and search the text with `Ctrl+F` (`⌘F` on macOS). Videos are shown above the text, with their subtitles.
+- **Transcript**: each segment with when it starts and ends, and its speaker. Click a segment to play the audio from there, change the speed from `0.5×` to `2×`, and search the text with `Ctrl+F` (`⌘F` on macOS). Videos are shown above the text, with their subtitles. `Precise timestamps (00:00:01,000)` in the `⋯` menu shows the times to the millisecond, like the subtitles, instead of `MM:SS`.
 - **Plain text**: the text, which you can edit freely. The changes are saved automatically.
 - **Summary**: see [Summary and Translation](#summary-and-translation).
 
-To correct the transcription while keeping its timestamps, use `Find and replace…`, `Rename speakers…` (giving two speakers the same name merges them) or right-click a sentence to edit it. See [the transcript](https://getaudiotext.com/en/guides/transcript/).
+To correct the transcription while keeping its timestamps, use `Find and replace…`, `Rename speakers…` (giving two speakers the same name merges them) or right-click a segment to edit it. See [the transcript](https://getaudiotext.com/en/guides/transcript/).
 
 ### Summary and Translation
 
-The `Summary` mode generates a summary of the transcription, its key points and, if it has timestamps, its chapters. The `Translate` button translates it into another language, shown next to the original text and sentence by sentence, so the translation is also played and highlighted. Both are kept in the history.
+The `Summary` mode generates a summary of the transcription, its key points and, if it has timestamps, its chapters. The `Translate` button translates it into another language, shown next to the original text and segment by segment, so the translation is also played and highlighted. Its segments start with the timestamps of the original, but a translation often needs another timing (e.g. subtitles that take longer to read), so right-click one of them to change when it starts and ends, add a segment after it or delete it. To translate it yourself, choose `Myself, from scratch` as the provider: the translation starts with the timestamps of the original and empty segments, which you translate one by one by right-clicking them. Videos can show the translation as their subtitles, from the options of the subtitles or the `Translate` button. Both are kept in the history.
 
 <picture>
   <source
@@ -724,7 +709,7 @@ The `Summary` mode generates a summary of the transcription, its key points and,
     media="(prefers-color-scheme: dark)"
   />
   <img
-    src="docs/dark/main.png"
+    src="docs/dark/summary.png"
     alt="The summary of a transcription, with its key points and chapters"
   >
 </picture>
@@ -745,17 +730,17 @@ Leave the model empty to use the default one of the provider, or type the name o
 
 ### Export
 
-The `Export` button (or `Ctrl+S`, `⌘S` on macOS) saves the transcription as plain text (`.txt`), Markdown (`.md`), a Word document (`.docx`), subtitles (`.srt` and `.vtt`), a table (`.tsv`) or JSON (`.json`). The Markdown and Word documents include the summary, if any, and the text in paragraphs with the timestamp and the speaker of each one. When transcribing a folder, the files are saved automatically in the chosen types.
+The `Export` button (or `Ctrl+S`, `⌘S` on macOS) saves the transcription as plain text (`.txt`), Markdown (`.md`), a Word document (`.docx`), subtitles (`.srt` and `.vtt`), a table (`.tsv`) or JSON (`.json`). The Markdown and Word documents include the summary, if any, and the text in paragraphs with the timestamp and the speaker of each one. The translation is exported in the same formats, from `Translation into…` in the same menu or the export button of the translation, with the language in the name of the file (e.g. `video.es.srt`) so the video players load it with the video. When transcribing a folder, the files are saved automatically in the chosen types.
 
 ### History
 
-Every transcription is kept in the history, with its summary, its translation and its corrections. Search them by name, text, note, tag or source, and right-click one to rename it, add a note or a tag, pin it to the top, move it to a group, show its file in the file manager or delete it. Deleting a transcription doesn't delete your audio, video or saved files. See [history](https://getaudiotext.com/en/guides/history/).
+Every transcription is kept in the history, with its summary, its translation and its corrections. Search them by name, text, note, tag or source, and right-click one to rename it, add or delete a note, add a tag, pin it to the top, move it to a group, show its file in the file manager or delete it. Deleting a transcription doesn't delete your audio, video or saved files. See [history](https://getaudiotext.com/en/guides/history/).
 
 ### Preferences
 
 The gear at the top right opens the settings that don't change with each transcription:
 
-- **General**: the appearance (system, light or dark), the interface language and the notifications of the system when a transcription is ready.
+- **General**: the appearance (system, light or dark), the interface language, the format of the dates (short, medium, long or ISO) and the times (automatic, 12-hour or 24-hour), and the notifications of the system when a transcription is ready.
 - **AI**: the providers and the models of the summaries and the translations, and the address of Ollama.
 - **API keys**: the keys of OpenAI, Anthropic, DeepSeek, Gemini, Mistral, xAI, DeepL and Google, and the Hugging Face token.
 - **WhisperX**: the compute type, the batch size and whether to use the CPU.
