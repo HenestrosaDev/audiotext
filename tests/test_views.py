@@ -854,6 +854,12 @@ def test_a_translation_is_exported_like_the_transcription(
     assert submenu.entrycget("end", "label") == "JSON (.json)"
     view.show_translation_export_menu(view.translation_panel.btn_export)
     assert menus[1].index("end") == submenu.index("end")
+    # On Windows, Tk crashes if a menu with a cascade is destroyed before it has
+    # been built, which happens when it's idle, as the menus aren't shown here
+    ui.pump()
+    for menu in menus:
+        menu.destroy()
+    ui.pump()
 
     initial_files: list[str] = []
 
