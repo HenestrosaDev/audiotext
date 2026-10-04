@@ -1,0 +1,39 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      # The minor and patch versions in a single pull request. The major ones come
+      # separately, since they're more likely to break something
+      python-dependencies:
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # PyTorch is pinned to the version that WhisperX supports, so it's updated by
+      # hand together with WhisperX
+      - dependency-name: torch
+      - dependency-name: torchaudio
+      - dependency-name: torchvision
+
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: monthly
+    groups:
+      web-dependencies:
+        update-types:
+          - minor
+          - patch

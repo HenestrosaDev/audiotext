@@ -25,6 +25,29 @@ def get_root_path() -> Path:
     return root_path
 
 
+def get_user_config_dir() -> Path:
+    """
+    Gets the directory where the settings of the user are stored, following the
+    conventions of each operating system. It can be overridden with the
+    `AUDIOTEXT_CONFIG_DIR` environment variable (e.g. for a portable setup).
+
+    :return: The directory. It may not exist yet.
+    :rtype: Path
+    """
+    if config_dir := os.environ.get("AUDIOTEXT_CONFIG_DIR"):
+        return Path(config_dir)
+
+    if sys.platform == "win32":
+        base_dir = Path(os.environ.get("APPDATA") or Path.home() / "AppData/Roaming")
+        return base_dir / "Audiotext"
+
+    if sys.platform == "darwin":
+        return Path.home() / "Library" / "Application Support" / "Audiotext"
+
+    base_dir = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config")
+    return base_dir / "audiotext"
+
+
 IMG_RELATIVE_PATH = "res/img"
 
 ROOT_PATH = get_root_path()

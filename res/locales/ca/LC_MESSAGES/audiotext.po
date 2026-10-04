@@ -1,0 +1,2223 @@
+# Catalan translations for Audiotext.
+# Copyright (C) 2026 HenestrosaDev
+# This file is distributed under the same license as the Audiotext project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Audiotext 2.3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
+"POT-Creation-Date: 2026-10-04 18:26+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Machine translation (please review) "
+"<https://github.com/HenestrosaDev/audiotext>\n"
+"Language: ca\n"
+"Language-Team: Catalan <https://github.com/HenestrosaDev/audiotext>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: src/controllers/folder_transcriber.py:58
+msgid ""
+"The folder doesn't contain files to transcribe. The files that already "
+"have a transcription are skipped unless you check 'Overwrite existing "
+"files'."
+msgstr ""
+"La carpeta no conté fitxers per transcriure. Els fitxers que ja tenen una"
+" transcripció s'ometen tret que marquis «Sobreescriu els fitxers "
+"existents»."
+
+#: src/controllers/folder_transcriber.py:81
+#, python-brace-format
+msgid "Transcribed {done} of {total} files."
+msgstr "S'han transcrit {done} de {total} fitxers."
+
+#: src/controllers/folder_transcriber.py:97
+#, python-brace-format
+msgid "Waiting for new files in {folder}…"
+msgstr "S'estan esperant fitxers nous a {folder}…"
+
+#: src/controllers/folder_transcriber.py:114
+#, python-brace-format
+msgid "Stopped watching the folder. Files transcribed: {done}."
+msgstr "S'ha deixat de vigilar la carpeta. Fitxers transcrits: {done}."
+
+#: src/controllers/folder_transcriber.py:137
+msgid "cancelled"
+msgstr "cancel·lat"
+
+#: src/controllers/folder_transcriber.py:176
+#, python-brace-format
+msgid "File {current} of {total} ({name}): {message}"
+msgstr "Fitxer {current} de {total} ({name}): {message}"
+
+#: src/controllers/folder_transcriber.py:191
+#, python-brace-format
+msgid "{name}: {message}"
+msgstr "{name}: {message}"
+
+#: src/controllers/main_controller.py:99
+msgid "Cancelling…"
+msgstr "S'està cancel·lant…"
+
+#: src/controllers/main_controller.py:168
+msgid "Transcription cancelled."
+msgstr "S'ha cancel·lat la transcripció."
+
+#: src/controllers/main_controller.py:183
+msgid "Downloading…"
+msgstr "S'està baixant…"
+
+#: src/controllers/main_controller.py:210
+#, python-brace-format
+msgid "Done in {duration}."
+msgstr "Fet en {duration}."
+
+#: src/controllers/main_controller.py:273
+msgid "Isolating the speech…"
+msgstr "S'està aïllant la veu…"
+
+#: src/controllers/main_controller.py:306
+msgid "WhisperX model ready."
+msgstr "El model de WhisperX està a punt."
+
+#: src/controllers/main_controller.py:313
+#, python-brace-format
+msgid "Could not load the WhisperX model: {error}"
+msgstr "No s'ha pogut carregar el model de WhisperX: {error}"
+
+#: src/controllers/transcription_validator.py:17
+#: src/handlers/whisperx_handler.py:199
+msgid "No output file types selected. Please select at least one."
+msgstr ""
+"No hi ha cap tipus de fitxer de sortida seleccionat. Selecciona'n almenys"
+" un."
+
+#: src/controllers/transcription_validator.py:26
+#: src/views/settings/settings_form.py:170
+msgid ""
+"The Google API can't detect the language. Please select the language of "
+"the audio."
+msgstr "L'API de Google no pot detectar l'idioma. Selecciona l'idioma de l'àudio."
+
+#: src/controllers/transcription_validator.py:57
+#, python-brace-format
+msgid ""
+"The {model} model doesn't return timestamps, so it can't save {format} "
+"files. Choose another format or the whisper-1 model."
+msgstr ""
+"El model {model} no retorna marques de temps, així que no pot desar "
+"fitxers {format}. Tria un altre format o el model whisper-1."
+
+#: src/controllers/transcription_validator.py:75
+msgid "Please select a valid audio or video file."
+msgstr "Selecciona un fitxer d'àudio o de vídeo vàlid."
+
+#: src/controllers/transcription_validator.py:79
+#: src/views/new_transcription/new_transcription_view.py:476
+msgid "Please select a valid folder."
+msgstr "Selecciona una carpeta vàlida."
+
+#: src/controllers/transcription_validator.py:86
+msgid ""
+"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
+" or video file)."
+msgstr ""
+"Introdueix un URL vàlid (p. ex., l'enllaç d'un vídeo de YouTube o d'un "
+"fitxer d'àudio o vídeo)."
+
+#: src/handlers/ai_providers.py:104 src/handlers/ai_providers.py:109
+#: src/handlers/ai_providers.py:112
+msgid "The model didn't return a valid reply."
+msgstr "El model no ha retornat una resposta vàlida."
+
+#: src/handlers/ai_providers.py:157 src/handlers/ai_providers.py:190
+msgid "The reply of the model was too long."
+msgstr "La resposta del model era massa llarga."
+
+#: src/handlers/audio_handler.py:54 src/handlers/openai_api_handler.py:335
+#: src/handlers/whisperx_handler.py:216
+msgid "Loading audio…"
+msgstr "S'està carregant l'àudio…"
+
+#: src/handlers/audio_handler.py:81
+#, python-brace-format
+msgid "Unsupported file type: {extension}"
+msgstr "Tipus de fitxer no compatible: {extension}"
+
+#: src/handlers/audio_handler.py:132 src/handlers/openai_api_handler.py:360
+#: src/handlers/whisperx_handler.py:226 src/handlers/whisperx_handler.py:233
+#: src/views/history/formatting.py:42
+#: src/views/new_transcription/microphone_view.py:383
+msgid "Transcribing…"
+msgstr "S'està transcrivint…"
+
+#: src/handlers/audio_handler.py:135 src/handlers/openai_api_handler.py:363
+#, python-brace-format
+msgid "Transcribing chunk {current} of {total}…"
+msgstr "S'està transcrivint el fragment {current} de {total}…"
+
+#: src/handlers/live_transcriber.py:246
+msgid "The text can't be shown while recording."
+msgstr "El text no es pot mostrar mentre es grava."
+
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:446
+#, python-brace-format
+msgid "Loading the {model} model (it's downloaded the first time it's used)…"
+msgstr ""
+"S'està carregant el model {model} (es baixa la primera vegada que "
+"s'utilitza)…"
+
+#: src/handlers/openai_api_handler.py:474
+#, python-brace-format
+msgid "The audio is too large for the OpenAI API ({size} MB)."
+msgstr "L'àudio és massa gran per a l'API d'OpenAI ({size} MB)."
+
+#: src/handlers/summary_handler.py:103 src/handlers/summary_handler.py:118
+msgid "The model didn't return a valid summary."
+msgstr "El model no ha retornat un resum vàlid."
+
+#: src/handlers/summary_handler.py:174
+msgid "There is no text to summarize."
+msgstr "No hi ha text per resumir."
+
+#: src/handlers/transcribers.py:27 src/handlers/whisperx_handler.py:299
+msgid "There is no transcription to save. Please generate it first."
+msgstr "No hi ha cap transcripció per desar. Genera-la primer."
+
+#: src/handlers/translation_handler.py:245
+msgid "The model didn't return a valid translation."
+msgstr "El model no ha retornat una traducció vàlida."
+
+#: src/handlers/translation_handler.py:297
+#, python-brace-format
+msgid "DeepL can't translate into {language}."
+msgstr "DeepL no pot traduir a l'idioma {language}."
+
+#: src/handlers/translation_handler.py:312
+msgid "DeepL didn't return a valid translation."
+msgstr "DeepL no ha retornat una traducció vàlida."
+
+#: src/handlers/translation_handler.py:333
+msgid "Google Translate didn't return a valid translation."
+msgstr "Google Translate no ha retornat una traducció vàlida."
+
+#: src/handlers/translation_handler.py:362
+msgid "There is no text to translate."
+msgstr "No hi ha text per traduir."
+
+#: src/handlers/url_handler.py:87
+msgid ""
+"The URL doesn't point to an audio or video file. Use the link of a "
+"YouTube video or of a media file."
+msgstr ""
+"L'URL no apunta a un fitxer d'àudio o vídeo. Fes servir l'enllaç d'un "
+"vídeo de YouTube o d'un fitxer multimèdia."
+
+#: src/handlers/url_handler.py:105
+#, python-brace-format
+msgid "The file could not be downloaded: {error}"
+msgstr "No s'ha pogut baixar el fitxer: {error}"
+
+#: src/handlers/whisperx_handler.py:335 src/handlers/whisperx_handler.py:344
+msgid "Aligning subtitles…"
+msgstr "S'estan alineant els subtítols…"
+
+#: src/handlers/whisperx_handler.py:368 src/handlers/whisperx_handler.py:373
+msgid "Identifying speakers…"
+msgstr "S'estan identificant els parlants…"
+
+#: src/handlers/whisperx_handler.py:394
+#, python-brace-format
+msgid ""
+"Identifying speakers requires a Hugging Face token. Create one at "
+"{tokens_url}, accept the conditions of {model_url} and set the token in "
+"the WhisperX options."
+msgstr ""
+"Per identificar els parlants cal un testimoni de Hugging Face. Crea'n un "
+"a {tokens_url}, accepta les condicions de {model_url} i introdueix el "
+"testimoni a les opcions de WhisperX."
+
+#: src/handlers/whisperx_handler.py:479
+msgid "Loading the subtitle alignment model…"
+msgstr "S'està carregant el model d'alineació de subtítols…"
+
+#: src/handlers/whisperx_handler.py:512
+msgid ""
+"Loading the speaker identification model (it's downloaded the first time "
+"it's used)…"
+msgstr ""
+"S'està carregant el model d'identificació de parlants (es baixa la "
+"primera vegada que s'utilitza)…"
+
+#: src/handlers/whisperx_handler.py:526
+#, python-brace-format
+msgid ""
+"Could not download the speaker identification model. Check that the "
+"Hugging Face token is valid and that you've accepted the conditions of "
+"{model_url}."
+msgstr ""
+"No s'ha pogut baixar el model d'identificació de parlants. Comprova que "
+"el testimoni de Hugging Face és vàlid i que has acceptat les condicions "
+"de {model_url}."
+
+#: src/handlers/youtube_handler.py:34
+msgid ""
+"The audio of the YouTube video could not be downloaded. Please make sure "
+"the URL is correct."
+msgstr ""
+"No s'ha pogut baixar l'àudio del vídeo de YouTube. Comprova que l'URL "
+"sigui correcte."
+
+#: src/handlers/youtube_handler.py:40
+msgid "The YouTube video doesn't have an audio track."
+msgstr "El vídeo de YouTube no té pista d'àudio."
+
+#: src/utils/audio_utils.py:30
+msgid "No audio was recorded."
+msgstr "No s'ha enregistrat cap àudio."
+
+#: src/utils/exporters.py:149 src/utils/exporters.py:186
+#: src/views/settings/preferences_dialog.py:420
+#: src/views/transcript/summary_panel.py:189
+#: src/views/transcript/transcript_view.py:430
+msgid "Summary"
+msgstr "Resum"
+
+#: src/utils/exporters.py:151 src/utils/exporters.py:189
+#: src/views/transcript/summary_panel.py:206
+msgid "Key points"
+msgstr "Punts clau"
+
+#: src/utils/exporters.py:155 src/utils/exporters.py:193
+#: src/views/transcript/summary_panel.py:211
+msgid "Chapters"
+msgstr "Capítols"
+
+#: src/utils/exporters.py:161 src/utils/exporters.py:198
+#: src/views/new_transcription/microphone_view.py:227
+#: src/views/transcript/video_pane.py:241
+msgid "Transcription"
+msgstr "Transcripció"
+
+#: src/utils/time_format.py:77
+#, python-brace-format
+msgid "{minutes} min {seconds} s"
+msgstr "{minutes} min {seconds} s"
+
+#: src/utils/time_format.py:79
+#, python-brace-format
+msgid "{seconds} s"
+msgstr "{seconds} s"
+
+#: src/views/entries/entry_header.py:97
+msgid "Add note"
+msgstr "Afegeix una nota"
+
+#: src/views/entries/folder_view.py:54
+msgid "Files"
+msgstr "Fitxers"
+
+#: src/views/entries/folder_view.py:90
+#, python-brace-format
+msgid "{count} files"
+msgstr "{count} fitxers"
+
+#: src/views/entries/folder_view.py:91
+#, python-brace-format
+msgid "{count} done"
+msgstr "{count} completades"
+
+#: src/views/entries/folder_view.py:94
+#, python-brace-format
+msgid "{count} failed"
+msgstr "{count} amb errors"
+
+#: src/views/entries/folder_view.py:103
+#: src/views/transcript/transcript_view.py:1103
+msgid "Open the folder of the saved files"
+msgstr "Obre la carpeta dels fitxers desats"
+
+#: src/views/entries/folder_view.py:111
+#: src/views/history/history_sidebar.py:329
+#: src/views/transcript/transcript_view.py:1128
+msgid "Transcribe again"
+msgstr "Torna a transcriure"
+
+#: src/views/entries/folder_view.py:131
+msgid "Waiting for new files…"
+msgstr "S'estan esperant fitxers nous…"
+
+#: src/views/entries/folder_view.py:133
+msgid "No files"
+msgstr "Cap fitxer"
+
+#: src/views/entries/progress_card.py:17
+#: src/views/new_transcription/new_transcription_view.py:121
+msgid "Choose a file"
+msgstr "Tria un fitxer"
+
+#: src/views/entries/progress_card.py:18
+#: src/views/new_transcription/new_transcription_view.py:122
+msgid "Enter the URL"
+msgstr "Introdueix l'URL"
+
+#: src/views/entries/progress_card.py:19
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:433
+msgid "Record"
+msgstr "Grava"
+
+#: src/views/entries/progress_card.py:20 src/views/entries/progress_card.py:21
+#: src/views/new_transcription/new_transcription_view.py:123
+msgid "Choose a folder"
+msgstr "Tria una carpeta"
+
+#: src/views/entries/progress_card.py:22
+msgid "Source"
+msgstr "Origen"
+
+#: src/views/entries/progress_card.py:47
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:431
+#: src/views/new_transcription/microphone_view.py:433
+#: src/views/new_transcription/new_transcription_view.py:149
+#: src/views/transcript/summary_panel.py:88
+#: src/views/transcript/summary_panel.py:101
+msgid "Settings"
+msgstr "Configuració"
+
+#: src/views/entries/progress_card.py:47
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:433
+#: src/views/new_transcription/new_transcription_view.py:149
+msgid "Transcribe"
+msgstr "Transcriu"
+
+#: src/views/entries/progress_card.py:114
+#: src/views/history/history_sidebar.py:322
+msgid "Stop watching"
+msgstr "Deixa de vigilar"
+
+#: src/views/entries/progress_card.py:114
+#: src/views/history/history_sidebar.py:324
+#: src/views/transcript/edit_dialogs.py:46 src/views/widgets/text_dialog.py:60
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: src/views/entries/progress_card.py:125
+msgid ""
+"You can keep using Audiotext meanwhile. The result is saved in your "
+"history and opens here when it's ready."
+msgstr ""
+"Mentrestant, pots continuar fent servir Audiotext. El resultat es desa al"
+" teu historial i s'obre aquí quan estigui llest."
+
+#: src/views/entries/progress_card.py:137
+msgid "The transcription failed"
+msgstr "La transcripció ha fallat"
+
+#: src/views/entries/progress_card.py:138
+msgid "An unknown error occurred."
+msgstr "S'ha produït un error desconegut."
+
+#: src/views/entries/progress_card.py:140
+msgid "The transcription was interrupted"
+msgstr "S'ha interromput la transcripció"
+
+#: src/views/entries/progress_card.py:141
+msgid "Audiotext was closed before it finished."
+msgstr "Audiotext s'ha tancat abans d'acabar."
+
+#: src/views/entries/progress_card.py:143
+msgid "The transcription was cancelled"
+msgstr "S'ha cancel·lat la transcripció"
+
+#: src/views/entries/progress_card.py:158
+#: src/views/new_transcription/new_transcription_view.py:288
+msgid "Back"
+msgstr "Enrere"
+
+#: src/views/entries/progress_card.py:167
+msgid "Try again"
+msgstr "Torna-ho a provar"
+
+#: src/views/entries/progress_card.py:175
+msgid "Delete"
+msgstr "Elimina"
+
+#: src/views/entries/progress_card.py:188
+#, python-brace-format
+msgid "Waiting for {count} transcription(s) to finish."
+msgstr "S'està esperant que acabin {count} transcripcions."
+
+#: src/views/entries/progress_card.py:192
+msgid "Waiting for the current transcription to finish."
+msgstr "S'està esperant que acabi la transcripció actual."
+
+#: src/views/entries/progress_card.py:199
+msgid "Starting…"
+msgstr "S'està iniciant…"
+
+#: src/views/history/formatting.py:21 src/views/main_window/top_bar.py:25
+#: src/views/main_window/welcome_view.py:37
+msgid "File"
+msgstr "Fitxer"
+
+#: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:26
+#: src/views/main_window/welcome_view.py:38
+#: src/views/new_transcription/new_transcription_view.py:238
+msgid "URL"
+msgstr "URL"
+
+#: src/views/history/formatting.py:23 src/views/main_window/top_bar.py:27
+#: src/views/main_window/welcome_view.py:39
+msgid "Microphone"
+msgstr "Micròfon"
+
+#: src/views/history/formatting.py:24 src/views/main_window/top_bar.py:28
+#: src/views/main_window/welcome_view.py:43
+#: src/views/settings/cards/folder_card.py:19
+msgid "Folder"
+msgstr "Carpeta"
+
+#: src/views/history/formatting.py:25
+msgid "Watched folder"
+msgstr "Carpeta vigilada"
+
+#: src/views/history/formatting.py:41
+msgid "Queued"
+msgstr "A la cua"
+
+#: src/views/history/formatting.py:43
+msgid "Watching"
+msgstr "Vigilant"
+
+#: src/views/history/formatting.py:44
+msgid "Done"
+msgstr "Completada"
+
+#: src/views/history/formatting.py:45
+msgid "Failed"
+msgstr "Amb errors"
+
+#: src/views/history/formatting.py:46
+msgid "Cancelled"
+msgstr "Cancel·lada"
+
+#: src/views/history/formatting.py:47
+msgid "Interrupted"
+msgstr "Interrompuda"
+
+#: src/views/history/formatting.py:157
+msgid "Show in Finder"
+msgstr "Mostra al Finder"
+
+#: src/views/history/formatting.py:159
+msgid "Show in Explorer"
+msgstr "Mostra a l'Explorador"
+
+#: src/views/history/formatting.py:160
+msgid "Show in file manager"
+msgstr "Mostra al gestor de fitxers"
+
+#: src/views/history/history_row.py:248
+#, python-brace-format
+msgid "{done}/{total} files"
+msgstr "{done}/{total} fitxers"
+
+#: src/views/history/history_sidebar.py:113
+msgid "Search"
+msgstr "Cerca"
+
+#: src/views/history/history_sidebar.py:129
+#: src/views/main_window/entry_actions.py:382
+msgid "New group"
+msgstr "Grup nou"
+
+#: src/views/history/history_sidebar.py:184
+#, python-brace-format
+msgid "{count} transcriptions"
+msgstr "{count} transcripcions"
+
+#: src/views/history/history_sidebar.py:186
+msgid "1 transcription"
+msgstr "1 transcripció"
+
+#: src/views/history/history_sidebar.py:193
+msgid "No transcriptions yet"
+msgstr "Encara no hi ha transcripcions"
+
+#: src/views/history/history_sidebar.py:194
+msgid "Choose a source above to transcribe your first file."
+msgstr "Tria un origen a dalt per transcriure el teu primer fitxer."
+
+#: src/views/history/history_sidebar.py:270
+#: src/views/main_window/entry_actions.py:69
+msgid "Rename"
+msgstr "Canvia el nom"
+
+#: src/views/history/history_sidebar.py:272
+#: src/views/transcript/transcript_view.py:1115
+msgid "Edit note…"
+msgstr "Edita la nota…"
+
+#: src/views/history/history_sidebar.py:272
+#: src/views/transcript/transcript_view.py:1115
+msgid "Add note…"
+msgstr "Afegeix una nota…"
+
+#: src/views/history/history_sidebar.py:277
+#: src/views/transcript/transcript_view.py:1120
+msgid "Delete note…"
+msgstr "Elimina la nota…"
+
+#: src/views/history/history_sidebar.py:281
+#: src/views/transcript/transcript_view.py:1124
+msgid "Edit tag…"
+msgstr "Edita l'etiqueta…"
+
+#: src/views/history/history_sidebar.py:286
+msgid "Unpin"
+msgstr "Deixa de fixar"
+
+#: src/views/history/history_sidebar.py:286
+msgid "Pin to the top"
+msgstr "Fixa a dalt"
+
+#: src/views/history/history_sidebar.py:292
+msgid "No group"
+msgstr "Sense grup"
+
+#: src/views/history/history_sidebar.py:306
+msgid "New group…"
+msgstr "Grup nou…"
+
+#: src/views/history/history_sidebar.py:309
+msgid "Move to group"
+msgstr "Mou al grup"
+
+#: src/views/history/history_sidebar.py:335
+#: src/views/transcript/transcript_view.py:1133
+msgid "Delete…"
+msgstr "Elimina…"
+
+#: src/views/history/history_sidebar.py:347
+msgid "Rename group…"
+msgstr "Canvia el nom del grup…"
+
+#: src/views/history/history_sidebar.py:351
+msgid "Delete group…"
+msgstr "Elimina el grup…"
+
+#: src/views/history/history_sidebar.py:374
+msgid "Pinned"
+msgstr "Fixades"
+
+#: src/views/history/history_sidebar.py:382
+msgid "Transcriptions"
+msgstr "Transcripcions"
+
+#: src/views/history/history_sidebar.py:405
+msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
+msgstr ""
+"Buit. Per afegir-hi una transcripció, fes-hi clic dret i tria «Mou al "
+"grup»."
+
+#: src/views/history/history_sidebar.py:429
+msgid "No files yet"
+msgstr "Encara no hi ha fitxers"
+
+#: src/views/history/history_sidebar.py:465
+#: src/views/transcript/transcript_view.py:573
+msgid "No results"
+msgstr "Cap resultat"
+
+#: src/views/history/history_sidebar.py:466
+#, python-brace-format
+msgid "No transcription contains “{query}”."
+msgstr "Cap transcripció conté «{query}»."
+
+#: src/views/main_window/entry_actions.py:70
+msgid "Name of the transcription:"
+msgstr "Nom de la transcripció:"
+
+#: src/views/main_window/entry_actions.py:83
+msgid "Note"
+msgstr "Nota"
+
+#: src/views/main_window/entry_actions.py:84
+#, python-brace-format
+msgid "A note about “{title}”:"
+msgstr "Una nota sobre «{title}»:"
+
+#: src/views/main_window/entry_actions.py:97
+msgid "Delete note"
+msgstr "Elimina la nota"
+
+#: src/views/main_window/entry_actions.py:98
+#, python-brace-format
+msgid "Delete the note of “{title}”?"
+msgstr "Vols eliminar la nota de «{title}»?"
+
+#: src/views/main_window/entry_actions.py:111
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: src/views/main_window/entry_actions.py:112
+#, python-brace-format
+msgid "Tag of “{title}”. Leave it empty to show the kind of source."
+msgstr "Etiqueta de «{title}». Deixa-la buida per mostrar el tipus d'origen."
+
+#: src/views/main_window/entry_actions.py:136
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "El fitxer s'ha mogut o eliminat: {path}"
+
+#: src/views/main_window/entry_actions.py:142
+#, python-brace-format
+msgid "Could not open the file manager: {error}"
+msgstr "No s'ha pogut obrir el gestor de fitxers: {error}"
+
+#: src/views/main_window/entry_actions.py:152
+#, python-brace-format
+msgid "Could not open the folder: {error}"
+msgstr "No s'ha pogut obrir la carpeta: {error}"
+
+#: src/views/main_window/entry_actions.py:160
+#, python-brace-format
+msgid "Delete “{title}” from the history?"
+msgstr "Vols eliminar «{title}» de l'historial?"
+
+#: src/views/main_window/entry_actions.py:162
+msgid "The transcriptions of its files are deleted too."
+msgstr "També s'eliminen les transcripcions dels seus fitxers."
+
+#: src/views/main_window/entry_actions.py:163
+msgid "Your audio, video and saved files are not deleted."
+msgstr "Els teus fitxers d'àudio, vídeo i els desats no s'eliminen."
+
+#: src/views/main_window/entry_actions.py:165
+msgid "Delete transcription"
+msgstr "Elimina la transcripció"
+
+#: src/views/main_window/entry_actions.py:235
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "El resum de «{title}» està llest."
+
+#: src/views/main_window/entry_actions.py:240
+#, python-brace-format
+msgid "Could not summarize “{title}”: {error}"
+msgstr "No s'ha pogut resumir «{title}»: {error}"
+
+#: src/views/main_window/entry_actions.py:356
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "La traducció de «{title}» està llesta."
+
+#: src/views/main_window/entry_actions.py:361
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "No s'ha pogut traduir «{title}»: {error}"
+
+#: src/views/main_window/entry_actions.py:383
+#: src/views/main_window/entry_actions.py:400
+msgid "Name of the group:"
+msgstr "Nom del grup:"
+
+#: src/views/main_window/entry_actions.py:384
+msgid "Create"
+msgstr "Crea"
+
+#: src/views/main_window/entry_actions.py:399
+msgid "Rename group"
+msgstr "Canvia el nom del grup"
+
+#: src/views/main_window/entry_actions.py:413
+msgid "Delete group"
+msgstr "Elimina el grup"
+
+#: src/views/main_window/entry_actions.py:415
+#, python-brace-format
+msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
+msgstr ""
+"Vols eliminar el grup «{name}»? Les seves transcripcions es conserven, "
+"sense grup."
+
+#: src/views/main_window/main_window.py:497
+#: src/views/new_transcription/new_transcription_view.py:468
+#, python-brace-format
+msgid "“{name}” is not a supported audio or video file."
+msgstr "«{name}» no és un fitxer d'àudio o vídeo compatible."
+
+#: src/views/main_window/main_window.py:510
+msgid ""
+"Only one file can be added at a time. To transcribe several files, drop "
+"the folder that contains them."
+msgstr ""
+"Només es pot afegir un fitxer cada vegada. Per transcriure'n diversos, "
+"deixa anar la carpeta que els conté."
+
+#: src/views/main_window/main_window.py:598
+msgid ""
+"Type in the API key. It's kept in the credential store of your system. "
+"Leave it empty to remove it."
+msgstr ""
+"Escriu la clau d'API. Es desa al magatzem de credencials del teu sistema."
+" Deixa-la buida per eliminar-la."
+
+#: src/views/main_window/main_window.py:602
+msgid "OK"
+msgstr "D'acord"
+
+#: src/views/main_window/main_window.py:609
+msgid "API key saved."
+msgstr "S'ha desat la clau d'API."
+
+#: src/views/main_window/main_window.py:609
+msgid "API key removed."
+msgstr "S'ha eliminat la clau d'API."
+
+#: src/views/main_window/top_bar.py:70
+msgid "New transcription:"
+msgstr "Transcripció nova:"
+
+#: src/views/main_window/top_bar.py:156
+#: src/views/settings/preferences_dialog.py:749
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "Versió {version} disponible"
+
+#: src/views/main_window/transcription_jobs.py:54
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "Gravació · {date}"
+
+#: src/views/main_window/transcription_jobs.py:194
+msgid "The recording is no longer available."
+msgstr "La gravació ja no està disponible."
+
+#: src/views/main_window/transcription_jobs.py:337
+msgid "The transcription was cancelled."
+msgstr "S'ha cancel·lat la transcripció."
+
+#: src/views/main_window/transcription_jobs.py:358
+msgid "Transcription ready"
+msgstr "Transcripció a punt"
+
+#: src/views/main_window/transcription_jobs.py:386
+msgid "Recording…"
+msgstr "S'està gravant…"
+
+#: src/views/main_window/transcription_jobs.py:443
+msgid "Processing the recording…"
+msgstr "S'està processant l'enregistrament…"
+
+#: src/views/main_window/transcription_jobs.py:450
+#, python-brace-format
+msgid "Saved in {folder}."
+msgstr "Desat a {folder}."
+
+#: src/views/main_window/welcome_view.py:23
+msgid "What do you want to transcribe?"
+msgstr "Què vols transcriure?"
+
+#: src/views/main_window/welcome_view.py:28
+msgid ""
+"Choose a source, or select a transcription of your history to read and "
+"play it."
+msgstr ""
+"Tria un origen o selecciona una transcripció del teu historial per "
+"llegir-la i reproduir-la."
+
+#: src/views/main_window/welcome_view.py:37
+msgid "An audio or video file"
+msgstr "Un fitxer d'àudio o vídeo"
+
+#: src/views/main_window/welcome_view.py:38
+msgid "YouTube or a link to a file"
+msgstr "YouTube o l'enllaç a un fitxer"
+
+#: src/views/main_window/welcome_view.py:39
+#: src/views/new_transcription/microphone_view.py:431
+msgid "Record and transcribe"
+msgstr "Grava i transcriu"
+
+#: src/views/main_window/welcome_view.py:44
+msgid "Many files at once, or watch it"
+msgstr "Molts fitxers alhora, o vigila-la"
+
+#: src/views/main_window/welcome_view.py:60
+msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
+msgstr ""
+"Consell: deixa anar un fitxer o una carpeta a qualsevol lloc de la "
+"finestra per transcriure'l."
+
+#: src/views/new_transcription/microphone_view.py:70
+msgid "No sound. Check that the microphone is on and allowed."
+msgstr "No hi ha so. Comprova que el micròfon està engegat i té permís."
+
+#: src/views/new_transcription/microphone_view.py:72
+msgid "Waiting for speech…"
+msgstr "S'està esperant que parlis…"
+
+#: src/views/new_transcription/microphone_view.py:75
+msgid "Too quiet. Speak louder or closer to the microphone."
+msgstr "Massa baix. Parla més fort o més a prop del micròfon."
+
+#: src/views/new_transcription/microphone_view.py:77
+msgid "Good level"
+msgstr "Bon nivell"
+
+#: src/views/new_transcription/microphone_view.py:80
+msgid "Too loud. Move away from the microphone."
+msgstr "Massa alt. Allunya't del micròfon."
+
+#: src/views/new_transcription/microphone_view.py:124
+msgid "Transcribe from the microphone"
+msgstr "Transcriu des del micròfon"
+
+#: src/views/new_transcription/microphone_view.py:130
+msgid "Record yourself or a meeting. The recording is kept in your history."
+msgstr "Grava't a tu o una reunió. La gravació es conserva al teu historial."
+
+#: src/views/new_transcription/microphone_view.py:161
+msgid "Loading…"
+msgstr "S'està carregant…"
+
+#: src/views/new_transcription/microphone_view.py:252
+#: src/views/transcript/summary_panel.py:242
+#: src/views/transcript/transcript_view.py:442
+#: src/views/transcript/transcript_view.py:1163
+msgid "Copy"
+msgstr "Copia"
+
+#: src/views/new_transcription/microphone_view.py:262
+msgid "Open in history"
+msgstr "Obre a l'historial"
+
+#: src/views/new_transcription/microphone_view.py:282
+msgid "Wait until the current transcription finishes, or cancel it."
+msgstr "Espera que acabi la transcripció actual o cancel·la-la."
+
+#: src/views/new_transcription/microphone_view.py:370
+#, python-brace-format
+msgid "Press the button to start recording ({shortcut})"
+msgstr "Prem el botó per començar a gravar ({shortcut})"
+
+#: src/views/new_transcription/microphone_view.py:375
+msgid "The level is shown while recording"
+msgstr "El nivell es mostra mentre graves"
+
+#: src/views/new_transcription/microphone_view.py:379
+msgid "Recording… Press the button to stop and transcribe."
+msgstr "S'està gravant… Prem el botó per aturar i transcriure."
+
+#: src/views/new_transcription/microphone_view.py:389
+msgid "Done. Press the button to record again."
+msgstr "Fet. Prem el botó per tornar a gravar."
+
+#: src/views/new_transcription/microphone_view.py:392
+msgid "Press the button to try again."
+msgstr "Prem el botó per tornar-ho a provar."
+
+#: src/views/new_transcription/microphone_view.py:408
+msgid "Draft. It's replaced when the final transcription finishes."
+msgstr "Esborrany. Se substitueix quan acaba la transcripció final."
+
+#: src/views/new_transcription/microphone_view.py:414
+msgid "The text will appear here as you speak."
+msgstr "El text apareixerà aquí mentre parles."
+
+#: src/views/new_transcription/microphone_view.py:415
+msgid "The transcription will appear here when you stop recording."
+msgstr "La transcripció apareixerà aquí quan deixis de gravar."
+
+#: src/views/new_transcription/microphone_view.py:431
+msgid "Refine"
+msgstr "Refina"
+
+#: src/views/new_transcription/microphone_view.py:462
+#: src/views/new_transcription/microphone_view.py:463
+msgid "No microphone found"
+msgstr "No s'ha trobat cap micròfon"
+
+#: src/views/new_transcription/microphone_view.py:481
+msgid "default"
+msgstr "predeterminat"
+
+#: src/views/new_transcription/new_transcription_view.py:103
+msgid "Transcribe a file"
+msgstr "Transcriu un fitxer"
+
+#: src/views/new_transcription/new_transcription_view.py:104
+msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
+msgstr "Fitxers d'àudio i vídeo: MP3, WAV, M4A, MP4, MOV, MKV i més."
+
+#: src/views/new_transcription/new_transcription_view.py:108
+msgid "Transcribe from a URL"
+msgstr "Transcriu des d'un URL"
+
+#: src/views/new_transcription/new_transcription_view.py:109
+msgid "A YouTube video or a direct link to an audio or video file."
+msgstr "Un vídeo de YouTube o un enllaç directe a un fitxer d'àudio o vídeo."
+
+#: src/views/new_transcription/new_transcription_view.py:113
+msgid "Transcribe a folder"
+msgstr "Transcriu una carpeta"
+
+#: src/views/new_transcription/new_transcription_view.py:115
+msgid ""
+"All the audio and video files of a folder, or the new ones as they're "
+"added."
+msgstr ""
+"Tots els fitxers d'àudio i vídeo d'una carpeta, o els nous a mesura que "
+"s'hi afegeixen."
+
+#: src/views/new_transcription/new_transcription_view.py:175
+msgid "Drop an audio or video file here"
+msgstr "Deixa anar un fitxer d'àudio o vídeo aquí"
+
+#: src/views/new_transcription/new_transcription_view.py:177
+msgid "Drop a folder here"
+msgstr "Deixa anar una carpeta aquí"
+
+#: src/views/new_transcription/new_transcription_view.py:182
+msgid "or"
+msgstr "o"
+
+#: src/views/new_transcription/new_transcription_view.py:188
+msgid "Choose a file…"
+msgstr "Tria un fitxer…"
+
+#: src/views/new_transcription/new_transcription_view.py:188
+msgid "Choose a folder…"
+msgstr "Tria una carpeta…"
+
+#: src/views/new_transcription/new_transcription_view.py:225
+#: src/views/settings/cards/output_card.py:91
+#: src/views/settings/preferences_dialog.py:409
+msgid "Change…"
+msgstr "Canvia…"
+
+#: src/views/new_transcription/new_transcription_view.py:254
+msgid "Paste"
+msgstr "Enganxa"
+
+#: src/views/new_transcription/new_transcription_view.py:270
+msgid ""
+"Examples: https://youtu.be/dQw4w9WgXcQ · "
+"https://example.com/podcast/episode-12.mp3"
+msgstr ""
+"Exemples: https://youtu.be/dQw4w9WgXcQ · "
+"https://example.com/podcast/episode-12.mp3"
+
+#: src/views/new_transcription/new_transcription_view.py:349
+msgid "Select a file"
+msgstr "Selecciona un fitxer"
+
+#: src/views/new_transcription/new_transcription_view.py:351
+msgid "All supported files"
+msgstr "Tots els fitxers compatibles"
+
+#: src/views/new_transcription/new_transcription_view.py:352
+msgid "Audio files"
+msgstr "Fitxers d'àudio"
+
+#: src/views/new_transcription/new_transcription_view.py:353
+msgid "Video files"
+msgstr "Fitxers de vídeo"
+
+#: src/views/new_transcription/new_transcription_view.py:357
+msgid "Select a folder"
+msgstr "Selecciona una carpeta"
+
+#: src/views/new_transcription/new_transcription_view.py:387
+msgid "Continue"
+msgstr "Continua"
+
+#: src/views/new_transcription/new_transcription_view.py:416
+msgid "Add to queue"
+msgstr "Afegeix a la cua"
+
+#: src/views/new_transcription/new_transcription_view.py:416
+msgid "Start transcription"
+msgstr "Comença la transcripció"
+
+#: src/views/new_transcription/new_transcription_view.py:423
+msgid "It will start when the current transcription finishes."
+msgstr "Començarà quan acabi la transcripció actual."
+
+#: src/views/new_transcription/new_transcription_view.py:489
+msgid "Reading…"
+msgstr "S'està llegint…"
+
+#: src/views/new_transcription/new_transcription_view.py:503
+msgid "Video"
+msgstr "Vídeo"
+
+#: src/views/new_transcription/new_transcription_view.py:503
+msgid "Audio"
+msgstr "Àudio"
+
+#: src/views/new_transcription/new_transcription_view.py:520
+msgid "No audio or video files found (subfolders included)."
+msgstr "No s'han trobat fitxers d'àudio ni de vídeo (subcarpetes incloses)."
+
+#: src/views/new_transcription/new_transcription_view.py:522
+msgid "1 audio or video file (subfolders included)"
+msgstr "1 fitxer d'àudio o vídeo (subcarpetes incloses)"
+
+#: src/views/new_transcription/new_transcription_view.py:524
+#, python-brace-format
+msgid "{count} audio and video files (subfolders included)"
+msgstr "{count} fitxers d'àudio i vídeo (subcarpetes incloses)"
+
+#: src/views/new_transcription/new_transcription_view.py:548
+msgid "YouTube video"
+msgstr "Vídeo de YouTube"
+
+#: src/views/new_transcription/new_transcription_view.py:548
+msgid "Link to a file"
+msgstr "Enllaç a un fitxer"
+
+#: src/views/new_transcription/new_transcription_view.py:554
+msgid "Enter a URL that starts with http:// or https://"
+msgstr "Introdueix un URL que comenci per http:// o https://"
+
+#: src/views/settings/cards/engine_card.py:163
+#: src/views/settings/preferences_dialog.py:56
+msgid "OpenAI API key"
+msgstr "Clau d'API d'OpenAI"
+
+#: src/views/settings/preferences_dialog.py:58
+msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
+msgstr "Necessària per a l'API de Whisper, i per resumir i traduir amb OpenAI."
+
+#: src/views/settings/preferences_dialog.py:62
+msgid "Anthropic API key"
+msgstr "Clau d'API d'Anthropic"
+
+#: src/views/settings/preferences_dialog.py:63
+msgid "Required to summarize and translate with Claude."
+msgstr "Necessària per resumir i traduir amb Claude."
+
+#: src/views/settings/preferences_dialog.py:66
+msgid "DeepSeek API key"
+msgstr "Clau d'API de DeepSeek"
+
+#: src/views/settings/preferences_dialog.py:67
+msgid "Required to summarize and translate with DeepSeek."
+msgstr "Necessària per resumir i traduir amb DeepSeek."
+
+#: src/views/settings/preferences_dialog.py:70
+msgid "Gemini API key"
+msgstr "Clau d'API de Gemini"
+
+#: src/views/settings/preferences_dialog.py:72
+msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgstr "Necessària per resumir i traduir amb Gemini (s'obté a Google AI Studio)."
+
+#: src/views/settings/preferences_dialog.py:76
+msgid "Mistral API key"
+msgstr "Clau d'API de Mistral"
+
+#: src/views/settings/preferences_dialog.py:77
+msgid "Required to summarize and translate with Mistral."
+msgstr "Necessària per resumir i traduir amb Mistral."
+
+#: src/views/settings/preferences_dialog.py:80
+msgid "xAI API key"
+msgstr "Clau d'API de xAI"
+
+#: src/views/settings/preferences_dialog.py:81
+msgid "Required to summarize and translate with Grok."
+msgstr "Necessària per resumir i traduir amb Grok."
+
+#: src/views/settings/preferences_dialog.py:84
+msgid "DeepL API key"
+msgstr "Clau d'API de DeepL"
+
+#: src/views/settings/preferences_dialog.py:85
+msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgstr ""
+"Necessària per traduir amb DeepL. També funcionen les claus del pla "
+"gratuït."
+
+#: src/views/settings/cards/engine_card.py:165
+#: src/views/settings/preferences_dialog.py:88
+msgid "Google API key"
+msgstr "Clau d'API de Google"
+
+#: src/views/settings/preferences_dialog.py:90
+msgid ""
+"Optional for Google Speech-to-Text: without it, the free tier is used. "
+"Required to translate with Google Translate (Cloud Translation API)."
+msgstr ""
+"Opcional per a Google Speech-to-Text: sense ella, s'utilitza el nivell "
+"gratuït. Necessària per traduir amb Google Translate (Cloud Translation "
+"API)."
+
+#: src/views/settings/cards/options_card.py:89
+#: src/views/settings/preferences_dialog.py:94
+msgid "Hugging Face token"
+msgstr "Testimoni de Hugging Face"
+
+#: src/views/settings/preferences_dialog.py:96
+msgid ""
+"Required to identify speakers with WhisperX (pyannote/speaker-"
+"diarization-community-1)."
+msgstr ""
+"Necessari per identificar parlants amb WhisperX (pyannote/speaker-"
+"diarization-community-1)."
+
+#: src/views/settings/preferences_dialog.py:147
+msgid "Preferences"
+msgstr "Preferències"
+
+#: src/views/settings/preferences_dialog.py:159
+msgid "General"
+msgstr "General"
+
+#: src/views/settings/preferences_dialog.py:160
+msgid "AI"
+msgstr "IA"
+
+#: src/views/settings/preferences_dialog.py:161
+msgid "API keys"
+msgstr "Claus d'API"
+
+#: src/views/settings/preferences_dialog.py:167
+#: src/views/transcript/player_bar.py:100
+msgid "Subtitles"
+msgstr "Subtítols"
+
+#: src/views/settings/preferences_dialog.py:169
+msgid "About"
+msgstr "Quant a"
+
+#: src/views/settings/preferences_dialog.py:258
+msgid "System"
+msgstr "Sistema"
+
+#: src/views/settings/preferences_dialog.py:258
+msgid "Light"
+msgstr "Clar"
+
+#: src/views/settings/preferences_dialog.py:258
+msgid "Dark"
+msgstr "Fosc"
+
+#: src/views/settings/preferences_dialog.py:260
+msgid "Appearance"
+msgstr "Aparença"
+
+#: src/views/settings/preferences_dialog.py:272
+msgid "System language"
+msgstr "Idioma del sistema"
+
+#: src/views/settings/preferences_dialog.py:278
+msgid "Interface language"
+msgstr "Idioma de la interfície"
+
+#: src/views/settings/preferences_dialog.py:281
+msgid "It can be changed when no transcription is in progress."
+msgstr "Es pot canviar quan no hi ha cap transcripció en curs."
+
+#: src/views/settings/preferences_dialog.py:299
+msgid "Notifications"
+msgstr "Notificacions"
+
+#: src/views/settings/preferences_dialog.py:300
+msgid "Shows a notification of the system when a transcription is ready."
+msgstr "Mostra una notificació del sistema quan una transcripció està a punt."
+
+#: src/views/settings/preferences_dialog.py:309
+msgid "Updates"
+msgstr "Actualitzacions"
+
+#: src/views/settings/preferences_dialog.py:309
+msgid "Checks for a new version when the app opens."
+msgstr "Comprova si hi ha una versió nova quan s'obre l'aplicació."
+
+#: src/views/settings/preferences_dialog.py:331
+msgid "Date format"
+msgstr "Format de la data"
+
+#: src/views/settings/preferences_dialog.py:343
+msgid "Automatic"
+msgstr "Automàtic"
+
+#: src/views/settings/preferences_dialog.py:352
+msgid "Time format"
+msgstr "Format de l'hora"
+
+#: src/views/settings/preferences_dialog.py:353
+msgid "Automatic uses the clock of the interface language."
+msgstr "L'automàtic fa servir el rellotge de l'idioma de la interfície."
+
+#: src/views/settings/preferences_dialog.py:409
+msgid "Set…"
+msgstr "Configura…"
+
+#: src/views/settings/cards/language_card.py:123
+#: src/views/settings/preferences_dialog.py:444
+#: src/views/transcript/translation_panel.py:167
+msgid "Translation"
+msgstr "Traducció"
+
+#: src/views/settings/preferences_dialog.py:455
+msgid "Ollama"
+msgstr "Ollama"
+
+#: src/views/settings/preferences_dialog.py:460
+msgid "Server URL"
+msgstr "URL del servidor"
+
+#: src/views/settings/preferences_dialog.py:461
+msgid "Ollama runs the models on your computer, without an API key."
+msgstr "Ollama executa els models al teu ordinador, sense clau d'API."
+
+#: src/views/settings/preferences_dialog.py:492
+msgid "Provider"
+msgstr "Proveïdor"
+
+#: src/views/settings/cards/engine_card.py:66
+#: src/views/settings/preferences_dialog.py:499
+msgid "Model"
+msgstr "Model"
+
+#: src/views/settings/preferences_dialog.py:500
+msgid "The default model of the provider if empty."
+msgstr "Si és buit, el model predeterminat del proveïdor."
+
+#: src/views/settings/preferences_dialog.py:545
+msgid "Compute type"
+msgstr "Tipus de càlcul"
+
+#: src/views/settings/preferences_dialog.py:546
+msgid "float16 is faster on GPUs. int8 uses less memory."
+msgstr "float16 és més ràpid a les GPU. int8 fa servir menys memòria."
+
+#: src/views/settings/preferences_dialog.py:560
+msgid "Batch size"
+msgstr "Mida del lot"
+
+#: src/views/settings/preferences_dialog.py:560
+msgid "Lower it if you run out of memory."
+msgstr "Redueix-lo si et quedes sense memòria."
+
+#: src/views/settings/preferences_dialog.py:572
+msgid "Use CPU"
+msgstr "Utilitza la CPU"
+
+#: src/views/settings/preferences_dialog.py:575
+msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgstr "No s'ha trobat cap GPU amb CUDA, així que WhisperX s'executa a la CPU."
+
+#: src/views/settings/preferences_dialog.py:589
+msgid "Highlight words"
+msgstr "Ressalta les paraules"
+
+#: src/views/settings/preferences_dialog.py:590
+msgid "Underlines each word as it's said (.srt and .vtt)."
+msgstr "Subratlla cada paraula a mesura que es diu (.srt i .vtt)."
+
+#: src/views/settings/preferences_dialog.py:597
+msgid "Max. line count"
+msgstr "Màx. de línies"
+
+#: src/views/settings/preferences_dialog.py:604
+msgid "Max. line width"
+msgstr "Màx. de caràcters per línia"
+
+#: src/views/settings/preferences_dialog.py:616
+msgid "Temperature"
+msgstr "Temperatura"
+
+#: src/views/settings/preferences_dialog.py:617
+msgid "Between 0 and 1. Higher values are more random."
+msgstr "Entre 0 i 1. Els valors més alts són més aleatoris."
+
+#: src/views/settings/preferences_dialog.py:629
+msgid "Timestamps of the words"
+msgstr "Marques de temps de les paraules"
+
+#: src/views/settings/preferences_dialog.py:630
+msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgstr "Ressalta cada paraula durant la reproducció (model whisper-1). Triga més."
+
+#: src/views/settings/preferences_dialog.py:660
+#, python-brace-format
+msgid "Version {version}"
+msgstr "Versió {version}"
+
+#: src/views/settings/preferences_dialog.py:664
+#, python-brace-format
+msgid "Made by {author}"
+msgstr "Creat per {author}"
+
+#: src/views/settings/preferences_dialog.py:671
+msgid "Documentation"
+msgstr "Documentació"
+
+#: src/views/settings/preferences_dialog.py:689
+msgid "Donate"
+msgstr "Fes una donació"
+
+#: src/views/settings/preferences_dialog.py:701
+msgid "Check for updates"
+msgstr "Cerca actualitzacions"
+
+#: src/views/settings/preferences_dialog.py:725
+msgid "Checking for updates…"
+msgstr "S'estan cercant actualitzacions…"
+
+#: src/views/settings/preferences_dialog.py:737
+msgid "Could not check for updates."
+msgstr "No s'han pogut cercar actualitzacions."
+
+#: src/views/settings/preferences_dialog.py:742
+msgid "Download"
+msgstr "Baixa"
+
+#: src/views/settings/preferences_dialog.py:756
+msgid "You have the latest version."
+msgstr "Tens la darrera versió."
+
+#: src/views/settings/settings_form.py:163
+msgid "Select at least one output file type."
+msgstr "Selecciona almenys un tipus de fitxer de sortida."
+
+#: src/views/settings/settings_form.py:180
+#, python-brace-format
+msgid ""
+"The {model} model only transcribes English. Choose a multilingual model "
+"or set the language of the audio to English."
+msgstr ""
+"El model {model} només transcriu anglès. Tria un model multilingüe o "
+"indica que l'idioma de l'àudio és l'anglès."
+
+#: src/views/settings/settings_form.py:188
+msgid "The Whisper API requires an OpenAI API key."
+msgstr "L'API de Whisper necessita una clau d'API d'OpenAI."
+
+#: src/views/settings/cards/context_card.py:28
+msgid "Context"
+msgstr "Context"
+
+#: src/views/settings/cards/context_card.py:34
+msgid "Keywords"
+msgstr "Paraules clau"
+
+#: src/views/settings/cards/context_card.py:39
+msgid "e.g. Audiotext, WhisperX, Henestrosa"
+msgstr "p. ex., Audiotext, WhisperX, Henestrosa"
+
+#: src/views/settings/cards/context_card.py:46
+msgid ""
+"Names, terms or acronyms said in the audio, separated by commas, so "
+"they're spelled right."
+msgstr ""
+"Noms, termes o sigles que es diuen a l'àudio, separats per comes, perquè "
+"s'escriguin bé."
+
+#: src/views/settings/cards/context_card.py:51
+msgid "Description"
+msgstr "Descripció"
+
+#: src/views/settings/cards/context_card.py:56
+msgid "e.g. An interview about speech recognition"
+msgstr "p. ex., Una entrevista sobre reconeixement de veu"
+
+#: src/views/settings/cards/context_card.py:63
+msgid "What the audio is about, such as its topic or setting."
+msgstr "De què tracta l'àudio, com ara el tema o el lloc on es va gravar."
+
+#: src/views/settings/cards/context_card.py:100
+msgid "Not used by the Google API."
+msgstr "L'API de Google no l'utilitza."
+
+#: src/views/settings/cards/context_card.py:112
+#, python-brace-format
+msgid "Not used by the {model} model."
+msgstr "El model {model} no l'utilitza."
+
+#: src/views/settings/cards/engine_card.py:25
+msgid "Identifies the speakers. With timestamps."
+msgstr "Identifica els parlants. Amb marques de temps."
+
+#: src/views/settings/cards/engine_card.py:28
+msgid ""
+"With timestamps, to play the transcription segment by segment and "
+"generate subtitles."
+msgstr ""
+"Amb marques de temps, per reproduir la transcripció segment a segment i "
+"generar subtítols."
+
+#: src/views/settings/cards/engine_card.py:32
+msgid ""
+"More accurate, but without timestamps: the transcription can't be played "
+"segment by segment nor subtitled."
+msgstr ""
+"Més precís, però sense marques de temps: la transcripció no es pot "
+"reproduir segment a segment ni subtitular."
+
+#: src/views/settings/cards/engine_card.py:50
+msgid "Engine"
+msgstr "Motor"
+
+#: src/views/settings/cards/engine_card.py:54
+msgid "Transcription method"
+msgstr "Mètode de transcripció"
+
+#: src/views/settings/cards/engine_card.py:114
+msgid ""
+"Only transcribes English, faster than the multilingual model of the same "
+"size."
+msgstr ""
+"Només transcriu anglès, més ràpid que el model multilingüe de la mateixa "
+"mida."
+
+#: src/views/settings/cards/engine_card.py:118
+msgid "Larger models are more accurate, but slower."
+msgstr "Els models més grans són més precisos, però més lents."
+
+#: src/views/settings/cards/engine_card.py:121
+msgid "Runs on your computer. Free, private and unlimited."
+msgstr "S'executa al teu ordinador. Gratuït, privat i il·limitat."
+
+#: src/views/settings/cards/engine_card.py:131
+msgid "Runs on the servers of OpenAI. Requires an API key."
+msgstr "S'executa als servidors d'OpenAI. Necessita una clau d'API."
+
+#: src/views/settings/cards/engine_card.py:135
+msgid ""
+"Runs on the servers of Google. An API key is optional; without it, the "
+"free tier is used."
+msgstr ""
+"S'executa als servidors de Google. La clau d'API és opcional; sense ella,"
+" s'utilitza el nivell gratuït."
+
+#: src/views/settings/cards/engine_card.py:140
+msgid "API key set"
+msgstr "Clau d'API configurada"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/translation_panel.py:387
+msgid "Set API key…"
+msgstr "Configura la clau d'API…"
+
+#: src/views/settings/cards/folder_card.py:22
+msgid "Watch the folder"
+msgstr "Vigila la carpeta"
+
+#: src/views/settings/cards/folder_card.py:34
+msgid ""
+"Keeps running and transcribes the files added to the folder, until you "
+"stop it. The files it already contains are skipped."
+msgstr ""
+"Continua en marxa i transcriu els fitxers que s'afegeixen a la carpeta "
+"fins que l'aturis. Els fitxers que ja conté s'ometen."
+
+#: src/views/settings/cards/folder_card.py:39
+msgid ""
+"Transcribes the audio and video files of the folder and its subfolders. "
+"Files that already have a transcription are skipped unless you overwrite "
+"them."
+msgstr ""
+"Transcriu els fitxers d'àudio i vídeo de la carpeta i les seves "
+"subcarpetes. Els fitxers que ja tenen una transcripció s'ometen, tret que"
+" els sobreescriguis."
+
+#: src/views/settings/cards/language_card.py:56
+msgid "Language"
+msgstr "Idioma"
+
+#: src/views/settings/cards/language_card.py:60
+msgid "Auto-detect"
+msgstr "Detecció automàtica"
+
+#: src/views/settings/cards/language_card.py:63
+msgid "Same as the audio"
+msgstr "El mateix que l'àudio"
+
+#: src/views/settings/cards/language_card.py:70
+#: src/views/settings/cards/language_card.py:74
+msgid "Language of the audio"
+msgstr "Idioma de l'àudio"
+
+#: src/views/settings/cards/language_card.py:75
+#: src/views/settings/cards/language_card.py:93
+#: src/views/transcript/translation_panel.py:341
+msgid "Search language…"
+msgstr "Cerca un idioma…"
+
+#: src/views/settings/cards/language_card.py:76
+#: src/views/settings/cards/language_card.py:94
+#: src/views/transcript/translation_panel.py:342
+msgid "No languages found."
+msgstr "No s'han trobat idiomes."
+
+#: src/views/settings/cards/language_card.py:88
+#: src/views/settings/cards/language_card.py:92
+msgid "Language of the transcription"
+msgstr "Idioma de la transcripció"
+
+#: src/views/settings/cards/language_card.py:131
+msgid "Translate with Whisper (recommended)"
+msgstr "Tradueix amb Whisper (recomanat)"
+
+#: src/views/settings/cards/language_card.py:191
+msgid ""
+"The Google API can't translate. The transcription will be in the language"
+" of the audio."
+msgstr ""
+"L'API de Google no pot traduir. La transcripció serà en l'idioma de "
+"l'àudio."
+
+#: src/views/settings/cards/language_card.py:201
+#, python-brace-format
+msgid "Write it directly in {language} (experimental)"
+msgstr "Escriu-la directament en l'idioma {language} (experimental)"
+
+#: src/views/settings/cards/language_card.py:219
+msgid "Whisper transcribes and translates the audio in one step."
+msgstr "Whisper transcriu i tradueix l'àudio en un sol pas."
+
+#: src/views/settings/cards/language_card.py:223
+#, python-brace-format
+msgid ""
+"Whisper can only translate into {english}. For other languages, it's "
+"asked to write the transcription in {language} directly. It works well "
+"for many languages, but check the result."
+msgstr ""
+"Whisper només pot traduir a l'idioma {english}. Per a altres idiomes, se "
+"li demana que escrigui la transcripció directament en l'idioma "
+"{language}. Funciona bé amb molts idiomes, però revisa el resultat."
+
+#: src/views/settings/cards/live_card.py:27
+msgid "Live text"
+msgstr "Text en directe"
+
+#: src/views/settings/cards/live_card.py:30
+msgid "Show the text while recording"
+msgstr "Mostra el text mentre es grava"
+
+#: src/views/settings/cards/live_card.py:35
+msgid "Live model"
+msgstr "Model en directe"
+
+#: src/views/settings/cards/live_card.py:62
+#: src/views/settings/cards/options_card.py:116
+#: src/views/settings/cards/options_card.py:145
+msgid "Only available with WhisperX."
+msgstr "Només disponible amb WhisperX."
+
+#: src/views/settings/cards/live_card.py:65
+msgid ""
+"A fast model writes a draft while you speak. When you stop, the whole "
+"recording is transcribed again with the model of the engine, which is "
+"more accurate."
+msgstr ""
+"Un model ràpid escriu un esborrany mentre parles. Quan pares, tota la "
+"gravació es torna a transcriure amb el model del motor, que és més "
+"precís."
+
+#: src/views/settings/cards/live_card.py:70
+msgid "The text is shown when you stop recording."
+msgstr "El text es mostra quan deixes de gravar."
+
+#: src/views/settings/cards/options_card.py:37
+msgid "Options"
+msgstr "Opcions"
+
+#: src/views/settings/cards/options_card.py:43
+msgid "Word-level timings"
+msgstr "Temps per paraula"
+
+#: src/views/settings/cards/options_card.py:51
+msgid "Extract speech"
+msgstr "Extreu la veu"
+
+#: src/views/settings/cards/options_card.py:55
+msgid "Reduces music and background noise before transcribing."
+msgstr "Redueix la música i el soroll de fons abans de transcriure."
+
+#: src/views/settings/cards/options_card.py:59
+msgid "Identify speakers"
+msgstr "Identifica els parlants"
+
+#: src/views/settings/cards/options_card.py:69
+msgid "Number of speakers (0 = auto)"
+msgstr "Nombre de parlants (0 = auto)"
+
+#: src/views/settings/cards/options_card.py:87
+msgid "Set Hugging Face token…"
+msgstr "Configura el testimoni de Hugging Face…"
+
+#: src/views/settings/cards/options_card.py:119
+msgid "Highlights each word while playing. The subtitles already use them."
+msgstr ""
+"Ressalta cada paraula durant la reproducció. Els subtítols ja els fan "
+"servir."
+
+#: src/views/settings/cards/options_card.py:122
+msgid "Highlights each word while playing. Takes a bit longer."
+msgstr "Ressalta cada paraula durant la reproducció. Triga una mica més."
+
+#: src/views/settings/cards/options_card.py:132
+msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgstr "Indica qui parla a cada part. Necessita un testimoni de Hugging Face."
+
+#: src/views/settings/cards/options_card.py:138
+msgid "The model of the Whisper API identifies the speakers."
+msgstr "El model de l'API de Whisper identifica els parlants."
+
+#: src/views/settings/cards/options_card.py:141
+msgid ""
+"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
+" of the Whisper API."
+msgstr ""
+"Només disponible amb WhisperX o amb el model gpt-4o-transcribe-diarize de"
+" l'API de Whisper."
+
+#: src/views/settings/cards/output_card.py:37
+msgid "Output"
+msgstr "Sortida"
+
+#: src/views/settings/cards/output_card.py:41
+msgid "File types"
+msgstr "Tipus de fitxer"
+
+#: src/views/settings/cards/output_card.py:100
+msgid "Next to the source"
+msgstr "Al costat de l'origen"
+
+#: src/views/settings/cards/output_card.py:110
+msgid "Overwrite existing files"
+msgstr "Sobreescriu els fitxers existents"
+
+#: src/views/settings/cards/output_card.py:114
+msgid "The files of a folder are always saved."
+msgstr "Els fitxers d'una carpeta sempre es desen."
+
+#: src/views/settings/cards/output_card.py:142
+msgid "The Google API returns plain text (.txt)."
+msgstr "L'API de Google retorna text pla (.txt)."
+
+#: src/views/settings/cards/output_card.py:147
+#, python-brace-format
+msgid "Saved in {folder}"
+msgstr "Es desa a {folder}"
+
+#: src/views/settings/cards/output_card.py:150
+msgid "Saved next to the source"
+msgstr "Es desa al costat de l'origen"
+
+#: src/views/settings/cards/output_card.py:169
+msgid "Format of the files."
+msgstr "Format dels fitxers."
+
+#: src/views/settings/cards/output_card.py:172
+#, python-brace-format
+msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
+msgstr ""
+"El model {model} no retorna marques de temps, així que no pot desar "
+"subtítols."
+
+#: src/views/settings/cards/output_card.py:192
+msgid "Choose where to save the transcriptions"
+msgstr "Tria on desar les transcripcions"
+
+#: src/views/transcript/corrections.py:78
+msgid "Replaced."
+msgstr "S'ha substituït."
+
+#: src/views/transcript/corrections.py:94
+#: src/views/transcript/transcript_view.py:863
+msgid "Edit the text"
+msgstr "Edita el text"
+
+#: src/views/transcript/corrections.py:95
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "Text dit a {time}:"
+
+#: src/views/transcript/edit_dialogs.py:92
+msgid "Find and replace"
+msgstr "Cerca i substitueix"
+
+#: src/views/transcript/edit_dialogs.py:92
+msgid "Replace all"
+msgstr "Substitueix-ho tot"
+
+#: src/views/transcript/edit_dialogs.py:101
+msgid "Find:"
+msgstr "Cerca:"
+
+#: src/views/transcript/edit_dialogs.py:101
+msgid "Replace with:"
+msgstr "Substitueix per:"
+
+#: src/views/transcript/edit_dialogs.py:113
+msgid "Match case"
+msgstr "Distingeix majúscules"
+
+#: src/views/transcript/edit_dialogs.py:142
+msgid "1 match"
+msgstr "1 coincidència"
+
+#: src/views/transcript/edit_dialogs.py:144
+#, python-brace-format
+msgid "{count} matches"
+msgstr "{count} coincidències"
+
+#: src/views/transcript/edit_dialogs.py:162
+msgid "Rename speakers"
+msgstr "Canvia el nom dels parlants"
+
+#: src/views/transcript/edit_dialogs.py:162
+#: src/views/transcript/transcript_view.py:890
+#: src/views/widgets/text_dialog.py:66
+msgid "Save"
+msgstr "Desa"
+
+#: src/views/transcript/edit_dialogs.py:169
+msgid ""
+"Give a name to each speaker. Giving two speakers the same name merges "
+"them."
+msgstr ""
+"Posa un nom a cada parlant. Si dones el mateix nom a dos parlants, es "
+"fusionen."
+
+#: src/views/transcript/edit_dialogs.py:239
+msgid "Start:"
+msgstr "Inici:"
+
+#: src/views/transcript/edit_dialogs.py:239
+msgid "End:"
+msgstr "Final:"
+
+#: src/views/transcript/edit_dialogs.py:278
+msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
+msgstr "Escriu els temps com a 00:01:05,900, 01:05,9 o 65.9."
+
+#: src/views/transcript/edit_dialogs.py:280
+msgid "The segment must end after it starts."
+msgstr "El segment ha d'acabar després de començar."
+
+#: src/views/transcript/player_bar.py:122
+msgid "Loading the audio…"
+msgstr "S'està carregant l'àudio…"
+
+#: src/views/transcript/player_bar.py:151
+#, python-brace-format
+msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr "Espai: reprodueix/pausa · ←/→: {seconds} s enrere/endavant"
+
+#: src/views/transcript/player_bar.py:252
+#: src/views/transcript/transcript_view.py:1017
+#, python-brace-format
+msgid "The audio can't be played: {error}"
+msgstr "No es pot reproduir l'àudio: {error}"
+
+#: src/views/transcript/summary_panel.py:73
+msgid "Summarizing…"
+msgstr "S'està resumint…"
+
+#: src/views/transcript/summary_panel.py:74
+#, python-brace-format
+msgid "{provider} is reading the transcription. It takes a moment."
+msgstr "{provider} està llegint la transcripció. Trigarà un moment."
+
+#: src/views/transcript/summary_panel.py:80
+#: src/views/transcript/summary_panel.py:93
+msgid "No summary yet"
+msgstr "Encara no hi ha resum"
+
+#: src/views/transcript/summary_panel.py:82
+#, python-brace-format
+msgid ""
+"Generate a summary, the key points and the chapters of the transcription "
+"with {provider}."
+msgstr ""
+"Genera un resum, els punts clau i els capítols de la transcripció amb "
+"{provider}."
+
+#: src/views/transcript/summary_panel.py:87
+msgid "Generate summary"
+msgstr "Genera un resum"
+
+#: src/views/transcript/summary_panel.py:95
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to summarize, or choose another provider in"
+" the settings."
+msgstr ""
+"Introdueix la clau d'API de {provider} per resumir, o tria un altre "
+"proveïdor a la configuració."
+
+#: src/views/transcript/summary_panel.py:195
+msgid "The transcription is very long, so only its beginning was summarized."
+msgstr ""
+"La transcripció és molt llarga, així que només se n'ha resumit el "
+"principi."
+
+#: src/views/transcript/summary_panel.py:252
+msgid "Regenerate"
+msgstr "Torna a generar"
+
+#: src/views/transcript/summary_panel.py:279
+#, python-brace-format
+msgid "Generated by {model} · {date}"
+msgstr "Generat per {model} · {date}"
+
+#: src/views/transcript/transcript_text.py:183
+msgid "Click a segment to play it. Right-click it to edit it."
+msgstr ""
+"Fes clic en un segment per reproduir-lo. Fes-hi clic amb el botó dret per"
+" editar-lo."
+
+#: src/views/transcript/transcript_text.py:188
+msgid "The plain text has been edited; the transcript keeps the original."
+msgstr "El text pla s'ha editat; la transcripció conserva l'original."
+
+#: src/views/transcript/transcript_text.py:196
+msgid "You can edit the text. The changes are saved automatically."
+msgstr "Pots editar el text. Els canvis es desen automàticament."
+
+#: src/views/transcript/transcript_text.py:199
+msgid ""
+"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
+"transcribe-diarize models of the Whisper API."
+msgstr ""
+"Les marques de temps només estan disponibles amb WhisperX i amb els "
+"models whisper-1 i gpt-4o-transcribe-diarize de l'API de Whisper."
+
+#: src/views/transcript/transcript_text.py:357
+msgid "This transcription has no timestamps."
+msgstr "Aquesta transcripció no té marques de temps."
+
+#: src/views/transcript/transcript_view.py:90
+msgid "Plain text (.txt)"
+msgstr "Text pla (.txt)"
+
+#: src/views/transcript/transcript_view.py:91
+msgid "Markdown (.md)"
+msgstr "Markdown (.md)"
+
+#: src/views/transcript/transcript_view.py:92
+msgid "Word document (.docx)"
+msgstr "Document de Word (.docx)"
+
+#: src/views/transcript/transcript_view.py:93
+msgid "Subtitles (.srt)"
+msgstr "Subtítols (.srt)"
+
+#: src/views/transcript/transcript_view.py:94
+msgid "Web subtitles (.vtt)"
+msgstr "Subtítols web (.vtt)"
+
+#: src/views/transcript/transcript_view.py:95
+msgid "Table (.tsv)"
+msgstr "Taula (.tsv)"
+
+#: src/views/transcript/transcript_view.py:96
+msgid "JSON (.json)"
+msgstr "JSON (.json)"
+
+#: src/views/transcript/transcript_view.py:243
+#: src/views/transcript/video_pane.py:247
+#, python-brace-format
+msgid "Translation into {language}"
+msgstr "Traducció a l'idioma {language}"
+
+#: src/views/transcript/transcript_view.py:280
+msgid "Export transcription"
+msgstr "Exporta la transcripció"
+
+#: src/views/transcript/transcript_view.py:299
+#, python-brace-format
+msgid "Export translation into {language}"
+msgstr "Exporta la traducció a l'idioma {language}"
+
+#: src/views/transcript/transcript_view.py:330
+msgid "All files"
+msgstr "Tots els fitxers"
+
+#: src/views/transcript/transcript_view.py:339
+#, python-brace-format
+msgid "Could not export: {error}"
+msgstr "No s'ha pogut exportar: {error}"
+
+#: src/views/transcript/transcript_view.py:342
+#, python-brace-format
+msgid "Exported to {path}"
+msgstr "S'ha exportat a {path}"
+
+#: src/views/transcript/transcript_view.py:391
+#, python-brace-format
+msgid "Search ({shortcut})"
+msgstr "Cerca ({shortcut})"
+
+#: src/views/transcript/transcript_view.py:428
+msgid "Transcript"
+msgstr "Transcripció"
+
+#: src/views/transcript/transcript_view.py:429
+msgid "Plain text"
+msgstr "Text pla"
+
+#: src/views/transcript/transcript_view.py:438
+#: src/views/transcript/translation_panel.py:321
+msgid "Translate"
+msgstr "Tradueix"
+
+#: src/views/transcript/transcript_view.py:446
+msgid "Export"
+msgstr "Exporta"
+
+#: src/views/transcript/transcript_view.py:575
+#, python-brace-format
+msgid "{current} of {total}"
+msgstr "{current} de {total}"
+
+#: src/views/transcript/transcript_view.py:615
+msgid "Summary copied."
+msgstr "S'ha copiat el resum."
+
+#: src/views/transcript/transcript_view.py:691
+msgid "Hide the translation"
+msgstr "Amaga la traducció"
+
+#: src/views/transcript/transcript_view.py:696
+msgid "Show the translation"
+msgstr "Mostra la traducció"
+
+#: src/views/transcript/transcript_view.py:700
+msgid "Translate into another language…"
+msgstr "Tradueix a un altre idioma…"
+
+#: src/views/transcript/transcript_view.py:716
+msgid "Show it as the subtitles of the video"
+msgstr "Mostra-la com a subtítols del vídeo"
+
+#: src/views/transcript/transcript_view.py:723
+msgid "Delete the translation"
+msgstr "Elimina la traducció"
+
+#: src/views/transcript/transcript_view.py:804
+#: src/views/transcript/transcript_view.py:1060
+msgid "Play from here"
+msgstr "Reprodueix des d'aquí"
+
+#: src/views/transcript/transcript_view.py:807
+#: src/views/transcript/transcript_view.py:1063
+msgid "Edit the text…"
+msgstr "Edita el text…"
+
+#: src/views/transcript/transcript_view.py:807
+msgid "Translate the text…"
+msgstr "Tradueix el text…"
+
+#: src/views/transcript/transcript_view.py:811
+msgid "Edit the timing…"
+msgstr "Edita els temps…"
+
+#: src/views/transcript/transcript_view.py:815
+msgid "Add a segment after…"
+msgstr "Afegeix un segment després…"
+
+#: src/views/transcript/transcript_view.py:820
+#: src/views/transcript/transcript_view.py:938
+msgid "Delete the segment"
+msgstr "Elimina el segment"
+
+#: src/views/transcript/transcript_view.py:863
+msgid "Translate the text"
+msgstr "Tradueix el text"
+
+#: src/views/transcript/transcript_view.py:864
+#, python-brace-format
+msgid "Translation of “{text}”, said from {start} to {end}:"
+msgstr "Traducció de «{text}», dit de {start} a {end}:"
+
+#: src/views/transcript/transcript_view.py:868
+#, python-brace-format
+msgid "Translation of the segment from {start} to {end}:"
+msgstr "Traducció del segment de {start} a {end}:"
+
+#: src/views/transcript/transcript_view.py:889
+msgid "Edit the timing"
+msgstr "Edita els temps"
+
+#: src/views/transcript/transcript_view.py:913
+msgid "Add a segment"
+msgstr "Afegeix un segment"
+
+#: src/views/transcript/transcript_view.py:914
+msgid "Add"
+msgstr "Afegeix"
+
+#: src/views/transcript/transcript_view.py:915
+#, python-brace-format
+msgid "The new segment goes after the one at {time}:"
+msgstr "El segment nou va després del de {time}:"
+
+#: src/views/transcript/transcript_view.py:939
+#, python-brace-format
+msgid "Delete the segment “{text}”?"
+msgstr "Vols eliminar el segment «{text}»?"
+
+#: src/views/transcript/transcript_view.py:950
+#, python-brace-format
+msgid "The segment at {time}, not translated yet."
+msgstr "El segment de {time}, encara no traduït."
+
+#: src/views/transcript/transcript_view.py:964
+#, python-brace-format
+msgid "Translation into {language} copied."
+msgstr "S'ha copiat la traducció a l'idioma {language}."
+
+#: src/views/transcript/transcript_view.py:976
+msgid "The audio isn't available: the source file was moved or deleted."
+msgstr "L'àudio no està disponible: el fitxer d'origen s'ha mogut o eliminat."
+
+#: src/views/transcript/transcript_view.py:978
+msgid "The audio isn't available."
+msgstr "L'àudio no està disponible."
+
+#: src/views/transcript/transcript_view.py:1066
+#: src/views/transcript/transcript_view.py:1078
+msgid "Rename speakers…"
+msgstr "Canvia el nom dels parlants…"
+
+#: src/views/transcript/transcript_view.py:1076
+msgid "Find and replace…"
+msgstr "Cerca i substitueix…"
+
+#: src/views/transcript/transcript_view.py:1088
+msgid "Precise timestamps (00:00:01,000)"
+msgstr "Marques de temps precises (00:00:01,000)"
+
+#: src/views/transcript/transcript_view.py:1111
+msgid "Rename…"
+msgstr "Canvia el nom…"
+
+#: src/views/transcript/transcript_view.py:1155
+msgid "Copied"
+msgstr "Copiat"
+
+#: src/views/transcript/translation_panel.py:130
+msgid "Not translated yet"
+msgstr "Encara no traduït"
+
+#: src/views/transcript/translation_panel.py:155
+#, python-brace-format
+msgid "Translating into {language}…"
+msgstr "S'està traduint a l'idioma {language}…"
+
+#: src/views/transcript/translation_panel.py:159
+msgid "Translating…"
+msgstr "S'està traduint…"
+
+#: src/views/transcript/translation_panel.py:162
+msgid "It takes a moment."
+msgstr "Trigarà un moment."
+
+#: src/views/transcript/translation_panel.py:164
+msgid "The transcription is being translated. It takes a moment."
+msgstr "S'està traduint la transcripció. Trigarà un moment."
+
+#: src/views/transcript/translation_panel.py:171
+msgid "There is no translation yet."
+msgstr "Encara no hi ha traducció."
+
+#: src/views/transcript/translation_panel.py:173
+msgid "Translate…"
+msgstr "Tradueix…"
+
+#: src/views/transcript/translation_panel.py:276
+#, python-brace-format
+msgid "Segments left to translate: {count}. Right-click one to translate it."
+msgstr ""
+"Segments per traduir: {count}. Fes clic amb el botó dret en un per "
+"traduir-lo."
+
+#: src/views/transcript/translation_panel.py:283
+msgid "Translated manually"
+msgstr "Traduït manualment"
+
+#: src/views/transcript/translation_panel.py:331
+msgid "Myself, from scratch"
+msgstr "Jo mateix, des de zero"
+
+#: src/views/transcript/translation_panel.py:335
+msgid "Translate into:"
+msgstr "Tradueix a:"
+
+#: src/views/transcript/translation_panel.py:340
+msgid "Language of the translation"
+msgstr "Idioma de la traducció"
+
+#: src/views/transcript/translation_panel.py:357
+msgid "Provider:"
+msgstr "Proveïdor:"
+
+#: src/views/transcript/translation_panel.py:397
+msgid "More options in the settings"
+msgstr "Més opcions a la configuració"
+
+#: src/views/transcript/translation_panel.py:434
+#, python-brace-format
+msgid "Set the API key of {provider} to translate with it."
+msgstr "Introdueix la clau d'API de {provider} per traduir-hi."
+
+#: src/views/transcript/video_pane.py:226
+msgid "Show subtitles on the video"
+msgstr "Mostra els subtítols al vídeo"
+
+#: src/views/transcript/video_pane.py:258
+msgid "Size"
+msgstr "Mida"
+
+#: src/views/transcript/video_pane.py:262
+msgid "Small"
+msgstr "Petit"
+
+#: src/views/transcript/video_pane.py:263
+msgid "Medium"
+msgstr "Mitjà"
+
+#: src/views/transcript/video_pane.py:264
+msgid "Large"
+msgstr "Gran"
+
+#: src/views/transcript/video_pane.py:268
+msgid "Position"
+msgstr "Posició"
+
+#: src/views/transcript/video_pane.py:271
+msgid "Bottom"
+msgstr "A baix"
+
+#: src/views/transcript/video_pane.py:271
+msgid "Top"
+msgstr "A dalt"
+
+#: src/views/transcript/video_pane.py:274
+msgid "Style"
+msgstr "Estil"
+
+#: src/views/transcript/video_pane.py:278
+msgid "Dark background"
+msgstr "Fons fosc"
+
+#: src/views/transcript/video_pane.py:279
+msgid "Outline"
+msgstr "Contorn"
