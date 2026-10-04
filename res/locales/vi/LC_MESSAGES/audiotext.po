@@ -1,0 +1,2058 @@
+# Vietnamese translations for Audiotext.
+# Copyright (C) 2026 HenestrosaDev
+# This file is distributed under the same license as the Audiotext project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Audiotext 2.3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
+"POT-Creation-Date: 2026-10-04 04:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Machine translation (please review) "
+"<https://github.com/HenestrosaDev/audiotext>\n"
+"Language: vi\n"
+"Language-Team: Vietnamese <https://github.com/HenestrosaDev/audiotext>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: src/controllers/folder_transcriber.py:58
+msgid ""
+"The folder doesn't contain files to transcribe. The files that already "
+"have a transcription are skipped unless you check 'Overwrite existing "
+"files'."
+msgstr ""
+"Thư mục không chứa tệp nào để chép lời. Các tệp đã có bản chép lời sẽ bị "
+"bỏ qua trừ khi bạn chọn \"Ghi đè tệp hiện có\"."
+
+#: src/controllers/folder_transcriber.py:81
+#, python-brace-format
+msgid "Transcribed {done} of {total} files."
+msgstr "Đã chép lời {done}/{total} tệp."
+
+#: src/controllers/folder_transcriber.py:97
+#, python-brace-format
+msgid "Waiting for new files in {folder}…"
+msgstr "Đang chờ tệp mới trong {folder}…"
+
+#: src/controllers/folder_transcriber.py:114
+#, python-brace-format
+msgid "Stopped watching the folder. Files transcribed: {done}."
+msgstr "Đã dừng theo dõi thư mục. Số tệp đã chép lời: {done}."
+
+#: src/controllers/folder_transcriber.py:137
+msgid "cancelled"
+msgstr "đã hủy"
+
+#: src/controllers/folder_transcriber.py:176
+#, python-brace-format
+msgid "File {current} of {total} ({name}): {message}"
+msgstr "Tệp {current}/{total} ({name}): {message}"
+
+#: src/controllers/folder_transcriber.py:191
+#, python-brace-format
+msgid "{name}: {message}"
+msgstr "{name}: {message}"
+
+#: src/controllers/main_controller.py:99
+msgid "Cancelling…"
+msgstr "Đang hủy…"
+
+#: src/controllers/main_controller.py:168
+msgid "Transcription cancelled."
+msgstr "Đã hủy chép lời."
+
+#: src/controllers/main_controller.py:183
+msgid "Downloading…"
+msgstr "Đang tải xuống…"
+
+#: src/controllers/main_controller.py:210
+#, python-brace-format
+msgid "Done in {duration}."
+msgstr "Hoàn tất trong {duration}."
+
+#: src/controllers/main_controller.py:273
+msgid "Isolating the speech…"
+msgstr "Đang tách giọng nói…"
+
+#: src/controllers/main_controller.py:306
+msgid "WhisperX model ready."
+msgstr "Mô hình WhisperX đã sẵn sàng."
+
+#: src/controllers/main_controller.py:313
+#, python-brace-format
+msgid "Could not load the WhisperX model: {error}"
+msgstr "Không thể tải mô hình WhisperX: {error}"
+
+#: src/controllers/transcription_validator.py:17
+#: src/handlers/whisperx_handler.py:199
+msgid "No output file types selected. Please select at least one."
+msgstr "Chưa chọn loại tệp đầu ra nào. Vui lòng chọn ít nhất một loại."
+
+#: src/controllers/transcription_validator.py:26
+#: src/views/settings/settings_form.py:169
+msgid ""
+"The Google API can't detect the language. Please select the language of "
+"the audio."
+msgstr ""
+"Google API không thể phát hiện ngôn ngữ. Vui lòng chọn ngôn ngữ của âm "
+"thanh."
+
+#: src/controllers/transcription_validator.py:57
+#, python-brace-format
+msgid ""
+"The {model} model doesn't return timestamps, so it can't save {format} "
+"files. Choose another format or the whisper-1 model."
+msgstr ""
+"Mô hình {model} không trả về dấu thời gian nên không thể lưu tệp "
+"{format}. Hãy chọn định dạng khác hoặc mô hình whisper-1."
+
+#: src/controllers/transcription_validator.py:75
+msgid "Please select a valid audio or video file."
+msgstr "Vui lòng chọn tệp âm thanh hoặc video hợp lệ."
+
+#: src/controllers/transcription_validator.py:79
+#: src/views/new_transcription/new_transcription_view.py:476
+msgid "Please select a valid folder."
+msgstr "Vui lòng chọn thư mục hợp lệ."
+
+#: src/controllers/transcription_validator.py:86
+msgid ""
+"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
+" or video file)."
+msgstr ""
+"Vui lòng nhập URL hợp lệ (ví dụ: liên kết của video YouTube hoặc của tệp "
+"âm thanh hoặc video)."
+
+#: src/handlers/ai_providers.py:104 src/handlers/ai_providers.py:109
+#: src/handlers/ai_providers.py:112
+msgid "The model didn't return a valid reply."
+msgstr "Mô hình không trả về phản hồi hợp lệ."
+
+#: src/handlers/ai_providers.py:157 src/handlers/ai_providers.py:190
+msgid "The reply of the model was too long."
+msgstr "Phản hồi của mô hình quá dài."
+
+#: src/handlers/audio_handler.py:54 src/handlers/openai_api_handler.py:335
+#: src/handlers/whisperx_handler.py:216
+msgid "Loading audio…"
+msgstr "Đang tải âm thanh…"
+
+#: src/handlers/audio_handler.py:81
+#, python-brace-format
+msgid "Unsupported file type: {extension}"
+msgstr "Loại tệp không được hỗ trợ: {extension}"
+
+#: src/handlers/audio_handler.py:132 src/handlers/openai_api_handler.py:360
+#: src/handlers/whisperx_handler.py:226 src/handlers/whisperx_handler.py:233
+#: src/views/history/formatting.py:39
+#: src/views/new_transcription/microphone_view.py:383
+msgid "Transcribing…"
+msgstr "Đang chép lời…"
+
+#: src/handlers/audio_handler.py:135 src/handlers/openai_api_handler.py:363
+#, python-brace-format
+msgid "Transcribing chunk {current} of {total}…"
+msgstr "Đang chép lời đoạn {current}/{total}…"
+
+#: src/handlers/live_transcriber.py:246
+msgid "The text can't be shown while recording."
+msgstr "Không thể hiển thị văn bản khi đang ghi âm."
+
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:446
+#, python-brace-format
+msgid "Loading the {model} model (it's downloaded the first time it's used)…"
+msgstr ""
+"Đang tải mô hình {model} (mô hình sẽ được tải xuống trong lần sử dụng đầu"
+" tiên)…"
+
+#: src/handlers/openai_api_handler.py:474
+#, python-brace-format
+msgid "The audio is too large for the OpenAI API ({size} MB)."
+msgstr "Âm thanh quá lớn đối với OpenAI API ({size} MB)."
+
+#: src/handlers/summary_handler.py:103 src/handlers/summary_handler.py:118
+msgid "The model didn't return a valid summary."
+msgstr "Mô hình không trả về bản tóm tắt hợp lệ."
+
+#: src/handlers/summary_handler.py:174
+msgid "There is no text to summarize."
+msgstr "Không có văn bản để tóm tắt."
+
+#: src/handlers/transcribers.py:27 src/handlers/whisperx_handler.py:299
+msgid "There is no transcription to save. Please generate it first."
+msgstr "Không có bản chép lời nào để lưu. Vui lòng tạo trước."
+
+#: src/handlers/translation_handler.py:243
+msgid "The model didn't return a valid translation."
+msgstr "Mô hình không trả về bản dịch hợp lệ."
+
+#: src/handlers/translation_handler.py:295
+#, python-brace-format
+msgid "DeepL can't translate into {language}."
+msgstr "DeepL không thể dịch sang {language}."
+
+#: src/handlers/translation_handler.py:310
+msgid "DeepL didn't return a valid translation."
+msgstr "DeepL không trả về bản dịch hợp lệ."
+
+#: src/handlers/translation_handler.py:331
+msgid "Google Translate didn't return a valid translation."
+msgstr "Google Dịch không trả về bản dịch hợp lệ."
+
+#: src/handlers/translation_handler.py:360
+msgid "There is no text to translate."
+msgstr "Không có văn bản để dịch."
+
+#: src/handlers/url_handler.py:87
+msgid ""
+"The URL doesn't point to an audio or video file. Use the link of a "
+"YouTube video or of a media file."
+msgstr ""
+"URL không trỏ đến tệp âm thanh hoặc video. Hãy dùng liên kết của video "
+"YouTube hoặc của tệp đa phương tiện."
+
+#: src/handlers/url_handler.py:105
+#, python-brace-format
+msgid "The file could not be downloaded: {error}"
+msgstr "Không thể tải xuống tệp: {error}"
+
+#: src/handlers/whisperx_handler.py:335 src/handlers/whisperx_handler.py:344
+msgid "Aligning subtitles…"
+msgstr "Đang căn chỉnh phụ đề…"
+
+#: src/handlers/whisperx_handler.py:368 src/handlers/whisperx_handler.py:373
+msgid "Identifying speakers…"
+msgstr "Đang nhận diện người nói…"
+
+#: src/handlers/whisperx_handler.py:394
+#, python-brace-format
+msgid ""
+"Identifying speakers requires a Hugging Face token. Create one at "
+"{tokens_url}, accept the conditions of {model_url} and set the token in "
+"the WhisperX options."
+msgstr ""
+"Nhận diện người nói cần token Hugging Face. Hãy tạo token tại "
+"{tokens_url}, chấp nhận điều khoản của {model_url} và đặt token trong tùy"
+" chọn WhisperX."
+
+#: src/handlers/whisperx_handler.py:479
+msgid "Loading the subtitle alignment model…"
+msgstr "Đang tải mô hình căn chỉnh phụ đề…"
+
+#: src/handlers/whisperx_handler.py:512
+msgid ""
+"Loading the speaker identification model (it's downloaded the first time "
+"it's used)…"
+msgstr ""
+"Đang tải mô hình nhận diện người nói (mô hình được tải xuống trong lần sử"
+" dụng đầu tiên)…"
+
+#: src/handlers/whisperx_handler.py:526
+#, python-brace-format
+msgid ""
+"Could not download the speaker identification model. Check that the "
+"Hugging Face token is valid and that you've accepted the conditions of "
+"{model_url}."
+msgstr ""
+"Không thể tải xuống mô hình nhận diện người nói. Hãy kiểm tra token "
+"Hugging Face hợp lệ và bạn đã chấp nhận điều khoản của {model_url}."
+
+#: src/handlers/youtube_handler.py:34
+msgid ""
+"The audio of the YouTube video could not be downloaded. Please make sure "
+"the URL is correct."
+msgstr ""
+"Không thể tải âm thanh của video YouTube xuống. Vui lòng kiểm tra URL có "
+"đúng không."
+
+#: src/handlers/youtube_handler.py:40
+msgid "The YouTube video doesn't have an audio track."
+msgstr "Video YouTube không có rãnh âm thanh."
+
+#: src/utils/audio_utils.py:30
+msgid "No audio was recorded."
+msgstr "Không ghi được âm thanh nào."
+
+#: src/utils/exporters.py:149 src/utils/exporters.py:186
+#: src/views/settings/preferences_dialog.py:349
+#: src/views/transcript/summary_panel.py:188
+#: src/views/transcript/transcript_view.py:336
+msgid "Summary"
+msgstr "Bản tóm tắt"
+
+#: src/utils/exporters.py:151 src/utils/exporters.py:189
+#: src/views/transcript/summary_panel.py:205
+msgid "Key points"
+msgstr "Ý chính"
+
+#: src/utils/exporters.py:155 src/utils/exporters.py:193
+#: src/views/transcript/summary_panel.py:210
+msgid "Chapters"
+msgstr "Chương"
+
+#: src/utils/exporters.py:161 src/utils/exporters.py:198
+#: src/views/new_transcription/microphone_view.py:227
+msgid "Transcription"
+msgstr "Chép lời"
+
+#: src/utils/time_format.py:30
+#, python-brace-format
+msgid "{minutes} min {seconds} s"
+msgstr "{minutes} phút {seconds} giây"
+
+#: src/utils/time_format.py:32
+#, python-brace-format
+msgid "{seconds} s"
+msgstr "{seconds} giây"
+
+#: src/views/entries/entry_header.py:97
+msgid "Add note"
+msgstr "Thêm ghi chú"
+
+#: src/views/entries/folder_view.py:53
+msgid "Files"
+msgstr "Tệp"
+
+#: src/views/entries/folder_view.py:89
+#, python-brace-format
+msgid "{count} files"
+msgstr "{count} tệp"
+
+#: src/views/entries/folder_view.py:90
+#, python-brace-format
+msgid "{count} done"
+msgstr "{count} hoàn tất"
+
+#: src/views/entries/folder_view.py:93
+#, python-brace-format
+msgid "{count} failed"
+msgstr "{count} thất bại"
+
+#: src/views/entries/folder_view.py:102
+#: src/views/transcript/transcript_view.py:824
+msgid "Open the folder of the saved files"
+msgstr "Mở thư mục chứa các tệp đã lưu"
+
+#: src/views/entries/folder_view.py:110
+#: src/views/history/history_sidebar.py:322
+#: src/views/transcript/transcript_view.py:844
+msgid "Transcribe again"
+msgstr "Chép lời lại"
+
+#: src/views/entries/folder_view.py:130
+msgid "Waiting for new files…"
+msgstr "Đang chờ tệp mới…"
+
+#: src/views/entries/folder_view.py:132
+msgid "No files"
+msgstr "Không có tệp"
+
+#: src/views/entries/progress_card.py:17
+#: src/views/new_transcription/new_transcription_view.py:121
+msgid "Choose a file"
+msgstr "Chọn tệp"
+
+#: src/views/entries/progress_card.py:18
+#: src/views/new_transcription/new_transcription_view.py:122
+msgid "Enter the URL"
+msgstr "Nhập URL"
+
+#: src/views/entries/progress_card.py:19
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:433
+msgid "Record"
+msgstr "Ghi âm"
+
+#: src/views/entries/progress_card.py:20 src/views/entries/progress_card.py:21
+#: src/views/new_transcription/new_transcription_view.py:123
+msgid "Choose a folder"
+msgstr "Chọn thư mục"
+
+#: src/views/entries/progress_card.py:22
+msgid "Source"
+msgstr "Nguồn"
+
+#: src/views/entries/progress_card.py:47
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:431
+#: src/views/new_transcription/microphone_view.py:433
+#: src/views/new_transcription/new_transcription_view.py:149
+#: src/views/transcript/summary_panel.py:87
+#: src/views/transcript/summary_panel.py:100
+msgid "Settings"
+msgstr "Cài đặt"
+
+#: src/views/entries/progress_card.py:47
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:433
+#: src/views/new_transcription/new_transcription_view.py:149
+msgid "Transcribe"
+msgstr "Chép lời"
+
+#: src/views/entries/progress_card.py:114
+#: src/views/history/history_sidebar.py:315
+msgid "Stop watching"
+msgstr "Dừng theo dõi"
+
+#: src/views/entries/progress_card.py:114
+#: src/views/history/history_sidebar.py:317
+#: src/views/transcript/edit_dialogs.py:39 src/views/widgets/text_dialog.py:60
+msgid "Cancel"
+msgstr "Hủy"
+
+#: src/views/entries/progress_card.py:125
+msgid ""
+"You can keep using Audiotext meanwhile. The result is saved in your "
+"history and opens here when it's ready."
+msgstr ""
+"Trong lúc chờ, bạn có thể tiếp tục dùng Audiotext. Kết quả được lưu trong"
+" lịch sử và mở ở đây khi sẵn sàng."
+
+#: src/views/entries/progress_card.py:137
+msgid "The transcription failed"
+msgstr "Chép lời thất bại"
+
+#: src/views/entries/progress_card.py:138
+msgid "An unknown error occurred."
+msgstr "Đã xảy ra lỗi không xác định."
+
+#: src/views/entries/progress_card.py:140
+msgid "The transcription was interrupted"
+msgstr "Quá trình chép lời bị gián đoạn"
+
+#: src/views/entries/progress_card.py:141
+msgid "Audiotext was closed before it finished."
+msgstr "Audiotext đã bị đóng trước khi hoàn tất."
+
+#: src/views/entries/progress_card.py:143
+msgid "The transcription was cancelled"
+msgstr "Đã hủy chép lời"
+
+#: src/views/entries/progress_card.py:158
+#: src/views/new_transcription/new_transcription_view.py:288
+msgid "Back"
+msgstr "Quay lại"
+
+#: src/views/entries/progress_card.py:167
+msgid "Try again"
+msgstr "Thử lại"
+
+#: src/views/entries/progress_card.py:175
+msgid "Delete"
+msgstr "Xóa"
+
+#: src/views/entries/progress_card.py:188
+#, python-brace-format
+msgid "Waiting for {count} transcription(s) to finish."
+msgstr "Đang chờ {count} bản chép lời hoàn tất."
+
+#: src/views/entries/progress_card.py:192
+msgid "Waiting for the current transcription to finish."
+msgstr "Đang chờ bản chép lời hiện tại hoàn tất."
+
+#: src/views/entries/progress_card.py:199
+msgid "Starting…"
+msgstr "Đang bắt đầu…"
+
+#: src/views/history/formatting.py:18 src/views/main_window/top_bar.py:25
+#: src/views/main_window/welcome_view.py:37
+msgid "File"
+msgstr "Tệp"
+
+#: src/views/history/formatting.py:19 src/views/main_window/top_bar.py:26
+#: src/views/main_window/welcome_view.py:38
+#: src/views/new_transcription/new_transcription_view.py:238
+msgid "URL"
+msgstr "URL"
+
+#: src/views/history/formatting.py:20 src/views/main_window/top_bar.py:27
+#: src/views/main_window/welcome_view.py:39
+msgid "Microphone"
+msgstr "Micrô"
+
+#: src/views/history/formatting.py:21 src/views/main_window/top_bar.py:28
+#: src/views/main_window/welcome_view.py:43
+#: src/views/settings/cards/folder_card.py:19
+msgid "Folder"
+msgstr "Thư mục"
+
+#: src/views/history/formatting.py:22
+msgid "Watched folder"
+msgstr "Thư mục được theo dõi"
+
+#: src/views/history/formatting.py:38
+msgid "Queued"
+msgstr "Đang chờ"
+
+#: src/views/history/formatting.py:40
+msgid "Watching"
+msgstr "Đang theo dõi"
+
+#: src/views/history/formatting.py:41
+msgid "Done"
+msgstr "Hoàn tất"
+
+#: src/views/history/formatting.py:42
+msgid "Failed"
+msgstr "Thất bại"
+
+#: src/views/history/formatting.py:43
+msgid "Cancelled"
+msgstr "Đã hủy"
+
+#: src/views/history/formatting.py:44
+msgid "Interrupted"
+msgstr "Bị gián đoạn"
+
+#: src/views/history/formatting.py:108
+msgid "Show in Finder"
+msgstr "Hiển thị trong Finder"
+
+#: src/views/history/formatting.py:110
+msgid "Show in Explorer"
+msgstr "Hiển thị trong Explorer"
+
+#: src/views/history/formatting.py:111
+msgid "Show in file manager"
+msgstr "Hiển thị trong trình quản lý tệp"
+
+#: src/views/history/history_row.py:248
+#, python-brace-format
+msgid "{done}/{total} files"
+msgstr "{done}/{total} tệp"
+
+#: src/views/history/history_sidebar.py:111
+msgid "Search"
+msgstr "Tìm kiếm"
+
+#: src/views/history/history_sidebar.py:127
+#: src/views/main_window/entry_actions.py:343
+msgid "New group"
+msgstr "Nhóm mới"
+
+#: src/views/history/history_sidebar.py:182
+#, python-brace-format
+msgid "{count} transcriptions"
+msgstr "{count} bản chép lời"
+
+#: src/views/history/history_sidebar.py:184
+msgid "1 transcription"
+msgstr "1 bản chép lời"
+
+#: src/views/history/history_sidebar.py:191
+msgid "No transcriptions yet"
+msgstr "Chưa có bản chép lời nào"
+
+#: src/views/history/history_sidebar.py:192
+msgid "Choose a source above to transcribe your first file."
+msgstr "Chọn một nguồn ở trên để chép lời tệp đầu tiên của bạn."
+
+#: src/views/history/history_sidebar.py:268
+#: src/views/main_window/entry_actions.py:68
+msgid "Rename"
+msgstr "Đổi tên"
+
+#: src/views/history/history_sidebar.py:270
+#: src/views/transcript/transcript_view.py:836
+msgid "Edit note…"
+msgstr "Chỉnh sửa ghi chú…"
+
+#: src/views/history/history_sidebar.py:270
+#: src/views/transcript/transcript_view.py:836
+msgid "Add note…"
+msgstr "Thêm ghi chú…"
+
+#: src/views/history/history_sidebar.py:274
+#: src/views/transcript/transcript_view.py:840
+msgid "Edit tag…"
+msgstr "Chỉnh sửa nhãn…"
+
+#: src/views/history/history_sidebar.py:279
+msgid "Unpin"
+msgstr "Bỏ ghim"
+
+#: src/views/history/history_sidebar.py:279
+msgid "Pin to the top"
+msgstr "Ghim lên đầu"
+
+#: src/views/history/history_sidebar.py:285
+msgid "No group"
+msgstr "Không có nhóm"
+
+#: src/views/history/history_sidebar.py:299
+msgid "New group…"
+msgstr "Nhóm mới…"
+
+#: src/views/history/history_sidebar.py:302
+msgid "Move to group"
+msgstr "Chuyển vào nhóm"
+
+#: src/views/history/history_sidebar.py:328
+#: src/views/transcript/transcript_view.py:849
+msgid "Delete…"
+msgstr "Xóa…"
+
+#: src/views/history/history_sidebar.py:340
+msgid "Rename group…"
+msgstr "Đổi tên nhóm…"
+
+#: src/views/history/history_sidebar.py:344
+msgid "Delete group…"
+msgstr "Xóa nhóm…"
+
+#: src/views/history/history_sidebar.py:367
+msgid "Pinned"
+msgstr "Đã ghim"
+
+#: src/views/history/history_sidebar.py:375
+msgid "Transcriptions"
+msgstr "Bản chép lời"
+
+#: src/views/history/history_sidebar.py:398
+msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
+msgstr ""
+"Trống. Để thêm bản chép lời, nhấp chuột phải vào bản đó và chọn \"Chuyển "
+"vào nhóm\"."
+
+#: src/views/history/history_sidebar.py:422
+msgid "No files yet"
+msgstr "Chưa có tệp nào"
+
+#: src/views/history/history_sidebar.py:458
+#: src/views/transcript/transcript_view.py:463
+msgid "No results"
+msgstr "Không có kết quả"
+
+#: src/views/history/history_sidebar.py:459
+#, python-brace-format
+msgid "No transcription contains “{query}”."
+msgstr "Không có bản chép lời nào chứa \"{query}\"."
+
+#: src/views/main_window/entry_actions.py:69
+msgid "Name of the transcription:"
+msgstr "Tên bản chép lời:"
+
+#: src/views/main_window/entry_actions.py:82
+msgid "Note"
+msgstr "Ghi chú"
+
+#: src/views/main_window/entry_actions.py:83
+#, python-brace-format
+msgid "A note about “{title}”:"
+msgstr "Ghi chú về \"{title}\":"
+
+#: src/views/main_window/entry_actions.py:97
+msgid "Tag"
+msgstr "Nhãn"
+
+#: src/views/main_window/entry_actions.py:98
+#, python-brace-format
+msgid "Tag of “{title}”. Leave it empty to show the kind of source."
+msgstr "Nhãn của \"{title}\". Để trống để hiển thị loại nguồn."
+
+#: src/views/main_window/entry_actions.py:122
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "Tệp đã bị di chuyển hoặc xóa: {path}"
+
+#: src/views/main_window/entry_actions.py:128
+#, python-brace-format
+msgid "Could not open the file manager: {error}"
+msgstr "Không thể mở trình quản lý tệp: {error}"
+
+#: src/views/main_window/entry_actions.py:138
+#, python-brace-format
+msgid "Could not open the folder: {error}"
+msgstr "Không thể mở thư mục: {error}"
+
+#: src/views/main_window/entry_actions.py:146
+#, python-brace-format
+msgid "Delete “{title}” from the history?"
+msgstr "Xóa \"{title}\" khỏi lịch sử?"
+
+#: src/views/main_window/entry_actions.py:148
+msgid "The transcriptions of its files are deleted too."
+msgstr "Các bản chép lời của các tệp trong đó cũng bị xóa."
+
+#: src/views/main_window/entry_actions.py:149
+msgid "Your audio, video and saved files are not deleted."
+msgstr "Các tệp âm thanh, video và tệp đã lưu của bạn không bị xóa."
+
+#: src/views/main_window/entry_actions.py:151
+msgid "Delete transcription"
+msgstr "Xóa bản chép lời"
+
+#: src/views/main_window/entry_actions.py:221
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "Bản tóm tắt của \"{title}\" đã sẵn sàng."
+
+#: src/views/main_window/entry_actions.py:226
+#, python-brace-format
+msgid "Could not summarize “{title}”: {error}"
+msgstr "Không thể tóm tắt \"{title}\": {error}"
+
+#: src/views/main_window/entry_actions.py:317
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "Bản dịch của \"{title}\" đã sẵn sàng."
+
+#: src/views/main_window/entry_actions.py:322
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "Không thể dịch \"{title}\": {error}"
+
+#: src/views/main_window/entry_actions.py:344
+#: src/views/main_window/entry_actions.py:361
+msgid "Name of the group:"
+msgstr "Tên nhóm:"
+
+#: src/views/main_window/entry_actions.py:345
+msgid "Create"
+msgstr "Tạo"
+
+#: src/views/main_window/entry_actions.py:360
+msgid "Rename group"
+msgstr "Đổi tên nhóm"
+
+#: src/views/main_window/entry_actions.py:374
+msgid "Delete group"
+msgstr "Xóa nhóm"
+
+#: src/views/main_window/entry_actions.py:376
+#, python-brace-format
+msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
+msgstr ""
+"Xóa nhóm \"{name}\"? Các bản chép lời của nhóm vẫn được giữ lại, không "
+"thuộc nhóm nào."
+
+#: src/views/main_window/main_window.py:497
+#: src/views/new_transcription/new_transcription_view.py:468
+#, python-brace-format
+msgid "“{name}” is not a supported audio or video file."
+msgstr "\"{name}\" không phải là tệp âm thanh hoặc video được hỗ trợ."
+
+#: src/views/main_window/main_window.py:510
+msgid ""
+"Only one file can be added at a time. To transcribe several files, drop "
+"the folder that contains them."
+msgstr ""
+"Mỗi lần chỉ có thể thêm một tệp. Để chép lời nhiều tệp, hãy thả thư mục "
+"chứa chúng."
+
+#: src/views/main_window/main_window.py:593
+msgid ""
+"Type in the API key. It's kept in the credential store of your system. "
+"Leave it empty to remove it."
+msgstr ""
+"Nhập khóa API. Khóa được lưu trong kho thông tin xác thực của hệ thống. "
+"Để trống để xóa."
+
+#: src/views/main_window/main_window.py:597
+msgid "OK"
+msgstr "OK"
+
+#: src/views/main_window/main_window.py:604
+msgid "API key saved."
+msgstr "Đã lưu khóa API."
+
+#: src/views/main_window/main_window.py:604
+msgid "API key removed."
+msgstr "Đã xóa khóa API."
+
+#: src/views/main_window/top_bar.py:70
+msgid "New transcription:"
+msgstr "Bản chép lời mới:"
+
+#: src/views/main_window/top_bar.py:156
+#: src/views/settings/preferences_dialog.py:669
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "Đã có phiên bản {version}"
+
+#: src/views/main_window/transcription_jobs.py:54
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "Bản ghi · {date}"
+
+#: src/views/main_window/transcription_jobs.py:194
+msgid "The recording is no longer available."
+msgstr "Bản ghi không còn khả dụng."
+
+#: src/views/main_window/transcription_jobs.py:337
+msgid "The transcription was cancelled."
+msgstr "Đã hủy chép lời."
+
+#: src/views/main_window/transcription_jobs.py:358
+msgid "Transcription ready"
+msgstr "Bản chép lời đã sẵn sàng"
+
+#: src/views/main_window/transcription_jobs.py:386
+msgid "Recording…"
+msgstr "Đang ghi âm…"
+
+#: src/views/main_window/transcription_jobs.py:443
+msgid "Processing the recording…"
+msgstr "Đang xử lý bản ghi âm…"
+
+#: src/views/main_window/transcription_jobs.py:450
+#, python-brace-format
+msgid "Saved in {folder}."
+msgstr "Đã lưu vào {folder}."
+
+#: src/views/main_window/welcome_view.py:23
+msgid "What do you want to transcribe?"
+msgstr "Bạn muốn chép lời gì?"
+
+#: src/views/main_window/welcome_view.py:28
+msgid ""
+"Choose a source, or select a transcription of your history to read and "
+"play it."
+msgstr "Chọn một nguồn, hoặc chọn một bản chép lời trong lịch sử để đọc và phát."
+
+#: src/views/main_window/welcome_view.py:37
+msgid "An audio or video file"
+msgstr "Tệp âm thanh hoặc video"
+
+#: src/views/main_window/welcome_view.py:38
+msgid "YouTube or a link to a file"
+msgstr "YouTube hoặc liên kết đến tệp"
+
+#: src/views/main_window/welcome_view.py:39
+#: src/views/new_transcription/microphone_view.py:431
+msgid "Record and transcribe"
+msgstr "Ghi âm và chép lời"
+
+#: src/views/main_window/welcome_view.py:44
+msgid "Many files at once, or watch it"
+msgstr "Nhiều tệp cùng lúc, hoặc theo dõi thư mục"
+
+#: src/views/main_window/welcome_view.py:60
+msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
+msgstr "Mẹo: thả tệp hoặc thư mục vào bất kỳ đâu trên cửa sổ để chép lời."
+
+#: src/views/new_transcription/microphone_view.py:70
+msgid "No sound. Check that the microphone is on and allowed."
+msgstr "Không có âm thanh. Hãy kiểm tra micrô đã bật và được cấp quyền."
+
+#: src/views/new_transcription/microphone_view.py:72
+msgid "Waiting for speech…"
+msgstr "Đang chờ giọng nói…"
+
+#: src/views/new_transcription/microphone_view.py:75
+msgid "Too quiet. Speak louder or closer to the microphone."
+msgstr "Quá nhỏ. Hãy nói to hơn hoặc gần micrô hơn."
+
+#: src/views/new_transcription/microphone_view.py:77
+msgid "Good level"
+msgstr "Mức tốt"
+
+#: src/views/new_transcription/microphone_view.py:80
+msgid "Too loud. Move away from the microphone."
+msgstr "Quá to. Hãy lùi xa micrô."
+
+#: src/views/new_transcription/microphone_view.py:124
+msgid "Transcribe from the microphone"
+msgstr "Chép lời từ micrô"
+
+#: src/views/new_transcription/microphone_view.py:130
+msgid "Record yourself or a meeting. The recording is kept in your history."
+msgstr ""
+"Ghi âm chính bạn hoặc một cuộc họp. Bản ghi được lưu trong lịch sử của "
+"bạn."
+
+#: src/views/new_transcription/microphone_view.py:161
+msgid "Loading…"
+msgstr "Đang tải…"
+
+#: src/views/new_transcription/microphone_view.py:252
+#: src/views/transcript/summary_panel.py:241
+#: src/views/transcript/transcript_view.py:348
+#: src/views/transcript/transcript_view.py:879
+msgid "Copy"
+msgstr "Sao chép"
+
+#: src/views/new_transcription/microphone_view.py:262
+msgid "Open in history"
+msgstr "Mở trong lịch sử"
+
+#: src/views/new_transcription/microphone_view.py:282
+msgid "Wait until the current transcription finishes, or cancel it."
+msgstr "Hãy đợi bản chép lời hiện tại hoàn tất, hoặc hủy nó."
+
+#: src/views/new_transcription/microphone_view.py:370
+#, python-brace-format
+msgid "Press the button to start recording ({shortcut})"
+msgstr "Nhấn nút để bắt đầu ghi âm ({shortcut})"
+
+#: src/views/new_transcription/microphone_view.py:375
+msgid "The level is shown while recording"
+msgstr "Mức âm được hiển thị khi ghi âm"
+
+#: src/views/new_transcription/microphone_view.py:379
+msgid "Recording… Press the button to stop and transcribe."
+msgstr "Đang ghi âm… Nhấn nút để dừng và chép lời."
+
+#: src/views/new_transcription/microphone_view.py:389
+msgid "Done. Press the button to record again."
+msgstr "Xong. Nhấn nút để ghi âm lại."
+
+#: src/views/new_transcription/microphone_view.py:392
+msgid "Press the button to try again."
+msgstr "Nhấn nút để thử lại."
+
+#: src/views/new_transcription/microphone_view.py:408
+msgid "Draft. It's replaced when the final transcription finishes."
+msgstr "Bản nháp. Sẽ được thay thế khi bản chép lời cuối cùng hoàn tất."
+
+#: src/views/new_transcription/microphone_view.py:414
+msgid "The text will appear here as you speak."
+msgstr "Văn bản sẽ xuất hiện ở đây khi bạn nói."
+
+#: src/views/new_transcription/microphone_view.py:415
+msgid "The transcription will appear here when you stop recording."
+msgstr "Bản chép lời sẽ xuất hiện ở đây khi bạn dừng ghi âm."
+
+#: src/views/new_transcription/microphone_view.py:431
+msgid "Refine"
+msgstr "Tinh chỉnh"
+
+#: src/views/new_transcription/microphone_view.py:462
+#: src/views/new_transcription/microphone_view.py:463
+msgid "No microphone found"
+msgstr "Không tìm thấy micrô"
+
+#: src/views/new_transcription/microphone_view.py:478
+msgid "default"
+msgstr "mặc định"
+
+#: src/views/new_transcription/new_transcription_view.py:103
+msgid "Transcribe a file"
+msgstr "Chép lời tệp"
+
+#: src/views/new_transcription/new_transcription_view.py:104
+msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
+msgstr ""
+"Tệp âm thanh và video: MP3, WAV, M4A, MP4, MOV, MKV và nhiều định dạng "
+"khác."
+
+#: src/views/new_transcription/new_transcription_view.py:108
+msgid "Transcribe from a URL"
+msgstr "Chép lời từ URL"
+
+#: src/views/new_transcription/new_transcription_view.py:109
+msgid "A YouTube video or a direct link to an audio or video file."
+msgstr "Video YouTube hoặc liên kết trực tiếp đến tệp âm thanh hoặc video."
+
+#: src/views/new_transcription/new_transcription_view.py:113
+msgid "Transcribe a folder"
+msgstr "Chép lời thư mục"
+
+#: src/views/new_transcription/new_transcription_view.py:115
+msgid ""
+"All the audio and video files of a folder, or the new ones as they're "
+"added."
+msgstr ""
+"Tất cả tệp âm thanh và video trong một thư mục, hoặc các tệp mới khi "
+"chúng được thêm vào."
+
+#: src/views/new_transcription/new_transcription_view.py:175
+msgid "Drop an audio or video file here"
+msgstr "Thả tệp âm thanh hoặc video vào đây"
+
+#: src/views/new_transcription/new_transcription_view.py:177
+msgid "Drop a folder here"
+msgstr "Thả thư mục vào đây"
+
+#: src/views/new_transcription/new_transcription_view.py:182
+msgid "or"
+msgstr "hoặc"
+
+#: src/views/new_transcription/new_transcription_view.py:188
+msgid "Choose a file…"
+msgstr "Chọn tệp…"
+
+#: src/views/new_transcription/new_transcription_view.py:188
+msgid "Choose a folder…"
+msgstr "Chọn thư mục…"
+
+#: src/views/new_transcription/new_transcription_view.py:225
+#: src/views/settings/cards/output_card.py:91
+#: src/views/settings/preferences_dialog.py:338
+msgid "Change…"
+msgstr "Thay đổi…"
+
+#: src/views/new_transcription/new_transcription_view.py:254
+msgid "Paste"
+msgstr "Dán"
+
+#: src/views/new_transcription/new_transcription_view.py:270
+msgid ""
+"Examples: https://youtu.be/dQw4w9WgXcQ · "
+"https://example.com/podcast/episode-12.mp3"
+msgstr ""
+"Ví dụ: https://youtu.be/dQw4w9WgXcQ · "
+"https://example.com/podcast/episode-12.mp3"
+
+#: src/views/new_transcription/new_transcription_view.py:349
+msgid "Select a file"
+msgstr "Chọn tệp"
+
+#: src/views/new_transcription/new_transcription_view.py:351
+msgid "All supported files"
+msgstr "Tất cả tệp được hỗ trợ"
+
+#: src/views/new_transcription/new_transcription_view.py:352
+msgid "Audio files"
+msgstr "Tệp âm thanh"
+
+#: src/views/new_transcription/new_transcription_view.py:353
+msgid "Video files"
+msgstr "Tệp video"
+
+#: src/views/new_transcription/new_transcription_view.py:357
+msgid "Select a folder"
+msgstr "Chọn thư mục"
+
+#: src/views/new_transcription/new_transcription_view.py:387
+msgid "Continue"
+msgstr "Tiếp tục"
+
+#: src/views/new_transcription/new_transcription_view.py:416
+msgid "Add to queue"
+msgstr "Thêm vào hàng đợi"
+
+#: src/views/new_transcription/new_transcription_view.py:416
+msgid "Start transcription"
+msgstr "Bắt đầu chép lời"
+
+#: src/views/new_transcription/new_transcription_view.py:423
+msgid "It will start when the current transcription finishes."
+msgstr "Sẽ bắt đầu khi bản chép lời hiện tại hoàn tất."
+
+#: src/views/new_transcription/new_transcription_view.py:489
+msgid "Reading…"
+msgstr "Đang đọc…"
+
+#: src/views/new_transcription/new_transcription_view.py:503
+msgid "Video"
+msgstr "Video"
+
+#: src/views/new_transcription/new_transcription_view.py:503
+msgid "Audio"
+msgstr "Âm thanh"
+
+#: src/views/new_transcription/new_transcription_view.py:520
+msgid "No audio or video files found (subfolders included)."
+msgstr "Không tìm thấy tệp âm thanh hoặc video nào (bao gồm thư mục con)."
+
+#: src/views/new_transcription/new_transcription_view.py:522
+msgid "1 audio or video file (subfolders included)"
+msgstr "1 tệp âm thanh hoặc video (bao gồm thư mục con)"
+
+#: src/views/new_transcription/new_transcription_view.py:524
+#, python-brace-format
+msgid "{count} audio and video files (subfolders included)"
+msgstr "{count} tệp âm thanh và video (bao gồm thư mục con)"
+
+#: src/views/new_transcription/new_transcription_view.py:548
+msgid "YouTube video"
+msgstr "Video YouTube"
+
+#: src/views/new_transcription/new_transcription_view.py:548
+msgid "Link to a file"
+msgstr "Liên kết đến tệp"
+
+#: src/views/new_transcription/new_transcription_view.py:554
+msgid "Enter a URL that starts with http:// or https://"
+msgstr "Nhập URL bắt đầu bằng http:// hoặc https://"
+
+#: src/views/settings/cards/engine_card.py:163
+#: src/views/settings/preferences_dialog.py:48
+msgid "OpenAI API key"
+msgstr "Khóa OpenAI API"
+
+#: src/views/settings/preferences_dialog.py:50
+msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
+msgstr "Bắt buộc cho Whisper API, và để tóm tắt và dịch bằng OpenAI."
+
+#: src/views/settings/preferences_dialog.py:54
+msgid "Anthropic API key"
+msgstr "Khóa API Anthropic"
+
+#: src/views/settings/preferences_dialog.py:55
+msgid "Required to summarize and translate with Claude."
+msgstr "Bắt buộc để tóm tắt và dịch bằng Claude."
+
+#: src/views/settings/preferences_dialog.py:58
+msgid "DeepSeek API key"
+msgstr "Khóa API DeepSeek"
+
+#: src/views/settings/preferences_dialog.py:59
+msgid "Required to summarize and translate with DeepSeek."
+msgstr "Bắt buộc để tóm tắt và dịch bằng DeepSeek."
+
+#: src/views/settings/preferences_dialog.py:62
+msgid "Gemini API key"
+msgstr "Khóa API Gemini"
+
+#: src/views/settings/preferences_dialog.py:64
+msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgstr "Bắt buộc để tóm tắt và dịch bằng Gemini (lấy từ Google AI Studio)."
+
+#: src/views/settings/preferences_dialog.py:68
+msgid "Mistral API key"
+msgstr "Khóa API Mistral"
+
+#: src/views/settings/preferences_dialog.py:69
+msgid "Required to summarize and translate with Mistral."
+msgstr "Bắt buộc để tóm tắt và dịch bằng Mistral."
+
+#: src/views/settings/preferences_dialog.py:72
+msgid "xAI API key"
+msgstr "Khóa API xAI"
+
+#: src/views/settings/preferences_dialog.py:73
+msgid "Required to summarize and translate with Grok."
+msgstr "Bắt buộc để tóm tắt và dịch bằng Grok."
+
+#: src/views/settings/preferences_dialog.py:76
+msgid "DeepL API key"
+msgstr "Khóa API DeepL"
+
+#: src/views/settings/preferences_dialog.py:77
+msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgstr "Bắt buộc để dịch bằng DeepL. Khóa của gói miễn phí cũng dùng được."
+
+#: src/views/settings/cards/engine_card.py:165
+#: src/views/settings/preferences_dialog.py:80
+msgid "Google API key"
+msgstr "Khóa Google API"
+
+#: src/views/settings/preferences_dialog.py:82
+msgid ""
+"Optional for Google Speech-to-Text: without it, the free tier is used. "
+"Required to translate with Google Translate (Cloud Translation API)."
+msgstr ""
+"Tùy chọn cho Google Speech-to-Text: nếu không có, gói miễn phí sẽ được "
+"dùng. Bắt buộc để dịch bằng Google Dịch (Cloud Translation API)."
+
+#: src/views/settings/cards/options_card.py:89
+#: src/views/settings/preferences_dialog.py:86
+msgid "Hugging Face token"
+msgstr "Token Hugging Face"
+
+#: src/views/settings/preferences_dialog.py:88
+msgid ""
+"Required to identify speakers with WhisperX (pyannote/speaker-"
+"diarization-community-1)."
+msgstr ""
+"Bắt buộc để nhận diện người nói bằng WhisperX (pyannote/speaker-"
+"diarization-community-1)."
+
+#: src/views/settings/preferences_dialog.py:135
+msgid "Preferences"
+msgstr "Tùy chọn ưu tiên"
+
+#: src/views/settings/preferences_dialog.py:147
+msgid "General"
+msgstr "Chung"
+
+#: src/views/settings/preferences_dialog.py:148
+msgid "AI"
+msgstr "AI"
+
+#: src/views/settings/preferences_dialog.py:149
+msgid "API keys"
+msgstr "Khóa API"
+
+#: src/views/settings/preferences_dialog.py:155
+#: src/views/transcript/player_bar.py:100
+msgid "Subtitles"
+msgstr "Phụ đề"
+
+#: src/views/settings/preferences_dialog.py:157
+msgid "About"
+msgstr "Giới thiệu"
+
+#: src/views/settings/preferences_dialog.py:246
+msgid "System"
+msgstr "Hệ thống"
+
+#: src/views/settings/preferences_dialog.py:246
+msgid "Light"
+msgstr "Sáng"
+
+#: src/views/settings/preferences_dialog.py:246
+msgid "Dark"
+msgstr "Tối"
+
+#: src/views/settings/preferences_dialog.py:248
+msgid "Appearance"
+msgstr "Chế độ hiển thị"
+
+#: src/views/settings/preferences_dialog.py:260
+msgid "System language"
+msgstr "Ngôn ngữ hệ thống"
+
+#: src/views/settings/preferences_dialog.py:266
+msgid "Interface language"
+msgstr "Ngôn ngữ giao diện"
+
+#: src/views/settings/preferences_dialog.py:269
+msgid "It can be changed when no transcription is in progress."
+msgstr "Có thể thay đổi khi không có bản chép lời nào đang chạy."
+
+#: src/views/settings/preferences_dialog.py:285
+msgid "Notifications"
+msgstr "Thông báo"
+
+#: src/views/settings/preferences_dialog.py:286
+msgid "Shows a notification of the system when a transcription is ready."
+msgstr "Hiển thị thông báo của hệ thống khi bản chép lời đã sẵn sàng."
+
+#: src/views/settings/preferences_dialog.py:295
+msgid "Updates"
+msgstr "Cập nhật"
+
+#: src/views/settings/preferences_dialog.py:295
+msgid "Checks for a new version when the app opens."
+msgstr "Kiểm tra phiên bản mới khi mở ứng dụng."
+
+#: src/views/settings/preferences_dialog.py:338
+msgid "Set…"
+msgstr "Đặt…"
+
+#: src/views/settings/cards/language_card.py:123
+#: src/views/settings/preferences_dialog.py:373
+#: src/views/transcript/translation_panel.py:159
+msgid "Translation"
+msgstr "Bản dịch"
+
+#: src/views/settings/preferences_dialog.py:384
+msgid "Ollama"
+msgstr "Ollama"
+
+#: src/views/settings/preferences_dialog.py:389
+msgid "Server URL"
+msgstr "URL máy chủ"
+
+#: src/views/settings/preferences_dialog.py:390
+msgid "Ollama runs the models on your computer, without an API key."
+msgstr "Ollama chạy các mô hình trên máy tính của bạn, không cần khóa API."
+
+#: src/views/settings/preferences_dialog.py:421
+msgid "Provider"
+msgstr "Nhà cung cấp"
+
+#: src/views/settings/cards/engine_card.py:66
+#: src/views/settings/preferences_dialog.py:428
+msgid "Model"
+msgstr "Mô hình"
+
+#: src/views/settings/preferences_dialog.py:429
+msgid "The default model of the provider if empty."
+msgstr "Nếu để trống, dùng mô hình mặc định của nhà cung cấp."
+
+#: src/views/settings/preferences_dialog.py:474
+msgid "Compute type"
+msgstr "Kiểu tính toán"
+
+#: src/views/settings/preferences_dialog.py:475
+msgid "float16 is faster on GPUs. int8 uses less memory."
+msgstr "float16 nhanh hơn trên GPU. int8 dùng ít bộ nhớ hơn."
+
+#: src/views/settings/preferences_dialog.py:489
+msgid "Batch size"
+msgstr "Kích thước lô"
+
+#: src/views/settings/preferences_dialog.py:489
+msgid "Lower it if you run out of memory."
+msgstr "Giảm xuống nếu hết bộ nhớ."
+
+#: src/views/settings/preferences_dialog.py:501
+msgid "Use CPU"
+msgstr "Dùng CPU"
+
+#: src/views/settings/preferences_dialog.py:504
+msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgstr "Không tìm thấy GPU CUDA nên WhisperX chạy trên CPU."
+
+#: src/views/settings/preferences_dialog.py:518
+msgid "Highlight words"
+msgstr "Đánh dấu từ"
+
+#: src/views/settings/preferences_dialog.py:519
+msgid "Underlines each word as it's said (.srt and .vtt)."
+msgstr "Gạch chân từng từ khi được nói (.srt và .vtt)."
+
+#: src/views/settings/preferences_dialog.py:526
+msgid "Max. line count"
+msgstr "Số dòng tối đa"
+
+#: src/views/settings/preferences_dialog.py:533
+msgid "Max. line width"
+msgstr "Độ rộng dòng tối đa"
+
+#: src/views/settings/preferences_dialog.py:545
+msgid "Temperature"
+msgstr "Nhiệt độ"
+
+#: src/views/settings/preferences_dialog.py:546
+msgid "Between 0 and 1. Higher values are more random."
+msgstr "Từ 0 đến 1. Giá trị càng cao càng ngẫu nhiên."
+
+#: src/views/settings/preferences_dialog.py:558
+msgid "Timestamps of the words"
+msgstr "Dấu thời gian của từ"
+
+#: src/views/settings/preferences_dialog.py:559
+msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgstr "Đánh dấu từng từ khi phát (mô hình whisper-1). Mất nhiều thời gian hơn."
+
+#: src/views/settings/preferences_dialog.py:589
+#, python-brace-format
+msgid "Version {version}"
+msgstr "Phiên bản {version}"
+
+#: src/views/settings/preferences_dialog.py:593
+#, python-brace-format
+msgid "Made by {author}"
+msgstr "Tạo bởi {author}"
+
+#: src/views/settings/preferences_dialog.py:600
+msgid "Documentation"
+msgstr "Tài liệu"
+
+#: src/views/settings/preferences_dialog.py:614
+msgid "Donate"
+msgstr "Ủng hộ"
+
+#: src/views/settings/preferences_dialog.py:624
+msgid "Check for updates"
+msgstr "Kiểm tra cập nhật"
+
+#: src/views/settings/preferences_dialog.py:646
+msgid "Checking for updates…"
+msgstr "Đang kiểm tra cập nhật…"
+
+#: src/views/settings/preferences_dialog.py:658
+msgid "Could not check for updates."
+msgstr "Không thể kiểm tra cập nhật."
+
+#: src/views/settings/preferences_dialog.py:663
+msgid "Download"
+msgstr "Tải xuống"
+
+#: src/views/settings/preferences_dialog.py:676
+msgid "You have the latest version."
+msgstr "Bạn đang dùng phiên bản mới nhất."
+
+#: src/views/settings/settings_form.py:162
+msgid "Select at least one output file type."
+msgstr "Chọn ít nhất một loại tệp đầu ra."
+
+#: src/views/settings/settings_form.py:179
+#, python-brace-format
+msgid ""
+"The {model} model only transcribes English. Choose a multilingual model "
+"or set the language of the audio to English."
+msgstr ""
+"Mô hình {model} chỉ chép lời tiếng Anh. Hãy chọn mô hình đa ngôn ngữ hoặc"
+" đặt ngôn ngữ của âm thanh là tiếng Anh."
+
+#: src/views/settings/settings_form.py:187
+msgid "The Whisper API requires an OpenAI API key."
+msgstr "Whisper API cần khóa API OpenAI."
+
+#: src/views/settings/cards/context_card.py:28
+msgid "Context"
+msgstr "Ngữ cảnh"
+
+#: src/views/settings/cards/context_card.py:34
+msgid "Keywords"
+msgstr "Từ khóa"
+
+#: src/views/settings/cards/context_card.py:39
+msgid "e.g. Audiotext, WhisperX, Henestrosa"
+msgstr "ví dụ: Audiotext, WhisperX, Henestrosa"
+
+#: src/views/settings/cards/context_card.py:46
+msgid ""
+"Names, terms or acronyms said in the audio, separated by commas, so "
+"they're spelled right."
+msgstr ""
+"Tên riêng, thuật ngữ hoặc từ viết tắt được nói trong âm thanh, phân tách "
+"bằng dấu phẩy, để được viết đúng chính tả."
+
+#: src/views/settings/cards/context_card.py:51
+msgid "Description"
+msgstr "Mô tả"
+
+#: src/views/settings/cards/context_card.py:56
+msgid "e.g. An interview about speech recognition"
+msgstr "ví dụ: Một cuộc phỏng vấn về nhận dạng giọng nói"
+
+#: src/views/settings/cards/context_card.py:63
+msgid "What the audio is about, such as its topic or setting."
+msgstr "Nội dung của âm thanh, chẳng hạn như chủ đề hoặc bối cảnh."
+
+#: src/views/settings/cards/context_card.py:100
+msgid "Not used by the Google API."
+msgstr "Không được Google API sử dụng."
+
+#: src/views/settings/cards/context_card.py:112
+#, python-brace-format
+msgid "Not used by the {model} model."
+msgstr "Không được mô hình {model} sử dụng."
+
+#: src/views/settings/cards/engine_card.py:25
+msgid "Identifies the speakers. With timestamps."
+msgstr "Nhận diện người nói. Có dấu thời gian."
+
+#: src/views/settings/cards/engine_card.py:28
+msgid ""
+"With timestamps, to play the transcription sentence by sentence and "
+"generate subtitles."
+msgstr "Có dấu thời gian, để phát bản chép lời theo từng câu và tạo phụ đề."
+
+#: src/views/settings/cards/engine_card.py:32
+msgid ""
+"More accurate, but without timestamps: the transcription can't be played "
+"sentence by sentence nor subtitled."
+msgstr ""
+"Chính xác hơn nhưng không có dấu thời gian: không thể phát bản chép lời "
+"theo từng câu hoặc tạo phụ đề."
+
+#: src/views/settings/cards/engine_card.py:50
+msgid "Engine"
+msgstr "Công cụ"
+
+#: src/views/settings/cards/engine_card.py:54
+msgid "Transcription method"
+msgstr "Phương thức chép lời"
+
+#: src/views/settings/cards/engine_card.py:114
+msgid ""
+"Only transcribes English, faster than the multilingual model of the same "
+"size."
+msgstr "Chỉ chép lời tiếng Anh, nhanh hơn mô hình đa ngôn ngữ cùng kích thước."
+
+#: src/views/settings/cards/engine_card.py:118
+msgid "Larger models are more accurate, but slower."
+msgstr "Mô hình lớn hơn chính xác hơn nhưng chậm hơn."
+
+#: src/views/settings/cards/engine_card.py:121
+msgid "Runs on your computer. Free, private and unlimited."
+msgstr "Chạy trên máy tính của bạn. Miễn phí, riêng tư và không giới hạn."
+
+#: src/views/settings/cards/engine_card.py:131
+msgid "Runs on the servers of OpenAI. Requires an API key."
+msgstr "Chạy trên máy chủ của OpenAI. Cần khóa API."
+
+#: src/views/settings/cards/engine_card.py:135
+msgid ""
+"Runs on the servers of Google. An API key is optional; without it, the "
+"free tier is used."
+msgstr ""
+"Chạy trên máy chủ của Google. Khóa API là tùy chọn; nếu không có, gói "
+"miễn phí sẽ được dùng."
+
+#: src/views/settings/cards/engine_card.py:140
+msgid "API key set"
+msgstr "Đã đặt khóa API"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/transcript/summary_panel.py:99
+#: src/views/transcript/translation_panel.py:348
+msgid "Set API key…"
+msgstr "Đặt khóa API…"
+
+#: src/views/settings/cards/folder_card.py:22
+msgid "Watch the folder"
+msgstr "Theo dõi thư mục"
+
+#: src/views/settings/cards/folder_card.py:34
+msgid ""
+"Keeps running and transcribes the files added to the folder, until you "
+"stop it. The files it already contains are skipped."
+msgstr ""
+"Tiếp tục chạy và chép lời các tệp được thêm vào thư mục cho đến khi bạn "
+"dừng. Các tệp đã có trong thư mục sẽ bị bỏ qua."
+
+#: src/views/settings/cards/folder_card.py:39
+msgid ""
+"Transcribes the audio and video files of the folder and its subfolders. "
+"Files that already have a transcription are skipped unless you overwrite "
+"them."
+msgstr ""
+"Chép lời các tệp âm thanh và video trong thư mục và các thư mục con. Các "
+"tệp đã có bản chép lời sẽ bị bỏ qua trừ khi bạn ghi đè."
+
+#: src/views/settings/cards/language_card.py:56
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+#: src/views/settings/cards/language_card.py:60
+msgid "Auto-detect"
+msgstr "Tự động phát hiện"
+
+#: src/views/settings/cards/language_card.py:63
+msgid "Same as the audio"
+msgstr "Giống âm thanh"
+
+#: src/views/settings/cards/language_card.py:70
+#: src/views/settings/cards/language_card.py:74
+msgid "Language of the audio"
+msgstr "Ngôn ngữ của âm thanh"
+
+#: src/views/settings/cards/language_card.py:75
+#: src/views/settings/cards/language_card.py:93
+#: src/views/transcript/translation_panel.py:302
+msgid "Search language…"
+msgstr "Tìm ngôn ngữ…"
+
+#: src/views/settings/cards/language_card.py:76
+#: src/views/settings/cards/language_card.py:94
+#: src/views/transcript/translation_panel.py:303
+msgid "No languages found."
+msgstr "Không tìm thấy ngôn ngữ."
+
+#: src/views/settings/cards/language_card.py:88
+#: src/views/settings/cards/language_card.py:92
+msgid "Language of the transcription"
+msgstr "Ngôn ngữ của bản chép lời"
+
+#: src/views/settings/cards/language_card.py:131
+msgid "Translate with Whisper (recommended)"
+msgstr "Dịch bằng Whisper (khuyên dùng)"
+
+#: src/views/settings/cards/language_card.py:191
+msgid ""
+"The Google API can't translate. The transcription will be in the language"
+" of the audio."
+msgstr "Google API không thể dịch. Bản chép lời sẽ ở ngôn ngữ của âm thanh."
+
+#: src/views/settings/cards/language_card.py:201
+#, python-brace-format
+msgid "Write it directly in {language} (experimental)"
+msgstr "Viết trực tiếp bằng {language} (thử nghiệm)"
+
+#: src/views/settings/cards/language_card.py:219
+msgid "Whisper transcribes and translates the audio in one step."
+msgstr "Whisper chép lời và dịch âm thanh trong một bước."
+
+#: src/views/settings/cards/language_card.py:223
+#, python-brace-format
+msgid ""
+"Whisper can only translate into {english}. For other languages, it's "
+"asked to write the transcription in {language} directly. It works well "
+"for many languages, but check the result."
+msgstr ""
+"Whisper chỉ có thể dịch sang {english}. Với các ngôn ngữ khác, Whisper "
+"được yêu cầu viết bản chép lời trực tiếp bằng {language}. Cách này hoạt "
+"động tốt với nhiều ngôn ngữ, nhưng hãy kiểm tra kết quả."
+
+#: src/views/settings/cards/live_card.py:27
+msgid "Live text"
+msgstr "Văn bản trực tiếp"
+
+#: src/views/settings/cards/live_card.py:30
+msgid "Show the text while recording"
+msgstr "Hiển thị văn bản khi ghi âm"
+
+#: src/views/settings/cards/live_card.py:35
+msgid "Live model"
+msgstr "Mô hình trực tiếp"
+
+#: src/views/settings/cards/live_card.py:62
+#: src/views/settings/cards/options_card.py:116
+#: src/views/settings/cards/options_card.py:145
+msgid "Only available with WhisperX."
+msgstr "Chỉ khả dụng với WhisperX."
+
+#: src/views/settings/cards/live_card.py:65
+msgid ""
+"A fast model writes a draft while you speak. When you stop, the whole "
+"recording is transcribed again with the model of the engine, which is "
+"more accurate."
+msgstr ""
+"Một mô hình nhanh viết bản nháp trong khi bạn nói. Khi bạn dừng, toàn bộ "
+"bản ghi được chép lời lại bằng mô hình của công cụ, chính xác hơn."
+
+#: src/views/settings/cards/live_card.py:70
+msgid "The text is shown when you stop recording."
+msgstr "Văn bản được hiển thị khi bạn dừng ghi âm."
+
+#: src/views/settings/cards/options_card.py:37
+msgid "Options"
+msgstr "Tùy chọn"
+
+#: src/views/settings/cards/options_card.py:43
+msgid "Word-level timings"
+msgstr "Thời gian theo từng từ"
+
+#: src/views/settings/cards/options_card.py:51
+msgid "Extract speech"
+msgstr "Tách giọng nói"
+
+#: src/views/settings/cards/options_card.py:55
+msgid "Reduces music and background noise before transcribing."
+msgstr "Giảm nhạc và tiếng ồn nền trước khi chép lời."
+
+#: src/views/settings/cards/options_card.py:59
+msgid "Identify speakers"
+msgstr "Nhận diện người nói"
+
+#: src/views/settings/cards/options_card.py:69
+msgid "Number of speakers (0 = auto)"
+msgstr "Số người nói (0 = tự động)"
+
+#: src/views/settings/cards/options_card.py:87
+msgid "Set Hugging Face token…"
+msgstr "Đặt token Hugging Face…"
+
+#: src/views/settings/cards/options_card.py:119
+msgid "Highlights each word while playing. The subtitles already use them."
+msgstr "Đánh dấu từng từ khi phát. Phụ đề đã sử dụng chúng."
+
+#: src/views/settings/cards/options_card.py:122
+msgid "Highlights each word while playing. Takes a bit longer."
+msgstr "Đánh dấu từng từ khi phát. Mất thêm một chút thời gian."
+
+#: src/views/settings/cards/options_card.py:132
+msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgstr "Gắn nhãn ai đang nói trong từng phần. Cần token Hugging Face."
+
+#: src/views/settings/cards/options_card.py:138
+msgid "The model of the Whisper API identifies the speakers."
+msgstr "Mô hình của Whisper API nhận diện người nói."
+
+#: src/views/settings/cards/options_card.py:141
+msgid ""
+"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
+" of the Whisper API."
+msgstr ""
+"Chỉ khả dụng với WhisperX, hoặc với mô hình gpt-4o-transcribe-diarize của"
+" Whisper API."
+
+#: src/views/settings/cards/output_card.py:37
+msgid "Output"
+msgstr "Đầu ra"
+
+#: src/views/settings/cards/output_card.py:41
+msgid "File types"
+msgstr "Loại tệp"
+
+#: src/views/settings/cards/output_card.py:100
+msgid "Next to the source"
+msgstr "Cạnh nguồn"
+
+#: src/views/settings/cards/output_card.py:110
+msgid "Overwrite existing files"
+msgstr "Ghi đè tệp hiện có"
+
+#: src/views/settings/cards/output_card.py:114
+msgid "The files of a folder are always saved."
+msgstr "Các tệp của một thư mục luôn được lưu."
+
+#: src/views/settings/cards/output_card.py:142
+msgid "The Google API returns plain text (.txt)."
+msgstr "Google API trả về văn bản thuần (.txt)."
+
+#: src/views/settings/cards/output_card.py:147
+#, python-brace-format
+msgid "Saved in {folder}"
+msgstr "Lưu trong {folder}"
+
+#: src/views/settings/cards/output_card.py:150
+msgid "Saved next to the source"
+msgstr "Lưu cạnh nguồn"
+
+#: src/views/settings/cards/output_card.py:169
+msgid "Format of the files."
+msgstr "Định dạng của các tệp."
+
+#: src/views/settings/cards/output_card.py:172
+#, python-brace-format
+msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
+msgstr "Mô hình {model} không trả về dấu thời gian nên không thể lưu phụ đề."
+
+#: src/views/settings/cards/output_card.py:192
+msgid "Choose where to save the transcriptions"
+msgstr "Chọn nơi lưu các bản chép lời"
+
+#: src/views/transcript/corrections.py:78
+msgid "Replaced."
+msgstr "Đã thay thế."
+
+#: src/views/transcript/corrections.py:94
+#: src/views/transcript/transcript_view.py:670
+msgid "Edit the text"
+msgstr "Chỉnh sửa văn bản"
+
+#: src/views/transcript/corrections.py:95
+#: src/views/transcript/transcript_view.py:671
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "Văn bản được nói lúc {time}:"
+
+#: src/views/transcript/edit_dialogs.py:85
+msgid "Find and replace"
+msgstr "Tìm và thay thế"
+
+#: src/views/transcript/edit_dialogs.py:85
+msgid "Replace all"
+msgstr "Thay thế tất cả"
+
+#: src/views/transcript/edit_dialogs.py:94
+msgid "Find:"
+msgstr "Tìm:"
+
+#: src/views/transcript/edit_dialogs.py:94
+msgid "Replace with:"
+msgstr "Thay thế bằng:"
+
+#: src/views/transcript/edit_dialogs.py:106
+msgid "Match case"
+msgstr "Phân biệt hoa thường"
+
+#: src/views/transcript/edit_dialogs.py:135
+msgid "1 match"
+msgstr "1 kết quả khớp"
+
+#: src/views/transcript/edit_dialogs.py:137
+#, python-brace-format
+msgid "{count} matches"
+msgstr "{count} kết quả khớp"
+
+#: src/views/transcript/edit_dialogs.py:155
+msgid "Rename speakers"
+msgstr "Đổi tên người nói"
+
+#: src/views/transcript/edit_dialogs.py:155 src/views/widgets/text_dialog.py:66
+msgid "Save"
+msgstr "Lưu"
+
+#: src/views/transcript/edit_dialogs.py:162
+msgid ""
+"Give a name to each speaker. Giving two speakers the same name merges "
+"them."
+msgstr ""
+"Đặt tên cho từng người nói. Đặt cùng một tên cho hai người nói sẽ gộp họ "
+"lại."
+
+#: src/views/transcript/player_bar.py:122
+msgid "Loading the audio…"
+msgstr "Đang tải âm thanh…"
+
+#: src/views/transcript/player_bar.py:151
+#, python-brace-format
+msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr "Phím cách: phát/tạm dừng · ←/→: lùi/tới {seconds} giây"
+
+#: src/views/transcript/player_bar.py:252
+#: src/views/transcript/transcript_view.py:754
+#, python-brace-format
+msgid "The audio can't be played: {error}"
+msgstr "Không thể phát âm thanh: {error}"
+
+#: src/views/transcript/summary_panel.py:72
+msgid "Summarizing…"
+msgstr "Đang tóm tắt…"
+
+#: src/views/transcript/summary_panel.py:73
+#, python-brace-format
+msgid "{provider} is reading the transcription. It takes a moment."
+msgstr "{provider} đang đọc bản chép lời. Việc này mất một lát."
+
+#: src/views/transcript/summary_panel.py:79
+#: src/views/transcript/summary_panel.py:92
+msgid "No summary yet"
+msgstr "Chưa có bản tóm tắt"
+
+#: src/views/transcript/summary_panel.py:81
+#, python-brace-format
+msgid ""
+"Generate a summary, the key points and the chapters of the transcription "
+"with {provider}."
+msgstr ""
+"Tạo bản tóm tắt, các ý chính và các chương của bản chép lời bằng "
+"{provider}."
+
+#: src/views/transcript/summary_panel.py:86
+msgid "Generate summary"
+msgstr "Tạo bản tóm tắt"
+
+#: src/views/transcript/summary_panel.py:94
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to summarize, or choose another provider in"
+" the settings."
+msgstr ""
+"Đặt khóa API của {provider} để tóm tắt, hoặc chọn nhà cung cấp khác trong"
+" phần cài đặt."
+
+#: src/views/transcript/summary_panel.py:194
+msgid "The transcription is very long, so only its beginning was summarized."
+msgstr "Bản chép lời rất dài nên chỉ phần đầu được tóm tắt."
+
+#: src/views/transcript/summary_panel.py:251
+msgid "Regenerate"
+msgstr "Tạo lại"
+
+#: src/views/transcript/summary_panel.py:278
+#, python-brace-format
+msgid "Generated by {model} · {date}"
+msgstr "Được tạo bởi {model} · {date}"
+
+#: src/views/transcript/transcript_text.py:162
+msgid "Click a sentence to play it. Right-click it to edit it."
+msgstr "Nhấp vào một câu để phát. Nhấp chuột phải để chỉnh sửa."
+
+#: src/views/transcript/transcript_text.py:165
+msgid "The plain text has been edited; the transcript keeps the original."
+msgstr "Văn bản thuần đã được chỉnh sửa; bản ghi lời giữ nguyên bản gốc."
+
+#: src/views/transcript/transcript_text.py:170
+msgid "You can edit the text. The changes are saved automatically."
+msgstr "Bạn có thể chỉnh sửa văn bản. Thay đổi được lưu tự động."
+
+#: src/views/transcript/transcript_text.py:173
+msgid ""
+"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
+"transcribe-diarize models of the Whisper API."
+msgstr ""
+"Dấu thời gian chỉ khả dụng với WhisperX và các mô hình whisper-1 và gpt-"
+"4o-transcribe-diarize của Whisper API."
+
+#: src/views/transcript/transcript_text.py:325
+msgid "This transcription has no timestamps."
+msgstr "Bản chép lời này không có dấu thời gian."
+
+#: src/views/transcript/transcript_view.py:80
+msgid "Plain text (.txt)"
+msgstr "Văn bản thuần (.txt)"
+
+#: src/views/transcript/transcript_view.py:81
+msgid "Markdown (.md)"
+msgstr "Markdown (.md)"
+
+#: src/views/transcript/transcript_view.py:82
+msgid "Word document (.docx)"
+msgstr "Tài liệu Word (.docx)"
+
+#: src/views/transcript/transcript_view.py:83
+msgid "Subtitles (.srt)"
+msgstr "Phụ đề (.srt)"
+
+#: src/views/transcript/transcript_view.py:84
+msgid "Web subtitles (.vtt)"
+msgstr "Phụ đề web (.vtt)"
+
+#: src/views/transcript/transcript_view.py:85
+msgid "Table (.tsv)"
+msgstr "Bảng (.tsv)"
+
+#: src/views/transcript/transcript_view.py:86
+msgid "JSON (.json)"
+msgstr "JSON (.json)"
+
+#: src/views/transcript/transcript_view.py:225
+msgid "Export transcription"
+msgstr "Xuất bản chép lời"
+
+#: src/views/transcript/transcript_view.py:229
+msgid "All files"
+msgstr "Tất cả tệp"
+
+#: src/views/transcript/transcript_view.py:245
+#, python-brace-format
+msgid "Could not export: {error}"
+msgstr "Không thể xuất: {error}"
+
+#: src/views/transcript/transcript_view.py:248
+#, python-brace-format
+msgid "Exported to {path}"
+msgstr "Đã xuất sang {path}"
+
+#: src/views/transcript/transcript_view.py:297
+#, python-brace-format
+msgid "Search ({shortcut})"
+msgstr "Tìm kiếm ({shortcut})"
+
+#: src/views/transcript/transcript_view.py:334
+msgid "Transcript"
+msgstr "Bản ghi lời"
+
+#: src/views/transcript/transcript_view.py:335
+msgid "Plain text"
+msgstr "Văn bản thuần"
+
+#: src/views/transcript/transcript_view.py:344
+#: src/views/transcript/translation_panel.py:285
+msgid "Translate"
+msgstr "Dịch"
+
+#: src/views/transcript/transcript_view.py:352
+msgid "Export"
+msgstr "Xuất"
+
+#: src/views/transcript/transcript_view.py:465
+#, python-brace-format
+msgid "{current} of {total}"
+msgstr "{current}/{total}"
+
+#: src/views/transcript/transcript_view.py:505
+msgid "Summary copied."
+msgstr "Đã sao chép bản tóm tắt."
+
+#: src/views/transcript/transcript_view.py:582
+msgid "Hide the translation"
+msgstr "Ẩn bản dịch"
+
+#: src/views/transcript/transcript_view.py:587
+msgid "Show the translation"
+msgstr "Hiển thị bản dịch"
+
+#: src/views/transcript/transcript_view.py:591
+msgid "Translate into another language…"
+msgstr "Dịch sang ngôn ngữ khác…"
+
+#: src/views/transcript/transcript_view.py:602
+msgid "Delete the translation"
+msgstr "Xóa bản dịch"
+
+#: src/views/transcript/transcript_view.py:648
+#: src/views/transcript/transcript_view.py:792
+msgid "Play from here"
+msgstr "Phát từ đây"
+
+#: src/views/transcript/transcript_view.py:651
+#: src/views/transcript/transcript_view.py:795
+msgid "Edit the text…"
+msgstr "Chỉnh sửa văn bản…"
+
+#: src/views/transcript/transcript_view.py:701
+#, python-brace-format
+msgid "Translation into {language} copied."
+msgstr "Đã sao chép bản dịch sang {language}."
+
+#: src/views/transcript/transcript_view.py:713
+msgid "The audio isn't available: the source file was moved or deleted."
+msgstr "Âm thanh không khả dụng: tệp nguồn đã bị di chuyển hoặc xóa."
+
+#: src/views/transcript/transcript_view.py:715
+msgid "The audio isn't available."
+msgstr "Âm thanh không khả dụng."
+
+#: src/views/transcript/transcript_view.py:798
+#: src/views/transcript/transcript_view.py:810
+msgid "Rename speakers…"
+msgstr "Đổi tên người nói…"
+
+#: src/views/transcript/transcript_view.py:808
+msgid "Find and replace…"
+msgstr "Tìm và thay thế…"
+
+#: src/views/transcript/transcript_view.py:832
+msgid "Rename…"
+msgstr "Đổi tên…"
+
+#: src/views/transcript/transcript_view.py:871
+msgid "Copied"
+msgstr "Đã sao chép"
+
+#: src/views/transcript/translation_panel.py:148
+#, python-brace-format
+msgid "Translating into {language}…"
+msgstr "Đang dịch sang {language}…"
+
+#: src/views/transcript/translation_panel.py:152
+msgid "Translating…"
+msgstr "Đang dịch…"
+
+#: src/views/transcript/translation_panel.py:154
+msgid "It takes a moment."
+msgstr "Việc này mất một lát."
+
+#: src/views/transcript/translation_panel.py:156
+msgid "The transcription is being translated. It takes a moment."
+msgstr "Bản chép lời đang được dịch. Việc này mất một lát."
+
+#: src/views/transcript/translation_panel.py:162
+msgid "There is no translation yet."
+msgstr "Chưa có bản dịch."
+
+#: src/views/transcript/translation_panel.py:164
+msgid "Translate…"
+msgstr "Dịch…"
+
+#: src/views/transcript/translation_panel.py:296
+msgid "Translate into:"
+msgstr "Dịch sang:"
+
+#: src/views/transcript/translation_panel.py:301
+msgid "Language of the translation"
+msgstr "Ngôn ngữ của bản dịch"
+
+#: src/views/transcript/translation_panel.py:318
+msgid "Provider:"
+msgstr "Nhà cung cấp:"
+
+#: src/views/transcript/translation_panel.py:358
+msgid "More options in the settings"
+msgstr "Thêm tùy chọn trong phần cài đặt"
+
+#: src/views/transcript/translation_panel.py:395
+#, python-brace-format
+msgid "Set the API key of {provider} to translate with it."
+msgstr "Đặt khóa API của {provider} để dịch bằng dịch vụ này."
+
+#: src/views/transcript/video_pane.py:191
+msgid "Show subtitles on the video"
+msgstr "Hiển thị phụ đề trên video"
+
+#: src/views/transcript/video_pane.py:199
+msgid "Size"
+msgstr "Kích thước"
+
+#: src/views/transcript/video_pane.py:203
+msgid "Small"
+msgstr "Nhỏ"
+
+#: src/views/transcript/video_pane.py:204
+msgid "Medium"
+msgstr "Vừa"
+
+#: src/views/transcript/video_pane.py:205
+msgid "Large"
+msgstr "Lớn"
+
+#: src/views/transcript/video_pane.py:209
+msgid "Position"
+msgstr "Vị trí"
+
+#: src/views/transcript/video_pane.py:212
+msgid "Bottom"
+msgstr "Dưới"
+
+#: src/views/transcript/video_pane.py:212
+msgid "Top"
+msgstr "Trên"
+
+#: src/views/transcript/video_pane.py:215
+msgid "Style"
+msgstr "Kiểu"
+
+#: src/views/transcript/video_pane.py:219
+msgid "Dark background"
+msgstr "Nền tối"
+
+#: src/views/transcript/video_pane.py:220
+msgid "Outline"
+msgstr "Viền chữ"
