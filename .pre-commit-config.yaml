@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: check-ast
       - id: check-case-conflict
@@ -23,9 +23,19 @@ repos:
         types:
           - python
         entry: mypy --strict
+        exclude: ^tests/
+        # Parallel runs share the cache, which makes mypy crash when it's empty
+        require_serial: true
+      - id: compile-translations
+        name: Compile the translations and check their placeholders
+        language: python
+        additional_dependencies: [ babel==2.18.0 ]
+        entry: python .github/scripts/compile_translations.py
+        files: ^res/locales/.*\.(po|mo)$
+        pass_filenames: false
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.5
+    rev: v0.16.10
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format

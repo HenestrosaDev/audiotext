@@ -1,14 +1,19 @@
---extra-index-url https://download.pytorch.org/whl/cu121
+--extra-index-url https://download.pytorch.org/whl/cu128
 
-customtkinter==5.2.1
-moviepy==1.0.3
-openai==1.36.0
-pyaudio==0.2.14
+anthropic==1.11.0
+audioop-lts==0.2.2; python_version >= "3.13"
+babel==2.18.0
+customtkinter==6.0.0
+keyring==25.7.0
+openai==3.24.0
 pydub==0.25.1
-python-dotenv==1.0.1
-pytubefix==6.5.2
-SpeechRecognition==3.9.0
-torch==2.2.1
-torchaudio==2.2.1
-torchvision==0.17.1
-whisperx==3.1.5
+python-docx==1.2.0
+python-dotenv==1.2.4
+pytubefix==11.2.0
+sounddevice==0.5.6
+SpeechRecognition==3.17.0
+tkinterdnd2==0.6.3
+torch==2.8.0
+torchaudio==2.8.0
+torchvision==0.23.0
+whisperx==3.8.6

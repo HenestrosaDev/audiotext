@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import Protocol
 
 import speech_recognition as sr
+
 from models.transcription import Transcription
 
 

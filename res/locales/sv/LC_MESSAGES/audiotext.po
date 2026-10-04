@@ -1,0 +1,2208 @@
+# Swedish translations for Audiotext.
+# Copyright (C) 2026 HenestrosaDev
+# This file is distributed under the same license as the Audiotext project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Audiotext 2.3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
+"POT-Creation-Date: 2026-10-04 18:26+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Machine translation (please review) "
+"<https://github.com/HenestrosaDev/audiotext>\n"
+"Language: sv\n"
+"Language-Team: Swedish <https://github.com/HenestrosaDev/audiotext>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: src/controllers/folder_transcriber.py:58
+msgid ""
+"The folder doesn't contain files to transcribe. The files that already "
+"have a transcription are skipped unless you check 'Overwrite existing "
+"files'."
+msgstr ""
+"Mappen innehåller inga filer att transkribera. Filer som redan har en "
+"transkribering hoppas över, om du inte markerar ”Skriv över befintliga "
+"filer”."
+
+#: src/controllers/folder_transcriber.py:81
+#, python-brace-format
+msgid "Transcribed {done} of {total} files."
+msgstr "{done} av {total} filer transkriberades."
+
+#: src/controllers/folder_transcriber.py:97
+#, python-brace-format
+msgid "Waiting for new files in {folder}…"
+msgstr "Väntar på nya filer i {folder}…"
+
+#: src/controllers/folder_transcriber.py:114
+#, python-brace-format
+msgid "Stopped watching the folder. Files transcribed: {done}."
+msgstr "Slutade bevaka mappen. Transkriberade filer: {done}."
+
+#: src/controllers/folder_transcriber.py:137
+msgid "cancelled"
+msgstr "avbruten"
+
+#: src/controllers/folder_transcriber.py:176
+#, python-brace-format
+msgid "File {current} of {total} ({name}): {message}"
+msgstr "Fil {current} av {total} ({name}): {message}"
+
+#: src/controllers/folder_transcriber.py:191
+#, python-brace-format
+msgid "{name}: {message}"
+msgstr "{name}: {message}"
+
+#: src/controllers/main_controller.py:99
+msgid "Cancelling…"
+msgstr "Avbryter…"
+
+#: src/controllers/main_controller.py:168
+msgid "Transcription cancelled."
+msgstr "Transkriberingen avbröts."
+
+#: src/controllers/main_controller.py:183
+msgid "Downloading…"
+msgstr "Laddar ned…"
+
+#: src/controllers/main_controller.py:210
+#, python-brace-format
+msgid "Done in {duration}."
+msgstr "Klart på {duration}."
+
+#: src/controllers/main_controller.py:273
+msgid "Isolating the speech…"
+msgstr "Isolerar talet…"
+
+#: src/controllers/main_controller.py:306
+msgid "WhisperX model ready."
+msgstr "WhisperX-modellen är redo."
+
+#: src/controllers/main_controller.py:313
+#, python-brace-format
+msgid "Could not load the WhisperX model: {error}"
+msgstr "Det gick inte att läsa in WhisperX-modellen: {error}"
+
+#: src/controllers/transcription_validator.py:17
+#: src/handlers/whisperx_handler.py:199
+msgid "No output file types selected. Please select at least one."
+msgstr "Inga utdatafiltyper har valts. Välj minst en."
+
+#: src/controllers/transcription_validator.py:26
+#: src/views/settings/settings_form.py:170
+msgid ""
+"The Google API can't detect the language. Please select the language of "
+"the audio."
+msgstr "Google API kan inte identifiera språket. Välj språket i ljudet."
+
+#: src/controllers/transcription_validator.py:57
+#, python-brace-format
+msgid ""
+"The {model} model doesn't return timestamps, so it can't save {format} "
+"files. Choose another format or the whisper-1 model."
+msgstr ""
+"Modellen {model} returnerar inga tidsstämplar och kan därför inte spara "
+"{format}-filer. Välj ett annat format eller modellen whisper-1."
+
+#: src/controllers/transcription_validator.py:75
+msgid "Please select a valid audio or video file."
+msgstr "Välj en giltig ljud- eller videofil."
+
+#: src/controllers/transcription_validator.py:79
+#: src/views/new_transcription/new_transcription_view.py:476
+msgid "Please select a valid folder."
+msgstr "Välj en giltig mapp."
+
+#: src/controllers/transcription_validator.py:86
+msgid ""
+"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
+" or video file)."
+msgstr ""
+"Ange en giltig URL (t.ex. länken till en YouTube-video eller till en "
+"ljud- eller videofil)."
+
+#: src/handlers/ai_providers.py:104 src/handlers/ai_providers.py:109
+#: src/handlers/ai_providers.py:112
+msgid "The model didn't return a valid reply."
+msgstr "Modellen returnerade inget giltigt svar."
+
+#: src/handlers/ai_providers.py:157 src/handlers/ai_providers.py:190
+msgid "The reply of the model was too long."
+msgstr "Modellens svar var för långt."
+
+#: src/handlers/audio_handler.py:54 src/handlers/openai_api_handler.py:335
+#: src/handlers/whisperx_handler.py:216
+msgid "Loading audio…"
+msgstr "Läser in ljudet…"
+
+#: src/handlers/audio_handler.py:81
+#, python-brace-format
+msgid "Unsupported file type: {extension}"
+msgstr "Filtypen stöds inte: {extension}"
+
+#: src/handlers/audio_handler.py:132 src/handlers/openai_api_handler.py:360
+#: src/handlers/whisperx_handler.py:226 src/handlers/whisperx_handler.py:233
+#: src/views/history/formatting.py:42
+#: src/views/new_transcription/microphone_view.py:383
+msgid "Transcribing…"
+msgstr "Transkriberar…"
+
+#: src/handlers/audio_handler.py:135 src/handlers/openai_api_handler.py:363
+#, python-brace-format
+msgid "Transcribing chunk {current} of {total}…"
+msgstr "Transkriberar del {current} av {total}…"
+
+#: src/handlers/live_transcriber.py:246
+msgid "The text can't be shown while recording."
+msgstr "Texten kan inte visas under inspelning."
+
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:446
+#, python-brace-format
+msgid "Loading the {model} model (it's downloaded the first time it's used)…"
+msgstr "Läser in modellen {model} (den laddas ned första gången den används)…"
+
+#: src/handlers/openai_api_handler.py:474
+#, python-brace-format
+msgid "The audio is too large for the OpenAI API ({size} MB)."
+msgstr "Ljudet är för stort för OpenAI-API:et ({size} MB)."
+
+#: src/handlers/summary_handler.py:103 src/handlers/summary_handler.py:118
+msgid "The model didn't return a valid summary."
+msgstr "Modellen returnerade ingen giltig sammanfattning."
+
+#: src/handlers/summary_handler.py:174
+msgid "There is no text to summarize."
+msgstr "Det finns ingen text att sammanfatta."
+
+#: src/handlers/transcribers.py:27 src/handlers/whisperx_handler.py:299
+msgid "There is no transcription to save. Please generate it first."
+msgstr "Det finns ingen transkribering att spara. Skapa en först."
+
+#: src/handlers/translation_handler.py:245
+msgid "The model didn't return a valid translation."
+msgstr "Modellen returnerade ingen giltig översättning."
+
+#: src/handlers/translation_handler.py:297
+#, python-brace-format
+msgid "DeepL can't translate into {language}."
+msgstr "DeepL kan inte översätta till {language}."
+
+#: src/handlers/translation_handler.py:312
+msgid "DeepL didn't return a valid translation."
+msgstr "DeepL returnerade ingen giltig översättning."
+
+#: src/handlers/translation_handler.py:333
+msgid "Google Translate didn't return a valid translation."
+msgstr "Google Översätt returnerade ingen giltig översättning."
+
+#: src/handlers/translation_handler.py:362
+msgid "There is no text to translate."
+msgstr "Det finns ingen text att översätta."
+
+#: src/handlers/url_handler.py:87
+msgid ""
+"The URL doesn't point to an audio or video file. Use the link of a "
+"YouTube video or of a media file."
+msgstr ""
+"URL:en pekar inte på en ljud- eller videofil. Använd länken till en "
+"YouTube-video eller till en mediefil."
+
+#: src/handlers/url_handler.py:105
+#, python-brace-format
+msgid "The file could not be downloaded: {error}"
+msgstr "Det gick inte att ladda ned filen: {error}"
+
+#: src/handlers/whisperx_handler.py:335 src/handlers/whisperx_handler.py:344
+msgid "Aligning subtitles…"
+msgstr "Justerar undertexterna…"
+
+#: src/handlers/whisperx_handler.py:368 src/handlers/whisperx_handler.py:373
+msgid "Identifying speakers…"
+msgstr "Identifierar talare…"
+
+#: src/handlers/whisperx_handler.py:394
+#, python-brace-format
+msgid ""
+"Identifying speakers requires a Hugging Face token. Create one at "
+"{tokens_url}, accept the conditions of {model_url} and set the token in "
+"the WhisperX options."
+msgstr ""
+"Talaridentifiering kräver en Hugging Face-token. Skapa en på "
+"{tokens_url}, godkänn villkoren för {model_url} och ange token i "
+"WhisperX-alternativen."
+
+#: src/handlers/whisperx_handler.py:479
+msgid "Loading the subtitle alignment model…"
+msgstr "Läser in modellen för justering av undertexter…"
+
+#: src/handlers/whisperx_handler.py:512
+msgid ""
+"Loading the speaker identification model (it's downloaded the first time "
+"it's used)…"
+msgstr ""
+"Läser in modellen för talaridentifiering (den laddas ned första gången "
+"den används)…"
+
+#: src/handlers/whisperx_handler.py:526
+#, python-brace-format
+msgid ""
+"Could not download the speaker identification model. Check that the "
+"Hugging Face token is valid and that you've accepted the conditions of "
+"{model_url}."
+msgstr ""
+"Det gick inte att ladda ned modellen för talaridentifiering. Kontrollera "
+"att Hugging Face-token är giltig och att du har godkänt villkoren för "
+"{model_url}."
+
+#: src/handlers/youtube_handler.py:34
+msgid ""
+"The audio of the YouTube video could not be downloaded. Please make sure "
+"the URL is correct."
+msgstr ""
+"Det gick inte att ladda ned ljudet från YouTube-videon. Kontrollera att "
+"webbadressen är korrekt."
+
+#: src/handlers/youtube_handler.py:40
+msgid "The YouTube video doesn't have an audio track."
+msgstr "YouTube-videon har inget ljudspår."
+
+#: src/utils/audio_utils.py:30
+msgid "No audio was recorded."
+msgstr "Inget ljud spelades in."
+
+#: src/utils/exporters.py:149 src/utils/exporters.py:186
+#: src/views/settings/preferences_dialog.py:420
+#: src/views/transcript/summary_panel.py:189
+#: src/views/transcript/transcript_view.py:430
+msgid "Summary"
+msgstr "Sammanfattning"
+
+#: src/utils/exporters.py:151 src/utils/exporters.py:189
+#: src/views/transcript/summary_panel.py:206
+msgid "Key points"
+msgstr "Huvudpunkter"
+
+#: src/utils/exporters.py:155 src/utils/exporters.py:193
+#: src/views/transcript/summary_panel.py:211
+msgid "Chapters"
+msgstr "Kapitel"
+
+#: src/utils/exporters.py:161 src/utils/exporters.py:198
+#: src/views/new_transcription/microphone_view.py:227
+#: src/views/transcript/video_pane.py:241
+msgid "Transcription"
+msgstr "Transkribering"
+
+#: src/utils/time_format.py:77
+#, python-brace-format
+msgid "{minutes} min {seconds} s"
+msgstr "{minutes} min {seconds} s"
+
+#: src/utils/time_format.py:79
+#, python-brace-format
+msgid "{seconds} s"
+msgstr "{seconds} s"
+
+#: src/views/entries/entry_header.py:97
+msgid "Add note"
+msgstr "Lägg till anteckning"
+
+#: src/views/entries/folder_view.py:54
+msgid "Files"
+msgstr "Filer"
+
+#: src/views/entries/folder_view.py:90
+#, python-brace-format
+msgid "{count} files"
+msgstr "{count} filer"
+
+#: src/views/entries/folder_view.py:91
+#, python-brace-format
+msgid "{count} done"
+msgstr "{count} klara"
+
+#: src/views/entries/folder_view.py:94
+#, python-brace-format
+msgid "{count} failed"
+msgstr "{count} misslyckade"
+
+#: src/views/entries/folder_view.py:103
+#: src/views/transcript/transcript_view.py:1103
+msgid "Open the folder of the saved files"
+msgstr "Öppna mappen med sparade filer"
+
+#: src/views/entries/folder_view.py:111
+#: src/views/history/history_sidebar.py:329
+#: src/views/transcript/transcript_view.py:1128
+msgid "Transcribe again"
+msgstr "Transkribera igen"
+
+#: src/views/entries/folder_view.py:131
+msgid "Waiting for new files…"
+msgstr "Väntar på nya filer…"
+
+#: src/views/entries/folder_view.py:133
+msgid "No files"
+msgstr "Inga filer"
+
+#: src/views/entries/progress_card.py:17
+#: src/views/new_transcription/new_transcription_view.py:121
+msgid "Choose a file"
+msgstr "Välj en fil"
+
+#: src/views/entries/progress_card.py:18
+#: src/views/new_transcription/new_transcription_view.py:122
+msgid "Enter the URL"
+msgstr "Ange URL:en"
+
+#: src/views/entries/progress_card.py:19
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:433
+msgid "Record"
+msgstr "Spela in"
+
+#: src/views/entries/progress_card.py:20 src/views/entries/progress_card.py:21
+#: src/views/new_transcription/new_transcription_view.py:123
+msgid "Choose a folder"
+msgstr "Välj en mapp"
+
+#: src/views/entries/progress_card.py:22
+msgid "Source"
+msgstr "Källa"
+
+#: src/views/entries/progress_card.py:47
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:431
+#: src/views/new_transcription/microphone_view.py:433
+#: src/views/new_transcription/new_transcription_view.py:149
+#: src/views/transcript/summary_panel.py:88
+#: src/views/transcript/summary_panel.py:101
+msgid "Settings"
+msgstr "Inställningar"
+
+#: src/views/entries/progress_card.py:47
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:433
+#: src/views/new_transcription/new_transcription_view.py:149
+msgid "Transcribe"
+msgstr "Transkribera"
+
+#: src/views/entries/progress_card.py:114
+#: src/views/history/history_sidebar.py:322
+msgid "Stop watching"
+msgstr "Sluta bevaka"
+
+#: src/views/entries/progress_card.py:114
+#: src/views/history/history_sidebar.py:324
+#: src/views/transcript/edit_dialogs.py:46 src/views/widgets/text_dialog.py:60
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: src/views/entries/progress_card.py:125
+msgid ""
+"You can keep using Audiotext meanwhile. The result is saved in your "
+"history and opens here when it's ready."
+msgstr ""
+"Du kan fortsätta använda Audiotext under tiden. Resultatet sparas i din "
+"historik och öppnas här när det är klart."
+
+#: src/views/entries/progress_card.py:137
+msgid "The transcription failed"
+msgstr "Transkriberingen misslyckades"
+
+#: src/views/entries/progress_card.py:138
+msgid "An unknown error occurred."
+msgstr "Ett okänt fel uppstod."
+
+#: src/views/entries/progress_card.py:140
+msgid "The transcription was interrupted"
+msgstr "Transkriberingen avbröts oväntat"
+
+#: src/views/entries/progress_card.py:141
+msgid "Audiotext was closed before it finished."
+msgstr "Audiotext stängdes innan det var klart."
+
+#: src/views/entries/progress_card.py:143
+msgid "The transcription was cancelled"
+msgstr "Transkriberingen avbröts"
+
+#: src/views/entries/progress_card.py:158
+#: src/views/new_transcription/new_transcription_view.py:288
+msgid "Back"
+msgstr "Tillbaka"
+
+#: src/views/entries/progress_card.py:167
+msgid "Try again"
+msgstr "Försök igen"
+
+#: src/views/entries/progress_card.py:175
+msgid "Delete"
+msgstr "Ta bort"
+
+#: src/views/entries/progress_card.py:188
+#, python-brace-format
+msgid "Waiting for {count} transcription(s) to finish."
+msgstr "Väntar på att {count} transkribering(ar) ska bli klara."
+
+#: src/views/entries/progress_card.py:192
+msgid "Waiting for the current transcription to finish."
+msgstr "Väntar på att den aktuella transkriberingen ska bli klar."
+
+#: src/views/entries/progress_card.py:199
+msgid "Starting…"
+msgstr "Startar…"
+
+#: src/views/history/formatting.py:21 src/views/main_window/top_bar.py:25
+#: src/views/main_window/welcome_view.py:37
+msgid "File"
+msgstr "Fil"
+
+#: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:26
+#: src/views/main_window/welcome_view.py:38
+#: src/views/new_transcription/new_transcription_view.py:238
+msgid "URL"
+msgstr "URL"
+
+#: src/views/history/formatting.py:23 src/views/main_window/top_bar.py:27
+#: src/views/main_window/welcome_view.py:39
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: src/views/history/formatting.py:24 src/views/main_window/top_bar.py:28
+#: src/views/main_window/welcome_view.py:43
+#: src/views/settings/cards/folder_card.py:19
+msgid "Folder"
+msgstr "Mapp"
+
+#: src/views/history/formatting.py:25
+msgid "Watched folder"
+msgstr "Bevakad mapp"
+
+#: src/views/history/formatting.py:41
+msgid "Queued"
+msgstr "I kö"
+
+#: src/views/history/formatting.py:43
+msgid "Watching"
+msgstr "Bevakar"
+
+#: src/views/history/formatting.py:44
+msgid "Done"
+msgstr "Klar"
+
+#: src/views/history/formatting.py:45
+msgid "Failed"
+msgstr "Misslyckad"
+
+#: src/views/history/formatting.py:46
+msgid "Cancelled"
+msgstr "Avbruten"
+
+#: src/views/history/formatting.py:47
+msgid "Interrupted"
+msgstr "Ofullständig"
+
+#: src/views/history/formatting.py:157
+msgid "Show in Finder"
+msgstr "Visa i Finder"
+
+#: src/views/history/formatting.py:159
+msgid "Show in Explorer"
+msgstr "Visa i Utforskaren"
+
+#: src/views/history/formatting.py:160
+msgid "Show in file manager"
+msgstr "Visa i filhanteraren"
+
+#: src/views/history/history_row.py:248
+#, python-brace-format
+msgid "{done}/{total} files"
+msgstr "{done}/{total} filer"
+
+#: src/views/history/history_sidebar.py:113
+msgid "Search"
+msgstr "Sök"
+
+#: src/views/history/history_sidebar.py:129
+#: src/views/main_window/entry_actions.py:382
+msgid "New group"
+msgstr "Ny grupp"
+
+#: src/views/history/history_sidebar.py:184
+#, python-brace-format
+msgid "{count} transcriptions"
+msgstr "{count} transkriberingar"
+
+#: src/views/history/history_sidebar.py:186
+msgid "1 transcription"
+msgstr "1 transkribering"
+
+#: src/views/history/history_sidebar.py:193
+msgid "No transcriptions yet"
+msgstr "Inga transkriberingar ännu"
+
+#: src/views/history/history_sidebar.py:194
+msgid "Choose a source above to transcribe your first file."
+msgstr "Välj en källa ovan för att transkribera din första fil."
+
+#: src/views/history/history_sidebar.py:270
+#: src/views/main_window/entry_actions.py:69
+msgid "Rename"
+msgstr "Byt namn"
+
+#: src/views/history/history_sidebar.py:272
+#: src/views/transcript/transcript_view.py:1115
+msgid "Edit note…"
+msgstr "Redigera anteckning…"
+
+#: src/views/history/history_sidebar.py:272
+#: src/views/transcript/transcript_view.py:1115
+msgid "Add note…"
+msgstr "Lägg till anteckning…"
+
+#: src/views/history/history_sidebar.py:277
+#: src/views/transcript/transcript_view.py:1120
+msgid "Delete note…"
+msgstr "Radera anteckning…"
+
+#: src/views/history/history_sidebar.py:281
+#: src/views/transcript/transcript_view.py:1124
+msgid "Edit tag…"
+msgstr "Redigera etikett…"
+
+#: src/views/history/history_sidebar.py:286
+msgid "Unpin"
+msgstr "Lossa"
+
+#: src/views/history/history_sidebar.py:286
+msgid "Pin to the top"
+msgstr "Fäst överst"
+
+#: src/views/history/history_sidebar.py:292
+msgid "No group"
+msgstr "Ingen grupp"
+
+#: src/views/history/history_sidebar.py:306
+msgid "New group…"
+msgstr "Ny grupp…"
+
+#: src/views/history/history_sidebar.py:309
+msgid "Move to group"
+msgstr "Flytta till grupp"
+
+#: src/views/history/history_sidebar.py:335
+#: src/views/transcript/transcript_view.py:1133
+msgid "Delete…"
+msgstr "Ta bort…"
+
+#: src/views/history/history_sidebar.py:347
+msgid "Rename group…"
+msgstr "Byt namn på grupp…"
+
+#: src/views/history/history_sidebar.py:351
+msgid "Delete group…"
+msgstr "Ta bort grupp…"
+
+#: src/views/history/history_sidebar.py:374
+msgid "Pinned"
+msgstr "Fästa"
+
+#: src/views/history/history_sidebar.py:382
+msgid "Transcriptions"
+msgstr "Transkriberingar"
+
+#: src/views/history/history_sidebar.py:405
+msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
+msgstr ""
+"Tom. Lägg till en transkribering genom att högerklicka på den och välja "
+"”Flytta till grupp”."
+
+#: src/views/history/history_sidebar.py:429
+msgid "No files yet"
+msgstr "Inga filer ännu"
+
+#: src/views/history/history_sidebar.py:465
+#: src/views/transcript/transcript_view.py:573
+msgid "No results"
+msgstr "Inga resultat"
+
+#: src/views/history/history_sidebar.py:466
+#, python-brace-format
+msgid "No transcription contains “{query}”."
+msgstr "Ingen transkribering innehåller ”{query}”."
+
+#: src/views/main_window/entry_actions.py:70
+msgid "Name of the transcription:"
+msgstr "Transkriberingens namn:"
+
+#: src/views/main_window/entry_actions.py:83
+msgid "Note"
+msgstr "Anteckning"
+
+#: src/views/main_window/entry_actions.py:84
+#, python-brace-format
+msgid "A note about “{title}”:"
+msgstr "En anteckning om ”{title}”:"
+
+#: src/views/main_window/entry_actions.py:97
+msgid "Delete note"
+msgstr "Radera anteckning"
+
+#: src/views/main_window/entry_actions.py:98
+#, python-brace-format
+msgid "Delete the note of “{title}”?"
+msgstr "Radera anteckningen till ”{title}”?"
+
+#: src/views/main_window/entry_actions.py:111
+msgid "Tag"
+msgstr "Etikett"
+
+#: src/views/main_window/entry_actions.py:112
+#, python-brace-format
+msgid "Tag of “{title}”. Leave it empty to show the kind of source."
+msgstr "Etikett för ”{title}”. Lämna tom för att visa typen av källa."
+
+#: src/views/main_window/entry_actions.py:136
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "Filen har flyttats eller tagits bort: {path}"
+
+#: src/views/main_window/entry_actions.py:142
+#, python-brace-format
+msgid "Could not open the file manager: {error}"
+msgstr "Det gick inte att öppna filhanteraren: {error}"
+
+#: src/views/main_window/entry_actions.py:152
+#, python-brace-format
+msgid "Could not open the folder: {error}"
+msgstr "Det gick inte att öppna mappen: {error}"
+
+#: src/views/main_window/entry_actions.py:160
+#, python-brace-format
+msgid "Delete “{title}” from the history?"
+msgstr "Ta bort ”{title}” från historiken?"
+
+#: src/views/main_window/entry_actions.py:162
+msgid "The transcriptions of its files are deleted too."
+msgstr "Transkriberingarna av dess filer tas också bort."
+
+#: src/views/main_window/entry_actions.py:163
+msgid "Your audio, video and saved files are not deleted."
+msgstr "Dina ljud-, video- och sparade filer tas inte bort."
+
+#: src/views/main_window/entry_actions.py:165
+msgid "Delete transcription"
+msgstr "Ta bort transkribering"
+
+#: src/views/main_window/entry_actions.py:235
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "Sammanfattningen av ”{title}” är klar."
+
+#: src/views/main_window/entry_actions.py:240
+#, python-brace-format
+msgid "Could not summarize “{title}”: {error}"
+msgstr "Det gick inte att sammanfatta ”{title}”: {error}"
+
+#: src/views/main_window/entry_actions.py:356
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "Översättningen av ”{title}” är klar."
+
+#: src/views/main_window/entry_actions.py:361
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "Det gick inte att översätta ”{title}”: {error}"
+
+#: src/views/main_window/entry_actions.py:383
+#: src/views/main_window/entry_actions.py:400
+msgid "Name of the group:"
+msgstr "Gruppens namn:"
+
+#: src/views/main_window/entry_actions.py:384
+msgid "Create"
+msgstr "Skapa"
+
+#: src/views/main_window/entry_actions.py:399
+msgid "Rename group"
+msgstr "Byt namn på grupp"
+
+#: src/views/main_window/entry_actions.py:413
+msgid "Delete group"
+msgstr "Ta bort grupp"
+
+#: src/views/main_window/entry_actions.py:415
+#, python-brace-format
+msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
+msgstr "Ta bort gruppen ”{name}”? Dess transkriberingar behålls, utan grupp."
+
+#: src/views/main_window/main_window.py:497
+#: src/views/new_transcription/new_transcription_view.py:468
+#, python-brace-format
+msgid "“{name}” is not a supported audio or video file."
+msgstr "”{name}” är inte en ljud- eller videofil som stöds."
+
+#: src/views/main_window/main_window.py:510
+msgid ""
+"Only one file can be added at a time. To transcribe several files, drop "
+"the folder that contains them."
+msgstr ""
+"Endast en fil kan läggas till åt gången. Om du vill transkribera flera "
+"filer släpper du mappen som innehåller dem."
+
+#: src/views/main_window/main_window.py:598
+msgid ""
+"Type in the API key. It's kept in the credential store of your system. "
+"Leave it empty to remove it."
+msgstr ""
+"Skriv in API-nyckeln. Den sparas i systemets lagring för "
+"inloggningsuppgifter. Lämna tom för att ta bort den."
+
+#: src/views/main_window/main_window.py:602
+msgid "OK"
+msgstr "OK"
+
+#: src/views/main_window/main_window.py:609
+msgid "API key saved."
+msgstr "API-nyckeln har sparats."
+
+#: src/views/main_window/main_window.py:609
+msgid "API key removed."
+msgstr "API-nyckeln har tagits bort."
+
+#: src/views/main_window/top_bar.py:70
+msgid "New transcription:"
+msgstr "Ny transkribering:"
+
+#: src/views/main_window/top_bar.py:156
+#: src/views/settings/preferences_dialog.py:749
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "Version {version} är tillgänglig"
+
+#: src/views/main_window/transcription_jobs.py:54
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "Inspelning · {date}"
+
+#: src/views/main_window/transcription_jobs.py:194
+msgid "The recording is no longer available."
+msgstr "Inspelningen är inte längre tillgänglig."
+
+#: src/views/main_window/transcription_jobs.py:337
+msgid "The transcription was cancelled."
+msgstr "Transkriberingen avbröts."
+
+#: src/views/main_window/transcription_jobs.py:358
+msgid "Transcription ready"
+msgstr "Transkriberingen är klar"
+
+#: src/views/main_window/transcription_jobs.py:386
+msgid "Recording…"
+msgstr "Spelar in…"
+
+#: src/views/main_window/transcription_jobs.py:443
+msgid "Processing the recording…"
+msgstr "Bearbetar inspelningen…"
+
+#: src/views/main_window/transcription_jobs.py:450
+#, python-brace-format
+msgid "Saved in {folder}."
+msgstr "Sparad i {folder}."
+
+#: src/views/main_window/welcome_view.py:23
+msgid "What do you want to transcribe?"
+msgstr "Vad vill du transkribera?"
+
+#: src/views/main_window/welcome_view.py:28
+msgid ""
+"Choose a source, or select a transcription of your history to read and "
+"play it."
+msgstr ""
+"Välj en källa, eller välj en transkribering i historiken för att läsa och"
+" spela upp den."
+
+#: src/views/main_window/welcome_view.py:37
+msgid "An audio or video file"
+msgstr "En ljud- eller videofil"
+
+#: src/views/main_window/welcome_view.py:38
+msgid "YouTube or a link to a file"
+msgstr "YouTube eller en länk till en fil"
+
+#: src/views/main_window/welcome_view.py:39
+#: src/views/new_transcription/microphone_view.py:431
+msgid "Record and transcribe"
+msgstr "Spela in och transkribera"
+
+#: src/views/main_window/welcome_view.py:44
+msgid "Many files at once, or watch it"
+msgstr "Många filer samtidigt, eller bevaka den"
+
+#: src/views/main_window/welcome_view.py:60
+msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
+msgstr ""
+"Tips: släpp en fil eller mapp var som helst i fönstret för att "
+"transkribera den."
+
+#: src/views/new_transcription/microphone_view.py:70
+msgid "No sound. Check that the microphone is on and allowed."
+msgstr "Inget ljud. Kontrollera att mikrofonen är på och tillåten."
+
+#: src/views/new_transcription/microphone_view.py:72
+msgid "Waiting for speech…"
+msgstr "Väntar på tal…"
+
+#: src/views/new_transcription/microphone_view.py:75
+msgid "Too quiet. Speak louder or closer to the microphone."
+msgstr "För tyst. Tala högre eller närmare mikrofonen."
+
+#: src/views/new_transcription/microphone_view.py:77
+msgid "Good level"
+msgstr "Bra nivå"
+
+#: src/views/new_transcription/microphone_view.py:80
+msgid "Too loud. Move away from the microphone."
+msgstr "För högt. Flytta dig längre bort från mikrofonen."
+
+#: src/views/new_transcription/microphone_view.py:124
+msgid "Transcribe from the microphone"
+msgstr "Transkribera från mikrofonen"
+
+#: src/views/new_transcription/microphone_view.py:130
+msgid "Record yourself or a meeting. The recording is kept in your history."
+msgstr "Spela in dig själv eller ett möte. Inspelningen sparas i din historik."
+
+#: src/views/new_transcription/microphone_view.py:161
+msgid "Loading…"
+msgstr "Läser in…"
+
+#: src/views/new_transcription/microphone_view.py:252
+#: src/views/transcript/summary_panel.py:242
+#: src/views/transcript/transcript_view.py:442
+#: src/views/transcript/transcript_view.py:1163
+msgid "Copy"
+msgstr "Kopiera"
+
+#: src/views/new_transcription/microphone_view.py:262
+msgid "Open in history"
+msgstr "Öppna i historiken"
+
+#: src/views/new_transcription/microphone_view.py:282
+msgid "Wait until the current transcription finishes, or cancel it."
+msgstr "Vänta tills den aktuella transkriberingen är klar, eller avbryt den."
+
+#: src/views/new_transcription/microphone_view.py:370
+#, python-brace-format
+msgid "Press the button to start recording ({shortcut})"
+msgstr "Tryck på knappen för att börja spela in ({shortcut})"
+
+#: src/views/new_transcription/microphone_view.py:375
+msgid "The level is shown while recording"
+msgstr "Nivån visas under inspelning"
+
+#: src/views/new_transcription/microphone_view.py:379
+msgid "Recording… Press the button to stop and transcribe."
+msgstr "Spelar in… Tryck på knappen för att stoppa och transkribera."
+
+#: src/views/new_transcription/microphone_view.py:389
+msgid "Done. Press the button to record again."
+msgstr "Klart. Tryck på knappen för att spela in igen."
+
+#: src/views/new_transcription/microphone_view.py:392
+msgid "Press the button to try again."
+msgstr "Tryck på knappen för att försöka igen."
+
+#: src/views/new_transcription/microphone_view.py:408
+msgid "Draft. It's replaced when the final transcription finishes."
+msgstr "Utkast. Det ersätts när den slutliga transkriberingen är klar."
+
+#: src/views/new_transcription/microphone_view.py:414
+msgid "The text will appear here as you speak."
+msgstr "Texten visas här medan du talar."
+
+#: src/views/new_transcription/microphone_view.py:415
+msgid "The transcription will appear here when you stop recording."
+msgstr "Transkriberingen visas här när du slutar spela in."
+
+#: src/views/new_transcription/microphone_view.py:431
+msgid "Refine"
+msgstr "Förfina"
+
+#: src/views/new_transcription/microphone_view.py:462
+#: src/views/new_transcription/microphone_view.py:463
+msgid "No microphone found"
+msgstr "Ingen mikrofon hittades"
+
+#: src/views/new_transcription/microphone_view.py:481
+msgid "default"
+msgstr "standard"
+
+#: src/views/new_transcription/new_transcription_view.py:103
+msgid "Transcribe a file"
+msgstr "Transkribera en fil"
+
+#: src/views/new_transcription/new_transcription_view.py:104
+msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
+msgstr "Ljud- och videofiler: MP3, WAV, M4A, MP4, MOV, MKV med flera."
+
+#: src/views/new_transcription/new_transcription_view.py:108
+msgid "Transcribe from a URL"
+msgstr "Transkribera från en URL"
+
+#: src/views/new_transcription/new_transcription_view.py:109
+msgid "A YouTube video or a direct link to an audio or video file."
+msgstr "En YouTube-video eller en direktlänk till en ljud- eller videofil."
+
+#: src/views/new_transcription/new_transcription_view.py:113
+msgid "Transcribe a folder"
+msgstr "Transkribera en mapp"
+
+#: src/views/new_transcription/new_transcription_view.py:115
+msgid ""
+"All the audio and video files of a folder, or the new ones as they're "
+"added."
+msgstr "Alla ljud- och videofiler i en mapp, eller nya filer när de läggs till."
+
+#: src/views/new_transcription/new_transcription_view.py:175
+msgid "Drop an audio or video file here"
+msgstr "Släpp en ljud- eller videofil här"
+
+#: src/views/new_transcription/new_transcription_view.py:177
+msgid "Drop a folder here"
+msgstr "Släpp en mapp här"
+
+#: src/views/new_transcription/new_transcription_view.py:182
+msgid "or"
+msgstr "eller"
+
+#: src/views/new_transcription/new_transcription_view.py:188
+msgid "Choose a file…"
+msgstr "Välj en fil…"
+
+#: src/views/new_transcription/new_transcription_view.py:188
+msgid "Choose a folder…"
+msgstr "Välj en mapp…"
+
+#: src/views/new_transcription/new_transcription_view.py:225
+#: src/views/settings/cards/output_card.py:91
+#: src/views/settings/preferences_dialog.py:409
+msgid "Change…"
+msgstr "Ändra…"
+
+#: src/views/new_transcription/new_transcription_view.py:254
+msgid "Paste"
+msgstr "Klistra in"
+
+#: src/views/new_transcription/new_transcription_view.py:270
+msgid ""
+"Examples: https://youtu.be/dQw4w9WgXcQ · "
+"https://example.com/podcast/episode-12.mp3"
+msgstr ""
+"Exempel: https://youtu.be/dQw4w9WgXcQ · "
+"https://example.com/podcast/episode-12.mp3"
+
+#: src/views/new_transcription/new_transcription_view.py:349
+msgid "Select a file"
+msgstr "Välj en fil"
+
+#: src/views/new_transcription/new_transcription_view.py:351
+msgid "All supported files"
+msgstr "Alla filer som stöds"
+
+#: src/views/new_transcription/new_transcription_view.py:352
+msgid "Audio files"
+msgstr "Ljudfiler"
+
+#: src/views/new_transcription/new_transcription_view.py:353
+msgid "Video files"
+msgstr "Videofiler"
+
+#: src/views/new_transcription/new_transcription_view.py:357
+msgid "Select a folder"
+msgstr "Välj en mapp"
+
+#: src/views/new_transcription/new_transcription_view.py:387
+msgid "Continue"
+msgstr "Fortsätt"
+
+#: src/views/new_transcription/new_transcription_view.py:416
+msgid "Add to queue"
+msgstr "Lägg till i kön"
+
+#: src/views/new_transcription/new_transcription_view.py:416
+msgid "Start transcription"
+msgstr "Starta transkriberingen"
+
+#: src/views/new_transcription/new_transcription_view.py:423
+msgid "It will start when the current transcription finishes."
+msgstr "Startar när den aktuella transkriberingen är klar."
+
+#: src/views/new_transcription/new_transcription_view.py:489
+msgid "Reading…"
+msgstr "Läser…"
+
+#: src/views/new_transcription/new_transcription_view.py:503
+msgid "Video"
+msgstr "Video"
+
+#: src/views/new_transcription/new_transcription_view.py:503
+msgid "Audio"
+msgstr "Ljud"
+
+#: src/views/new_transcription/new_transcription_view.py:520
+msgid "No audio or video files found (subfolders included)."
+msgstr "Inga ljud- eller videofiler hittades (inklusive undermappar)."
+
+#: src/views/new_transcription/new_transcription_view.py:522
+msgid "1 audio or video file (subfolders included)"
+msgstr "1 ljud- eller videofil (inklusive undermappar)"
+
+#: src/views/new_transcription/new_transcription_view.py:524
+#, python-brace-format
+msgid "{count} audio and video files (subfolders included)"
+msgstr "{count} ljud- och videofiler (inklusive undermappar)"
+
+#: src/views/new_transcription/new_transcription_view.py:548
+msgid "YouTube video"
+msgstr "YouTube-video"
+
+#: src/views/new_transcription/new_transcription_view.py:548
+msgid "Link to a file"
+msgstr "Länk till en fil"
+
+#: src/views/new_transcription/new_transcription_view.py:554
+msgid "Enter a URL that starts with http:// or https://"
+msgstr "Ange en URL som börjar med http:// eller https://"
+
+#: src/views/settings/cards/engine_card.py:163
+#: src/views/settings/preferences_dialog.py:56
+msgid "OpenAI API key"
+msgstr "OpenAI API-nyckel"
+
+#: src/views/settings/preferences_dialog.py:58
+msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
+msgstr "Krävs för Whisper-API:et och för att sammanfatta och översätta med OpenAI."
+
+#: src/views/settings/preferences_dialog.py:62
+msgid "Anthropic API key"
+msgstr "API-nyckel för Anthropic"
+
+#: src/views/settings/preferences_dialog.py:63
+msgid "Required to summarize and translate with Claude."
+msgstr "Krävs för att sammanfatta och översätta med Claude."
+
+#: src/views/settings/preferences_dialog.py:66
+msgid "DeepSeek API key"
+msgstr "API-nyckel för DeepSeek"
+
+#: src/views/settings/preferences_dialog.py:67
+msgid "Required to summarize and translate with DeepSeek."
+msgstr "Krävs för att sammanfatta och översätta med DeepSeek."
+
+#: src/views/settings/preferences_dialog.py:70
+msgid "Gemini API key"
+msgstr "API-nyckel för Gemini"
+
+#: src/views/settings/preferences_dialog.py:72
+msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgstr ""
+"Krävs för att sammanfatta och översätta med Gemini (hämtas i Google AI "
+"Studio)."
+
+#: src/views/settings/preferences_dialog.py:76
+msgid "Mistral API key"
+msgstr "API-nyckel för Mistral"
+
+#: src/views/settings/preferences_dialog.py:77
+msgid "Required to summarize and translate with Mistral."
+msgstr "Krävs för att sammanfatta och översätta med Mistral."
+
+#: src/views/settings/preferences_dialog.py:80
+msgid "xAI API key"
+msgstr "API-nyckel för xAI"
+
+#: src/views/settings/preferences_dialog.py:81
+msgid "Required to summarize and translate with Grok."
+msgstr "Krävs för att sammanfatta och översätta med Grok."
+
+#: src/views/settings/preferences_dialog.py:84
+msgid "DeepL API key"
+msgstr "API-nyckel för DeepL"
+
+#: src/views/settings/preferences_dialog.py:85
+msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgstr ""
+"Krävs för att översätta med DeepL. Nycklar för gratisplanen fungerar "
+"också."
+
+#: src/views/settings/cards/engine_card.py:165
+#: src/views/settings/preferences_dialog.py:88
+msgid "Google API key"
+msgstr "Google API-nyckel"
+
+#: src/views/settings/preferences_dialog.py:90
+msgid ""
+"Optional for Google Speech-to-Text: without it, the free tier is used. "
+"Required to translate with Google Translate (Cloud Translation API)."
+msgstr ""
+"Valfri för Google Speech-to-Text: utan den används gratisnivån. Krävs för"
+" att översätta med Google Översätt (Cloud Translation API)."
+
+#: src/views/settings/cards/options_card.py:89
+#: src/views/settings/preferences_dialog.py:94
+msgid "Hugging Face token"
+msgstr "Hugging Face-token"
+
+#: src/views/settings/preferences_dialog.py:96
+msgid ""
+"Required to identify speakers with WhisperX (pyannote/speaker-"
+"diarization-community-1)."
+msgstr ""
+"Krävs för att identifiera talare med WhisperX (pyannote/speaker-"
+"diarization-community-1)."
+
+#: src/views/settings/preferences_dialog.py:147
+msgid "Preferences"
+msgstr "Inställningar"
+
+#: src/views/settings/preferences_dialog.py:159
+msgid "General"
+msgstr "Allmänt"
+
+#: src/views/settings/preferences_dialog.py:160
+msgid "AI"
+msgstr "AI"
+
+#: src/views/settings/preferences_dialog.py:161
+msgid "API keys"
+msgstr "API-nycklar"
+
+#: src/views/settings/preferences_dialog.py:167
+#: src/views/transcript/player_bar.py:100
+msgid "Subtitles"
+msgstr "Undertexter"
+
+#: src/views/settings/preferences_dialog.py:169
+msgid "About"
+msgstr "Om"
+
+#: src/views/settings/preferences_dialog.py:258
+msgid "System"
+msgstr "System"
+
+#: src/views/settings/preferences_dialog.py:258
+msgid "Light"
+msgstr "Ljust"
+
+#: src/views/settings/preferences_dialog.py:258
+msgid "Dark"
+msgstr "Mörkt"
+
+#: src/views/settings/preferences_dialog.py:260
+msgid "Appearance"
+msgstr "Utseende"
+
+#: src/views/settings/preferences_dialog.py:272
+msgid "System language"
+msgstr "Systemspråk"
+
+#: src/views/settings/preferences_dialog.py:278
+msgid "Interface language"
+msgstr "Gränssnittets språk"
+
+#: src/views/settings/preferences_dialog.py:281
+msgid "It can be changed when no transcription is in progress."
+msgstr "Kan ändras när ingen transkribering pågår."
+
+#: src/views/settings/preferences_dialog.py:299
+msgid "Notifications"
+msgstr "Aviseringar"
+
+#: src/views/settings/preferences_dialog.py:300
+msgid "Shows a notification of the system when a transcription is ready."
+msgstr "Visar en systemavisering när en transkribering är klar."
+
+#: src/views/settings/preferences_dialog.py:309
+msgid "Updates"
+msgstr "Uppdateringar"
+
+#: src/views/settings/preferences_dialog.py:309
+msgid "Checks for a new version when the app opens."
+msgstr "Söker efter en ny version när appen öppnas."
+
+#: src/views/settings/preferences_dialog.py:331
+msgid "Date format"
+msgstr "Datumformat"
+
+#: src/views/settings/preferences_dialog.py:343
+msgid "Automatic"
+msgstr "Automatiskt"
+
+#: src/views/settings/preferences_dialog.py:352
+msgid "Time format"
+msgstr "Tidsformat"
+
+#: src/views/settings/preferences_dialog.py:353
+msgid "Automatic uses the clock of the interface language."
+msgstr "Automatiskt använder gränssnittsspråkets klocka."
+
+#: src/views/settings/preferences_dialog.py:409
+msgid "Set…"
+msgstr "Ange…"
+
+#: src/views/settings/cards/language_card.py:123
+#: src/views/settings/preferences_dialog.py:444
+#: src/views/transcript/translation_panel.py:167
+msgid "Translation"
+msgstr "Översättning"
+
+#: src/views/settings/preferences_dialog.py:455
+msgid "Ollama"
+msgstr "Ollama"
+
+#: src/views/settings/preferences_dialog.py:460
+msgid "Server URL"
+msgstr "Serverns URL"
+
+#: src/views/settings/preferences_dialog.py:461
+msgid "Ollama runs the models on your computer, without an API key."
+msgstr "Ollama kör modellerna på din dator, utan API-nyckel."
+
+#: src/views/settings/preferences_dialog.py:492
+msgid "Provider"
+msgstr "Leverantör"
+
+#: src/views/settings/cards/engine_card.py:66
+#: src/views/settings/preferences_dialog.py:499
+msgid "Model"
+msgstr "Modell"
+
+#: src/views/settings/preferences_dialog.py:500
+msgid "The default model of the provider if empty."
+msgstr "Leverantörens standardmodell om tomt."
+
+#: src/views/settings/preferences_dialog.py:545
+msgid "Compute type"
+msgstr "Beräkningstyp"
+
+#: src/views/settings/preferences_dialog.py:546
+msgid "float16 is faster on GPUs. int8 uses less memory."
+msgstr "float16 är snabbare på GPU:er. int8 använder mindre minne."
+
+#: src/views/settings/preferences_dialog.py:560
+msgid "Batch size"
+msgstr "Batchstorlek"
+
+#: src/views/settings/preferences_dialog.py:560
+msgid "Lower it if you run out of memory."
+msgstr "Sänk värdet om minnet tar slut."
+
+#: src/views/settings/preferences_dialog.py:572
+msgid "Use CPU"
+msgstr "Använd CPU"
+
+#: src/views/settings/preferences_dialog.py:575
+msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgstr "Ingen CUDA-GPU hittades, så WhisperX körs på processorn."
+
+#: src/views/settings/preferences_dialog.py:589
+msgid "Highlight words"
+msgstr "Markera ord"
+
+#: src/views/settings/preferences_dialog.py:590
+msgid "Underlines each word as it's said (.srt and .vtt)."
+msgstr "Stryker under varje ord när det sägs (.srt och .vtt)."
+
+#: src/views/settings/preferences_dialog.py:597
+msgid "Max. line count"
+msgstr "Max. antal rader"
+
+#: src/views/settings/preferences_dialog.py:604
+msgid "Max. line width"
+msgstr "Max. radbredd"
+
+#: src/views/settings/preferences_dialog.py:616
+msgid "Temperature"
+msgstr "Temperatur"
+
+#: src/views/settings/preferences_dialog.py:617
+msgid "Between 0 and 1. Higher values are more random."
+msgstr "Mellan 0 och 1. Högre värden är mer slumpmässiga."
+
+#: src/views/settings/preferences_dialog.py:629
+msgid "Timestamps of the words"
+msgstr "Tidsstämplar för orden"
+
+#: src/views/settings/preferences_dialog.py:630
+msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgstr "Markerar varje ord under uppspelning (modellen whisper-1). Tar längre tid."
+
+#: src/views/settings/preferences_dialog.py:660
+#, python-brace-format
+msgid "Version {version}"
+msgstr "Version {version}"
+
+#: src/views/settings/preferences_dialog.py:664
+#, python-brace-format
+msgid "Made by {author}"
+msgstr "Skapad av {author}"
+
+#: src/views/settings/preferences_dialog.py:671
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: src/views/settings/preferences_dialog.py:689
+msgid "Donate"
+msgstr "Donera"
+
+#: src/views/settings/preferences_dialog.py:701
+msgid "Check for updates"
+msgstr "Sök efter uppdateringar"
+
+#: src/views/settings/preferences_dialog.py:725
+msgid "Checking for updates…"
+msgstr "Söker efter uppdateringar…"
+
+#: src/views/settings/preferences_dialog.py:737
+msgid "Could not check for updates."
+msgstr "Det gick inte att söka efter uppdateringar."
+
+#: src/views/settings/preferences_dialog.py:742
+msgid "Download"
+msgstr "Ladda ned"
+
+#: src/views/settings/preferences_dialog.py:756
+msgid "You have the latest version."
+msgstr "Du har den senaste versionen."
+
+#: src/views/settings/settings_form.py:163
+msgid "Select at least one output file type."
+msgstr "Välj minst en typ av utdatafil."
+
+#: src/views/settings/settings_form.py:180
+#, python-brace-format
+msgid ""
+"The {model} model only transcribes English. Choose a multilingual model "
+"or set the language of the audio to English."
+msgstr ""
+"Modellen {model} transkriberar endast engelska. Välj en flerspråkig "
+"modell eller ange engelska som ljudets språk."
+
+#: src/views/settings/settings_form.py:188
+msgid "The Whisper API requires an OpenAI API key."
+msgstr "Whisper-API:et kräver en API-nyckel för OpenAI."
+
+#: src/views/settings/cards/context_card.py:28
+msgid "Context"
+msgstr "Sammanhang"
+
+#: src/views/settings/cards/context_card.py:34
+msgid "Keywords"
+msgstr "Nyckelord"
+
+#: src/views/settings/cards/context_card.py:39
+msgid "e.g. Audiotext, WhisperX, Henestrosa"
+msgstr "t.ex. Audiotext, WhisperX, Henestrosa"
+
+#: src/views/settings/cards/context_card.py:46
+msgid ""
+"Names, terms or acronyms said in the audio, separated by commas, so "
+"they're spelled right."
+msgstr ""
+"Namn, termer eller förkortningar som sägs i ljudet, avgränsade med "
+"kommatecken, så att de stavas rätt."
+
+#: src/views/settings/cards/context_card.py:51
+msgid "Description"
+msgstr "Beskrivning"
+
+#: src/views/settings/cards/context_card.py:56
+msgid "e.g. An interview about speech recognition"
+msgstr "t.ex. En intervju om taligenkänning"
+
+#: src/views/settings/cards/context_card.py:63
+msgid "What the audio is about, such as its topic or setting."
+msgstr "Vad ljudet handlar om, till exempel ämnet eller miljön."
+
+#: src/views/settings/cards/context_card.py:100
+msgid "Not used by the Google API."
+msgstr "Används inte av Google API."
+
+#: src/views/settings/cards/context_card.py:112
+#, python-brace-format
+msgid "Not used by the {model} model."
+msgstr "Används inte av modellen {model}."
+
+#: src/views/settings/cards/engine_card.py:25
+msgid "Identifies the speakers. With timestamps."
+msgstr "Identifierar talarna. Med tidsstämplar."
+
+#: src/views/settings/cards/engine_card.py:28
+msgid ""
+"With timestamps, to play the transcription segment by segment and "
+"generate subtitles."
+msgstr ""
+"Med tidsstämplar, för att spela upp transkriberingen segment för segment "
+"och skapa undertexter."
+
+#: src/views/settings/cards/engine_card.py:32
+msgid ""
+"More accurate, but without timestamps: the transcription can't be played "
+"segment by segment nor subtitled."
+msgstr ""
+"Mer exakt, men utan tidsstämplar: transkriberingen kan inte spelas upp "
+"segment för segment eller textas."
+
+#: src/views/settings/cards/engine_card.py:50
+msgid "Engine"
+msgstr "Motor"
+
+#: src/views/settings/cards/engine_card.py:54
+msgid "Transcription method"
+msgstr "Transkriberingsmetod"
+
+#: src/views/settings/cards/engine_card.py:114
+msgid ""
+"Only transcribes English, faster than the multilingual model of the same "
+"size."
+msgstr ""
+"Transkriberar endast engelska, snabbare än den flerspråkiga modellen av "
+"samma storlek."
+
+#: src/views/settings/cards/engine_card.py:118
+msgid "Larger models are more accurate, but slower."
+msgstr "Större modeller är mer exakta, men långsammare."
+
+#: src/views/settings/cards/engine_card.py:121
+msgid "Runs on your computer. Free, private and unlimited."
+msgstr "Körs på din dator. Gratis, privat och obegränsat."
+
+#: src/views/settings/cards/engine_card.py:131
+msgid "Runs on the servers of OpenAI. Requires an API key."
+msgstr "Körs på OpenAI:s servrar. Kräver en API-nyckel."
+
+#: src/views/settings/cards/engine_card.py:135
+msgid ""
+"Runs on the servers of Google. An API key is optional; without it, the "
+"free tier is used."
+msgstr ""
+"Körs på Googles servrar. En API-nyckel är valfri; utan den används "
+"gratisnivån."
+
+#: src/views/settings/cards/engine_card.py:140
+msgid "API key set"
+msgstr "API-nyckel angiven"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/translation_panel.py:387
+msgid "Set API key…"
+msgstr "Ange API-nyckel…"
+
+#: src/views/settings/cards/folder_card.py:22
+msgid "Watch the folder"
+msgstr "Bevaka mappen"
+
+#: src/views/settings/cards/folder_card.py:34
+msgid ""
+"Keeps running and transcribes the files added to the folder, until you "
+"stop it. The files it already contains are skipped."
+msgstr ""
+"Fortsätter att köra och transkriberar filer som läggs till i mappen tills"
+" du stoppar det. Filer som redan finns hoppas över."
+
+#: src/views/settings/cards/folder_card.py:39
+msgid ""
+"Transcribes the audio and video files of the folder and its subfolders. "
+"Files that already have a transcription are skipped unless you overwrite "
+"them."
+msgstr ""
+"Transkriberar ljud- och videofilerna i mappen och dess undermappar. Filer"
+" som redan har en transkribering hoppas över, om du inte skriver över "
+"dem."
+
+#: src/views/settings/cards/language_card.py:56
+msgid "Language"
+msgstr "Språk"
+
+#: src/views/settings/cards/language_card.py:60
+msgid "Auto-detect"
+msgstr "Identifiera automatiskt"
+
+#: src/views/settings/cards/language_card.py:63
+msgid "Same as the audio"
+msgstr "Samma som ljudet"
+
+#: src/views/settings/cards/language_card.py:70
+#: src/views/settings/cards/language_card.py:74
+msgid "Language of the audio"
+msgstr "Ljudets språk"
+
+#: src/views/settings/cards/language_card.py:75
+#: src/views/settings/cards/language_card.py:93
+#: src/views/transcript/translation_panel.py:341
+msgid "Search language…"
+msgstr "Sök språk…"
+
+#: src/views/settings/cards/language_card.py:76
+#: src/views/settings/cards/language_card.py:94
+#: src/views/transcript/translation_panel.py:342
+msgid "No languages found."
+msgstr "Inga språk hittades."
+
+#: src/views/settings/cards/language_card.py:88
+#: src/views/settings/cards/language_card.py:92
+msgid "Language of the transcription"
+msgstr "Transkriberingens språk"
+
+#: src/views/settings/cards/language_card.py:131
+msgid "Translate with Whisper (recommended)"
+msgstr "Översätt med Whisper (rekommenderas)"
+
+#: src/views/settings/cards/language_card.py:191
+msgid ""
+"The Google API can't translate. The transcription will be in the language"
+" of the audio."
+msgstr "Google-API:et kan inte översätta. Transkriberingen blir på ljudets språk."
+
+#: src/views/settings/cards/language_card.py:201
+#, python-brace-format
+msgid "Write it directly in {language} (experimental)"
+msgstr "Skriv den direkt på {language} (experimentellt)"
+
+#: src/views/settings/cards/language_card.py:219
+msgid "Whisper transcribes and translates the audio in one step."
+msgstr "Whisper transkriberar och översätter ljudet i ett steg."
+
+#: src/views/settings/cards/language_card.py:223
+#, python-brace-format
+msgid ""
+"Whisper can only translate into {english}. For other languages, it's "
+"asked to write the transcription in {language} directly. It works well "
+"for many languages, but check the result."
+msgstr ""
+"Whisper kan bara översätta till {english}. För andra språk ombeds den "
+"skriva transkriberingen direkt på {language}. Det fungerar bra för många "
+"språk, men kontrollera resultatet."
+
+#: src/views/settings/cards/live_card.py:27
+msgid "Live text"
+msgstr "Livetext"
+
+#: src/views/settings/cards/live_card.py:30
+msgid "Show the text while recording"
+msgstr "Visa texten under inspelning"
+
+#: src/views/settings/cards/live_card.py:35
+msgid "Live model"
+msgstr "Livemodell"
+
+#: src/views/settings/cards/live_card.py:62
+#: src/views/settings/cards/options_card.py:116
+#: src/views/settings/cards/options_card.py:145
+msgid "Only available with WhisperX."
+msgstr "Endast tillgängligt med WhisperX."
+
+#: src/views/settings/cards/live_card.py:65
+msgid ""
+"A fast model writes a draft while you speak. When you stop, the whole "
+"recording is transcribed again with the model of the engine, which is "
+"more accurate."
+msgstr ""
+"En snabb modell skriver ett utkast medan du talar. När du slutar "
+"transkriberas hela inspelningen igen med motorns modell, som är mer "
+"exakt."
+
+#: src/views/settings/cards/live_card.py:70
+msgid "The text is shown when you stop recording."
+msgstr "Texten visas när du slutar spela in."
+
+#: src/views/settings/cards/options_card.py:37
+msgid "Options"
+msgstr "Alternativ"
+
+#: src/views/settings/cards/options_card.py:43
+msgid "Word-level timings"
+msgstr "Tider per ord"
+
+#: src/views/settings/cards/options_card.py:51
+msgid "Extract speech"
+msgstr "Extrahera tal"
+
+#: src/views/settings/cards/options_card.py:55
+msgid "Reduces music and background noise before transcribing."
+msgstr "Minskar musik och bakgrundsljud före transkriberingen."
+
+#: src/views/settings/cards/options_card.py:59
+msgid "Identify speakers"
+msgstr "Identifiera talare"
+
+#: src/views/settings/cards/options_card.py:69
+msgid "Number of speakers (0 = auto)"
+msgstr "Antal talare (0 = auto)"
+
+#: src/views/settings/cards/options_card.py:87
+msgid "Set Hugging Face token…"
+msgstr "Ange Hugging Face-token…"
+
+#: src/views/settings/cards/options_card.py:119
+msgid "Highlights each word while playing. The subtitles already use them."
+msgstr "Markerar varje ord under uppspelning. Undertexterna använder dem redan."
+
+#: src/views/settings/cards/options_card.py:122
+msgid "Highlights each word while playing. Takes a bit longer."
+msgstr "Markerar varje ord under uppspelning. Tar lite längre tid."
+
+#: src/views/settings/cards/options_card.py:132
+msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgstr "Anger vem som talar i varje del. Kräver en Hugging Face-token."
+
+#: src/views/settings/cards/options_card.py:138
+msgid "The model of the Whisper API identifies the speakers."
+msgstr "Modellen i Whisper-API:et identifierar talarna."
+
+#: src/views/settings/cards/options_card.py:141
+msgid ""
+"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
+" of the Whisper API."
+msgstr ""
+"Endast tillgängligt med WhisperX, eller med modellen gpt-4o-transcribe-"
+"diarize i Whisper-API:et."
+
+#: src/views/settings/cards/output_card.py:37
+msgid "Output"
+msgstr "Utdata"
+
+#: src/views/settings/cards/output_card.py:41
+msgid "File types"
+msgstr "Filtyper"
+
+#: src/views/settings/cards/output_card.py:100
+msgid "Next to the source"
+msgstr "Bredvid källan"
+
+#: src/views/settings/cards/output_card.py:110
+msgid "Overwrite existing files"
+msgstr "Skriv över befintliga filer"
+
+#: src/views/settings/cards/output_card.py:114
+msgid "The files of a folder are always saved."
+msgstr "Filerna i en mapp sparas alltid."
+
+#: src/views/settings/cards/output_card.py:142
+msgid "The Google API returns plain text (.txt)."
+msgstr "Google-API:et returnerar oformaterad text (.txt)."
+
+#: src/views/settings/cards/output_card.py:147
+#, python-brace-format
+msgid "Saved in {folder}"
+msgstr "Sparas i {folder}"
+
+#: src/views/settings/cards/output_card.py:150
+msgid "Saved next to the source"
+msgstr "Sparas bredvid källan"
+
+#: src/views/settings/cards/output_card.py:169
+msgid "Format of the files."
+msgstr "Filernas format."
+
+#: src/views/settings/cards/output_card.py:172
+#, python-brace-format
+msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
+msgstr ""
+"Modellen {model} returnerar inga tidsstämplar och kan därför inte spara "
+"undertexter."
+
+#: src/views/settings/cards/output_card.py:192
+msgid "Choose where to save the transcriptions"
+msgstr "Välj var transkriberingarna ska sparas"
+
+#: src/views/transcript/corrections.py:78
+msgid "Replaced."
+msgstr "Ersatt."
+
+#: src/views/transcript/corrections.py:94
+#: src/views/transcript/transcript_view.py:863
+msgid "Edit the text"
+msgstr "Redigera texten"
+
+#: src/views/transcript/corrections.py:95
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "Text som sades vid {time}:"
+
+#: src/views/transcript/edit_dialogs.py:92
+msgid "Find and replace"
+msgstr "Sök och ersätt"
+
+#: src/views/transcript/edit_dialogs.py:92
+msgid "Replace all"
+msgstr "Ersätt alla"
+
+#: src/views/transcript/edit_dialogs.py:101
+msgid "Find:"
+msgstr "Sök:"
+
+#: src/views/transcript/edit_dialogs.py:101
+msgid "Replace with:"
+msgstr "Ersätt med:"
+
+#: src/views/transcript/edit_dialogs.py:113
+msgid "Match case"
+msgstr "Matcha skiftläge"
+
+#: src/views/transcript/edit_dialogs.py:142
+msgid "1 match"
+msgstr "1 träff"
+
+#: src/views/transcript/edit_dialogs.py:144
+#, python-brace-format
+msgid "{count} matches"
+msgstr "{count} träffar"
+
+#: src/views/transcript/edit_dialogs.py:162
+msgid "Rename speakers"
+msgstr "Byt namn på talare"
+
+#: src/views/transcript/edit_dialogs.py:162
+#: src/views/transcript/transcript_view.py:890
+#: src/views/widgets/text_dialog.py:66
+msgid "Save"
+msgstr "Spara"
+
+#: src/views/transcript/edit_dialogs.py:169
+msgid ""
+"Give a name to each speaker. Giving two speakers the same name merges "
+"them."
+msgstr "Ge varje talare ett namn. Om två talare får samma namn slås de ihop."
+
+#: src/views/transcript/edit_dialogs.py:239
+msgid "Start:"
+msgstr "Början:"
+
+#: src/views/transcript/edit_dialogs.py:239
+msgid "End:"
+msgstr "Slut:"
+
+#: src/views/transcript/edit_dialogs.py:278
+msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
+msgstr "Skriv tiderna som 00:01:05,900, 01:05,9 eller 65.9."
+
+#: src/views/transcript/edit_dialogs.py:280
+msgid "The segment must end after it starts."
+msgstr "Segmentet måste sluta efter att det börjar."
+
+#: src/views/transcript/player_bar.py:122
+msgid "Loading the audio…"
+msgstr "Läser in ljudet…"
+
+#: src/views/transcript/player_bar.py:151
+#, python-brace-format
+msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr "Blanksteg: spela upp/pausa · ←/→: {seconds} s bakåt/framåt"
+
+#: src/views/transcript/player_bar.py:252
+#: src/views/transcript/transcript_view.py:1017
+#, python-brace-format
+msgid "The audio can't be played: {error}"
+msgstr "Ljudet kan inte spelas upp: {error}"
+
+#: src/views/transcript/summary_panel.py:73
+msgid "Summarizing…"
+msgstr "Sammanfattar…"
+
+#: src/views/transcript/summary_panel.py:74
+#, python-brace-format
+msgid "{provider} is reading the transcription. It takes a moment."
+msgstr "{provider} läser transkriberingen. Det tar en stund."
+
+#: src/views/transcript/summary_panel.py:80
+#: src/views/transcript/summary_panel.py:93
+msgid "No summary yet"
+msgstr "Ingen sammanfattning ännu"
+
+#: src/views/transcript/summary_panel.py:82
+#, python-brace-format
+msgid ""
+"Generate a summary, the key points and the chapters of the transcription "
+"with {provider}."
+msgstr ""
+"Skapa en sammanfattning, huvudpunkterna och kapitlen i transkriberingen "
+"med {provider}."
+
+#: src/views/transcript/summary_panel.py:87
+msgid "Generate summary"
+msgstr "Skapa sammanfattning"
+
+#: src/views/transcript/summary_panel.py:95
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to summarize, or choose another provider in"
+" the settings."
+msgstr ""
+"Ange API-nyckeln för {provider} för att sammanfatta, eller välj en annan "
+"leverantör i inställningarna."
+
+#: src/views/transcript/summary_panel.py:195
+msgid "The transcription is very long, so only its beginning was summarized."
+msgstr "Transkriberingen är mycket lång, så bara början har sammanfattats."
+
+#: src/views/transcript/summary_panel.py:252
+msgid "Regenerate"
+msgstr "Skapa igen"
+
+#: src/views/transcript/summary_panel.py:279
+#, python-brace-format
+msgid "Generated by {model} · {date}"
+msgstr "Skapad av {model} · {date}"
+
+#: src/views/transcript/transcript_text.py:183
+msgid "Click a segment to play it. Right-click it to edit it."
+msgstr ""
+"Klicka på ett segment för att spela upp det. Högerklicka för att redigera"
+" det."
+
+#: src/views/transcript/transcript_text.py:188
+msgid "The plain text has been edited; the transcript keeps the original."
+msgstr "Den oformaterade texten har redigerats; transkriptet behåller originalet."
+
+#: src/views/transcript/transcript_text.py:196
+msgid "You can edit the text. The changes are saved automatically."
+msgstr "Du kan redigera texten. Ändringarna sparas automatiskt."
+
+#: src/views/transcript/transcript_text.py:199
+msgid ""
+"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
+"transcribe-diarize models of the Whisper API."
+msgstr ""
+"Tidsstämplar är endast tillgängliga med WhisperX och modellerna whisper-1"
+" och gpt-4o-transcribe-diarize i Whisper-API:et."
+
+#: src/views/transcript/transcript_text.py:357
+msgid "This transcription has no timestamps."
+msgstr "Den här transkriberingen har inga tidsstämplar."
+
+#: src/views/transcript/transcript_view.py:90
+msgid "Plain text (.txt)"
+msgstr "Oformaterad text (.txt)"
+
+#: src/views/transcript/transcript_view.py:91
+msgid "Markdown (.md)"
+msgstr "Markdown (.md)"
+
+#: src/views/transcript/transcript_view.py:92
+msgid "Word document (.docx)"
+msgstr "Word-dokument (.docx)"
+
+#: src/views/transcript/transcript_view.py:93
+msgid "Subtitles (.srt)"
+msgstr "Undertexter (.srt)"
+
+#: src/views/transcript/transcript_view.py:94
+msgid "Web subtitles (.vtt)"
+msgstr "Webbundertexter (.vtt)"
+
+#: src/views/transcript/transcript_view.py:95
+msgid "Table (.tsv)"
+msgstr "Tabell (.tsv)"
+
+#: src/views/transcript/transcript_view.py:96
+msgid "JSON (.json)"
+msgstr "JSON (.json)"
+
+#: src/views/transcript/transcript_view.py:243
+#: src/views/transcript/video_pane.py:247
+#, python-brace-format
+msgid "Translation into {language}"
+msgstr "Översättning till {language}"
+
+#: src/views/transcript/transcript_view.py:280
+msgid "Export transcription"
+msgstr "Exportera transkribering"
+
+#: src/views/transcript/transcript_view.py:299
+#, python-brace-format
+msgid "Export translation into {language}"
+msgstr "Exportera översättningen till {language}"
+
+#: src/views/transcript/transcript_view.py:330
+msgid "All files"
+msgstr "Alla filer"
+
+#: src/views/transcript/transcript_view.py:339
+#, python-brace-format
+msgid "Could not export: {error}"
+msgstr "Det gick inte att exportera: {error}"
+
+#: src/views/transcript/transcript_view.py:342
+#, python-brace-format
+msgid "Exported to {path}"
+msgstr "Exporterad till {path}"
+
+#: src/views/transcript/transcript_view.py:391
+#, python-brace-format
+msgid "Search ({shortcut})"
+msgstr "Sök ({shortcut})"
+
+#: src/views/transcript/transcript_view.py:428
+msgid "Transcript"
+msgstr "Transkript"
+
+#: src/views/transcript/transcript_view.py:429
+msgid "Plain text"
+msgstr "Oformaterad text"
+
+#: src/views/transcript/transcript_view.py:438
+#: src/views/transcript/translation_panel.py:321
+msgid "Translate"
+msgstr "Översätt"
+
+#: src/views/transcript/transcript_view.py:446
+msgid "Export"
+msgstr "Exportera"
+
+#: src/views/transcript/transcript_view.py:575
+#, python-brace-format
+msgid "{current} of {total}"
+msgstr "{current} av {total}"
+
+#: src/views/transcript/transcript_view.py:615
+msgid "Summary copied."
+msgstr "Sammanfattningen har kopierats."
+
+#: src/views/transcript/transcript_view.py:691
+msgid "Hide the translation"
+msgstr "Dölj översättningen"
+
+#: src/views/transcript/transcript_view.py:696
+msgid "Show the translation"
+msgstr "Visa översättningen"
+
+#: src/views/transcript/transcript_view.py:700
+msgid "Translate into another language…"
+msgstr "Översätt till ett annat språk…"
+
+#: src/views/transcript/transcript_view.py:716
+msgid "Show it as the subtitles of the video"
+msgstr "Visa den som videons undertexter"
+
+#: src/views/transcript/transcript_view.py:723
+msgid "Delete the translation"
+msgstr "Ta bort översättningen"
+
+#: src/views/transcript/transcript_view.py:804
+#: src/views/transcript/transcript_view.py:1060
+msgid "Play from here"
+msgstr "Spela upp härifrån"
+
+#: src/views/transcript/transcript_view.py:807
+#: src/views/transcript/transcript_view.py:1063
+msgid "Edit the text…"
+msgstr "Redigera texten…"
+
+#: src/views/transcript/transcript_view.py:807
+msgid "Translate the text…"
+msgstr "Översätt texten…"
+
+#: src/views/transcript/transcript_view.py:811
+msgid "Edit the timing…"
+msgstr "Redigera tiderna…"
+
+#: src/views/transcript/transcript_view.py:815
+msgid "Add a segment after…"
+msgstr "Lägg till ett segment efter…"
+
+#: src/views/transcript/transcript_view.py:820
+#: src/views/transcript/transcript_view.py:938
+msgid "Delete the segment"
+msgstr "Radera segmentet"
+
+#: src/views/transcript/transcript_view.py:863
+msgid "Translate the text"
+msgstr "Översätt texten"
+
+#: src/views/transcript/transcript_view.py:864
+#, python-brace-format
+msgid "Translation of “{text}”, said from {start} to {end}:"
+msgstr "Översättning av ”{text}”, sagt från {start} till {end}:"
+
+#: src/views/transcript/transcript_view.py:868
+#, python-brace-format
+msgid "Translation of the segment from {start} to {end}:"
+msgstr "Översättning av segmentet från {start} till {end}:"
+
+#: src/views/transcript/transcript_view.py:889
+msgid "Edit the timing"
+msgstr "Redigera tiderna"
+
+#: src/views/transcript/transcript_view.py:913
+msgid "Add a segment"
+msgstr "Lägg till ett segment"
+
+#: src/views/transcript/transcript_view.py:914
+msgid "Add"
+msgstr "Lägg till"
+
+#: src/views/transcript/transcript_view.py:915
+#, python-brace-format
+msgid "The new segment goes after the one at {time}:"
+msgstr "Det nya segmentet hamnar efter det vid {time}:"
+
+#: src/views/transcript/transcript_view.py:939
+#, python-brace-format
+msgid "Delete the segment “{text}”?"
+msgstr "Radera segmentet ”{text}”?"
+
+#: src/views/transcript/transcript_view.py:950
+#, python-brace-format
+msgid "The segment at {time}, not translated yet."
+msgstr "Segmentet vid {time}, inte översatt ännu."
+
+#: src/views/transcript/transcript_view.py:964
+#, python-brace-format
+msgid "Translation into {language} copied."
+msgstr "Översättningen till {language} har kopierats."
+
+#: src/views/transcript/transcript_view.py:976
+msgid "The audio isn't available: the source file was moved or deleted."
+msgstr "Ljudet är inte tillgängligt: källfilen har flyttats eller tagits bort."
+
+#: src/views/transcript/transcript_view.py:978
+msgid "The audio isn't available."
+msgstr "Ljudet är inte tillgängligt."
+
+#: src/views/transcript/transcript_view.py:1066
+#: src/views/transcript/transcript_view.py:1078
+msgid "Rename speakers…"
+msgstr "Byt namn på talare…"
+
+#: src/views/transcript/transcript_view.py:1076
+msgid "Find and replace…"
+msgstr "Sök och ersätt…"
+
+#: src/views/transcript/transcript_view.py:1088
+msgid "Precise timestamps (00:00:01,000)"
+msgstr "Exakta tidsstämplar (00:00:01,000)"
+
+#: src/views/transcript/transcript_view.py:1111
+msgid "Rename…"
+msgstr "Byt namn…"
+
+#: src/views/transcript/transcript_view.py:1155
+msgid "Copied"
+msgstr "Kopierat"
+
+#: src/views/transcript/translation_panel.py:130
+msgid "Not translated yet"
+msgstr "Inte översatt ännu"
+
+#: src/views/transcript/translation_panel.py:155
+#, python-brace-format
+msgid "Translating into {language}…"
+msgstr "Översätter till {language}…"
+
+#: src/views/transcript/translation_panel.py:159
+msgid "Translating…"
+msgstr "Översätter…"
+
+#: src/views/transcript/translation_panel.py:162
+msgid "It takes a moment."
+msgstr "Det tar en stund."
+
+#: src/views/transcript/translation_panel.py:164
+msgid "The transcription is being translated. It takes a moment."
+msgstr "Transkriberingen översätts. Det tar en stund."
+
+#: src/views/transcript/translation_panel.py:171
+msgid "There is no translation yet."
+msgstr "Det finns ingen översättning ännu."
+
+#: src/views/transcript/translation_panel.py:173
+msgid "Translate…"
+msgstr "Översätt…"
+
+#: src/views/transcript/translation_panel.py:276
+#, python-brace-format
+msgid "Segments left to translate: {count}. Right-click one to translate it."
+msgstr ""
+"Segment kvar att översätta: {count}. Högerklicka på ett för att översätta"
+" det."
+
+#: src/views/transcript/translation_panel.py:283
+msgid "Translated manually"
+msgstr "Manuellt översatt"
+
+#: src/views/transcript/translation_panel.py:331
+msgid "Myself, from scratch"
+msgstr "Själv, från grunden"
+
+#: src/views/transcript/translation_panel.py:335
+msgid "Translate into:"
+msgstr "Översätt till:"
+
+#: src/views/transcript/translation_panel.py:340
+msgid "Language of the translation"
+msgstr "Översättningens språk"
+
+#: src/views/transcript/translation_panel.py:357
+msgid "Provider:"
+msgstr "Leverantör:"
+
+#: src/views/transcript/translation_panel.py:397
+msgid "More options in the settings"
+msgstr "Fler alternativ i inställningarna"
+
+#: src/views/transcript/translation_panel.py:434
+#, python-brace-format
+msgid "Set the API key of {provider} to translate with it."
+msgstr "Ange API-nyckeln för {provider} för att översätta med den."
+
+#: src/views/transcript/video_pane.py:226
+msgid "Show subtitles on the video"
+msgstr "Visa undertexter på videon"
+
+#: src/views/transcript/video_pane.py:258
+msgid "Size"
+msgstr "Storlek"
+
+#: src/views/transcript/video_pane.py:262
+msgid "Small"
+msgstr "Liten"
+
+#: src/views/transcript/video_pane.py:263
+msgid "Medium"
+msgstr "Medel"
+
+#: src/views/transcript/video_pane.py:264
+msgid "Large"
+msgstr "Stor"
+
+#: src/views/transcript/video_pane.py:268
+msgid "Position"
+msgstr "Position"
+
+#: src/views/transcript/video_pane.py:271
+msgid "Bottom"
+msgstr "Nederst"
+
+#: src/views/transcript/video_pane.py:271
+msgid "Top"
+msgstr "Överst"
+
+#: src/views/transcript/video_pane.py:274
+msgid "Style"
+msgstr "Stil"
+
+#: src/views/transcript/video_pane.py:278
+msgid "Dark background"
+msgstr "Mörk bakgrund"
+
+#: src/views/transcript/video_pane.py:279
+msgid "Outline"
+msgstr "Kontur"

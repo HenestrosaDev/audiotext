@@ -54,6 +54,8 @@ cover/
 # Translations
 # *.mo
 *.pot
+# The template of the translations of the app
+!res/locales/audiotext.pot
 
 # Django stuff:
 *.log
@@ -160,3 +162,4 @@ cython_debug/
 #.idea/
 
 audio-chunks/
+.DS_Store

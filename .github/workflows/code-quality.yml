@@ -7,34 +7,102 @@ on:
     paths:
       - "src/**"
       - "tests/**"
+      - "requirements*.txt"
+      - "pyproject.toml"
+      - "config.ini"
+      - "res/locales/**"
+      - ".pre-commit-config.yaml"
+      - ".github/scripts/**"
+      - ".github/workflows/code-quality.yml"
   push:
     branches:
       - main
     paths:
       - "src/**"
       - "tests/**"
+      - "requirements*.txt"
+      - "pyproject.toml"
+      - "config.ini"
+      - "res/locales/**"
+      - ".pre-commit-config.yaml"
+      - ".github/scripts/**"
+      - ".github/workflows/code-quality.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10"]
     steps:
-    - uses: actions/checkout@master
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: 'pip'
-    - name: Install PortAudio to install PyAudio
-      run: |
-        sudo apt-get update
-        sudo apt-get install python3-pyaudio portaudio19-dev python3-dev
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt -r requirements-dev.txt
-    - name: Run pre-commit
-      run: |
-        SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install system dependencies (PortAudio for sounddevice, FFmpeg for pydub)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libportaudio2 ffmpeg
+      - name: Use the CPU build of PyTorch, which is much smaller
+        run: python .github/scripts/use_cpu_torch.py
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: Run pre-commit
+        run: |
+          SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
+
+  test:
+    name: test (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        include:
+          # Audiotext is a desktop app, so it's also tested on the other systems
+          - os: macos-latest
+            python-version: "3.12"
+          - os: windows-latest
+            python-version: "3.12"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          # Xvfb provides a display for the tests of the interface
+          sudo apt-get install -y libportaudio2 ffmpeg xvfb
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ffmpeg
+      - name: Install system dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: choco install ffmpeg --no-progress -y
+      - name: Use the CPU build of PyTorch, which is much smaller
+        run: python .github/scripts/use_cpu_torch.py
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: Run tests
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            xvfb-run --auto-servernum pytest --cov=src --cov-report=term-missing
+          else
+            pytest --cov=src --cov-report=term-missing
+          fi
