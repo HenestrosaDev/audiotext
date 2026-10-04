@@ -1,8 +1,8 @@
-import traceback
 from pathlib import Path
-from typing import Optional
 
 from pytubefix import YouTube
+
+from utils.i18n import _
 
 
 class YouTubeHandler:
@@ -11,27 +11,32 @@ class YouTubeHandler:
         url: str,
         output_path: str = ".",
         output_filename: str = "yt-audio.mp3",
-    ) -> Optional[Path]:
+    ) -> Path:
         """
         Downloads audio from a YouTube video.
 
         :param url: The URL of the YouTube video.
-        :param output_path: (Optional) The directory where the audio file will be saved.
-                            Default is the current directory.
-        :param output_filename: (Optional) The name of the audio file to be saved.
-                                 Default is "yt-audio.mp3".
-        :return: The path to the downloaded audio file as a Path object,
-                 or None if the download fails.
+        :param output_path: The directory where the audio file will be saved.
+        :param output_filename: The name of the audio file to be saved.
+        :raises ValueError: If the audio could not be downloaded.
+        :return: The path to the downloaded audio file.
         """
         try:
-            yt = YouTube(url)
-            stream = yt.streams.filter(only_audio=True).first()
-            output_file = stream.download(
-                output_path=output_path, filename=output_filename
+            stream = YouTube(url).streams.filter(only_audio=True).first()
+            output_file = (
+                stream.download(output_path=output_path, filename=output_filename)
+                if stream
+                else None
             )
+        except Exception as e:
+            raise ValueError(
+                _(
+                    "The audio of the YouTube video could not be downloaded. Please "
+                    "make sure the URL is correct."
+                )
+            ) from e
 
-            return Path(output_file) if output_file else None
+        if not output_file:
+            raise ValueError(_("The YouTube video doesn't have an audio track."))
 
-        except Exception:
-            print(traceback.format_exc())
-            return None
+        return Path(output_file)
