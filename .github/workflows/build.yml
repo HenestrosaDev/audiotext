@@ -1,0 +1,91 @@
+name: Build
+
+# Checks that the app can be packaged with PyInstaller on each system, so a change
+# of the dependencies or of the spec doesn't break the releases unnoticed
+on:
+  pull_request:
+    branches:
+      - "**"
+    paths:
+      - "src/**"
+      - "audiotext.spec"
+      - "requirements.txt"
+      - "res/**"
+      - "pyproject.toml"
+      - ".github/scripts/**"
+      - ".github/workflows/build.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "audiotext.spec"
+      - "requirements.txt"
+      - "res/**"
+      - "pyproject.toml"
+      - ".github/scripts/**"
+      - ".github/workflows/build.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      # FFmpeg and FFprobe are bundled with the app
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libportaudio2 ffmpeg xvfb
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ffmpeg
+      - name: Install system dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          choco install ffmpeg --no-progress -y
+          # Chocolatey adds shims to PATH, which run the executables from where the package
+          # is installed and so only work on this computer. The actual ones are bundled
+          echo "$ChocolateyInstall"'\lib\ffmpeg\tools\ffmpeg\bin' >> "$GITHUB_PATH"
+      - name: Use the CPU build of PyTorch, which is much smaller
+        run: python .github/scripts/use_cpu_torch.py
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+      - name: Build
+        run: pyinstaller audiotext.spec --noconfirm
+      # On Windows, the app shows a dialog instead of closing when it fails to open, so
+      # it can only be checked on the other systems
+      - name: Check that the app opens (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run --auto-servernum python .github/scripts/smoke_test_app.py dist/Audiotext/Audiotext
+      - name: Check that the app opens (macOS)
+        if: runner.os == 'macOS'
+        run: python .github/scripts/smoke_test_app.py dist/Audiotext.app/Contents/MacOS/Audiotext
+      - name: Upload the app
+        uses: actions/upload-artifact@v4
+        with:
+          name: Audiotext-${{ runner.os }}
+          path: dist/
+          retention-days: 7
