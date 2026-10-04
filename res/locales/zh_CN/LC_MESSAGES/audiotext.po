@@ -1,0 +1,1997 @@
+# Chinese (Simplified, China) translations for Audiotext.
+# Copyright (C) 2026 HenestrosaDev
+# This file is distributed under the same license as the Audiotext project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Audiotext 2.3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
+"POT-Creation-Date: 2026-10-04 04:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Machine translation (please review) "
+"<https://github.com/HenestrosaDev/audiotext>\n"
+"Language: zh_Hans_CN\n"
+"Language-Team: Chinese (Simplified, China) "
+"<https://github.com/HenestrosaDev/audiotext>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: src/controllers/folder_transcriber.py:58
+msgid ""
+"The folder doesn't contain files to transcribe. The files that already "
+"have a transcription are skipped unless you check 'Overwrite existing "
+"files'."
+msgstr "该文件夹中没有要转写的文件。除非勾选“覆盖现有文件”，否则会跳过已有转写的文件。"
+
+#: src/controllers/folder_transcriber.py:81
+#, python-brace-format
+msgid "Transcribed {done} of {total} files."
+msgstr "已转写 {done}/{total} 个文件。"
+
+#: src/controllers/folder_transcriber.py:97
+#, python-brace-format
+msgid "Waiting for new files in {folder}…"
+msgstr "正在等待 {folder} 中的新文件…"
+
+#: src/controllers/folder_transcriber.py:114
+#, python-brace-format
+msgid "Stopped watching the folder. Files transcribed: {done}."
+msgstr "已停止监视文件夹。已转录的文件:{done}。"
+
+#: src/controllers/folder_transcriber.py:137
+msgid "cancelled"
+msgstr "已取消"
+
+#: src/controllers/folder_transcriber.py:176
+#, python-brace-format
+msgid "File {current} of {total} ({name}): {message}"
+msgstr "文件 {current}/{total}（{name}）：{message}"
+
+#: src/controllers/folder_transcriber.py:191
+#, python-brace-format
+msgid "{name}: {message}"
+msgstr "{name}:{message}"
+
+#: src/controllers/main_controller.py:99
+msgid "Cancelling…"
+msgstr "正在取消…"
+
+#: src/controllers/main_controller.py:168
+msgid "Transcription cancelled."
+msgstr "已取消转写。"
+
+#: src/controllers/main_controller.py:183
+msgid "Downloading…"
+msgstr "正在下载…"
+
+#: src/controllers/main_controller.py:210
+#, python-brace-format
+msgid "Done in {duration}."
+msgstr "已完成，用时 {duration}。"
+
+#: src/controllers/main_controller.py:273
+msgid "Isolating the speech…"
+msgstr "正在分离人声…"
+
+#: src/controllers/main_controller.py:306
+msgid "WhisperX model ready."
+msgstr "WhisperX 模型已就绪。"
+
+#: src/controllers/main_controller.py:313
+#, python-brace-format
+msgid "Could not load the WhisperX model: {error}"
+msgstr "无法加载 WhisperX 模型：{error}"
+
+#: src/controllers/transcription_validator.py:17
+#: src/handlers/whisperx_handler.py:199
+msgid "No output file types selected. Please select at least one."
+msgstr "未选择输出文件类型。请至少选择一种。"
+
+#: src/controllers/transcription_validator.py:26
+#: src/views/settings/settings_form.py:169
+msgid ""
+"The Google API can't detect the language. Please select the language of "
+"the audio."
+msgstr "Google API 无法检测语言。请选择音频的语言。"
+
+#: src/controllers/transcription_validator.py:57
+#, python-brace-format
+msgid ""
+"The {model} model doesn't return timestamps, so it can't save {format} "
+"files. Choose another format or the whisper-1 model."
+msgstr "{model} 模型不返回时间戳，因此无法保存 {format} 文件。请选择其他格式或 whisper-1 模型。"
+
+#: src/controllers/transcription_validator.py:75
+msgid "Please select a valid audio or video file."
+msgstr "请选择有效的音频或视频文件。"
+
+#: src/controllers/transcription_validator.py:79
+#: src/views/new_transcription/new_transcription_view.py:476
+msgid "Please select a valid folder."
+msgstr "请选择有效的文件夹。"
+
+#: src/controllers/transcription_validator.py:86
+msgid ""
+"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
+" or video file)."
+msgstr "请输入有效的 URL（例如 YouTube 视频或音频、视频文件的链接）。"
+
+#: src/handlers/ai_providers.py:104 src/handlers/ai_providers.py:109
+#: src/handlers/ai_providers.py:112
+msgid "The model didn't return a valid reply."
+msgstr "模型未返回有效的回复。"
+
+#: src/handlers/ai_providers.py:157 src/handlers/ai_providers.py:190
+msgid "The reply of the model was too long."
+msgstr "模型的回复太长。"
+
+#: src/handlers/audio_handler.py:54 src/handlers/openai_api_handler.py:335
+#: src/handlers/whisperx_handler.py:216
+msgid "Loading audio…"
+msgstr "正在加载音频…"
+
+#: src/handlers/audio_handler.py:81
+#, python-brace-format
+msgid "Unsupported file type: {extension}"
+msgstr "不支持的文件类型：{extension}"
+
+#: src/handlers/audio_handler.py:132 src/handlers/openai_api_handler.py:360
+#: src/handlers/whisperx_handler.py:226 src/handlers/whisperx_handler.py:233
+#: src/views/history/formatting.py:39
+#: src/views/new_transcription/microphone_view.py:383
+msgid "Transcribing…"
+msgstr "正在转写…"
+
+#: src/handlers/audio_handler.py:135 src/handlers/openai_api_handler.py:363
+#, python-brace-format
+msgid "Transcribing chunk {current} of {total}…"
+msgstr "正在转写第 {current}/{total} 段…"
+
+#: src/handlers/live_transcriber.py:246
+msgid "The text can't be shown while recording."
+msgstr "录音时无法显示文本。"
+
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:446
+#, python-brace-format
+msgid "Loading the {model} model (it's downloaded the first time it's used)…"
+msgstr "正在加载 {model} 模型（首次使用时会下载）…"
+
+#: src/handlers/openai_api_handler.py:474
+#, python-brace-format
+msgid "The audio is too large for the OpenAI API ({size} MB)."
+msgstr "音频对 OpenAI API 来说太大（{size} MB）。"
+
+#: src/handlers/summary_handler.py:103 src/handlers/summary_handler.py:118
+msgid "The model didn't return a valid summary."
+msgstr "模型未返回有效的摘要。"
+
+#: src/handlers/summary_handler.py:174
+msgid "There is no text to summarize."
+msgstr "没有可总结的文本。"
+
+#: src/handlers/transcribers.py:27 src/handlers/whisperx_handler.py:299
+msgid "There is no transcription to save. Please generate it first."
+msgstr "没有可保存的转写。请先生成转写。"
+
+#: src/handlers/translation_handler.py:243
+msgid "The model didn't return a valid translation."
+msgstr "模型未返回有效的翻译。"
+
+#: src/handlers/translation_handler.py:295
+#, python-brace-format
+msgid "DeepL can't translate into {language}."
+msgstr "DeepL 无法翻译成{language}。"
+
+#: src/handlers/translation_handler.py:310
+msgid "DeepL didn't return a valid translation."
+msgstr "DeepL 未返回有效的翻译。"
+
+#: src/handlers/translation_handler.py:331
+msgid "Google Translate didn't return a valid translation."
+msgstr "Google 翻译未返回有效的翻译。"
+
+#: src/handlers/translation_handler.py:360
+msgid "There is no text to translate."
+msgstr "没有可翻译的文本。"
+
+#: src/handlers/url_handler.py:87
+msgid ""
+"The URL doesn't point to an audio or video file. Use the link of a "
+"YouTube video or of a media file."
+msgstr "该 URL 未指向音频或视频文件。请使用 YouTube 视频或媒体文件的链接。"
+
+#: src/handlers/url_handler.py:105
+#, python-brace-format
+msgid "The file could not be downloaded: {error}"
+msgstr "无法下载文件：{error}"
+
+#: src/handlers/whisperx_handler.py:335 src/handlers/whisperx_handler.py:344
+msgid "Aligning subtitles…"
+msgstr "正在对齐字幕…"
+
+#: src/handlers/whisperx_handler.py:368 src/handlers/whisperx_handler.py:373
+msgid "Identifying speakers…"
+msgstr "正在识别说话人…"
+
+#: src/handlers/whisperx_handler.py:394
+#, python-brace-format
+msgid ""
+"Identifying speakers requires a Hugging Face token. Create one at "
+"{tokens_url}, accept the conditions of {model_url} and set the token in "
+"the WhisperX options."
+msgstr ""
+"识别说话人需要 Hugging Face 令牌。请在 {tokens_url} 创建令牌,接受 {model_url} 的使用条款,然后在 "
+"WhisperX 选项中设置该令牌。"
+
+#: src/handlers/whisperx_handler.py:479
+msgid "Loading the subtitle alignment model…"
+msgstr "正在加载字幕对齐模型…"
+
+#: src/handlers/whisperx_handler.py:512
+msgid ""
+"Loading the speaker identification model (it's downloaded the first time "
+"it's used)…"
+msgstr "正在加载说话人识别模型(首次使用时会下载)…"
+
+#: src/handlers/whisperx_handler.py:526
+#, python-brace-format
+msgid ""
+"Could not download the speaker identification model. Check that the "
+"Hugging Face token is valid and that you've accepted the conditions of "
+"{model_url}."
+msgstr "无法下载说话人识别模型。请检查 Hugging Face 令牌是否有效,以及是否已接受 {model_url} 的使用条款。"
+
+#: src/handlers/youtube_handler.py:34
+msgid ""
+"The audio of the YouTube video could not be downloaded. Please make sure "
+"the URL is correct."
+msgstr "无法下载该 YouTube 视频的音频。请确认网址是否正确。"
+
+#: src/handlers/youtube_handler.py:40
+msgid "The YouTube video doesn't have an audio track."
+msgstr "该 YouTube 视频没有音轨。"
+
+#: src/utils/audio_utils.py:30
+msgid "No audio was recorded."
+msgstr "未录制到任何音频。"
+
+#: src/utils/exporters.py:149 src/utils/exporters.py:186
+#: src/views/settings/preferences_dialog.py:349
+#: src/views/transcript/summary_panel.py:188
+#: src/views/transcript/transcript_view.py:336
+msgid "Summary"
+msgstr "摘要"
+
+#: src/utils/exporters.py:151 src/utils/exporters.py:189
+#: src/views/transcript/summary_panel.py:205
+msgid "Key points"
+msgstr "要点"
+
+#: src/utils/exporters.py:155 src/utils/exporters.py:193
+#: src/views/transcript/summary_panel.py:210
+msgid "Chapters"
+msgstr "章节"
+
+#: src/utils/exporters.py:161 src/utils/exporters.py:198
+#: src/views/new_transcription/microphone_view.py:227
+msgid "Transcription"
+msgstr "转写"
+
+#: src/utils/time_format.py:30
+#, python-brace-format
+msgid "{minutes} min {seconds} s"
+msgstr "{minutes} 分 {seconds} 秒"
+
+#: src/utils/time_format.py:32
+#, python-brace-format
+msgid "{seconds} s"
+msgstr "{seconds} 秒"
+
+#: src/views/entries/entry_header.py:97
+msgid "Add note"
+msgstr "添加备注"
+
+#: src/views/entries/folder_view.py:53
+msgid "Files"
+msgstr "文件"
+
+#: src/views/entries/folder_view.py:89
+#, python-brace-format
+msgid "{count} files"
+msgstr "{count} 个文件"
+
+#: src/views/entries/folder_view.py:90
+#, python-brace-format
+msgid "{count} done"
+msgstr "{count} 个已完成"
+
+#: src/views/entries/folder_view.py:93
+#, python-brace-format
+msgid "{count} failed"
+msgstr "{count} 个失败"
+
+#: src/views/entries/folder_view.py:102
+#: src/views/transcript/transcript_view.py:824
+msgid "Open the folder of the saved files"
+msgstr "打开已保存文件所在的文件夹"
+
+#: src/views/entries/folder_view.py:110
+#: src/views/history/history_sidebar.py:322
+#: src/views/transcript/transcript_view.py:844
+msgid "Transcribe again"
+msgstr "重新转写"
+
+#: src/views/entries/folder_view.py:130
+msgid "Waiting for new files…"
+msgstr "正在等待新文件…"
+
+#: src/views/entries/folder_view.py:132
+msgid "No files"
+msgstr "没有文件"
+
+#: src/views/entries/progress_card.py:17
+#: src/views/new_transcription/new_transcription_view.py:121
+msgid "Choose a file"
+msgstr "选择文件"
+
+#: src/views/entries/progress_card.py:18
+#: src/views/new_transcription/new_transcription_view.py:122
+msgid "Enter the URL"
+msgstr "输入 URL"
+
+#: src/views/entries/progress_card.py:19
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:433
+msgid "Record"
+msgstr "录音"
+
+#: src/views/entries/progress_card.py:20 src/views/entries/progress_card.py:21
+#: src/views/new_transcription/new_transcription_view.py:123
+msgid "Choose a folder"
+msgstr "选择文件夹"
+
+#: src/views/entries/progress_card.py:22
+msgid "Source"
+msgstr "来源"
+
+#: src/views/entries/progress_card.py:47
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:431
+#: src/views/new_transcription/microphone_view.py:433
+#: src/views/new_transcription/new_transcription_view.py:149
+#: src/views/transcript/summary_panel.py:87
+#: src/views/transcript/summary_panel.py:100
+msgid "Settings"
+msgstr "设置"
+
+#: src/views/entries/progress_card.py:47
+#: src/views/new_transcription/microphone_view.py:136
+#: src/views/new_transcription/microphone_view.py:433
+#: src/views/new_transcription/new_transcription_view.py:149
+msgid "Transcribe"
+msgstr "转写"
+
+#: src/views/entries/progress_card.py:114
+#: src/views/history/history_sidebar.py:315
+msgid "Stop watching"
+msgstr "停止监视"
+
+#: src/views/entries/progress_card.py:114
+#: src/views/history/history_sidebar.py:317
+#: src/views/transcript/edit_dialogs.py:39 src/views/widgets/text_dialog.py:60
+msgid "Cancel"
+msgstr "取消"
+
+#: src/views/entries/progress_card.py:125
+msgid ""
+"You can keep using Audiotext meanwhile. The result is saved in your "
+"history and opens here when it's ready."
+msgstr "在此期间，你可以继续使用 Audiotext。结果会保存在历史记录中，并在就绪时在此处打开。"
+
+#: src/views/entries/progress_card.py:137
+msgid "The transcription failed"
+msgstr "转写失败"
+
+#: src/views/entries/progress_card.py:138
+msgid "An unknown error occurred."
+msgstr "发生未知错误。"
+
+#: src/views/entries/progress_card.py:140
+msgid "The transcription was interrupted"
+msgstr "转写已中断"
+
+#: src/views/entries/progress_card.py:141
+msgid "Audiotext was closed before it finished."
+msgstr "Audiotext 在完成前被关闭。"
+
+#: src/views/entries/progress_card.py:143
+msgid "The transcription was cancelled"
+msgstr "转写已取消"
+
+#: src/views/entries/progress_card.py:158
+#: src/views/new_transcription/new_transcription_view.py:288
+msgid "Back"
+msgstr "返回"
+
+#: src/views/entries/progress_card.py:167
+msgid "Try again"
+msgstr "重试"
+
+#: src/views/entries/progress_card.py:175
+msgid "Delete"
+msgstr "删除"
+
+#: src/views/entries/progress_card.py:188
+#, python-brace-format
+msgid "Waiting for {count} transcription(s) to finish."
+msgstr "正在等待 {count} 个转写完成。"
+
+#: src/views/entries/progress_card.py:192
+msgid "Waiting for the current transcription to finish."
+msgstr "正在等待当前转写完成。"
+
+#: src/views/entries/progress_card.py:199
+msgid "Starting…"
+msgstr "正在启动…"
+
+#: src/views/history/formatting.py:18 src/views/main_window/top_bar.py:25
+#: src/views/main_window/welcome_view.py:37
+msgid "File"
+msgstr "文件"
+
+#: src/views/history/formatting.py:19 src/views/main_window/top_bar.py:26
+#: src/views/main_window/welcome_view.py:38
+#: src/views/new_transcription/new_transcription_view.py:238
+msgid "URL"
+msgstr "URL"
+
+#: src/views/history/formatting.py:20 src/views/main_window/top_bar.py:27
+#: src/views/main_window/welcome_view.py:39
+msgid "Microphone"
+msgstr "麦克风"
+
+#: src/views/history/formatting.py:21 src/views/main_window/top_bar.py:28
+#: src/views/main_window/welcome_view.py:43
+#: src/views/settings/cards/folder_card.py:19
+msgid "Folder"
+msgstr "文件夹"
+
+#: src/views/history/formatting.py:22
+msgid "Watched folder"
+msgstr "被监视的文件夹"
+
+#: src/views/history/formatting.py:38
+msgid "Queued"
+msgstr "排队中"
+
+#: src/views/history/formatting.py:40
+msgid "Watching"
+msgstr "监视中"
+
+#: src/views/history/formatting.py:41
+msgid "Done"
+msgstr "已完成"
+
+#: src/views/history/formatting.py:42
+msgid "Failed"
+msgstr "失败"
+
+#: src/views/history/formatting.py:43
+msgid "Cancelled"
+msgstr "已取消"
+
+#: src/views/history/formatting.py:44
+msgid "Interrupted"
+msgstr "已中断"
+
+#: src/views/history/formatting.py:108
+msgid "Show in Finder"
+msgstr "在访达中显示"
+
+#: src/views/history/formatting.py:110
+msgid "Show in Explorer"
+msgstr "在资源管理器中显示"
+
+#: src/views/history/formatting.py:111
+msgid "Show in file manager"
+msgstr "在文件管理器中显示"
+
+#: src/views/history/history_row.py:248
+#, python-brace-format
+msgid "{done}/{total} files"
+msgstr "{done}/{total} 个文件"
+
+#: src/views/history/history_sidebar.py:111
+msgid "Search"
+msgstr "搜索"
+
+#: src/views/history/history_sidebar.py:127
+#: src/views/main_window/entry_actions.py:343
+msgid "New group"
+msgstr "新建分组"
+
+#: src/views/history/history_sidebar.py:182
+#, python-brace-format
+msgid "{count} transcriptions"
+msgstr "{count} 个转写"
+
+#: src/views/history/history_sidebar.py:184
+msgid "1 transcription"
+msgstr "1 个转写"
+
+#: src/views/history/history_sidebar.py:191
+msgid "No transcriptions yet"
+msgstr "暂无转写"
+
+#: src/views/history/history_sidebar.py:192
+msgid "Choose a source above to transcribe your first file."
+msgstr "在上方选择一个来源，转写你的第一个文件。"
+
+#: src/views/history/history_sidebar.py:268
+#: src/views/main_window/entry_actions.py:68
+msgid "Rename"
+msgstr "重命名"
+
+#: src/views/history/history_sidebar.py:270
+#: src/views/transcript/transcript_view.py:836
+msgid "Edit note…"
+msgstr "编辑备注…"
+
+#: src/views/history/history_sidebar.py:270
+#: src/views/transcript/transcript_view.py:836
+msgid "Add note…"
+msgstr "添加备注…"
+
+#: src/views/history/history_sidebar.py:274
+#: src/views/transcript/transcript_view.py:840
+msgid "Edit tag…"
+msgstr "编辑标签…"
+
+#: src/views/history/history_sidebar.py:279
+msgid "Unpin"
+msgstr "取消置顶"
+
+#: src/views/history/history_sidebar.py:279
+msgid "Pin to the top"
+msgstr "置顶"
+
+#: src/views/history/history_sidebar.py:285
+msgid "No group"
+msgstr "无分组"
+
+#: src/views/history/history_sidebar.py:299
+msgid "New group…"
+msgstr "新建分组…"
+
+#: src/views/history/history_sidebar.py:302
+msgid "Move to group"
+msgstr "移到分组"
+
+#: src/views/history/history_sidebar.py:328
+#: src/views/transcript/transcript_view.py:849
+msgid "Delete…"
+msgstr "删除…"
+
+#: src/views/history/history_sidebar.py:340
+msgid "Rename group…"
+msgstr "重命名分组…"
+
+#: src/views/history/history_sidebar.py:344
+msgid "Delete group…"
+msgstr "删除分组…"
+
+#: src/views/history/history_sidebar.py:367
+msgid "Pinned"
+msgstr "已置顶"
+
+#: src/views/history/history_sidebar.py:375
+msgid "Transcriptions"
+msgstr "转写"
+
+#: src/views/history/history_sidebar.py:398
+msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
+msgstr "空。要添加转写，请右键点击它并选择“移到分组”。"
+
+#: src/views/history/history_sidebar.py:422
+msgid "No files yet"
+msgstr "暂无文件"
+
+#: src/views/history/history_sidebar.py:458
+#: src/views/transcript/transcript_view.py:463
+msgid "No results"
+msgstr "无结果"
+
+#: src/views/history/history_sidebar.py:459
+#, python-brace-format
+msgid "No transcription contains “{query}”."
+msgstr "没有包含“{query}”的转写。"
+
+#: src/views/main_window/entry_actions.py:69
+msgid "Name of the transcription:"
+msgstr "转写名称："
+
+#: src/views/main_window/entry_actions.py:82
+msgid "Note"
+msgstr "备注"
+
+#: src/views/main_window/entry_actions.py:83
+#, python-brace-format
+msgid "A note about “{title}”:"
+msgstr "关于“{title}”的备注："
+
+#: src/views/main_window/entry_actions.py:97
+msgid "Tag"
+msgstr "标签"
+
+#: src/views/main_window/entry_actions.py:98
+#, python-brace-format
+msgid "Tag of “{title}”. Leave it empty to show the kind of source."
+msgstr "“{title}”的标签。留空则显示来源类型。"
+
+#: src/views/main_window/entry_actions.py:122
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "文件已被移动或删除：{path}"
+
+#: src/views/main_window/entry_actions.py:128
+#, python-brace-format
+msgid "Could not open the file manager: {error}"
+msgstr "无法打开文件管理器：{error}"
+
+#: src/views/main_window/entry_actions.py:138
+#, python-brace-format
+msgid "Could not open the folder: {error}"
+msgstr "无法打开文件夹：{error}"
+
+#: src/views/main_window/entry_actions.py:146
+#, python-brace-format
+msgid "Delete “{title}” from the history?"
+msgstr "从历史记录中删除“{title}”？"
+
+#: src/views/main_window/entry_actions.py:148
+msgid "The transcriptions of its files are deleted too."
+msgstr "其中文件的转写也会被删除。"
+
+#: src/views/main_window/entry_actions.py:149
+msgid "Your audio, video and saved files are not deleted."
+msgstr "你的音频、视频和已保存的文件不会被删除。"
+
+#: src/views/main_window/entry_actions.py:151
+msgid "Delete transcription"
+msgstr "删除转写"
+
+#: src/views/main_window/entry_actions.py:221
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "“{title}”的摘要已就绪。"
+
+#: src/views/main_window/entry_actions.py:226
+#, python-brace-format
+msgid "Could not summarize “{title}”: {error}"
+msgstr "无法总结“{title}”：{error}"
+
+#: src/views/main_window/entry_actions.py:317
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "“{title}”的翻译已就绪。"
+
+#: src/views/main_window/entry_actions.py:322
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "无法翻译“{title}”：{error}"
+
+#: src/views/main_window/entry_actions.py:344
+#: src/views/main_window/entry_actions.py:361
+msgid "Name of the group:"
+msgstr "分组名称："
+
+#: src/views/main_window/entry_actions.py:345
+msgid "Create"
+msgstr "创建"
+
+#: src/views/main_window/entry_actions.py:360
+msgid "Rename group"
+msgstr "重命名分组"
+
+#: src/views/main_window/entry_actions.py:374
+msgid "Delete group"
+msgstr "删除分组"
+
+#: src/views/main_window/entry_actions.py:376
+#, python-brace-format
+msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
+msgstr "删除分组“{name}”？其中的转写会保留，但不再属于任何分组。"
+
+#: src/views/main_window/main_window.py:497
+#: src/views/new_transcription/new_transcription_view.py:468
+#, python-brace-format
+msgid "“{name}” is not a supported audio or video file."
+msgstr "“{name}”不是受支持的音频或视频文件。"
+
+#: src/views/main_window/main_window.py:510
+msgid ""
+"Only one file can be added at a time. To transcribe several files, drop "
+"the folder that contains them."
+msgstr "一次只能添加一个文件。要转写多个文件，请拖放包含它们的文件夹。"
+
+#: src/views/main_window/main_window.py:593
+msgid ""
+"Type in the API key. It's kept in the credential store of your system. "
+"Leave it empty to remove it."
+msgstr "输入 API 密钥。它会保存在系统的凭据存储中。留空即可移除。"
+
+#: src/views/main_window/main_window.py:597
+msgid "OK"
+msgstr "确定"
+
+#: src/views/main_window/main_window.py:604
+msgid "API key saved."
+msgstr "API 密钥已保存。"
+
+#: src/views/main_window/main_window.py:604
+msgid "API key removed."
+msgstr "API 密钥已移除。"
+
+#: src/views/main_window/top_bar.py:70
+msgid "New transcription:"
+msgstr "新转写："
+
+#: src/views/main_window/top_bar.py:156
+#: src/views/settings/preferences_dialog.py:669
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "版本 {version} 可用"
+
+#: src/views/main_window/transcription_jobs.py:54
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "录音 · {date}"
+
+#: src/views/main_window/transcription_jobs.py:194
+msgid "The recording is no longer available."
+msgstr "录音已不可用。"
+
+#: src/views/main_window/transcription_jobs.py:337
+msgid "The transcription was cancelled."
+msgstr "转写已取消。"
+
+#: src/views/main_window/transcription_jobs.py:358
+msgid "Transcription ready"
+msgstr "转写完成"
+
+#: src/views/main_window/transcription_jobs.py:386
+msgid "Recording…"
+msgstr "正在录音…"
+
+#: src/views/main_window/transcription_jobs.py:443
+msgid "Processing the recording…"
+msgstr "正在处理录音…"
+
+#: src/views/main_window/transcription_jobs.py:450
+#, python-brace-format
+msgid "Saved in {folder}."
+msgstr "已保存到 {folder}。"
+
+#: src/views/main_window/welcome_view.py:23
+msgid "What do you want to transcribe?"
+msgstr "你想转写什么？"
+
+#: src/views/main_window/welcome_view.py:28
+msgid ""
+"Choose a source, or select a transcription of your history to read and "
+"play it."
+msgstr "选择一个来源，或从历史记录中选择转写来阅读和播放。"
+
+#: src/views/main_window/welcome_view.py:37
+msgid "An audio or video file"
+msgstr "音频或视频文件"
+
+#: src/views/main_window/welcome_view.py:38
+msgid "YouTube or a link to a file"
+msgstr "YouTube 或文件链接"
+
+#: src/views/main_window/welcome_view.py:39
+#: src/views/new_transcription/microphone_view.py:431
+msgid "Record and transcribe"
+msgstr "录音并转写"
+
+#: src/views/main_window/welcome_view.py:44
+msgid "Many files at once, or watch it"
+msgstr "一次处理多个文件，或监视文件夹"
+
+#: src/views/main_window/welcome_view.py:60
+msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
+msgstr "提示：将文件或文件夹拖放到窗口任意位置即可转写。"
+
+#: src/views/new_transcription/microphone_view.py:70
+msgid "No sound. Check that the microphone is on and allowed."
+msgstr "没有声音。请检查麦克风是否已打开并获得授权。"
+
+#: src/views/new_transcription/microphone_view.py:72
+msgid "Waiting for speech…"
+msgstr "正在等待语音…"
+
+#: src/views/new_transcription/microphone_view.py:75
+msgid "Too quiet. Speak louder or closer to the microphone."
+msgstr "声音太小。请大声一点或靠近麦克风说话。"
+
+#: src/views/new_transcription/microphone_view.py:77
+msgid "Good level"
+msgstr "音量合适"
+
+#: src/views/new_transcription/microphone_view.py:80
+msgid "Too loud. Move away from the microphone."
+msgstr "声音太大。请离麦克风远一点。"
+
+#: src/views/new_transcription/microphone_view.py:124
+msgid "Transcribe from the microphone"
+msgstr "从麦克风转写"
+
+#: src/views/new_transcription/microphone_view.py:130
+msgid "Record yourself or a meeting. The recording is kept in your history."
+msgstr "录下你自己或一场会议。录音会保存在历史记录中。"
+
+#: src/views/new_transcription/microphone_view.py:161
+msgid "Loading…"
+msgstr "正在加载…"
+
+#: src/views/new_transcription/microphone_view.py:252
+#: src/views/transcript/summary_panel.py:241
+#: src/views/transcript/transcript_view.py:348
+#: src/views/transcript/transcript_view.py:879
+msgid "Copy"
+msgstr "复制"
+
+#: src/views/new_transcription/microphone_view.py:262
+msgid "Open in history"
+msgstr "在历史记录中打开"
+
+#: src/views/new_transcription/microphone_view.py:282
+msgid "Wait until the current transcription finishes, or cancel it."
+msgstr "请等待当前转写完成，或将其取消。"
+
+#: src/views/new_transcription/microphone_view.py:370
+#, python-brace-format
+msgid "Press the button to start recording ({shortcut})"
+msgstr "按下按钮开始录音（{shortcut}）"
+
+#: src/views/new_transcription/microphone_view.py:375
+msgid "The level is shown while recording"
+msgstr "录音时会显示音量"
+
+#: src/views/new_transcription/microphone_view.py:379
+msgid "Recording… Press the button to stop and transcribe."
+msgstr "正在录音… 按下按钮停止并转写。"
+
+#: src/views/new_transcription/microphone_view.py:389
+msgid "Done. Press the button to record again."
+msgstr "完成。按下按钮可再次录音。"
+
+#: src/views/new_transcription/microphone_view.py:392
+msgid "Press the button to try again."
+msgstr "按下按钮重试。"
+
+#: src/views/new_transcription/microphone_view.py:408
+msgid "Draft. It's replaced when the final transcription finishes."
+msgstr "草稿。最终转写完成后会被替换。"
+
+#: src/views/new_transcription/microphone_view.py:414
+msgid "The text will appear here as you speak."
+msgstr "你说话时，文本会显示在这里。"
+
+#: src/views/new_transcription/microphone_view.py:415
+msgid "The transcription will appear here when you stop recording."
+msgstr "停止录音后，转写会显示在这里。"
+
+#: src/views/new_transcription/microphone_view.py:431
+msgid "Refine"
+msgstr "精修"
+
+#: src/views/new_transcription/microphone_view.py:462
+#: src/views/new_transcription/microphone_view.py:463
+msgid "No microphone found"
+msgstr "未找到麦克风"
+
+#: src/views/new_transcription/microphone_view.py:478
+msgid "default"
+msgstr "默认"
+
+#: src/views/new_transcription/new_transcription_view.py:103
+msgid "Transcribe a file"
+msgstr "转写文件"
+
+#: src/views/new_transcription/new_transcription_view.py:104
+msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
+msgstr "音频和视频文件：MP3、WAV、M4A、MP4、MOV、MKV 等。"
+
+#: src/views/new_transcription/new_transcription_view.py:108
+msgid "Transcribe from a URL"
+msgstr "从 URL 转写"
+
+#: src/views/new_transcription/new_transcription_view.py:109
+msgid "A YouTube video or a direct link to an audio or video file."
+msgstr "YouTube 视频，或音频、视频文件的直接链接。"
+
+#: src/views/new_transcription/new_transcription_view.py:113
+msgid "Transcribe a folder"
+msgstr "转写文件夹"
+
+#: src/views/new_transcription/new_transcription_view.py:115
+msgid ""
+"All the audio and video files of a folder, or the new ones as they're "
+"added."
+msgstr "文件夹中的所有音频和视频文件，或新添加的文件。"
+
+#: src/views/new_transcription/new_transcription_view.py:175
+msgid "Drop an audio or video file here"
+msgstr "将音频或视频文件拖放到此处"
+
+#: src/views/new_transcription/new_transcription_view.py:177
+msgid "Drop a folder here"
+msgstr "将文件夹拖放到此处"
+
+#: src/views/new_transcription/new_transcription_view.py:182
+msgid "or"
+msgstr "或"
+
+#: src/views/new_transcription/new_transcription_view.py:188
+msgid "Choose a file…"
+msgstr "选择文件…"
+
+#: src/views/new_transcription/new_transcription_view.py:188
+msgid "Choose a folder…"
+msgstr "选择文件夹…"
+
+#: src/views/new_transcription/new_transcription_view.py:225
+#: src/views/settings/cards/output_card.py:91
+#: src/views/settings/preferences_dialog.py:338
+msgid "Change…"
+msgstr "更改…"
+
+#: src/views/new_transcription/new_transcription_view.py:254
+msgid "Paste"
+msgstr "粘贴"
+
+#: src/views/new_transcription/new_transcription_view.py:270
+msgid ""
+"Examples: https://youtu.be/dQw4w9WgXcQ · "
+"https://example.com/podcast/episode-12.mp3"
+msgstr ""
+"示例：https://youtu.be/dQw4w9WgXcQ · "
+"https://example.com/podcast/episode-12.mp3"
+
+#: src/views/new_transcription/new_transcription_view.py:349
+msgid "Select a file"
+msgstr "选择文件"
+
+#: src/views/new_transcription/new_transcription_view.py:351
+msgid "All supported files"
+msgstr "所有支持的文件"
+
+#: src/views/new_transcription/new_transcription_view.py:352
+msgid "Audio files"
+msgstr "音频文件"
+
+#: src/views/new_transcription/new_transcription_view.py:353
+msgid "Video files"
+msgstr "视频文件"
+
+#: src/views/new_transcription/new_transcription_view.py:357
+msgid "Select a folder"
+msgstr "选择文件夹"
+
+#: src/views/new_transcription/new_transcription_view.py:387
+msgid "Continue"
+msgstr "继续"
+
+#: src/views/new_transcription/new_transcription_view.py:416
+msgid "Add to queue"
+msgstr "添加到队列"
+
+#: src/views/new_transcription/new_transcription_view.py:416
+msgid "Start transcription"
+msgstr "开始转写"
+
+#: src/views/new_transcription/new_transcription_view.py:423
+msgid "It will start when the current transcription finishes."
+msgstr "将在当前转写完成后开始。"
+
+#: src/views/new_transcription/new_transcription_view.py:489
+msgid "Reading…"
+msgstr "正在读取…"
+
+#: src/views/new_transcription/new_transcription_view.py:503
+msgid "Video"
+msgstr "视频"
+
+#: src/views/new_transcription/new_transcription_view.py:503
+msgid "Audio"
+msgstr "音频"
+
+#: src/views/new_transcription/new_transcription_view.py:520
+msgid "No audio or video files found (subfolders included)."
+msgstr "未找到音频或视频文件（含子文件夹）。"
+
+#: src/views/new_transcription/new_transcription_view.py:522
+msgid "1 audio or video file (subfolders included)"
+msgstr "1 个音频或视频文件（含子文件夹）"
+
+#: src/views/new_transcription/new_transcription_view.py:524
+#, python-brace-format
+msgid "{count} audio and video files (subfolders included)"
+msgstr "{count} 个音频和视频文件（含子文件夹）"
+
+#: src/views/new_transcription/new_transcription_view.py:548
+msgid "YouTube video"
+msgstr "YouTube 视频"
+
+#: src/views/new_transcription/new_transcription_view.py:548
+msgid "Link to a file"
+msgstr "文件链接"
+
+#: src/views/new_transcription/new_transcription_view.py:554
+msgid "Enter a URL that starts with http:// or https://"
+msgstr "请输入以 http:// 或 https:// 开头的 URL"
+
+#: src/views/settings/cards/engine_card.py:163
+#: src/views/settings/preferences_dialog.py:48
+msgid "OpenAI API key"
+msgstr "OpenAI API 密钥"
+
+#: src/views/settings/preferences_dialog.py:50
+msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
+msgstr "Whisper API 以及使用 OpenAI 总结和翻译时必需。"
+
+#: src/views/settings/preferences_dialog.py:54
+msgid "Anthropic API key"
+msgstr "Anthropic API 密钥"
+
+#: src/views/settings/preferences_dialog.py:55
+msgid "Required to summarize and translate with Claude."
+msgstr "使用 Claude 总结和翻译时必需。"
+
+#: src/views/settings/preferences_dialog.py:58
+msgid "DeepSeek API key"
+msgstr "DeepSeek API 密钥"
+
+#: src/views/settings/preferences_dialog.py:59
+msgid "Required to summarize and translate with DeepSeek."
+msgstr "使用 DeepSeek 总结和翻译时必需。"
+
+#: src/views/settings/preferences_dialog.py:62
+msgid "Gemini API key"
+msgstr "Gemini API 密钥"
+
+#: src/views/settings/preferences_dialog.py:64
+msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgstr "使用 Gemini 总结和翻译时必需（可在 Google AI Studio 获取）。"
+
+#: src/views/settings/preferences_dialog.py:68
+msgid "Mistral API key"
+msgstr "Mistral API 密钥"
+
+#: src/views/settings/preferences_dialog.py:69
+msgid "Required to summarize and translate with Mistral."
+msgstr "使用 Mistral 总结和翻译时必需。"
+
+#: src/views/settings/preferences_dialog.py:72
+msgid "xAI API key"
+msgstr "xAI API 密钥"
+
+#: src/views/settings/preferences_dialog.py:73
+msgid "Required to summarize and translate with Grok."
+msgstr "使用 Grok 总结和翻译时必需。"
+
+#: src/views/settings/preferences_dialog.py:76
+msgid "DeepL API key"
+msgstr "DeepL API 密钥"
+
+#: src/views/settings/preferences_dialog.py:77
+msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgstr "使用 DeepL 翻译时必需。免费套餐的密钥也可以使用。"
+
+#: src/views/settings/cards/engine_card.py:165
+#: src/views/settings/preferences_dialog.py:80
+msgid "Google API key"
+msgstr "Google API 密钥"
+
+#: src/views/settings/preferences_dialog.py:82
+msgid ""
+"Optional for Google Speech-to-Text: without it, the free tier is used. "
+"Required to translate with Google Translate (Cloud Translation API)."
+msgstr ""
+"对 Google Speech-to-Text 是可选的：不设置则使用免费层级。使用 Google 翻译（Cloud Translation "
+"API）翻译时必需。"
+
+#: src/views/settings/cards/options_card.py:89
+#: src/views/settings/preferences_dialog.py:86
+msgid "Hugging Face token"
+msgstr "Hugging Face 令牌"
+
+#: src/views/settings/preferences_dialog.py:88
+msgid ""
+"Required to identify speakers with WhisperX (pyannote/speaker-"
+"diarization-community-1)."
+msgstr "使用 WhisperX 识别说话人时必需（pyannote/speaker-diarization-community-1）。"
+
+#: src/views/settings/preferences_dialog.py:135
+msgid "Preferences"
+msgstr "偏好设置"
+
+#: src/views/settings/preferences_dialog.py:147
+msgid "General"
+msgstr "常规"
+
+#: src/views/settings/preferences_dialog.py:148
+msgid "AI"
+msgstr "AI"
+
+#: src/views/settings/preferences_dialog.py:149
+msgid "API keys"
+msgstr "API 密钥"
+
+#: src/views/settings/preferences_dialog.py:155
+#: src/views/transcript/player_bar.py:100
+msgid "Subtitles"
+msgstr "字幕"
+
+#: src/views/settings/preferences_dialog.py:157
+msgid "About"
+msgstr "关于"
+
+#: src/views/settings/preferences_dialog.py:246
+msgid "System"
+msgstr "跟随系统"
+
+#: src/views/settings/preferences_dialog.py:246
+msgid "Light"
+msgstr "浅色"
+
+#: src/views/settings/preferences_dialog.py:246
+msgid "Dark"
+msgstr "深色"
+
+#: src/views/settings/preferences_dialog.py:248
+msgid "Appearance"
+msgstr "外观"
+
+#: src/views/settings/preferences_dialog.py:260
+msgid "System language"
+msgstr "系统语言"
+
+#: src/views/settings/preferences_dialog.py:266
+msgid "Interface language"
+msgstr "界面语言"
+
+#: src/views/settings/preferences_dialog.py:269
+msgid "It can be changed when no transcription is in progress."
+msgstr "没有正在进行的转写时可以更改。"
+
+#: src/views/settings/preferences_dialog.py:285
+msgid "Notifications"
+msgstr "通知"
+
+#: src/views/settings/preferences_dialog.py:286
+msgid "Shows a notification of the system when a transcription is ready."
+msgstr "转写完成时显示系统通知。"
+
+#: src/views/settings/preferences_dialog.py:295
+msgid "Updates"
+msgstr "更新"
+
+#: src/views/settings/preferences_dialog.py:295
+msgid "Checks for a new version when the app opens."
+msgstr "打开应用时检查是否有新版本。"
+
+#: src/views/settings/preferences_dialog.py:338
+msgid "Set…"
+msgstr "设置…"
+
+#: src/views/settings/cards/language_card.py:123
+#: src/views/settings/preferences_dialog.py:373
+#: src/views/transcript/translation_panel.py:159
+msgid "Translation"
+msgstr "翻译"
+
+#: src/views/settings/preferences_dialog.py:384
+msgid "Ollama"
+msgstr "Ollama"
+
+#: src/views/settings/preferences_dialog.py:389
+msgid "Server URL"
+msgstr "服务器 URL"
+
+#: src/views/settings/preferences_dialog.py:390
+msgid "Ollama runs the models on your computer, without an API key."
+msgstr "Ollama 在你的电脑上运行模型，无需 API 密钥。"
+
+#: src/views/settings/preferences_dialog.py:421
+msgid "Provider"
+msgstr "提供商"
+
+#: src/views/settings/cards/engine_card.py:66
+#: src/views/settings/preferences_dialog.py:428
+msgid "Model"
+msgstr "模型"
+
+#: src/views/settings/preferences_dialog.py:429
+msgid "The default model of the provider if empty."
+msgstr "留空则使用提供商的默认模型。"
+
+#: src/views/settings/preferences_dialog.py:474
+msgid "Compute type"
+msgstr "计算类型"
+
+#: src/views/settings/preferences_dialog.py:475
+msgid "float16 is faster on GPUs. int8 uses less memory."
+msgstr "float16 在 GPU 上更快。int8 占用更少内存。"
+
+#: src/views/settings/preferences_dialog.py:489
+msgid "Batch size"
+msgstr "批处理大小"
+
+#: src/views/settings/preferences_dialog.py:489
+msgid "Lower it if you run out of memory."
+msgstr "内存不足时请调低。"
+
+#: src/views/settings/preferences_dialog.py:501
+msgid "Use CPU"
+msgstr "使用 CPU"
+
+#: src/views/settings/preferences_dialog.py:504
+msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgstr "未找到 CUDA GPU，因此 WhisperX 在 CPU 上运行。"
+
+#: src/views/settings/preferences_dialog.py:518
+msgid "Highlight words"
+msgstr "高亮单词"
+
+#: src/views/settings/preferences_dialog.py:519
+msgid "Underlines each word as it's said (.srt and .vtt)."
+msgstr "在说出每个单词时为其加下划线（.srt 和 .vtt）。"
+
+#: src/views/settings/preferences_dialog.py:526
+msgid "Max. line count"
+msgstr "最大行数"
+
+#: src/views/settings/preferences_dialog.py:533
+msgid "Max. line width"
+msgstr "最大行宽"
+
+#: src/views/settings/preferences_dialog.py:545
+msgid "Temperature"
+msgstr "温度"
+
+#: src/views/settings/preferences_dialog.py:546
+msgid "Between 0 and 1. Higher values are more random."
+msgstr "介于 0 到 1 之间。值越高，随机性越强。"
+
+#: src/views/settings/preferences_dialog.py:558
+msgid "Timestamps of the words"
+msgstr "单词时间戳"
+
+#: src/views/settings/preferences_dialog.py:559
+msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgstr "播放时高亮每个单词（whisper-1 模型）。耗时更长。"
+
+#: src/views/settings/preferences_dialog.py:589
+#, python-brace-format
+msgid "Version {version}"
+msgstr "版本 {version}"
+
+#: src/views/settings/preferences_dialog.py:593
+#, python-brace-format
+msgid "Made by {author}"
+msgstr "作者：{author}"
+
+#: src/views/settings/preferences_dialog.py:600
+msgid "Documentation"
+msgstr "文档"
+
+#: src/views/settings/preferences_dialog.py:614
+msgid "Donate"
+msgstr "捐赠"
+
+#: src/views/settings/preferences_dialog.py:624
+msgid "Check for updates"
+msgstr "检查更新"
+
+#: src/views/settings/preferences_dialog.py:646
+msgid "Checking for updates…"
+msgstr "正在检查更新…"
+
+#: src/views/settings/preferences_dialog.py:658
+msgid "Could not check for updates."
+msgstr "无法检查更新。"
+
+#: src/views/settings/preferences_dialog.py:663
+msgid "Download"
+msgstr "下载"
+
+#: src/views/settings/preferences_dialog.py:676
+msgid "You have the latest version."
+msgstr "你使用的是最新版本。"
+
+#: src/views/settings/settings_form.py:162
+msgid "Select at least one output file type."
+msgstr "请至少选择一种输出文件类型。"
+
+#: src/views/settings/settings_form.py:179
+#, python-brace-format
+msgid ""
+"The {model} model only transcribes English. Choose a multilingual model "
+"or set the language of the audio to English."
+msgstr "{model} 模型仅转写英语。请选择多语言模型，或将音频语言设为英语。"
+
+#: src/views/settings/settings_form.py:187
+msgid "The Whisper API requires an OpenAI API key."
+msgstr "Whisper API 需要 OpenAI API 密钥。"
+
+#: src/views/settings/cards/context_card.py:28
+msgid "Context"
+msgstr "背景信息"
+
+#: src/views/settings/cards/context_card.py:34
+msgid "Keywords"
+msgstr "关键词"
+
+#: src/views/settings/cards/context_card.py:39
+msgid "e.g. Audiotext, WhisperX, Henestrosa"
+msgstr "例如：Audiotext, WhisperX, Henestrosa"
+
+#: src/views/settings/cards/context_card.py:46
+msgid ""
+"Names, terms or acronyms said in the audio, separated by commas, so "
+"they're spelled right."
+msgstr "音频中出现的人名、术语或缩写，用逗号分隔，以便正确拼写。"
+
+#: src/views/settings/cards/context_card.py:51
+msgid "Description"
+msgstr "描述"
+
+#: src/views/settings/cards/context_card.py:56
+msgid "e.g. An interview about speech recognition"
+msgstr "例如：一场关于语音识别的访谈"
+
+#: src/views/settings/cards/context_card.py:63
+msgid "What the audio is about, such as its topic or setting."
+msgstr "音频的内容，例如主题或场景。"
+
+#: src/views/settings/cards/context_card.py:100
+msgid "Not used by the Google API."
+msgstr "Google API 不使用此项。"
+
+#: src/views/settings/cards/context_card.py:112
+#, python-brace-format
+msgid "Not used by the {model} model."
+msgstr "{model} 模型不使用此项。"
+
+#: src/views/settings/cards/engine_card.py:25
+msgid "Identifies the speakers. With timestamps."
+msgstr "识别说话人。带时间戳。"
+
+#: src/views/settings/cards/engine_card.py:28
+msgid ""
+"With timestamps, to play the transcription sentence by sentence and "
+"generate subtitles."
+msgstr "带时间戳，可逐句播放转写并生成字幕。"
+
+#: src/views/settings/cards/engine_card.py:32
+msgid ""
+"More accurate, but without timestamps: the transcription can't be played "
+"sentence by sentence nor subtitled."
+msgstr "更准确，但没有时间戳：转写无法逐句播放，也无法生成字幕。"
+
+#: src/views/settings/cards/engine_card.py:50
+msgid "Engine"
+msgstr "引擎"
+
+#: src/views/settings/cards/engine_card.py:54
+msgid "Transcription method"
+msgstr "转写方式"
+
+#: src/views/settings/cards/engine_card.py:114
+msgid ""
+"Only transcribes English, faster than the multilingual model of the same "
+"size."
+msgstr "仅转写英语，比相同大小的多语言模型更快。"
+
+#: src/views/settings/cards/engine_card.py:118
+msgid "Larger models are more accurate, but slower."
+msgstr "模型越大越准确，但速度越慢。"
+
+#: src/views/settings/cards/engine_card.py:121
+msgid "Runs on your computer. Free, private and unlimited."
+msgstr "在你的电脑上运行。免费、私密且无限制。"
+
+#: src/views/settings/cards/engine_card.py:131
+msgid "Runs on the servers of OpenAI. Requires an API key."
+msgstr "在 OpenAI 的服务器上运行。需要 API 密钥。"
+
+#: src/views/settings/cards/engine_card.py:135
+msgid ""
+"Runs on the servers of Google. An API key is optional; without it, the "
+"free tier is used."
+msgstr "在 Google 的服务器上运行。API 密钥是可选的；不设置则使用免费层级。"
+
+#: src/views/settings/cards/engine_card.py:140
+msgid "API key set"
+msgstr "已设置 API 密钥"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/transcript/summary_panel.py:99
+#: src/views/transcript/translation_panel.py:348
+msgid "Set API key…"
+msgstr "设置 API 密钥…"
+
+#: src/views/settings/cards/folder_card.py:22
+msgid "Watch the folder"
+msgstr "监视文件夹"
+
+#: src/views/settings/cards/folder_card.py:34
+msgid ""
+"Keeps running and transcribes the files added to the folder, until you "
+"stop it. The files it already contains are skipped."
+msgstr "持续运行并转写添加到文件夹中的文件，直到你停止。文件夹中已有的文件会被跳过。"
+
+#: src/views/settings/cards/folder_card.py:39
+msgid ""
+"Transcribes the audio and video files of the folder and its subfolders. "
+"Files that already have a transcription are skipped unless you overwrite "
+"them."
+msgstr "转写文件夹及其子文件夹中的音频和视频文件。已有转写的文件会被跳过，除非你选择覆盖。"
+
+#: src/views/settings/cards/language_card.py:56
+msgid "Language"
+msgstr "语言"
+
+#: src/views/settings/cards/language_card.py:60
+msgid "Auto-detect"
+msgstr "自动检测"
+
+#: src/views/settings/cards/language_card.py:63
+msgid "Same as the audio"
+msgstr "与音频相同"
+
+#: src/views/settings/cards/language_card.py:70
+#: src/views/settings/cards/language_card.py:74
+msgid "Language of the audio"
+msgstr "音频语言"
+
+#: src/views/settings/cards/language_card.py:75
+#: src/views/settings/cards/language_card.py:93
+#: src/views/transcript/translation_panel.py:302
+msgid "Search language…"
+msgstr "搜索语言…"
+
+#: src/views/settings/cards/language_card.py:76
+#: src/views/settings/cards/language_card.py:94
+#: src/views/transcript/translation_panel.py:303
+msgid "No languages found."
+msgstr "未找到语言。"
+
+#: src/views/settings/cards/language_card.py:88
+#: src/views/settings/cards/language_card.py:92
+msgid "Language of the transcription"
+msgstr "转写语言"
+
+#: src/views/settings/cards/language_card.py:131
+msgid "Translate with Whisper (recommended)"
+msgstr "使用 Whisper 翻译（推荐）"
+
+#: src/views/settings/cards/language_card.py:191
+msgid ""
+"The Google API can't translate. The transcription will be in the language"
+" of the audio."
+msgstr "Google API 无法翻译。转写将使用音频的语言。"
+
+#: src/views/settings/cards/language_card.py:201
+#, python-brace-format
+msgid "Write it directly in {language} (experimental)"
+msgstr "直接用{language}书写（实验性）"
+
+#: src/views/settings/cards/language_card.py:219
+msgid "Whisper transcribes and translates the audio in one step."
+msgstr "Whisper 一步完成音频的转写和翻译。"
+
+#: src/views/settings/cards/language_card.py:223
+#, python-brace-format
+msgid ""
+"Whisper can only translate into {english}. For other languages, it's "
+"asked to write the transcription in {language} directly. It works well "
+"for many languages, but check the result."
+msgstr "Whisper 只能翻译成{english}。对于其他语言，会要求它直接用{language}写出转写。这对许多语言效果不错，但请检查结果。"
+
+#: src/views/settings/cards/live_card.py:27
+msgid "Live text"
+msgstr "实时文本"
+
+#: src/views/settings/cards/live_card.py:30
+msgid "Show the text while recording"
+msgstr "录音时显示文本"
+
+#: src/views/settings/cards/live_card.py:35
+msgid "Live model"
+msgstr "实时模型"
+
+#: src/views/settings/cards/live_card.py:62
+#: src/views/settings/cards/options_card.py:116
+#: src/views/settings/cards/options_card.py:145
+msgid "Only available with WhisperX."
+msgstr "仅适用于 WhisperX。"
+
+#: src/views/settings/cards/live_card.py:65
+msgid ""
+"A fast model writes a draft while you speak. When you stop, the whole "
+"recording is transcribed again with the model of the engine, which is "
+"more accurate."
+msgstr "你说话时，一个快速模型会写出草稿。停下后，整段录音会用引擎的模型重新转写，结果更准确。"
+
+#: src/views/settings/cards/live_card.py:70
+msgid "The text is shown when you stop recording."
+msgstr "停止录音后会显示文本。"
+
+#: src/views/settings/cards/options_card.py:37
+msgid "Options"
+msgstr "选项"
+
+#: src/views/settings/cards/options_card.py:43
+msgid "Word-level timings"
+msgstr "逐词时间"
+
+#: src/views/settings/cards/options_card.py:51
+msgid "Extract speech"
+msgstr "提取人声"
+
+#: src/views/settings/cards/options_card.py:55
+msgid "Reduces music and background noise before transcribing."
+msgstr "转写前降低音乐和背景噪音。"
+
+#: src/views/settings/cards/options_card.py:59
+msgid "Identify speakers"
+msgstr "识别说话人"
+
+#: src/views/settings/cards/options_card.py:69
+msgid "Number of speakers (0 = auto)"
+msgstr "说话人数量(0 = 自动)"
+
+#: src/views/settings/cards/options_card.py:87
+msgid "Set Hugging Face token…"
+msgstr "设置 Hugging Face 令牌…"
+
+#: src/views/settings/cards/options_card.py:119
+msgid "Highlights each word while playing. The subtitles already use them."
+msgstr "播放时高亮每个单词。字幕已在使用。"
+
+#: src/views/settings/cards/options_card.py:122
+msgid "Highlights each word while playing. Takes a bit longer."
+msgstr "播放时高亮每个单词。耗时稍长。"
+
+#: src/views/settings/cards/options_card.py:132
+msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgstr "标注每段由谁说话。需要 Hugging Face 令牌。"
+
+#: src/views/settings/cards/options_card.py:138
+msgid "The model of the Whisper API identifies the speakers."
+msgstr "Whisper API 的模型会识别说话人。"
+
+#: src/views/settings/cards/options_card.py:141
+msgid ""
+"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
+" of the Whisper API."
+msgstr "仅适用于 WhisperX，或 Whisper API 的 gpt-4o-transcribe-diarize 模型。"
+
+#: src/views/settings/cards/output_card.py:37
+msgid "Output"
+msgstr "输出"
+
+#: src/views/settings/cards/output_card.py:41
+msgid "File types"
+msgstr "文件类型"
+
+#: src/views/settings/cards/output_card.py:100
+msgid "Next to the source"
+msgstr "与来源相同的位置"
+
+#: src/views/settings/cards/output_card.py:110
+msgid "Overwrite existing files"
+msgstr "覆盖现有文件"
+
+#: src/views/settings/cards/output_card.py:114
+msgid "The files of a folder are always saved."
+msgstr "文件夹中的文件始终会被保存。"
+
+#: src/views/settings/cards/output_card.py:142
+msgid "The Google API returns plain text (.txt)."
+msgstr "Google API 返回纯文本 (.txt)。"
+
+#: src/views/settings/cards/output_card.py:147
+#, python-brace-format
+msgid "Saved in {folder}"
+msgstr "保存在 {folder}"
+
+#: src/views/settings/cards/output_card.py:150
+msgid "Saved next to the source"
+msgstr "保存在来源旁边"
+
+#: src/views/settings/cards/output_card.py:169
+msgid "Format of the files."
+msgstr "文件的格式。"
+
+#: src/views/settings/cards/output_card.py:172
+#, python-brace-format
+msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
+msgstr "{model} 模型不返回时间戳，因此无法保存字幕。"
+
+#: src/views/settings/cards/output_card.py:192
+msgid "Choose where to save the transcriptions"
+msgstr "选择转写的保存位置"
+
+#: src/views/transcript/corrections.py:78
+msgid "Replaced."
+msgstr "已替换。"
+
+#: src/views/transcript/corrections.py:94
+#: src/views/transcript/transcript_view.py:670
+msgid "Edit the text"
+msgstr "编辑文本"
+
+#: src/views/transcript/corrections.py:95
+#: src/views/transcript/transcript_view.py:671
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "{time} 时说的文本："
+
+#: src/views/transcript/edit_dialogs.py:85
+msgid "Find and replace"
+msgstr "查找和替换"
+
+#: src/views/transcript/edit_dialogs.py:85
+msgid "Replace all"
+msgstr "全部替换"
+
+#: src/views/transcript/edit_dialogs.py:94
+msgid "Find:"
+msgstr "查找："
+
+#: src/views/transcript/edit_dialogs.py:94
+msgid "Replace with:"
+msgstr "替换为："
+
+#: src/views/transcript/edit_dialogs.py:106
+msgid "Match case"
+msgstr "区分大小写"
+
+#: src/views/transcript/edit_dialogs.py:135
+msgid "1 match"
+msgstr "1 个匹配项"
+
+#: src/views/transcript/edit_dialogs.py:137
+#, python-brace-format
+msgid "{count} matches"
+msgstr "{count} 个匹配项"
+
+#: src/views/transcript/edit_dialogs.py:155
+msgid "Rename speakers"
+msgstr "重命名说话人"
+
+#: src/views/transcript/edit_dialogs.py:155 src/views/widgets/text_dialog.py:66
+msgid "Save"
+msgstr "保存"
+
+#: src/views/transcript/edit_dialogs.py:162
+msgid ""
+"Give a name to each speaker. Giving two speakers the same name merges "
+"them."
+msgstr "为每位说话人命名。给两位说话人起相同的名字会将他们合并。"
+
+#: src/views/transcript/player_bar.py:122
+msgid "Loading the audio…"
+msgstr "正在加载音频…"
+
+#: src/views/transcript/player_bar.py:151
+#, python-brace-format
+msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr "空格：播放/暂停 · ←/→：后退/前进 {seconds} 秒"
+
+#: src/views/transcript/player_bar.py:252
+#: src/views/transcript/transcript_view.py:754
+#, python-brace-format
+msgid "The audio can't be played: {error}"
+msgstr "无法播放音频:{error}"
+
+#: src/views/transcript/summary_panel.py:72
+msgid "Summarizing…"
+msgstr "正在总结…"
+
+#: src/views/transcript/summary_panel.py:73
+#, python-brace-format
+msgid "{provider} is reading the transcription. It takes a moment."
+msgstr "{provider} 正在读取转写。需要一点时间。"
+
+#: src/views/transcript/summary_panel.py:79
+#: src/views/transcript/summary_panel.py:92
+msgid "No summary yet"
+msgstr "暂无摘要"
+
+#: src/views/transcript/summary_panel.py:81
+#, python-brace-format
+msgid ""
+"Generate a summary, the key points and the chapters of the transcription "
+"with {provider}."
+msgstr "使用 {provider} 生成转写的摘要、要点和章节。"
+
+#: src/views/transcript/summary_panel.py:86
+msgid "Generate summary"
+msgstr "生成摘要"
+
+#: src/views/transcript/summary_panel.py:94
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to summarize, or choose another provider in"
+" the settings."
+msgstr "请设置 {provider} 的 API 密钥以生成摘要，或在设置中选择其他提供商。"
+
+#: src/views/transcript/summary_panel.py:194
+msgid "The transcription is very long, so only its beginning was summarized."
+msgstr "转写内容很长，因此只总结了开头部分。"
+
+#: src/views/transcript/summary_panel.py:251
+msgid "Regenerate"
+msgstr "重新生成"
+
+#: src/views/transcript/summary_panel.py:278
+#, python-brace-format
+msgid "Generated by {model} · {date}"
+msgstr "由 {model} 生成 · {date}"
+
+#: src/views/transcript/transcript_text.py:162
+msgid "Click a sentence to play it. Right-click it to edit it."
+msgstr "点击句子即可播放。右键点击可编辑。"
+
+#: src/views/transcript/transcript_text.py:165
+msgid "The plain text has been edited; the transcript keeps the original."
+msgstr "纯文本已被编辑；逐字稿保留原始内容。"
+
+#: src/views/transcript/transcript_text.py:170
+msgid "You can edit the text. The changes are saved automatically."
+msgstr "你可以编辑文本。更改会自动保存。"
+
+#: src/views/transcript/transcript_text.py:173
+msgid ""
+"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
+"transcribe-diarize models of the Whisper API."
+msgstr ""
+"时间戳仅适用于 WhisperX 以及 Whisper API 的 whisper-1 和 gpt-4o-transcribe-diarize "
+"模型。"
+
+#: src/views/transcript/transcript_text.py:325
+msgid "This transcription has no timestamps."
+msgstr "此转写没有时间戳。"
+
+#: src/views/transcript/transcript_view.py:80
+msgid "Plain text (.txt)"
+msgstr "纯文本 (.txt)"
+
+#: src/views/transcript/transcript_view.py:81
+msgid "Markdown (.md)"
+msgstr "Markdown (.md)"
+
+#: src/views/transcript/transcript_view.py:82
+msgid "Word document (.docx)"
+msgstr "Word 文档 (.docx)"
+
+#: src/views/transcript/transcript_view.py:83
+msgid "Subtitles (.srt)"
+msgstr "字幕 (.srt)"
+
+#: src/views/transcript/transcript_view.py:84
+msgid "Web subtitles (.vtt)"
+msgstr "网页字幕 (.vtt)"
+
+#: src/views/transcript/transcript_view.py:85
+msgid "Table (.tsv)"
+msgstr "表格 (.tsv)"
+
+#: src/views/transcript/transcript_view.py:86
+msgid "JSON (.json)"
+msgstr "JSON (.json)"
+
+#: src/views/transcript/transcript_view.py:225
+msgid "Export transcription"
+msgstr "导出转写"
+
+#: src/views/transcript/transcript_view.py:229
+msgid "All files"
+msgstr "所有文件"
+
+#: src/views/transcript/transcript_view.py:245
+#, python-brace-format
+msgid "Could not export: {error}"
+msgstr "无法导出：{error}"
+
+#: src/views/transcript/transcript_view.py:248
+#, python-brace-format
+msgid "Exported to {path}"
+msgstr "已导出到 {path}"
+
+#: src/views/transcript/transcript_view.py:297
+#, python-brace-format
+msgid "Search ({shortcut})"
+msgstr "搜索({shortcut})"
+
+#: src/views/transcript/transcript_view.py:334
+msgid "Transcript"
+msgstr "逐字稿"
+
+#: src/views/transcript/transcript_view.py:335
+msgid "Plain text"
+msgstr "纯文本"
+
+#: src/views/transcript/transcript_view.py:344
+#: src/views/transcript/translation_panel.py:285
+msgid "Translate"
+msgstr "翻译"
+
+#: src/views/transcript/transcript_view.py:352
+msgid "Export"
+msgstr "导出"
+
+#: src/views/transcript/transcript_view.py:465
+#, python-brace-format
+msgid "{current} of {total}"
+msgstr "{current}/{total}"
+
+#: src/views/transcript/transcript_view.py:505
+msgid "Summary copied."
+msgstr "已复制摘要。"
+
+#: src/views/transcript/transcript_view.py:582
+msgid "Hide the translation"
+msgstr "隐藏翻译"
+
+#: src/views/transcript/transcript_view.py:587
+msgid "Show the translation"
+msgstr "显示翻译"
+
+#: src/views/transcript/transcript_view.py:591
+msgid "Translate into another language…"
+msgstr "翻译成其他语言…"
+
+#: src/views/transcript/transcript_view.py:602
+msgid "Delete the translation"
+msgstr "删除翻译"
+
+#: src/views/transcript/transcript_view.py:648
+#: src/views/transcript/transcript_view.py:792
+msgid "Play from here"
+msgstr "从此处播放"
+
+#: src/views/transcript/transcript_view.py:651
+#: src/views/transcript/transcript_view.py:795
+msgid "Edit the text…"
+msgstr "编辑文本…"
+
+#: src/views/transcript/transcript_view.py:701
+#, python-brace-format
+msgid "Translation into {language} copied."
+msgstr "已复制{language}翻译。"
+
+#: src/views/transcript/transcript_view.py:713
+msgid "The audio isn't available: the source file was moved or deleted."
+msgstr "音频不可用：源文件已被移动或删除。"
+
+#: src/views/transcript/transcript_view.py:715
+msgid "The audio isn't available."
+msgstr "音频不可用。"
+
+#: src/views/transcript/transcript_view.py:798
+#: src/views/transcript/transcript_view.py:810
+msgid "Rename speakers…"
+msgstr "重命名说话人…"
+
+#: src/views/transcript/transcript_view.py:808
+msgid "Find and replace…"
+msgstr "查找和替换…"
+
+#: src/views/transcript/transcript_view.py:832
+msgid "Rename…"
+msgstr "重命名…"
+
+#: src/views/transcript/transcript_view.py:871
+msgid "Copied"
+msgstr "已复制"
+
+#: src/views/transcript/translation_panel.py:148
+#, python-brace-format
+msgid "Translating into {language}…"
+msgstr "正在翻译成{language}…"
+
+#: src/views/transcript/translation_panel.py:152
+msgid "Translating…"
+msgstr "正在翻译…"
+
+#: src/views/transcript/translation_panel.py:154
+msgid "It takes a moment."
+msgstr "需要一点时间。"
+
+#: src/views/transcript/translation_panel.py:156
+msgid "The transcription is being translated. It takes a moment."
+msgstr "正在翻译转写。需要一点时间。"
+
+#: src/views/transcript/translation_panel.py:162
+msgid "There is no translation yet."
+msgstr "暂无翻译。"
+
+#: src/views/transcript/translation_panel.py:164
+msgid "Translate…"
+msgstr "翻译…"
+
+#: src/views/transcript/translation_panel.py:296
+msgid "Translate into:"
+msgstr "翻译成："
+
+#: src/views/transcript/translation_panel.py:301
+msgid "Language of the translation"
+msgstr "翻译语言"
+
+#: src/views/transcript/translation_panel.py:318
+msgid "Provider:"
+msgstr "提供商："
+
+#: src/views/transcript/translation_panel.py:358
+msgid "More options in the settings"
+msgstr "设置中有更多选项"
+
+#: src/views/transcript/translation_panel.py:395
+#, python-brace-format
+msgid "Set the API key of {provider} to translate with it."
+msgstr "请设置 {provider} 的 API 密钥以使用它翻译。"
+
+#: src/views/transcript/video_pane.py:191
+msgid "Show subtitles on the video"
+msgstr "在视频上显示字幕"
+
+#: src/views/transcript/video_pane.py:199
+msgid "Size"
+msgstr "大小"
+
+#: src/views/transcript/video_pane.py:203
+msgid "Small"
+msgstr "小"
+
+#: src/views/transcript/video_pane.py:204
+msgid "Medium"
+msgstr "中"
+
+#: src/views/transcript/video_pane.py:205
+msgid "Large"
+msgstr "大"
+
+#: src/views/transcript/video_pane.py:209
+msgid "Position"
+msgstr "位置"
+
+#: src/views/transcript/video_pane.py:212
+msgid "Bottom"
+msgstr "底部"
+
+#: src/views/transcript/video_pane.py:212
+msgid "Top"
+msgstr "顶部"
+
+#: src/views/transcript/video_pane.py:215
+msgid "Style"
+msgstr "样式"
+
+#: src/views/transcript/video_pane.py:219
+msgid "Dark background"
+msgstr "深色背景"
+
+#: src/views/transcript/video_pane.py:220
+msgid "Outline"
+msgstr "描边"

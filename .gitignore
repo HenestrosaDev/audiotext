@@ -54,6 +54,8 @@ cover/
 # Translations
 # *.mo
 *.pot
+# The template of the translations of the app
+!res/locales/audiotext.pot
 
 # Django stuff:
 *.log
