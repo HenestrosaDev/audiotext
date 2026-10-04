@@ -1,6 +1,46 @@
+[project]
+name = "audiotext"
+version = "2.3.0"
+description = "Transcribe audio and video files, YouTube videos and microphone recordings."
+requires-python = ">=3.10,<3.14"
+license = "MIT"
+license-files = ["LICENSE"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+src = ["src", "tests"]
+extend-exclude = ["audiotext.spec"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+]
+
+[tool.ruff.lint.per-file-ignores]
+"src/views/*.py" = ["E501"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.coverage.report]
+# A bit below the current coverage, since it varies with the system and the version
+# of Python. Raise it when the coverage grows
+fail_under = 78
+
 [tool.mypy]
+mypy_path = "src"
+explicit_package_bases = true
 disable_error_code = "import-untyped"
 
 [[tool.mypy.overrides]]
-module = "*.ctk_scrollable_dropdown.*"
-ignore_errors = true
+module = ["whisperx.*", "speech_recognition.*", "pytubefix.*", "pydub.*"]
+ignore_missing_imports = true

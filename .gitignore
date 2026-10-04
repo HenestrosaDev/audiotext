@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 audio-chunks/
+.DS_Store
