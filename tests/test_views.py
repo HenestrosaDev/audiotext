@@ -871,7 +871,8 @@ def test_a_translation_is_exported_like_the_transcription(
     # With the timing of the translation, without the segments not translated yet
     assert "00:00:03,500 --> 00:00:05,000\n[SPEAKER_00]: Adiós." in srt
     assert srt.count(" --> ") == 2
-    assert (tmp_path / initial_files[1]).read_text(encoding="utf-8") == "Hola wisper Adiós.\n"
+    txt = (tmp_path / initial_files[1]).read_text(encoding="utf-8")
+    assert txt == "Hola wisper Adiós.\n"
 
 
 def test_the_video_can_be_subtitled_with_the_translation(ui: Ui) -> None:
