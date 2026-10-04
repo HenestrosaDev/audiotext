@@ -264,7 +264,7 @@ def test_a_summary_is_generated_and_exported(
         )
         view.export(file_type)
         assert target.exists()
-    assert "A short talk." in (tmp_path / "export.md").read_text()
+    assert "A short talk." in (tmp_path / "export.md").read_text(encoding="utf-8")
 
 
 def test_the_summary_without_a_key_leads_to_the_settings(ui: Ui) -> None:
@@ -867,11 +867,11 @@ def test_a_translation_is_exported_like_the_transcription(
 
     # Named like the subtitles that the video players load with the video
     assert initial_files[0].endswith(".es.srt")
-    srt = (tmp_path / initial_files[0]).read_text()
+    srt = (tmp_path / initial_files[0]).read_text(encoding="utf-8")
     # With the timing of the translation, without the segments not translated yet
     assert "00:00:03,500 --> 00:00:05,000\n[SPEAKER_00]: Adiós." in srt
     assert srt.count(" --> ") == 2
-    assert (tmp_path / initial_files[1]).read_text() == "Hola wisper Adiós.\n"
+    assert (tmp_path / initial_files[1]).read_text(encoding="utf-8") == "Hola wisper Adiós.\n"
 
 
 def test_the_video_can_be_subtitled_with_the_translation(ui: Ui) -> None:
