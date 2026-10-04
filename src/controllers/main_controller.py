@@ -1,429 +1,343 @@
-import asyncio
-import os
+import dataclasses
+import functools
+import logging
+import tempfile
 import threading
-import traceback
+import time
+from collections.abc import Callable, Mapping
 from pathlib import Path
-from tkinter import filedialog
+from typing import Any
 
-import speech_recognition as sr
 import utils.audio_utils as au
-from handlers.audio_handler import AudioHandler
-from handlers.google_api_handler import GoogleApiHandler
-from handlers.openai_api_handler import OpenAiApiHandler
+import utils.config_manager as cm
+from controllers.folder_transcriber import FolderTranscriber
+from controllers.mic_recorder import MicRecorder
+from controllers.transcription_saver import TranscriptionSaver
+from controllers.transcription_validator import validate_transcription
+from handlers.live_transcriber import LiveTranscriber
+from handlers.transcribers import create_transcribers
+from handlers.url_handler import UrlHandler
 from handlers.whisperx_handler import WhisperXHandler
-from handlers.youtube_handler import YouTubeHandler
-from models.transcription import Transcription
-from utils import constants as c
+from interfaces.transcriber import Transcriber
+from interfaces.transcription_view import TranscriptionView
+from models.transcription import Transcription, TranscriptionResult
+from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.enums import AudioSource, TranscriptionMethod
+from utils.errors import format_error
+from utils.i18n import _
+from utils.progress import ProgressCallback
+from utils.time_format import format_elapsed_time
+
+logger = logging.getLogger(__name__)
+
+MIC_RECORDING_PATH = Path(tempfile.gettempdir()) / "audiotext-mic-output.wav"
+URL_DOWNLOAD_PATH = Path(tempfile.gettempdir()) / "audiotext-url-download"
 
 
 class MainController:
-    # Don't add type annotation to `view` to avoid circular imports
-    def __init__(self, transcription: Transcription, view):  # type: ignore[no-untyped-def]
-        self.view = view
-        self.transcription = transcription
-        self._is_mic_recording = False
+    """
+    Runs the transcriptions requested by the view in a background thread, so the
+    UI stays responsive, and reports their progress and results to the view.
+    """
 
-        self._whisperx_handler = WhisperXHandler()
+    def __init__(
+        self,
+        view: TranscriptionView,
+        whisperx_handler: WhisperXHandler | None = None,
+        transcribers: Mapping[TranscriptionMethod, Transcriber] | None = None,
+    ) -> None:
+        """
+        :param whisperx_handler: Transcribes with WhisperX and keeps its models
+                                 loaded. By default, it uses the configuration of
+                                 `config.ini`.
+        :param transcribers: The transcriber of each transcription method. By
+                             default, the ones of the app.
+        """
+        self.view = view
+        self._is_transcribing = False
+        self._cancellation_token = CancellationToken()
+
+        self._whisperx_handler = whisperx_handler or WhisperXHandler()
+        self._transcribers = transcribers or create_transcribers(self._whisperx_handler)
+        self._mic_recorder = MicRecorder(
+            LiveTranscriber(
+                on_text=lambda text: self._ui(self.view.on_live_text, text),
+                on_status=lambda message: self._ui(self.view.on_live_status, message),
+            ),
+            on_progress=lambda elapsed_seconds, level: self._ui(
+                self.view.on_recording_progress, elapsed_seconds, level
+            ),
+        )
 
     # PUBLIC METHODS
 
-    def select_file(self) -> None:
-        """
-        Prompts a file explorer to determine the audio/video file path to transcribe.
-
-        :return: None
-        """
-        file_path = filedialog.askopenfilename(
-            initialdir="/",
-            title="Select a file",
-            filetypes=[
-                ("All supported files", c.SUPPORTED_FILE_EXTENSIONS),
-                ("Audio files", c.AUDIO_FILE_EXTENSIONS),
-                ("Video files", c.VIDEO_FILE_EXTENSIONS),
-            ],
-        )
-
-        if file_path:
-            self.view.on_select_path_success(file_path)
-
-    def select_directory(self) -> None:
-        """
-        Prompts a file explorer to determine the folder path to transcribe.
-
-        :return: None
-        """
-        dir_path = filedialog.askdirectory()
-
-        if dir_path:
-            self.view.on_select_path_success(dir_path)
-
     def prepare_for_transcription(self, transcription: Transcription) -> None:
         """
-        Prepares to transcribe based on the specified source type of the transcription
-        object provided. It sets up the necessary configurations and starts the
-        transcription process.
-
-        :param transcription: An instance of the Transcription class containing
-                              information about the audio to transcribe.
-        :type transcription: Transcription
-        :return: None
+        Validates the transcription settings and starts the transcription process in
+        a background thread.
         """
         try:
-            if not transcription.output_file_types:
-                raise ValueError(
-                    "No output file types selected. Please select at least one."
-                )
-
-            self.transcription = transcription
-
-            if transcription.audio_source == AudioSource.FILE:
-                self._prepare_for_file_transcription(transcription.audio_source_path)
-            elif transcription.audio_source == AudioSource.MIC:
-                threading.Thread(target=self._start_recording_from_mic).start()
-                return
-            elif transcription.audio_source == AudioSource.YOUTUBE:
-                if url := transcription.youtube_url:
-                    self._prepare_for_youtube_video_transcription(url)
-                else:
-                    raise ValueError("No YouTube video URL provided. Please enter one.")
-
-            threading.Thread(
-                target=lambda loop: loop.run_until_complete(
-                    self._handle_transcription_process()
-                ),
-                args=(asyncio.new_event_loop(),),
-            ).start()
-
+            validate_transcription(transcription)
         except Exception as e:
-            self._handle_exception(e)
+            self._show_failure(e)
+            return
+
+        self._cancellation_token = CancellationToken()
+        self._is_transcribing = True
+
+        self._start_background_task(
+            lambda: self._run_process(self._get_process(transcription))
+        )
+
+    def cancel_transcription(self) -> None:
+        """
+        Requests the cancellation of the transcription in progress. The process stops
+        at the next safe point (between files, chunks or batches).
+        """
+        if self._is_transcribing:
+            self._cancellation_token.cancel()
+            self._report_progress(_("Cancelling…"), None)
 
     def stop_recording_from_mic(self) -> None:
         """
-        Stops recording audio from the microphone.
-
-        This method sets the `_is_mic_recording` attribute to False and triggers the
-        `on_stop_recording_from_mic` method on the `view` attribute to indicate that
-        recording from the microphone has stopped.
-
-        :return: None
+        Stops recording audio from the microphone. The recorded audio is transcribed
+        right after.
         """
-        self._is_mic_recording = False
+        self._mic_recorder.stop()
         self.view.on_stop_recording_from_mic()
 
-    def save_transcription(
-        self, file_path: Path, should_autosave: bool, should_overwrite: bool
-    ) -> None:
+    def preload_model(self) -> None:
         """
-        Saves the transcription to a text file and optionally generate subtitles.
-
-        :param file_path: The path where the text file will be saved.
-        :type file_path: Path
-        :param should_autosave: Indicates whether the text file should be saved
-                                automatically without showing a file dialog.
-        :type should_autosave: bool
-        :param should_overwrite: Indicates whether existing files should be overwritten
-                                 if they exist.
-        :type should_overwrite: bool
-        :return: None
+        Loads the WhisperX model of the current configuration in the background, so
+        the transcription can start right away. It does nothing if WhisperX is not
+        the selected transcription method or if the model is not downloaded yet, as
+        it's downloaded when the user transcribes with it.
         """
-        save_file_path = self._get_save_path(file_path, should_autosave)
+        config_transcription = cm.ConfigManager.get_config_transcription()
 
-        if not save_file_path:
+        if config_transcription.method != TranscriptionMethod.WHISPERX.value:
             return
 
-        if self.transcription.method == TranscriptionMethod.WHISPERX:
-            if self.transcription.output_file_types:
-                self._whisperx_handler.save_transcription(
-                    file_path=Path(save_file_path),
-                    output_file_types=self.transcription.output_file_types,
-                    should_overwrite=should_overwrite,
-                )
-            else:
-                exception = ValueError(
-                    "There are no output file types selected. Please select at least "
-                    "one."
-                )
-                self._handle_exception(exception)
-        elif self.transcription.method in [
-            TranscriptionMethod.GOOGLE_API,
-            TranscriptionMethod.WHISPER_API,
-        ]:
-            if self.transcription.text:
-                if should_overwrite or not os.path.exists(save_file_path):
-                    with open(save_file_path, "w", encoding="utf-8") as file:
-                        file.write(self.transcription.text)
-            else:
-                exception = ValueError(
-                    "There is no transcription available. Please generate it again."
-                )
-                self._handle_exception(exception)
-        else:
-            exception = ValueError(
-                "Incorrect transcription method. Please check the `config.ini` file."
+        # The transcription in progress will load the model when it needs it
+        if not self._is_transcribing:
+            self._start_background_task(self._preload_model)
+
+    # PROCESSES
+
+    def _get_process(self, transcription: Transcription) -> Callable[[], str]:
+        """
+        :return: The process that transcribes the audio source of the transcription,
+                 which returns a summary of the result.
+        """
+        source = transcription.audio_source
+
+        if source == AudioSource.MIC:
+            return functools.partial(self._transcribe_recording, transcription)
+        if source == AudioSource.YOUTUBE:
+            return functools.partial(self._transcribe_url, transcription)
+        if source in (AudioSource.DIRECTORY, AudioSource.WATCH):
+            folder_transcriber = FolderTranscriber(
+                transcription.audio_source_path,
+                self.view,
+                TranscriptionSaver(transcription),
+                functools.partial(self._transcribe_file, transcription),
+                self._cancellation_token,
             )
-            self._handle_exception(exception)
+            if source == AudioSource.WATCH:
+                return folder_transcriber.watch
+            return folder_transcriber.transcribe_all
 
-    # PRIVATE METHODS
+        return functools.partial(
+            self._transcribe_single_file,
+            transcription,
+            transcription.audio_source_path,
+        )
 
-    def _prepare_for_file_transcription(self, file_path: Path) -> None:
+    def _run_process(self, process: Callable[[], str]) -> None:
         """
-        Prepares the system for transcription from a file by verifying if the file
-        exists and is supported for transcription. If the file is valid, it updates the
-        source path in the transcription object; otherwise, it raises a ValueError.
-
-        :param file_path: The path to the file for transcription.
-        :type file_path: Path
-        :raises ValueError: If the provided file path does not exist or is not supported
-                            for transcription.
-        :return: None
+        Runs a transcription process. Upon completion, cancellation or error, it
+        notifies the view that the transcription has been processed, along with a
+        summary of the result.
         """
-        is_file_supported = file_path.suffix.lower() in c.SUPPORTED_FILE_EXTENSIONS
-        if file_path.is_file() and is_file_supported:
-            self.transcription.audio_source_path = file_path
-        else:
-            raise ValueError("Error: No valid file selected.")
+        status: str | None = None
+        error_message = None
 
-    def _prepare_for_youtube_video_transcription(self, url: str) -> None:
-        """
-        Prepares the system for transcription from a YouTube video by downloading
-        the audio from the video using the YouTubeHandler. It updates the source path
-        in the transcription object with the downloaded audio file path. If the source
-        path is not obtained successfully, it raises a ValueError.
-
-        :param url: URL of the YouTube video to transcribe.
-        :type url: str
-        :raises ValueError: If the YouTube video URL is incorrect or the audio download
-                            fails.
-        :return: None
-        """
-        audio_source_path = YouTubeHandler.download_audio_from_video(url)
-
-        if not audio_source_path:
-            raise ValueError(
-                "Something went wrong with the YouTube video audio download. Please "
-                "make sure the URL you entered is correct."
-            )
-
-        self.transcription.audio_source_path = audio_source_path
-
-    async def _handle_transcription_process(self) -> None:
-        """
-        Handles the transcription process based on the type of source specified in the
-        transcription object. It asynchronously transcribes either a single file or
-        multiple files in a directory. Upon completion or error, it notifies the view
-        that the transcription process has been processed.
-
-        :return: None
-        """
         try:
-            if self.transcription.audio_source == AudioSource.DIRECTORY:
-                await self._transcribe_directory(self.transcription.audio_source_path)
-            else:
-                await self._transcribe_file(self.transcription.audio_source_path)
+            status = process()
+        except TranscriptionCancelledError:
+            status = _("Transcription cancelled.")
         except Exception as e:
-            self._handle_exception(e)
+            logger.error("An error occurred", exc_info=e)
+            error_message = format_error(e)
         finally:
-            self.view.on_processed_transcription()
+            self._is_transcribing = False
+            # The error is shown first, so the view knows the result has failed
+            # when it's notified that the process has finished
+            if error_message:
+                self._ui(self.view.show_error, error_message)
 
-    async def _transcribe_directory(self, dir_path: Path) -> None:
-        """
-        Transcribes supported files from a directory.
+            self._ui(self.view.on_processed_transcription, status)
 
-        :param dir_path: The directory path selected by the user.
-        :type dir_path: Path
-        :raises ValueError: If the directory path is invalid or doesn't contain valid
-                            file types to transcribe.
-        :return: None
-        """
-        if files := self._get_files_to_transcribe_from_directory():
-            # Create a list of coroutines for each file transcription task
-            tasks = [self._transcribe_file(file) for file in files]
+    def _transcribe_url(self, transcription: Transcription) -> str:
+        assert transcription.url
+        self._report_progress(_("Downloading…"), None)
+        file_path = UrlHandler.download(
+            transcription.url,
+            transcription.media_path or URL_DOWNLOAD_PATH,
+            self._cancellation_token,
+        )
+        self._ui(self.view.on_media_downloaded, file_path)
 
-            # Run all tasks concurrently
-            await asyncio.gather(*tasks)
+        return self._transcribe_single_file(transcription, file_path)
 
-            self.view.display_text(f"Files from '{dir_path}' successfully transcribed.")
-        else:
-            raise ValueError(
-                "Error: The directory path is invalid or doesn't contain valid "
-                "file types to transcribe. Please choose another one."
+    def _transcribe_recording(self, transcription: Transcription) -> str:
+        try:
+            recording_path = self._mic_recorder.record(
+                transcription, transcription.media_path or MIC_RECORDING_PATH
             )
+        except Exception:
+            self._ui(self.view.on_stop_recording_from_mic)
+            raise
 
-    async def _transcribe_file(self, file_path: Path) -> None:
+        return self._transcribe_single_file(transcription, recording_path)
+
+    def _transcribe_single_file(
+        self, transcription: Transcription, file_path: Path
+    ) -> str:
+        start_time = time.monotonic()
+        self._transcribe_file(transcription, file_path, self._report_progress)
+
+        return _("Done in {duration}.").format(
+            duration=format_elapsed_time(time.monotonic() - start_time)
+        )
+
+    def _transcribe_file(
+        self,
+        transcription: Transcription,
+        file_path: Path,
+        on_progress: ProgressCallback,
+    ) -> None:
         """
-        Transcribes audio from a file based on the specified transcription method.
-        It updates the transcription object with the transcribed text. If the source
-        type is microphone or YouTube, it removes the temporary file after
-        transcription. It also displays the transcribed text and saves it if autosave
-        is enabled.
-
-        :param file_path: The path of the audio file for transcription.
-        :type file_path: Path
-        :return: None
+        Transcribes the audio of a file, sends the result to the view and saves it
+        if autosave is enabled. Temporary audio files (microphone and URL) are
+        removed after the transcription unless the history keeps them.
         """
-        transcription = self.transcription
-        transcription.audio_source_path = file_path
-
-        if self.transcription.method == TranscriptionMethod.GOOGLE_API:
-            self.transcription.text = AudioHandler.get_transcription(
-                transcription=transcription,
-                transcription_func=GoogleApiHandler.transcribe,
-                should_split_on_silence=True,
-            )
-        elif self.transcription.method == TranscriptionMethod.WHISPER_API:
-            self.transcription.text = AudioHandler.get_transcription(
-                transcription=transcription,
-                transcription_func=OpenAiApiHandler.transcribe,
-                should_split_on_silence=False,
-            )
-        elif self.transcription.method == TranscriptionMethod.WHISPERX:
-            self.transcription.text = await self._whisperx_handler.transcribe_file(
-                transcription
-            )
-
-        if self.transcription.audio_source in [AudioSource.MIC, AudioSource.YOUTUBE]:
-            self.transcription.audio_source_path.unlink()  # Remove tmp file
-
-        if self.transcription.audio_source != AudioSource.DIRECTORY:
-            self.view.display_text(self.transcription.text)
-
-        if self.transcription.should_autosave:
-            self.save_transcription(
-                file_path,
-                should_autosave=True,
-                should_overwrite=self.transcription.should_overwrite,
-            )
-
-    def _get_files_to_transcribe_from_directory(self) -> list[Path]:
-        """
-        Retrieves a list of files to transcribe from a directory.
-
-        :return: A list of file paths to transcribe in the directory.
-        :rtype: list[Path]
-        """
-        if not self.transcription.output_file_types:
-            raise ValueError(
-                "No output file types selected. Please select at least one."
-            )
-
-        matching_files = []
-
-        for root, _, files in os.walk(self.transcription.audio_source_path):
-            for file in files:
-                if any(file.endswith(ext) for ext in c.SUPPORTED_FILE_EXTENSIONS):
-                    file_path = Path(root) / file
-
-                    if not self.transcription.should_overwrite and any(
-                        (file_path.with_suffix(f".{ext}")).exists()
-                        for ext in self.transcription.output_file_types
-                    ):
-                        print(f"{file_path} already has transcription(s). Skipping.")
-                        continue
-
-                    matching_files.append(file_path)
-                    print(f"{file_path} added to the list of files to transcribe!")
-
-        return matching_files
-
-    def _start_recording_from_mic(self) -> None:
-        """
-        Records the audio from the microphone and starts the transcription process when
-        finished recording.
-
-        This function continuously records audio from the microphone until stopped.
-        The recorded audio is then saved to a WAV file and used for transcription.
-
-        :return: None
-        """
-        self._is_mic_recording = True
-        audio_data = []
+        transcriber = self._get_transcriber(transcription.method)
+        source = transcription.audio_source
+        has_several_files = bool(source and source.has_several_files)
 
         try:
-            r = sr.Recognizer()
+            result = self._transcribe_audio(
+                transcriber,
+                dataclasses.replace(transcription, audio_source_path=file_path),
+                on_progress,
+            )
+        finally:
+            if source and source.is_temporary and transcription.media_path is None:
+                file_path.unlink(missing_ok=True)
 
-            with sr.Microphone() as mic:
-                while self._is_mic_recording:
-                    audio_chunk = r.listen(mic, timeout=5)
-                    audio_data.append(audio_chunk)
+        self._ui(
+            self.view.on_file_transcribed,
+            file_path,
+            result.text,
+            result.segments,
+            result.language,
+        )
 
-            if audio_data:
-                filename = "mic-output.wav"
-                au.save_audio_data(audio_data, filename=filename)
-                self.transcription.audio_source_path = Path(filename)
+        if not has_several_files:
+            self._ui(self.view.display_text, result.text)
 
-                threading.Thread(
-                    target=lambda loop: loop.run_until_complete(
-                        self._handle_transcription_process()
-                    ),
-                    args=(asyncio.new_event_loop(),),
-                ).start()
-            else:
-                e = ValueError("No audio detected")
-                self._handle_exception(e)
+        if transcription.should_autosave:
+            folder = TranscriptionSaver(transcription).save(
+                transcriber, result, file_path
+            )
+            # The files of a folder are notified once all of them are transcribed
+            if not has_several_files:
+                self._ui(self.view.on_transcription_saved, folder)
 
+    def _transcribe_audio(
+        self,
+        transcriber: Transcriber,
+        transcription: Transcription,
+        on_progress: ProgressCallback,
+    ) -> TranscriptionResult:
+        """
+        Transcribes the audio of the transcription, isolating the speech first if
+        the transcription requires it.
+        """
+        if not transcription.should_isolate_speech:
+            return transcriber.transcribe(
+                transcription, on_progress, self._cancellation_token
+            )
+
+        on_progress(_("Isolating the speech…"), None)
+        isolated_path = au.isolate_speech(
+            transcription.audio_source_path,
+            Path(tempfile.gettempdir())
+            / f"audiotext-speech-{threading.get_ident()}.wav",
+        )
+
+        try:
+            self._cancellation_token.raise_if_cancelled()
+            return transcriber.transcribe(
+                dataclasses.replace(transcription, audio_source_path=isolated_path),
+                on_progress,
+                self._cancellation_token,
+            )
+        finally:
+            isolated_path.unlink(missing_ok=True)
+
+    def _get_transcriber(self, method: TranscriptionMethod | None) -> Transcriber:
+        """
+        :raises ValueError: If the transcription method is not supported.
+        """
+        if method is None or method not in self._transcribers:
+            raise ValueError(f"Unsupported transcription method: {method}")
+
+        return self._transcribers[method]
+
+    def _preload_model(self) -> None:
+        try:
+            is_loaded = self._whisperx_handler.preload_model(
+                on_progress=lambda message, _fraction: self._show_status(message)
+            )
+
+            if is_loaded:
+                self._show_status(_("WhisperX model ready."))
         except Exception as e:
-            self.stop_recording_from_mic()
-            self._handle_exception(e)
+            logger.error("Could not preload the WhisperX model", exc_info=e)
 
-    def _get_save_path(self, file_path: Path, should_autosave: bool) -> Path:
-        """
-        Determines the save path for a file, either automatically or via a save dialog.
-
-        :param file_path: The initial file path.
-        :type file_path: Path
-        :param should_autosave: If True, saves the file automatically with a generated
-                                name.
-        :type should_autosave: bool
-        :return: The path where the file should be saved.
-        :rtype: Path
-        """
-        if self.transcription.output_file_types:
-            is_one_output_file_type = len(self.transcription.output_file_types) == 1
-        else:
-            is_one_output_file_type = False
-
-        file_dir = file_path.parent
-        file_type = ""
-        initial_file_name = file_path.stem
-
-        if is_one_output_file_type:
-            file_type = c.FORMATS_TO_FILE_TYPES.get(  # type: ignore[assignment]
-                self.transcription.output_file_types[0]  # type: ignore[index]
-            )
-            initial_file_name += f".{file_type}"
-
-        if should_autosave:
-            return file_dir / initial_file_name
-        else:
-            default_extension = (
-                f".{file_type}" if self.transcription.output_file_types else None
-            )
-
-            file_types = [("All Files", "*.*")]
-
-            if is_one_output_file_type:
-                file_types.insert(0, (f"{file_type.upper()} file", f"*.{file_type}"))
-
-            return Path(
-                filedialog.asksaveasfilename(
-                    initialdir=file_dir,
-                    initialfile=initial_file_name,
-                    title="Save as",
-                    defaultextension=default_extension,
-                    filetypes=file_types,
+            if not self._is_transcribing:
+                self._ui(
+                    self.view.show_error,
+                    _("Could not load the WhisperX model: {error}").format(
+                        error=format_error(e)
+                    ),
                 )
-            )
 
-    def _handle_exception(self, e: Exception) -> None:
-        """
-        Prints the traceback of the exception, notifies the view that the transcription
-        process has been processed, and displays a representation of the exception.
+    # VIEW UPDATES
 
-        :param e: The exception that occurred during the transcription process.
-        :type e: Exception
-        :return: None
+    @staticmethod
+    def _start_background_task(task: Callable[[], None]) -> None:
+        threading.Thread(target=task, daemon=True).start()
+
+    def _ui(self, callback: Callable[..., Any], *args: Any) -> None:
         """
-        print(traceback.format_exc())
-        self.view.on_processed_transcription()
-        self.view.display_text(repr(e))
+        Schedules a view update on the UI thread, since Tkinter widgets must not be
+        modified from background threads.
+        """
+        self.view.run_on_ui_thread(callback, *args)
+
+    def _report_progress(self, message: str, fraction: float | None) -> None:
+        self._ui(self.view.on_transcription_progress, message, fraction)
+
+    def _show_status(self, message: str) -> None:
+        # The progress of a transcription takes precedence over other statuses
+        if not self._is_transcribing:
+            self._ui(self.view.show_status, message)
+
+    def _show_failure(self, e: Exception) -> None:
+        """Shows the error of a transcription that couldn't start."""
+        logger.error("Could not start the transcription", exc_info=e)
+        self._ui(self.view.show_error, format_error(e))
+        self._ui(self.view.on_processed_transcription, None)
