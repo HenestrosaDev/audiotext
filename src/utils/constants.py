@@ -1,5 +1,12 @@
 APP_NAME = "Audiotext"
+APP_VERSION = "3.0.0"
+GITHUB_URL = "https://github.com/HenestrosaDev/audiotext"
+DOCS_URL = "https://getaudiotext.com"
+DONATION_URL = "https://ko-fi.com/henestrosadev"
 APP_LANGUAGES = {"en": "English", "es": "Español"}
+
+# Value of the transcription language to let the transcription method detect it
+AUTO_DETECT_LANGUAGE = "auto"
 
 # Code languages convention: ISO 639-1
 AUDIO_LANGUAGES = {
@@ -72,7 +79,7 @@ AUDIO_LANGUAGES = {
     "pa": "Punjabi",
     "pl": "Polish",
     "ps": "Pashto",
-    "pt": "Português",
+    "pt": "Portuguese",
     "ro": "Romanian",
     "ru": "Russian",
     "sa": "Sanskrit",
