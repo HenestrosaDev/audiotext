@@ -1,33 +1,44 @@
 # -*- mode: python ; coding: utf-8 -*-
-from pathlib import Path
-from PyInstaller.compat import is_darwin, is_win
+import platform
+import re
 import shutil
+import sysconfig
+from pathlib import Path
+
+from PyInstaller.compat import is_darwin, is_win
+from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy_metadata
 
 import sys ; sys.setrecursionlimit(sys.getrecursionlimit() * 5)
 
-def find_site_packages(venv_dir = "venv"):
-    venv_path = Path(venv_dir)
-    for site_packages in venv_path.rglob("site-packages"):
-        if site_packages.is_dir():
-            return site_packages
+sys.path.insert(0, "packaging")
+from third_party_licenses import write_third_party_licenses
 
-    return None
+# The version of the app, which is set in `pyproject.toml`
+version = re.search(
+    r'^version = "(.+)"', Path("pyproject.toml").read_text(encoding="utf-8"), re.M
+).group(1)
 
-site_packages_path = find_site_packages()
+# The packages of the environment that runs PyInstaller (e.g. `venv` or `.venv`)
+site_packages_path = Path(sysconfig.get_paths()["purelib"])
 
 datas = [
+    ("LICENSE", "."),
+    (f"{site_packages_path}/babel", "babel"),
     (f"{site_packages_path}/customtkinter", "customtkinter"),
+    # The native tkdnd libraries that tkinterdnd2 loads to drop files on the window
+    (f"{site_packages_path}/tkinterdnd2", "tkinterdnd2"),
     (f"{site_packages_path}/transformers", "transformers"),
     (f"{site_packages_path}/lightning", "lightning"),
     (f"{site_packages_path}/lightning_fabric", "lightning_fabric"),
-    (f"{site_packages_path}/speechbrain", "speechbrain"),
     (f"{site_packages_path}/pyannote", "pyannote"),
     (f"{site_packages_path}/asteroid_filterbanks", "asteroid_filterbanks"),
     (f"{site_packages_path}/whisperx", "whisperx"),
-    (f"{site_packages_path}/librosa", "librosa"),
     ("res", "res"),
     ("config.ini", "."),
-    (".env", "."),
+    # The template of the Word documents
+    *collect_data_files("docx"),
+    # keyring finds the credential store of the system through its metadata
+    *copy_metadata("keyring"),
 ]
 
 hiddenimports = [
@@ -36,6 +47,8 @@ hiddenimports = [
     "sklearn.neighbors.quad_tree",
     "sklearn.tree",
     "sklearn.tree._utils",
+    # The credential stores of each system, which keyring imports dynamically
+    *collect_submodules("keyring.backends"),
 ]
 
 block_cipher = None
@@ -46,17 +59,35 @@ if is_debug:
 else:
     options = []
 
+
+def find_executable(name, required=True):
+    """Returns the path of an executable in PATH to bundle it."""
+    path = shutil.which(name)
+    if path is None:
+        if required:
+            raise SystemExit(f"{name} isn't installed")
+        return None
+    # Chocolatey adds shims to PATH (in `C:\ProgramData\chocolatey\bin`), which run the
+    # executables from where the package is installed and so only work on this computer
+    if Path(path).parent.parent.name.lower() == "chocolatey":
+        raise SystemExit(
+            f"{path} is a shim of Chocolatey. Add the directory of the actual executable "
+            "to PATH (e.g. `C:\\ProgramData\\chocolatey\\lib\\ffmpeg\\tools\\ffmpeg\\bin`)"
+        )
+    return path
+
+
 binaries = [
-    (shutil.which("ffmpeg"), "."),
-    (shutil.which("ffprobe"), "."),
+    (find_executable("ffmpeg"), "."),
+    (find_executable("ffprobe"), "."),
 ]
 
-if flac_path := shutil.which("flac"):
+if flac_path := find_executable("flac", required=False):
     binaries += [(flac_path, ".")]
 
 a = Analysis(
     ["src/app.py"],
-    pathex=[site_packages_path],
+    pathex=[],
     binaries=binaries,
     datas=datas,
     hiddenimports=hiddenimports,
@@ -69,6 +100,14 @@ a = Analysis(
     cipher=block_cipher,
     noarchive=False,
 )
+
+# The licenses of the bundled software, which most of them require to include. It's
+# written after the analysis, since it lists the native libraries that are bundled
+third_party_licenses_path = Path(workpath, "THIRD_PARTY_LICENSES.txt")
+write_third_party_licenses(
+    third_party_licenses_path, binary_paths=[source for _, source, _ in a.binaries]
+)
+a.datas += [("THIRD_PARTY_LICENSES.txt", str(third_party_licenses_path), "DATA")]
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
@@ -112,8 +151,11 @@ app = BUNDLE(
     name="Audiotext.app",
     icon=macos_icon,
     bundle_identifier="com.henestrosadev.audiotext",
-    version="2.3.0",
+    version=version,
     info_plist={
+        # The bundled binaries (e.g. FFmpeg) only run on the macOS version that built
+        # them or later
+        "LSMinimumSystemVersion": ".".join(platform.mac_ver()[0].split(".")[:2]) if is_darwin else "",
         "NSPrincipalClass": "NSApplication",
         "NSAppleScriptEnabed": False,
         "NSHighResolutionCapable": True,
