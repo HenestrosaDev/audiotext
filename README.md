@@ -1,14 +1,5 @@
 <div id="top"></div>
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I am using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
 <!-- PROJECT LOGO -->
 <div align="center">
   <picture>
@@ -27,12 +18,18 @@
     <img src="docs/light/icon.png" alt="Logo" width="128" height="128">
   </picture>
   <h1 align="center">Audiotext</h1>
-  <p align="center">A desktop application that transcribes audio from files, microphone input or YouTube videos with the option to translate the content and create subtitles.</p>
+  <p align="center">A desktop app that transcribes audio and video files, YouTube videos and microphone recordings on your computer, and translates, summarizes and subtitles them.</p>
   <p>
     <a href="https://github.com/HenestrosaDev/audiotext/actions/workflows/code-quality.yml">
       <img
         src="https://github.com/HenestrosaDev/audiotext/actions/workflows/code-quality.yml/badge.svg"
         alt="Code Quality badge status"
+      />
+    </a>
+    <a href="https://github.com/HenestrosaDev/audiotext/actions/workflows/build.yml">
+      <img
+        src="https://github.com/HenestrosaDev/audiotext/actions/workflows/build.yml/badge.svg"
+        alt="Build badge status"
       />
     </a>
     <br>
@@ -45,12 +42,12 @@
     <a href="https://github.com/HenestrosaDev/audiotext/stargazers">
       <img
         src="https://img.shields.io/github/stars/HenestrosaDev/audiotext"
-        alt="GitHub Contributors"
+        alt="GitHub stars"
       />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE">
       <img
-        src="https://img.shields.io/badge/license-BSD--4--Clause-lightgray"
+        src="https://img.shields.io/badge/license-MIT-lightgray"
         alt="License"
       />
     </a>
@@ -58,7 +55,7 @@
     <a href="https://github.com/HenestrosaDev/audiotext/graphs/contributors">
       <img
         src="https://img.shields.io/github/contributors/HenestrosaDev/audiotext"
-        alt="GitHub Contributors"
+        alt="GitHub contributors"
       />
     </a>
     <a href="https://github.com/HenestrosaDev/audiotext/issues">
@@ -75,6 +72,10 @@
     </a>
   </p>
   <p>
+    <a href="https://getaudiotext.com">
+      <strong>Documentation</strong>
+    </a>
+    ·
     <a href="https://github.com/HenestrosaDev/audiotext/issues/new/choose">
       Report Bug
     </a>
@@ -89,11 +90,30 @@
   </p>
 </div>
 
+<picture>
+  <source
+    srcset="docs/light/main.png"
+    media="(prefers-color-scheme: light)"
+  />
+  <source
+    srcset="docs/dark/main.png"
+    width="128"
+    height="128"
+    media="(prefers-color-scheme: dark)"
+  />
+  <img
+    src="docs/dark/main.png"
+    alt="The Audiotext window with a transcription open"
+  >
+</picture>
+
 <!-- TABLE OF CONTENTS -->
 
 ## Table of Contents
 
 - [About the Project](#about-the-project)
+  - [Features](#features)
+  - [Documentation](#documentation)
   - [Supported Languages](#supported-languages)
   - [Supported File Types](#supported-file-types)
   - [Project Structure](#project-structure)
@@ -103,35 +123,24 @@
   - [Setting Up the Project Locally](#setting-up-the-project-locally)
   - [Notes](#notes)
 - [Usage](#usage)
-  - [Transcription Language](#transcription-language)
-  - [Transcription Method](#transcription-method)
-  - [Audio Source](#audio-source)
-  - [Save Transcription](#save-transcription)
-    - [Autosave](#autosave)
-    - [Overwrite Existing Files](#overwrite-existing-files)
-  - [Google Speech-To-Text API Options](#google-speech-to-text-api-options)
-    - [Google API Key](#google-api-key)
-  - [Whisper API Options](#whisper-api-options)
-    - [Whisper API Key](#whisper-api-key)
-    - [Response Format](#response-format)
-    - [Temperature](#temperature)
-    - [Timestamp Granularities](#timestamp-granularities)
-  - [WhisperX Options](#whisperx-options)
-    - [Output File Types](#output-file-types)
-    - [Translate to English](#translate-to-english)
-    - [Subtitle Options](#subtitle-options)
-      - [Highlight Words](#highlight-words)
-      - [Max. Line Width](#max-line-width)
-      - [Max. Line Count](#max-line-count)
-    - [Advanced Options](#advanced-options)
-      - [Model Size](#model-size)
-      - [Compute Type](#compute-type)
-      - [Batch Size](#batch-size)
-      - [Use CPU](#use-cpu)
+  - [The Window](#the-window)
+  - [Audio Sources](#audio-sources)
+  - [Transcription Settings](#transcription-settings)
+  - [Transcription Engines](#transcription-engines)
+  - [The Transcript](#the-transcript)
+  - [Summary and Translation](#summary-and-translation)
+  - [Export](#export)
+  - [History](#history)
+  - [Preferences](#preferences)
+  - [Keyboard Shortcuts](#keyboard-shortcuts)
+  - [Command-Line Interface](#command-line-interface)
 - [Troubleshooting](#troubleshooting)
 - [Roadmap](#roadmap)
 - [Authors](#authors)
 - [Contributing](#contributing)
+  - [Translations](#translations)
+  - [Documentation Website](#documentation-website)
+  - [Releasing a Version](#releasing-a-version)
 - [Acknowledgments](#acknowledgments)
 - [License](#license)
 - [Support](#support)
@@ -140,25 +149,30 @@
 
 ## About the Project
 
-![Main](docs/main-system.png)
+**Audiotext** transcribes the audio of files, videos, YouTube videos, links to media files, microphone recordings and whole folders into any of the 100 languages it supports. It transcribes with [**WhisperX**](https://github.com/m-bain/whisperX) on your computer, for free and without sending your audio anywhere, or with the [**Whisper API**](https://platform.openai.com/docs/guides/speech-to-text) and the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text). Then you can play the transcription sentence by sentence, correct it, translate it, summarize it and export it, for example as subtitles.
 
-**Audiotext** transcribes the audio from an audio file, video file, microphone input, directory, or YouTube video into any of the 99 different languages it supports. You can transcribe using the [**Google Speech-to-Text API**](https://cloud.google.com/speech-to-text), the [**Whisper API**](https://platform.openai.com/docs/guides/speech-to-text), or [**WhisperX**](https://github.com/m-bain/whisperX). The last two methods can even translate the transcription or generate subtitles!
+### Features
 
-You can also choose the theme you like best. It can be dark, light, or the one configured in the system.
+- **Any source**: audio and video files, YouTube videos and direct links to media files, the microphone (with a live draft of the text while you speak), the files of a folder and its subfolders, or a folder that is watched to transcribe the files added to it.
+- **Private and offline**: WhisperX runs on your computer, on the CPU or, much faster, on an NVIDIA GPU with CUDA.
+- **Speaker identification**, word-level timings, speech extraction (to reduce music and background noise), and keywords and context to spell names and terms right.
+- **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL or Google Translate.
+- **A transcript you can play**: click a sentence to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps.
+- **Summaries** with the key points and the chapters of the transcription.
+- **Export** to plain text, Markdown, Word, SRT, VTT, TSV and JSON.
+- **History** of all your transcriptions, with search, groups, pins, tags and notes, and a queue to transcribe while you keep working, with a notification when each transcription is ready (or, in a watched folder, each new file).
+- **Command-line interface** to transcribe from scripts.
+- **The interface in 22 languages**, with a light, dark or system theme.
 
-<details>
-  <summary>Dark</summary>
-  <img src="docs/dark/from-file.png" alt="Dark theme">
-</details>
+### Documentation
 
-<details>
-  <summary>Light</summary>
-  <img src="docs/light/from-file.png" alt="Light theme">
-</details>
+The full documentation of **Audiotext** is available at [**getaudiotext.com**](https://getaudiotext.com), in all the languages of the interface (Català, Čeština, Deutsch, English, Español, Français, Galego, हिन्दी, Bahasa Indonesia, Italiano, 日本語, 한국어, Nederlands, Polski, Português, Română, Русский, Svenska, Türkçe, Українська, Tiếng Việt and 简体中文). The website opens in the language of your browser, and the app opens it in the language of its interface from `Preferences` → `About` → `Documentation`.
 
 <!-- SUPPORTED LANGUAGES -->
 
 ### Supported Languages
+
+WhisperX and the Whisper API transcribe these languages, and detect them automatically:
 
 <details>
   <summary>Click here to display</summary>
@@ -265,6 +279,10 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   - Yoruba
 </details>
 
+The interface is available in Català, Čeština, Deutsch, English, Español, Français, Galego, हिन्दी, Bahasa Indonesia, Italiano, 日本語, 한국어, Nederlands, Polski, Português, Română, Русский, Svenska, Türkçe, Українська, Tiếng Việt and 简体中文. It uses the language of the system if it's available, and it can be changed in `Preferences` → `General` → `Interface language`.
+
+<!-- SUPPORTED FILE TYPES -->
+
 ### Supported File Types
 
 <details>
@@ -316,94 +334,226 @@ You can also choose the theme you like best. It can be dark, light, or the one c
   <summary>ASCII folder structure</summary>
 
   ```
+  │   .env.example
   │   .gitignore
+  │   .pre-commit-config.yaml
   │   audiotext.spec
+  │   config.ini
   │   LICENSE
+  │   pyproject.toml
   │   README.md
+  │   requirements-dev.txt
   │   requirements.txt
   │
   ├───.github
   │   │   CONTRIBUTING.md
+  │   │   dependabot.yml
   │   │   FUNDING.yml
   │   │
   │   ├───ISSUE_TEMPLATE
   │   │       bug_report_template.md
   │   │       feature_request_template.md
   │   │
-  │   └───PULL_REQUEST_TEMPLATE
-  │           pull_request_template.md
+  │   ├───PULL_REQUEST_TEMPLATE
+  │   │       pull_request_template.md
+  │   │
+  │   ├───scripts
+  │   │       build_bundle.sh
+  │   │       compile_translations.py
+  │   │       make_gpu_addon.py
+  │   │       smoke_test_app.py
+  │   │       update_translations.py
+  │   │       use_cpu_torch.py
+  │   │
+  │   └───workflows
+  │           build.yml
+  │           code-quality.yml
+  │           release.yml
+  │           web.yml
   │
-  ├───docs/
+  ├───docs/ (images of this README)
+  │
+  ├───packaging
+  │       linux-install.sh
+  │       linux.sh
+  │       macos.sh
+  │       windows.iss
   │
   ├───res
   │   ├───img
-  │   │       icon.ico
+  │   │       file-explorer.png
+  │   │       icon-dark.png
+  │   │       icon-light.png
   │   │
-  │   └───locales
-  │       │   main_controller.pot
-  │       │   main_window.pot
-  │       │
-  │       ├───en
-  │       │   └───LC_MESSAGES
-  │       │           app.mo
-  │       │           app.po
-  │       │           main_controller.po
-  │       │           main_window.po
-  │       │
-  │       └───es
-  │           └───LC_MESSAGES
-  │                   app.mo
-  │                   app.po
-  │                   main_controller.po
-  │                   main_window.po
+  │   ├───locales
+  │   │   │   audiotext.pot
+  │   │   │
+  │   │   └───<language>
+  │   │       └───LC_MESSAGES
+  │   │               audiotext.mo
+  │   │               audiotext.po
+  │   │
+  │   ├───macos
+  │   │       entitlements.plist
+  │   │       icon.icns
+  │   │
+  │   └───windows
+  │           icon.ico
   │
-  └───src
-      │   app.py
-      │
-      ├───controllers
-      │       __init__.py
-      │       main_controller.py
-      │
-      ├───handlers
-      │       file_handler.py
-      │       google_api_handler.py
-      │       openai_api_handler.py
-      │       whisperx_handler.py
-      │       youtube_handler.py
-      │
-      ├───interfaces
-      │       transcribable.py
-      │
-      ├───models
-      │   │   __init__.py
-      │   │   transcription.py
-      │   │
-      │   └───config
-      │           __init__.py
-      │           config_subtitles.py
-      │           config_system.py
-      │           config_transcription.py
-      │           config_whisper_api.py
-      │           config_whisperx.py
-      │
-      ├───utils
-      │       __init__.py
-      │       audio_utils.py
-      │       config_manager.py
-      │       constants.py
-      │       dict_utils.py
-      │       enums.py
-      │       env_keys.py
-      │       path_helper.py
-      │
-      └───views
-          │   __init__.py
-          │   main_window.py
-          │
-          └───custom_widgets
-                  __init__.py
-                  ctk_scrollable_dropdown/
-                  ctk_input_dialog.py
+  ├───src
+  │   │   app.py
+  │   │   cli.py
+  │   │
+  │   ├───controllers
+  │   │       __init__.py
+  │   │       directory_report.py
+  │   │       folder_transcriber.py
+  │   │       main_controller.py
+  │   │       mic_recorder.py
+  │   │       transcription_saver.py
+  │   │       transcription_validator.py
+  │   │
+  │   ├───handlers
+  │   │       __init__.py
+  │   │       ai_providers.py
+  │   │       audio_handler.py
+  │   │       google_api_handler.py
+  │   │       live_transcriber.py
+  │   │       openai_api_handler.py
+  │   │       summary_handler.py
+  │   │       transcribers.py
+  │   │       translation_handler.py
+  │   │       url_handler.py
+  │   │       whisperx_handler.py
+  │   │       youtube_handler.py
+  │   │
+  │   ├───interfaces
+  │   │       __init__.py
+  │   │       transcribable.py
+  │   │       transcriber.py
+  │   │       transcription_view.py
+  │   │
+  │   ├───models
+  │   │   │   __init__.py
+  │   │   │   history.py
+  │   │   │   summary.py
+  │   │   │   transcript_segment.py
+  │   │   │   transcription.py
+  │   │   │   transcription_settings.py
+  │   │   │   translation.py
+  │   │   │
+  │   │   └───config
+  │   │           __init__.py
+  │   │           config_ai.py
+  │   │           config_subtitles.py
+  │   │           config_system.py
+  │   │           config_transcription.py
+  │   │           config_whisper_api.py
+  │   │           config_whisperx.py
+  │   │
+  │   ├───utils
+  │   │       __init__.py
+  │   │       audio_player.py
+  │   │       audio_utils.py
+  │   │       cancellation.py
+  │   │       config_manager.py
+  │   │       constants.py
+  │   │       enums.py
+  │   │       env_keys.py
+  │   │       errors.py
+  │   │       exporters.py
+  │   │       folder_watcher.py
+  │   │       history_store.py
+  │   │       i18n.py
+  │   │       media.py
+  │   │       notifications.py
+  │   │       path_helper.py
+  │   │       progress.py
+  │   │       subtitle_cues.py
+  │   │       system.py
+  │   │       time_format.py
+  │   │       transcript_editing.py
+  │   │       validators.py
+  │   │
+  │   └───views
+  │       │   __init__.py
+  │       │
+  │       ├───entries
+  │       │       __init__.py
+  │       │       delegates.py
+  │       │       entry_header.py
+  │       │       folder_view.py
+  │       │       progress_card.py
+  │       │       status_view.py
+  │       │
+  │       ├───history
+  │       │       __init__.py
+  │       │       formatting.py
+  │       │       history_row.py
+  │       │       history_sidebar.py
+  │       │
+  │       ├───main_window
+  │       │       __init__.py
+  │       │       entry_actions.py
+  │       │       main_window.py
+  │       │       top_bar.py
+  │       │       transcription_jobs.py
+  │       │       welcome_view.py
+  │       │
+  │       ├───new_transcription
+  │       │       __init__.py
+  │       │       microphone_view.py
+  │       │       new_transcription_view.py
+  │       │
+  │       ├───settings
+  │       │   │   __init__.py
+  │       │   │   option_labels.py
+  │       │   │   preferences_dialog.py
+  │       │   │   settings_form.py
+  │       │   │
+  │       │   └───cards
+  │       │           __init__.py
+  │       │           base.py
+  │       │           context_card.py
+  │       │           engine_card.py
+  │       │           folder_card.py
+  │       │           language_card.py
+  │       │           live_card.py
+  │       │           options_card.py
+  │       │           output_card.py
+  │       │
+  │       ├───style
+  │       │       __init__.py
+  │       │       icons.py
+  │       │       theme.py
+  │       │
+  │       ├───transcript
+  │       │       __init__.py
+  │       │       corrections.py
+  │       │       edit_dialogs.py
+  │       │       media_layout.py
+  │       │       player_bar.py
+  │       │       summary_panel.py
+  │       │       transcript_text.py
+  │       │       transcript_view.py
+  │       │       translation_panel.py
+  │       │       video_pane.py
+  │       │
+  │       └───widgets
+  │               __init__.py
+  │               bindings.py
+  │               button.py
+  │               level_meter.py
+  │               option_menu.py
+  │               pill.py
+  │               search_entry.py
+  │               searchable_option_menu.py
+  │               splitter.py
+  │               stepper.py
+  │               text_dialog.py
+  │               textbox.py
+  │
+  └───tests/ (the test suite (pytest))
   ```
 </details>
 
@@ -411,19 +561,19 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ### Built With
 
-- [CTkScrollableDropdown](https://github.com/Akascape/CTkScrollableDropdown) for the scrollable option menu to display the full list of supported languages.
-- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the GUI.
-- [moviepy](https://pypi.org/project/moviepy/) for video processing, from which the program extracts the audio to be transcribed.
-- [OpenAI Python API library](https://pypi.org/project/openai/) for using the **Whisper API**.
-- [PyAudio](https://pypi.org/project/PyAudio/) for recording microphone audio.
-- [pydub](https://github.com/jiaaro/pydub) for audio processing.
-- [python-dotenv](https://pypi.org/project/python-dotenv/) for handling environment variables.
-- [PyTorch](https://github.com/pytorch/pytorch) for building and training neural networks.
-- [PyTorch-CUDA](https://pytorch.org/docs/stable/cuda.html) for enabling GPU support (CUDA) with PyTorch. CUDA is a parallel computing platform and application programming interface model created by NVIDIA.
-- [pytube](https://github.com/pytube/pytube) for audio download of YouTube videos.
-- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for using the **Google Speech-To-Text API**.
-- [Torchaudio](https://pytorch.org/audio/stable/index.html) for audio processing tasks, including speech recognition and audio classification.
-- [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition. This product includes software developed by Max Bain. Uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper), which is a reimplementation of [OpenAI's Whisper](https://github.com/openai/whisper) model using [CTranslate2](https://github.com/OpenNMT/CTranslate2/).
+- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the interface, and [tkinterdnd2](https://github.com/Eliav2/tkinterdnd2) for dropping files and folders on the window.
+- [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition on your computer. This product includes software developed by Max Bain. Uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper), which is a reimplementation of [OpenAI's Whisper](https://github.com/openai/whisper) model using [CTranslate2](https://github.com/OpenNMT/CTranslate2/), and [pyannote.audio](https://github.com/pyannote/pyannote-audio) to identify the speakers.
+- [PyTorch](https://github.com/pytorch/pytorch) and [Torchaudio](https://pytorch.org/audio/stable/index.html), which WhisperX runs on, with [CUDA](https://pytorch.org/docs/stable/cuda.html) for NVIDIA GPUs.
+- [OpenAI Python API library](https://pypi.org/project/openai/) for the **Whisper API**, and for the summaries and translations with OpenAI, DeepSeek, Gemini, Mistral, Grok and Ollama.
+- [Anthropic Python API library](https://pypi.org/project/anthropic/) for the summaries and translations with Claude.
+- [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) for the **Google Speech-to-Text API**.
+- [FFmpeg](https://ffmpeg.org/) and [pydub](https://github.com/jiaaro/pydub) to extract and process the audio of the files.
+- [python-sounddevice](https://github.com/spatialaudio/python-sounddevice) to record from the microphone and play the audio of the transcriptions.
+- [pytubefix](https://github.com/JuanBindez/pytubefix) to download the audio of YouTube videos.
+- [python-docx](https://github.com/python-openxml/python-docx) to export Word documents.
+- [Babel](https://babel.pocoo.org/) for the translations of the interface and the names of the languages.
+- [keyring](https://github.com/jaraco/keyring) to keep the API keys in the credential store of the system, and [python-dotenv](https://pypi.org/project/python-dotenv/) to read them from `.env` files.
+- [Astro Starlight](https://starlight.astro.build) for the [documentation website](https://getaudiotext.com).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -433,48 +583,37 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ### Installation
 
-1. Install [FFmpeg](https://ffmpeg.org) to execute the program. Otherwise, it won't be able to process the audio files.
+Download the file for your system from the [latest release](https://github.com/HenestrosaDev/audiotext/releases/latest). FFmpeg is included, so you don't need to install anything else.
 
-    To check if you have it installed on your system, run `ffmpeg -version`. It should return something similar to this:
-    ```
-    ffmpeg version 5.1.2-essentials_build-www.gyan.dev Copyright (c) 2000-2022 the FFmpeg developers
-    built with gcc 12.1.0 (Rev2, Built by MSYS2 project)
-    configuration: --enable-gpl --enable-version3 --enable-static --disable-w32threads --disable-autodetect --enable-fontconfig --enable-iconv --enable-gnutls --enable-libxml2 --enable-gmp --enable-lzma --enable-zlib --enable-libsrt --enable-libssh --enable-libzmq --enable-avisynth --enable-sdl2 --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxvid --enable-libaom --enable-libopenjpeg --enable-libvpx --enable-libass --enable-libfreetype --enable-libfribidi --enable-libvidstab --enable-libvmaf --enable-libzimg --enable-amf --enable-cuda-llvm --enable-cuvid --enable-ffnvcodec --enable-nvdec --enable-nvenc --enable-d3d11va --enable-dxva2 --enable-libmfx --enable-libgme --enable-libopenmpt --enable-libopencore-amrwb --enable-libmp3lame --enable-libtheora --enable-libvo-amrwbenc --enable-libgsm --enable-libopencore-amrnb --enable-libopus --enable-libspeex --enable-libvorbis --enable-librubberband
-    libavutil      57. 28.100 / 57. 28.100
-    libavcodec     59. 37.100 / 59. 37.100
-    libavformat    59. 27.100 / 59. 27.100
-    libavdevice    59.  7.100 / 59.  7.100
-    libavfilter     8. 44.100 /  8. 44.100
-    libswscale      6.  7.100 /  6.  7.100
-    libswresample   4.  7.100 /  4.  7.100
-    ```
+| System | File |
+| --- | --- |
+| macOS 15 or later (Apple Silicon) | `Audiotext-X.Y.Z-macos-arm64.dmg` |
+| Windows (64-bit) | `Audiotext-X.Y.Z-windows-x64-setup.exe` |
+| Linux (x86_64) | `Audiotext-X.Y.Z-linux-x86_64.tar.gz` |
 
-    If the output is an error, it is because your system cannot find the `ffmpeg` system variable, which is probably because you don't have it installed on your system. To install `ffmpeg`, open a command prompt and run one of the following commands, depending on your operating system:
-    ```
-    # on Ubuntu or Debian
-    sudo apt update && sudo apt install ffmpeg
+The `-gpu-N` files are downloaded by the installers if you choose GPU acceleration, so you don't need to download them yourself.
 
-    # on Arch Linux
-    sudo pacman -S ffmpeg
+- **macOS**: Open the `.dmg` file and drag `Audiotext` into the `Applications` folder. The app isn't notarized by Apple, so the first time you open it, macOS will block it. To open it anyway, go to `System Settings` > `Privacy & Security` and click `Open Anyway`. Intel Macs aren't supported because PyTorch no longer supports them.
+- **Windows**: Run the installer. If you have an NVIDIA GPU, the installer offers to download GPU acceleration (CUDA), which makes WhisperX transcriptions much faster. The installer isn't signed, so Windows SmartScreen may warn you about it: click `More info` > `Run anyway`.
+- **Linux**: Extract the archive and run `./install.sh`. It installs the app for your user and adds it to the applications menu. If you have an NVIDIA GPU, it offers to download GPU acceleration (CUDA); you can also choose it with `./install.sh --gpu` or `./install.sh --cpu`. To uninstall the app, run `./install.sh --uninstall`. You can also run the app without installing it by opening `Audiotext/Audiotext`, but only with the CPU. To record from the microphone and play audio, install PortAudio (e.g. `sudo apt install libportaudio2`).
 
-    # on MacOS using Homebrew (https://brew.sh/)
-    brew install ffmpeg
+To change between the CPU and the GPU versions, install the app again and choose the other option.
 
-    # on Windows using Chocolatey (https://chocolatey.org/)
-    choco install ffmpeg
-
-    # on Windows using Scoop (https://scoop.sh/)
-    scoop install ffmpeg
-    ```
-2. Go to [releases](https://github.com/HenestrosaDev/audiotext/releases) and download the latest.
-3. Decompress the downloaded file.
-4. Open the `audiotext` folder and double-click the `Audiotext` executable file.
+The [installation guide](https://getaudiotext.com/en/getting-started/installation/) explains these steps in detail.
 
 ### Setting Up the Project Locally
 
-1. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git`.
-2. Change the current working directory to `audiotext` by running `cd audiotext`.
-3. (Optional but recommended) Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`.
+1. Install the system dependencies: [FFmpeg](https://ffmpeg.org) (required to process audio and video files) and, on Linux, [PortAudio](https://www.portaudio.com/) (required to record from the microphone and play audio; on macOS and Windows, it's included in the `sounddevice` package):
+   ```bash
+   # macOS
+   brew install ffmpeg
+   # Ubuntu/Debian
+   sudo apt install ffmpeg libportaudio2
+   # Windows
+   choco install ffmpeg
+   ```
+2. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git` and change the current working directory to `audiotext` by running `cd audiotext`.
+3. (Optional but recommended) Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`. **Python 3.10 to 3.13** is required (WhisperX doesn't support Python 3.14 yet).
 4. (Optional but recommended) Activate the virtual environment:
    ```bash
    # on Windows
@@ -484,19 +623,27 @@ You can also choose the theme you like best. It can be dark, light, or the one c
    # and then . venv/Scripts/activate
 
    # on macOS and Linux
-   source venv/Scripts/activate
+   source venv/bin/activate
    ```
 5. Run `pip install -r requirements.txt` to install the dependencies.
+   - `requirements.txt` installs PyTorch with CUDA support, which is a large download (several GB) on Linux and Windows. If you don't have an NVIDIA GPU, install the CPU-only build first by running `pip install torch==2.8.0 torchaudio==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cpu`. On macOS, there's no CUDA, so the CPU build is always used.
+   - If you use [uv](https://docs.astral.sh/uv/) instead of pip, run `uv pip install --index-strategy unsafe-best-match -r requirements.txt`, since uv only looks for a package in the first index that has it by default.
 6. (Optional) If you intend to contribute to the project, run `pip install -r requirements-dev.txt` to install the development dependencies.
 7. (Optional) If you followed step 6, run `pre-commit install` to install the pre-commit hooks in your `.git/` directory.
-8. Copy and paste the `.env.example` file as `.env` to the root of the directory.
-9. Run `python src/app.py` to start the program.
+8. (Optional) The API keys can be set from the app. To set them beforehand, copy the `.env.example` file as `.env` to your user configuration folder (see the notes below) and fill them in. They can also be set as environment variables.
+9. Run `python src/app.py` to start the program. The first time a **WhisperX** model is used, it's downloaded (from ~75 MB for `tiny` to ~3 GB for `large-v2`), so it may take a while. To try the program quickly, choose the `tiny` model in the `Engine` settings of the transcription.
+10. (Optional) If you followed step 6, run `pytest` to run the test suite.
 
 ### Notes
 
-- You cannot generate a single executable file for this project with PyInstaller due to the dependency with the CustomTkinter package (reason [here](https://github.com/TomSchimansky/CustomTkinter/wiki/Packaging)).
-- For **Apple Silicon Macs** and **Ubuntu** users: An error occurs when trying to install the `pyaudio` package. [Here](https://stackoverflow.com/questions/73268630/error-could-not-build-wheels-for-pyaudio-which-is-required-to-install-pyprojec) is a StackOverflow post explaining how to solve this issue.
-- I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription. The same applies to the lines using the `logger` package in the `moviepy/audio/io/ffmpeg_audiowriter` file from the `moviepy` package. There is also a change in the line 169 that changes `logger=logger` to `logger=None` to avoid more errors related to opening the console.
+- The `config.ini` file of the project contains the default settings and is never modified by the app. The settings you change, the history of the transcriptions and the recordings of the microphone are stored in your user configuration folder, so they survive updates and are not committed by mistake:
+  - **Windows**: `%APPDATA%\Audiotext`
+  - **macOS**: `~/Library/Application Support/Audiotext`
+  - **Linux**: `~/.config/audiotext` (or `$XDG_CONFIG_HOME/audiotext`)
+
+  It contains `config.ini` (your settings; delete it to restore the defaults), `history.json` (your transcriptions, with their summaries, translations and corrections) and `media/` (the recordings and the audio downloaded from links). To use another folder (e.g. for a portable installation), set the `AUDIOTEXT_CONFIG_DIR` environment variable.
+- The API keys and the Hugging Face token are kept in the credential store of your system: the Keychain on macOS, the Credential Manager on Windows and the Secret Service (e.g. GNOME Keyring or KWallet) on Linux. If the system has none (e.g. a server without a desktop), they're stored in a `.env` file in the same folder, readable only by your user. The keys that previous versions stored in that file are moved to the credential store the first time the app opens. Environment variables with the same names (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `DEEPSEEK_API_KEY`, `GEMINI_API_KEY`, `MISTRAL_API_KEY`, `XAI_API_KEY`, `DEEPL_API_KEY`, `GOOGLE_API_KEY` and `HF_TOKEN`) take precedence, and a `.env` file in the root of the project, used by previous versions, is still read.
+- I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -504,449 +651,173 @@ You can also choose the theme you like best. It can be dark, light, or the one c
 
 ## Usage
 
-Once you open the **Audiotext** executable file (explained in the [Getting Started](#getting-started) section), you'll see something like this:
+This is an overview of what you can do with **Audiotext**. The [documentation](https://getaudiotext.com) explains each feature in detail.
+
+### The Window
+
+- **The top bar** has the buttons to start a new transcription from a `File`, a `URL`, the `Microphone` or a `Folder`, the status of the app, and the gear that opens the [preferences](#preferences). The button on the left shows or hides the history.
+- **The history**, on the left, has all your transcriptions (see [History](#history)).
+- **The main area** shows the source you're setting up, the progress of a transcription, or the transcription selected in the history.
+
+You can also drop a file or a folder anywhere on the window to transcribe it. See [your first transcription](https://getaudiotext.com/en/getting-started/first-transcription/).
+
+### Audio Sources
+
+- **File**: an audio or video file (see the [supported file types](#supported-file-types)).
+- **URL**: a YouTube video or a direct link to an audio or video file, e.g. the episode of a podcast. The audio is downloaded first.
+- **Microphone**: records you or a meeting and transcribes it. The recording is kept in the history. With WhisperX, `Show the text while recording` shows a draft written by a fast model while you speak, which is replaced by the transcription of the whole recording when you stop.
+- **Folder**: transcribes the audio and video files of a folder and its subfolders, and saves the transcription of each file next to it (or in another folder) in the chosen file types. Files that already have a transcription are skipped unless `Overwrite existing files` is on. With `Watch the folder`, it keeps transcribing the files added to the folder until you stop it.
+
+While a transcription is in progress, you can keep using the app and set up the next ones, which are added to a queue. See [audio sources](https://getaudiotext.com/en/guides/sources/).
+
+### Transcription Settings
+
+Before transcribing, the settings are shown in cards. They're remembered for the next time, and each transcription keeps the settings it was made with:
+
+- **Engine**: the transcription method and its model (see [Transcription Engines](#transcription-engines)).
+- **Language**: the language of the audio (detected automatically by default) and the language of the transcription. If they differ, Whisper translates the audio while transcribing: into English, or, experimentally, into any other language.
+- **Context**: `Keywords` (names, terms or acronyms said in the audio, so they're spelled right) and a `Description` of what the audio is about.
+- **Options**: `Word-level timings` (to highlight each word while playing), `Extract speech` (to reduce music and background noise) and `Identify speakers`. Identifying the speakers with WhisperX requires a free Hugging Face token and accepting the conditions of [pyannote/speaker-diarization-community-1](https://huggingface.co/pyannote/speaker-diarization-community-1).
+- **Live text** (microphone) and **Folder** and **Output** (folders).
+
+See [transcription settings](https://getaudiotext.com/en/guides/transcription-settings/).
+
+### Transcription Engines
+
+| | WhisperX | Whisper API | Google API |
+| --- | --- | --- | --- |
+| Runs on | Your computer | OpenAI servers | Google servers |
+| Cost | Free, unlimited | Paid, requires an OpenAI API key | Free tier (60 minutes per month), or paid with an API key |
+| Detects the language and translates | ✓ | ✓ | |
+| Timestamps | ✓ | With `whisper-1` and `gpt-4o-transcribe-diarize` | |
+| Identifies the speakers | ✓ (with a Hugging Face token) | With `gpt-4o-transcribe-diarize` | |
+
+- **WhisperX** is the default. Its models go from `tiny` (~1 GB of VRAM, fast) to `large-v2` (the default, <8 GB, the most accurate) and `large-v3-turbo` (much faster, almost as accurate). The English-only models (`tiny.en`, `base.en`, `small.en`, `medium.en`) and the distilled ones (`distil-small.en`, `distil-medium.en`, `distil-large-v2`, `distil-large-v3`, `distil-large-v3.5`) are faster than the multilingual models of the same size, but only transcribe English. The `Compute type`, the `Batch size` and the `Use CPU` options are in the preferences.
+- **Whisper API**: `whisper-1` (the default) has timestamps and translates into English, `gpt-transcribe` is more accurate but has no timestamps, and `gpt-4o-transcribe-diarize` identifies the speakers. Long audios are split into chunks of up to 10 minutes.
+- **Google API**: doesn't punctuate the sentences (Audiotext does), can't detect the language nor translate, and returns plain text.
+
+See [engines](https://getaudiotext.com/en/reference/engines/).
+
+### The Transcript
+
+Select a transcription of the history to open it. It has three modes:
+
+- **Transcript**: each sentence with its timestamp and its speaker. Click a sentence to play the audio from there, change the speed from `0.5×` to `2×`, and search the text with `Ctrl+F` (`⌘F` on macOS). Videos are shown above the text, with their subtitles.
+- **Plain text**: the text, which you can edit freely. The changes are saved automatically.
+- **Summary**: see [Summary and Translation](#summary-and-translation).
+
+To correct the transcription while keeping its timestamps, use `Find and replace…`, `Rename speakers…` (giving two speakers the same name merges them) or right-click a sentence to edit it. See [the transcript](https://getaudiotext.com/en/guides/transcript/).
+
+### Summary and Translation
+
+The `Summary` mode generates a summary of the transcription, its key points and, if it has timestamps, its chapters. The `Translate` button translates it into another language, shown next to the original text and sentence by sentence, so the translation is also played and highlighted. Both are kept in the history.
 
 <picture>
   <source
-    srcset="docs/light/main.png"
+    srcset="docs/light/summary.png"
     media="(prefers-color-scheme: light)"
   />
   <source
-    srcset="docs/dark/main.png"
+    srcset="docs/dark/summary.png"
+    width="128"
+    height="128"
     media="(prefers-color-scheme: dark)"
   />
   <img
-    src="docs/light/main.png"
-    alt="Main"
+    src="docs/dark/main.png"
+    alt="The summary of a transcription, with its key points and chapters"
   >
 </picture>
 
-### Transcription Language
+They're generated by the provider chosen in `Preferences` → `AI`:
 
-The target language for the transcription. If you use the **Whisper API** or the **WhisperX** transcription methods, you can set this to a language other than the one spoken in the audio in order to translate it to the selected language.
+| Provider | Default model | API key |
+| --- | --- | --- |
+| OpenAI | `gpt-5.4-mini` | [OpenAI](https://platform.openai.com/api-keys) |
+| Claude (Anthropic) | `claude-haiku-4-5` | [Anthropic](https://console.anthropic.com/settings/keys) |
+| DeepSeek | `deepseek-chat` | [DeepSeek](https://platform.deepseek.com/api_keys) |
+| Gemini (Google) | `gemini-3.8-flash` | [Google AI Studio](https://aistudio.google.com/apikey) |
+| Mistral | `mistral-small-latest` | [Mistral](https://console.mistral.ai/api-keys) |
+| Grok (xAI) | `grok-4.3` | [xAI](https://console.x.ai) |
+| Ollama (local) | `llama3.2` | Not needed. The models run on your computer with [Ollama](https://ollama.com) |
 
-For example, to translate an English audio into French, you would set `Transcription language` to French, as shown in the video below:
+Leave the model empty to use the default one of the provider, or type the name of any other model of the provider. The translations can also be made by **DeepL** (with a [DeepL API key](https://www.deepl.com/your-account/keys), including the free ones) and **Google Translate** (with the Google API key and the Cloud Translation API enabled). Each provider charges for the use of its API, for which **Audiotext** is not responsible. See [summary and translation](https://getaudiotext.com/en/guides/summary-and-translation/).
 
-<!-- english-to-french.mp4 -->
-https://github.com/user-attachments/assets/e68d9b90-3978-4ffb-9b62-bd3d57a1a33d
+### Export
 
-This is an unofficial way to perform translations, so be sure to double-check the generated transcription for errors.
+The `Export` button (or `Ctrl+S`, `⌘S` on macOS) saves the transcription as plain text (`.txt`), Markdown (`.md`), a Word document (`.docx`), subtitles (`.srt` and `.vtt`), a table (`.tsv`) or JSON (`.json`). The Markdown and Word documents include the summary, if any, and the text in paragraphs with the timestamp and the speaker of each one. When transcribing a folder, the files are saved automatically in the chosen types.
 
-### Transcription Method
+### History
 
-There are three transcription methods available in **Audiotext**:
+Every transcription is kept in the history, with its summary, its translation and its corrections. Search them by name, text, note, tag or source, and right-click one to rename it, add a note or a tag, pin it to the top, move it to a group, show its file in the file manager or delete it. Deleting a transcription doesn't delete your audio, video or saved files. See [history](https://getaudiotext.com/en/guides/history/).
 
-- **Google Speech-To-Text API** (hereafter referred to as **Google API**): Requires an Internet connection. It doesn't punctuate sentences (the punctuation is produced by **Audiotext**), and the quality of the resulting transcriptions often requires manual adjustment due to lower quality compared to the **Whisper API** or **WhisperX**. In its free tier, usage is limited to 60 minutes per month, but this limit can be extended by adding an [API key](#google-api-key).
+### Preferences
 
-- **Whisper API**: Requires an Internet connection. This method is intended for people whose machines are not powerful enough to run **WhisperX** gracefully. It has fewer options than **WhisperX**, but the quality of the transcriptions is similar to those generated by the `large-v2` model of **Whisper X**. However, you need to set an OpenAI API key to use this method. See the [Whisper API Key](#whisper-api-key) section for more information.
+The gear at the top right opens the settings that don't change with each transcription:
 
-- **WhisperX**: Selected by default. It doesn't require an Internet connection because the entire transcription process takes place locally on your computer. As a result, it's much more demanding of hardware resources than the other remote transcription methods. **WhisperX** can run on CPUs and CUDA GPUs, although it performs better on the latter. The quality of the transcription depends on the selected [model size](#model-size) and [computation type](#compute-type). In addition, **WhisperX** offers a wider range of features, including a more customizable subtitle generation process than the **Whisper API** and more output file types. It has no usage restrictions while remaining completely free.
+- **General**: the appearance (system, light or dark), the interface language and the notifications of the system when a transcription is ready.
+- **AI**: the providers and the models of the summaries and the translations, and the address of Ollama.
+- **API keys**: the keys of OpenAI, Anthropic, DeepSeek, Gemini, Mistral, xAI, DeepL and Google, and the Hugging Face token.
+- **WhisperX**: the compute type, the batch size and whether to use the CPU.
+- **Subtitles**: highlighting the words, and the maximum line count and width of the `.srt` and `.vtt` files.
+- **Whisper API**: the temperature and the timestamps of the words.
+- **About**: the version, and links to the documentation, GitHub and the donation page.
 
-### Audio Source
+See [preferences](https://getaudiotext.com/en/reference/preferences/).
 
-You can transcribe from four different audio sources:
+### Keyboard Shortcuts
 
-- **File** (see image above): Click the file explorer icon to select the file you want to transcribe, or manually enter the path to the file in the `Path` input field. You can transcribe audio from both audio and video files.
+| Shortcut | Action |
+| --- | --- |
+| `Ctrl+Enter` / `⌘↩` | Start the transcription, or start and stop recording |
+| `Ctrl+O` / `⌘O` | Choose a file (or a folder, in the folder source) |
+| `Ctrl+S` / `⌘S` | Export the transcription being shown |
+| `Ctrl+F` / `⌘F` | Search the transcription |
+| `Esc` | Cancel the transcription in progress |
+| `Space` | Play or pause the audio |
+| `←` / `→` | Go back or forward 5 seconds |
 
-  Note that the file explorer has the `All supported files` option selected by default. To select only audio files or video files, click the combo box in the lower right corner of the file explorer to change the file type, as marked in red in the following image:
+### Command-Line Interface
 
-  ![File explorer](docs/file-explorer.png)
+**Audiotext** can also be used from the command line to transcribe from scripts, when [running it from the source code](#setting-up-the-project-locally). The options that are not given take the values configured in the app, and the transcriptions are always saved next to each transcribed file, or in the folder given with `--output-dir` (where the subfolders of a transcribed folder are recreated).
 
-  ![Supported files](docs/supported-files.png)
+```bash
+# Transcribe a file. The text is also printed, so it can be redirected
+python src/cli.py transcribe interview.mp3 --language es --output-types txt,srt
 
-- **Directory**: Click the file explorer icon to select the directory containing the files you want to transcribe, or manually enter the path to the directory in the `Path` input field. Note that the `Autosave` option is checked and cannot be unchecked because each file's transcription will automatically be saved in the same path as the source file.
+# Transcribe the files of a folder identifying the speakers
+python src/cli.py transcribe recordings/ --diarize --speakers 2 --output-dir transcriptions/
 
-  <picture>
-    <source
-      srcset="docs/light/from-directory.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/from-directory.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img
-      src="docs/light/from-directory.png"
-      alt="Main"
-    >
-  </picture>
+# Transcribe a YouTube video with the Whisper API
+python src/cli.py transcribe "https://www.youtube.com/watch?v=…" --method whisper-api
 
-  For example, let's use the following directory as a reference:
+# Transcribe a meeting with the Whisper API, with its keywords and its context
+python src/cli.py transcribe meeting.m4a --method whisper-api \
+    --openai-model gpt-transcribe --keywords "Audiotext, WhisperX" \
+    --prompt "A meeting about the next release"
 
-  ```
-  └───files-to-transcribe
-      │   paranoid-android.mp3
-      │   the-past-recedes.flac
-      │
-      └───movies
-              mulholland-dr-2001.avi
-              seul-contre-tous-1998.mp4
-  ```
+# Transcribe the files added to a folder until stopped with Ctrl+C
+python src/cli.py watch inbox/ --output-types srt
 
-  After transcribing the `files-to-transcribe` directory using **WhisperX**, with the `Overwrite existing files` option unchecked and the output file types `.vtt` and `.txt` selected, the folder structure will look like this:
-
-  ```
-  └───files-to-transcribe
-      │   paranoid-android.mp3
-      │   paranoid-android.txt
-      │   paranoid-android.vtt
-      │   the-past-recedes.flac
-      │   the-past-recedes.txt
-      │   the-past-recedes.vtt
-      │
-      └───movies
-              mulholland-dr-2001.avi
-              mulholland-dr-2001.txt
-              mulholland-dr-2001.vtt
-              seul-contre-tous-1998.mp4
-              seul-contre-tous-1998.txt
-              seul-contre-tous-1998.vtt
-  ```
-
-  If we transcribe the directory again with the **Google API** and the `Overwrite existing files` option unchecked, **Audiotext** won't process any files because there are already `.txt` files corresponding to all the files in the directory. However, if we added the file `endors-toi.wav` to the root of `files-to-transcribe`, it would be the only file that would be processed because it doesn't have a `.txt` attached to it. The same would happen in the **WhisperX** scenario, since `endors-toi.wav` has no transcription files generated.
-
-  Note that if we check the `Overwrite existing files` option, all files will be processed again and the existing transcription files will be overwritten.
-
-- **Microphone**: To start recording, simply click the `Start recording` button to begin the process. The text of the button will change to `Stop recording` and its color will change to red. Click it to stop recording and generate the transcription.
-
-  Here is a video demonstrating this feature:
-
-  <!-- english.mp4 -->
-  https://github.com/user-attachments/assets/61f2173b-bcfb-4251-a910-0cf6b37598c6
-
-  Note that your operating system must recognize an input source, otherwise an error message will appear in the text box indicating that no input source was detected.
-
-- **YouTube video**: Requires an Internet connection to get the audio of the video. To generate the transcription, simply enter the URL of the video in the `YouTube video URL` field and click the `Generate transcription` button when you are finished adjusting the settings.
-
-  <picture>
-    <source
-      srcset="docs/light/from-youtube.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/from-youtube.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img
-      src="docs/light/from-youtube.png"
-      alt="From microphone"
-    >
-  </picture>
-
-### Save Transcription
-
-When you click on the `Save transcription` button, you'll be prompted for a file explorer where you can name the transcription file and select the path where you want to save it. Please note that any text entered or modified in the textbox **WILL NOT** be included in the saved transcription.
-
-#### Autosave
-
-Unchecked by default. If checked, the transcription will automatically be saved in the root of the folder where the file to transcribe is stored. If there are already existing files with the same name, they won't be overwritten. To do that, you'll need to check the `Overwrite existing files` option (see below).
-
-Note that if you create a transcription using the `Microphone` or `YouTube` audio sources with the `Autosave` action enabled, the transcription files will be saved in the root of the `audiotext-vX.X.X` directory.
-
-#### Overwrite Existing Files
-
-This option can only be checked if the `Autosave` option is checked. If `Overwrite existing files` is checked, existing transcriptions in the root directory of the file to be transcribed will be overwritten when saving.
-
-For example, let's use this directory as a reference:
-
-```
-└───audios
-        foo.mp3
-        foo.srt
-        foo.txt
+# Check whether a new version is available
+python src/cli.py check-update
 ```
 
-If we transcribe the audio file `foo.mp3` with the output file types `.json`, `.txt` and `.srt` and the `Autosave` and `Overwrite existing files` options checked, the files `foo.srt` and `foo.txt` will be overwritten and the file `foo.json` will be created.
+Run `python src/cli.py transcribe --help` to see all the options. The progress is printed to the standard error (use `--quiet` to hide it, or `--verbose` to also print the logs), and the command exits with code `1` if a transcription fails. For the speaker identification, the Hugging Face token can be set in the app or in the `HF_TOKEN` environment variable. See [the command-line interface](https://getaudiotext.com/en/reference/cli/).
 
-On the other hand, if we transcribe the audio file `foo.mp3` with the same output file types, with the option `Autosave` checked but without the option `Overwrite existing files`, the file `foo.json` will still be created, but the files `foo.srt` and `foo.txt` will remain unchanged.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-### Google Speech-To-Text API Options
-
-The `Google API options` frame appears if the selected transcription method is **Google API**. See the [Transcription Method](#transcription-method) section to know more about the **Google API**.
-
-<p align="center">
-  <picture>
-    <source
-      srcset="docs/light/google-api-options.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/google-api-options.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img src="docs/light/google-api-options.png" alt="google-api-options">
-  </picture>
-</p>
-
-#### Google API Key
-
-Since the program uses the free **Google API** tier by default, which allows you to transcribe up to 60 minutes of audio per month for free, you may need to add an API key if you want to make extensive use of this feature. To do so, click the `Set API key` button. You'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
-
-<p align="center">
-  <picture>
-    <source
-      srcset="docs/light/google-api-key-dialog.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/google-api-key-dialog.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img src="docs/light/google-api-key-dialog.png" alt="Google API key dialog">
-  </picture>
-</p>
-
-Remember that **WhisperX** provides fast, unlimited audio transcription that supports translation and subtitle generation for free, unlike the **Google API**. Also note that Google charges for the use of the API key, for which **Audiotext** is not responsible.
-
-### Whisper API Options
-
-The `Whisper API options` frame appears if the selected transcription method is **Whisper API**. See the [Transcription Method](#transcription-method) section to know more about the **Whisper API**.
-
-<p align="center">
-  <picture>
-    <source
-      srcset="docs/light/whisper-api-options.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/whisper-api-options.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img src="docs/light/whisper-api-options.png" alt="Whisper API options">
-  </picture>
-</p>
-
-#### Whisper API Key
-
-As noted in the [Transcription Method](#transcription-method) section, an [OpenAI API key]((https://platform.openai.com/api-keys)) is required to use this transcription method. Otherwise, you won't be able to use it.
-
-To add it, click the `Set OpenAI API key` button. You'll be presented with a dialog box where you can enter your API key, which will **only** be used to make requests to the API.
-
-<p align="center">
-  <picture>
-    <source
-      srcset="docs/light/open-ai-api-key-dialog.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/open-ai-api-key-dialog.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img src="docs/light/open-ai-api-key-dialog.png" alt="OpenAI API key dialog">
-  </picture>
-</p>
-
-OpenAI charges for the use of the API key, for which **Audiotext** is not responsible. See the [Troubleshooting](#troubleshooting) section if you get error `429` on your first request with an API key.
-
-#### Response Format
-
-The format of the transcript output, in one of these options:
-
-- `json`
-- `srt` (subtitle file type)
-- `text`
-- `verbose_json`
-- `vtt` (subtitle file type)
-
-Defaults to `text`.
-
-#### Temperature
-
-The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.
-
-Defaults to 0.
-
-#### Timestamp Granularities
-
-The timestamp granularities to populate for this transcription. `Response format` must be set `verbose_json` to use timestamp granularities. Either or both of these options are supported: `word`, or `segment`.
-
-**Note**: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
-
-Defaults to `segment`.
-
-### WhisperX Options
-
-The **WhisperX** options appear when the selected transcription method is **WhisperX**. You can select the output file types of the transcription and whether to translate the transcription into English.
-
-<p align="center">
-  <picture>
-    <source
-      srcset="docs/light/whisperx-options.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/whisperx-options.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img
-      src="docs/light/whisperx-options.png"
-      alt="WhisperX options"
-    >
-  </picture>
-</p>
-
-#### Output File Types
-
-You can select one or more of the following transcription output file types:
-
-- `.aud`
-- `.json`
-- `.srt` (subtitle file type)
-- `.tsv`
-- `.txt`
-- `.vtt` (subtitle file type)
-
-If you select one of the two subtitle file types (`.vtt` and `.srt`), the `Subtitle options` frame will be displayed with more options (read more [here](#subtitle-options)).
-
-#### Translate to English
-
-To translate the transcription to English, simply check the `Translate to English` checkbox before generating the transcription, as shown in the video below.
-
-<!-- spanish-to-english.mp4 -->
-https://github.com/user-attachments/assets/e614201c-25f2-4ec7-8478-3b63aade0c44
-
-If you want to translate the audio to another language, check the [Transcription Language](#transcription-language) section.
-
-### Subtitle Options
-
-When you select the `.srt` and/or the `.vtt` output file type(s), the `Subtitle options` frame will be displayed. Note that the input options only apply to the `.srt` and `.vtt` files:
-
-<p align="center">
-  <picture>
-    <source
-      srcset="docs/light/subtitle-options.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/subtitle-options.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img
-      src="docs/light/subtitle-options.png"
-      alt="Subtitle options"
-    >
-  </picture>
-</p>
-
-To get the subtitle file(s) after the audio is transcribed, you can either check the `Autosave` option before generating the transcription or click `Save transcription` and select the path where you want to save them as explained in the [Save Transcription](#save-transcription) section.
-
-#### Highlight Words
-
-Underline each word as it's spoken in `.srt` and `.vtt` subtitle files. Not checked by default.
-
-#### Max. Line Count
-
-The maximum number of lines in a segment. `2` by default.
-
-#### Max. Line Width
-
-The maximum number of characters in a line before breaking the line. `42` by default.
-
-### Advanced Options
-
-When you click the `Show advanced options` button in the `WhisperX options` frame, the `Advanced options` frame appears, as shown in the figure below.
-
-<p align="center">
-  <picture>
-    <source
-      srcset="docs/light/whisperx-advanced-options.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <source
-      srcset="docs/dark/whisperx-advanced-options.png"
-      media="(prefers-color-scheme: dark)"
-    />
-    <img src="docs/light/whisperx-advanced-options.png" alt="WhisperX advanced options">
-  </picture>
-</p>
-
-It's highly recommended that you don't change the default configuration unless you're having problems with **WhisperX** or you know exactly what you're doing, especially the `Compute type` and `Batch size` options. Change them at your own risk and be aware that you may experience problems, such as having to reboot your system if the GPU runs out of VRAM.
-
-#### Model Size
-
-There are five main ASR (Automatic Speech Recognition) model sizes that offer tradeoffs between speed and accuracy. The larger the model size, the more VRAM it uses and the longer it takes to transcribe. Unfortunately, **WhisperX** hasn't provided specific performance data for each model, so the table below is based on the one detailed in [OpenAI's Whisper README](https://github.com/openai/whisper). According to **WhisperX**, the `large-v2` model requires <8GB of GPU memory and batches inference for 70x real-time transcription (taken from the project's [README](https://github.com/m-bain/whisperX)).
-
-|  Model   | Parameters | Required VRAM  |
-|:--------:|:----------:|:--------------:|
-|  `tiny`  |    39 M    |     ~1 GB      |
-|  `base`  |    74 M    |     ~1 GB      |
-| `small`  |   244 M    |     ~2 GB      |
-| `medium` |   769 M    |     ~5 GB      |
-| `large`  |   1550 M   |     <8 GB      |
-
-> [!NOTE]
->`large` is divided into three versions: `large-v1`, `large-v2`, and `large-v3`. The default model size is `large-v2`, since `large-v3` has some bugs that weren't as common in `large-v2`, such as hallucination and repetition, especially for certain languages like Japanese. There are also more prevalent problems with missing punctuation and capitalization. See the announcements for the [`large-v2`](https://github.com/openai/whisper/discussions/661) and the [`large-v3`](https://github.com/openai/whisper/discussions/1762) models for more insight into their differences and the issues encountered with each.
-
-The larger the model size, the lower the WER (Word Error Rate in %). The table below is taken from [this Medium article](https://blog.ml6.eu/fine-tuning-whisper-for-dutch-language-the-crucial-role-of-size-dd5a7012d45f), which analyzes the performance of pre-trained Whisper models on common Dutch speech.
-
-|  Model   |  WER  |
-|:--------:|:-----:|
-|   tiny   | 50.98 |
-|  small   | 17.90 |
-| large-v2 | 7.81  |
-
-#### Compute Type
-
-This term refers to different data types used in computing, particularly in the context of numerical representation. It determines how numbers are stored and represented in a computer's memory. The higher the precision, the more resources will be needed and the better the transcription will be.
-
-There are three possible values for **Audiotext**:
-- `int8`: Default if using CPU. It represents whole numbers without any fractional part. Its size is 8 bits (1 byte) and it can represent integer values from -128 to 127 (signed) or 0 to 255 (unsigned). It is used in scenarios where memory efficiency is critical, such as in quantized neural networks or edge devices with limited computational resources.
-- `float16`: Default if using CUDA GPU. It's a half precision type representing 16-bit floating point numbers. Its size is 16 bits (2 bytes). It has a smaller range and precision compared to `float32`. It's often used in applications where memory is a critical resource, such as in deep learning models running on GPUs or TPUs.
-- `float32`: Recommended for CUDA GPUs with more than 8 GB of VRAM. It's a single precision type representing 32-bit floating point numbers, which is a standard for representing real numbers in computers. Its size is 32 bits (4 bytes). It can represent a wide range of real numbers with a reasonable level of precision.
-
-#### Batch Size
-
-This option determines how many samples are processed together before the model parameters are updated. It doesn't affect the quality of the transcription, only the generation speed (the smaller, the slower).
-
-For simplicity, let's divide the possible batch size values into two groups:
-
-- **Small batch size (0<x<=8)**: Training with small batch sizes means that model weights are updated more frequently, potentially leading to more stable convergence. They use less memory, which can be important when working with limited resources. `8` is the default value.
-- **Large batch size (>8)**: Speeds up in training, especially on hardware optimized for parallel processing such as GPUs. Max. recommended to `16`.
-
-#### Use CPU
-
-**WhisperX** will use the CPU for transcription if checked. Checked by default if there is no CUDA GPU.
-
-As noted in the [Compute Type](#compute-type) section, the default compute type value for the CPU is `int8`, since many CPUs don't support efficient `float16` or `float32` computation, which would result in an error. Change it at your own risk.
+<!-- TROUBLESHOOTING -->
 
 ## Troubleshooting
 
-### The program is unresponsive when using WhisperX
+- **The first WhisperX transcription takes a long time**: the model is downloaded the first time it's used (up to ~3 GB). It stays in memory while its options don't change, so the next transcriptions start right away.
+- **WhisperX fails with `CUDA out of memory`**: lower the `Batch size` (e.g. `4`) in `Preferences` → `WhisperX`, use a smaller model (e.g. `small`) or a lighter `Compute type` (e.g. `int8`). The last two can reduce the quality.
+- **Transcribing takes too long**: the speed of WhisperX depends on your hardware. Try a smaller model, `large-v3-turbo` on a GPU, or the Whisper API or the Google API, which run on remote servers.
+- **The Whisper API returns the error `429`**: your OpenAI account has run out of credits, or it needs funds before using the API for the first time. Buy credits in the [Billing](https://platform.openai.com/settings/organization/billing/overview) section of your account, wait up to 10 minutes and, if the error persists, create a new API key.
+- **The speakers aren't identified**: check that the Hugging Face token has the `Read` role and that you've accepted the conditions of [pyannote/speaker-diarization-community-1](https://huggingface.co/pyannote/speaker-diarization-community-1) with the same account.
 
-The first transcription created by **WhisperX** will take longer than subsequent ones. That's because **Audiotext** needs to load the model, which can take a few minutes, depending on the hardware the program is running on. It may appear to be unresponsive, but do not close it, as it will eventually return to a normal state.
-
-Once the model is loaded, you'll notice a dramatic increase in the speed of subsequent transcriptions using this method.
-
-### I get the error `RuntimeError: CUDA Out of memory` when using WhisperX
-
-Try any of the following (2 and 3 can affect quality) (taken from [WhisperX README](https://github.com/m-bain/whisperX#technical-details-%EF%B8%8F)):
-1. Reduce batch size, e.g. `4`
-2. Use a smaller ASR model, e.g. `base`
-3. Use lighter compute type, e.g. `int8`
-
-### Is it possible to use less GPU/CPU memory requirements when using WhisperX?
-
-You can follow the steps above. See the [Model Size](#model-size) section for how much memory you need for each model.
-
-### The program takes _too_ much time to generate a transcription
-
-Try using a smaller ASR model and/or a lighter computation type, as indicated in the point above. Keep in mind that the first **WhisperX** transcription will take some time to load the model. Also remember that the transcription process depends heavily on your system's hardware, so don't expect instant results on modest CPUs. Alternatively, you can use the **Whisper API** or **Google API** transcription methods, which are much less hardware intensive than **WhisperX** because the transcriptions are generated remotely, but you'll be dependent on the speed of your Internet connection.
-
-### When I try to generate a transcription using the Whisper API method, I get the error `429`
-
-You'll be prompted with an error like this:
-
-```
-RateLimitError("Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}")
-```
-
-This is either because your account run out of credits or because you need to fund your account before you can use the API for the first time (even if you have free credits available). To fix this, you need to purchase credits for your account (starting at $5) with a credit or debit card by going to the [Billing](https://platform.openai.com/settings/organization/billing/overview) section of your OpenAI account settings.
-
-After funds are added to your account, it may take up to 10 minutes for your account to become active.
-
-If you are using an API key that was created before you funded your account for the first time, and the error still persists after about 10 minutes, you'll need to create a new API key and change it in **Audiotext** (see the [Whisper API Key](#whisper-api-key) section to change it).
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+See [troubleshooting](https://getaudiotext.com/en/help/troubleshooting/) for more problems and their solutions.
 
 <!-- ROADMAP -->
 
@@ -970,12 +841,50 @@ See also the list of [contributors](https://github.com/HenestrosaDev/audiotext/c
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. Please read the [CONTRIBUTING.md](https://github.com/HenestrosaDev/audiotext/blob/main/.github/CONTRIBUTING.md) file, where you can find more detailed information about how to contribute to the project.
 
+### Translations
+
+The interface is translated with [gettext](https://www.gnu.org/software/gettext/). The texts marked with `_()` (or `N_()`, for the ones defined before the language is set) are in `res/locales/audiotext.pot`, and the translations of each language in `res/locales/<language>/LC_MESSAGES/audiotext.po`, which are compiled into the `audiotext.mo` files that the app loads.
+
+After the texts of the code change, or after editing a `.po` file (e.g. with [Poedit](https://poedit.net/)), run:
+
+```bash
+python .github/scripts/update_translations.py
+```
+
+It extracts the texts into the template, updates the catalogs, compiles them and lists the texts that are still to translate or review (new texts are empty, and changed ones are marked as `fuzzy`). Those are shown in English until they're translated and their `fuzzy` flag is removed. The tests (`tests/test_translations.py`) fail while a catalog is out of date or a translation doesn't keep the placeholders of the original text (e.g. `{count}`).
+
+To add a language, create its catalog, add it to `UI_LANGUAGES` in `src/utils/i18n.py`, translate it and run the script:
+
+```bash
+pybabel init -i res/locales/audiotext.pot -d res/locales -D audiotext -l <code>
+python .github/scripts/update_translations.py
+```
+
+### Documentation Website
+
+The source of [getaudiotext.com](https://getaudiotext.com) is in the [audiotext-docs](https://github.com/HenestrosaDev/audiotext-docs) repository. It's built with [Astro Starlight](https://starlight.astro.build) and requires [Node.js](https://nodejs.org) 22.12 or later. Each language has its own folder in `src/content/docs` (e.g. `en`, `es` or `zh-cn`), and the root of the website redirects to the language of the browser, or to English.
+
+```bash
+git clone https://github.com/HenestrosaDev/audiotext-docs.git
+cd audiotext-docs
+npm install
+npm run dev     # serves the website at http://localhost:4321
+npm run build   # builds the website into dist
+```
+
+When a feature changes, update the English page and its translations. A page that hasn't been translated yet is shown in English, with a notice, in the other languages.
+
+### Releasing a Version
+
+See [Releasing a Version](https://github.com/HenestrosaDev/audiotext/blob/main/.github/CONTRIBUTING.md#releasing-a-version) in the contributing guide.
+
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
 
 I used the following resources to create this project:
 
+- [Buzz](https://github.com/chidiwilliams/buzz), which inspired the folder watching, the transcript viewer, the speaker identification and the command-line interface.
 - [Extracting speech from video using Python](https://towardsdatascience.com/extracting-speech-from-video-using-python-f0ec7e312d38)
 - [How to translate Python applications with the GNU gettext module](https://phrase.com/blog/posts/translate-python-gnu-gettext/)
 - [Speech recognition on large audio files](https://www.geeksforgeeks.org/python-speech-recognition-on-large-audio-files/)
@@ -984,7 +893,9 @@ I used the following resources to create this project:
 
 ## License
 
-Distributed under the BSD-4-Clause license. See [`LICENSE`](https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE) for more information.
+Distributed under the MIT license. See [`LICENSE`](https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE) for more information.
+
+The app includes third-party software under its own licenses, such as FFmpeg (GPL). They are listed in `THIRD_PARTY_LICENSES.txt`, which is included with the app.
 
 <!-- SUPPORT -->
 
