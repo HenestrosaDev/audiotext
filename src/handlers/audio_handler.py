@@ -1,17 +1,28 @@
-import os
-import shutil
-import traceback
-from io import BytesIO
+import logging
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable, Optional
 
 import speech_recognition as sr
-from models.transcription import Transcription
-from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
+
+from models.transcription import Transcription
 from utils import constants as c
-from utils.path_helper import ROOT_PATH
+from utils.audio_utils import audio_segment_to_audio_data
+from utils.cancellation import CancellationToken
+from utils.i18n import _
+from utils.progress import ProgressCallback, ignore_progress
+
+logger = logging.getLogger(__name__)
+
+TranscriptionFunc = Callable[[sr.AudioData, Transcription], str]
+
+# Minimum duration (ms) of silence required to consider a segment as a split point
+MIN_SILENCE_LEN_MS = 500
+# Audio this many decibels below the average loudness is considered silence
+SILENCE_THRESHOLD_OFFSET_DB = 40
+# Silence (ms) kept at the beginning and end of each chunk
+KEEP_SILENCE_MS = 100
 
 
 class AudioHandler:
@@ -19,174 +30,119 @@ class AudioHandler:
     def get_transcription(
         transcription: Transcription,
         should_split_on_silence: bool,
-        transcription_func: Callable[[sr.AudioData, Transcription], str],
+        transcription_func: TranscriptionFunc,
+        on_progress: ProgressCallback = ignore_progress,
+        cancellation_token: CancellationToken | None = None,
     ) -> str:
         """
-        Transcribes audio from a file using the Google Speech-to-Text API.
+        Transcribes the audio of the file referenced by `transcription` using the
+        given transcription function.
 
         :param transcription: An instance of Transcription containing information
                               about the audio file.
-        :type transcription: Transcription
-        :param should_split_on_silence: A boolean flag indicating whether the audio
-                                        should be split into chunks based on silence.
-                                        If True, the audio will be split on silence
-                                        and each chunk will be transcribed separately.
-                                        If False, the entire audio will be transcribed
-                                        as a single segment.
-        :type should_split_on_silence: bool
+        :param should_split_on_silence: Whether the audio should be split into chunks
+                                        based on silence, transcribing each chunk
+                                        separately. Useful for APIs that limit the
+                                        duration of the audio per request.
         :param transcription_func: The function to use for transcription.
-        :type transcription_func: Callable[[sr.AudioData, Transcription], str]
-        :return: The transcribed text or an error message if transcription fails.
-        :rtype: str
+        :param on_progress: Called with the progress of the transcription.
+        :param cancellation_token: Checked between chunks to abort the process.
+        :raises ValueError: If the file type is not supported.
+        :raises TranscriptionCancelledError: If the token is cancelled.
+        :return: The transcribed text.
         """
-        chunks_directory = ROOT_PATH / "audio-chunks"
-        chunks_directory.mkdir(exist_ok=True)
+        on_progress(_("Loading audio…"), None)
+        audio = AudioHandler.load_audio_file(transcription.audio_source_path)
 
-        try:
-            audio = AudioHandler.load_audio_file(
-                transcription.audio_source_path, chunks_directory
-            )
-            if audio is None:
-                raise ValueError("Unsupported file type")
+        if should_split_on_silence:
+            audio_chunks = AudioHandler.split_audio_into_chunks(audio)
+        else:
+            audio_chunks = [audio]
 
-            if should_split_on_silence:
-                audio_chunks = AudioHandler.split_audio_into_chunks(audio)
-            else:
-                audio_chunks = [audio]
-
-            text = AudioHandler.process_audio_chunks(
-                audio_chunks, transcription, transcription_func, chunks_directory
-            )
-
-        except Exception:
-            text = traceback.format_exc()
-
-        finally:
-            AudioHandler.cleanup(chunks_directory)
-
-        return text
+        return AudioHandler.process_audio_chunks(
+            audio_chunks,
+            transcription,
+            transcription_func,
+            on_progress,
+            cancellation_token,
+        )
 
     @staticmethod
-    def load_audio_file(
-        file_path: Path, chunks_directory: Path
-    ) -> Optional[AudioSegment]:
+    def load_audio_file(file_path: Path) -> AudioSegment:
         """
-        Load the audio from the file or extract it from the video.
+        Loads the audio from an audio file or the audio track from a video file.
 
         :param file_path: Path to the file to be loaded.
-        :type file_path: Path
-        :param chunks_directory: Directory to store intermediate audio files.
-        :type chunks_directory: Path
-        :return: Loaded AudioSegment object or None if unsupported file type.
-        :rtype: Optional[AudioSegment]
+        :raises ValueError: If the file type is not supported.
+        :return: The loaded audio.
         """
-        content_type = file_path.suffix
+        if file_path.suffix.lower() not in c.SUPPORTED_FILE_EXTENSIONS:
+            raise ValueError(
+                _("Unsupported file type: {extension}").format(
+                    extension=file_path.suffix
+                )
+            )
 
-        if content_type in c.AUDIO_FILE_EXTENSIONS:
-            return AudioSegment.from_file(file_path)
-
-        elif content_type in c.VIDEO_FILE_EXTENSIONS:
-            clip = VideoFileClip(str(file_path))
-            video_audio_path = chunks_directory / f"{file_path.stem}.wav"
-            clip.audio.write_audiofile(video_audio_path)
-            return AudioSegment.from_wav(video_audio_path)
-
-        return None
+        # FFmpeg extracts the audio track when the file is a video
+        return AudioSegment.from_file(file_path)
 
     @staticmethod
-    def split_audio_into_chunks(sound: AudioSegment) -> AudioSegment:
+    def split_audio_into_chunks(sound: AudioSegment) -> list[AudioSegment]:
         """
         Split the audio into chunks based on silence.
 
-        :param sound: The AudioSegment object to be split.
-        :type sound: AudioSegment
+        :param sound: The audio to be split.
         :return: List of audio chunks.
-        :rtype: AudioSegment
         """
-        return split_on_silence(
+        chunks: list[AudioSegment] = split_on_silence(
             sound,
-            min_silence_len=500,  # Minimum duration of silence required to consider a segment as a split point
-            silence_thresh=sound.dBFS
-            - 40,  # Audio with a level -X decibels below the original audio level will be considered as silence
-            keep_silence=100,  # Adds a buffer of silence before and after each split point
+            min_silence_len=MIN_SILENCE_LEN_MS,
+            silence_thresh=sound.dBFS - SILENCE_THRESHOLD_OFFSET_DB,
+            keep_silence=KEEP_SILENCE_MS,
         )
+        return chunks
 
     @staticmethod
     def process_audio_chunks(
         audio_chunks: list[AudioSegment],
         transcription: Transcription,
-        transcription_func: Callable[[sr.AudioData, Transcription], str],
-        chunks_directory: Path,
+        transcription_func: TranscriptionFunc,
+        on_progress: ProgressCallback = ignore_progress,
+        cancellation_token: CancellationToken | None = None,
     ) -> str:
         """
-        Process each audio chunk for transcription.
+        Transcribes each audio chunk and joins the results. Chunks without
+        recognizable speech are skipped.
 
         :param audio_chunks: List of audio chunks.
-        :type audio_chunks: list[AudioSegment]
         :param transcription: Transcription object containing transcription details.
-        :type transcription: Transcription
         :param transcription_func: The function to use for transcription.
-        :type transcription_func: Callable[[sr.AudioData, Transcription], str]
-        :param chunks_directory: Directory to store intermediate audio files.
-        :type chunks_directory: Path
+        :param on_progress: Called before transcribing each chunk.
+        :param cancellation_token: Checked between chunks to abort the process.
+        :raises TranscriptionCancelledError: If the token is cancelled.
         :return: The combined transcribed text.
-        :rtype: str
         """
-        recognizer = sr.Recognizer()
+        token = cancellation_token or CancellationToken()
+        texts = []
 
         for idx, audio_chunk in enumerate(audio_chunks):
-            chunk_filename = os.path.join(chunks_directory, f"chunk{idx}.wav")
-            audio_chunk.export(chunk_filename, bitrate="64k", format="wav")
+            token.raise_if_cancelled()
 
-            with sr.AudioFile(chunk_filename) as source:
-                recognizer.adjust_for_ambient_noise(source)
-                audio_data = recognizer.record(source)
+            if len(audio_chunks) == 1:
+                on_progress(_("Transcribing…"), None)
+            else:
+                on_progress(
+                    _("Transcribing chunk {current} of {total}…").format(
+                        current=idx + 1, total=len(audio_chunks)
+                    ),
+                    idx / len(audio_chunks),
+                )
 
-                try:
-                    chunk_text = transcription_func(
-                        audio_data,
-                        transcription,
-                    )
-                    print(f"chunk text: {chunk_text}")
-                    return chunk_text
+            audio_data = audio_segment_to_audio_data(audio_chunk)
 
-                except Exception:
-                    return traceback.format_exc()
+            try:
+                texts.append(transcription_func(audio_data, transcription))
+            except sr.UnknownValueError:
+                logger.info("No speech recognized in chunk %d. Skipping.", idx)
 
-        return ""
-
-    @staticmethod
-    def cleanup(chunks_directory: Path) -> None:
-        """
-        Clean up the `chunks` directory.
-
-        :param chunks_directory: Directory to be deleted.
-        :type chunks_directory: Path
-        :rtype: None
-        """
-        shutil.rmtree(chunks_directory)
-
-    @staticmethod
-    def compress_audio(audio_data: sr.AudioData) -> BytesIO:
-        # Convert sr.AudioData to AudioSegment
-        audio_segment = AudioSegment(
-            data=audio_data.get_raw_data(),
-            sample_width=audio_data.sample_width,
-            frame_rate=audio_data.sample_rate,
-            channels=1,
-        )
-
-        # Compress the audio: reduce frame rate and export as MP3
-        compressed_audio = BytesIO()
-        audio_segment.set_frame_rate(12000).export(
-            compressed_audio, format="mp3", bitrate="32k"
-        )
-        compressed_audio.seek(0)
-
-        # Set name to be treated as a file
-        compressed_audio.name = "audiotext-audio.mp3"
-
-        size_in_mb = len(compressed_audio.getvalue()) / (1024 * 1024)
-        print(f"Compressed audio size: {size_in_mb:.2f} MB")
-
-        return compressed_audio
+        return "".join(texts).strip()

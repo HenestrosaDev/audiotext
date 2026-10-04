@@ -1,4 +1,5 @@
 import speech_recognition as sr
+
 from interfaces.transcribable import Transcribable
 from models.transcription import Transcription
 from utils.env_keys import EnvKeys
@@ -7,15 +8,14 @@ from utils.env_keys import EnvKeys
 class GoogleApiHandler(Transcribable):
     @staticmethod
     def transcribe(audio_data: sr.AudioData, transcription: Transcription) -> str:
-        r = sr.Recognizer()
+        recognizer = sr.Recognizer()
 
-        text = str(
-            r.recognize_google(
-                audio_data,
-                language=transcription.language_code,
-                key=EnvKeys.GOOGLE_API_KEY.get_value() or None,
-            )
+        # Without an API key, the free tier of the Google API is used
+        api_key = EnvKeys.GOOGLE_API_KEY.get_value(default="") or None
+
+        text = recognizer.recognize_google(
+            audio_data, language=transcription.language_code, key=api_key
         )
-        text = f"{text}. "
 
-        return text
+        # The Google API doesn't punctuate sentences
+        return f"{text}. "
