@@ -20,6 +20,8 @@ All types of contributions are encouraged and valued. See the [Table of Contents
   - [Suggesting Enhancements](#suggesting-enhancements)
 - [Styleguide](#styleguide)
   - [Commit Messages](#commit-messages)
+- [Building the Installers](#building-the-installers)
+- [Releasing a Version](#releasing-a-version)
 
 
 
@@ -145,6 +147,34 @@ In an attempt to keep consistency and maintainability in the code-base, here are
 * Consider if you are double-name-spacing and how modules are meant to be imported.
   Consider the module name-space and whether it's flattened in `__init__.py`.
 * Only use multiple-inheritance if using a mixin. Mixin classes should end in `"Mixin"`.
+
+## Building the Installers
+The scripts of the `packaging` folder create the file of each system from the app built by PyInstaller. Each one has to be run on its system, from the root of the project, in the virtual environment with the dependencies installed:
+
+```bash
+pip install pyinstaller
+pyinstaller audiotext.spec --noconfirm   # builds the app in dist/
+```
+
+| System | Command | Creates (in `dist/`) | Requires |
+| --- | --- | --- | --- |
+| macOS | `packaging/macos.sh` | `Audiotext-X.Y.Z-macos-arm64.dmg` | - |
+| Windows | `iscc packaging\windows.iss` | `Audiotext-X.Y.Z-windows-x64-setup.exe` | [Inno Setup](https://jrsoftware.org/isinfo.php) 6.5 or later |
+| Linux | `packaging/linux.sh` | `Audiotext-X.Y.Z-linux-x86_64.tar.gz` (with `packaging/linux-install.sh` as `install.sh`) | - |
+
+The version is the one of `pyproject.toml`. The installers built this way contain the PyTorch build installed in the virtual environment (CUDA or CPU) and don't offer the GPU add-on, which only the [Release](workflows/release.yml) workflow creates, since it needs both builds and the URL of the release.
+
+## Releasing a Version
+The [Release](workflows/release.yml) workflow builds the installers of each system and attaches them to a draft release when a version tag is pushed:
+
+1. Update the `version` in `pyproject.toml` (e.g. `2.4.0`) and commit it.
+2. Tag the commit with the same version prefixed by `v` and push the tag:
+   ```bash
+   git tag v2.4.0
+   git push origin v2.4.0
+   ```
+   For a pre-release, add a suffix (e.g. `v2.4.0-rc.1`), which marks the release as a pre-release. The workflow fails if the tag doesn't match the version of `pyproject.toml`.
+3. Once the workflow finishes (it takes a while, since it builds the app with and without CUDA), review the notes of the draft release and publish it. The installers can only download the GPU add-on (the `-gpu-N` files) once the release is published.
 
 <!-- omit in toc -->
 ## Attribution
