@@ -26,7 +26,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check that the tag matches the version of pyproject.toml
         id: version
         run: |
@@ -63,13 +63,13 @@ jobs:
       NAME: Audiotext-${{ needs.version.outputs.version }}-${{ matrix.platform }}
       URL_BASE: https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Free disk space for the CUDA build (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           df -h /
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       # FFmpeg and FFprobe are bundled with the app
@@ -129,7 +129,7 @@ jobs:
         run: packaging/linux.sh build/cpu/Audiotext build/release build/gpu-addon.txt
 
       - name: Upload the release files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-${{ matrix.platform }}
           path: build/release/
@@ -143,7 +143,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: release-*
           path: release
