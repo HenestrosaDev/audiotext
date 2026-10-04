@@ -10,28 +10,16 @@ class ConfigWhisperApi:
     response_format: Literal["json", "text", "srt", "verbose_json", "vtt"]
     temperature: float
     timestamp_granularities: list[TimestampGranularitiesType]
+    # Added in a later version, so they have defaults for older `config.ini` files
+    model: str = "whisper-1"
 
     class Key(Enum):
         """
-        Enum class for keys associated with the WhisperX configuration.
+        Enum class for keys associated with the Whisper API configuration.
         """
 
         SECTION = "whisper_api"
         RESPONSE_FORMAT = "response_format"
         TEMPERATURE = "temperature"
         TIMESTAMP_GRANULARITIES = "timestamp_granularities"
-
-        def value_type(self) -> str:
-            """
-            Get the value type associated with the ConfigKey.
-
-            :return: The type of the value as a string, or None if the key is not found.
-            :rtype: str
-            """
-            type_mapping = {
-                ConfigWhisperApi.Key.RESPONSE_FORMAT: "str",
-                ConfigWhisperApi.Key.TEMPERATURE: "float",
-                ConfigWhisperApi.Key.TIMESTAMP_GRANULARITIES: "list",
-            }
-
-            return str(type_mapping.get(self))
+        MODEL = "model"

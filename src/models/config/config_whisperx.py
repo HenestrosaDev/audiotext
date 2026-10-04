@@ -13,6 +13,14 @@ class ConfigWhisperX:
     use_cpu: bool
     can_use_gpu: bool
     output_file_types: list[OutputFileTypes]
+    # Added in a later version, so they have defaults for older `config.ini` files
+    diarize: bool = False
+    # 0 lets the diarization model detect the number of speakers
+    num_speakers: int = 0
+    # Shows the text while recording from the microphone, transcribed with a
+    # smaller model to keep up with the speech
+    live_transcription: bool = True
+    live_model_size: str = "small"
 
     class Key(Enum):
         """
@@ -26,21 +34,7 @@ class ConfigWhisperX:
         USE_CPU = "use_cpu"
         CAN_USE_GPU = "can_use_gpu"
         OUTPUT_FILE_TYPES = "output_file_types"
-
-        def value_type(self) -> str:
-            """
-            Get the value type associated with the ConfigKey.
-
-            :return: The type of the value as a string, or None if the key is not found.
-            :rtype: str
-            """
-            type_mapping = {
-                ConfigWhisperX.Key.MODEL_SIZE: "str",
-                ConfigWhisperX.Key.BATCH_SIZE: "int",
-                ConfigWhisperX.Key.COMPUTE_TYPE: "str",
-                ConfigWhisperX.Key.USE_CPU: "bool",
-                ConfigWhisperX.Key.CAN_USE_GPU: "bool",
-                ConfigWhisperX.Key.OUTPUT_FILE_TYPES: "list",
-            }
-
-            return str(type_mapping.get(self))
+        DIARIZE = "diarize"
+        NUM_SPEAKERS = "num_speakers"
+        LIVE_TRANSCRIPTION = "live_transcription"
+        LIVE_MODEL_SIZE = "live_model_size"
