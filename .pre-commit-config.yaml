@@ -24,6 +24,8 @@ repos:
           - python
         entry: mypy --strict
         exclude: ^tests/
+        # Parallel runs share the cache, which makes mypy crash when it's empty
+        require_serial: true
       - id: compile-translations
         name: Compile the translations and check their placeholders
         language: python
