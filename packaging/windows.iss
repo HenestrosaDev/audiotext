@@ -74,7 +74,8 @@ ArchiveExtraction=enhanced/nopassword
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "catalan"; MessagesFile: "compiler:Languages\Catalan.isl"
-Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+; Inno Setup 6 only has it among the unofficial translations (from is-6_7_3)
+Name: "chinesesimplified"; MessagesFile: "{#RootDir}\packaging\languages\ChineseSimplified.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 Name: "dutch"; MessagesFile: "compiler:Languages\Dutch.isl"
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
