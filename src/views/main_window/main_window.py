@@ -574,11 +574,16 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
             initial_tab=tab,
             on_ai_change=self._refresh_shown_entry,
             on_check_for_updates=self.check_for_updates,
+            on_date_format_change=self._on_date_format_change,
         )
 
     def _refresh_shown_entry(self) -> None:
         if self._entry_view_id:
             self._refresh_entry_view(self._entry_view_id)
+
+    def _on_date_format_change(self) -> None:
+        self.sidebar.refresh()
+        self._refresh_shown_entry()
 
     def set_api_key(self, env_key: EnvKeys) -> None:
         """Asks for an API key, e.g. the one of the provider of the summaries."""

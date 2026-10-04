@@ -7,7 +7,7 @@ import customtkinter as ctk
 
 from models.transcript_segment import TranscriptSegment
 from utils.i18n import _
-from utils.time_format import format_timestamp
+from utils.time_format import format_segment_range
 from views.style import theme
 from views.widgets.textbox import CTkTextbox
 
@@ -39,9 +39,10 @@ def find_index(starts: list[float], position: float) -> int | None:
 
 class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
     """
-    The text of a transcription, in two modes: the transcript, with the timestamp
-    and the speaker of each segment, which highlights the segment (and the word)
-    being played; and the plain text, which can be edited.
+    The text of a transcription, in two modes: the transcript, with the timestamps
+    (start and end) and the speaker of each segment above its text, which
+    highlights the segment (and the word) being played; and the plain text, which
+    can be edited.
     """
 
     def __init__(
@@ -50,12 +51,18 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         on_segment_click: Callable[[int], None],
         on_segment_menu: Callable[[Any, int], str | None] | None = None,
         on_text_edit: Callable[[str], None] | None = None,
+        show_click_hint: bool = True,
+        empty_segment_text: str = "",
     ) -> None:
         """
         :param on_segment_click: Called with the index of a clicked segment.
         :param on_segment_menu: Called with the event and the index of a segment
                                 that is right-clicked.
         :param on_text_edit: Called with the plain text after the user edits it.
+        :param show_click_hint: Whether to explain above the transcript that its
+                                segments can be clicked.
+        :param empty_segment_text: Shown, dimmed, in place of the text of a
+                                   segment that has none (e.g. not translated yet).
         """
         super().__init__(
             master,
@@ -67,6 +74,8 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._on_segment_click = on_segment_click
         self._on_segment_menu = on_segment_menu
         self._on_text_edit = on_text_edit
+        self._show_click_hint = show_click_hint
+        self._empty_segment_text = empty_segment_text
 
         self._segments: list[TranscriptSegment] = []
         self._segment_starts: list[float] = []
@@ -76,6 +85,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._current_word: int | None = None
         self._is_text_edited = False
         self._mode = PLAIN_TEXT_MODE
+        self._is_precise = False
         self._query = ""
         self._matches: list[tuple[str, str]] = []
         self._current_match: int | None = None
@@ -151,6 +161,15 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             self._mode = PLAIN_TEXT_MODE
         self.set_mode(self._mode)
 
+    def set_precise_timestamps(self, is_precise: bool) -> None:
+        """Shows the timestamps as `HH:MM:SS,mmm` instead of `MM:SS`."""
+        if is_precise == self._is_precise:
+            return
+        self._is_precise = is_precise
+        self._current_segment = self._current_word = None
+        self._render_transcript()
+        self.search(self._query)
+
     def set_mode(self, mode: str) -> None:
         self._mode = mode if self._segments else PLAIN_TEXT_MODE
 
@@ -159,11 +178,19 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             self.tbx_transcript.grid(
                 row=1, column=0, sticky=ctk.NSEW, padx=2, pady=(0, 2)
             )
-            hint = _("Click a sentence to play it. Right-click it to edit it.")
-            if self._is_text_edited:
-                hint += " " + _(
-                    "The plain text has been edited; the transcript keeps the original."
+            hints = []
+            if self._show_click_hint:
+                hints.append(
+                    _("Click a segment to play it. Right-click it to edit it.")
                 )
+            if self._is_text_edited:
+                hints.append(
+                    _(
+                        "The plain text has been edited; the transcript keeps the "
+                        "original."
+                    )
+                )
+            hint = " ".join(hints)
         else:
             self.tbx_transcript.grid_forget()
             self.tbx_plain.grid(row=1, column=0, sticky=ctk.NSEW, padx=2, pady=(0, 2))
@@ -174,6 +201,11 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                     "and gpt-4o-transcribe-diarize models of the Whisper API."
                 )
         self.lbl_hint.configure(text=hint)
+        # Without a hint, the text takes its space
+        if hint:
+            self.lbl_hint.grid()
+        else:
+            self.lbl_hint.grid_remove()
         self.search(self._query)
 
     def get_text(self) -> str:
@@ -289,6 +321,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox = self.tbx_transcript
         textbox.tag_config("timestamp", foreground=self._color(theme.HINT_TEXT))
         self._tag_font("timestamp", theme.font(12, family=theme.MONOSPACE_FAMILY))
+        textbox.tag_config("empty_segment", foreground=self._color(theme.HINT_TEXT))
         textbox.tag_config("current", background=self._color(CURRENT_SEGMENT_COLOR))
         textbox.tag_config("current_word", background=self._color(CURRENT_WORD_COLOR))
 
@@ -330,20 +363,26 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         word_entries: list[tuple[float, str, str]] = []
         for idx, segment in enumerate(self._segments):
             segment_tag = f"segment_{idx}"
+            # The timestamps and the speaker on their own line, above the text
             textbox.insert(
                 ctk.END,
-                format_timestamp(segment.start) + "   ",
+                format_segment_range(segment.start, segment.end, self._is_precise),
                 ("timestamp", segment_tag),
             )
             if segment.speaker:
                 textbox.insert(
                     ctk.END,
-                    f"{segment.speaker}  ",
+                    f"   {segment.speaker}",
                     (f"speaker_{segment.speaker}", segment_tag),
                 )
+            textbox.insert(ctk.END, "\n", segment_tag)
 
             if segment.words:
                 word_entries.extend(self._insert_words(segment, segment_tag))
+            elif not segment.text:
+                textbox.insert(
+                    ctk.END, self._empty_segment_text, ("empty_segment", segment_tag)
+                )
             else:
                 textbox.insert(ctk.END, segment.text, segment_tag)
             textbox.insert(ctk.END, "\n\n")

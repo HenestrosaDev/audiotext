@@ -8,7 +8,7 @@ from typing import Any
 import customtkinter as ctk
 from PIL import Image, ImageTk
 
-from models.config.config_system import ConfigSystem
+from models.config.config_system import ConfigSystem, SubtitleTrack
 from utils.config_manager import ConfigManager
 from utils.i18n import _
 from utils.media import VideoFrameSource
@@ -25,7 +25,8 @@ SUBTITLE_BACKGROUND_OPACITY = 0.6
 class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
     """
     Shows the frames of a video, fitted to its size, with the subtitles drawn over
-    them as the user configures them (size, position and style).
+    them as the user configures them (size, position and style). The subtitles
+    show the transcription, or its translation if the user chooses it.
     """
 
     def __init__(
@@ -37,6 +38,7 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         on_subtitles_change: Callable[[], None],
     ) -> None:
         """
+        :param cue_track: The subtitles of the transcription.
         :param config_system: The settings of the subtitles, which are changed in
                               place when the user changes them.
         :param on_subtitles_change: Called when the subtitles are shown or hidden.
@@ -47,6 +49,9 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         )
         self._config = config_system
         self._cue_track = cue_track
+        # The subtitles of the translation, if any, and the name of its language
+        self._translation_track: CueTrack | None = None
+        self._translation_language = ""
         self._on_subtitles_change = on_subtitles_change
         self._source: VideoFrameSource | None = None
         self._frame_number = -1
@@ -108,15 +113,45 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
 
     @property
     def has_subtitles(self) -> bool:
-        return bool(self._cue_track.cues)
+        return bool(self._cue_track.cues) or self.has_translation_subtitles
+
+    @property
+    def has_translation_subtitles(self) -> bool:
+        return bool(self._translation_track and self._translation_track.cues)
 
     @property
     def is_showing_subtitles(self) -> bool:
         return self._config.show_subtitles
 
+    @property
+    def is_showing_translation(self) -> bool:
+        """Whether the subtitles show the translation, if they're shown."""
+        return (
+            self.has_translation_subtitles
+            and self._config.subtitle_track == SubtitleTrack.TRANSLATION.value
+        )
+
     def set_cue_track(self, cue_track: CueTrack) -> None:
         self._cue_track = cue_track
         self._update_subtitle(force=True)
+
+    def set_translation_track(self, cue_track: CueTrack | None, language: str) -> None:
+        """
+        :param cue_track: The subtitles of the translation, or None if there is
+                          none.
+        :param language: The name of the language of the translation.
+        """
+        self._translation_track = cue_track
+        self._translation_language = language
+        self._update_subtitle(force=True)
+
+    def show_translation(self, is_translation: bool) -> None:
+        """Shows the subtitles of the translation, or the ones of the original."""
+        track = SubtitleTrack.TRANSLATION if is_translation else SubtitleTrack.ORIGINAL
+        self._set_option(ConfigSystem.Key.SUBTITLE_TRACK, "subtitle_track", track.value)
+        # Choosing the text of the subtitles shows them
+        if not self._config.show_subtitles:
+            self.toggle_subtitles()
 
     def show_position(self, position: float) -> None:
         """Shows the frame and the subtitle at the position of the playback."""
@@ -194,6 +229,30 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         )
         menu.add_separator()
 
+        if self.has_translation_subtitles:
+            track = tk.StringVar(
+                menu,
+                SubtitleTrack.TRANSLATION.value
+                if self.is_showing_translation
+                else SubtitleTrack.ORIGINAL.value,
+            )
+            variables.append(track)
+            menu.add_radiobutton(
+                label=_("Transcription"),
+                value=SubtitleTrack.ORIGINAL.value,
+                variable=track,
+                command=lambda: self.show_translation(False),
+            )
+            menu.add_radiobutton(
+                label=_("Translation into {language}").format(
+                    language=self._translation_language
+                ),
+                value=SubtitleTrack.TRANSLATION.value,
+                variable=track,
+                command=lambda: self.show_translation(True),
+            )
+            menu.add_separator()
+
         choices = [
             (
                 _("Size"),
@@ -249,7 +308,12 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         self._update_subtitle(force=True)
 
     def _update_subtitle(self, force: bool = False) -> None:
-        cue = self._cue_track.at(self._position)
+        track = (
+            self._translation_track
+            if self._translation_track and self.is_showing_translation
+            else self._cue_track
+        )
+        cue = track.at(self._position)
         text = cue.text if cue and self._config.show_subtitles else ""
         if text != self._subtitle_text or force:
             self._subtitle_text = text

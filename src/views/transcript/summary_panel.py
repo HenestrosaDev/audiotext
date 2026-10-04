@@ -11,6 +11,7 @@ from views.history.formatting import format_full_date
 from views.style import icons, theme
 from views.widgets.bindings import bind_wraplength
 from views.widgets.option_menu import skip_scrollbar_forced_layout
+from views.widgets.scrollable_frame import CTkScrollableFrame
 
 
 class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
@@ -44,7 +45,7 @@ class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        self.frm_content = ctk.CTkScrollableFrame(self, fg_color="transparent")
+        self.frm_content = CTkScrollableFrame(self, fg_color="transparent")
         skip_scrollbar_forced_layout(self.frm_content)
         self.frm_content.grid(row=0, column=0, padx=2, pady=2, sticky=ctk.NSEW)
         self.frm_content.grid_columnconfigure(0, weight=1)

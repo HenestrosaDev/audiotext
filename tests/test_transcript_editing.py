@@ -3,12 +3,16 @@ import pytest
 from models.transcript_segment import TranscriptSegment, TranscriptWord
 from utils.transcript_editing import (
     count_matches,
+    delete_segment,
     edit_segment,
+    insert_segment,
+    overlapping_segments,
     realign_words,
     rename_speakers,
     rename_speakers_in_text,
     replace_in_segments,
     replace_text,
+    set_segment_timing,
     speakers,
 )
 
@@ -121,3 +125,41 @@ def test_rename_speakers_in_text() -> None:
         text, {"SPEAKER_00": "SPEAKER_01", "SPEAKER_01": "Ana"}
     ) == ("[SPEAKER_01]: Hi.\n\n[Ana]: SPEAKER_00 said hi.")
     assert rename_speakers_in_text(text, {}) == text
+
+
+TIMED = [
+    TranscriptSegment(0.0, 1.0, "One", "SPEAKER_00", WORDS[:1]),
+    TranscriptSegment(1.5, 3.0, "Two"),
+    TranscriptSegment(3.5, 5.0, "Three"),
+]
+
+
+def test_set_segment_timing_keeps_the_segments_sorted() -> None:
+    segments = set_segment_timing(TIMED, 0, 4.0, 4.5)
+
+    assert [s.text for s in segments] == ["Two", "Three", "One"]
+    # The timings of its words no longer apply
+    assert segments[2] == TranscriptSegment(4.0, 4.5, "One", "SPEAKER_00")
+
+
+def test_set_segment_timing_needs_it_to_end_after_it_starts() -> None:
+    with pytest.raises(ValueError):
+        set_segment_timing(TIMED, 0, 1.0, 1.0)
+    with pytest.raises(ValueError):
+        set_segment_timing(TIMED, 0, -1.0, 1.0)
+
+
+def test_insert_and_delete_segments() -> None:
+    added = TranscriptSegment(3.0, 3.5, "")
+    segments = insert_segment(TIMED, added)
+
+    assert segments[2] is added
+    assert delete_segment(segments, 2) == TIMED
+    with pytest.raises(ValueError):
+        insert_segment(TIMED, TranscriptSegment(3.0, 2.0, ""))
+
+
+def test_overlapping_segments() -> None:
+    assert [s.text for s in overlapping_segments(TIMED, 0.5, 2.0)] == ["One", "Two"]
+    # Touching a segment isn't overlapping it
+    assert overlapping_segments(TIMED, 1.0, 1.5) == []

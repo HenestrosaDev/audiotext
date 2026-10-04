@@ -1,5 +1,6 @@
 import webbrowser
 from collections.abc import Callable
+from datetime import datetime
 from typing import Any
 
 import customtkinter as ctk
@@ -13,7 +14,7 @@ from handlers.translation_handler import get_ai_provider, translation_providers
 from handlers.translation_handler import get_env_key as get_translation_env_key
 from models.config.config_ai import ConfigAi
 from models.config.config_subtitles import ConfigSubtitles
-from models.config.config_system import ConfigSystem
+from models.config.config_system import ConfigSystem, DateFormat, TimeFormat
 from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
 from utils.config_manager import ConfigManager
@@ -28,9 +29,16 @@ from utils.i18n import (
     sort_key,
 )
 from utils.update_checker import Release
+from views.history.formatting import (
+    format_clock_time,
+    format_day,
+    get_date_formats,
+    set_date_formats,
+)
 from views.settings.option_labels import OptionLabels, save_config
 from views.style import icons, theme
 from views.widgets.option_menu import CTkOptionMenu, skip_scrollbar_forced_layout
+from views.widgets.scrollable_frame import CTkScrollableFrame
 
 DEBOUNCE_DELAY_MS = 600
 ABOUT_ICON_SIZE = 96
@@ -106,12 +114,15 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         on_check_for_updates: (
             Callable[[Callable[[Release | None, bool], None]], None] | None
         ) = None,
+        on_date_format_change: Callable[[], None] | None = None,
     ) -> None:
         """
         :param initial_tab: The tab shown first, e.g. `AI_TAB`. Defaults to the
                             general one.
         :param on_ai_change: Called when the provider of the summaries or the
                              translations changes.
+        :param on_date_format_change: Called when the format of the dates or
+                                      the times changes, to show them again.
         :param on_check_for_updates: Checks whether a new version is available,
                                      calling back with it, if any, and whether
                                      the check failed.
@@ -122,6 +133,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._on_model_change = on_model_change
         self._on_ai_change = on_ai_change
         self._on_check_for_updates = on_check_for_updates
+        self._on_date_format_change = on_date_format_change
         self._available_update: Release | None = None
         self._can_change_language = can_change_language
         self._debounce_after_ids: dict[Any, str] = {}
@@ -279,9 +291,11 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         language_menu.set(language_labels.label(self._config_system.ui_language))
         language_menu.grid(row=0, column=1, rowspan=2, padx=(12, 0))
 
+        self._init_date_formats(tab)
+
         frame = self._row(
             tab,
-            2,
+            4,
             _("Notifications"),
             _("Shows a notification of the system when a transcription is ready."),
         )
@@ -292,7 +306,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         )
 
         frame = self._row(
-            tab, 3, _("Updates"), _("Checks for a new version when the app opens.")
+            tab, 5, _("Updates"), _("Checks for a new version when the app opens.")
         )
         self._switch(
             frame,
@@ -300,10 +314,67 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             lambda is_on: save_config(ConfigSystem.Key.CHECK_FOR_UPDATES, str(is_on)),
         )
 
-    def _scrollable(self, tab: Any) -> ctk.CTkScrollableFrame:
+    def _init_date_formats(self, tab: Any) -> None:
+        """The formats of the dates and the times, shown as examples of them."""
+        date_format, time_format = get_date_formats()
+        # An afternoon time, so the 12- and 24-hour clocks differ
+        example = datetime.now().replace(hour=13, minute=30)
+
+        # Formats that look the same in the language (e.g. the short and the
+        # medium ones in Japanese) are shown once
+        examples: dict[str, str] = {}
+        for option in DateFormat:
+            label = format_day(example, option)
+            if label not in examples.values():
+                examples[option.value] = label
+        date_labels = OptionLabels(examples)
+        frame = self._row(tab, 2, _("Date format"))
+        date_menu = CTkOptionMenu(
+            frame,
+            values=date_labels.labels,
+            command=lambda label: self._on_date_format_change_to(
+                DateFormat(date_labels.value(label)), get_date_formats()[1]
+            ),
+        )
+        date_menu.set(format_day(example, date_format))
+        date_menu.grid(row=0, column=1, rowspan=2, padx=(12, 0))
+
+        time_labels = OptionLabels(
+            {TimeFormat.AUTO.value: _("Automatic")}
+            | {
+                option.value: format_clock_time(example, option)
+                for option in (TimeFormat.HOURS_12, TimeFormat.HOURS_24)
+            }
+        )
+        frame = self._row(
+            tab,
+            3,
+            _("Time format"),
+            _("Automatic uses the clock of the interface language."),
+        )
+        time_menu = ctk.CTkSegmentedButton(
+            frame,
+            values=time_labels.labels,
+            command=lambda label: self._on_date_format_change_to(
+                get_date_formats()[0], TimeFormat(time_labels.value(label))
+            ),
+        )
+        time_menu.set(time_labels.label(time_format.value))
+        time_menu.grid(row=0, column=1, rowspan=2, padx=(12, 0))
+
+    def _on_date_format_change_to(
+        self, date_format: DateFormat, time_format: TimeFormat
+    ) -> None:
+        set_date_formats(date_format, time_format)
+        save_config(ConfigSystem.Key.DATE_FORMAT, date_format.value)
+        save_config(ConfigSystem.Key.TIME_FORMAT, time_format.value)
+        if self._on_date_format_change:
+            self._on_date_format_change()
+
+    def _scrollable(self, tab: Any) -> CTkScrollableFrame:
         tab.grid_columnconfigure(0, weight=1)
         tab.grid_rowconfigure(0, weight=1)
-        frame = ctk.CTkScrollableFrame(tab, fg_color="transparent")
+        frame = CTkScrollableFrame(tab, fg_color="transparent")
         skip_scrollbar_forced_layout(frame)
         frame.grid(row=0, column=0, sticky=ctk.NSEW)
         return frame

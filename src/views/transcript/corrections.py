@@ -6,7 +6,6 @@ import customtkinter as ctk
 from models.history import HistoryEntry
 from models.transcript_segment import TranscriptSegment, join_segments
 from utils.i18n import _
-from utils.time_format import format_timestamp
 from utils.transcript_editing import (
     count_matches,
     edit_segment,
@@ -36,6 +35,7 @@ class TranscriptCorrectionsMixin:
     _delegate: TranscriptDelegate
     _search_variable: ctk.StringVar
     text: "TranscriptText"
+    _format_time: Callable[[float], str]
 
     def _update_transcript(
         self, segments: list[TranscriptSegment], change_text: Callable[[str], str]
@@ -92,7 +92,7 @@ class TranscriptCorrectionsMixin:
         text = TextDialog(
             self,
             _("Edit the text"),
-            _("Text said at {time}:").format(time=format_timestamp(segment.start)),
+            _("Text said at {time}:").format(time=self._format_time(segment.start)),
             segment.text,
             is_multiline=True,
             allow_empty=False,

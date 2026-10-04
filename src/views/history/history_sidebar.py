@@ -11,6 +11,7 @@ from views.history.formatting import reveal_label
 from views.history.history_row import HistoryRow, SectionHeader
 from views.style import icons, theme
 from views.widgets.bindings import bind_wraplength
+from views.widgets.scrollable_frame import CTkScrollableFrame
 from views.widgets.search_entry import SearchEntry
 
 SPINNER_INTERVAL_MS = 90
@@ -26,6 +27,7 @@ class SidebarDelegate(Protocol):
     def select_entry(self, entry_id: str) -> None: ...
     def rename_entry(self, entry_id: str, title: str) -> None: ...
     def edit_note(self, entry_id: str) -> None: ...
+    def delete_note(self, entry_id: str) -> None: ...
     def edit_tag(self, entry_id: str) -> None: ...
     def move_to_group(self, entry_id: str, group_id: str | None) -> None: ...
     def move_to_new_group(self, entry_id: str) -> None: ...
@@ -81,7 +83,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         self._menu_group_variable: tk.StringVar | None = None
 
         self._init_search()
-        self.frm_list = ctk.CTkScrollableFrame(
+        self.frm_list = CTkScrollableFrame(
             self, fg_color="transparent", corner_radius=0
         )
         self.frm_list.grid(row=1, column=0, sticky=ctk.NSEW, padx=(6, 0))
@@ -270,6 +272,11 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             label=_("Edit note…") if entry.note else _("Add note…"),
             command=lambda: self.delegate.edit_note(entry_id),
         )
+        if entry.note:
+            menu.add_command(
+                label=_("Delete note…"),
+                command=lambda: self.delegate.delete_note(entry_id),
+            )
         menu.add_command(
             label=_("Edit tag…"), command=lambda: self.delegate.edit_tag(entry_id)
         )

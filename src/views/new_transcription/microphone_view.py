@@ -5,6 +5,7 @@ from typing import Any
 
 import customtkinter as ctk
 
+from models.config.config_transcription import ConfigTranscription
 from models.transcription_settings import TranscriptionSettings
 from utils.audio_utils import (
     InputDevice,
@@ -13,6 +14,7 @@ from utils.audio_utils import (
     level_to_dbfs,
     list_input_devices,
 )
+from utils.config_manager import ConfigManager
 from utils.enums import TranscriptionMethod
 from utils.env_keys import EnvKeys
 from utils.i18n import _
@@ -63,6 +65,8 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         # Whether the text is shown while recording, as chosen in the settings
         self._is_live = False
         self._devices: list[InputDevice] = []
+        # Name of the last device chosen, selected again while it's connected
+        self._saved_device = ConfigManager.get_config_transcription().mic_device
         self._level_monitor = LevelMonitor()
         self._level_messages = {
             InputLevel.NO_SIGNAL: (
@@ -158,7 +162,10 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             device_row, text="", image=icons.icon("mic", 16, theme.ICON_MUTED)
         ).grid(row=0, column=0, padx=(0, 8))
         self.omn_device = CTkOptionMenu(
-            device_row, values=[_("Loading…")], dynamic_resizing=False
+            device_row,
+            values=[_("Loading…")],
+            dynamic_resizing=False,
+            command=self._on_device_selected,
         )
         self.omn_device.grid(row=0, column=1, sticky=ctk.EW)
         self.btn_refresh_devices = ctk.CTkButton(
@@ -456,7 +463,6 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
     def _on_devices_loaded(self, devices: list[InputDevice]) -> None:
         if not self.winfo_exists():
             return
-        previous = self.omn_device.get()
         self._devices = devices
         if not devices:
             self.omn_device.configure(values=[_("No microphone found")])
@@ -464,12 +470,16 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             self.omn_device.configure(state=ctk.DISABLED)
             return
 
-        names = [self._device_label(device) for device in devices]
-        self.omn_device.configure(values=names)
-        default = next(
-            (self._device_label(d) for d in devices if d.is_default), names[0]
+        self.omn_device.configure(
+            values=[self._device_label(device) for device in devices]
         )
-        self.omn_device.set(previous if previous in names else default)
+        # The saved device if it's still connected, or else the default one. The
+        # saved device isn't replaced, so it's selected again when it's back
+        selected = next(
+            (d for d in devices if d.name == self._saved_device),
+            next((d for d in devices if d.is_default), devices[0]),
+        )
+        self.omn_device.set(self._device_label(selected))
         if self._state not in (MicState.RECORDING, MicState.TRANSCRIBING):
             self.omn_device.configure(state=ctk.NORMAL)
 
@@ -480,6 +490,17 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         # Outside the f-string, so pybabel finds it on Python 3.10 and 3.11
         default = _("default")
         return f"{device.name} ({default})"
+
+    def _on_device_selected(self, label: str) -> None:
+        for device in self._devices:
+            if self._device_label(device) == label:
+                self._saved_device = device.name
+                ConfigManager.modify_value(
+                    ConfigTranscription.Key.SECTION,
+                    ConfigTranscription.Key.MIC_DEVICE,
+                    device.name,
+                )
+                return
 
     def _selected_device_index(self) -> int | None:
         selected = self.omn_device.get()
