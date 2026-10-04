@@ -1,3 +1,5 @@
+import math
+
 from utils.i18n import _
 
 
@@ -13,8 +15,53 @@ def format_clock(total_seconds: int) -> str:
 
 
 def format_timestamp(seconds: float) -> str:
-    """Formats a position, rounded down so it doesn't go past the sentence."""
+    """Formats a position, rounded down so it doesn't go past the segment."""
     return format_clock(int(max(seconds, 0)))
+
+
+def format_segment_time(seconds: float, is_precise: bool) -> str:
+    """
+    Formats the start of a segment: simplified (`MM:SS`), or precise to the
+    millisecond like the subtitles (`HH:MM:SS,mmm`), for professional
+    transcribers and translators.
+    """
+    return (
+        format_subtitle_time(seconds, ",") if is_precise else format_timestamp(seconds)
+    )
+
+
+def format_segment_range(start: float, end: float, is_precise: bool) -> str:
+    """Formats when a segment starts and ends, e.g. `00:01 – 00:03`."""
+    return (
+        f"{format_segment_time(start, is_precise)} – "
+        f"{format_segment_time(end, is_precise)}"
+    )
+
+
+def parse_segment_time(text: str) -> float:
+    """
+    Parses a position typed by the user: `SS`, `MM:SS` or `HH:MM:SS`, with
+    optional fractions of a second (e.g. `01:05,900` or `01:05.9`).
+
+    :raises ValueError: If it isn't a valid position.
+    """
+    *units_texts, seconds_text = text.strip().replace(",", ".").split(":")
+    if len(units_texts) > 2:
+        raise ValueError(f"Invalid time: {text!r}")
+
+    units = [int(unit) for unit in units_texts]
+    seconds = float(seconds_text)
+    # Only the first part can exceed its range (e.g. 90 seconds or 75 minutes)
+    if (
+        not math.isfinite(seconds)
+        or any(part < 0 for part in [*units, seconds])
+        or ((units and seconds >= 60) or (len(units) == 2 and units[1] >= 60))
+    ):
+        raise ValueError(f"Invalid time: {text!r}")
+
+    for multiplier, unit in zip((60, 3600), reversed(units), strict=False):
+        seconds += unit * multiplier
+    return seconds
 
 
 def format_duration(seconds: float) -> str:

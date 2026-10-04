@@ -2,11 +2,15 @@
 
 import sys
 from datetime import datetime
+from enum import Enum
+from typing import TypeVar
 
 import customtkinter as ctk
-from babel.dates import format_date, format_time
+from babel.dates import format_date, format_skeleton, format_time
 
+from models.config.config_system import DateFormat, TimeFormat
 from models.history import EntryStatus, HistoryEntry
+from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
 from utils.i18n import _, get_language
 from views.style import icons, theme
@@ -62,6 +66,60 @@ def status_icon(
     return icons.icon(name, size, color)
 
 
+# The formats chosen by the user, read once from the settings since dates are
+# formatted for each row of the history
+_formats: tuple[DateFormat, TimeFormat] | None = None
+
+
+def get_date_formats() -> tuple[DateFormat, TimeFormat]:
+    """The formats of the dates and the times chosen by the user."""
+    global _formats
+    if _formats is None:
+        config = ConfigManager.get_config_system()
+        _formats = (
+            _parse(DateFormat, config.date_format, DateFormat.MEDIUM),
+            _parse(TimeFormat, config.time_format, TimeFormat.AUTO),
+        )
+    return _formats
+
+
+def set_date_formats(date_format: DateFormat, time_format: TimeFormat) -> None:
+    global _formats
+    _formats = (date_format, time_format)
+
+
+_EnumT = TypeVar("_EnumT", bound=Enum)
+
+
+def _parse(enum: type[_EnumT], value: str, default: _EnumT) -> _EnumT:
+    try:
+        return enum(value)
+    except ValueError:
+        return default
+
+
+def format_clock_time(value: datetime, time_format: TimeFormat | None = None) -> str:
+    """
+    Formats a time of the day in the interface language, with the hours of its
+    clock or of the 12- or 24-hour one chosen by the user.
+    """
+    time_format = time_format or get_date_formats()[1]
+    locale = get_language()
+    if time_format == TimeFormat.HOURS_12:
+        return format_skeleton("hm", value, locale=locale)
+    if time_format == TimeFormat.HOURS_24:
+        return format_skeleton("Hm", value, locale=locale)
+    return format_time(value, "short", locale=locale)
+
+
+def format_day(value: datetime, date_format: DateFormat | None = None) -> str:
+    """Formats a date in the interface language, as the user chose to."""
+    date_format = date_format or get_date_formats()[0]
+    if date_format == DateFormat.ISO:
+        return value.strftime("%Y-%m-%d")
+    return format_date(value, date_format.value, locale=get_language())
+
+
 def format_entry_date(value: datetime, now: datetime | None = None) -> str:
     """
     Formats the date of an entry like the Notes app: the time if it's from
@@ -75,10 +133,12 @@ def format_entry_date(value: datetime, now: datetime | None = None) -> str:
 
     try:
         if days <= 0:
-            return format_time(local_value, "short", locale=locale)
+            return format_clock_time(local_value)
         if days < 7:
             return format_date(local_value, "EEEE", locale=locale).capitalize()
-        return format_date(local_value, "short", locale=locale)
+        # The sidebar is narrow, so the dates are short, unless they're ISO ones
+        is_iso = get_date_formats()[0] == DateFormat.ISO
+        return format_day(local_value, DateFormat.ISO if is_iso else DateFormat.SHORT)
     except (ValueError, LookupError):
         return local_value.strftime("%Y-%m-%d")
 
@@ -92,13 +152,8 @@ def format_method(entry: HistoryEntry) -> str:
 
 
 def format_full_date(value: datetime) -> str:
-    locale = get_language()
     try:
-        return (
-            format_date(value, "long", locale=locale)
-            + ", "
-            + format_time(value, "short", locale=locale)
-        )
+        return format_day(value) + ", " + format_clock_time(value)
     except (ValueError, LookupError):
         return value.strftime("%Y-%m-%d %H:%M")
 

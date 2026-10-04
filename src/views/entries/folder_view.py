@@ -11,6 +11,7 @@ from views.entries.entry_header import EntryHeader
 from views.entries.progress_card import ProgressCard
 from views.history.formatting import format_entry_date, status_icon, status_label
 from views.style import theme
+from views.widgets.scrollable_frame import CTkScrollableFrame
 
 
 class FolderView(ctk.CTkFrame):  # type: ignore[misc]
@@ -52,7 +53,7 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
         ctk.CTkLabel(
             self, text=_("Files"), font=theme.font(15, "bold"), anchor=ctk.W
         ).grid(row=3, column=0, padx=28, pady=(18, 6), sticky=ctk.W)
-        self.frm_files = ctk.CTkScrollableFrame(
+        self.frm_files = CTkScrollableFrame(
             self,
             fg_color=theme.CARD_BG,
             border_color=theme.CARD_BORDER,

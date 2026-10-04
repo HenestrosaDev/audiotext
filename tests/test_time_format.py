@@ -1,5 +1,14 @@
+import pytest
+
 from utils.enums import ModelSize
-from utils.time_format import format_duration, format_elapsed_time, format_timestamp
+from utils.time_format import (
+    format_duration,
+    format_elapsed_time,
+    format_segment_range,
+    format_segment_time,
+    format_timestamp,
+    parse_segment_time,
+)
 
 
 def test_format_timestamp_without_hours() -> None:
@@ -28,3 +37,40 @@ def test_english_only_models() -> None:
 def test_format_elapsed_time() -> None:
     assert format_elapsed_time(4.6) == "5 s"
     assert format_elapsed_time(125) == "2 min 5 s"
+
+
+def test_format_segment_time() -> None:
+    assert format_segment_time(65.9, is_precise=False) == "01:05"
+    assert format_segment_time(65.9, is_precise=True) == "00:01:05,900"
+    assert format_segment_time(3661.25, is_precise=True) == "01:01:01,250"
+
+
+def test_format_segment_range() -> None:
+    assert format_segment_range(1.5, 3, is_precise=False) == "00:01 – 00:03"
+    assert (
+        format_segment_range(1.5, 3, is_precise=True) == "00:00:01,500 – 00:00:03,000"
+    )
+
+
+@pytest.mark.parametrize(
+    ("text", "seconds"),
+    [
+        ("5", 5),
+        ("90", 90),
+        ("01:05,9", 65.9),
+        ("1:05.900", 65.9),
+        ("75:00", 4500),
+        (" 00:01:05,900 ", 3665.9 - 3600),
+        ("1:00:00", 3600),
+    ],
+)
+def test_parse_segment_time(text: str, seconds: float) -> None:
+    assert parse_segment_time(text) == pytest.approx(seconds)
+
+
+@pytest.mark.parametrize(
+    "text", ["", "a", "-1", "1:75", "1:60:00", "1::2", "1:2:3:4", "nan", "inf"]
+)
+def test_parse_segment_time_rejects_invalid_times(text: str) -> None:
+    with pytest.raises(ValueError):
+        parse_segment_time(text)

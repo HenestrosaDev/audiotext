@@ -25,12 +25,12 @@ def describe_api_model(name: str) -> str:
         return _("Identifies the speakers. With timestamps.")
     if model.has_timestamps:
         return _(
-            "With timestamps, to play the transcription sentence by sentence and "
+            "With timestamps, to play the transcription segment by segment and "
             "generate subtitles."
         )
     return _(
         "More accurate, but without timestamps: the transcription can't be played "
-        "sentence by sentence nor subtitled."
+        "segment by segment nor subtitled."
     )
 
 

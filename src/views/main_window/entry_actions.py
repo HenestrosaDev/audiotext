@@ -5,12 +5,13 @@ import subprocess
 import threading
 from collections.abc import Callable
 from dataclasses import replace
+from datetime import datetime
 from pathlib import Path
 from tkinter import messagebox
 from typing import TYPE_CHECKING, Any
 
 from handlers.summary_handler import SummaryHandler
-from handlers.translation_handler import TranslationHandler
+from handlers.translation_handler import MANUAL, TranslationHandler
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
@@ -86,6 +87,19 @@ class EntryActionsMixin:
         ).get_input()
         if note is not None and note != entry.note:
             self._store.update(entry, note=note)
+            self._on_entry_changed(entry_id)
+
+    def delete_note(self, entry_id: str) -> None:
+        entry = self._store.get(entry_id)
+        if entry is None or not entry.note:
+            return
+        if messagebox.askyesno(
+            _("Delete note"),
+            _("Delete the note of “{title}”?").format(title=entry.title),
+            icon=messagebox.WARNING,
+            parent=self.winfo_toplevel(),
+        ):
+            self._store.update(entry, note="")
             self._on_entry_changed(entry_id)
 
     def edit_tag(self, entry_id: str) -> None:
@@ -264,6 +278,28 @@ class EntryActionsMixin:
 
         threading.Thread(target=translate, daemon=True).start()
 
+    def start_manual_translation(self, entry_id: str, language: str) -> None:
+        """
+        Starts a translation for the user to write from scratch: each segment
+        keeps its timestamps, with an empty text.
+        """
+        entry = self._store.get(entry_id)
+        if entry is None or entry_id in self._translating:
+            return
+
+        self._translation_errors.pop(entry_id, None)
+        translation = TranscriptTranslation(
+            language=language,
+            text="",
+            segments=tuple(
+                replace(segment, text="", words=()) for segment in entry.segments
+            ),
+            provider=MANUAL,
+            created_at=datetime.now().astimezone().isoformat(timespec="seconds"),
+        )
+        self._store.update(entry, translation=translation.to_dict())
+        self._refresh_entry_view(entry_id)
+
     def is_translating(self, entry_id: str) -> bool:
         return entry_id in self._translating
 
@@ -283,16 +319,19 @@ class EntryActionsMixin:
             )
 
     def update_translation(
-        self, entry_id: str, segments: tuple[str, ...], text: str
+        self, entry_id: str, segments: list[TranscriptSegment], text: str
     ) -> None:
-        """Saves the corrections of a translation (e.g. an edited segment)."""
+        """
+        Saves the corrections of a translation, e.g. an edited, retimed, added or
+        deleted segment.
+        """
         entry = self._store.get(entry_id)
         translation = entry and TranscriptTranslation.from_dict(entry.translation)
         if entry and translation:
             self._store.update(
                 entry,
                 translation=replace(
-                    translation, segments=segments, text=text
+                    translation, segments=tuple(segments), text=text
                 ).to_dict(),
             )
             self._refresh_entry_view(entry_id)

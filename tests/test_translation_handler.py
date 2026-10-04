@@ -74,7 +74,10 @@ def test_the_segments_are_translated_keeping_their_timestamps(
         provider="anthropic",
     )
 
-    assert translation.segments == ("HELLO", "GOODBYE")
+    assert translation.segments == (
+        TranscriptSegment(0.0, 1.0, "HELLO", "SPEAKER_00"),
+        TranscriptSegment(1.5, 3.0, "GOODBYE", "SPEAKER_01"),
+    )
     assert translation.text == "[SPEAKER_00]: HELLO\n\n[SPEAKER_01]: GOODBYE"
     assert translation.language == "es"
     assert translation.provider == "anthropic"
@@ -242,8 +245,23 @@ def test_the_keys_needed_by_each_provider(monkeypatch: pytest.MonkeyPatch) -> No
 
 def test_translation_round_trip() -> None:
     translation = TranscriptTranslation(
-        "es", "Hola", ("Hola",), "deepl", "", "2026-10-03T10:00:00+02:00"
+        "es",
+        "Hola",
+        (TranscriptSegment(0.5, 2.0, "Hola", "SPEAKER_00"),),
+        "deepl",
+        "",
+        "2026-10-03T10:00:00+02:00",
     )
 
     assert TranscriptTranslation.from_dict(translation.to_dict()) == translation
     assert TranscriptTranslation.from_dict({}) is None
+
+
+def test_the_texts_of_the_segments_of_old_translations_are_dropped() -> None:
+    translation = TranscriptTranslation.from_dict(
+        {"language": "es", "text": "Hola", "segments": ["Hola"]}
+    )
+
+    assert translation is not None
+    assert translation.segments == ()
+    assert translation.text == "Hola"

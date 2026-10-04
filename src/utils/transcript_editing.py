@@ -1,6 +1,7 @@
 """
 Corrections of a transcription: replacing a text, renaming a speaker and editing
-the text of a segment.
+the text of a segment. The timing of the segments of a translation can also
+change, and segments can be added to it or deleted from it.
 
 The segments keep the timings of their words, which highlight each word while
 playing and are needed by the subtitles. When the text of a segment changes, the
@@ -10,6 +11,7 @@ the words they replace.
 
 import difflib
 import re
+from dataclasses import replace
 
 from models.transcript_segment import TranscriptSegment, TranscriptWord
 
@@ -119,6 +121,62 @@ def edit_segment(
         _with_text(segment, text) if segment_idx == idx else segment
         for segment_idx, segment in enumerate(segments)
     ]
+
+
+def set_segment_timing(
+    segments: list[TranscriptSegment], idx: int, start: float, end: float
+) -> list[TranscriptSegment]:
+    """
+    Changes when a segment starts and ends, keeping the segments sorted by their
+    start. The timings of its words no longer apply, so they're dropped.
+
+    :raises ValueError: If it doesn't end after it starts.
+    """
+    if start < 0 or end <= start:
+        raise ValueError("A segment must end after it starts")
+
+    changed = replace(segments[idx], start=start, end=end, words=())
+    return sorted_segments(
+        [changed if segment_idx == idx else s for segment_idx, s in enumerate(segments)]
+    )
+
+
+def insert_segment(
+    segments: list[TranscriptSegment], segment: TranscriptSegment
+) -> list[TranscriptSegment]:
+    """
+    Adds a segment, keeping the segments sorted by their start.
+
+    :raises ValueError: If it doesn't end after it starts.
+    """
+    if segment.start < 0 or segment.end <= segment.start:
+        raise ValueError("A segment must end after it starts")
+
+    return sorted_segments([*segments, segment])
+
+
+def delete_segment(
+    segments: list[TranscriptSegment], idx: int
+) -> list[TranscriptSegment]:
+    """Removes a segment, keeping the order of the others."""
+    return [
+        segment for segment_idx, segment in enumerate(segments) if segment_idx != idx
+    ]
+
+
+def sorted_segments(segments: list[TranscriptSegment]) -> list[TranscriptSegment]:
+    """Sorts the segments by their start, keeping the order of the ones that tie."""
+    return sorted(segments, key=lambda segment: segment.start)
+
+
+def overlapping_segments(
+    segments: list[TranscriptSegment], start: float, end: float
+) -> list[TranscriptSegment]:
+    """
+    The segments said between two positions, e.g. the ones of the transcription
+    that a segment of its translation translates.
+    """
+    return [s for s in segments if s.start < end and s.end > start]
 
 
 def speakers(segments: list[TranscriptSegment]) -> list[str]:

@@ -2,7 +2,7 @@
 
 import contextlib
 from collections.abc import Callable
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
@@ -11,11 +11,11 @@ import customtkinter as ctk
 import utils.constants as c
 from handlers.translation_handler import (
     DEEPL,
+    MANUAL,
     get_env_key,
     has_api_key,
     translation_providers,
 )
-from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 from utils.env_keys import EnvKeys
@@ -35,28 +35,17 @@ def language_name(code: str) -> str:
     return get_language_name(code, fallback=c.AUDIO_LANGUAGES.get(code, code))
 
 
-def translated_segments(
-    translation: TranscriptTranslation, segments: list[TranscriptSegment]
-) -> list[TranscriptSegment]:
-    """
-    The segments of the transcription with their translated text, so the
-    translation keeps their timestamps. Empty if the translation doesn't match
-    them (e.g. it's of the edited text).
-    """
-    if not translation.segments or len(translation.segments) != len(segments):
-        return []
-
-    return [
-        replace(segment, text=text, words=())
-        for segment, text in zip(segments, translation.segments, strict=True)
-    ]
+def has_timed_texts(translation: TranscriptTranslation) -> bool:
+    """Whether some segment of the translation has a text, to subtitle it."""
+    return any(segment.text for segment in translation.segments)
 
 
 class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
     """
     The translation of a transcription, shown on the right of its text: in the
     same mode (with timestamps or as plain text), highlighting the segment being
-    played. Clicking a segment plays it. It can be edited like the transcription.
+    played. Clicking a segment plays it. It can be edited like the transcription,
+    and its segments have their own timestamps, which can be changed.
     """
 
     def __init__(
@@ -66,13 +55,18 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         on_segment_menu: Callable[[Any, int], str | None],
         on_text_edit: Callable[[str], None],
         on_copy: Callable[[], None],
+        on_export: Callable[[Any], None],
         on_translate: Callable[[], None],
         on_close: Callable[[], None],
     ) -> None:
         """
+        :param on_segment_click: Called with the index of a clicked segment of the
+                                 translation.
         :param on_segment_menu: Called with the event and the index of a segment
-                                that is right-clicked.
+                                of the translation that is right-clicked.
         :param on_text_edit: Called with the plain text after the user edits it.
+        :param on_export: Called with the button below which the formats to
+                          export it are shown.
         :param on_translate: Called to translate it again, e.g. into another
                              language.
         :param on_close: Called to hide the panel.
@@ -90,18 +84,30 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
 
         header = ctk.CTkFrame(self, fg_color="transparent")
         header.grid(row=0, column=0, padx=(16, 8), pady=(8, 0), sticky=ctk.EW)
-        header.grid_columnconfigure(1, weight=1)
+        # The source and the date of the translation are clipped if they don't fit
+        header.grid_columnconfigure(2, weight=1)
         ctk.CTkLabel(
             header, text="", image=icons.icon("globe", 15, theme.ICON_MUTED)
         ).grid(row=0, column=0, padx=(0, 6))
         self.lbl_title = ctk.CTkLabel(
             header, text="", font=theme.font(14, "bold"), anchor=ctk.W
         )
-        self.lbl_title.grid(row=0, column=1, sticky=ctk.EW)
+        self.lbl_title.grid(row=0, column=1, sticky=ctk.W)
+        self.lbl_source = ctk.CTkLabel(
+            header,
+            text="",
+            font=theme.font(12),
+            text_color=theme.HINT_TEXT,
+            anchor=ctk.W,
+        )
+        self.lbl_source.grid(row=0, column=2, padx=(8, 0), sticky=ctk.EW)
 
-        self.btn_copy = self._icon_button(header, 2, "copy", on_copy)
-        self.btn_translate = self._icon_button(header, 3, "refresh", on_translate)
-        self._icon_button(header, 4, "x_circle", on_close)
+        self.btn_copy = self._icon_button(header, 3, "copy", on_copy)
+        self.btn_export = self._icon_button(
+            header, 4, "export", lambda: on_export(self.btn_export)
+        )
+        self.btn_translate = self._icon_button(header, 5, "refresh", on_translate)
+        self._icon_button(header, 6, "x_circle", on_close)
 
         self.lbl_details = ctk.CTkLabel(
             self,
@@ -119,6 +125,9 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             on_segment_click=on_segment_click,
             on_segment_menu=on_segment_menu,
             on_text_edit=on_text_edit,
+            # The transcript on its left already explains it
+            show_click_hint=False,
+            empty_segment_text=_("Not translated yet"),
         )
         # It's inside the card of the panel
         self.text.configure(fg_color="transparent", border_width=0)
@@ -131,13 +140,11 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
     def show(
         self,
         translation: TranscriptTranslation | None,
-        segments: list[TranscriptSegment],
         is_loading: bool,
         error: str,
         pending_language: str | None,
     ) -> None:
         """
-        :param segments: The segments of the transcription.
         :param is_loading: Whether a translation is in progress.
         :param error: Why the last translation failed, if it did.
         :param pending_language: The language being translated into, if known.
@@ -151,12 +158,14 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
                 if language
                 else _("Translating…")
             )
+            self.lbl_source.configure(text="")
             self._set_details(_("It takes a moment."))
             self._show_message(
                 _("The transcription is being translated. It takes a moment.")
             )
         elif translation is None:
             self.lbl_title.configure(text=_("Translation"))
+            self.lbl_source.configure(text="")
             self._set_details("")
             self._show_message(
                 error or _("There is no translation yet."),
@@ -164,22 +173,29 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
                 action=(_("Translate…"), self._on_translate),
             )
         else:
+            segments = list(translation.segments)
             self.lbl_title.configure(text=language_name(translation.language))
-            self._set_details(error or self._describe(translation), bool(error))
+            self.lbl_source.configure(text=self._describe(translation))
+            self._set_details(
+                error or self._segments_left_hint(translation),
+                bool(error),
+            )
             self.frm_message.grid_forget()
             self.text.grid(row=2, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
             self.text.set_content(
-                translated_segments(translation, segments),
-                translation.text,
-                translation.is_text_edited,
+                segments, translation.text, translation.is_text_edited
             )
 
         has_translation = translation is not None and not is_loading
-        self.btn_copy.configure(state=ctk.NORMAL if has_translation else ctk.DISABLED)
+        for button in (self.btn_copy, self.btn_export):
+            button.configure(state=ctk.NORMAL if has_translation else ctk.DISABLED)
         self.btn_translate.configure(state=ctk.DISABLED if is_loading else ctk.NORMAL)
 
     def set_mode(self, mode: str) -> None:
         self.text.set_mode(mode)
+
+    def set_precise_timestamps(self, is_precise: bool) -> None:
+        self.text.set_precise_timestamps(is_precise)
 
     def save_pending_text(self) -> None:
         """Saves the edited text right away, if its saving is pending."""
@@ -208,9 +224,14 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         return button
 
     def _set_details(self, text: str, is_error: bool = False) -> None:
+        """Shows a hint or an error below the header, if there is one."""
         self.lbl_details.configure(
             text=text, text_color=theme.ERROR_TEXT if is_error else theme.HINT_TEXT
         )
+        if text:
+            self.lbl_details.grid()
+        else:
+            self.lbl_details.grid_remove()
 
     def _show_message(
         self,
@@ -244,11 +265,26 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             ).grid(row=1, column=0, pady=(14, 0))
 
     @staticmethod
+    def _segments_left_hint(translation: TranscriptTranslation) -> str:
+        """If the user translates it, how many segments are left."""
+        if translation.provider != MANUAL:
+            return ""
+        left = sum(1 for segment in translation.segments if not segment.text)
+        if not left:
+            return ""
+        return _(
+            "Segments left to translate: {count}. Right-click one to translate it."
+        ).format(count=left)
+
+    @staticmethod
     def _describe(translation: TranscriptTranslation) -> str:
         """The provider and the model that translated it, and when."""
-        provider = translation_providers().get(
-            translation.provider, translation.provider
-        )
+        if translation.provider == MANUAL:
+            provider = _("Translated manually")
+        else:
+            provider = translation_providers().get(
+                translation.provider, translation.provider
+            )
         parts = [provider]
         if translation.model:
             parts.append(translation.model)
@@ -290,7 +326,10 @@ class TranslateDialog(_Dialog):
         config = ConfigManager.get_config_ai()
         language_labels = get_language_labels()
         self._language_labels = OptionLabels(language_labels)
-        self._provider_labels = OptionLabels(translation_providers())
+        # The user can also translate it, from empty segments with the timestamps
+        self._provider_labels = OptionLabels(
+            {**translation_providers(), MANUAL: _("Myself, from scratch")}
+        )
 
         ctk.CTkLabel(
             self.frm_body, text=_("Translate into:"), font=theme.font(13)
@@ -387,7 +426,7 @@ class TranslateDialog(_Dialog):
 
     def _refresh(self) -> None:
         provider = self._provider
-        if has_api_key(provider):
+        if provider == MANUAL or has_api_key(provider):
             self.frm_key.grid_remove()
             self.btn_ok.configure(state=ctk.NORMAL)
         else:
@@ -416,7 +455,7 @@ class TranslateDialog(_Dialog):
         self.omn_language.focus_set()
 
     def _ok(self) -> None:
-        if not has_api_key(self._provider):
+        if self._provider != MANUAL and not has_api_key(self._provider):
             return
         self._result = TranslationRequest(
             language=self._language_labels.value(self.omn_language.get()),
