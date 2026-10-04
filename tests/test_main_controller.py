@@ -771,7 +771,9 @@ class TestDirectoryReport:
 
         report.update(files[0], FileStatus.FAILED, "Error")
 
-        assert report.render("Summary") == "Summary\n\n✗ a.mp3 — Error\n• sub/b.mp3"
+        # The paths are shown with the separator of the system
+        sub_file = Path("sub", "b.mp3")
+        assert report.render("Summary") == f"Summary\n\n✗ a.mp3 — Error\n• {sub_file}"
         assert (report.done, report.failed, report.total) == (0, 1, 2)
 
 
