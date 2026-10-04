@@ -354,7 +354,6 @@ The interface is available in Català, Čeština, Deutsch, English, Español, Fr
   │           build.yml
   │           code-quality.yml
   │           release.yml
-  │           web.yml
   │
   ├───docs/ (images of this README)
   │
