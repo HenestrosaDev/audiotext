@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-04 04:28+0200\n"
+"POT-Creation-Date: 2026-10-04 13:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -744,7 +744,7 @@ msgid "New transcription:"
 msgstr "새 받아쓰기:"
 
 #: src/views/main_window/top_bar.py:156
-#: src/views/settings/preferences_dialog.py:669
+#: src/views/settings/preferences_dialog.py:678
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "버전 {version} 사용 가능"
@@ -899,7 +899,7 @@ msgstr "다듬기"
 msgid "No microphone found"
 msgstr "마이크를 찾을 수 없습니다"
 
-#: src/views/new_transcription/microphone_view.py:478
+#: src/views/new_transcription/microphone_view.py:481
 msgid "default"
 msgstr "기본값"
 
@@ -1295,27 +1295,27 @@ msgstr "제작: {author}"
 msgid "Documentation"
 msgstr "문서"
 
-#: src/views/settings/preferences_dialog.py:614
+#: src/views/settings/preferences_dialog.py:618
 msgid "Donate"
 msgstr "후원하기"
 
-#: src/views/settings/preferences_dialog.py:624
+#: src/views/settings/preferences_dialog.py:630
 msgid "Check for updates"
 msgstr "업데이트 확인"
 
-#: src/views/settings/preferences_dialog.py:646
+#: src/views/settings/preferences_dialog.py:654
 msgid "Checking for updates…"
 msgstr "업데이트 확인 중…"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:666
 msgid "Could not check for updates."
 msgstr "업데이트를 확인할 수 없습니다."
 
-#: src/views/settings/preferences_dialog.py:663
+#: src/views/settings/preferences_dialog.py:671
 msgid "Download"
 msgstr "다운로드"
 
-#: src/views/settings/preferences_dialog.py:676
+#: src/views/settings/preferences_dialog.py:685
 msgid "You have the latest version."
 msgstr "최신 버전을 사용 중입니다."
 

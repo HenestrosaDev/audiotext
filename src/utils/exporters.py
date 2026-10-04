@@ -146,19 +146,19 @@ def to_markdown(document: ExportDocument) -> str:
     lines = [f"# {document.title}", ""]
 
     if summary := document.summary:
-        lines += [f"## {_('Summary')}", "", summary.summary, ""]
+        lines += ["## " + _("Summary"), "", summary.summary, ""]
         if summary.key_points:
-            lines += [f"### {_('Key points')}", ""]
+            lines += ["### " + _("Key points"), ""]
             lines += [f"- {point}" for point in summary.key_points]
             lines.append("")
         if summary.chapters:
-            lines += [f"### {_('Chapters')}", ""]
+            lines += ["### " + _("Chapters"), ""]
             lines += [
                 f"- **{format_timestamp(chapter.start)}** {chapter.title}"
                 for chapter in summary.chapters
             ]
             lines.append("")
-        lines += [f"## {_('Transcription')}", ""]
+        lines += ["## " + _("Transcription"), ""]
 
     for paragraph in paragraphs(document):
         prefix = ""

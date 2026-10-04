@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-04 04:28+0200\n"
+"POT-Creation-Date: 2026-10-04 13:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -765,7 +765,7 @@ msgid "New transcription:"
 msgstr "Ny transkribering:"
 
 #: src/views/main_window/top_bar.py:156
-#: src/views/settings/preferences_dialog.py:669
+#: src/views/settings/preferences_dialog.py:678
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "Version {version} är tillgänglig"
@@ -924,7 +924,7 @@ msgstr "Förfina"
 msgid "No microphone found"
 msgstr "Ingen mikrofon hittades"
 
-#: src/views/new_transcription/microphone_view.py:478
+#: src/views/new_transcription/microphone_view.py:481
 msgid "default"
 msgstr "standard"
 
@@ -1326,27 +1326,27 @@ msgstr "Skapad av {author}"
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: src/views/settings/preferences_dialog.py:614
+#: src/views/settings/preferences_dialog.py:618
 msgid "Donate"
 msgstr "Donera"
 
-#: src/views/settings/preferences_dialog.py:624
+#: src/views/settings/preferences_dialog.py:630
 msgid "Check for updates"
 msgstr "Sök efter uppdateringar"
 
-#: src/views/settings/preferences_dialog.py:646
+#: src/views/settings/preferences_dialog.py:654
 msgid "Checking for updates…"
 msgstr "Söker efter uppdateringar…"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:666
 msgid "Could not check for updates."
 msgstr "Det gick inte att söka efter uppdateringar."
 
-#: src/views/settings/preferences_dialog.py:663
+#: src/views/settings/preferences_dialog.py:671
 msgid "Download"
 msgstr "Ladda ned"
 
-#: src/views/settings/preferences_dialog.py:676
+#: src/views/settings/preferences_dialog.py:685
 msgid "You have the latest version."
 msgstr "Du har den senaste versionen."
 
