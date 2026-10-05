@@ -22,9 +22,10 @@ def test_format_timestamp_with_hours() -> None:
     assert format_timestamp(3661.5) == "01:01:01"
 
 
-def test_format_duration_rounds() -> None:
-    assert format_duration(59.6) == "01:00"
-    assert format_duration(3599.6) == "01:00:00"
+def test_format_duration_rounds_down_like_the_positions() -> None:
+    assert format_duration(59.6) == "00:59"
+    assert format_duration(3599.6) == "59:59"
+    assert format_duration(209.6) == format_timestamp(209.6)
 
 
 def test_english_only_models() -> None:

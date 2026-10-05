@@ -1006,9 +1006,12 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if self._is_destroyed or not self.winfo_exists():
             return
 
+        # The length of the decoded audio is preferred over the one reported by the
+        # container, so the header shows the same duration as the player bar
         self.header.set_duration(
-            info.duration
-            or (len(samples) / PLAYBACK_SAMPLE_RATE if samples is not None else None)
+            len(samples) / PLAYBACK_SAMPLE_RATE
+            if samples is not None
+            else info.duration
         )
 
         if samples is None:
