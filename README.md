@@ -516,7 +516,7 @@ You can propose a new feature by creating a [discussion](https://github.com/Hene
 
 ## Authors
 
-- HenestrosaDev <henestrosadev@gmail.com> (José Carlos López Henestrosa)
+- HenestrosaDev <github@henestrosa.dev> (José Carlos López Henestrosa)
 
 See also the list of [contributors](https://github.com/HenestrosaDev/audiotext/contributors) who participated in this project.
 
