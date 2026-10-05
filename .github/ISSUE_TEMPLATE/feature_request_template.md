@@ -3,7 +3,7 @@ name: Feature Request
 about: Suggest an idea for this project
 title: "[Feature] "
 labels: ''
-assignees: HenestrosaConH
+assignees: HenestrosaDev
 ---
 
 Overview
@@ -36,5 +36,3 @@ Next Steps
 ---------------------
 
 In this section, outline the next steps for implementing the enhancement. This could include assigning the enhancement to a specific team member, setting a timeline for implementation, or opening a pull request for review.
-
-An enhancement template provides a clear and structured approach for proposing enhancements to a project, which can help ensure that proposals are well-thought-out and considered by the project's maintainers.

@@ -20,6 +20,7 @@ What types of changes does your code introduce? Put an x in the boxes that apply
 Put an x in the boxes that apply.
 
 - [ ] My code follows the code style of this project.
+- [ ] My commit messages follow [Conventional Commits](https://github.com/HenestrosaDev/audiotext/blob/main/.github/CONTRIBUTING.md#commit-messages).
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the documentation accordingly.
 - [ ] I have added tests to cover my changes.
