@@ -65,8 +65,11 @@ def parse_segment_time(text: str) -> float:
 
 
 def format_duration(seconds: float) -> str:
-    """Formats a duration, rounded to the nearest second."""
-    return format_clock(round(max(seconds, 0)))
+    """
+    Formats a duration, rounded down like the positions, so it matches the one the
+    player bar shows when the audio reaches the end.
+    """
+    return format_timestamp(seconds)
 
 
 def format_elapsed_time(seconds: float) -> str:
