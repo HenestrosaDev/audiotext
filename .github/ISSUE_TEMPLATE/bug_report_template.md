@@ -3,7 +3,7 @@ name: Bug Report
 about: Create a report to help us improve
 title: "[Bug] "
 labels: ''
-assignees: HenestrosaConH
+assignees: HenestrosaDev
 ---
 
 Steps to reproduce
@@ -11,7 +11,7 @@ Steps to reproduce
 
 1. (How do you make the issue happen? Does it happen every time you try it?)
 2. (Make sure to go into as much detail as needed to reproduce the issue.)
-3. (If there are any files, like any `strings.xml`, don't forget to include them.)
+3. (If the issue happens with a specific file, like an audio file or an exported transcription, don't forget to include it.)
 
 Expected behaviour
 ------------------
@@ -24,7 +24,7 @@ Actual behaviour
 (What happened instead? How is it different from what you expected?)
 
 ```
-(If the library threw an exception, paste the full stack trace here)
+(If the app showed an error or crashed, paste the full traceback here)
 ```
 
 System information
