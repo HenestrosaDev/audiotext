@@ -99,8 +99,7 @@ https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
 - [About the Project](#about-the-project)
   - [Features](#features)
   - [Documentation](#documentation)
-  - [Supported Languages](#supported-languages)
-  - [Supported File Types](#supported-file-types)
+  - [Languages and Formats](#languages-and-formats)
   - [Project Structure](#project-structure)
   - [Built With](#built-with)
 - [Getting Started](#getting-started)
@@ -108,16 +107,6 @@ https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
   - [Setting Up the Project Locally](#setting-up-the-project-locally)
   - [Notes](#notes)
 - [Usage](#usage)
-  - [The Window](#the-window)
-  - [Audio Sources](#audio-sources)
-  - [Transcription Settings](#transcription-settings)
-  - [Transcription Engines](#transcription-engines)
-  - [The Transcript](#the-transcript)
-  - [Summary and Translation](#summary-and-translation)
-  - [Export](#export)
-  - [History](#history)
-  - [Preferences](#preferences)
-  - [Keyboard Shortcuts](#keyboard-shortcuts)
   - [Command-Line Interface](#command-line-interface)
 - [Troubleshooting](#troubleshooting)
 - [Roadmap](#roadmap)
@@ -153,163 +142,11 @@ https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
 
 The full documentation of **Audiotext** is available at [**getaudiotext.com**](https://getaudiotext.com), in all the languages of the interface (Català, Čeština, Deutsch, English, Español, Français, Galego, हिन्दी, Bahasa Indonesia, Italiano, 日本語, 한국어, Nederlands, Polski, Português, Română, Русский, Svenska, Türkçe, Українська, Tiếng Việt and 简体中文). The website opens in the language of your browser, and the app opens it in the language of its interface from `Preferences` → `About` → `Documentation`.
 
-<!-- SUPPORTED LANGUAGES -->
+<!-- LANGUAGES AND FORMATS -->
 
-### Supported Languages
+### Languages and Formats
 
-WhisperX and the Whisper API transcribe these languages, and detect them automatically:
-
-<details>
-  <summary>Click here to display</summary>
-
-  - Afrikaans
-  - Albanian
-  - Amharic
-  - Arabic
-  - Armenian
-  - Assamese
-  - Azerbaijan
-  - Bashkir
-  - Basque
-  - Belarusian
-  - Bengali
-  - Bosnian
-  - Breton
-  - Bulgarian
-  - Burmese
-  - Catalan
-  - Chinese
-  - Chinese (Yue)
-  - Croatian
-  - Czech
-  - Danish
-  - Dutch
-  - English
-  - Estonian
-  - Faroese
-  - Farsi
-  - Finnish
-  - French
-  - Galician
-  - Georgian
-  - German
-  - Greek
-  - Gujarati
-  - Haitian
-  - Hausa
-  - Hawaiian
-  - Hebrew
-  - Hindi
-  - Hungarian
-  - Icelandic
-  - Indonesian
-  - Italian
-  - Japanese
-  - Javanese
-  - Kannada
-  - Kazakh
-  - Khmer
-  - Korean
-  - Lao
-  - Latin
-  - Latvian
-  - Lingala
-  - Lithuanian
-  - Luxembourgish
-  - Macedonian
-  - Malagasy
-  - Malay
-  - Malayalam
-  - Maltese
-  - Maori
-  - Marathi
-  - Mongolian
-  - Nepali
-  - Norwegian
-  - Norwegian Nynorsk
-  - Occitan
-  - Pashto
-  - Polish
-  - Português
-  - Punjabi
-  - Romanian
-  - Russian
-  - Sanskrit
-  - Serbian
-  - Shona
-  - Sindhi
-  - Sinhala
-  - Slovak
-  - Slovenian
-  - Somali
-  - Spanish
-  - Sundanese
-  - Swahili
-  - Swedish
-  - Tagalog
-  - Tajik
-  - Tamil
-  - Tatar
-  - Telugu
-  - Thai
-  - Tibetan
-  - Turkish
-  - Turkmen
-  - Ukrainian
-  - Urdu
-  - Uzbek
-  - Vietnamese
-  - Welsh
-  - Yiddish
-  - Yoruba
-</details>
-
-The interface is available in Català, Čeština, Deutsch, English, Español, Français, Galego, हिन्दी, Bahasa Indonesia, Italiano, 日本語, 한국어, Nederlands, Polski, Português, Română, Русский, Svenska, Türkçe, Українська, Tiếng Việt and 简体中文. It uses the language of the system if it's available, and it can be changed in `Preferences` → `General` → `Interface language`.
-
-<!-- SUPPORTED FILE TYPES -->
-
-### Supported File Types
-
-<details>
-  <summary>Audio file formats</summary>
-
-  - `.aac`
-  - `.flac`
-  - `.mp3`
-  - `.mpeg`
-  - `.oga`
-  - `.ogg`
-  - `.opus`
-  - `.wav`
-  - `.wma`
-</details>
-
-<details>
-  <summary>Video file formats</summary>
-
-  - `.3g2`
-  - `.3gp2`
-  - `.3gp`
-  - `.3gpp2`
-  - `.3gpp`
-  - `.asf`
-  - `.avi`
-  - `.f4a`
-  - `.f4b`
-  - `.f4v`
-  - `.flv`
-  - `.m4a`
-  - `.m4b`
-  - `.m4r`
-  - `.m4v`
-  - `.mkv`
-  - `.mov`
-  - `.mp4`
-  - `.ogv`
-  - `.ogx`
-  - `.webm`
-  - `.wmv`
-</details>
+WhisperX and the Whisper API transcribe about 100 languages and detect them automatically. **Audiotext** transcribes the most common audio and video formats (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.mkv`, `.webm` and many more), and exports to `.txt`, `.md`, `.docx`, `.srt`, `.vtt`, `.tsv` and `.json`. See the full lists in [formats and languages](https://getaudiotext.com/en/reference/formats-and-languages/).
 
 <!-- PROJECT STRUCTURE -->
 
@@ -575,15 +412,11 @@ Download the file for your system from the [latest release](https://github.com/H
 | Windows (64-bit) | `Audiotext-X.Y.Z-windows-x64-setup.exe` |
 | Linux (x86_64) | `Audiotext-X.Y.Z-linux-x86_64.tar.gz` |
 
-The `-gpu-N` files are downloaded by the installers if you choose GPU acceleration, so you don't need to download them yourself.
+- **macOS**: open the `.dmg` and drag `Audiotext` into `Applications`. The app isn't notarized, so allow it the first time in `System Settings` > `Privacy & Security` > `Open Anyway`.
+- **Windows**: run the installer. SmartScreen may warn you because it isn't signed: click `More info` > `Run anyway`.
+- **Linux**: extract the archive and run `./install.sh`.
 
-- **macOS**: Open the `.dmg` file and drag `Audiotext` into the `Applications` folder. The app isn't notarized by Apple, so the first time you open it, macOS will block it. To open it anyway, go to `System Settings` > `Privacy & Security` and click `Open Anyway`. Intel Macs aren't supported because PyTorch no longer supports them.
-- **Windows**: Run the installer. If you have an NVIDIA GPU, the installer offers to download GPU acceleration (CUDA), which makes WhisperX transcriptions much faster. The installer isn't signed, so Windows SmartScreen may warn you about it: click `More info` > `Run anyway`.
-- **Linux**: Extract the archive and run `./install.sh`. It installs the app for your user and adds it to the applications menu. If you have an NVIDIA GPU, it offers to download GPU acceleration (CUDA); you can also choose it with `./install.sh --gpu` or `./install.sh --cpu`. To uninstall the app, run `./install.sh --uninstall`. You can also run the app without installing it by opening `Audiotext/Audiotext`, but only with the CPU. To record from the microphone and play audio, install PortAudio (e.g. `sudo apt install libportaudio2`).
-
-To change between the CPU and the GPU versions, install the app again and choose the other option.
-
-The [installation guide](https://getaudiotext.com/en/getting-started/installation/) explains these steps in detail.
+On Windows and Linux, the installer offers to download GPU acceleration (CUDA) if you have an NVIDIA GPU. The [installation guide](https://getaudiotext.com/en/getting-started/installation/) explains each step and the requirements.
 
 ### Setting Up the Project Locally
 
@@ -620,13 +453,7 @@ The [installation guide](https://getaudiotext.com/en/getting-started/installatio
 
 ### Notes
 
-- The `config.ini` file of the project contains the default settings and is never modified by the app. The settings you change, the history of the transcriptions and the recordings of the microphone are stored in your user configuration folder, so they survive updates and are not committed by mistake:
-  - **Windows**: `%APPDATA%\Audiotext`
-  - **macOS**: `~/Library/Application Support/Audiotext`
-  - **Linux**: `~/.config/audiotext` (or `$XDG_CONFIG_HOME/audiotext`)
-
-  It contains `config.ini` (your settings; delete it to restore the defaults), `history.json` (your transcriptions, with their summaries, translations and corrections) and `media/` (the recordings and the audio downloaded from links). To use another folder (e.g. for a portable installation), set the `AUDIOTEXT_CONFIG_DIR` environment variable.
-- The API keys and the Hugging Face token are kept in the credential store of your system: the Keychain on macOS, the Credential Manager on Windows and the Secret Service (e.g. GNOME Keyring or KWallet) on Linux. If the system has none (e.g. a server without a desktop), they're stored in a `.env` file in the same folder, readable only by your user. The keys that previous versions stored in that file are moved to the credential store the first time the app opens. Environment variables with the same names (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `DEEPSEEK_API_KEY`, `GEMINI_API_KEY`, `MISTRAL_API_KEY`, `XAI_API_KEY`, `DEEPL_API_KEY`, `GOOGLE_API_KEY` and `HF_TOKEN`) take precedence, and a `.env` file in the root of the project, used by previous versions, is still read.
+- The `config.ini` file of the project contains the default settings and is never modified by the app. Your settings, history and recordings are stored in your user configuration folder (or in `AUDIOTEXT_CONFIG_DIR`), and the API keys in the credential store of your system or in environment variables such as `OPENAI_API_KEY` and `HF_TOKEN`. See [files and data](https://getaudiotext.com/en/reference/files-and-data/).
 - I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -635,135 +462,19 @@ The [installation guide](https://getaudiotext.com/en/getting-started/installatio
 
 ## Usage
 
-This is an overview of what you can do with **Audiotext**. The [documentation](https://getaudiotext.com) explains each feature in detail.
+The [documentation](https://getaudiotext.com) explains how to use each feature:
 
-### The Window
-
-- **The top bar** has the buttons to start a new transcription from a `File`, a `URL`, the `Microphone` or a `Folder`, the status of the app, and the gear that opens the [preferences](#preferences). The button on the left shows or hides the history.
-- **The history**, on the left, has all your transcriptions (see [History](#history)).
-- **The main area** shows the source you're setting up, the progress of a transcription, or the transcription selected in the history.
-
-You can also drop a file or a folder anywhere on the window to transcribe it. See [your first transcription](https://getaudiotext.com/en/getting-started/first-transcription/).
-
-### Audio Sources
-
-- **File**: an audio or video file (see the [supported file types](#supported-file-types)).
-- **URL**: a YouTube video or a direct link to an audio or video file, e.g. the episode of a podcast. The audio is downloaded first.
-- **Microphone**: records you or a meeting and transcribes it. The recording is kept in the history. With WhisperX, `Show the text while recording` shows a draft written by a fast model while you speak, which is replaced by the transcription of the whole recording when you stop. To transcribe what your computer plays (e.g. a video call), record it from a loopback device such as Stereo Mix or VB-CABLE on Windows, BlackHole on macOS or the monitor of your speakers on Linux; see [record the audio of your computer](https://getaudiotext.com/en/guides/sources/#record-the-audio-of-your-computer).
-- **Folder**: transcribes the audio and video files of a folder and its subfolders, and saves the transcription of each file next to it (or in another folder) in the chosen file types. Files that already have a transcription are skipped unless `Overwrite existing files` is on. With `Watch the folder`, it keeps transcribing the files added to the folder until you stop it.
-
-While a transcription is in progress, you can keep using the app and set up the next ones, which are added to a queue. See [audio sources](https://getaudiotext.com/en/guides/sources/).
-
-### Transcription Settings
-
-Before transcribing, the settings are shown in cards. They're remembered for the next time, and each transcription keeps the settings it was made with:
-
-- **Engine**: the transcription method and its model (see [Transcription Engines](#transcription-engines)).
-- **Language**: the language of the audio (detected automatically by default) and the language of the transcription. If they differ, Whisper translates the audio while transcribing: into English, or, experimentally, into any other language.
-- **Context**: `Keywords` (names, terms or acronyms said in the audio, so they're spelled right) and a `Description` of what the audio is about.
-- **Options**: `Word-level timings` (to highlight each word while playing), `Extract speech` (to reduce music and background noise) and `Identify speakers`. Identifying the speakers with WhisperX requires a free Hugging Face token and accepting the conditions of [pyannote/speaker-diarization-community-1](https://huggingface.co/pyannote/speaker-diarization-community-1).
-- **Live text** (microphone) and **Folder** and **Output** (folders).
-
-See [transcription settings](https://getaudiotext.com/en/guides/transcription-settings/).
-
-### Transcription Engines
-
-| | WhisperX | Whisper API | Google API |
-| --- | --- | --- | --- |
-| Runs on | Your computer | OpenAI servers | Google servers |
-| Cost | Free, unlimited | Paid, requires an OpenAI API key | Free tier (60 minutes per month), or paid with an API key |
-| Detects the language and translates | ✓ | ✓ | |
-| Timestamps | ✓ | With `whisper-1` and `gpt-4o-transcribe-diarize` | |
-| Identifies the speakers | ✓ (with a Hugging Face token) | With `gpt-4o-transcribe-diarize` | |
-
-- **WhisperX** is the default. Its models go from `tiny` (~1 GB of VRAM, fast) to `large-v2` (the default, <8 GB, the most accurate) and `large-v3-turbo` (much faster, almost as accurate). The English-only models (`tiny.en`, `base.en`, `small.en`, `medium.en`) and the distilled ones (`distil-small.en`, `distil-medium.en`, `distil-large-v2`, `distil-large-v3`, `distil-large-v3.5`) are faster than the multilingual models of the same size, but only transcribe English. The `Compute type`, the `Batch size` and the `Use CPU` options are in the preferences.
-- **Whisper API**: `whisper-1` (the default) has timestamps and translates into English, `gpt-transcribe` is more accurate but has no timestamps, and `gpt-4o-transcribe-diarize` identifies the speakers. Long audios are split into chunks of up to 10 minutes.
-- **Google API**: doesn't punctuate the sentences (Audiotext does), can't detect the language nor translate, and returns plain text.
-
-See [engines](https://getaudiotext.com/en/reference/engines/).
-
-### The Transcript
-
-Select a transcription of the history to open it. It has three modes:
-
-- **Transcript**: each segment with when it starts and ends, and its speaker. Click a segment to play the audio from there, change the speed from `0.5×` to `2×`, and search the text with `Ctrl+F` (`⌘F` on macOS). Videos are shown above the text, with their subtitles. `Precise timestamps (00:00:01,000)` in the `⋯` menu shows the times to the millisecond, like the subtitles, instead of `MM:SS`.
-- **Plain text**: the text, which you can edit freely. The changes are saved automatically.
-- **Summary**: see [Summary and Translation](#summary-and-translation).
-
-To correct the transcription while keeping its timestamps, use `Find and replace…`, `Rename speakers…` (giving two speakers the same name merges them) or right-click a segment to edit it. See [the transcript](https://getaudiotext.com/en/guides/transcript/).
-
-### Summary and Translation
-
-The `Summary` mode generates a summary of the transcription, its key points and, if it has timestamps, its chapters. The `Translate` button translates it into another language, shown next to the original text and segment by segment, so the translation is also played and highlighted. Its segments start with the timestamps of the original, but a translation often needs another timing (e.g. subtitles that take longer to read), so right-click one of them to change when it starts and ends, add a segment after it or delete it. To translate it yourself, choose `Myself, from scratch` as the provider: the translation starts with the timestamps of the original and empty segments, which you translate one by one by right-clicking them. Videos can show the translation as their subtitles, from the options of the subtitles or the `Translate` button. Both are kept in the history.
-
-<picture>
-  <source
-    srcset="docs/light/summary.png"
-    media="(prefers-color-scheme: light)"
-  />
-  <source
-    srcset="docs/dark/summary.png"
-    width="128"
-    height="128"
-    media="(prefers-color-scheme: dark)"
-  />
-  <img
-    src="docs/dark/summary.png"
-    alt="The summary of a transcription, with its key points and chapters"
-  >
-</picture>
-
-They're generated by the provider chosen in `Preferences` → `AI`:
-
-| Provider | Default model | API key |
-| --- | --- | --- |
-| OpenAI | `gpt-5.4-mini` | [OpenAI](https://platform.openai.com/api-keys) |
-| Claude (Anthropic) | `claude-haiku-4-5` | [Anthropic](https://console.anthropic.com/settings/keys) |
-| DeepSeek | `deepseek-chat` | [DeepSeek](https://platform.deepseek.com/api_keys) |
-| Gemini (Google) | `gemini-3.8-flash` | [Google AI Studio](https://aistudio.google.com/apikey) |
-| Mistral | `mistral-small-latest` | [Mistral](https://console.mistral.ai/api-keys) |
-| Grok (xAI) | `grok-4.3` | [xAI](https://console.x.ai) |
-| Ollama (local) | `llama3.2` | Not needed. The models run on your computer with [Ollama](https://ollama.com) |
-
-Leave the model empty to use the default one of the provider, or type the name of any other model of the provider. The translations can also be made by **DeepL** (with a [DeepL API key](https://www.deepl.com/your-account/keys), including the free ones) and **Google Translate** (with the Google API key and the Cloud Translation API enabled). Each provider charges for the use of its API, for which **Audiotext** is not responsible. See [summary and translation](https://getaudiotext.com/en/guides/summary-and-translation/).
-
-### Export
-
-The `Export` button (or `Ctrl+S`, `⌘S` on macOS) saves the transcription as plain text (`.txt`), Markdown (`.md`), a Word document (`.docx`), subtitles (`.srt` and `.vtt`), a table (`.tsv`) or JSON (`.json`). The Markdown and Word documents include the summary, if any, and the text in paragraphs with the timestamp and the speaker of each one. The translation is exported in the same formats, from `Translation into…` in the same menu or the export button of the translation, with the language in the name of the file (e.g. `video.es.srt`) so the video players load it with the video. When transcribing a folder, the files are saved automatically in the chosen types.
-
-### History
-
-Every transcription is kept in the history, with its summary, its translation and its corrections. Search them by name, text, note, tag or source, and right-click one to rename it, add or delete a note, add a tag, pin it to the top, move it to a group, show its file in the file manager or delete it. Deleting a transcription doesn't delete your audio, video or saved files. See [history](https://getaudiotext.com/en/guides/history/).
-
-### Preferences
-
-The gear at the top right opens the settings that don't change with each transcription:
-
-- **General**: the appearance (system, light or dark), the interface language, the format of the dates (short, medium, long or ISO) and the times (automatic, 12-hour or 24-hour), and the notifications of the system when a transcription is ready.
-- **AI**: the providers and the models of the summaries and the translations, and the address of Ollama.
-- **API keys**: the keys of OpenAI, Anthropic, DeepSeek, Gemini, Mistral, xAI, DeepL and Google, and the Hugging Face token.
-- **WhisperX**: the compute type, the batch size and whether to use the CPU.
-- **Subtitles**: highlighting the words, and the maximum line count and width of the `.srt` and `.vtt` files.
-- **Whisper API**: the temperature and the timestamps of the words.
-- **About**: the version, and links to the documentation, GitHub and the donation page.
-
-See [preferences](https://getaudiotext.com/en/reference/preferences/).
-
-### Keyboard Shortcuts
-
-| Shortcut | Action |
-| --- | --- |
-| `Ctrl+Enter` / `⌘↩` | Start the transcription, or start and stop recording |
-| `Ctrl+O` / `⌘O` | Choose a file (or a folder, in the folder source) |
-| `Ctrl+S` / `⌘S` | Export the transcription being shown |
-| `Ctrl+F` / `⌘F` | Search the transcription |
-| `Esc` | Cancel the transcription in progress |
-| `Space` | Play or pause the audio |
-| `←` / `→` | Go back or forward 5 seconds |
+- [Your first transcription](https://getaudiotext.com/en/getting-started/first-transcription/): the window and the keyboard shortcuts.
+- [Audio sources](https://getaudiotext.com/en/guides/sources/): files, URLs, the microphone and folders.
+- [Transcription settings](https://getaudiotext.com/en/guides/transcription-settings/): the language, the context and the options.
+- [Engines](https://getaudiotext.com/en/reference/engines/): WhisperX, the Whisper API and the Google API, and their models.
+- [The transcript](https://getaudiotext.com/en/guides/transcript/): playing, searching and correcting the transcription.
+- [Summary and translation](https://getaudiotext.com/en/guides/summary-and-translation/): the AI providers and their models.
+- [History](https://getaudiotext.com/en/guides/history/) and [preferences](https://getaudiotext.com/en/reference/preferences/).
 
 ### Command-Line Interface
 
-**Audiotext** can also be used from the command line to transcribe from scripts, when [running it from the source code](#setting-up-the-project-locally). The options that are not given take the values configured in the app, and the transcriptions are always saved next to each transcribed file, or in the folder given with `--output-dir` (where the subfolders of a transcribed folder are recreated).
+When [running it from the source code](#setting-up-the-project-locally), **Audiotext** can also transcribe from the command line:
 
 ```bash
 # Transcribe a file. The text is also printed, so it can be redirected
@@ -772,22 +483,11 @@ python src/cli.py transcribe interview.mp3 --language es --output-types txt,srt
 # Transcribe the files of a folder identifying the speakers
 python src/cli.py transcribe recordings/ --diarize --speakers 2 --output-dir transcriptions/
 
-# Transcribe a YouTube video with the Whisper API
-python src/cli.py transcribe "https://www.youtube.com/watch?v=…" --method whisper-api
-
-# Transcribe a meeting with the Whisper API, with its keywords and its context
-python src/cli.py transcribe meeting.m4a --method whisper-api \
-    --openai-model gpt-transcribe --keywords "Audiotext, WhisperX" \
-    --prompt "A meeting about the next release"
-
 # Transcribe the files added to a folder until stopped with Ctrl+C
 python src/cli.py watch inbox/ --output-types srt
-
-# Check whether a new version is available
-python src/cli.py check-update
 ```
 
-Run `python src/cli.py transcribe --help` to see all the options. The progress is printed to the standard error (use `--quiet` to hide it, or `--verbose` to also print the logs), and the command exits with code `1` if a transcription fails. For the speaker identification, the Hugging Face token can be set in the app or in the `HF_TOKEN` environment variable. See [the command-line interface](https://getaudiotext.com/en/reference/cli/).
+Run `python src/cli.py transcribe --help` to see all the options, or see [the command-line interface](https://getaudiotext.com/en/reference/cli/).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -795,13 +495,7 @@ Run `python src/cli.py transcribe --help` to see all the options. The progress i
 
 ## Troubleshooting
 
-- **The first WhisperX transcription takes a long time**: the model is downloaded the first time it's used (up to ~3 GB). It stays in memory while its options don't change, so the next transcriptions start right away.
-- **WhisperX fails with `CUDA out of memory`**: lower the `Batch size` (e.g. `4`) in `Preferences` → `WhisperX`, use a smaller model (e.g. `small`) or a lighter `Compute type` (e.g. `int8`). The last two can reduce the quality.
-- **Transcribing takes too long**: the speed of WhisperX depends on your hardware. Try a smaller model, `large-v3-turbo` on a GPU, or the Whisper API or the Google API, which run on remote servers.
-- **The Whisper API returns the error `429`**: your OpenAI account has run out of credits, or it needs funds before using the API for the first time. Buy credits in the [Billing](https://platform.openai.com/settings/organization/billing/overview) section of your account, wait up to 10 minutes and, if the error persists, create a new API key.
-- **The speakers aren't identified**: check that the Hugging Face token has the `Read` role and that you've accepted the conditions of [pyannote/speaker-diarization-community-1](https://huggingface.co/pyannote/speaker-diarization-community-1) with the same account.
-
-See [troubleshooting](https://getaudiotext.com/en/help/troubleshooting/) for more problems and their solutions.
+See [troubleshooting](https://getaudiotext.com/en/help/troubleshooting/) for common problems and their solutions. If yours isn't there, [open an issue](https://github.com/HenestrosaDev/audiotext/issues/new/choose).
 
 <!-- ROADMAP -->
 
