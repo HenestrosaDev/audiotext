@@ -195,10 +195,15 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   ├───docs/ (images of this README)
   │
   ├───packaging
-  │       linux-install.sh
-  │       linux.sh
-  │       macos.sh
-  │       windows.iss
+  │   │   linux-install.sh
+  │   │   linux.sh
+  │   │   macos.sh
+  │   │   third_party_licenses.py
+  │   │   windows.iss
+  │   │
+  │   ├───languages/ (Inno Setup messages missing from Inno Setup 6)
+  │   │
+  │   └───licenses/ (license texts of the bundled third-party software)
   │
   ├───res
   │   ├───img
@@ -294,6 +299,7 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   │   │       system.py
   │   │       time_format.py
   │   │       transcript_editing.py
+  │   │       update_checker.py
   │   │       validators.py
   │   │
   │   └───views
@@ -367,6 +373,8 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   │               level_meter.py
   │               option_menu.py
   │               pill.py
+  │               placeholder.py
+  │               scrollable_frame.py
   │               search_entry.py
   │               searchable_option_menu.py
   │               splitter.py
@@ -454,7 +462,6 @@ On Windows and Linux, the installer offers to download GPU acceleration (CUDA) i
 ### Notes
 
 - The `config.ini` file of the project contains the default settings and is never modified by the app. Your settings, history and recordings are stored in your user configuration folder (or in `AUDIOTEXT_CONFIG_DIR`), and the API keys in the credential store of your system or in environment variables such as `OPENAI_API_KEY` and `HF_TOKEN`. See [files and data](https://getaudiotext.com/en/reference/files-and-data/).
-- I had to comment out the lines `pprint(response_text, indent=4)` in the `recognize_google` function from the `__init__.py` file of the `SpeechRecognition` package to avoid opening a command line along with the GUI. Otherwise, the program would not be able to use the Google API transcription method because `pprint` throws an error if it cannot print to the CLI, preventing the code from generating the transcription.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
