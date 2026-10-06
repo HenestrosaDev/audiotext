@@ -1,5 +1,5 @@
 APP_NAME = "Audiotext"
-APP_VERSION = "3.0.0"
+APP_VERSION = "3.1.0"
 GITHUB_URL = "https://github.com/HenestrosaDev/audiotext"
 DOCS_URL = "https://getaudiotext.com"
 DONATION_URL = "https://ko-fi.com/henestrosadev"
