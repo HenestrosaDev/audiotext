@@ -39,6 +39,9 @@ datas = [
     *collect_data_files("docx"),
     # keyring finds the credential store of the system through its metadata
     *copy_metadata("keyring"),
+    # transformers reads the version of torchcodec (a dependency of pyannote) when it's
+    # importable, so importing `transformers.Pipeline` fails without its metadata
+    *copy_metadata("torchcodec"),
 ]
 
 hiddenimports = [
