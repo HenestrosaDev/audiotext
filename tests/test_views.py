@@ -179,6 +179,34 @@ def test_the_views_of_the_entries(ui: Ui, audio_file: Path) -> None:
             ui.pump(0.12)
 
 
+def test_the_actions_of_the_views_reach_the_history(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import views.main_window.entry_dialogs as entry_dialogs
+
+    monkeypatch.setattr(entry_dialogs.TextDialog, "get_input", lambda _self: "Renamed")
+    monkeypatch.setattr(entry_dialogs.messagebox, "askyesno", lambda *_a, **_k: True)
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+
+    # Renamed from the view of the entry, which asks for the name
+    ui.window._entry_view._actions.prompts.ask_to_rename_entry(entry.id)
+    ui.pump()
+    assert ui.store.get(entry.id).title == "Renamed"
+    assert ui.window._entry_view.header.lbl_title.cget("text") == "Renamed"
+
+    # Pinned from the sidebar, which doesn't ask
+    ui.window.sidebar.actions.history.toggle_pin(entry.id)
+    ui.pump()
+    assert ui.store.get(entry.id).is_pinned
+
+    ui.window.sidebar.actions.prompts.confirm_delete_entry(entry.id)
+    ui.pump()
+    assert ui.store.get(entry.id) is None
+    assert ui.window._entry_view is None
+
+
 def test_the_transcript_can_be_searched_and_corrected(
     ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -289,7 +317,7 @@ def test_the_summary_without_a_key_leads_to_the_settings(ui: Ui) -> None:
     assert "Set API key…" in button_texts
     assert "Settings" in button_texts
 
-    view._delegate.show_preferences(AI_TAB)
+    view._actions.window.show_preferences(AI_TAB)
     ui.pump()
     preferences = ui.window._preferences
     assert preferences.tabs.get() == "AI"
@@ -769,7 +797,7 @@ def test_a_summary_finished_while_the_window_is_rebuilt_is_shown(
 
     # The summary finishes, but its result isn't shown before the window is
     # rebuilt, since the events of Tk aren't processed in the meantime
-    ui.window.summarize_entry(entry.id)
+    ui.app._history.summarize_entry(entry.id)
     assert has_finished.wait(5)
     time.sleep(0.1)
     old_window = ui.window
@@ -778,7 +806,7 @@ def test_a_summary_finished_while_the_window_is_rebuilt_is_shown(
     ui.pump(0.5)
 
     assert ui.store.get(entry.id).summary == summary.to_dict()
-    assert not ui.window.is_summarizing(entry.id)
+    assert not ui.app._history.is_summarizing(entry.id)
     assert ui.window.top_bar._status_message == "The summary of “Entry” is ready."
 
 

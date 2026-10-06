@@ -223,7 +223,7 @@ class HistoryRow(ctk.CTkFrame):  # type: ignore[misc]
             else:
                 text = status_label(entry.status)
             if entry.status == EntryStatus.PROCESSING:
-                progress = self._sidebar.delegate.get_progress(entry.id)
+                progress = self._sidebar.actions.jobs.get_progress(entry.id)
                 if progress is not None:
                     text = f"{progress:.0%}"
             self.lbl_meta.configure(text=text)
@@ -236,7 +236,7 @@ class HistoryRow(ctk.CTkFrame):  # type: ignore[misc]
         if entry.status != EntryStatus.DONE:
             label = status_label(entry.status)
             if entry.status == EntryStatus.PROCESSING:
-                progress = self._sidebar.delegate.get_progress(entry.id)
+                progress = self._sidebar.actions.jobs.get_progress(entry.id)
                 if progress is not None:
                     label = f"{label} {progress:.0%}"
             parts.append(label)
@@ -301,7 +301,7 @@ class HistoryRow(ctk.CTkFrame):  # type: ignore[misc]
     def _on_click(self, event: Any) -> None:
         if getattr(event, "widget", None) is getattr(self, "btn_chevron", None):
             return
-        self._sidebar.delegate.select_entry(self.entry_id)
+        self._sidebar.actions.select_entry(self.entry_id)
 
     def start_rename(self, title: str) -> None:
         """Replaces the title with an entry to rename it in place."""
@@ -324,7 +324,7 @@ class HistoryRow(ctk.CTkFrame):  # type: ignore[misc]
             entry.destroy()
             self.lbl_title.grid()
             if should_save and new_title and new_title != title:
-                self._sidebar.delegate.rename_entry(self.entry_id, new_title)
+                self._sidebar.actions.history.rename_entry(self.entry_id, new_title)
 
         entry.bind("<Return>", lambda _event: finish(True))
 
