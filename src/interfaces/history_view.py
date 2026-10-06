@@ -2,6 +2,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any, Protocol
 
+from interfaces.transcription_view import RecordingView
 from models.history import HistoryEntry
 
 
@@ -91,3 +92,10 @@ class TranscriptionQueueView(HistoryView, Protocol):
         Called once the transcription of the recording of an entry finishes, is
         cancelled or fails, as its status says.
         """
+
+
+class MainView(TranscriptionQueueView, RecordingView, Protocol):
+    """
+    The view of the queue of transcriptions, which also shows the recordings from
+    the microphone while they're being made.
+    """
