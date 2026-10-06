@@ -482,7 +482,7 @@ def run(
         AudioSource.WATCH,
     )
 
-    controller = MainController(view, whisperx_handler)
+    controller = MainController(view, view, whisperx_handler)
     controller.prepare_for_transcription(transcription)
 
     is_cancelled = False

@@ -43,7 +43,7 @@ def controller(
     monkeypatch.setattr(
         MainController, "_start_background_task", staticmethod(lambda task: task())
     )
-    return MainController(fake_view, whisperx_handler)
+    return MainController(fake_view, fake_view, whisperx_handler)
 
 
 @pytest.fixture
