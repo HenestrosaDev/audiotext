@@ -4,7 +4,7 @@ from typing import Any
 import customtkinter as ctk
 
 from utils.enums import AudioSource
-from utils.i18n import _
+from utils.i18n import L_
 from views.localization import Text, localize
 from views.style import icons, theme
 
@@ -22,11 +22,11 @@ class WelcomeView(ctk.CTkFrame):  # type: ignore[misc]
         )
         localize(
             ctk.CTkLabel(self, font=theme.font(24, "bold")),
-            text=lambda: _("What do you want to transcribe?"),
+            text=L_("What do you want to transcribe?"),
         ).grid(row=2, column=0, pady=(12, 4))
         localize(
             ctk.CTkLabel(self, font=theme.font(14), text_color=theme.HINT_TEXT),
-            text=lambda: _(
+            text=L_(
                 "Choose a source, or select a transcription of your history to read and play it."
             ),
         ).grid(row=3, column=0)
@@ -37,26 +37,26 @@ class WelcomeView(ctk.CTkFrame):  # type: ignore[misc]
             (
                 AudioSource.FILE,
                 "file",
-                lambda: _("File"),
-                lambda: _("An audio or video file"),
+                L_("File"),
+                L_("An audio or video file"),
             ),
             (
                 AudioSource.YOUTUBE,
                 "link",
-                lambda: _("URL"),
-                lambda: _("YouTube or a link to a file"),
+                L_("URL"),
+                L_("YouTube or a link to a file"),
             ),
             (
                 AudioSource.MIC,
                 "mic",
-                lambda: _("Microphone"),
-                lambda: _("Record and transcribe"),
+                L_("Microphone"),
+                L_("Record and transcribe"),
             ),
             (
                 AudioSource.DIRECTORY,
                 "folder",
-                lambda: _("Folder"),
-                lambda: _("Many files at once, or watch it"),
+                L_("Folder"),
+                L_("Many files at once, or watch it"),
             ),
         ]
         for idx, (source, icon_name, title, description) in enumerate(sources):
@@ -71,7 +71,7 @@ class WelcomeView(ctk.CTkFrame):  # type: ignore[misc]
 
         localize(
             ctk.CTkLabel(self, font=theme.font(12), text_color=theme.HINT_TEXT),
-            text=lambda: _(
+            text=L_(
                 "Tip: drop a file or a folder anywhere on the window to transcribe it."
             ),
         ).grid(row=5, column=0, pady=(24, 30))

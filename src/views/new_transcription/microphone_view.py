@@ -17,7 +17,7 @@ from utils.audio_utils import (
 from utils.config_manager import ConfigManager
 from utils.enums import TranscriptionMethod
 from utils.env_keys import EnvKeys
-from utils.i18n import _
+from utils.i18n import L_, _
 from utils.time_format import format_timestamp
 from views.localization import Text, localize
 from views.settings.settings_form import FormMode, SettingsForm
@@ -77,17 +77,17 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         self._level_messages: dict[InputLevel, tuple[Any, Text]] = {
             InputLevel.NO_SIGNAL: (
                 theme.STATUS_FAILED,
-                lambda: _("No sound. Check that the microphone is on and allowed."),
+                L_("No sound. Check that the microphone is on and allowed."),
             ),
-            InputLevel.SILENCE: (theme.SUBTLE_BG, lambda: _("Waiting for speech…")),
+            InputLevel.SILENCE: (theme.SUBTLE_BG, L_("Waiting for speech…")),
             InputLevel.TOO_QUIET: (
                 theme.STATUS_CANCELLED,
-                lambda: _("Too quiet. Speak louder or closer to the microphone."),
+                L_("Too quiet. Speak louder or closer to the microphone."),
             ),
-            InputLevel.GOOD: (theme.STATUS_DONE, lambda: _("Good level")),
+            InputLevel.GOOD: (theme.STATUS_DONE, L_("Good level")),
             InputLevel.TOO_LOUD: (
                 theme.STATUS_FAILED,
-                lambda: _("Too loud. Move away from the microphone."),
+                L_("Too loud. Move away from the microphone."),
             ),
         }
 
@@ -131,18 +131,18 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         ).grid(row=0, column=0, rowspan=2, padx=(0, 14))
         localize(
             ctk.CTkLabel(header, font=theme.font(22, "bold")),
-            text=lambda: _("Transcribe from the microphone"),
+            text=L_("Transcribe from the microphone"),
         ).grid(row=0, column=1, sticky=ctk.W)
         localize(
             ctk.CTkLabel(header, font=theme.font(13), text_color=theme.HINT_TEXT),
-            text=lambda: _(
+            text=L_(
                 "Record yourself or a meeting. The recording is kept in your history."
             ),
         ).grid(row=1, column=1, sticky=ctk.W)
 
         self.stepper = Stepper(
             self,
-            [lambda: _("Settings"), lambda: _("Record"), lambda: _("Transcribe")],
+            [L_("Settings"), L_("Record"), L_("Transcribe")],
         )
         self.stepper.grid(
             row=1, column=0, columnspan=2, padx=32, pady=(22, 18), sticky=ctk.EW
@@ -241,7 +241,7 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         # Transcription
         localize(
             ctk.CTkLabel(card, font=theme.font(15, "bold"), anchor=ctk.W),
-            text=lambda: _("Transcription"),
+            text=L_("Transcription"),
         ).grid(row=3, column=0, padx=20, pady=(20, 6), sticky=ctk.W)
         self.tbx_text = CTkTextbox(
             card,
@@ -273,14 +273,14 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
                 command=self._on_copy,
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Copy"),
+            text=L_("Copy"),
         )
         self.btn_copy.grid(row=0, column=1, padx=(8, 0))
         self.btn_open = localize(
             ctk.CTkButton(
                 footer, width=0, command=self._on_open_entry, **theme.SECONDARY_BUTTON
             ),
-            text=lambda: _("Open in history"),
+            text=L_("Open in history"),
         )
         self.btn_open.grid(row=0, column=2, padx=(8, 0))
 
@@ -298,7 +298,7 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
                 self.lbl_footer.configure(text_color=theme.ERROR_TEXT)
                 localize(
                     self.lbl_footer,
-                    text=lambda: _(
+                    text=L_(
                         "Wait until the current transcription finishes, or cancel it."
                     ),
                 )
@@ -392,21 +392,19 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
                 ).format(shortcut=f"{theme.SHORTCUT_MODIFIER_LABEL}↩"),
             )
             self.level_meter.reset()
-            localize(
-                self.lbl_speech, text=lambda: _("The level is shown while recording")
-            )
+            localize(self.lbl_speech, text=L_("The level is shown while recording"))
         elif state == MicState.RECORDING:
             self.stepper.set_current(1)
             localize(
                 self.lbl_state,
-                text=lambda: _("Recording… Press the button to stop and transcribe."),
+                text=L_("Recording… Press the button to stop and transcribe."),
             )
         elif state == MicState.TRANSCRIBING:
             self.stepper.set_current(2)
             if message:
                 self.lbl_state.configure(text=message)
             else:
-                localize(self.lbl_state, text=lambda: _("Transcribing…"))
+                localize(self.lbl_state, text=L_("Transcribing…"))
             self.level_meter.reset()
             self.lbl_speech_dot.configure(fg_color=theme.SUBTLE_BG)
             self.lbl_speech.configure(text="")
@@ -414,11 +412,11 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             self.stepper.set_current(3)
             localize(
                 self.lbl_state,
-                text=lambda: _("Done. Press the button to record again."),
+                text=L_("Done. Press the button to record again."),
             )
         else:
             self.stepper.set_current(2, is_error=True)
-            localize(self.lbl_state, text=lambda: _("Press the button to try again."))
+            localize(self.lbl_state, text=L_("Press the button to try again."))
 
         self.lbl_footer.configure(
             text=message if state == MicState.FAILED else "",
@@ -434,9 +432,7 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             self.lbl_footer.configure(text_color=theme.HINT_TEXT)
             localize(
                 self.lbl_footer,
-                text=lambda: _(
-                    "Draft. It's replaced when the final transcription finishes."
-                ),
+                text=L_("Draft. It's replaced when the final transcription finishes."),
             )
 
     def _show_placeholder(self) -> None:
@@ -468,15 +464,15 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         steps: list[Text]
         if self._is_live:
             steps = [
-                lambda: _("Settings"),
-                lambda: _("Record and transcribe"),
-                lambda: _("Refine"),
+                L_("Settings"),
+                L_("Record and transcribe"),
+                L_("Refine"),
             ]
         else:
             steps = [
-                lambda: _("Settings"),
-                lambda: _("Record"),
-                lambda: _("Transcribe"),
+                L_("Settings"),
+                L_("Record"),
+                L_("Transcribe"),
             ]
         self.stepper.set_steps(steps)
         # Only the texts that depend on the choice are updated. `_apply_state`

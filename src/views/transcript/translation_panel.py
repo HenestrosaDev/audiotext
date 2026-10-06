@@ -19,7 +19,7 @@ from handlers.translation_handler import (
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 from utils.env_keys import EnvKeys
-from utils.i18n import _, get_language, get_language_name
+from utils.i18n import L_, _, get_language, get_language_name
 from views.history.formatting import format_full_date
 from views.settings.option_labels import get_language_labels
 from views.style import icons, theme
@@ -128,7 +128,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             on_text_edit=on_text_edit,
             # The transcript on its left already explains it
             show_click_hint=False,
-            empty_segment_text=lambda: _("Not translated yet"),
+            empty_segment_text=L_("Not translated yet"),
         )
         # It's inside the card of the panel
         self.text.configure(fg_color="transparent", border_width=0)
@@ -332,9 +332,9 @@ class TranslateDialog(_Dialog):
         self.omn_language = CTkSearchableOptionMenu(
             self.frm_body,
             values=[],
-            title=lambda: _("Language of the translation"),
-            search_placeholder=lambda: _("Search language…"),
-            no_results_text=lambda: _("No languages found."),
+            title=L_("Language of the translation"),
+            search_placeholder=L_("Search language…"),
+            no_results_text=L_("No languages found."),
             width=260,
             dynamic_resizing=False,
         )
