@@ -3,7 +3,7 @@ from typing import Any
 import customtkinter as ctk
 
 from models.history import HistoryEntry
-from views.entries.delegates import EntryDelegate
+from views.entries.delegates import EntryActions
 from views.entries.entry_header import EntryHeader
 from views.entries.progress_card import ProgressCard
 
@@ -11,16 +11,14 @@ from views.entries.progress_card import ProgressCard
 class StatusView(ctk.CTkFrame):  # type: ignore[misc]
     """An entry that is waiting, being transcribed, or has failed."""
 
-    def __init__(
-        self, master: Any, entry: HistoryEntry, delegate: EntryDelegate
-    ) -> None:
+    def __init__(self, master: Any, entry: HistoryEntry, actions: EntryActions) -> None:
         super().__init__(master, fg_color="transparent")
         self.entry_id = entry.id
         self.grid_columnconfigure(0, weight=1)
 
-        self.header = EntryHeader(self, entry, delegate)
+        self.header = EntryHeader(self, entry, actions.prompts)
         self.header.grid(row=0, column=0, padx=28, pady=(22, 0), sticky=ctk.EW)
-        self.card = ProgressCard(self, entry, delegate)
+        self.card = ProgressCard(self, entry, actions)
         self.card.grid(row=1, column=0, padx=28, pady=24, sticky=ctk.EW)
 
     def update_entry(self, entry: HistoryEntry) -> None:
