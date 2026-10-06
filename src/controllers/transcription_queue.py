@@ -8,11 +8,9 @@ from urllib.parse import parse_qs, unquote, urlsplit
 from interfaces.history_view import TranscriptionQueueView
 from interfaces.transcription_runner import TranscriptionRunner
 from interfaces.transcription_view import TranscriptionView
-from models.config.config_whisperx import ConfigWhisperX
 from models.history import EntryStatus, HistoryEntry
 from models.transcript_segment import TranscriptSegment
 from models.transcription_settings import TranscriptionSettings
-from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
 from utils.history_store import HistoryStore
 from utils.validators import is_youtube_url
@@ -215,11 +213,6 @@ class TranscriptionQueue:
             return
 
         settings = TranscriptionSettings.from_dict(entry.settings)
-        ConfigManager.modify_value(
-            ConfigWhisperX.Key.SECTION,
-            ConfigWhisperX.Key.MODEL_SIZE,
-            settings.model_size,
-        )
 
         kind = AudioSource(entry.kind)
         media_path: Path | None = None

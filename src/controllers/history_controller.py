@@ -1,6 +1,5 @@
 import logging
 import subprocess
-import threading
 from dataclasses import replace
 from datetime import datetime
 from pathlib import Path
@@ -8,9 +7,12 @@ from pathlib import Path
 from handlers.summary_handler import SummaryHandler
 from handlers.translation_handler import MANUAL, TranslationHandler
 from interfaces.history_view import HistoryView
+from interfaces.summarizer import Summarizer
+from interfaces.translator import Translator
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
+from utils.background import TaskStarter, start_in_background
 from utils.errors import format_error
 from utils.history_store import HistoryStore
 from utils.system import open_in_file_manager, reveal_in_file_manager
@@ -28,9 +30,27 @@ class HistoryController:
     changes), so the summaries and translations in progress aren't lost.
     """
 
-    def __init__(self, store: HistoryStore, view: HistoryView) -> None:
+    def __init__(
+        self,
+        store: HistoryStore,
+        view: HistoryView,
+        summarizer: Summarizer | None = None,
+        translator: Translator | None = None,
+        start_task: TaskStarter = start_in_background,
+    ) -> None:
+        """
+        :param summarizer: Summarizes the transcriptions. By default, with the
+                           configured language model.
+        :param translator: Translates the transcriptions. By default, with the
+                           provider chosen by the user.
+        :param start_task: Starts the summaries and the translations, which take a
+                           while, without waiting for them.
+        """
         self._store = store
         self.view = view
+        self._summarizer = summarizer or SummaryHandler()
+        self._translator = translator or TranslationHandler()
+        self._start_task = start_task
         # The entries being summarized, and why the last summary of each failed
         self._summarizing: set[str] = set()
         self._summary_errors: dict[str, str] = {}
@@ -126,7 +146,7 @@ class HistoryController:
             summary: TranscriptSummary | None = None
             error = ""
             try:
-                summary = SummaryHandler.summarize(text, segments)
+                summary = self._summarizer.summarize(text, segments)
             except Exception as e:
                 logger.error("Could not summarize %s", entry_id, exc_info=e)
                 error = format_error(e)
@@ -134,7 +154,7 @@ class HistoryController:
                 self._on_summary_finished, entry_id, summary, error
             )
 
-        threading.Thread(target=summarize, daemon=True).start()
+        self._start_task(summarize)
 
     def is_summarizing(self, entry_id: str) -> bool:
         return entry_id in self._summarizing
@@ -179,7 +199,7 @@ class HistoryController:
             translation: TranscriptTranslation | None = None
             error = ""
             try:
-                translation = TranslationHandler.translate(
+                translation = self._translator.translate(
                     text, segments, is_text_edited, language, provider, model
                 )
             except Exception as e:
@@ -189,7 +209,7 @@ class HistoryController:
                 self._on_translation_finished, entry_id, translation, error
             )
 
-        threading.Thread(target=translate, daemon=True).start()
+        self._start_task(translate)
 
     def start_manual_translation(self, entry_id: str, language: str) -> None:
         """
