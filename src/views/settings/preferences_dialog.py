@@ -124,7 +124,6 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         master: Any,
         on_set_api_key: Callable[[EnvKeys, str], None],
         on_model_change: Callable[[], None],
-        can_change_language: bool,
         initial_tab: str | None = None,
         on_ai_change: Callable[[], None] | None = None,
         on_check_for_updates: (
@@ -150,7 +149,6 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._on_check_for_updates = on_check_for_updates
         self._on_date_format_change = on_date_format_change
         self._available_update: Release | None = None
-        self._can_change_language = can_change_language
         self._debounce_after_ids: dict[Any, str] = {}
 
         self._config_system = ConfigManager.get_config_system()
@@ -304,19 +302,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         )
         menu.grid(row=0, column=1, rowspan=2, padx=(12, 0))
 
-        frame = self._row(
-            tab,
-            1,
-            L_("Interface language"),
-            None
-            if self._can_change_language
-            else L_("It can be changed when no transcription is in progress."),
-        )
-        language_menu = CTkOptionMenu(
-            frame,
-            values=[],
-            state=ctk.NORMAL if self._can_change_language else ctk.DISABLED,
-        )
+        frame = self._row(tab, 1, L_("Interface language"))
+        language_menu = CTkOptionMenu(frame, values=[])
         # The languages are named in their own language
         LocalizedOptions(
             language_menu,

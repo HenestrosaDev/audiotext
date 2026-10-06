@@ -20,6 +20,7 @@ import pytest
 
 import utils.constants as c
 import utils.env_keys as env_keys
+import utils.i18n as i18n
 import utils.update_checker as update_checker
 from controllers.transcription_queue import Job
 from models.config.config_system import ConfigSystem
@@ -952,6 +953,37 @@ def test_the_open_views_keep_their_state_in_another_language(
     assert transcript.seg_mode.get() == "Summary"
     assert transcript._modes.get() == "summary"
     ui.window._preferences.destroy()
+
+
+def test_the_language_changes_while_a_transcription_runs(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(ui.window._jobs, "_run_next", lambda: None)
+    jobs = ui.window._jobs
+    entry = ui.add(title="talk.mp3", status=EntryStatus.PROCESSING)
+    jobs._job = Job(entry_id=entry.id, is_folder=False, is_mic=False)
+    jobs.on_transcription_progress(i18n._("Isolating the speech…"), 0.25)
+    ui.window.select_entry(entry.id)
+    ui.window.show_preferences()
+    ui.pump()
+    preferences = ui.window._preferences
+    try:
+        preferences._on_language_change("es")
+        ui.pump()
+
+        # The progress reported next is in the new language
+        jobs.on_transcription_progress(i18n._("Isolating the speech…"), 0.5)
+        ui.pump()
+        card = ui.window._entry_view.card
+        assert card.lbl_message.cget("text") == "Aislando la voz…"
+        assert not untranslated_texts(ui.window)
+        assert not untranslated_texts(preferences)
+        assert jobs.is_busy()
+    finally:
+        preferences._on_language_change("en")
+        preferences.destroy()
+        jobs._job = None
+        ui.pump()
 
 
 def test_every_page_is_shown_in_another_language(ui: Ui, audio_file: Path) -> None:
