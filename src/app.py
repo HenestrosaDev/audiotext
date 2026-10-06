@@ -12,12 +12,15 @@ import utils.config_manager as cm
 import utils.constants as c
 import utils.i18n as i18n
 import utils.path_helper as ph
+from controllers.history_controller import HistoryController
 from controllers.main_controller import MainController
+from controllers.transcription_queue import TranscriptionQueue
 from models.config.config_system import ConfigSystem
 from models.config.config_whisperx import ConfigWhisperX
 from utils.enums import ComputeType
 from utils.env_keys import migrate_env_file
 from utils.history_store import HistoryStore
+from views.main_window.current_window import CurrentWindow
 from views.main_window.main_window import MainWindow
 from views.style import theme
 
@@ -141,9 +144,16 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             config_dir / "history.json", config_dir / "media"
         )
 
+        # The controllers are kept while the window is rebuilt, with what's in
+        # progress, and always report to the window being shown
+        self._current_window = CurrentWindow(self)
+        self._history = HistoryController(self._history_store, self._current_window)
+        self._jobs = TranscriptionQueue(
+            self._history_store,
+            self._current_window,
+            create_runner=lambda jobs: MainController(jobs, self._current_window),
+        )
         self._view = self._create_view()
-        self._controller = MainController(self._view)
-        self._view.set_controller(self._controller)
         if config_system.check_for_updates:
             self._view.check_for_updates()
 
@@ -274,8 +284,11 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         view = MainWindow(
             self,
             self._history_store,
+            self._history,
+            self._jobs,
             on_ui_language_change=self._on_ui_language_change,
         )
+        self._current_window.window = view
         view.pack(fill="both", expand=True)
         return view
 
@@ -290,8 +303,6 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         self._view.destroy()
 
         self._view = self._create_view()
-        self._view.set_controller(self._controller)
-        self._controller.view = self._view
         self._view.restore_session_state(session_state)
 
     def _bind_shortcuts(self) -> None:
