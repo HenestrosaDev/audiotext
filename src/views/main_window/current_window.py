@@ -50,16 +50,16 @@ class CurrentWindow:
         self.window.refresh_entry_view(entry_id)
 
     def on_reveal_failed(self, path: Path, error: Exception) -> None:
-        self.window.on_reveal_failed(path, error)
+        self.window.messages.on_reveal_failed(path, error)
 
     def on_open_folder_failed(self, folder: Path, error: Exception) -> None:
-        self.window.on_open_folder_failed(folder, error)
+        self.window.messages.on_open_folder_failed(folder, error)
 
     def on_summary_finished(self, entry: HistoryEntry, error: str | None) -> None:
-        self.window.on_summary_finished(entry, error)
+        self.window.messages.on_summary_finished(entry, error)
 
     def on_translation_finished(self, entry: HistoryEntry, error: str | None) -> None:
-        self.window.on_translation_finished(entry, error)
+        self.window.messages.on_translation_finished(entry, error)
 
     # QUEUE
 
@@ -70,18 +70,18 @@ class CurrentWindow:
         self.window.refresh_progress(entry_id)
 
     def on_recording_unavailable(self, entry: HistoryEntry) -> None:
-        self.window.on_recording_unavailable(entry)
+        self.window.messages.on_recording_unavailable(entry)
 
     def on_transcription_finished(
         self, entry: HistoryEntry, status_message: str | None
     ) -> None:
-        self.window.on_transcription_finished(entry, status_message)
+        self.window.messages.on_transcription_finished(entry, status_message)
 
     def on_transcription_ready(self, entry: HistoryEntry) -> None:
-        self.window.on_transcription_ready(entry)
+        self.window.messages.on_transcription_ready(entry)
 
     def on_transcription_saved(self, folder: Path) -> None:
-        self.window.on_transcription_saved(folder)
+        self.window.messages.on_transcription_saved(folder)
 
     # MICROPHONE
 
