@@ -6,7 +6,7 @@ import customtkinter as ctk
 from models.history import EntryStatus, HistoryEntry
 from utils.history_store import HistoryStore
 from utils.i18n import _
-from views.entries.delegates import EntryDelegate
+from views.entries.delegates import EntryActions
 from views.entries.entry_header import EntryHeader
 from views.entries.progress_card import ProgressCard
 from views.history.formatting import format_entry_date, status_icon, status_label
@@ -25,17 +25,17 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
         master: Any,
         entry: HistoryEntry,
         store: HistoryStore,
-        delegate: EntryDelegate,
+        actions: EntryActions,
     ) -> None:
         super().__init__(master, fg_color="transparent")
         self.entry_id = entry.id
         self._store = store
-        self._delegate = delegate
+        self._actions = actions
         self._rows: dict[str, tuple[ctk.CTkLabel, ctk.CTkLabel]] = {}
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(4, weight=1)
 
-        self.header = EntryHeader(self, entry, delegate)
+        self.header = EntryHeader(self, entry, actions.prompts)
         self.header.grid(row=0, column=0, padx=28, pady=(22, 0), sticky=ctk.EW)
 
         # Row 1 is the progress card, only shown while the folder is transcribed
@@ -77,7 +77,7 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
             EntryStatus.INTERRUPTED,
         ):
             if self.card is None:
-                self.card = ProgressCard(self, entry, self._delegate)
+                self.card = ProgressCard(self, entry, self._actions)
                 self.card.grid(row=1, column=0, padx=28, pady=(16, 0), sticky=ctk.EW)
             self.card.update_entry(entry)
         elif self.card is not None:
@@ -102,7 +102,7 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
                 self.frm_buttons,
                 text=_("Open the folder of the saved files"),
                 width=0,
-                command=lambda: self._delegate.open_folder(output_dir),
+                command=lambda: self._actions.files.open_folder(output_dir),
                 **theme.SECONDARY_BUTTON,
             ).grid(row=0, column=0, padx=(8, 0))
         if not entry.status.is_active:
@@ -110,7 +110,7 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
                 self.frm_buttons,
                 text=_("Transcribe again"),
                 width=0,
-                command=lambda: self._delegate.retry_entry(entry.id),
+                command=lambda: self._actions.jobs.retry_entry(entry.id),
                 **theme.SECONDARY_BUTTON,
             ).grid(row=0, column=1, padx=(8, 0))
 
@@ -178,7 +178,7 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
             for widget in (icon_label, name_label, detail_label):
                 widget.bind(
                     "<Button-1>",
-                    lambda _event, child_id=child.id: self._delegate.select_entry(
+                    lambda _event, child_id=child.id: self._actions.window.select_entry(
                         child_id
                     ),
                 )

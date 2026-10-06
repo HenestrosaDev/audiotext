@@ -5,7 +5,7 @@ import customtkinter as ctk
 from models.history import HistoryEntry
 from utils.i18n import _, get_language_name
 from utils.time_format import format_duration
-from views.entries.delegates import TranscriptDelegate
+from views.entries.delegates import EntryPrompts
 from views.history.formatting import (
     format_full_date,
     format_method,
@@ -31,12 +31,10 @@ def entry_meta_items(entry: HistoryEntry) -> list[tuple[str, str]]:
 class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
     """Title, source, date, tag and note of an entry."""
 
-    def __init__(
-        self, master: Any, entry: HistoryEntry, delegate: TranscriptDelegate
-    ) -> None:
+    def __init__(self, master: Any, entry: HistoryEntry, prompts: EntryPrompts) -> None:
         super().__init__(master, fg_color="transparent")
         self.grid_columnconfigure(0, weight=1)
-        self._delegate = delegate
+        self._prompts = prompts
         # Known once the media is loaded
         self._duration: float | None = None
         self._build(entry)
@@ -49,7 +47,7 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
         self.set_duration(self._duration)
 
     def _build(self, entry: HistoryEntry) -> None:
-        delegate = self._delegate
+        prompts = self._prompts
         self._entry = entry
 
         self.lbl_title = ctk.CTkLabel(
@@ -63,7 +61,7 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
         self.lbl_title.grid(row=0, column=0, sticky=ctk.EW)
         bind_wraplength(self.lbl_title, margin=10, minimum=200)
         self.lbl_title.bind(
-            "<Double-Button-1>", lambda _event: delegate.rename_entry_dialog(entry.id)
+            "<Double-Button-1>", lambda _event: prompts.ask_to_rename_entry(entry.id)
         )
 
         meta = ctk.CTkFrame(self, fg_color="transparent")
@@ -90,7 +88,7 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
         self.pil_tag = Pill(actions, cursor="hand2")
         self.pil_tag.set_tag(entry.tag, source_label(entry.kind))
         self.pil_tag.grid(row=0, column=0)
-        self.pil_tag.bind("<Button-1>", lambda _event: delegate.edit_tag(entry.id))
+        self.pil_tag.bind("<Button-1>", lambda _event: prompts.ask_for_tag(entry.id))
         if not entry.note:
             ctk.CTkButton(
                 actions,
@@ -100,7 +98,7 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
                 width=0,
                 height=22,
                 font=theme.font(12),
-                command=lambda: delegate.edit_note(entry.id),
+                command=lambda: prompts.ask_for_note(entry.id),
                 **theme.GHOST_BUTTON,
             ).grid(row=0, column=1, padx=(8, 0))
 
@@ -128,14 +126,14 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
             lbl_note.grid(row=0, column=1, padx=(0, 4), pady=10, sticky=ctk.EW)
             bind_wraplength(lbl_note, margin=10, minimum=200)
             for widget in (note, lbl_note):
-                widget.bind("<Button-1>", lambda _event: delegate.edit_note(entry.id))
+                widget.bind("<Button-1>", lambda _event: prompts.ask_for_note(entry.id))
 
             note_actions = ctk.CTkFrame(note, fg_color="transparent")
             note_actions.grid(row=0, column=2, padx=(0, 8), pady=11, sticky=ctk.N)
             for column, (icon_name, command) in enumerate(
                 (
-                    ("pencil", lambda: delegate.edit_note(entry.id)),
-                    ("trash", lambda: delegate.delete_note(entry.id)),
+                    ("pencil", lambda: prompts.ask_for_note(entry.id)),
+                    ("trash", lambda: prompts.confirm_delete_note(entry.id)),
                 )
             ):
                 ctk.CTkButton(
