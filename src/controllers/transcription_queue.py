@@ -66,24 +66,14 @@ class TranscriptionQueue:
     the interface language changes), so the queue isn't lost.
     """
 
-    def __init__(self, store: HistoryStore) -> None:
+    def __init__(self, store: HistoryStore, view: TranscriptionQueueView) -> None:
         self._store = store
-        self._view: TranscriptionQueueView | None = None
+        self.view = view
         self._controller: MainController | None = None
         self._job: Job | None = None
         self._queue: deque[str] = deque()
         # The entry created for the last recording, opened from the microphone view
         self.last_mic_entry_id: str | None = None
-
-    def attach_view(self, view: TranscriptionQueueView) -> None:
-        """Shows the queue in a view, replacing the previous one if it was rebuilt."""
-        self._view = view
-
-    @property
-    def view(self) -> TranscriptionQueueView:
-        if self._view is None:
-            raise RuntimeError("The queue of transcriptions has no view attached")
-        return self._view
 
     def set_controller(self, controller: "MainController") -> None:
         self._controller = controller

@@ -720,6 +720,42 @@ def test_a_failed_transcription_goes_back_to_its_settings(
     ui.app._jobs._queue.clear()
 
 
+def test_a_summary_finished_while_the_window_is_rebuilt_is_shown(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import threading
+
+    import controllers.history_controller as history_controller
+
+    summary = TranscriptSummary("A short talk.", (), (), "model", "")
+    has_finished = threading.Event()
+
+    def summarize(_text: str, _segments: list[TranscriptSegment]) -> TranscriptSummary:
+        has_finished.set()
+        return summary
+
+    monkeypatch.setattr(
+        history_controller.SummaryHandler, "summarize", staticmethod(summarize)
+    )
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+
+    # The summary finishes, but its result isn't shown before the window is
+    # rebuilt, since the events of Tk aren't processed in the meantime
+    ui.window.summarize_entry(entry.id)
+    assert has_finished.wait(5)
+    time.sleep(0.1)
+    old_window = ui.window
+    ui.app._on_ui_language_change("en")
+    assert ui.window is not old_window
+    ui.pump(0.5)
+
+    assert ui.store.get(entry.id).summary == summary.to_dict()
+    assert not ui.window.is_summarizing(entry.id)
+    assert ui.window.top_bar._status_message == "The summary of “Entry” is ready."
+
+
 def test_the_preferences_and_the_interface_language(ui: Ui) -> None:
     ui.window.show_preferences()
     ui.pump()

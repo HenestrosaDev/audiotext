@@ -47,9 +47,7 @@ def history(
     store: HistoryStore, view: MagicMock, monkeypatch: pytest.MonkeyPatch
 ) -> HistoryController:
     monkeypatch.setattr(history_controller.threading, "Thread", SyncThread)
-    history = HistoryController(store)
-    history.attach_view(view)
-    return history
+    return HistoryController(store, view)
 
 
 def add(store: HistoryStore, **kwargs: Any) -> HistoryEntry:
@@ -181,11 +179,3 @@ def test_entries_are_moved_to_a_new_group(
     history.delete_group(group_id)
     assert store.get_group(group_id) is None
     assert store.get(entry.id) is not None
-
-
-def test_a_change_without_a_view_fails_clearly(store: HistoryStore) -> None:
-    history = HistoryController(store)
-    entry = add(store)
-
-    with pytest.raises(RuntimeError, match="no view attached"):
-        history.rename_entry(entry.id, "New")

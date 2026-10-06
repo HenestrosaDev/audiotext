@@ -20,6 +20,7 @@ from models.config.config_whisperx import ConfigWhisperX
 from utils.enums import ComputeType
 from utils.env_keys import migrate_env_file
 from utils.history_store import HistoryStore
+from views.main_window.current_window import CurrentWindow
 from views.main_window.main_window import MainWindow
 from views.style import theme
 
@@ -143,12 +144,14 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             config_dir / "history.json", config_dir / "media"
         )
 
-        # They're kept while the window is rebuilt, with what's in progress
-        self._history = HistoryController(self._history_store)
-        self._jobs = TranscriptionQueue(self._history_store)
-        self._view = self._create_view()
-        self._controller = MainController(self._jobs, self._view)
+        # The controllers are kept while the window is rebuilt, with what's in
+        # progress, and always report to the window being shown
+        self._current_window = CurrentWindow(self)
+        self._history = HistoryController(self._history_store, self._current_window)
+        self._jobs = TranscriptionQueue(self._history_store, self._current_window)
+        self._controller = MainController(self._jobs, self._current_window)
         self._jobs.set_controller(self._controller)
+        self._view = self._create_view()
         if config_system.check_for_updates:
             self._view.check_for_updates()
 
@@ -283,8 +286,7 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             self._jobs,
             on_ui_language_change=self._on_ui_language_change,
         )
-        self._history.attach_view(view)
-        self._jobs.attach_view(view)
+        self._current_window.window = view
         view.pack(fill="both", expand=True)
         return view
 
@@ -299,7 +301,6 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         self._view.destroy()
 
         self._view = self._create_view()
-        self._controller.recording_view = self._view
         self._view.restore_session_state(session_state)
 
     def _bind_shortcuts(self) -> None:

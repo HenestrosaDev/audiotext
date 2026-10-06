@@ -35,8 +35,7 @@ def controller() -> MagicMock:
 def jobs(
     store: HistoryStore, view: MagicMock, controller: MagicMock
 ) -> TranscriptionQueue:
-    jobs = TranscriptionQueue(store)
-    jobs.attach_view(view)
+    jobs = TranscriptionQueue(store, view)
     jobs.set_controller(controller)
     return jobs
 
@@ -178,10 +177,3 @@ def test_a_recording_that_is_no_longer_kept_is_not_retried(
     view.show_status.assert_called_once_with(
         "The recording is no longer available.", is_error=True
     )
-
-
-def test_a_transcription_without_a_view_fails_clearly(store: HistoryStore) -> None:
-    jobs = TranscriptionQueue(store)
-
-    with pytest.raises(RuntimeError, match="no view attached"):
-        jobs.start(AudioSource.FILE, "/a.mp3", TranscriptionSettings())

@@ -1,5 +1,4 @@
 import logging
-import queue
 import threading
 import tkinter as tk
 import webbrowser
@@ -36,13 +35,12 @@ from views.new_transcription.new_transcription_view import NewTranscriptionView
 from views.settings.preferences_dialog import PreferencesDialog, api_key_labels
 from views.style import theme
 from views.transcript.transcript_view import TranscriptView
+from views.ui_thread_queue import UiThreadQueue
 from views.widgets.splitter import Splitter
 from views.widgets.text_dialog import TextDialog
 
 logger = logging.getLogger(__name__)
 
-# How often the callbacks queued from background threads are run
-UI_QUEUE_POLL_INTERVAL_MS = 50
 # Width kept for the content when the sidebar is widened
 CONTENT_MIN_WIDTH = 420
 
@@ -101,10 +99,9 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self._preferences: PreferencesDialog | None = None
         self._available_update: Release | None = None
 
-        # Callbacks sent from background threads to be run on the Tkinter thread
-        self._ui_queue: queue.SimpleQueue[tuple[Callable[..., Any], tuple[Any, ...]]]
-        self._ui_queue = queue.SimpleQueue()
-        self._ui_queue_after_id: str | None = None
+        # The callbacks of the background threads of the views, which aren't run
+        # once the window is destroyed
+        self._ui_queue = UiThreadQueue(self)
 
         self.grid_columnconfigure(2, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -143,11 +140,9 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.frm_content.grid_rowconfigure(0, weight=1)
 
         self.show_welcome()
-        self._process_ui_queue()
 
     def destroy(self) -> None:
-        if self._ui_queue_after_id:
-            self.after_cancel(self._ui_queue_after_id)
+        self._ui_queue.stop()
         super().destroy()
 
     # SESSION (the window is rebuilt when the interface language changes)
@@ -408,22 +403,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         Schedules a callback to be run on the Tkinter thread. Tkinter is not
         thread-safe, so background threads must use this method to update the UI.
         """
-        self._ui_queue.put((callback, args))
-
-    def _process_ui_queue(self) -> None:
-        while True:
-            try:
-                callback, args = self._ui_queue.get_nowait()
-            except queue.Empty:
-                break
-            try:
-                callback(*args)
-            except Exception:
-                logger.exception("Error while updating the UI")
-
-        self._ui_queue_after_id = self.after(
-            UI_QUEUE_POLL_INTERVAL_MS, self._process_ui_queue
-        )
+        self._ui_queue.put(callback, *args)
 
     # TRANSCRIPTIONS
 
