@@ -95,8 +95,10 @@ def create_archive(root: Path, rel_paths: list[str], archive: Path, fmt: str) ->
             command = ["7z", "a", "-t7z", "-mx=5", "-ms=off", "-mmt=on", "-scsUTF-8"]
             command += [str(archive.resolve()), f"@{list_file.name}"]
         else:
-            command = ["tar", "-czf", str(archive.resolve()), "--no-recursion"]
-            command += ["-T", list_file.name]
+            # xz (LZMA2, like 7z) makes the CUDA libraries much smaller than gzip. -T0
+            # compresses with all the cores
+            command = ["tar", "-cf", str(archive.resolve()), "--no-recursion"]
+            command += ["--use-compress-program=xz -6 -T0", "-T", list_file.name]
         subprocess.run(command, cwd=root, check=True)
     finally:
         os.unlink(list_file.name)
@@ -140,7 +142,7 @@ def main() -> None:
     parser.add_argument("--gpu", type=Path, required=True, help="GPU build")
     parser.add_argument("--out", type=Path, required=True, help="archives directory")
     parser.add_argument("--name", required=True, help="archives name, e.g. App-gpu")
-    parser.add_argument("--format", choices=["7z", "tar.gz"], required=True)
+    parser.add_argument("--format", choices=["7z", "tar.xz"], required=True)
     parser.add_argument("--url-base", required=True, help="URL of the release assets")
     parser.add_argument("--manifest", type=Path, help="manifest file to write")
     parser.add_argument("--iss", type=Path, help="Inno Setup include file to write")
