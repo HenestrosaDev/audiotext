@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-04 18:26+0200\n"
+"POT-Creation-Date: 2026-10-07 00:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -58,43 +58,47 @@ msgstr "फ़ाइल {current}/{total} ({name}): {message}"
 msgid "{name}: {message}"
 msgstr "{name}: {message}"
 
-#: src/controllers/main_controller.py:99
+#: src/controllers/main_controller.py:113
 msgid "Cancelling…"
 msgstr "रद्द किया जा रहा है…"
 
-#: src/controllers/main_controller.py:168
+#: src/controllers/main_controller.py:182
 msgid "Transcription cancelled."
 msgstr "ट्रांसक्रिप्शन रद्द किया गया।"
 
-#: src/controllers/main_controller.py:183
+#: src/controllers/main_controller.py:197
 msgid "Downloading…"
 msgstr "डाउनलोड हो रहा है…"
 
-#: src/controllers/main_controller.py:210
+#: src/controllers/main_controller.py:208
+msgid "Recording…"
+msgstr "रिकॉर्ड हो रहा है…"
+
+#: src/controllers/main_controller.py:225
 #, python-brace-format
 msgid "Done in {duration}."
 msgstr "{duration} में पूरा हुआ।"
 
-#: src/controllers/main_controller.py:273
+#: src/controllers/main_controller.py:288
 msgid "Isolating the speech…"
 msgstr "आवाज़ अलग की जा रही है…"
 
-#: src/controllers/main_controller.py:306
+#: src/controllers/main_controller.py:321
 msgid "WhisperX model ready."
 msgstr "WhisperX मॉडल तैयार है।"
 
-#: src/controllers/main_controller.py:313
+#: src/controllers/main_controller.py:328
 #, python-brace-format
 msgid "Could not load the WhisperX model: {error}"
 msgstr "WhisperX मॉडल लोड नहीं हो सका: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:199
+#: src/handlers/whisperx_handler.py:200
 msgid "No output file types selected. Please select at least one."
 msgstr "कोई आउटपुट फ़ाइल प्रकार नहीं चुना गया है। कृपया कम से कम एक चुनें।"
 
 #: src/controllers/transcription_validator.py:26
-#: src/views/settings/settings_form.py:170
+#: src/views/settings/settings_form.py:176
 msgid ""
 "The Google API can't detect the language. Please select the language of "
 "the audio."
@@ -114,7 +118,7 @@ msgid "Please select a valid audio or video file."
 msgstr "कृपया एक मान्य ऑडियो या वीडियो फ़ाइल चुनें।"
 
 #: src/controllers/transcription_validator.py:79
-#: src/views/new_transcription/new_transcription_view.py:476
+#: src/views/new_transcription/new_transcription_view.py:491
 msgid "Please select a valid folder."
 msgstr "कृपया एक मान्य फ़ोल्डर चुनें।"
 
@@ -136,7 +140,7 @@ msgid "The reply of the model was too long."
 msgstr "मॉडल का जवाब बहुत लंबा था।"
 
 #: src/handlers/audio_handler.py:54 src/handlers/openai_api_handler.py:335
-#: src/handlers/whisperx_handler.py:216
+#: src/handlers/whisperx_handler.py:224
 msgid "Loading audio…"
 msgstr "ऑडियो लोड किया जा रहा है…"
 
@@ -146,9 +150,9 @@ msgid "Unsupported file type: {extension}"
 msgstr "असमर्थित फ़ाइल प्रकार: {extension}"
 
 #: src/handlers/audio_handler.py:132 src/handlers/openai_api_handler.py:360
-#: src/handlers/whisperx_handler.py:226 src/handlers/whisperx_handler.py:233
-#: src/views/history/formatting.py:42
-#: src/views/new_transcription/microphone_view.py:383
+#: src/handlers/whisperx_handler.py:234 src/handlers/whisperx_handler.py:241
+#: src/views/history/formatting.py:43
+#: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
 msgstr "ट्रांसक्राइब किया जा रहा है…"
 
@@ -161,7 +165,7 @@ msgstr "भाग {current}/{total} ट्रांसक्राइब कि�
 msgid "The text can't be shown while recording."
 msgstr "रिकॉर्डिंग के दौरान टेक्स्ट नहीं दिखाया जा सकता।"
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:446
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:454
 #, python-brace-format
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr ""
@@ -181,7 +185,7 @@ msgstr "मॉडल ने मान्य सारांश नहीं ल�
 msgid "There is no text to summarize."
 msgstr "सारांश बनाने के लिए कोई टेक्स्ट नहीं है।"
 
-#: src/handlers/transcribers.py:27 src/handlers/whisperx_handler.py:299
+#: src/handlers/transcribers.py:27 src/handlers/whisperx_handler.py:307
 msgid "There is no transcription to save. Please generate it first."
 msgstr "सहेजने के लिए कोई ट्रांसक्रिप्शन नहीं है। कृपया पहले इसे बनाएँ।"
 
@@ -219,15 +223,15 @@ msgstr ""
 msgid "The file could not be downloaded: {error}"
 msgstr "फ़ाइल डाउनलोड नहीं हो सकी: {error}"
 
-#: src/handlers/whisperx_handler.py:335 src/handlers/whisperx_handler.py:344
+#: src/handlers/whisperx_handler.py:343 src/handlers/whisperx_handler.py:352
 msgid "Aligning subtitles…"
 msgstr "सबटाइटल संरेखित किए जा रहे हैं…"
 
-#: src/handlers/whisperx_handler.py:368 src/handlers/whisperx_handler.py:373
+#: src/handlers/whisperx_handler.py:376 src/handlers/whisperx_handler.py:381
 msgid "Identifying speakers…"
 msgstr "वक्ताओं की पहचान की जा रही है…"
 
-#: src/handlers/whisperx_handler.py:394
+#: src/handlers/whisperx_handler.py:402
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -238,11 +242,11 @@ msgstr ""
 "टोकन बनाएँ, {model_url} की शर्तें स्वीकार करें और WhisperX विकल्पों में "
 "टोकन सेट करें।"
 
-#: src/handlers/whisperx_handler.py:479
+#: src/handlers/whisperx_handler.py:487
 msgid "Loading the subtitle alignment model…"
 msgstr "सबटाइटल संरेखण मॉडल लोड किया जा रहा है…"
 
-#: src/handlers/whisperx_handler.py:512
+#: src/handlers/whisperx_handler.py:520
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
@@ -250,7 +254,7 @@ msgstr ""
 "वक्ता पहचान मॉडल लोड हो रहा है (पहली बार उपयोग करने पर यह डाउनलोड होता "
 "है)…"
 
-#: src/handlers/whisperx_handler.py:526
+#: src/handlers/whisperx_handler.py:534
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -275,9 +279,9 @@ msgid "No audio was recorded."
 msgstr "कोई ऑडियो रिकॉर्ड नहीं हुआ।"
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:420
+#: src/views/settings/preferences_dialog.py:446
 #: src/views/transcript/summary_panel.py:189
-#: src/views/transcript/transcript_view.py:430
+#: src/views/transcript/transcript_view.py:447
 msgid "Summary"
 msgstr "सारांश"
 
@@ -292,117 +296,117 @@ msgid "Chapters"
 msgstr "अध्याय"
 
 #: src/utils/exporters.py:161 src/utils/exporters.py:198
-#: src/views/new_transcription/microphone_view.py:227
+#: src/views/new_transcription/microphone_view.py:244
 #: src/views/transcript/video_pane.py:241
 msgid "Transcription"
 msgstr "ट्रांसक्रिप्शन"
 
-#: src/utils/time_format.py:77
+#: src/utils/time_format.py:80
 #, python-brace-format
 msgid "{minutes} min {seconds} s"
 msgstr "{minutes} मि {seconds} से"
 
-#: src/utils/time_format.py:79
+#: src/utils/time_format.py:82
 #, python-brace-format
 msgid "{seconds} s"
 msgstr "{seconds} से"
 
-#: src/views/entries/entry_header.py:97
+#: src/views/entries/entry_header.py:98
 msgid "Add note"
 msgstr "नोट जोड़ें"
 
-#: src/views/entries/folder_view.py:54
+#: src/views/entries/folder_view.py:56
 msgid "Files"
 msgstr "फ़ाइलें"
 
-#: src/views/entries/folder_view.py:90
+#: src/views/entries/folder_view.py:95
 #, python-brace-format
 msgid "{count} files"
 msgstr "{count} फ़ाइलें"
 
-#: src/views/entries/folder_view.py:91
+#: src/views/entries/folder_view.py:96
 #, python-brace-format
 msgid "{count} done"
 msgstr "{count} पूरे हुए"
 
-#: src/views/entries/folder_view.py:94
+#: src/views/entries/folder_view.py:99
 #, python-brace-format
 msgid "{count} failed"
 msgstr "{count} विफल"
 
-#: src/views/entries/folder_view.py:103
-#: src/views/transcript/transcript_view.py:1103
+#: src/views/entries/folder_view.py:108
+#: src/views/transcript/transcript_view.py:1129
 msgid "Open the folder of the saved files"
 msgstr "सहेजी गई फ़ाइलों का फ़ोल्डर खोलें"
 
-#: src/views/entries/folder_view.py:111
-#: src/views/history/history_sidebar.py:329
-#: src/views/transcript/transcript_view.py:1128
+#: src/views/entries/folder_view.py:116
+#: src/views/history/history_sidebar.py:353
+#: src/views/transcript/transcript_view.py:1157
 msgid "Transcribe again"
 msgstr "फिर से ट्रांसक्राइब करें"
 
-#: src/views/entries/folder_view.py:131
+#: src/views/entries/folder_view.py:136
 msgid "Waiting for new files…"
 msgstr "नई फ़ाइलों की प्रतीक्षा हो रही है…"
 
-#: src/views/entries/folder_view.py:133
+#: src/views/entries/folder_view.py:138
 msgid "No files"
 msgstr "कोई फ़ाइल नहीं"
 
-#: src/views/entries/progress_card.py:17
-#: src/views/new_transcription/new_transcription_view.py:121
+#: src/views/entries/progress_card.py:20
+#: src/views/new_transcription/new_transcription_view.py:107
 msgid "Choose a file"
 msgstr "फ़ाइल चुनें"
 
-#: src/views/entries/progress_card.py:18
-#: src/views/new_transcription/new_transcription_view.py:122
+#: src/views/entries/progress_card.py:21
+#: src/views/new_transcription/new_transcription_view.py:113
 msgid "Enter the URL"
 msgstr "URL दर्ज करें"
 
-#: src/views/entries/progress_card.py:19
-#: src/views/new_transcription/microphone_view.py:136
-#: src/views/new_transcription/microphone_view.py:433
+#: src/views/entries/progress_card.py:22
+#: src/views/new_transcription/microphone_view.py:145
+#: src/views/new_transcription/microphone_view.py:474
 msgid "Record"
 msgstr "रिकॉर्ड करें"
 
-#: src/views/entries/progress_card.py:20 src/views/entries/progress_card.py:21
-#: src/views/new_transcription/new_transcription_view.py:123
+#: src/views/entries/progress_card.py:23 src/views/entries/progress_card.py:24
+#: src/views/new_transcription/new_transcription_view.py:121
 msgid "Choose a folder"
 msgstr "फ़ोल्डर चुनें"
 
-#: src/views/entries/progress_card.py:22
+#: src/views/entries/progress_card.py:25
 msgid "Source"
 msgstr "स्रोत"
 
-#: src/views/entries/progress_card.py:47
-#: src/views/new_transcription/microphone_view.py:136
-#: src/views/new_transcription/microphone_view.py:431
-#: src/views/new_transcription/microphone_view.py:433
-#: src/views/new_transcription/new_transcription_view.py:149
+#: src/views/entries/progress_card.py:51
+#: src/views/new_transcription/microphone_view.py:145
+#: src/views/new_transcription/microphone_view.py:467
+#: src/views/new_transcription/microphone_view.py:473
+#: src/views/new_transcription/new_transcription_view.py:148
 #: src/views/transcript/summary_panel.py:88
 #: src/views/transcript/summary_panel.py:101
 msgid "Settings"
 msgstr "सेटिंग्स"
 
-#: src/views/entries/progress_card.py:47
-#: src/views/new_transcription/microphone_view.py:136
-#: src/views/new_transcription/microphone_view.py:433
-#: src/views/new_transcription/new_transcription_view.py:149
+#: src/views/entries/progress_card.py:52
+#: src/views/new_transcription/microphone_view.py:145
+#: src/views/new_transcription/microphone_view.py:475
+#: src/views/new_transcription/new_transcription_view.py:148
 msgid "Transcribe"
 msgstr "ट्रांसक्राइब करें"
 
-#: src/views/entries/progress_card.py:114
-#: src/views/history/history_sidebar.py:322
+#: src/views/entries/progress_card.py:121
+#: src/views/history/history_sidebar.py:346
 msgid "Stop watching"
 msgstr "निगरानी बंद करें"
 
-#: src/views/entries/progress_card.py:114
-#: src/views/history/history_sidebar.py:324
+#: src/views/entries/progress_card.py:121
+#: src/views/history/history_sidebar.py:348
 #: src/views/transcript/edit_dialogs.py:46 src/views/widgets/text_dialog.py:60
 msgid "Cancel"
 msgstr "रद्द करें"
 
-#: src/views/entries/progress_card.py:125
+#: src/views/entries/progress_card.py:132
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "
 "history and opens here when it's ready."
@@ -410,111 +414,111 @@ msgstr ""
 "इस बीच आप Audiotext का उपयोग जारी रख सकते हैं। नतीजा आपके इतिहास में "
 "सहेजा जाता है और तैयार होने पर यहाँ खुलता है।"
 
-#: src/views/entries/progress_card.py:137
+#: src/views/entries/progress_card.py:144
 msgid "The transcription failed"
 msgstr "ट्रांसक्रिप्शन विफल रहा"
 
-#: src/views/entries/progress_card.py:138
+#: src/views/entries/progress_card.py:145
 msgid "An unknown error occurred."
 msgstr "एक अज्ञात त्रुटि हुई।"
 
-#: src/views/entries/progress_card.py:140
+#: src/views/entries/progress_card.py:147
 msgid "The transcription was interrupted"
 msgstr "ट्रांसक्रिप्शन बाधित हो गया"
 
-#: src/views/entries/progress_card.py:141
+#: src/views/entries/progress_card.py:148
 msgid "Audiotext was closed before it finished."
 msgstr "Audiotext काम पूरा होने से पहले बंद हो गया।"
 
-#: src/views/entries/progress_card.py:143
+#: src/views/entries/progress_card.py:150
 msgid "The transcription was cancelled"
 msgstr "ट्रांसक्रिप्शन रद्द कर दिया गया"
 
-#: src/views/entries/progress_card.py:158
-#: src/views/new_transcription/new_transcription_view.py:288
+#: src/views/entries/progress_card.py:165
+#: src/views/new_transcription/new_transcription_view.py:303
 msgid "Back"
 msgstr "वापस"
 
-#: src/views/entries/progress_card.py:167
+#: src/views/entries/progress_card.py:174
 msgid "Try again"
 msgstr "फिर से कोशिश करें"
 
-#: src/views/entries/progress_card.py:175
+#: src/views/entries/progress_card.py:182
 msgid "Delete"
 msgstr "हटाएँ"
 
-#: src/views/entries/progress_card.py:188
+#: src/views/entries/progress_card.py:195
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "{count} ट्रांसक्रिप्शन पूरे होने की प्रतीक्षा हो रही है।"
 
-#: src/views/entries/progress_card.py:192
+#: src/views/entries/progress_card.py:199
 msgid "Waiting for the current transcription to finish."
 msgstr "मौजूदा ट्रांसक्रिप्शन पूरा होने की प्रतीक्षा हो रही है।"
 
-#: src/views/entries/progress_card.py:199
+#: src/views/entries/progress_card.py:206
 msgid "Starting…"
 msgstr "शुरू किया जा रहा है…"
 
-#: src/views/history/formatting.py:21 src/views/main_window/top_bar.py:25
-#: src/views/main_window/welcome_view.py:37
+#: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:27
+#: src/views/main_window/welcome_view.py:40
 msgid "File"
 msgstr "फ़ाइल"
 
-#: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:26
-#: src/views/main_window/welcome_view.py:38
-#: src/views/new_transcription/new_transcription_view.py:238
+#: src/views/history/formatting.py:23 src/views/main_window/top_bar.py:28
+#: src/views/main_window/welcome_view.py:46
+#: src/views/new_transcription/new_transcription_view.py:244
 msgid "URL"
 msgstr "URL"
 
-#: src/views/history/formatting.py:23 src/views/main_window/top_bar.py:27
-#: src/views/main_window/welcome_view.py:39
+#: src/views/history/formatting.py:24 src/views/main_window/top_bar.py:29
+#: src/views/main_window/welcome_view.py:52
 msgid "Microphone"
 msgstr "माइक्रोफ़ोन"
 
-#: src/views/history/formatting.py:24 src/views/main_window/top_bar.py:28
-#: src/views/main_window/welcome_view.py:43
+#: src/views/history/formatting.py:25 src/views/main_window/top_bar.py:30
+#: src/views/main_window/welcome_view.py:58
 #: src/views/settings/cards/folder_card.py:19
 msgid "Folder"
 msgstr "फ़ोल्डर"
 
-#: src/views/history/formatting.py:25
+#: src/views/history/formatting.py:26
 msgid "Watched folder"
 msgstr "निगरानी वाला फ़ोल्डर"
 
-#: src/views/history/formatting.py:41
+#: src/views/history/formatting.py:42
 msgid "Queued"
 msgstr "कतार में"
 
-#: src/views/history/formatting.py:43
+#: src/views/history/formatting.py:44
 msgid "Watching"
 msgstr "निगरानी जारी"
 
-#: src/views/history/formatting.py:44
+#: src/views/history/formatting.py:45
 msgid "Done"
 msgstr "पूरा हुआ"
 
-#: src/views/history/formatting.py:45
+#: src/views/history/formatting.py:46
 msgid "Failed"
 msgstr "विफल"
 
-#: src/views/history/formatting.py:46
+#: src/views/history/formatting.py:47
 msgid "Cancelled"
 msgstr "रद्द किया गया"
 
-#: src/views/history/formatting.py:47
+#: src/views/history/formatting.py:48
 msgid "Interrupted"
 msgstr "बाधित"
 
-#: src/views/history/formatting.py:157
+#: src/views/history/formatting.py:163
 msgid "Show in Finder"
 msgstr "Finder में दिखाएँ"
 
-#: src/views/history/formatting.py:159
+#: src/views/history/formatting.py:165
 msgid "Show in Explorer"
 msgstr "Explorer में दिखाएँ"
 
-#: src/views/history/formatting.py:160
+#: src/views/history/formatting.py:166
 msgid "Show in file manager"
 msgstr "फ़ाइल प्रबंधक में दिखाएँ"
 
@@ -523,230 +527,208 @@ msgstr "फ़ाइल प्रबंधक में दिखाएँ"
 msgid "{done}/{total} files"
 msgstr "{done}/{total} फ़ाइलें"
 
-#: src/views/history/history_sidebar.py:113
+#: src/views/history/history_sidebar.py:132
 msgid "Search"
 msgstr "खोजें"
 
-#: src/views/history/history_sidebar.py:129
-#: src/views/main_window/entry_actions.py:382
+#: src/views/history/history_sidebar.py:157
+#: src/views/main_window/entry_dialogs.py:114
 msgid "New group"
 msgstr "नया समूह"
 
-#: src/views/history/history_sidebar.py:184
+#: src/views/history/history_sidebar.py:205
 #, python-brace-format
 msgid "{count} transcriptions"
 msgstr "{count} ट्रांसक्रिप्शन"
 
-#: src/views/history/history_sidebar.py:186
+#: src/views/history/history_sidebar.py:207
 msgid "1 transcription"
 msgstr "1 ट्रांसक्रिप्शन"
 
-#: src/views/history/history_sidebar.py:193
+#: src/views/history/history_sidebar.py:214
 msgid "No transcriptions yet"
 msgstr "अभी तक कोई ट्रांसक्रिप्शन नहीं"
 
-#: src/views/history/history_sidebar.py:194
+#: src/views/history/history_sidebar.py:215
 msgid "Choose a source above to transcribe your first file."
 msgstr "अपनी पहली फ़ाइल ट्रांसक्राइब करने के लिए ऊपर से कोई स्रोत चुनें।"
 
-#: src/views/history/history_sidebar.py:270
-#: src/views/main_window/entry_actions.py:69
+#: src/views/history/history_sidebar.py:291
+#: src/views/main_window/entry_dialogs.py:40
 msgid "Rename"
 msgstr "नाम बदलें"
 
-#: src/views/history/history_sidebar.py:272
-#: src/views/transcript/transcript_view.py:1115
+#: src/views/history/history_sidebar.py:293
+#: src/views/transcript/transcript_view.py:1141
 msgid "Edit note…"
 msgstr "नोट संपादित करें…"
 
-#: src/views/history/history_sidebar.py:272
-#: src/views/transcript/transcript_view.py:1115
+#: src/views/history/history_sidebar.py:293
+#: src/views/transcript/transcript_view.py:1141
 msgid "Add note…"
 msgstr "नोट जोड़ें…"
 
-#: src/views/history/history_sidebar.py:277
-#: src/views/transcript/transcript_view.py:1120
+#: src/views/history/history_sidebar.py:298
+#: src/views/transcript/transcript_view.py:1146
 msgid "Delete note…"
 msgstr "नोट हटाएँ…"
 
-#: src/views/history/history_sidebar.py:281
-#: src/views/transcript/transcript_view.py:1124
+#: src/views/history/history_sidebar.py:302
+#: src/views/transcript/transcript_view.py:1152
 msgid "Edit tag…"
 msgstr "टैग संपादित करें…"
 
-#: src/views/history/history_sidebar.py:286
+#: src/views/history/history_sidebar.py:308
 msgid "Unpin"
 msgstr "अनपिन करें"
 
-#: src/views/history/history_sidebar.py:286
+#: src/views/history/history_sidebar.py:308
 msgid "Pin to the top"
 msgstr "ऊपर पिन करें"
 
-#: src/views/history/history_sidebar.py:292
+#: src/views/history/history_sidebar.py:314
 msgid "No group"
 msgstr "कोई समूह नहीं"
 
-#: src/views/history/history_sidebar.py:306
+#: src/views/history/history_sidebar.py:330
 msgid "New group…"
 msgstr "नया समूह…"
 
-#: src/views/history/history_sidebar.py:309
+#: src/views/history/history_sidebar.py:333
 msgid "Move to group"
 msgstr "समूह में ले जाएँ"
 
-#: src/views/history/history_sidebar.py:335
-#: src/views/transcript/transcript_view.py:1133
+#: src/views/history/history_sidebar.py:359
+#: src/views/transcript/transcript_view.py:1162
 msgid "Delete…"
 msgstr "हटाएँ…"
 
-#: src/views/history/history_sidebar.py:347
+#: src/views/history/history_sidebar.py:372
 msgid "Rename group…"
 msgstr "समूह का नाम बदलें…"
 
-#: src/views/history/history_sidebar.py:351
+#: src/views/history/history_sidebar.py:376
 msgid "Delete group…"
 msgstr "समूह हटाएँ…"
 
-#: src/views/history/history_sidebar.py:374
+#: src/views/history/history_sidebar.py:399
 msgid "Pinned"
 msgstr "पिन किए गए"
 
-#: src/views/history/history_sidebar.py:382
+#: src/views/history/history_sidebar.py:407
 msgid "Transcriptions"
 msgstr "ट्रांसक्रिप्शन"
 
-#: src/views/history/history_sidebar.py:405
+#: src/views/history/history_sidebar.py:430
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "खाली। ट्रांसक्रिप्शन जोड़ने के लिए उस पर राइट-क्लिक करें और \"समूह में ले"
 " जाएँ\" चुनें।"
 
-#: src/views/history/history_sidebar.py:429
+#: src/views/history/history_sidebar.py:454
 msgid "No files yet"
 msgstr "अभी तक कोई फ़ाइल नहीं"
 
-#: src/views/history/history_sidebar.py:465
-#: src/views/transcript/transcript_view.py:573
+#: src/views/history/history_sidebar.py:490
+#: src/views/transcript/transcript_view.py:588
 msgid "No results"
 msgstr "कोई परिणाम नहीं"
 
-#: src/views/history/history_sidebar.py:466
+#: src/views/history/history_sidebar.py:491
 #, python-brace-format
 msgid "No transcription contains “{query}”."
 msgstr "किसी ट्रांसक्रिप्शन में \"{query}\" नहीं है।"
 
-#: src/views/main_window/entry_actions.py:70
+#: src/views/main_window/entry_dialogs.py:41
 msgid "Name of the transcription:"
 msgstr "ट्रांसक्रिप्शन का नाम:"
 
-#: src/views/main_window/entry_actions.py:83
+#: src/views/main_window/entry_dialogs.py:54
 msgid "Note"
 msgstr "नोट"
 
-#: src/views/main_window/entry_actions.py:84
+#: src/views/main_window/entry_dialogs.py:55
 #, python-brace-format
 msgid "A note about “{title}”:"
 msgstr "\"{title}\" के बारे में एक नोट:"
 
-#: src/views/main_window/entry_actions.py:97
+#: src/views/main_window/entry_dialogs.py:67
 msgid "Delete note"
 msgstr "नोट हटाएँ"
 
-#: src/views/main_window/entry_actions.py:98
+#: src/views/main_window/entry_dialogs.py:68
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "“{title}” का नोट हटाएँ?"
 
-#: src/views/main_window/entry_actions.py:111
+#: src/views/main_window/entry_dialogs.py:80
 msgid "Tag"
 msgstr "टैग"
 
-#: src/views/main_window/entry_actions.py:112
+#: src/views/main_window/entry_dialogs.py:81
 #, python-brace-format
 msgid "Tag of “{title}”. Leave it empty to show the kind of source."
 msgstr "\"{title}\" का टैग। स्रोत का प्रकार दिखाने के लिए इसे खाली छोड़ें।"
 
-#: src/views/main_window/entry_actions.py:136
-#, python-brace-format
-msgid "The file was moved or deleted: {path}"
-msgstr "फ़ाइल को ले जाया गया या हटा दिया गया: {path}"
-
-#: src/views/main_window/entry_actions.py:142
-#, python-brace-format
-msgid "Could not open the file manager: {error}"
-msgstr "फ़ाइल प्रबंधक नहीं खुल सका: {error}"
-
-#: src/views/main_window/entry_actions.py:152
-#, python-brace-format
-msgid "Could not open the folder: {error}"
-msgstr "फ़ोल्डर नहीं खुल सका: {error}"
-
-#: src/views/main_window/entry_actions.py:160
+#: src/views/main_window/entry_dialogs.py:95
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
 msgstr "\"{title}\" को इतिहास से हटाएँ?"
 
-#: src/views/main_window/entry_actions.py:162
+#: src/views/main_window/entry_dialogs.py:97
 msgid "The transcriptions of its files are deleted too."
 msgstr "इसकी फ़ाइलों के ट्रांसक्रिप्शन भी हटा दिए जाते हैं।"
 
-#: src/views/main_window/entry_actions.py:163
+#: src/views/main_window/entry_dialogs.py:98
 msgid "Your audio, video and saved files are not deleted."
 msgstr "आपकी ऑडियो, वीडियो और सहेजी गई फ़ाइलें नहीं हटाई जातीं।"
 
-#: src/views/main_window/entry_actions.py:165
+#: src/views/main_window/entry_dialogs.py:100
 msgid "Delete transcription"
 msgstr "ट्रांसक्रिप्शन हटाएँ"
 
-#: src/views/main_window/entry_actions.py:235
-#, python-brace-format
-msgid "The summary of “{title}” is ready."
-msgstr "\"{title}\" का सारांश तैयार है।"
-
-#: src/views/main_window/entry_actions.py:240
-#, python-brace-format
-msgid "Could not summarize “{title}”: {error}"
-msgstr "\"{title}\" का सारांश नहीं बन सका: {error}"
-
-#: src/views/main_window/entry_actions.py:356
-#, python-brace-format
-msgid "The translation of “{title}” is ready."
-msgstr "\"{title}\" का अनुवाद तैयार है।"
-
-#: src/views/main_window/entry_actions.py:361
-#, python-brace-format
-msgid "Could not translate “{title}”: {error}"
-msgstr "\"{title}\" का अनुवाद नहीं हो सका: {error}"
-
-#: src/views/main_window/entry_actions.py:383
-#: src/views/main_window/entry_actions.py:400
+#: src/views/main_window/entry_dialogs.py:115
+#: src/views/main_window/entry_dialogs.py:132
 msgid "Name of the group:"
 msgstr "समूह का नाम:"
 
-#: src/views/main_window/entry_actions.py:384
+#: src/views/main_window/entry_dialogs.py:116
 msgid "Create"
 msgstr "बनाएँ"
 
-#: src/views/main_window/entry_actions.py:399
+#: src/views/main_window/entry_dialogs.py:131
 msgid "Rename group"
 msgstr "समूह का नाम बदलें"
 
-#: src/views/main_window/entry_actions.py:413
+#: src/views/main_window/entry_dialogs.py:144
 msgid "Delete group"
 msgstr "समूह हटाएँ"
 
-#: src/views/main_window/entry_actions.py:415
+#: src/views/main_window/entry_dialogs.py:146
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "समूह \"{name}\" हटाएँ? इसके ट्रांसक्रिप्शन बिना समूह के रखे जाएँगे।"
 
-#: src/views/main_window/main_window.py:497
-#: src/views/new_transcription/new_transcription_view.py:468
+#: src/views/main_window/main_window.py:464
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "रिकॉर्डिंग · {date}"
+
+#: src/views/main_window/main_window.py:484
+msgid "Processing the recording…"
+msgstr "रिकॉर्डिंग प्रोसेस की जा रही है…"
+
+#: src/views/main_window/main_window.py:510
+msgid "The transcription was cancelled."
+msgstr "ट्रांसक्रिप्शन रद्द कर दिया गया।"
+
+#: src/views/main_window/main_window.py:594
+#: src/views/new_transcription/new_transcription_view.py:485
 #, python-brace-format
 msgid "“{name}” is not a supported audio or video file."
 msgstr "\"{name}\" कोई समर्थित ऑडियो या वीडियो फ़ाइल नहीं है।"
 
-#: src/views/main_window/main_window.py:510
+#: src/views/main_window/main_window.py:607
 msgid ""
 "Only one file can be added at a time. To transcribe several files, drop "
 "the folder that contains them."
@@ -754,7 +736,7 @@ msgstr ""
 "एक बार में केवल एक फ़ाइल जोड़ी जा सकती है। कई फ़ाइलें ट्रांसक्राइब करने "
 "के लिए, उन्हें रखने वाला फ़ोल्डर छोड़ें।"
 
-#: src/views/main_window/main_window.py:598
+#: src/views/main_window/main_window.py:690
 msgid ""
 "Type in the API key. It's kept in the credential store of your system. "
 "Leave it empty to remove it."
@@ -762,63 +744,81 @@ msgstr ""
 "API कुंजी टाइप करें। यह आपके सिस्टम के क्रेडेंशियल स्टोर में रखी जाती है।"
 " हटाने के लिए इसे खाली छोड़ें।"
 
-#: src/views/main_window/main_window.py:602
+#: src/views/main_window/main_window.py:694
 msgid "OK"
 msgstr "ठीक है"
 
-#: src/views/main_window/main_window.py:609
+#: src/views/main_window/main_window.py:701
 msgid "API key saved."
 msgstr "API कुंजी सहेजी गई।"
 
-#: src/views/main_window/main_window.py:609
+#: src/views/main_window/main_window.py:701
 msgid "API key removed."
 msgstr "API कुंजी हटा दी गई।"
 
-#: src/views/main_window/top_bar.py:70
-msgid "New transcription:"
-msgstr "नया ट्रांसक्रिप्शन:"
-
-#: src/views/main_window/top_bar.py:156
-#: src/views/settings/preferences_dialog.py:749
-#, python-brace-format
-msgid "Version {version} is available"
-msgstr "संस्करण {version} उपलब्ध है"
-
-#: src/views/main_window/transcription_jobs.py:54
-#, python-brace-format
-msgid "Recording · {date}"
-msgstr "रिकॉर्डिंग · {date}"
-
-#: src/views/main_window/transcription_jobs.py:194
-msgid "The recording is no longer available."
-msgstr "रिकॉर्डिंग अब उपलब्ध नहीं है।"
-
-#: src/views/main_window/transcription_jobs.py:337
-msgid "The transcription was cancelled."
-msgstr "ट्रांसक्रिप्शन रद्द कर दिया गया।"
-
-#: src/views/main_window/transcription_jobs.py:358
+#: src/views/main_window/status_messages.py:40
 msgid "Transcription ready"
 msgstr "ट्रांसक्रिप्शन तैयार है"
 
-#: src/views/main_window/transcription_jobs.py:386
-msgid "Recording…"
-msgstr "रिकॉर्ड हो रहा है…"
-
-#: src/views/main_window/transcription_jobs.py:443
-msgid "Processing the recording…"
-msgstr "रिकॉर्डिंग प्रोसेस की जा रही है…"
-
-#: src/views/main_window/transcription_jobs.py:450
+#: src/views/main_window/status_messages.py:43
 #, python-brace-format
 msgid "Saved in {folder}."
 msgstr "{folder} में सहेजा गया।"
 
-#: src/views/main_window/welcome_view.py:23
+#: src/views/main_window/status_messages.py:47
+msgid "The recording is no longer available."
+msgstr "रिकॉर्डिंग अब उपलब्ध नहीं है।"
+
+#: src/views/main_window/status_messages.py:54
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "फ़ाइल को ले जाया गया या हटा दिया गया: {path}"
+
+#: src/views/main_window/status_messages.py:56
+#, python-brace-format
+msgid "Could not open the file manager: {error}"
+msgstr "फ़ाइल प्रबंधक नहीं खुल सका: {error}"
+
+#: src/views/main_window/status_messages.py:61
+#, python-brace-format
+msgid "Could not open the folder: {error}"
+msgstr "फ़ोल्डर नहीं खुल सका: {error}"
+
+#: src/views/main_window/status_messages.py:69
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "\"{title}\" का सारांश तैयार है।"
+
+#: src/views/main_window/status_messages.py:73
+#, python-brace-format
+msgid "Could not summarize “{title}”: {error}"
+msgstr "\"{title}\" का सारांश नहीं बन सका: {error}"
+
+#: src/views/main_window/status_messages.py:83
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "\"{title}\" का अनुवाद तैयार है।"
+
+#: src/views/main_window/status_messages.py:87
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "\"{title}\" का अनुवाद नहीं हो सका: {error}"
+
+#: src/views/main_window/top_bar.py:72
+msgid "New transcription:"
+msgstr "नया ट्रांसक्रिप्शन:"
+
+#: src/views/main_window/top_bar.py:160
+#: src/views/settings/preferences_dialog.py:785
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "संस्करण {version} उपलब्ध है"
+
+#: src/views/main_window/welcome_view.py:25
 msgid "What do you want to transcribe?"
 msgstr "आप क्या ट्रांसक्राइब करना चाहते हैं?"
 
-#: src/views/main_window/welcome_view.py:28
+#: src/views/main_window/welcome_view.py:30
 msgid ""
 "Choose a source, or select a transcription of your history to read and "
 "play it."
@@ -826,145 +826,144 @@ msgstr ""
 "कोई स्रोत चुनें, या पढ़ने और चलाने के लिए अपने इतिहास से कोई "
 "ट्रांसक्रिप्शन चुनें।"
 
-#: src/views/main_window/welcome_view.py:37
+#: src/views/main_window/welcome_view.py:41
 msgid "An audio or video file"
 msgstr "एक ऑडियो या वीडियो फ़ाइल"
 
-#: src/views/main_window/welcome_view.py:38
+#: src/views/main_window/welcome_view.py:47
 msgid "YouTube or a link to a file"
 msgstr "YouTube या किसी फ़ाइल का लिंक"
 
-#: src/views/main_window/welcome_view.py:39
-#: src/views/new_transcription/microphone_view.py:431
+#: src/views/main_window/welcome_view.py:53
+#: src/views/new_transcription/microphone_view.py:468
 msgid "Record and transcribe"
 msgstr "रिकॉर्ड करें और ट्रांसक्राइब करें"
 
-#: src/views/main_window/welcome_view.py:44
+#: src/views/main_window/welcome_view.py:59
 msgid "Many files at once, or watch it"
 msgstr "एक साथ कई फ़ाइलें, या फ़ोल्डर की निगरानी"
 
-#: src/views/main_window/welcome_view.py:60
+#: src/views/main_window/welcome_view.py:75
 msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
 msgstr ""
 "सुझाव: ट्रांसक्राइब करने के लिए किसी फ़ाइल या फ़ोल्डर को विंडो पर कहीं भी"
 " छोड़ें।"
 
-#: src/views/new_transcription/microphone_view.py:70
+#: src/views/new_transcription/microphone_view.py:80
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "कोई आवाज़ नहीं। जाँचें कि माइक्रोफ़ोन चालू है और उसकी अनुमति है।"
 
-#: src/views/new_transcription/microphone_view.py:72
+#: src/views/new_transcription/microphone_view.py:82
 msgid "Waiting for speech…"
 msgstr "आवाज़ की प्रतीक्षा हो रही है…"
 
-#: src/views/new_transcription/microphone_view.py:75
+#: src/views/new_transcription/microphone_view.py:85
 msgid "Too quiet. Speak louder or closer to the microphone."
 msgstr "बहुत धीमा। ज़ोर से या माइक्रोफ़ोन के पास बोलें।"
 
-#: src/views/new_transcription/microphone_view.py:77
+#: src/views/new_transcription/microphone_view.py:87
 msgid "Good level"
 msgstr "अच्छा स्तर"
 
-#: src/views/new_transcription/microphone_view.py:80
+#: src/views/new_transcription/microphone_view.py:90
 msgid "Too loud. Move away from the microphone."
 msgstr "बहुत तेज़। माइक्रोफ़ोन से दूर हटें।"
 
-#: src/views/new_transcription/microphone_view.py:124
+#: src/views/new_transcription/microphone_view.py:134
 msgid "Transcribe from the microphone"
 msgstr "माइक्रोफ़ोन से ट्रांसक्राइब करें"
 
-#: src/views/new_transcription/microphone_view.py:130
+#: src/views/new_transcription/microphone_view.py:139
 msgid "Record yourself or a meeting. The recording is kept in your history."
 msgstr ""
 "खुद को या किसी मीटिंग को रिकॉर्ड करें। रिकॉर्डिंग आपके इतिहास में रखी "
 "जाती है।"
 
-#: src/views/new_transcription/microphone_view.py:161
-msgid "Loading…"
-msgstr "लोड हो रहा है…"
-
-#: src/views/new_transcription/microphone_view.py:252
+#: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:242
-#: src/views/transcript/transcript_view.py:442
-#: src/views/transcript/transcript_view.py:1163
+#: src/views/transcript/transcript_view.py:459
+#: src/views/transcript/transcript_view.py:1192
 msgid "Copy"
 msgstr "कॉपी करें"
 
-#: src/views/new_transcription/microphone_view.py:262
+#: src/views/new_transcription/microphone_view.py:283
 msgid "Open in history"
 msgstr "इतिहास में खोलें"
 
-#: src/views/new_transcription/microphone_view.py:282
+#: src/views/new_transcription/microphone_view.py:302
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "मौजूदा ट्रांसक्रिप्शन पूरा होने तक प्रतीक्षा करें, या उसे रद्द करें।"
 
-#: src/views/new_transcription/microphone_view.py:370
+#: src/views/new_transcription/microphone_view.py:391
 #, python-brace-format
 msgid "Press the button to start recording ({shortcut})"
 msgstr "रिकॉर्डिंग शुरू करने के लिए बटन दबाएँ ({shortcut})"
 
-#: src/views/new_transcription/microphone_view.py:375
+#: src/views/new_transcription/microphone_view.py:395
 msgid "The level is shown while recording"
 msgstr "रिकॉर्डिंग के दौरान स्तर दिखाया जाता है"
 
-#: src/views/new_transcription/microphone_view.py:379
+#: src/views/new_transcription/microphone_view.py:400
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "रिकॉर्ड हो रहा है… रोकने और ट्रांसक्राइब करने के लिए बटन दबाएँ।"
 
-#: src/views/new_transcription/microphone_view.py:389
+#: src/views/new_transcription/microphone_view.py:415
 msgid "Done. Press the button to record again."
 msgstr "हो गया। फिर से रिकॉर्ड करने के लिए बटन दबाएँ।"
 
-#: src/views/new_transcription/microphone_view.py:392
+#: src/views/new_transcription/microphone_view.py:419
 msgid "Press the button to try again."
 msgstr "फिर से कोशिश करने के लिए बटन दबाएँ।"
 
-#: src/views/new_transcription/microphone_view.py:408
+#: src/views/new_transcription/microphone_view.py:435
 msgid "Draft. It's replaced when the final transcription finishes."
 msgstr "ड्राफ़्ट। अंतिम ट्रांसक्रिप्शन पूरा होने पर इसे बदल दिया जाएगा।"
 
-#: src/views/new_transcription/microphone_view.py:414
+#: src/views/new_transcription/microphone_view.py:445
 msgid "The text will appear here as you speak."
 msgstr "आपके बोलते ही टेक्स्ट यहाँ दिखाई देगा।"
 
-#: src/views/new_transcription/microphone_view.py:415
+#: src/views/new_transcription/microphone_view.py:447
 msgid "The transcription will appear here when you stop recording."
 msgstr "रिकॉर्डिंग रोकने पर ट्रांसक्रिप्शन यहाँ दिखाई देगा।"
 
-#: src/views/new_transcription/microphone_view.py:431
+#: src/views/new_transcription/microphone_view.py:469
 msgid "Refine"
 msgstr "परिष्कृत करें"
 
-#: src/views/new_transcription/microphone_view.py:462
-#: src/views/new_transcription/microphone_view.py:463
-msgid "No microphone found"
-msgstr "कोई माइक्रोफ़ोन नहीं मिला"
-
-#: src/views/new_transcription/microphone_view.py:481
+#: src/views/new_transcription/microphone_view.py:521
 msgid "default"
 msgstr "डिफ़ॉल्ट"
 
-#: src/views/new_transcription/new_transcription_view.py:103
+#: src/views/new_transcription/microphone_view.py:523
+msgid "Loading…"
+msgstr "लोड हो रहा है…"
+
+#: src/views/new_transcription/microphone_view.py:524
+msgid "No microphone found"
+msgstr "कोई माइक्रोफ़ोन नहीं मिला"
+
+#: src/views/new_transcription/new_transcription_view.py:105
 msgid "Transcribe a file"
 msgstr "फ़ाइल ट्रांसक्राइब करें"
 
-#: src/views/new_transcription/new_transcription_view.py:104
+#: src/views/new_transcription/new_transcription_view.py:106
 msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
 msgstr "ऑडियो और वीडियो फ़ाइलें: MP3, WAV, M4A, MP4, MOV, MKV और अन्य।"
 
-#: src/views/new_transcription/new_transcription_view.py:108
+#: src/views/new_transcription/new_transcription_view.py:111
 msgid "Transcribe from a URL"
 msgstr "URL से ट्रांसक्राइब करें"
 
-#: src/views/new_transcription/new_transcription_view.py:109
+#: src/views/new_transcription/new_transcription_view.py:112
 msgid "A YouTube video or a direct link to an audio or video file."
 msgstr "कोई YouTube वीडियो या किसी ऑडियो या वीडियो फ़ाइल का सीधा लिंक।"
 
-#: src/views/new_transcription/new_transcription_view.py:113
+#: src/views/new_transcription/new_transcription_view.py:117
 msgid "Transcribe a folder"
 msgstr "फ़ोल्डर ट्रांसक्राइब करें"
 
-#: src/views/new_transcription/new_transcription_view.py:115
+#: src/views/new_transcription/new_transcription_view.py:119
 msgid ""
 "All the audio and video files of a folder, or the new ones as they're "
 "added."
@@ -978,29 +977,29 @@ msgstr "ऑडियो या वीडियो फ़ाइल यहाँ �
 msgid "Drop a folder here"
 msgstr "फ़ोल्डर यहाँ छोड़ें"
 
-#: src/views/new_transcription/new_transcription_view.py:182
+#: src/views/new_transcription/new_transcription_view.py:184
 msgid "or"
 msgstr "या"
 
-#: src/views/new_transcription/new_transcription_view.py:188
+#: src/views/new_transcription/new_transcription_view.py:194
 msgid "Choose a file…"
 msgstr "फ़ाइल चुनें…"
 
-#: src/views/new_transcription/new_transcription_view.py:188
+#: src/views/new_transcription/new_transcription_view.py:194
 msgid "Choose a folder…"
 msgstr "फ़ोल्डर चुनें…"
 
-#: src/views/new_transcription/new_transcription_view.py:225
-#: src/views/settings/cards/output_card.py:91
-#: src/views/settings/preferences_dialog.py:409
+#: src/views/new_transcription/new_transcription_view.py:234
+#: src/views/settings/cards/output_card.py:98
+#: src/views/settings/preferences_dialog.py:436
 msgid "Change…"
 msgstr "बदलें…"
 
-#: src/views/new_transcription/new_transcription_view.py:254
+#: src/views/new_transcription/new_transcription_view.py:266
 msgid "Paste"
 msgstr "चिपकाएँ"
 
-#: src/views/new_transcription/new_transcription_view.py:270
+#: src/views/new_transcription/new_transcription_view.py:280
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
@@ -1008,144 +1007,144 @@ msgstr ""
 "उदाहरण: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
 
-#: src/views/new_transcription/new_transcription_view.py:349
+#: src/views/new_transcription/new_transcription_view.py:358
 msgid "Select a file"
 msgstr "फ़ाइल चुनें"
 
-#: src/views/new_transcription/new_transcription_view.py:351
+#: src/views/new_transcription/new_transcription_view.py:360
 msgid "All supported files"
 msgstr "सभी समर्थित फ़ाइलें"
 
-#: src/views/new_transcription/new_transcription_view.py:352
+#: src/views/new_transcription/new_transcription_view.py:361
 msgid "Audio files"
 msgstr "ऑडियो फ़ाइलें"
 
-#: src/views/new_transcription/new_transcription_view.py:353
+#: src/views/new_transcription/new_transcription_view.py:362
 msgid "Video files"
 msgstr "वीडियो फ़ाइलें"
 
-#: src/views/new_transcription/new_transcription_view.py:357
+#: src/views/new_transcription/new_transcription_view.py:366
 msgid "Select a folder"
 msgstr "फ़ोल्डर चुनें"
 
-#: src/views/new_transcription/new_transcription_view.py:387
+#: src/views/new_transcription/new_transcription_view.py:395
 msgid "Continue"
 msgstr "जारी रखें"
 
-#: src/views/new_transcription/new_transcription_view.py:416
+#: src/views/new_transcription/new_transcription_view.py:426
 msgid "Add to queue"
 msgstr "कतार में जोड़ें"
 
-#: src/views/new_transcription/new_transcription_view.py:416
+#: src/views/new_transcription/new_transcription_view.py:426
 msgid "Start transcription"
 msgstr "ट्रांसक्रिप्शन शुरू करें"
 
-#: src/views/new_transcription/new_transcription_view.py:423
+#: src/views/new_transcription/new_transcription_view.py:438
 msgid "It will start when the current transcription finishes."
 msgstr "मौजूदा ट्रांसक्रिप्शन पूरा होने पर शुरू होगा।"
 
-#: src/views/new_transcription/new_transcription_view.py:489
+#: src/views/new_transcription/new_transcription_view.py:503
 msgid "Reading…"
 msgstr "पढ़ा जा रहा है…"
 
-#: src/views/new_transcription/new_transcription_view.py:503
+#: src/views/new_transcription/new_transcription_view.py:525
 msgid "Video"
 msgstr "वीडियो"
 
-#: src/views/new_transcription/new_transcription_view.py:503
+#: src/views/new_transcription/new_transcription_view.py:525
 msgid "Audio"
 msgstr "ऑडियो"
 
-#: src/views/new_transcription/new_transcription_view.py:520
+#: src/views/new_transcription/new_transcription_view.py:544
 msgid "No audio or video files found (subfolders included)."
 msgstr "कोई ऑडियो या वीडियो फ़ाइल नहीं मिली (सबफ़ोल्डर सहित)।"
 
-#: src/views/new_transcription/new_transcription_view.py:522
+#: src/views/new_transcription/new_transcription_view.py:546
 msgid "1 audio or video file (subfolders included)"
 msgstr "1 ऑडियो या वीडियो फ़ाइल (सबफ़ोल्डर सहित)"
 
-#: src/views/new_transcription/new_transcription_view.py:524
+#: src/views/new_transcription/new_transcription_view.py:547
 #, python-brace-format
 msgid "{count} audio and video files (subfolders included)"
 msgstr "{count} ऑडियो और वीडियो फ़ाइलें (सबफ़ोल्डर सहित)"
 
-#: src/views/new_transcription/new_transcription_view.py:548
+#: src/views/new_transcription/new_transcription_view.py:583
 msgid "YouTube video"
 msgstr "YouTube वीडियो"
 
-#: src/views/new_transcription/new_transcription_view.py:548
+#: src/views/new_transcription/new_transcription_view.py:583
 msgid "Link to a file"
 msgstr "फ़ाइल का लिंक"
 
-#: src/views/new_transcription/new_transcription_view.py:554
+#: src/views/new_transcription/new_transcription_view.py:590
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "http:// या https:// से शुरू होने वाला URL दर्ज करें"
 
 #: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:56
+#: src/views/settings/preferences_dialog.py:68
 msgid "OpenAI API key"
 msgstr "OpenAI API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:58
+#: src/views/settings/preferences_dialog.py:70
 msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
 msgstr "Whisper API के लिए, और OpenAI से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:62
+#: src/views/settings/preferences_dialog.py:74
 msgid "Anthropic API key"
 msgstr "Anthropic API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:63
+#: src/views/settings/preferences_dialog.py:75
 msgid "Required to summarize and translate with Claude."
 msgstr "Claude से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:66
+#: src/views/settings/preferences_dialog.py:78
 msgid "DeepSeek API key"
 msgstr "DeepSeek API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:67
+#: src/views/settings/preferences_dialog.py:79
 msgid "Required to summarize and translate with DeepSeek."
 msgstr "DeepSeek से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:70
+#: src/views/settings/preferences_dialog.py:82
 msgid "Gemini API key"
 msgstr "Gemini API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:72
+#: src/views/settings/preferences_dialog.py:84
 msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr ""
 "Gemini से सारांश और अनुवाद के लिए आवश्यक (Google AI Studio से प्राप्त "
 "करें)।"
 
-#: src/views/settings/preferences_dialog.py:76
+#: src/views/settings/preferences_dialog.py:88
 msgid "Mistral API key"
 msgstr "Mistral API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:77
+#: src/views/settings/preferences_dialog.py:89
 msgid "Required to summarize and translate with Mistral."
 msgstr "Mistral से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:80
+#: src/views/settings/preferences_dialog.py:92
 msgid "xAI API key"
 msgstr "xAI API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:81
+#: src/views/settings/preferences_dialog.py:93
 msgid "Required to summarize and translate with Grok."
 msgstr "Grok से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:84
+#: src/views/settings/preferences_dialog.py:96
 msgid "DeepL API key"
 msgstr "DeepL API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:85
+#: src/views/settings/preferences_dialog.py:97
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "DeepL से अनुवाद के लिए आवश्यक। मुफ़्त प्लान की कुंजियाँ भी काम करती हैं।"
 
 #: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:88
+#: src/views/settings/preferences_dialog.py:100
 msgid "Google API key"
 msgstr "Google API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:90
+#: src/views/settings/preferences_dialog.py:102
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1154,12 +1153,12 @@ msgstr ""
 "होता है। Google Translate (Cloud Translation API) से अनुवाद के लिए "
 "आवश्यक।"
 
-#: src/views/settings/cards/options_card.py:89
-#: src/views/settings/preferences_dialog.py:94
+#: src/views/settings/cards/options_card.py:90
+#: src/views/settings/preferences_dialog.py:106
 msgid "Hugging Face token"
 msgstr "Hugging Face टोकन"
 
-#: src/views/settings/preferences_dialog.py:96
+#: src/views/settings/preferences_dialog.py:108
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1167,225 +1166,221 @@ msgstr ""
 "WhisperX से वक्ताओं की पहचान के लिए आवश्यक (pyannote/speaker-diarization-"
 "community-1)।"
 
-#: src/views/settings/preferences_dialog.py:147
+#: src/views/settings/preferences_dialog.py:160
 msgid "Preferences"
 msgstr "प्राथमिकताएँ"
 
-#: src/views/settings/preferences_dialog.py:159
+#: src/views/settings/preferences_dialog.py:174
 msgid "General"
 msgstr "सामान्य"
 
-#: src/views/settings/preferences_dialog.py:160
+#: src/views/settings/preferences_dialog.py:175
 msgid "AI"
 msgstr "AI"
 
-#: src/views/settings/preferences_dialog.py:161
+#: src/views/settings/preferences_dialog.py:176
 msgid "API keys"
 msgstr "API कुंजियाँ"
 
-#: src/views/settings/preferences_dialog.py:167
-#: src/views/transcript/player_bar.py:100
+#: src/views/settings/preferences_dialog.py:178
+#: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "सबटाइटल"
 
-#: src/views/settings/preferences_dialog.py:169
+#: src/views/settings/preferences_dialog.py:180
 msgid "About"
 msgstr "परिचय"
 
-#: src/views/settings/preferences_dialog.py:258
-msgid "System"
-msgstr "सिस्टम"
-
-#: src/views/settings/preferences_dialog.py:258
-msgid "Light"
-msgstr "लाइट"
-
-#: src/views/settings/preferences_dialog.py:258
-msgid "Dark"
-msgstr "डार्क"
-
-#: src/views/settings/preferences_dialog.py:260
+#: src/views/settings/preferences_dialog.py:295
 msgid "Appearance"
 msgstr "रूप-रंग"
 
-#: src/views/settings/preferences_dialog.py:272
-msgid "System language"
-msgstr "सिस्टम की भाषा"
+#: src/views/settings/preferences_dialog.py:299
+msgid "System"
+msgstr "सिस्टम"
 
-#: src/views/settings/preferences_dialog.py:278
+#: src/views/settings/preferences_dialog.py:299
+msgid "Light"
+msgstr "लाइट"
+
+#: src/views/settings/preferences_dialog.py:299
+msgid "Dark"
+msgstr "डार्क"
+
+#: src/views/settings/preferences_dialog.py:305
 msgid "Interface language"
 msgstr "इंटरफ़ेस की भाषा"
 
-#: src/views/settings/preferences_dialog.py:281
-msgid "It can be changed when no transcription is in progress."
-msgstr "जब कोई ट्रांसक्रिप्शन चल न रहा हो, तब इसे बदला जा सकता है।"
+#: src/views/settings/preferences_dialog.py:311
+msgid "System language"
+msgstr "सिस्टम की भाषा"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:324
 msgid "Notifications"
 msgstr "सूचनाएँ"
 
-#: src/views/settings/preferences_dialog.py:300
+#: src/views/settings/preferences_dialog.py:325
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "ट्रांसक्रिप्शन तैयार होने पर सिस्टम की सूचना दिखाता है।"
 
-#: src/views/settings/preferences_dialog.py:309
+#: src/views/settings/preferences_dialog.py:336
 msgid "Updates"
 msgstr "अपडेट"
 
-#: src/views/settings/preferences_dialog.py:309
+#: src/views/settings/preferences_dialog.py:337
 msgid "Checks for a new version when the app opens."
 msgstr "ऐप खुलने पर नए संस्करण की जाँच करता है।"
 
-#: src/views/settings/preferences_dialog.py:331
+#: src/views/settings/preferences_dialog.py:353
 msgid "Date format"
 msgstr "तारीख़ का प्रारूप"
 
-#: src/views/settings/preferences_dialog.py:343
-msgid "Automatic"
-msgstr "स्वचालित"
-
-#: src/views/settings/preferences_dialog.py:352
+#: src/views/settings/preferences_dialog.py:370
 msgid "Time format"
 msgstr "समय का प्रारूप"
 
-#: src/views/settings/preferences_dialog.py:353
+#: src/views/settings/preferences_dialog.py:371
 msgid "Automatic uses the clock of the interface language."
 msgstr "स्वचालित इंटरफ़ेस की भाषा की घड़ी का उपयोग करता है।"
 
-#: src/views/settings/preferences_dialog.py:409
+#: src/views/settings/preferences_dialog.py:377
+msgid "Automatic"
+msgstr "स्वचालित"
+
+#: src/views/settings/preferences_dialog.py:436
 msgid "Set…"
 msgstr "सेट करें…"
 
-#: src/views/settings/cards/language_card.py:123
-#: src/views/settings/preferences_dialog.py:444
-#: src/views/transcript/translation_panel.py:167
+#: src/views/settings/cards/language_card.py:119
+#: src/views/settings/preferences_dialog.py:471
+#: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "अनुवाद"
 
-#: src/views/settings/preferences_dialog.py:455
+#: src/views/settings/preferences_dialog.py:483
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:460
+#: src/views/settings/preferences_dialog.py:488
 msgid "Server URL"
 msgstr "सर्वर URL"
 
-#: src/views/settings/preferences_dialog.py:461
+#: src/views/settings/preferences_dialog.py:489
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama बिना API कुंजी के आपके कंप्यूटर पर मॉडल चलाता है।"
 
-#: src/views/settings/preferences_dialog.py:492
+#: src/views/settings/preferences_dialog.py:520
 msgid "Provider"
 msgstr "प्रदाता"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:499
+#: src/views/settings/preferences_dialog.py:527
 msgid "Model"
 msgstr "मॉडल"
 
-#: src/views/settings/preferences_dialog.py:500
+#: src/views/settings/preferences_dialog.py:528
 msgid "The default model of the provider if empty."
 msgstr "खाली होने पर प्रदाता का डिफ़ॉल्ट मॉडल।"
 
-#: src/views/settings/preferences_dialog.py:545
+#: src/views/settings/preferences_dialog.py:570
 msgid "Compute type"
 msgstr "गणना प्रकार"
 
-#: src/views/settings/preferences_dialog.py:546
+#: src/views/settings/preferences_dialog.py:571
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 GPU पर तेज़ है। int8 कम मेमोरी उपयोग करता है।"
 
-#: src/views/settings/preferences_dialog.py:560
+#: src/views/settings/preferences_dialog.py:587
 msgid "Batch size"
 msgstr "बैच आकार"
 
-#: src/views/settings/preferences_dialog.py:560
+#: src/views/settings/preferences_dialog.py:588
 msgid "Lower it if you run out of memory."
 msgstr "मेमोरी कम पड़ने पर इसे घटाएँ।"
 
-#: src/views/settings/preferences_dialog.py:572
+#: src/views/settings/preferences_dialog.py:600
 msgid "Use CPU"
 msgstr "CPU का उपयोग करें"
 
-#: src/views/settings/preferences_dialog.py:575
+#: src/views/settings/preferences_dialog.py:603
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "कोई CUDA GPU नहीं मिला, इसलिए WhisperX CPU पर चलता है।"
 
-#: src/views/settings/preferences_dialog.py:589
+#: src/views/settings/preferences_dialog.py:617
 msgid "Highlight words"
 msgstr "शब्द हाइलाइट करें"
 
-#: src/views/settings/preferences_dialog.py:590
+#: src/views/settings/preferences_dialog.py:618
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "हर शब्द बोले जाते ही उसे रेखांकित करता है (.srt और .vtt)।"
 
-#: src/views/settings/preferences_dialog.py:597
+#: src/views/settings/preferences_dialog.py:625
 msgid "Max. line count"
 msgstr "अधिकतम पंक्तियाँ"
 
-#: src/views/settings/preferences_dialog.py:604
+#: src/views/settings/preferences_dialog.py:632
 msgid "Max. line width"
 msgstr "अधिकतम पंक्ति चौड़ाई"
 
-#: src/views/settings/preferences_dialog.py:616
+#: src/views/settings/preferences_dialog.py:644
 msgid "Temperature"
 msgstr "तापमान"
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:645
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "0 और 1 के बीच। ज़्यादा मान ज़्यादा यादृच्छिक होते हैं।"
 
-#: src/views/settings/preferences_dialog.py:629
+#: src/views/settings/preferences_dialog.py:657
 msgid "Timestamps of the words"
 msgstr "शब्दों के टाइमस्टैम्प"
 
-#: src/views/settings/preferences_dialog.py:630
+#: src/views/settings/preferences_dialog.py:658
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "चलाते समय हर शब्द हाइलाइट करता है (whisper-1 मॉडल)। ज़्यादा समय लगता है।"
 
-#: src/views/settings/preferences_dialog.py:660
+#: src/views/settings/preferences_dialog.py:688
 #, python-brace-format
 msgid "Version {version}"
 msgstr "संस्करण {version}"
 
-#: src/views/settings/preferences_dialog.py:664
+#: src/views/settings/preferences_dialog.py:692
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "{author} द्वारा निर्मित"
 
-#: src/views/settings/preferences_dialog.py:671
+#: src/views/settings/preferences_dialog.py:708
 msgid "Documentation"
 msgstr "दस्तावेज़"
 
-#: src/views/settings/preferences_dialog.py:689
+#: src/views/settings/preferences_dialog.py:728
 msgid "Donate"
 msgstr "दान करें"
 
-#: src/views/settings/preferences_dialog.py:701
+#: src/views/settings/preferences_dialog.py:742
 msgid "Check for updates"
 msgstr "अपडेट की जाँच करें"
 
-#: src/views/settings/preferences_dialog.py:725
+#: src/views/settings/preferences_dialog.py:761
 msgid "Checking for updates…"
 msgstr "अपडेट की जाँच हो रही है…"
 
-#: src/views/settings/preferences_dialog.py:737
+#: src/views/settings/preferences_dialog.py:772
 msgid "Could not check for updates."
 msgstr "अपडेट की जाँच नहीं हो सकी।"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:781
 msgid "Download"
 msgstr "डाउनलोड करें"
 
-#: src/views/settings/preferences_dialog.py:756
+#: src/views/settings/preferences_dialog.py:791
 msgid "You have the latest version."
 msgstr "आपके पास नवीनतम संस्करण है।"
 
-#: src/views/settings/settings_form.py:163
+#: src/views/settings/settings_form.py:169
 msgid "Select at least one output file type."
 msgstr "कम से कम एक आउटपुट फ़ाइल प्रकार चुनें।"
 
-#: src/views/settings/settings_form.py:180
+#: src/views/settings/settings_form.py:186
 #, python-brace-format
 msgid ""
 "The {model} model only transcribes English. Choose a multilingual model "
@@ -1394,15 +1389,15 @@ msgstr ""
 "{model} मॉडल केवल अंग्रेज़ी ट्रांसक्राइब करता है। कोई बहुभाषी मॉडल चुनें "
 "या ऑडियो की भाषा अंग्रेज़ी पर सेट करें।"
 
-#: src/views/settings/settings_form.py:188
+#: src/views/settings/settings_form.py:194
 msgid "The Whisper API requires an OpenAI API key."
 msgstr "Whisper API के लिए OpenAI API कुंजी आवश्यक है।"
 
-#: src/views/settings/cards/context_card.py:28
+#: src/views/settings/cards/context_card.py:29
 msgid "Context"
 msgstr "संदर्भ"
 
-#: src/views/settings/cards/context_card.py:34
+#: src/views/settings/cards/context_card.py:35
 msgid "Keywords"
 msgstr "कीवर्ड"
 
@@ -1422,19 +1417,19 @@ msgstr ""
 msgid "Description"
 msgstr "विवरण"
 
-#: src/views/settings/cards/context_card.py:56
+#: src/views/settings/cards/context_card.py:60
 msgid "e.g. An interview about speech recognition"
 msgstr "जैसे वाक् पहचान पर एक साक्षात्कार"
 
-#: src/views/settings/cards/context_card.py:63
+#: src/views/settings/cards/context_card.py:65
 msgid "What the audio is about, such as its topic or setting."
 msgstr "ऑडियो किस बारे में है, जैसे उसका विषय या परिवेश।"
 
-#: src/views/settings/cards/context_card.py:100
+#: src/views/settings/cards/context_card.py:103
 msgid "Not used by the Google API."
 msgstr "Google API इसका उपयोग नहीं करता।"
 
-#: src/views/settings/cards/context_card.py:112
+#: src/views/settings/cards/context_card.py:115
 #, python-brace-format
 msgid "Not used by the {model} model."
 msgstr "{model} मॉडल इसका उपयोग नहीं करता।"
@@ -1499,7 +1494,7 @@ msgstr "API कुंजी सेट है"
 
 #: src/views/settings/cards/engine_card.py:140
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:387
+#: src/views/transcript/translation_panel.py:382
 msgid "Set API key…"
 msgstr "API कुंजी सेट करें…"
 
@@ -1526,60 +1521,60 @@ msgstr ""
 " है। जिन फ़ाइलों का ट्रांसक्रिप्शन पहले से है, उन्हें छोड़ दिया जाता है, "
 "जब तक कि आप उन्हें अधिलेखित न करें।"
 
-#: src/views/settings/cards/language_card.py:56
+#: src/views/settings/cards/language_card.py:54
 msgid "Language"
 msgstr "भाषा"
 
-#: src/views/settings/cards/language_card.py:60
-msgid "Auto-detect"
-msgstr "स्वतः पहचानें"
-
-#: src/views/settings/cards/language_card.py:63
-msgid "Same as the audio"
-msgstr "ऑडियो के समान"
-
-#: src/views/settings/cards/language_card.py:70
-#: src/views/settings/cards/language_card.py:74
+#: src/views/settings/cards/language_card.py:61
+#: src/views/settings/cards/language_card.py:65
 msgid "Language of the audio"
 msgstr "ऑडियो की भाषा"
 
-#: src/views/settings/cards/language_card.py:75
-#: src/views/settings/cards/language_card.py:93
-#: src/views/transcript/translation_panel.py:341
+#: src/views/settings/cards/language_card.py:66
+#: src/views/settings/cards/language_card.py:86
+#: src/views/transcript/translation_panel.py:336
 msgid "Search language…"
 msgstr "भाषा खोजें…"
 
-#: src/views/settings/cards/language_card.py:76
-#: src/views/settings/cards/language_card.py:94
-#: src/views/transcript/translation_panel.py:342
+#: src/views/settings/cards/language_card.py:67
+#: src/views/settings/cards/language_card.py:87
+#: src/views/transcript/translation_panel.py:337
 msgid "No languages found."
 msgstr "कोई भाषा नहीं मिली।"
 
-#: src/views/settings/cards/language_card.py:88
-#: src/views/settings/cards/language_card.py:92
+#: src/views/settings/cards/language_card.py:72
+msgid "Auto-detect"
+msgstr "स्वतः पहचानें"
+
+#: src/views/settings/cards/language_card.py:81
+#: src/views/settings/cards/language_card.py:85
 msgid "Language of the transcription"
 msgstr "ट्रांसक्रिप्शन की भाषा"
 
-#: src/views/settings/cards/language_card.py:131
+#: src/views/settings/cards/language_card.py:92
+msgid "Same as the audio"
+msgstr "ऑडियो के समान"
+
+#: src/views/settings/cards/language_card.py:133
 msgid "Translate with Whisper (recommended)"
 msgstr "Whisper से अनुवाद करें (अनुशंसित)"
 
-#: src/views/settings/cards/language_card.py:191
+#: src/views/settings/cards/language_card.py:185
 msgid ""
 "The Google API can't translate. The transcription will be in the language"
 " of the audio."
 msgstr "Google API अनुवाद नहीं कर सकता। ट्रांसक्रिप्शन ऑडियो की भाषा में होगा।"
 
-#: src/views/settings/cards/language_card.py:201
+#: src/views/settings/cards/language_card.py:195
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "सीधे {language} में लिखें (प्रयोगात्मक)"
 
-#: src/views/settings/cards/language_card.py:219
+#: src/views/settings/cards/language_card.py:213
 msgid "Whisper transcribes and translates the audio in one step."
 msgstr "Whisper एक ही चरण में ऑडियो को ट्रांसक्राइब और अनुवाद करता है।"
 
-#: src/views/settings/cards/language_card.py:223
+#: src/views/settings/cards/language_card.py:217
 #, python-brace-format
 msgid ""
 "Whisper can only translate into {english}. For other languages, it's "
@@ -1603,8 +1598,8 @@ msgid "Live model"
 msgstr "लाइव मॉडल"
 
 #: src/views/settings/cards/live_card.py:62
-#: src/views/settings/cards/options_card.py:116
-#: src/views/settings/cards/options_card.py:145
+#: src/views/settings/cards/options_card.py:120
+#: src/views/settings/cards/options_card.py:149
 msgid "Only available with WhisperX."
 msgstr "केवल WhisperX के साथ उपलब्ध।"
 
@@ -1622,51 +1617,51 @@ msgstr ""
 msgid "The text is shown when you stop recording."
 msgstr "रिकॉर्डिंग रोकने पर टेक्स्ट दिखाया जाता है।"
 
-#: src/views/settings/cards/options_card.py:37
+#: src/views/settings/cards/options_card.py:38
 msgid "Options"
 msgstr "विकल्प"
 
-#: src/views/settings/cards/options_card.py:43
+#: src/views/settings/cards/options_card.py:44
 msgid "Word-level timings"
 msgstr "शब्द-स्तरीय समय"
 
-#: src/views/settings/cards/options_card.py:51
+#: src/views/settings/cards/options_card.py:52
 msgid "Extract speech"
 msgstr "आवाज़ अलग करें"
 
-#: src/views/settings/cards/options_card.py:55
+#: src/views/settings/cards/options_card.py:56
 msgid "Reduces music and background noise before transcribing."
 msgstr "ट्रांसक्राइब करने से पहले संगीत और पृष्ठभूमि शोर कम करता है।"
 
-#: src/views/settings/cards/options_card.py:59
+#: src/views/settings/cards/options_card.py:60
 msgid "Identify speakers"
 msgstr "वक्ताओं की पहचान करें"
 
-#: src/views/settings/cards/options_card.py:69
+#: src/views/settings/cards/options_card.py:70
 msgid "Number of speakers (0 = auto)"
 msgstr "वक्ताओं की संख्या (0 = स्वतः)"
 
-#: src/views/settings/cards/options_card.py:87
+#: src/views/settings/cards/options_card.py:94
 msgid "Set Hugging Face token…"
 msgstr "Hugging Face टोकन सेट करें…"
 
-#: src/views/settings/cards/options_card.py:119
+#: src/views/settings/cards/options_card.py:123
 msgid "Highlights each word while playing. The subtitles already use them."
 msgstr "चलाते समय हर शब्द हाइलाइट करता है। सबटाइटल पहले से इनका उपयोग करते हैं।"
 
-#: src/views/settings/cards/options_card.py:122
+#: src/views/settings/cards/options_card.py:126
 msgid "Highlights each word while playing. Takes a bit longer."
 msgstr "चलाते समय हर शब्द हाइलाइट करता है। थोड़ा ज़्यादा समय लगता है।"
 
-#: src/views/settings/cards/options_card.py:132
+#: src/views/settings/cards/options_card.py:136
 msgid "Labels who speaks in each part. Requires a Hugging Face token."
 msgstr "बताता है कि हर हिस्से में कौन बोल रहा है। Hugging Face टोकन आवश्यक है।"
 
-#: src/views/settings/cards/options_card.py:138
+#: src/views/settings/cards/options_card.py:142
 msgid "The model of the Whisper API identifies the speakers."
 msgstr "Whisper API का मॉडल वक्ताओं की पहचान करता है।"
 
-#: src/views/settings/cards/options_card.py:141
+#: src/views/settings/cards/options_card.py:145
 msgid ""
 "Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
 " of the Whisper API."
@@ -1674,49 +1669,49 @@ msgstr ""
 "केवल WhisperX के साथ, या Whisper API के gpt-4o-transcribe-diarize मॉडल के"
 " साथ उपलब्ध।"
 
-#: src/views/settings/cards/output_card.py:37
+#: src/views/settings/cards/output_card.py:38
 msgid "Output"
 msgstr "आउटपुट"
 
-#: src/views/settings/cards/output_card.py:41
+#: src/views/settings/cards/output_card.py:42
 msgid "File types"
 msgstr "फ़ाइल प्रकार"
 
-#: src/views/settings/cards/output_card.py:100
+#: src/views/settings/cards/output_card.py:108
 msgid "Next to the source"
 msgstr "स्रोत के पास"
 
-#: src/views/settings/cards/output_card.py:110
+#: src/views/settings/cards/output_card.py:115
 msgid "Overwrite existing files"
 msgstr "मौजूदा फ़ाइलें अधिलेखित करें"
 
-#: src/views/settings/cards/output_card.py:114
+#: src/views/settings/cards/output_card.py:119
 msgid "The files of a folder are always saved."
 msgstr "फ़ोल्डर की फ़ाइलें हमेशा सहेजी जाती हैं।"
 
-#: src/views/settings/cards/output_card.py:142
+#: src/views/settings/cards/output_card.py:147
 msgid "The Google API returns plain text (.txt)."
 msgstr "Google API सादा टेक्स्ट (.txt) लौटाता है।"
 
-#: src/views/settings/cards/output_card.py:147
+#: src/views/settings/cards/output_card.py:152
 #, python-brace-format
 msgid "Saved in {folder}"
 msgstr "{folder} में सहेजा जाता है"
 
-#: src/views/settings/cards/output_card.py:150
+#: src/views/settings/cards/output_card.py:155
 msgid "Saved next to the source"
 msgstr "स्रोत के पास सहेजा जाता है"
 
-#: src/views/settings/cards/output_card.py:169
+#: src/views/settings/cards/output_card.py:174
 msgid "Format of the files."
 msgstr "फ़ाइलों का फ़ॉर्मैट।"
 
-#: src/views/settings/cards/output_card.py:172
+#: src/views/settings/cards/output_card.py:177
 #, python-brace-format
 msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
 msgstr "{model} मॉडल टाइमस्टैम्प नहीं लौटाता, इसलिए यह सबटाइटल नहीं सहेज सकता।"
 
-#: src/views/settings/cards/output_card.py:192
+#: src/views/settings/cards/output_card.py:197
 msgid "Choose where to save the transcriptions"
 msgstr "चुनें कि ट्रांसक्रिप्शन कहाँ सहेजे जाएँ"
 
@@ -1725,7 +1720,7 @@ msgid "Replaced."
 msgstr "बदल दिया गया।"
 
 #: src/views/transcript/corrections.py:94
-#: src/views/transcript/transcript_view.py:863
+#: src/views/transcript/transcript_view.py:882
 msgid "Edit the text"
 msgstr "टेक्स्ट संपादित करें"
 
@@ -1768,7 +1763,7 @@ msgid "Rename speakers"
 msgstr "वक्ताओं के नाम बदलें"
 
 #: src/views/transcript/edit_dialogs.py:162
-#: src/views/transcript/transcript_view.py:890
+#: src/views/transcript/transcript_view.py:909
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "सहेजें"
@@ -1795,17 +1790,17 @@ msgstr "समय को 00:01:05,900, 01:05,9 या 65.9 की तरह ल�
 msgid "The segment must end after it starts."
 msgstr "सेगमेंट शुरू होने के बाद ही समाप्त होना चाहिए।"
 
-#: src/views/transcript/player_bar.py:122
+#: src/views/transcript/player_bar.py:127
 msgid "Loading the audio…"
 msgstr "ऑडियो लोड हो रहा है…"
 
-#: src/views/transcript/player_bar.py:151
+#: src/views/transcript/player_bar.py:155
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: चलाएँ/रोकें · ←/→: {seconds} सेकंड पीछे/आगे"
 
-#: src/views/transcript/player_bar.py:252
-#: src/views/transcript/transcript_view.py:1017
+#: src/views/transcript/player_bar.py:257
+#: src/views/transcript/transcript_view.py:1043
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "ऑडियो नहीं चलाया जा सकता: {error}"
@@ -1857,21 +1852,21 @@ msgstr "फिर से बनाएँ"
 msgid "Generated by {model} · {date}"
 msgstr "{model} द्वारा बनाया गया · {date}"
 
-#: src/views/transcript/transcript_text.py:183
+#: src/views/transcript/transcript_text.py:186
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr ""
 "किसी सेगमेंट को चलाने के लिए उस पर क्लिक करें। संपादित करने के लिए उस पर "
 "राइट-क्लिक करें।"
 
-#: src/views/transcript/transcript_text.py:188
+#: src/views/transcript/transcript_text.py:191
 msgid "The plain text has been edited; the transcript keeps the original."
 msgstr "सादा टेक्स्ट संपादित किया गया है; ट्रांसक्रिप्ट मूल को बनाए रखता है।"
 
-#: src/views/transcript/transcript_text.py:196
+#: src/views/transcript/transcript_text.py:199
 msgid "You can edit the text. The changes are saved automatically."
 msgstr "आप टेक्स्ट संपादित कर सकते हैं। बदलाव अपने आप सहेजे जाते हैं।"
 
-#: src/views/transcript/transcript_text.py:199
+#: src/views/transcript/transcript_text.py:202
 msgid ""
 "Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
 "transcribe-diarize models of the Whisper API."
@@ -1879,281 +1874,281 @@ msgstr ""
 "टाइमस्टैम्प केवल WhisperX के साथ और Whisper API के whisper-1 और gpt-4o-"
 "transcribe-diarize मॉडल के साथ उपलब्ध हैं।"
 
-#: src/views/transcript/transcript_text.py:357
+#: src/views/transcript/transcript_text.py:371
 msgid "This transcription has no timestamps."
 msgstr "इस ट्रांसक्रिप्शन में टाइमस्टैम्प नहीं हैं।"
 
-#: src/views/transcript/transcript_view.py:90
+#: src/views/transcript/transcript_view.py:92
 msgid "Plain text (.txt)"
 msgstr "सादा टेक्स्ट (.txt)"
 
-#: src/views/transcript/transcript_view.py:91
+#: src/views/transcript/transcript_view.py:93
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:92
+#: src/views/transcript/transcript_view.py:94
 msgid "Word document (.docx)"
 msgstr "Word दस्तावेज़ (.docx)"
 
-#: src/views/transcript/transcript_view.py:93
+#: src/views/transcript/transcript_view.py:95
 msgid "Subtitles (.srt)"
 msgstr "सबटाइटल (.srt)"
 
-#: src/views/transcript/transcript_view.py:94
+#: src/views/transcript/transcript_view.py:96
 msgid "Web subtitles (.vtt)"
 msgstr "वेब सबटाइटल (.vtt)"
 
-#: src/views/transcript/transcript_view.py:95
+#: src/views/transcript/transcript_view.py:97
 msgid "Table (.tsv)"
 msgstr "तालिका (.tsv)"
 
-#: src/views/transcript/transcript_view.py:96
+#: src/views/transcript/transcript_view.py:98
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:243
+#: src/views/transcript/transcript_view.py:256
 #: src/views/transcript/video_pane.py:247
 #, python-brace-format
 msgid "Translation into {language}"
 msgstr "{language} अनुवाद"
 
-#: src/views/transcript/transcript_view.py:280
+#: src/views/transcript/transcript_view.py:293
 msgid "Export transcription"
 msgstr "ट्रांसक्रिप्शन निर्यात करें"
 
-#: src/views/transcript/transcript_view.py:299
+#: src/views/transcript/transcript_view.py:312
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "{language} अनुवाद निर्यात करें"
 
-#: src/views/transcript/transcript_view.py:330
+#: src/views/transcript/transcript_view.py:343
 msgid "All files"
 msgstr "सभी फ़ाइलें"
 
-#: src/views/transcript/transcript_view.py:339
+#: src/views/transcript/transcript_view.py:352
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "निर्यात नहीं हो सका: {error}"
 
-#: src/views/transcript/transcript_view.py:342
+#: src/views/transcript/transcript_view.py:355
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "{path} में निर्यात किया गया"
 
-#: src/views/transcript/transcript_view.py:391
+#: src/views/transcript/transcript_view.py:404
 #, python-brace-format
 msgid "Search ({shortcut})"
 msgstr "खोजें ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:428
+#: src/views/transcript/transcript_view.py:445
 msgid "Transcript"
 msgstr "ट्रांसक्रिप्ट"
 
-#: src/views/transcript/transcript_view.py:429
+#: src/views/transcript/transcript_view.py:446
 msgid "Plain text"
 msgstr "सादा टेक्स्ट"
 
-#: src/views/transcript/transcript_view.py:438
-#: src/views/transcript/translation_panel.py:321
+#: src/views/transcript/transcript_view.py:455
+#: src/views/transcript/translation_panel.py:322
 msgid "Translate"
 msgstr "अनुवाद करें"
 
-#: src/views/transcript/transcript_view.py:446
+#: src/views/transcript/transcript_view.py:463
 msgid "Export"
 msgstr "निर्यात करें"
 
-#: src/views/transcript/transcript_view.py:575
+#: src/views/transcript/transcript_view.py:590
 #, python-brace-format
 msgid "{current} of {total}"
 msgstr "{total} में से {current}"
 
-#: src/views/transcript/transcript_view.py:615
+#: src/views/transcript/transcript_view.py:630
 msgid "Summary copied."
 msgstr "सारांश कॉपी हो गया।"
 
-#: src/views/transcript/transcript_view.py:691
+#: src/views/transcript/transcript_view.py:708
 msgid "Hide the translation"
 msgstr "अनुवाद छिपाएँ"
 
-#: src/views/transcript/transcript_view.py:696
+#: src/views/transcript/transcript_view.py:713
 msgid "Show the translation"
 msgstr "अनुवाद दिखाएँ"
 
-#: src/views/transcript/transcript_view.py:700
+#: src/views/transcript/transcript_view.py:717
 msgid "Translate into another language…"
 msgstr "किसी दूसरी भाषा में अनुवाद करें…"
 
-#: src/views/transcript/transcript_view.py:716
+#: src/views/transcript/transcript_view.py:733
 msgid "Show it as the subtitles of the video"
 msgstr "इसे वीडियो के सबटाइटल के रूप में दिखाएँ"
 
-#: src/views/transcript/transcript_view.py:723
+#: src/views/transcript/transcript_view.py:740
 msgid "Delete the translation"
 msgstr "अनुवाद हटाएँ"
 
-#: src/views/transcript/transcript_view.py:804
-#: src/views/transcript/transcript_view.py:1060
+#: src/views/transcript/transcript_view.py:823
+#: src/views/transcript/transcript_view.py:1086
 msgid "Play from here"
 msgstr "यहाँ से चलाएँ"
 
-#: src/views/transcript/transcript_view.py:807
-#: src/views/transcript/transcript_view.py:1063
+#: src/views/transcript/transcript_view.py:826
+#: src/views/transcript/transcript_view.py:1089
 msgid "Edit the text…"
 msgstr "टेक्स्ट संपादित करें…"
 
-#: src/views/transcript/transcript_view.py:807
+#: src/views/transcript/transcript_view.py:826
 msgid "Translate the text…"
 msgstr "टेक्स्ट का अनुवाद करें…"
 
-#: src/views/transcript/transcript_view.py:811
+#: src/views/transcript/transcript_view.py:830
 msgid "Edit the timing…"
 msgstr "समय संपादित करें…"
 
-#: src/views/transcript/transcript_view.py:815
+#: src/views/transcript/transcript_view.py:834
 msgid "Add a segment after…"
 msgstr "इसके बाद एक सेगमेंट जोड़ें…"
 
-#: src/views/transcript/transcript_view.py:820
-#: src/views/transcript/transcript_view.py:938
+#: src/views/transcript/transcript_view.py:839
+#: src/views/transcript/transcript_view.py:957
 msgid "Delete the segment"
 msgstr "सेगमेंट हटाएँ"
 
-#: src/views/transcript/transcript_view.py:863
+#: src/views/transcript/transcript_view.py:882
 msgid "Translate the text"
 msgstr "टेक्स्ट का अनुवाद करें"
 
-#: src/views/transcript/transcript_view.py:864
+#: src/views/transcript/transcript_view.py:883
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "\"{text}\" का अनुवाद, {start} से {end} तक बोला गया:"
 
-#: src/views/transcript/transcript_view.py:868
+#: src/views/transcript/transcript_view.py:887
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "{start} से {end} तक के सेगमेंट का अनुवाद:"
 
-#: src/views/transcript/transcript_view.py:889
+#: src/views/transcript/transcript_view.py:908
 msgid "Edit the timing"
 msgstr "समय संपादित करें"
 
-#: src/views/transcript/transcript_view.py:913
+#: src/views/transcript/transcript_view.py:932
 msgid "Add a segment"
 msgstr "सेगमेंट जोड़ें"
 
-#: src/views/transcript/transcript_view.py:914
+#: src/views/transcript/transcript_view.py:933
 msgid "Add"
 msgstr "जोड़ें"
 
-#: src/views/transcript/transcript_view.py:915
+#: src/views/transcript/transcript_view.py:934
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "नया सेगमेंट {time} वाले सेगमेंट के बाद आएगा:"
 
-#: src/views/transcript/transcript_view.py:939
+#: src/views/transcript/transcript_view.py:958
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "सेगमेंट \"{text}\" हटाएँ?"
 
-#: src/views/transcript/transcript_view.py:950
+#: src/views/transcript/transcript_view.py:969
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "{time} वाला सेगमेंट, अभी तक अनुवाद नहीं हुआ।"
 
-#: src/views/transcript/transcript_view.py:964
+#: src/views/transcript/transcript_view.py:983
 #, python-brace-format
 msgid "Translation into {language} copied."
 msgstr "{language} अनुवाद कॉपी हो गया।"
 
-#: src/views/transcript/transcript_view.py:976
+#: src/views/transcript/transcript_view.py:997
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "ऑडियो उपलब्ध नहीं है: स्रोत फ़ाइल को ले जाया गया या हटा दिया गया।"
 
-#: src/views/transcript/transcript_view.py:978
+#: src/views/transcript/transcript_view.py:1000
 msgid "The audio isn't available."
 msgstr "ऑडियो उपलब्ध नहीं है।"
 
-#: src/views/transcript/transcript_view.py:1066
-#: src/views/transcript/transcript_view.py:1078
+#: src/views/transcript/transcript_view.py:1092
+#: src/views/transcript/transcript_view.py:1104
 msgid "Rename speakers…"
 msgstr "वक्ताओं के नाम बदलें…"
 
-#: src/views/transcript/transcript_view.py:1076
+#: src/views/transcript/transcript_view.py:1102
 msgid "Find and replace…"
 msgstr "ढूँढें और बदलें…"
 
-#: src/views/transcript/transcript_view.py:1088
+#: src/views/transcript/transcript_view.py:1114
 msgid "Precise timestamps (00:00:01,000)"
 msgstr "सटीक टाइमस्टैम्प (00:00:01,000)"
 
-#: src/views/transcript/transcript_view.py:1111
+#: src/views/transcript/transcript_view.py:1137
 msgid "Rename…"
 msgstr "नाम बदलें…"
 
-#: src/views/transcript/transcript_view.py:1155
+#: src/views/transcript/transcript_view.py:1184
 msgid "Copied"
 msgstr "कॉपी हो गया"
 
-#: src/views/transcript/translation_panel.py:130
+#: src/views/transcript/translation_panel.py:131
 msgid "Not translated yet"
 msgstr "अभी तक अनुवाद नहीं हुआ"
 
-#: src/views/transcript/translation_panel.py:155
+#: src/views/transcript/translation_panel.py:156
 #, python-brace-format
 msgid "Translating into {language}…"
 msgstr "{language} में अनुवाद हो रहा है…"
 
-#: src/views/transcript/translation_panel.py:159
+#: src/views/transcript/translation_panel.py:160
 msgid "Translating…"
 msgstr "अनुवाद हो रहा है…"
 
-#: src/views/transcript/translation_panel.py:162
+#: src/views/transcript/translation_panel.py:163
 msgid "It takes a moment."
 msgstr "इसमें थोड़ा समय लगेगा।"
 
-#: src/views/transcript/translation_panel.py:164
+#: src/views/transcript/translation_panel.py:165
 msgid "The transcription is being translated. It takes a moment."
 msgstr "ट्रांसक्रिप्शन का अनुवाद हो रहा है। इसमें थोड़ा समय लगेगा।"
 
-#: src/views/transcript/translation_panel.py:171
+#: src/views/transcript/translation_panel.py:172
 msgid "There is no translation yet."
 msgstr "अभी तक कोई अनुवाद नहीं है।"
 
-#: src/views/transcript/translation_panel.py:173
+#: src/views/transcript/translation_panel.py:174
 msgid "Translate…"
 msgstr "अनुवाद करें…"
 
-#: src/views/transcript/translation_panel.py:276
+#: src/views/transcript/translation_panel.py:277
 #, python-brace-format
 msgid "Segments left to translate: {count}. Right-click one to translate it."
 msgstr ""
 "अनुवाद के लिए बचे सेगमेंट: {count}। अनुवाद करने के लिए किसी एक पर "
 "राइट-क्लिक करें।"
 
-#: src/views/transcript/translation_panel.py:283
+#: src/views/transcript/translation_panel.py:284
 msgid "Translated manually"
 msgstr "मैन्युअल रूप से अनूदित"
 
-#: src/views/transcript/translation_panel.py:331
-msgid "Myself, from scratch"
-msgstr "स्वयं, शुरू से"
-
-#: src/views/transcript/translation_panel.py:335
+#: src/views/transcript/translation_panel.py:330
 msgid "Translate into:"
 msgstr "इस भाषा में अनुवाद करें:"
 
-#: src/views/transcript/translation_panel.py:340
+#: src/views/transcript/translation_panel.py:335
 msgid "Language of the translation"
 msgstr "अनुवाद की भाषा"
 
-#: src/views/transcript/translation_panel.py:357
+#: src/views/transcript/translation_panel.py:351
 msgid "Provider:"
 msgstr "प्रदाता:"
 
-#: src/views/transcript/translation_panel.py:397
+#: src/views/transcript/translation_panel.py:361
+msgid "Myself, from scratch"
+msgstr "स्वयं, शुरू से"
+
+#: src/views/transcript/translation_panel.py:392
 msgid "More options in the settings"
 msgstr "सेटिंग्स में और विकल्प"
 
-#: src/views/transcript/translation_panel.py:434
+#: src/views/transcript/translation_panel.py:429
 #, python-brace-format
 msgid "Set the API key of {provider} to translate with it."
 msgstr "{provider} से अनुवाद करने के लिए उसकी API कुंजी सेट करें।"
