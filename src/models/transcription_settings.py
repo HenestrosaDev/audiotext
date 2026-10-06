@@ -146,6 +146,7 @@ class TranscriptionSettings:
         transcription = Transcription(
             audio_source=audio_source,
             method=method,
+            model_size=self.model_size if is_whisperx else None,
             language_code=language_code,
             should_translate=translation_mode == TranslationMode.WHISPER,
             output_file_types=self.effective_output_file_types,

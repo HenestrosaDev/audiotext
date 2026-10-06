@@ -296,6 +296,21 @@ def test_uses_the_config_of_the_provider(whisperx: MagicMock) -> None:
     assert whisperx.load_model.call_args.args[0] == "tiny"
 
 
+def test_the_model_of_the_transcription_replaces_the_configured_one(
+    whisperx: MagicMock,
+) -> None:
+    handler = WhisperXHandler()
+
+    handler.transcribe_file(make_transcription(model_size="tiny"))
+    handler.transcribe_file(make_transcription())
+
+    assert [call.args[0] for call in whisperx.load_model.call_args_list] == [
+        "tiny",
+        "large-v2",
+    ]
+    assert ConfigManager.get_config_whisperx().model_size == "large-v2"
+
+
 class TestDiarization:
     @pytest.fixture
     def diarize(
