@@ -148,9 +148,11 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         # progress, and always report to the window being shown
         self._current_window = CurrentWindow(self)
         self._history = HistoryController(self._history_store, self._current_window)
-        self._jobs = TranscriptionQueue(self._history_store, self._current_window)
-        self._controller = MainController(self._jobs, self._current_window)
-        self._jobs.set_controller(self._controller)
+        self._jobs = TranscriptionQueue(
+            self._history_store,
+            self._current_window,
+            create_runner=lambda jobs: MainController(jobs, self._current_window),
+        )
         self._view = self._create_view()
         if config_system.check_for_updates:
             self._view.check_for_updates()

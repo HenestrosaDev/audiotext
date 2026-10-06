@@ -2,11 +2,13 @@ from collections import deque
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
-from typing import TYPE_CHECKING, Any
+from typing import Any
 from urllib.parse import parse_qs, unquote, urlsplit
 
 import utils.notifications as notifications
 from interfaces.history_view import TranscriptionQueueView
+from interfaces.transcription_runner import TranscriptionRunner
+from interfaces.transcription_view import TranscriptionView
 from models.config.config_whisperx import ConfigWhisperX
 from models.history import EntryStatus, HistoryEntry
 from models.transcript_segment import TranscriptSegment
@@ -16,9 +18,6 @@ from utils.enums import AudioSource
 from utils.history_store import HistoryStore
 from utils.i18n import _
 from utils.validators import is_youtube_url
-
-if TYPE_CHECKING:
-    from controllers.main_controller import MainController
 
 
 @dataclass
@@ -66,21 +65,27 @@ class TranscriptionQueue:
     the interface language changes), so the queue isn't lost.
     """
 
-    def __init__(self, store: HistoryStore, view: TranscriptionQueueView) -> None:
+    def __init__(
+        self,
+        store: HistoryStore,
+        view: TranscriptionQueueView,
+        create_runner: Callable[[TranscriptionView], TranscriptionRunner],
+    ) -> None:
+        """
+        :param create_runner: Creates what runs the transcriptions, which reports
+                              their progress to the queue.
+        """
         self._store = store
         self.view = view
-        self._controller: MainController | None = None
         self._job: Job | None = None
         self._queue: deque[str] = deque()
         # The entry created for the last recording, opened from the microphone view
         self.last_mic_entry_id: str | None = None
-
-    def set_controller(self, controller: "MainController") -> None:
-        self._controller = controller
+        self._runner = create_runner(self)
 
     def preload_model(self) -> None:
-        if self._controller and not self.is_busy():
-            self._controller.preload_model()
+        if not self.is_busy():
+            self._runner.preload_model()
 
     # QUEUE
 
@@ -195,8 +200,7 @@ class TranscriptionQueue:
             if job.is_mic and self.view.is_recording():
                 self.stop_recording()
             job.is_cancel_requested = True
-            if self._controller:
-                self._controller.cancel_transcription()
+            self._runner.cancel_transcription()
         elif entry_id in self._queue:
             self._queue.remove(entry_id)
             self._store.update(entry, status=EntryStatus.CANCELLED)
@@ -204,7 +208,7 @@ class TranscriptionQueue:
             self._refresh_queue_positions()
 
     def _run_next(self) -> None:
-        if self._job is not None or not self._controller:
+        if self._job is not None:
             return
 
         while self._queue:
@@ -247,7 +251,7 @@ class TranscriptionQueue:
         self._store.update(entry, status=status, error="", method=settings.method)
         self.view.on_entry_changed(entry.id)
         self._refresh_queue_positions()
-        self._controller.prepare_for_transcription(transcription)
+        self._runner.prepare_for_transcription(transcription)
 
     def _refresh_queue_positions(self) -> None:
         for entry_id in self._queue:
@@ -348,7 +352,7 @@ class TranscriptionQueue:
         :return: Whether the recording started, since only one transcription is
                  processed at a time.
         """
-        if self.is_busy() or not self._controller:
+        if self.is_busy():
             return False
 
         entry = HistoryEntry(
@@ -371,7 +375,7 @@ class TranscriptionQueue:
             progress_message=_("Recording…"),
         )
         self.view.refresh_sidebar()
-        self._controller.prepare_for_transcription(
+        self._runner.prepare_for_transcription(
             settings.to_transcription(
                 AudioSource.MIC,
                 "",
@@ -382,8 +386,7 @@ class TranscriptionQueue:
         return True
 
     def stop_recording(self) -> None:
-        if self._controller:
-            self._controller.stop_recording_from_mic()
+        self._runner.stop_recording_from_mic()
 
     # CONTROLLER INTERFACE
 

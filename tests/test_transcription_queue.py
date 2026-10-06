@@ -35,9 +35,7 @@ def controller() -> MagicMock:
 def jobs(
     store: HistoryStore, view: MagicMock, controller: MagicMock
 ) -> TranscriptionQueue:
-    jobs = TranscriptionQueue(store, view)
-    jobs.set_controller(controller)
-    return jobs
+    return TranscriptionQueue(store, view, create_runner=lambda _jobs: controller)
 
 
 def start(jobs: TranscriptionQueue, view: MagicMock, value: str) -> str:
