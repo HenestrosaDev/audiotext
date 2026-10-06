@@ -13,7 +13,6 @@ from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
 from utils.errors import format_error
 from utils.history_store import HistoryStore
-from utils.i18n import _
 from utils.system import open_in_file_manager, reveal_in_file_manager
 
 logger = logging.getLogger(__name__)
@@ -70,26 +69,18 @@ class HistoryController:
             return
         try:
             reveal_in_file_manager(path)
-        except FileNotFoundError:
-            self.view.show_status(
-                _("The file was moved or deleted: {path}").format(path=path),
-                is_error=True,
-            )
+        except FileNotFoundError as e:
+            self.view.on_reveal_failed(path, e)
         except (OSError, subprocess.SubprocessError) as e:
             logger.error("Could not show %s", path, exc_info=e)
-            self.view.show_status(
-                _("Could not open the file manager: {error}").format(error=e),
-                is_error=True,
-            )
+            self.view.on_reveal_failed(path, e)
 
     def open_folder(self, folder: Path) -> None:
         try:
             open_in_file_manager(folder)
         except (OSError, subprocess.SubprocessError) as e:
             logger.error("Could not open %s", folder, exc_info=e)
-            self.view.show_status(
-                _("Could not open the folder: {error}").format(error=e), is_error=True
-            )
+            self.view.on_open_folder_failed(folder, e)
 
     def delete_entry(self, entry_id: str) -> None:
         """
@@ -161,18 +152,10 @@ class HistoryController:
 
         if summary:
             self._store.update(entry, summary=summary.to_dict())
-            self.view.show_status(
-                _("The summary of “{title}” is ready.").format(title=entry.title)
-            )
+            self.view.on_summary_finished(entry, None)
         else:
             self._summary_errors[entry_id] = error
-            self.view.show_status(
-                _("Could not summarize “{title}”: {error}").format(
-                    title=entry.title, error=error
-                ),
-                is_error=True,
-            )
-        self.view.refresh_entry_view(entry_id)
+            self.view.on_summary_finished(entry, error)
 
     # TRANSLATIONS
 
@@ -282,18 +265,10 @@ class HistoryController:
 
         if translation:
             self._store.update(entry, translation=translation.to_dict())
-            self.view.show_status(
-                _("The translation of “{title}” is ready.").format(title=entry.title)
-            )
+            self.view.on_translation_finished(entry, None)
         else:
             self._translation_errors[entry_id] = error
-            self.view.show_status(
-                _("Could not translate “{title}”: {error}").format(
-                    title=entry.title, error=error
-                ),
-                is_error=True,
-            )
-        self.view.refresh_entry_view(entry_id)
+            self.view.on_translation_finished(entry, error)
 
     # GROUPS
 

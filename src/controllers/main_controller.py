@@ -197,6 +197,7 @@ class MainController:
         return self._transcribe_single_file(transcription, file_path)
 
     def _transcribe_recording(self, transcription: Transcription) -> str:
+        self._report_progress(_("Recording…"), None)
         try:
             recording_path = self._mic_recorder.record(
                 transcription, transcription.media_path or MIC_RECORDING_PATH

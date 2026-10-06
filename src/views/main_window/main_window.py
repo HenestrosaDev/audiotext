@@ -12,6 +12,7 @@ from typing import Any
 import customtkinter as ctk
 
 import utils.constants as c
+import utils.notifications as notifications
 from controllers.history_controller import HistoryController
 from controllers.transcription_queue import TranscriptionQueue
 from models.config.config_system import ConfigSystem
@@ -430,6 +431,25 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def get_queue_position(self, entry_id: str) -> int | None:
         return self._jobs.get_queue_position(entry_id)
 
+    def on_transcription_finished(
+        self, entry: HistoryEntry, status_message: str | None
+    ) -> None:
+        if entry.status == EntryStatus.FAILED:
+            self.show_status(f"{entry.title}: {entry.error}", is_error=True)
+        elif status_message:
+            self.show_status(f"{entry.title}: {status_message}")
+
+    @staticmethod
+    def on_transcription_ready(entry: HistoryEntry) -> None:
+        if ConfigManager.get_config_system().notify_when_done:
+            notifications.notify(_("Transcription ready"), entry.title)
+
+    def on_transcription_saved(self, folder: Path) -> None:
+        self.show_status(_("Saved in {folder}.").format(folder=folder))
+
+    def on_recording_unavailable(self, entry: HistoryEntry) -> None:
+        self.show_status(_("The recording is no longer available."), is_error=True)
+
     # MICROPHONE
 
     def _start_recording(
@@ -476,13 +496,15 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         if self._mic_view:
             self._mic_view.show_text(text)
 
-    def on_mic_finished(self, error: str | None) -> None:
+    def on_mic_finished(self, entry: HistoryEntry) -> None:
         if self._mic_view is None:
             return
-        if error is None:
+        if entry.status == EntryStatus.DONE:
             self._mic_view.set_state(MicState.DONE)
         else:
-            self._mic_view.set_state(MicState.FAILED, error)
+            self._mic_view.set_state(
+                MicState.FAILED, entry.error or _("The transcription was cancelled.")
+            )
 
     # ENTRIES
 
@@ -554,6 +576,18 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def open_folder(self, folder: Path) -> None:
         self._history.open_folder(folder)
 
+    def on_reveal_failed(self, path: Path, error: Exception) -> None:
+        if isinstance(error, FileNotFoundError):
+            message = _("The file was moved or deleted: {path}").format(path=path)
+        else:
+            message = _("Could not open the file manager: {error}").format(error=error)
+        self.show_status(message, is_error=True)
+
+    def on_open_folder_failed(self, folder: Path, error: Exception) -> None:
+        self.show_status(
+            _("Could not open the folder: {error}").format(error=error), is_error=True
+        )
+
     def delete_entry(self, entry_id: str) -> None:
         entry = self._store.get(entry_id)
         if entry is None:
@@ -591,6 +625,20 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def get_summary_error(self, entry_id: str) -> str:
         return self._history.get_summary_error(entry_id)
 
+    def on_summary_finished(self, entry: HistoryEntry, error: str | None) -> None:
+        if error is None:
+            self.show_status(
+                _("The summary of “{title}” is ready.").format(title=entry.title)
+            )
+        else:
+            self.show_status(
+                _("Could not summarize “{title}”: {error}").format(
+                    title=entry.title, error=error
+                ),
+                is_error=True,
+            )
+        self.refresh_entry_view(entry.id)
+
     def translate_entry(
         self, entry_id: str, language: str, provider: str, model: str = ""
     ) -> None:
@@ -604,6 +652,20 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     def get_translation_error(self, entry_id: str) -> str:
         return self._history.get_translation_error(entry_id)
+
+    def on_translation_finished(self, entry: HistoryEntry, error: str | None) -> None:
+        if error is None:
+            self.show_status(
+                _("The translation of “{title}” is ready.").format(title=entry.title)
+            )
+        else:
+            self.show_status(
+                _("Could not translate “{title}”: {error}").format(
+                    title=entry.title, error=error
+                ),
+                is_error=True,
+            )
+        self.refresh_entry_view(entry.id)
 
     def save_translation_text(self, entry_id: str, text: str) -> None:
         self._history.save_translation_text(entry_id, text)
