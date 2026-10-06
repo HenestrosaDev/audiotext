@@ -5,12 +5,13 @@ callback of the interface raises an error. They're skipped without a display.
 
 import gettext
 import os
+import re
 import sys
 import time
 import tkinter as tk
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
-from functools import partial
+from functools import cache, partial
 from pathlib import Path
 from typing import Any
 
@@ -204,7 +205,39 @@ def untranslated_texts(root: Any) -> set[str]:
             texts.update([value] if isinstance(value, str) else value or [])
         if isinstance(widget, tk.Wm):
             texts.add(widget.title())
-    return {text for text in texts if text and translation.gettext(text) != text}
+    patterns = english_patterns(get_language())
+    return {
+        text
+        for text in texts
+        if text
+        and (
+            translation.gettext(text) != text
+            or any(pattern.search(text) for pattern in patterns)
+        )
+    }
+
+
+@cache
+def english_patterns(language: str) -> list[re.Pattern[str]]:
+    """
+    Patterns that find the English texts with a translation into a language in
+    the texts built from them: filled in (e.g. "Transcribed 2 of 3 files.") or
+    joined to others (e.g. "Translation into French · Done"). Single words are
+    left out, since they're often part of other texts (e.g. names).
+    """
+    translation = gettext.translation(
+        DOMAIN, LOCALES_PATH, languages=[language], fallback=True
+    )
+    patterns = []
+    for message, translated_message in getattr(translation, "_catalog", {}).items():
+        if not message or translated_message == message or " " not in message:
+            continue
+        # The placeholders (e.g. "{total}") match any text
+        parts = re.split(r"\{[^{}]*\}", message)
+        regex = r".+?".join(re.escape(part) for part in parts)
+        # Not inside a word (e.g. "Done" in "Undone")
+        patterns.append(re.compile(rf"(?<!\w){regex}(?!\w)"))
+    return patterns
 
 
 @pytest.fixture
