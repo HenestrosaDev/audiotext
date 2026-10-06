@@ -54,7 +54,8 @@ install_gpu_addon() {
 		echo "Downloading $name..."
 		curl -fL --retry 3 --progress-bar -o "$tmp_dir/$name" "$url"
 		echo "$sha  $tmp_dir/$name" | sha256sum --check --quiet -
-		tar -xzf "$tmp_dir/$name" -C "$app_dir"
+		# tar detects the compression of the archive (xz)
+		tar -xf "$tmp_dir/$name" -C "$app_dir"
 		rm "$tmp_dir/$name"
 	done <"$here/gpu-addon.txt"
 
