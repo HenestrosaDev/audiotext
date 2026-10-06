@@ -1,5 +1,6 @@
 import gc
 import logging
+import multiprocessing
 import re
 import sys
 import tkinter as tk
@@ -349,6 +350,10 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
 
 
 if __name__ == "__main__":
+    # The bundled app is also run for the helper processes of multiprocessing (e.g.
+    # the resource tracker used by PyTorch), which would otherwise open another window
+    multiprocessing.freeze_support()
+
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
     )
