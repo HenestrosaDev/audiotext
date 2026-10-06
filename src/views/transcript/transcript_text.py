@@ -8,6 +8,7 @@ import customtkinter as ctk
 from models.transcript_segment import TranscriptSegment
 from utils.i18n import _
 from utils.time_format import format_segment_range
+from views.localization import Text, on_language_change
 from views.style import theme
 from views.widgets.textbox import CTkTextbox
 
@@ -52,7 +53,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         on_segment_menu: Callable[[Any, int], str | None] | None = None,
         on_text_edit: Callable[[str], None] | None = None,
         show_click_hint: bool = True,
-        empty_segment_text: str = "",
+        empty_segment_text: Text | None = None,
     ) -> None:
         """
         :param on_segment_click: Called with the index of a clicked segment.
@@ -124,6 +125,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             add="+",
         )
         self._configure_tags()
+        on_language_change(self, self._on_language_change)
 
     def destroy(self) -> None:
         if self._save_text_after_id:
@@ -207,6 +209,17 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         else:
             self.lbl_hint.grid_remove()
         self.search(self._query)
+
+    def _on_language_change(self) -> None:
+        # The texts shown in place of the missing ones (e.g. a segment not
+        # translated yet) are part of the transcript
+        if not self._segments or any(
+            not segment.text and not segment.words for segment in self._segments
+        ):
+            self._current_segment = self._current_word = None
+            self._render_transcript()
+        # Shows the hint again, and the search in the new transcript
+        self.set_mode(self._mode)
 
     def get_text(self) -> str:
         return str(self.tbx_plain.get("1.0", ctk.END)).rstrip("\n")
@@ -380,8 +393,11 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             if segment.words:
                 word_entries.extend(self._insert_words(segment, segment_tag))
             elif not segment.text:
+                empty_text = self._empty_segment_text
                 textbox.insert(
-                    ctk.END, self._empty_segment_text, ("empty_segment", segment_tag)
+                    ctk.END,
+                    empty_text() if empty_text else "",
+                    ("empty_segment", segment_tag),
                 )
             else:
                 textbox.insert(ctk.END, segment.text, segment_tag)

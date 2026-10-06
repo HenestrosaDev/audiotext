@@ -1,10 +1,12 @@
 from collections.abc import Callable
+from functools import partial
 from typing import Any
 
 import customtkinter as ctk
 
 from utils.enums import AudioSource
 from utils.i18n import _
+from views.localization import localize
 from views.style import icons, theme
 
 STATUS_DURATION_MS = 6000
@@ -65,26 +67,26 @@ class TopBar(ctk.CTkFrame):  # type: ignore[misc]
 
         frm_sources = ctk.CTkFrame(self, fg_color="transparent")
         frm_sources.grid(row=0, column=2, sticky=ctk.W)
-        ctk.CTkLabel(
-            frm_sources,
-            text=_("New transcription:"),
-            font=theme.font(12),
-            text_color=theme.HINT_TEXT,
+        localize(
+            ctk.CTkLabel(frm_sources, font=theme.font(12), text_color=theme.HINT_TEXT),
+            text=lambda: _("New transcription:"),
         ).grid(row=0, column=0, padx=(0, 8))
 
         self._source_buttons: dict[AudioSource, tuple[ctk.CTkButton, str]] = {}
         for idx, (source, icon_name) in enumerate(SOURCES):
-            button = ctk.CTkButton(
-                frm_sources,
-                text=source_button_label(source),
-                image=icons.icon(icon_name, 17),
-                compound=ctk.LEFT,
-                width=0,
-                height=32,
-                corner_radius=8,
-                font=theme.font(13),
-                command=lambda source=source: on_source(source),
-                **theme.GHOST_BUTTON,
+            button = localize(
+                ctk.CTkButton(
+                    frm_sources,
+                    image=icons.icon(icon_name, 17),
+                    compound=ctk.LEFT,
+                    width=0,
+                    height=32,
+                    corner_radius=8,
+                    font=theme.font(13),
+                    command=lambda source=source: on_source(source),
+                    **theme.GHOST_BUTTON,
+                ),
+                text=partial(source_button_label, source),
             )
             button.grid(row=0, column=idx + 1, padx=2)
             self._source_buttons[source] = (button, icon_name)
@@ -152,9 +154,10 @@ class TopBar(ctk.CTkFrame):  # type: ignore[misc]
 
     def show_update(self, version: str, on_click: Callable[[], Any]) -> None:
         """Shows the button that opens the page of a new version of the app."""
-        self.btn_update.configure(
-            text=_("Version {version} is available").format(version=version),
-            command=on_click,
+        self.btn_update.configure(command=on_click)
+        localize(
+            self.btn_update,
+            text=lambda: _("Version {version} is available").format(version=version),
         )
         self.btn_update.grid()
 

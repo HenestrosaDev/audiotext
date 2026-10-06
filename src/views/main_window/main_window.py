@@ -74,6 +74,9 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     the entries pass their actions to the controllers directly, to `EntryDialogs`
     if the user must be asked first (e.g. for a name), or to the window if they
     change what's shown.
+
+    It's created once: when the interface language changes, its texts are shown
+    in the new one (see `views.localization`).
     """
 
     def __init__(
@@ -82,12 +85,10 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         store: HistoryStore,
         history: HistoryController,
         jobs: TranscriptionQueue,
-        on_ui_language_change: Callable[[str], None],
     ) -> None:
         super().__init__(parent, corner_radius=0, fg_color=theme.WINDOW_BG)
         self._store = store
         self._jobs = jobs
-        self._on_ui_language_change = on_ui_language_change
 
         self._page = Page.WELCOME
         self._new_views: dict[AudioSource, NewTranscriptionView] = {}
@@ -98,7 +99,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self._entry_view: Any = None
         self._entry_view_id: str | None = None
         self._preferences: PreferencesDialog | None = None
-        self._available_update: Release | None = None
 
         # The callbacks of the background threads of the views, which aren't run
         # once the window is destroyed
@@ -166,29 +166,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def destroy(self) -> None:
         self._ui_queue.stop()
         super().destroy()
-
-    # SESSION (the window is rebuilt when the interface language changes)
-
-    def get_session_state(self) -> dict[str, Any]:
-        source = next(
-            (s for s, v in self._new_views.items() if v.winfo_ismapped()), None
-        )
-        return {
-            "page": self._page,
-            "entry_id": self._entry_view_id,
-            "source": source,
-            "update": self._available_update,
-        }
-
-    def restore_session_state(self, state: dict[str, Any]) -> None:
-        if state["update"]:
-            self.show_update(state["update"])
-        if state["page"] == Page.ENTRY and state["entry_id"]:
-            self.select_entry(state["entry_id"])
-        elif state["page"] == Page.MIC:
-            self.show_source(AudioSource.MIC)
-        elif state["page"] == Page.NEW and state["source"]:
-            self.show_source(state["source"])
 
     # PAGES
 
@@ -630,7 +607,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             on_result(release, has_error)
 
     def show_update(self, release: Release) -> None:
-        self._available_update = release
         self.top_bar.show_update(
             release.version, on_click=lambda: webbrowser.open(release.url)
         )
@@ -648,9 +624,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self._preferences = PreferencesDialog(
             self,
             on_set_api_key=self._on_set_api_key,
-            on_ui_language_change=lambda language: self.after(
-                10, lambda: self._on_ui_language_change(language)
-            ),
             on_model_change=self._request_model_preload,
             can_change_language=not self._jobs.is_busy(),
             initial_tab=tab,

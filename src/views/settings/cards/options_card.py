@@ -11,6 +11,7 @@ from models.transcription_settings import TranscriptionSettings
 from utils.enums import TranscriptionMethod
 from utils.env_keys import EnvKeys
 from utils.i18n import _
+from views.localization import localize
 from views.settings.cards.base import SettingsCard
 from views.settings.option_labels import save_config
 from views.style import theme
@@ -34,13 +35,13 @@ class OptionsCard(SettingsCard):
         :param has_subtitles: Whether subtitles are saved with the settings, which
                               already need the timings of the words.
         """
-        super().__init__(master, _("Options"), on_change)
+        super().__init__(master, lambda: _("Options"), on_change)
         self._has_subtitles = has_subtitles
         self._debounce_after_id: str | None = None
 
         self.swi_align_words = self._switch(
             2,
-            _("Word-level timings"),
+            lambda: _("Word-level timings"),
             config_transcription.align_words,
             ConfigTranscription.Key.ALIGN_WORDS,
         )
@@ -48,15 +49,17 @@ class OptionsCard(SettingsCard):
 
         self.swi_isolate_speech = self._switch(
             4,
-            _("Extract speech"),
+            lambda: _("Extract speech"),
             config_transcription.isolate_speech,
             ConfigTranscription.Key.ISOLATE_SPEECH,
         )
-        self._hint(5, _("Reduces music and background noise before transcribing."))
+        self._hint(
+            5, lambda: _("Reduces music and background noise before transcribing.")
+        )
 
         self.swi_diarize = self._switch(
             6,
-            _("Identify speakers"),
+            lambda: _("Identify speakers"),
             config_whisperx.diarize,
             ConfigWhisperX.Key.DIARIZE,
         )
@@ -64,10 +67,9 @@ class OptionsCard(SettingsCard):
         self.frm_speakers.grid(
             row=7, column=0, columnspan=2, padx=18, pady=(8, 0), sticky=ctk.EW
         )
-        ctk.CTkLabel(
-            self.frm_speakers,
-            text=_("Number of speakers (0 = auto)"),
-            font=theme.font(12),
+        localize(
+            ctk.CTkLabel(self.frm_speakers, font=theme.font(12)),
+            text=lambda: _("Number of speakers (0 = auto)"),
         ).grid(row=0, column=0, sticky=ctk.W)
         self._num_speakers = ctk.StringVar(self, str(config_whisperx.num_speakers))
         self.ent_num_speakers = ctk.CTkEntry(
@@ -82,12 +84,16 @@ class OptionsCard(SettingsCard):
         )
         self.ent_num_speakers.grid(row=0, column=1, padx=(10, 0))
         self._num_speakers.trace_add("write", lambda *_args: self._debounce_save())
-        self.btn_hf_token = ctk.CTkButton(
-            self.frm_speakers,
-            text=_("Set Hugging Face token…"),
-            height=26,
-            command=lambda: on_set_api_key(EnvKeys.HF_TOKEN, _("Hugging Face token")),
-            **theme.SECONDARY_BUTTON,
+        self.btn_hf_token = localize(
+            ctk.CTkButton(
+                self.frm_speakers,
+                height=26,
+                command=lambda: on_set_api_key(
+                    EnvKeys.HF_TOKEN, _("Hugging Face token")
+                ),
+                **theme.SECONDARY_BUTTON,
+            ),
+            text=lambda: _("Set Hugging Face token…"),
         )
         self.btn_hf_token.grid(row=1, column=0, columnspan=2, pady=(8, 0), sticky=ctk.W)
         self.interactive_widgets.extend([self.ent_num_speakers, self.btn_hf_token])

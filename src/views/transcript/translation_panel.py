@@ -21,11 +21,12 @@ from utils.config_manager import ConfigManager
 from utils.env_keys import EnvKeys
 from utils.i18n import _, get_language, get_language_name
 from views.history.formatting import format_full_date
-from views.settings.option_labels import OptionLabels, get_language_labels
+from views.settings.option_labels import get_language_labels
 from views.style import icons, theme
 from views.transcript.edit_dialogs import _Dialog
 from views.transcript.transcript_text import TranscriptText
 from views.widgets.bindings import bind_wraplength
+from views.widgets.localized_options import LocalizedOptions
 from views.widgets.option_menu import CTkOptionMenu
 from views.widgets.searchable_option_menu import CTkSearchableOptionMenu
 
@@ -127,7 +128,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             on_text_edit=on_text_edit,
             # The transcript on its left already explains it
             show_click_hint=False,
-            empty_segment_text=_("Not translated yet"),
+            empty_segment_text=lambda: _("Not translated yet"),
         )
         # It's inside the card of the panel
         self.text.configure(fg_color="transparent", border_width=0)
@@ -324,35 +325,28 @@ class TranslateDialog(_Dialog):
         self._result: TranslationRequest | None = None
 
         config = ConfigManager.get_config_ai()
-        language_labels = get_language_labels()
-        self._language_labels = OptionLabels(language_labels)
-        # The user can also translate it, from empty segments with the timestamps
-        self._provider_labels = OptionLabels(
-            {**translation_providers(), MANUAL: _("Myself, from scratch")}
-        )
 
         ctk.CTkLabel(
             self.frm_body, text=_("Translate into:"), font=theme.font(13)
         ).grid(row=0, column=0, padx=(0, 10), pady=4, sticky=ctk.W)
         self.omn_language = CTkSearchableOptionMenu(
             self.frm_body,
-            values=self._language_labels.labels,
-            title=_("Language of the translation"),
-            search_placeholder=_("Search language…"),
-            no_results_text=_("No languages found."),
-            search_terms={
-                language_labels[code]: f"{name} {code}"
-                for code, name in c.AUDIO_LANGUAGES.items()
-            },
+            values=[],
+            title=lambda: _("Language of the translation"),
+            search_placeholder=lambda: _("Search language…"),
+            no_results_text=lambda: _("No languages found."),
             width=260,
             dynamic_resizing=False,
         )
-        self.omn_language.grid(row=0, column=1, pady=4, sticky=ctk.EW)
-        self.omn_language.set(
-            self._language_labels.label(
-                self._default_language(config.translation_language, source_language)
-            )
+        self._languages = LocalizedOptions(
+            self.omn_language,
+            get_language_labels,
+            self._default_language(config.translation_language, source_language),
+            search_terms={
+                code: f"{name} {code}" for code, name in c.AUDIO_LANGUAGES.items()
+            },
         )
+        self.omn_language.grid(row=0, column=1, pady=4, sticky=ctk.EW)
 
         ctk.CTkLabel(self.frm_body, text=_("Provider:"), font=theme.font(13)).grid(
             row=1, column=0, padx=(0, 10), pady=4, sticky=ctk.W
@@ -360,13 +354,14 @@ class TranslateDialog(_Dialog):
         provider = config.translation_provider
         if provider not in translation_providers():
             provider = DEEPL
-        self.omn_provider = CTkOptionMenu(
-            self.frm_body,
-            values=self._provider_labels.labels,
-            width=260,
-            command=lambda _label: self._refresh(),
+        self.omn_provider = CTkOptionMenu(self.frm_body, values=[], width=260)
+        # The user can also translate it, from empty segments with the timestamps
+        self._providers = LocalizedOptions(
+            self.omn_provider,
+            lambda: {**translation_providers(), MANUAL: _("Myself, from scratch")},
+            provider,
+            command=lambda _provider: self._refresh(),
         )
-        self.omn_provider.set(self._provider_labels.label(provider))
         self.omn_provider.grid(row=1, column=1, pady=4, sticky=ctk.EW)
 
         self.frm_key = ctk.CTkFrame(self.frm_body, fg_color="transparent")
@@ -422,7 +417,7 @@ class TranslateDialog(_Dialog):
 
     @property
     def _provider(self) -> str:
-        return self._provider_labels.value(self.omn_provider.get())
+        return self._providers.get()
 
     def _refresh(self) -> None:
         provider = self._provider
@@ -432,7 +427,7 @@ class TranslateDialog(_Dialog):
         else:
             self.lbl_key.configure(
                 text=_("Set the API key of {provider} to translate with it.").format(
-                    provider=self._provider_labels.label(provider)
+                    provider=self._providers.label(provider)
                 )
             )
             self.frm_key.grid()
@@ -458,7 +453,7 @@ class TranslateDialog(_Dialog):
         if self._provider != MANUAL and not has_api_key(self._provider):
             return
         self._result = TranslationRequest(
-            language=self._language_labels.value(self.omn_language.get()),
+            language=self._languages.get(),
             provider=self._provider,
         )
         self._close()

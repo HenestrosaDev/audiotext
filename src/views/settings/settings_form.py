@@ -13,6 +13,7 @@ from utils.config_manager import ConfigManager
 from utils.enums import ModelSize, TranscriptionMethod
 from utils.env_keys import EnvKeys
 from utils.i18n import _
+from views.localization import on_language_change
 from views.settings.cards.base import SettingsCard
 from views.settings.cards.context_card import ContextCard
 from views.settings.cards.engine_card import EngineCard
@@ -76,6 +77,9 @@ class SettingsForm(CTkScrollableFrame):
         self._config_whisperx = ConfigManager.get_config_whisperx()
         self._config_whisper_api = ConfigManager.get_config_whisper_api()
 
+        # Whether the user can change the options (e.g. not while recording)
+        self._is_enabled = True
+
         for column in range(columns):
             self.grid_columnconfigure(column, weight=1, uniform="settings")
 
@@ -95,6 +99,8 @@ class SettingsForm(CTkScrollableFrame):
             )
 
         self._refresh()
+        # After the cards, so the options of their menus are already translated
+        on_language_change(self, self._on_language_change)
 
     def _create_cards(self) -> list[SettingsCard]:
         refresh = self._refresh
@@ -190,6 +196,7 @@ class SettingsForm(CTkScrollableFrame):
         return None
 
     def set_enabled(self, is_enabled: bool) -> None:
+        self._is_enabled = is_enabled
         state = ctk.NORMAL if is_enabled else ctk.DISABLED
         for card in self._cards:
             for widget in card.interactive_widgets:
@@ -242,6 +249,12 @@ class SettingsForm(CTkScrollableFrame):
 
         if self._on_change:
             self._on_change()
+
+    def _on_language_change(self) -> None:
+        # Refreshing the cards enables the options that apply to the settings
+        self._refresh()
+        if not self._is_enabled:
+            self.set_enabled(False)
 
     def _has_subtitles(self, settings: TranscriptionSettings) -> bool:
         return self._has_output and bool(
