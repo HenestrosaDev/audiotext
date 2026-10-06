@@ -10,7 +10,7 @@ from models.config.config_whisperx import ConfigWhisperX
 from models.transcription_settings import TranscriptionSettings
 from utils.enums import TranscriptionMethod
 from utils.env_keys import EnvKeys
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.localization import localize
 from views.settings.cards.base import SettingsCard
 from views.settings.option_labels import save_config
@@ -35,13 +35,13 @@ class OptionsCard(SettingsCard):
         :param has_subtitles: Whether subtitles are saved with the settings, which
                               already need the timings of the words.
         """
-        super().__init__(master, lambda: _("Options"), on_change)
+        super().__init__(master, L_("Options"), on_change)
         self._has_subtitles = has_subtitles
         self._debounce_after_id: str | None = None
 
         self.swi_align_words = self._switch(
             2,
-            lambda: _("Word-level timings"),
+            L_("Word-level timings"),
             config_transcription.align_words,
             ConfigTranscription.Key.ALIGN_WORDS,
         )
@@ -49,17 +49,15 @@ class OptionsCard(SettingsCard):
 
         self.swi_isolate_speech = self._switch(
             4,
-            lambda: _("Extract speech"),
+            L_("Extract speech"),
             config_transcription.isolate_speech,
             ConfigTranscription.Key.ISOLATE_SPEECH,
         )
-        self._hint(
-            5, lambda: _("Reduces music and background noise before transcribing.")
-        )
+        self._hint(5, L_("Reduces music and background noise before transcribing."))
 
         self.swi_diarize = self._switch(
             6,
-            lambda: _("Identify speakers"),
+            L_("Identify speakers"),
             config_whisperx.diarize,
             ConfigWhisperX.Key.DIARIZE,
         )
@@ -69,7 +67,7 @@ class OptionsCard(SettingsCard):
         )
         localize(
             ctk.CTkLabel(self.frm_speakers, font=theme.font(12)),
-            text=lambda: _("Number of speakers (0 = auto)"),
+            text=L_("Number of speakers (0 = auto)"),
         ).grid(row=0, column=0, sticky=ctk.W)
         self._num_speakers = ctk.StringVar(self, str(config_whisperx.num_speakers))
         self.ent_num_speakers = ctk.CTkEntry(
@@ -93,7 +91,7 @@ class OptionsCard(SettingsCard):
                 ),
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Set Hugging Face token…"),
+            text=L_("Set Hugging Face token…"),
         )
         self.btn_hf_token.grid(row=1, column=0, columnspan=2, pady=(8, 0), sticky=ctk.W)
         self.interactive_widgets.extend([self.ent_num_speakers, self.btn_hf_token])

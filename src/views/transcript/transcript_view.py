@@ -23,7 +23,7 @@ from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 from utils.exporters import ExportDocument, available_formats, export
 from utils.history_store import sanitize_file_name
-from utils.i18n import _
+from utils.i18n import L_, _
 from utils.media import (
     PLAYBACK_SAMPLE_RATE,
     MediaInfo,
@@ -452,15 +452,15 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.seg_mode.grid(row=0, column=5, padx=(10, 0))
 
         self.btn_translate = self._create_action_button(
-            toolbar, lambda: _("Translate"), "globe", self._on_translate_button
+            toolbar, L_("Translate"), "globe", self._on_translate_button
         )
         self.btn_translate.grid(row=0, column=6, padx=(10, 0))
         self.btn_copy = self._create_action_button(
-            toolbar, lambda: _("Copy"), "copy", self._on_copy
+            toolbar, L_("Copy"), "copy", self._on_copy
         )
         self.btn_copy.grid(row=0, column=7, padx=(8, 0))
         self.btn_export = self._create_action_button(
-            toolbar, lambda: _("Export"), "export", self.show_export_menu
+            toolbar, L_("Export"), "export", self.show_export_menu
         )
         self.btn_export.grid(row=0, column=8, padx=(8, 0))
         self.btn_more = ctk.CTkButton(
@@ -1181,7 +1181,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.clipboard_clear()
         self.clipboard_append(self.text.get_text())
         self.btn_copy.configure(image=icons.icon("check", 15, theme.STATUS_DONE))
-        localize(self.btn_copy, text=lambda: _("Copied"))
+        localize(self.btn_copy, text=L_("Copied"))
         if self._copy_feedback_after_id:
             self.after_cancel(self._copy_feedback_after_id)
         self._copy_feedback_after_id = self.after(1500, self._reset_copy_button)
@@ -1189,4 +1189,4 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _reset_copy_button(self) -> None:
         self._copy_feedback_after_id = None
         self.btn_copy.configure(image=icons.icon("copy", 15))
-        localize(self.btn_copy, text=lambda: _("Copy"))
+        localize(self.btn_copy, text=L_("Copy"))

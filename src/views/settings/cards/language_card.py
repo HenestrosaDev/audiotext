@@ -12,7 +12,7 @@ from models.transcription_settings import (
     TranscriptionSettings,
     TranslationMode,
 )
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.localization import localize
 from views.settings.cards.base import SettingsCard
 from views.settings.option_labels import get_language_labels, save_config
@@ -51,20 +51,20 @@ class LanguageCard(SettingsCard):
         on_change: Callable[[], None],
         config_transcription: ConfigTranscription,
     ) -> None:
-        super().__init__(master, lambda: _("Language"), on_change)
+        super().__init__(master, L_("Language"), on_change)
 
         # The English names and the codes of the languages are also searched
         search_terms = {
             code: f"{name} {code}" for code, name in c.AUDIO_LANGUAGES.items()
         }
 
-        self._field_label(2, lambda: _("Language of the audio"))
+        self._field_label(2, L_("Language of the audio"))
         self.omn_input_language = CTkSearchableOptionMenu(
             self,
             values=[],
-            title=lambda: _("Language of the audio"),
-            search_placeholder=lambda: _("Search language…"),
-            no_results_text=lambda: _("No languages found."),
+            title=L_("Language of the audio"),
+            search_placeholder=L_("Search language…"),
+            no_results_text=L_("No languages found."),
             dynamic_resizing=False,
         )
         self._input_languages = LocalizedOptions(
@@ -78,13 +78,13 @@ class LanguageCard(SettingsCard):
             row=3, column=0, columnspan=2, padx=18, sticky=ctk.EW
         )
 
-        self._field_label(4, lambda: _("Language of the transcription"))
+        self._field_label(4, L_("Language of the transcription"))
         self.omn_output_language = CTkSearchableOptionMenu(
             self,
             values=[],
-            title=lambda: _("Language of the transcription"),
-            search_placeholder=lambda: _("Search language…"),
-            no_results_text=lambda: _("No languages found."),
+            title=L_("Language of the transcription"),
+            search_placeholder=L_("Search language…"),
+            no_results_text=L_("No languages found."),
             dynamic_resizing=False,
         )
         self._output_languages = LocalizedOptions(
@@ -116,7 +116,7 @@ class LanguageCard(SettingsCard):
 
         localize(
             ctk.CTkLabel(self.frm_translation, font=theme.font(13, "bold")),
-            text=lambda: _("Translation"),
+            text=L_("Translation"),
         ).grid(row=0, column=0, padx=12, pady=(10, 0), sticky=ctk.W)
 
         # The mode chosen by the user, kept while another language forces a mode
@@ -130,7 +130,7 @@ class LanguageCard(SettingsCard):
                 command=self._on_translation_mode_change,
                 font=theme.font(13),
             ),
-            text=lambda: _("Translate with Whisper (recommended)"),
+            text=L_("Translate with Whisper (recommended)"),
         )
         self.rad_whisper_translation.grid(
             row=1, column=0, padx=12, pady=(8, 0), sticky=ctk.W

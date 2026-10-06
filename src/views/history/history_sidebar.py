@@ -8,7 +8,7 @@ import customtkinter as ctk
 
 from models.history import EntryStatus, HistoryEntry, HistoryGroup
 from utils.history_store import HistoryStore
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.entries.delegates import EntryFiles, EntryPrompts, JobControls
 from views.history.formatting import reveal_label
 from views.history.history_row import HistoryRow, SectionHeader
@@ -129,7 +129,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         search = SearchEntry(
             frame,
             textvariable=self._search_variable,
-            placeholder_text=lambda: _("Search"),
+            placeholder_text=L_("Search"),
         )
         search.grid(row=0, column=0, sticky=ctk.EW)
         self.ent_search = search.entry
@@ -154,7 +154,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
                 command=self.actions.groups.ask_to_create_group,
                 **theme.GHOST_BUTTON,
             ),
-            text=lambda: _("New group"),
+            text=L_("New group"),
         ).grid(row=0, column=0, sticky=ctk.W)
         self.lbl_count = ctk.CTkLabel(
             footer, text="", font=theme.font(11), text_color=theme.HINT_TEXT

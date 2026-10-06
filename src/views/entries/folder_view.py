@@ -5,7 +5,7 @@ import customtkinter as ctk
 
 from models.history import EntryStatus, HistoryEntry
 from utils.history_store import HistoryStore
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.entries.delegates import EntryActions
 from views.entries.entry_header import EntryHeader
 from views.entries.progress_card import ProgressCard
@@ -53,7 +53,7 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
 
         localize(
             ctk.CTkLabel(self, font=theme.font(15, "bold"), anchor=ctk.W),
-            text=lambda: _("Files"),
+            text=L_("Files"),
         ).grid(row=3, column=0, padx=28, pady=(18, 6), sticky=ctk.W)
         self.frm_files = CTkScrollableFrame(
             self,
