@@ -3,8 +3,9 @@ The texts of the interface follow its language: when it changes, they're shown
 again in the new one, without rebuilding the window, so nothing the user typed or
 chose is lost.
 
-A text is given as a function that translates it (e.g. `lambda: _("Settings")`),
-so it can be translated again:
+A text is given as a function that translates it, so it can be translated again:
+`L_("Settings")`, or a lambda for a text filled in (e.g.
+`lambda: _("Version {version}").format(version=APP_VERSION)`).
 
 - `localize` sets the texts of a widget (e.g. its `text` or `placeholder_text`)
   instead of `configure`. It's used both when the widget is created and when its
@@ -73,7 +74,7 @@ def localize(widget: _WidgetT, **texts: Text) -> _WidgetT:
     translated again when the language changes, as long as the option isn't
     changed to another value in the meantime.
 
-    :param texts: The text of each option, e.g. `text=lambda: _("Settings")`. A
+    :param texts: The text of each option, e.g. `text=L_("Settings")`. A
                   toplevel window also takes its `title`.
     :return: The widget, to place it right away.
     """

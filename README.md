@@ -528,7 +528,7 @@ Contributions are what make the open source community such an amazing place to l
 
 ### Translations
 
-The interface is translated with [gettext](https://www.gnu.org/software/gettext/). The texts marked with `_()` (or `N_()`, for the ones defined before the language is set) are in `res/locales/audiotext.pot`, and the translations of each language in `res/locales/<language>/LC_MESSAGES/audiotext.po`, which are compiled into the `audiotext.mo` files that the app loads.
+The interface is translated with [gettext](https://www.gnu.org/software/gettext/). The texts marked with `_()` (or `N_()`, for the ones defined before the language is set, and `L_()`, for the ones translated again when it changes) are in `res/locales/audiotext.pot`, and the translations of each language in `res/locales/<language>/LC_MESSAGES/audiotext.po`, which are compiled into the `audiotext.mo` files that the app loads.
 
 After the texts of the code change, or after editing a `.po` file (e.g. with [Poedit](https://poedit.net/)), run:
 

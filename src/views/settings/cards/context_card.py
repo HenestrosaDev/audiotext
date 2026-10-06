@@ -7,7 +7,7 @@ from handlers.openai_api_handler import get_api_model
 from models.config.config_transcription import ConfigTranscription
 from models.transcription_settings import TranscriptionSettings, TranslationMode
 from utils.enums import TranscriptionMethod
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.localization import localize
 from views.settings.cards.base import SettingsCard
 from views.settings.option_labels import save_config
@@ -26,29 +26,29 @@ class ContextCard(SettingsCard):
         on_change: Callable[[], None],
         config_transcription: ConfigTranscription,
     ) -> None:
-        super().__init__(master, lambda: _("Context"), on_change)
+        super().__init__(master, L_("Context"), on_change)
         self._debounce_after_id: str | None = None
 
         # Why the fields are disabled, if they are
         self.lbl_unavailable = self._hint(2, pady=(2, 0))
 
-        self._field_label(3, lambda: _("Keywords"))
+        self._field_label(3, L_("Keywords"))
         self._keywords = ctk.StringVar(self, config_transcription.keywords)
         self.ent_keywords = localize(
             ctk.CTkEntry(self, textvariable=self._keywords),
-            placeholder_text=lambda: _("e.g. Audiotext, WhisperX, Henestrosa"),
+            placeholder_text=L_("e.g. Audiotext, WhisperX, Henestrosa"),
         )
         self.ent_keywords.grid(row=4, column=0, columnspan=2, padx=18, sticky=ctk.EW)
         self._keywords.trace_add("write", lambda *_args: self._debounce_save())
         self._hint(
             5,
-            lambda: _(
+            L_(
                 "Names, terms or acronyms said in the audio, separated by commas, "
                 "so they're spelled right."
             ),
         )
 
-        self._field_label(6, lambda: _("Description"))
+        self._field_label(6, L_("Description"))
         self.tbx_prompt = CTkPlaceholderTextbox(
             self, height=84, font=theme.font(13), on_change=self._debounce_save
         )
@@ -57,12 +57,12 @@ class ContextCard(SettingsCard):
         # Once the text is in, so the placeholder is only shown if it's empty
         localize(
             self.tbx_prompt,
-            placeholder_text=lambda: _("e.g. An interview about speech recognition"),
+            placeholder_text=L_("e.g. An interview about speech recognition"),
         )
         self.tbx_prompt.grid(row=7, column=0, columnspan=2, padx=18, sticky=ctk.EW)
         self._hint(
             8,
-            lambda: _("What the audio is about, such as its topic or setting."),
+            L_("What the audio is about, such as its topic or setting."),
             (2, 16),
         )
         self.interactive_widgets.extend([self.ent_keywords, self.tbx_prompt])

@@ -3,7 +3,9 @@ Translation of the user interface.
 
 Strings are marked with `_()` to be translated when they are shown, or with `N_()`
 when they are defined before the interface language is set (e.g. module constants),
-so they are extracted for translation but translated later with `_()`.
+so they are extracted for translation but translated later with `_()`. `L_()`
+gives a text of the interface that is translated again when the language changes
+(see `views.localization`), e.g. `localize(label, text=L_("Settings"))`.
 
 The catalogs live in `res/locales/<language>/LC_MESSAGES/audiotext.po` (see the
 "Translations" section of the README to add or update them).
@@ -16,6 +18,7 @@ import os
 import subprocess
 import sys
 import unicodedata
+from collections.abc import Callable
 
 from babel import Locale, UnknownLocaleError
 
@@ -77,6 +80,14 @@ def _(message: str) -> str:
 def N_(message: str) -> str:
     """Marks a message for translation without translating it."""
     return message
+
+
+def L_(message: str) -> Callable[[], str]:
+    """
+    Marks a message for translation, which is translated each time the returned
+    function is called, i.e. into the current interface language.
+    """
+    return lambda: _(message)
 
 
 def get_language() -> str:

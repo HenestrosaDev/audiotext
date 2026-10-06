@@ -663,7 +663,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             self,
             on_set_api_key=self._on_set_api_key,
             on_model_change=self._request_model_preload,
-            can_change_language=not self._jobs.is_busy(),
             initial_tab=tab,
             on_ai_change=self._refresh_shown_entry,
             on_check_for_updates=self.check_for_updates,

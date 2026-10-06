@@ -14,7 +14,7 @@ from models.transcription_settings import TranscriptionSettings
 from utils.enums import AudioSource
 from utils.env_keys import EnvKeys
 from utils.folder_watcher import list_supported_files
-from utils.i18n import _
+from utils.i18n import L_, _
 from utils.media import MediaInfo, probe_media
 from utils.time_format import format_duration
 from utils.validators import is_valid_url, is_youtube_url
@@ -102,27 +102,23 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
         titles: dict[AudioSource, tuple[str, Text, Text, Text]] = {
             AudioSource.FILE: (
                 "file",
-                lambda: _("Transcribe a file"),
-                lambda: _(
-                    "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
-                ),
-                lambda: _("Choose a file"),
+                L_("Transcribe a file"),
+                L_("Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."),
+                L_("Choose a file"),
             ),
             AudioSource.YOUTUBE: (
                 "link",
-                lambda: _("Transcribe from a URL"),
-                lambda: _(
-                    "A YouTube video or a direct link to an audio or video file."
-                ),
-                lambda: _("Enter the URL"),
+                L_("Transcribe from a URL"),
+                L_("A YouTube video or a direct link to an audio or video file."),
+                L_("Enter the URL"),
             ),
             AudioSource.DIRECTORY: (
                 "folder",
-                lambda: _("Transcribe a folder"),
-                lambda: _(
+                L_("Transcribe a folder"),
+                L_(
                     "All the audio and video files of a folder, or the new ones as they're added."
                 ),
-                lambda: _("Choose a folder"),
+                L_("Choose a folder"),
             ),
         }
         icon_name, title, subtitle, source_step = titles[self.source]
@@ -149,9 +145,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
             text=subtitle,
         ).grid(row=1, column=1, sticky=ctk.W)
 
-        self.stepper = Stepper(
-            self, [source_step, lambda: _("Settings"), lambda: _("Transcribe")]
-        )
+        self.stepper = Stepper(self, [source_step, L_("Settings"), L_("Transcribe")])
         self.stepper.grid(row=1, column=0, padx=32, pady=(22, 18), sticky=ctk.EW)
 
     def _card(self, master: Any) -> ctk.CTkFrame:
@@ -187,7 +181,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
             ctk.CTkLabel(
                 self.frm_drop_zone, font=theme.font(13), text_color=theme.HINT_TEXT
             ),
-            text=lambda: _("or"),
+            text=L_("or"),
         ).grid(row=3, column=0, pady=6)
         localize(
             ctk.CTkButton(
@@ -237,7 +231,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
                 command=self.trigger_browse,
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Change…"),
+            text=L_("Change…"),
         ).grid(row=0, column=2, rowspan=3, padx=20)
 
         self.frm_drop_zone.grid(row=0, column=0, sticky=ctk.NSEW)
@@ -247,9 +241,9 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
         card.grid(row=0, column=0, sticky="new")
         card.grid_columnconfigure(0, weight=1)
 
-        localize(
-            ctk.CTkLabel(card, font=theme.font(15, "bold")), text=lambda: _("URL")
-        ).grid(row=0, column=0, padx=22, pady=(20, 6), sticky=ctk.W)
+        localize(ctk.CTkLabel(card, font=theme.font(15, "bold")), text=L_("URL")).grid(
+            row=0, column=0, padx=22, pady=(20, 6), sticky=ctk.W
+        )
         self._url_variable = ctk.StringVar(self)
         self._url_variable.trace_add("write", lambda *_args: self._on_url_change())
         self.ent_url = ctk.CTkEntry(
@@ -269,7 +263,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
                 command=self._on_paste,
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Paste"),
+            text=L_("Paste"),
         ).grid(row=1, column=1, padx=(0, 22))
 
         self.lbl_url_status = ctk.CTkLabel(
@@ -282,7 +276,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
             ctk.CTkLabel(
                 card, font=theme.font(12), text_color=theme.HINT_TEXT, anchor=ctk.W
             ),
-            text=lambda: _(
+            text=L_(
                 "Examples: https://youtu.be/dQw4w9WgXcQ · "
                 "https://example.com/podcast/episode-12.mp3"
             ),
@@ -306,7 +300,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
                 command=lambda: self._show_step(SOURCE_STEP),
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Back"),
+            text=L_("Back"),
         )
         self.btn_back.grid(row=0, column=0)
 
@@ -398,7 +392,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
                 row=2, column=0, padx=32, pady=(0, 20), sticky=ctk.NSEW
             )
             self.btn_back.grid_remove()
-            localize(self.btn_primary, text=lambda: _("Continue"))
+            localize(self.btn_primary, text=L_("Continue"))
             self.btn_primary.configure(
                 image=icons.icon("chevron_right", 12, theme.ICON_ON_ACCENT),
                 compound=ctk.RIGHT,
@@ -441,9 +435,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
             if is_busy:
                 localize(
                     self.lbl_footer,
-                    text=lambda: _(
-                        "It will start when the current transcription finishes."
-                    ),
+                    text=L_("It will start when the current transcription finishes."),
                 )
             else:
                 self.lbl_footer.configure(text=self._source_description())
@@ -496,7 +488,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
             return
         if not is_file and not path.is_dir():
             self.lbl_footer.configure(text_color=theme.ERROR_TEXT)
-            localize(self.lbl_footer, text=lambda: _("Please select a valid folder."))
+            localize(self.lbl_footer, text=L_("Please select a valid folder."))
             return
 
         self._selected = str(path)
@@ -508,7 +500,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
         self.lbl_summary_name.configure(text=path.name or str(path))
         self.lbl_summary_path.configure(text=str(path.parent))
         self.lbl_summary_details.configure(text_color=theme.HINT_TEXT)
-        localize(self.lbl_summary_details, text=lambda: _("Reading…"))
+        localize(self.lbl_summary_details, text=L_("Reading…"))
         self._refresh_continue_button()
 
         selection_number = self._selection_number
@@ -595,7 +587,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
             self.lbl_url_status.configure(text_color=theme.ERROR_TEXT)
             localize(
                 self.lbl_url_status,
-                text=lambda: _("Enter a URL that starts with http:// or https://"),
+                text=L_("Enter a URL that starts with http:// or https://"),
             )
         else:
             self.lbl_url_status.configure(text="")

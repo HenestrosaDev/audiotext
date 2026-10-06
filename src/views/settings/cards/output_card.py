@@ -11,7 +11,7 @@ from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcription_settings import TranscriptionSettings, TranslationMode
 from utils.enums import TranscriptionMethod
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.localization import localize
 from views.settings.cards.base import SettingsCard
 from views.settings.option_labels import save_config
@@ -35,11 +35,11 @@ class OutputCard(SettingsCard):
         config_whisper_api: ConfigWhisperApi,
         output_dir: str = "",
     ) -> None:
-        super().__init__(master, lambda: _("Output"), on_change)
+        super().__init__(master, L_("Output"), on_change)
         # Files are saved next to the folder unless another one is chosen
         self._output_dir: Path | None = Path(output_dir) if output_dir else None
 
-        self._field_label(2, lambda: _("File types"))
+        self._field_label(2, L_("File types"))
         self.frm_file_types = ctk.CTkFrame(self, fg_color="transparent")
         self.frm_file_types.grid(row=3, column=0, columnspan=2, padx=18, sticky=ctk.W)
         self._file_type_checkboxes: dict[str, ctk.CTkCheckBox] = {}
@@ -95,7 +95,7 @@ class OutputCard(SettingsCard):
                 command=self._on_choose_output_dir,
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Change…"),
+            text=L_("Change…"),
         )
         self.btn_location.grid(row=0, column=1, padx=(8, 0))
         self.btn_reset_location = localize(
@@ -105,18 +105,18 @@ class OutputCard(SettingsCard):
                 command=self._on_reset_output_dir,
                 **theme.GHOST_BUTTON,
             ),
-            text=lambda: _("Next to the source"),
+            text=L_("Next to the source"),
         )
         self.btn_reset_location.grid(row=1, column=0, pady=(4, 0), sticky=ctk.W)
         self.interactive_widgets.extend([self.btn_location, self.btn_reset_location])
 
         self.swi_overwrite = self._switch(
             8,
-            lambda: _("Overwrite existing files"),
+            L_("Overwrite existing files"),
             config_transcription.overwrite_files,
             ConfigTranscription.Key.OVERWRITE_FILES,
         )
-        self._hint(9, lambda: _("The files of a folder are always saved."), (4, 16))
+        self._hint(9, L_("The files of a folder are always saved."), (4, 16))
 
     def update_settings(self, settings: TranscriptionSettings) -> None:
         settings.output_file_types = [
