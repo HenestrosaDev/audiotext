@@ -676,6 +676,32 @@ def test_the_settings_follow_the_method_and_the_model(ui: Ui, tmp_path: Path) ->
         ui.pump()
 
 
+def test_the_saved_description_is_shown_without_the_placeholder(ui: Ui) -> None:
+    import dataclasses
+
+    changes: list[None] = []
+    config = dataclasses.replace(
+        ConfigManager.get_config_transcription(), prompt="A talk about speech."
+    )
+    card = ContextCard(ui.window, lambda: changes.append(None), config)
+    ui.pump()
+
+    assert card.tbx_prompt.get("1.0", "end-1c") == "A talk about speech."
+    assert card.tbx_prompt.get_text() == "A talk about speech."
+    settings = TranscriptionSettings()
+    card.update_settings(settings)
+    assert settings.prompt == "A talk about speech."
+
+    # Emptied, it shows the placeholder again, which isn't taken as its text
+    card.tbx_prompt.set_text("")
+    ui.pump()
+    assert card.tbx_prompt.get("1.0", "end-1c")
+    assert card.tbx_prompt.get_text() == ""
+    assert not changes
+    card.destroy()
+    ui.pump()
+
+
 def test_a_failed_transcription_goes_back_to_its_settings(
     ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
