@@ -5,6 +5,7 @@ from typing import Any
 
 import customtkinter as ctk
 
+from views.localization import Text
 from views.widgets.option_menu import CTkOptionMenu
 from views.widgets.placeholder import add_placeholder
 
@@ -38,9 +39,9 @@ class CTkSearchableOptionMenu(CTkOptionMenu):
         self,
         master: Any,
         values: list[str],
-        title: str,
-        search_placeholder: str,
-        no_results_text: str,
+        title: Text,
+        search_placeholder: Text,
+        no_results_text: Text,
         command: Callable[[str], None] | None = None,
         search_terms: dict[str, str] | None = None,
         **kwargs: Any,
@@ -57,18 +58,33 @@ class CTkSearchableOptionMenu(CTkOptionMenu):
         # The native menu is never opened, so it doesn't need the values
         super().__init__(master, values=[], command=None, **kwargs)
 
-        self._picker_values = values
         self._picker_title = title
         self._search_placeholder = search_placeholder
         self._no_results_text = no_results_text
         self._picker_command = command
+        self._search_terms = search_terms or {}
+        self._set_picker_values(values)
+        self._picker: _SearchPicker | None = None
+
+    def configure(self, require_redraw: bool = False, **kwargs: Any) -> None:
+        """Also takes the `search_terms` of the labels, like the constructor."""
+        # The native menu is never opened, so the command is the picker's
+        if "command" in kwargs:
+            self._picker_command = kwargs.pop("command")
+        if "search_terms" in kwargs:
+            self._search_terms = kwargs.pop("search_terms") or {}
+            self._set_picker_values(kwargs.pop("values", self._picker_values))
+        elif "values" in kwargs:
+            self._set_picker_values(kwargs.pop("values"))
+        super().configure(require_redraw, **kwargs)
+
+    def _set_picker_values(self, values: list[str]) -> None:
+        # The picker keeps the values instead of the native menu
+        self._picker_values = values
         self._search_index = {
-            value: normalize_search_text(
-                f"{value} {(search_terms or {}).get(value, '')}"
-            )
+            value: normalize_search_text(f"{value} {self._search_terms.get(value, '')}")
             for value in values
         }
-        self._picker: _SearchPicker | None = None
 
     def _clicked(self, event: Any = None) -> None:
         # The parent only opens the dropdown when its own values aren't empty, but
@@ -86,9 +102,9 @@ class CTkSearchableOptionMenu(CTkOptionMenu):
             values=self._picker_values,
             search_index=self._search_index,
             current=self.get(),
-            title=self._picker_title,
+            title=self._picker_title(),
             search_placeholder=self._search_placeholder,
-            no_results_text=self._no_results_text,
+            no_results_text=self._no_results_text(),
             on_select=self._on_picker_select,
         )
 
@@ -119,7 +135,7 @@ class _SearchPicker(ctk.CTkToplevel):  # type: ignore[misc]
         search_index: dict[str, str],
         current: str,
         title: str,
-        search_placeholder: str,
+        search_placeholder: Text,
         no_results_text: str,
         on_select: Callable[[str], None],
     ):

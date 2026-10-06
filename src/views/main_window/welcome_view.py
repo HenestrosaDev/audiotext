@@ -5,6 +5,7 @@ import customtkinter as ctk
 
 from utils.enums import AudioSource
 from utils.i18n import _
+from views.localization import Text, localize
 from views.style import icons, theme
 
 
@@ -19,29 +20,43 @@ class WelcomeView(ctk.CTkFrame):  # type: ignore[misc]
         ctk.CTkLabel(self, text="", image=icons.app_logo(64, theme.ACCENT_TEXT)).grid(
             row=1, column=0
         )
-        ctk.CTkLabel(
-            self, text=_("What do you want to transcribe?"), font=theme.font(24, "bold")
+        localize(
+            ctk.CTkLabel(self, font=theme.font(24, "bold")),
+            text=lambda: _("What do you want to transcribe?"),
         ).grid(row=2, column=0, pady=(12, 4))
-        ctk.CTkLabel(
-            self,
-            text=_(
+        localize(
+            ctk.CTkLabel(self, font=theme.font(14), text_color=theme.HINT_TEXT),
+            text=lambda: _(
                 "Choose a source, or select a transcription of your history to read and play it."
             ),
-            font=theme.font(14),
-            text_color=theme.HINT_TEXT,
         ).grid(row=3, column=0)
 
         cards = ctk.CTkFrame(self, fg_color="transparent")
         cards.grid(row=4, column=0, pady=(30, 0), sticky=ctk.N)
-        sources = [
-            (AudioSource.FILE, "file", _("File"), _("An audio or video file")),
-            (AudioSource.YOUTUBE, "link", _("URL"), _("YouTube or a link to a file")),
-            (AudioSource.MIC, "mic", _("Microphone"), _("Record and transcribe")),
+        sources: list[tuple[AudioSource, str, Text, Text]] = [
+            (
+                AudioSource.FILE,
+                "file",
+                lambda: _("File"),
+                lambda: _("An audio or video file"),
+            ),
+            (
+                AudioSource.YOUTUBE,
+                "link",
+                lambda: _("URL"),
+                lambda: _("YouTube or a link to a file"),
+            ),
+            (
+                AudioSource.MIC,
+                "mic",
+                lambda: _("Microphone"),
+                lambda: _("Record and transcribe"),
+            ),
             (
                 AudioSource.DIRECTORY,
                 "folder",
-                _("Folder"),
-                _("Many files at once, or watch it"),
+                lambda: _("Folder"),
+                lambda: _("Many files at once, or watch it"),
             ),
         ]
         for idx, (source, icon_name, title, description) in enumerate(sources):
@@ -54,18 +69,16 @@ class WelcomeView(ctk.CTkFrame):  # type: ignore[misc]
             for widget in (card, *card.winfo_children()):
                 widget.bind("<Button-1>", on_click)
 
-        ctk.CTkLabel(
-            self,
-            text=_(
+        localize(
+            ctk.CTkLabel(self, font=theme.font(12), text_color=theme.HINT_TEXT),
+            text=lambda: _(
                 "Tip: drop a file or a folder anywhere on the window to transcribe it."
             ),
-            font=theme.font(12),
-            text_color=theme.HINT_TEXT,
         ).grid(row=5, column=0, pady=(24, 30))
 
     @staticmethod
     def _source_card(
-        master: Any, icon_name: str, title: str, description: str
+        master: Any, icon_name: str, title: Text, description: Text
     ) -> ctk.CTkFrame:
         card = ctk.CTkFrame(
             master,
@@ -88,14 +101,13 @@ class WelcomeView(ctk.CTkFrame):  # type: ignore[misc]
             corner_radius=10,
             fg_color=theme.ACCENT,
         ).grid(row=0, column=0, pady=(22, 10))
-        ctk.CTkLabel(card, text=title, font=theme.font(15, "bold")).grid(
+        localize(ctk.CTkLabel(card, font=theme.font(15, "bold")), text=title).grid(
             row=1, column=0
         )
-        ctk.CTkLabel(
-            card,
+        localize(
+            ctk.CTkLabel(
+                card, font=theme.font(12), text_color=theme.HINT_TEXT, wraplength=150
+            ),
             text=description,
-            font=theme.font(12),
-            text_color=theme.HINT_TEXT,
-            wraplength=150,
         ).grid(row=2, column=0, padx=8)
         return card

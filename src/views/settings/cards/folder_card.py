@@ -16,10 +16,10 @@ class FolderCard(SettingsCard):
         on_change: Callable[[], None],
         config_transcription: ConfigTranscription,
     ) -> None:
-        super().__init__(master, _("Folder"), on_change)
+        super().__init__(master, lambda: _("Folder"), on_change)
         self.swi_watch = self._switch(
             2,
-            _("Watch the folder"),
+            lambda: _("Watch the folder"),
             config_transcription.watch_folder,
             ConfigTranscription.Key.WATCH_FOLDER,
         )

@@ -3,10 +3,14 @@ Builds the interface and goes through its views, as a user would, failing if any
 callback of the interface raises an error. They're skipped without a display.
 """
 
+import gettext
 import os
 import sys
 import time
-from collections.abc import Iterator
+import tkinter as tk
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -25,9 +29,12 @@ from models.transcription_settings import TranscriptionSettings
 from tests.conftest import FakeSummarizer, FakeTranslator, MemoryKeyring, make_tone
 from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
+from utils.i18n import DOMAIN, LOCALES_PATH, get_language
+from views.localization import set_interface_language
 from views.settings.cards.context_card import ContextCard
 from views.settings.cards.engine_card import EngineCard
 from views.settings.cards.output_card import OutputCard
+from views.settings.preferences_dialog import AI_TAB, GENERAL_TAB
 from views.transcript.edit_dialogs import Replacement
 
 
@@ -77,7 +84,6 @@ class Ui:
 
     @property
     def window(self) -> Any:
-        # It's rebuilt when the interface language changes
         return self.app._view
 
     def pump(self, seconds: float = 0.2) -> None:
@@ -160,6 +166,47 @@ def ui(app: Any) -> Iterator[Ui]:
     ui.pump()
 
 
+@contextmanager
+def interface_language(ui: Ui, language: str) -> Iterator[None]:
+    """Shows the interface in a language, and in English again afterwards."""
+    set_interface_language(language)
+    ui.pump()
+    try:
+        yield
+    finally:
+        set_interface_language("en")
+        ui.pump()
+
+
+def untranslated_texts(root: Any) -> set[str]:
+    """
+    The texts shown in a window that are still in English, although they have a
+    translation into the current interface language. The other windows (e.g.
+    dialogs) are left out.
+    """
+    translation = gettext.translation(
+        DOMAIN, LOCALES_PATH, languages=[get_language()], fallback=True
+    )
+    texts: set[str] = set()
+    widgets = [root]
+    while widgets:
+        widget = widgets.pop()
+        if not widget.winfo_viewable():
+            continue
+        widgets.extend(
+            child for child in widget.winfo_children() if not isinstance(child, tk.Wm)
+        )
+        for option in ("text", "placeholder_text", "values"):
+            try:
+                value = widget.cget(option)
+            except (tk.TclError, ValueError, AttributeError):
+                continue
+            texts.update([value] if isinstance(value, str) else value or [])
+        if isinstance(widget, tk.Wm):
+            texts.add(widget.title())
+    return {text for text in texts if text and translation.gettext(text) != text}
+
+
 @pytest.fixture
 def audio_file(tmp_path: Path) -> Path:
     path = tmp_path / "talk.wav"
@@ -238,7 +285,7 @@ def test_the_transcript_can_be_searched_and_corrected(
     assert view.text.match_status == (0, 2)
 
     for label in ("Plain text", "Summary", "Transcript"):
-        view._on_mode_change(label)
+        view._on_mode_change(view._modes.value(label))
         ui.pump()
 
     view.player.toggle_playback()
@@ -292,7 +339,7 @@ def test_a_summary_is_generated_and_exported(
     ui.pump()
     view = ui.window._entry_view
 
-    view._on_mode_change("Summary")
+    view._on_mode_change(view._modes.value("Summary"))
     view._generate_summary()
     ui.pump(0.5)
 
@@ -310,14 +357,13 @@ def test_a_summary_is_generated_and_exported(
 
 
 def test_the_summary_without_a_key_leads_to_the_settings(ui: Ui) -> None:
-    from views.settings.preferences_dialog import AI_TAB
 
     entry = ui.add(segments=SEGMENTS, text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
 
-    view._on_mode_change("Summary")
+    view._on_mode_change(view._modes.value("Summary"))
     ui.pump()
     import customtkinter as ctk
 
@@ -376,7 +422,7 @@ def test_a_translation_is_shown_next_to_the_transcript(
 
     # It follows the mode and the playback of the transcript
     for label in ("Plain text", "Summary", "Transcript"):
-        view._on_mode_change(label)
+        view._on_mode_change(view._modes.value(label))
         ui.pump()
     view.player.toggle_playback()
     ui.pump(0.3)
@@ -425,7 +471,7 @@ def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) ->
     )
 
     # The plain text, which then keeps the changes of the user
-    view._on_mode_change("Plain text")
+    view._on_mode_change(view._modes.value("Plain text"))
     ui.pump()
     plain = view.translation_panel.text.tbx_plain
     plain.delete("1.0", "end")
@@ -735,7 +781,7 @@ def test_the_saved_description_is_shown_without_the_placeholder(ui: Ui) -> None:
 def test_a_failed_transcription_goes_back_to_its_settings(
     ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(ui.app._jobs, "_run_next", lambda: None)
+    monkeypatch.setattr(ui.window._jobs, "_run_next", lambda: None)
     settings = TranscriptionSettings(diarize=True, keywords="Audiotext")
     entry = ui.add(
         source=str(audio_file),
@@ -772,11 +818,11 @@ def test_a_failed_transcription_goes_back_to_its_settings(
     entry = ui.store.get(entry.id)
     assert entry.status == EntryStatus.QUEUED
     assert not entry.settings["diarize"]
-    assert ui.app._jobs._queue[-1] == entry.id
-    ui.app._jobs._queue.clear()
+    assert ui.window._jobs._queue[-1] == entry.id
+    ui.window._jobs._queue.clear()
 
 
-def test_a_summary_finished_while_the_window_is_rebuilt_is_shown(
+def test_a_summary_finished_while_the_language_changes_is_shown_in_it(
     ui: Ui, summarizer: FakeSummarizer
 ) -> None:
     summary = TranscriptSummary("A short talk.", (), (), "model", "")
@@ -786,30 +832,154 @@ def test_a_summary_finished_while_the_window_is_rebuilt_is_shown(
     ui.window.select_entry(entry.id)
     ui.pump()
 
-    # The summary finishes, but its result isn't shown before the window is
-    # rebuilt, since the events of Tk aren't processed in the meantime
-    ui.app._history.summarize_entry(entry.id)
+    # The summary finishes, but its result isn't shown before the language
+    # changes, since the events of Tk aren't processed in the meantime
+    ui.window._history.summarize_entry(entry.id)
     assert summarizer.has_summarized.wait(5)
     time.sleep(0.1)
-    old_window = ui.window
-    ui.app._on_ui_language_change("en")
-    assert ui.window is not old_window
-    ui.pump(0.5)
+    with interface_language(ui, "es"):
+        ui.pump(0.5)
 
-    assert ui.store.get(entry.id).summary == summary.to_dict()
-    assert not ui.app._history.is_summarizing(entry.id)
-    assert ui.window.top_bar._status_message == "The summary of “Entry” is ready."
+        assert ui.store.get(entry.id).summary == summary.to_dict()
+        assert not ui.window._history.is_summarizing(entry.id)
+        assert ui.window.top_bar._status_message == "El resumen de «Entry» está listo."
 
 
-def test_the_preferences_and_the_interface_language(ui: Ui) -> None:
+def test_the_preferences_change_the_interface_language(ui: Ui) -> None:
+    ui.window.show_preferences(GENERAL_TAB)
+    ui.pump()
+    preferences = ui.window._preferences
+    try:
+        # As if the user chose it in the menu of the languages
+        preferences._on_language_change("es")
+        ui.pump()
+
+        # The dialog where it was changed stays open, in the new language
+        assert ConfigManager.get_config_system().ui_language == "es"
+        assert preferences.winfo_exists()
+        assert preferences.title() == "Preferencias"
+        assert preferences.tabs.get() == "General"
+        preferences.show_tab(AI_TAB)
+        assert preferences.tabs.get() == "IA"
+        for tab in preferences._tab_names:
+            preferences.show_tab(tab)
+            ui.pump(0.3)
+            assert not untranslated_texts(preferences), tab
+    finally:
+        preferences._on_language_change("en")
+        preferences.destroy()
+        ui.pump()
+
+    assert ConfigManager.get_config_system().ui_language == "en"
+    assert ui.window.sidebar.lbl_count.cget("text") == "0 transcriptions"
+
+
+def test_the_open_views_keep_their_state_in_another_language(
+    ui: Ui, tmp_path: Path
+) -> None:
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.show_source(AudioSource.DIRECTORY)
+    view = ui.window._new_views[AudioSource.DIRECTORY]
+    view.set_source(str(tmp_path), should_advance=True)
+    ui.pump()
+    form = view.frm_settings
+    context = next(card for card in form._cards if isinstance(card, ContextCard))
+    context.ent_keywords.delete(0, "end")
+    context.ent_keywords.insert(0, "Audiotext")
     ui.window.show_preferences()
     ui.pump()
+
+    with interface_language(ui, "es"):
+        # The page, the history and the dialog are shown in Spanish
+        assert view.btn_back.cget("text") == "Atrás"
+        assert ui.window.sidebar.lbl_count.cget("text") == "1 transcripción"
+        assert not untranslated_texts(ui.window)
+        assert not untranslated_texts(ui.window._preferences)
+        # What the user chose and typed is kept
+        assert ui.window._new_views[AudioSource.DIRECTORY] is view
+        assert view._step == 1
+        assert context.ent_keywords.get() == "Audiotext"
+        assert ui.window._preferences.winfo_exists()
+
+        # The views opened afterwards, and their options, are in Spanish too
+        ui.window.select_entry(entry.id)
+        ui.pump()
+        transcript = ui.window._entry_view
+        assert transcript.seg_mode.cget("values") == [
+            "Transcripción",
+            "Texto plano",
+            "Resumen",
+        ]
+        transcript._on_mode_change(transcript._modes.value("Resumen"))
+        ui.pump()
+        assert transcript._mode == "summary"
+        assert not untranslated_texts(ui.window)
+
+    # The mode chosen is kept when the language changes back
+    assert transcript.seg_mode.get() == "Summary"
+    assert transcript._modes.get() == "summary"
     ui.window._preferences.destroy()
 
-    ui.app._on_ui_language_change("es")
+
+def test_every_page_is_shown_in_another_language(ui: Ui, audio_file: Path) -> None:
+    from handlers.translation_handler import MANUAL
+    from models.translation import TranscriptTranslation
+
+    # A translation with a segment left to translate, which has a text in its place
+    translation = TranscriptTranslation(
+        "fr", "Bonjour\n\nAu revoir", translated("Bonjour", "", "Au revoir"), MANUAL
+    )
+    # Their titles aren't texts of the interface, which would be taken as such
+    entries = [
+        ui.add(title="Broken", status=EntryStatus.FAILED, error="Boom"),
+        ui.add(title="Next", status=EntryStatus.QUEUED),
+        ui.add(
+            title="Talk",
+            segments=SEGMENTS,
+            text=TEXT,
+            media_path=str(audio_file),
+            translation=translation.to_dict(),
+        ),
+        ui.add(
+            title="Recordings",
+            kind=AudioSource.DIRECTORY.value,
+            source=str(audio_file.parent),
+        ),
+    ]
+    ui.add(title="talk.wav", parent_id=entries[-1].id, text="x")
+    pages: list[Callable[[], None]] = [ui.window.show_welcome]
+    pages += [
+        partial(ui.window.show_source, source)
+        for source in AudioSource
+        if source != AudioSource.WATCH
+    ]
+    pages += [partial(ui.window.select_entry, entry.id) for entry in entries]
+    # Opened in English first, so the pages that are kept are translated in place
+    for show_page in pages:
+        show_page()
+        ui.pump()
+    # The summary is shown while the language changes
+    ui.window.select_entry(entries[2].id)
     ui.pump()
-    ui.app._on_ui_language_change("en")
+    ui.window._entry_view._on_mode_change("summary")
     ui.pump()
+
+    with interface_language(ui, "es"):
+        assert ui.window._entry_view.summary_panel.winfo_ismapped()
+        assert not untranslated_texts(ui.window)
+        transcript = ui.window._entry_view
+        transcript._on_mode_change("transcript")
+        ui.pump()
+        assert transcript.translation_panel.lbl_title.cget("text") == "Francés"
+        assert (
+            "Sin traducir todavía"
+            in transcript.translation_panel.text.tbx_transcript.get("1.0", "end")
+        )
+        assert not untranslated_texts(ui.window)
+        for show_page in pages:
+            show_page()
+            ui.pump(0.3)
+            assert not untranslated_texts(ui.window)
 
 
 def test_a_new_version_is_shown_when_checking_for_updates(
@@ -833,11 +1003,14 @@ def test_a_new_version_is_shown_when_checking_for_updates(
     assert preferences.btn_update.cget("text") == "Download"
     preferences.destroy()
 
-    # The new version is still shown after the window is rebuilt
-    ui.app._on_ui_language_change("en")
-    ui.pump()
-    assert ui.window.top_bar.btn_update.winfo_ismapped()
-    assert "99.0.0" in ui.window.top_bar.btn_update.cget("text")
+    # The new version is shown in another language too
+    with interface_language(ui, "es"):
+        assert ui.window.top_bar.btn_update.winfo_ismapped()
+        assert (
+            ui.window.top_bar.btn_update.cget("text")
+            == "La versión 99.0.0 está disponible"
+        )
+    assert ui.window.top_bar.btn_update.cget("text") == "Version 99.0.0 is available"
 
 
 def test_a_notification_is_sent_when_a_transcription_is_ready(
@@ -845,17 +1018,17 @@ def test_a_notification_is_sent_when_a_transcription_is_ready(
     monkeypatch: pytest.MonkeyPatch,
     sent_notifications: list[tuple[str, str]],
 ) -> None:
-    monkeypatch.setattr(ui.app._jobs, "_run_next", lambda: None)
+    monkeypatch.setattr(ui.window._jobs, "_run_next", lambda: None)
 
     def finish(title: str, is_cancel_requested: bool = False) -> None:
         entry = ui.add(title=title, status=EntryStatus.PROCESSING)
-        ui.app._jobs._job = Job(
+        ui.window._jobs._job = Job(
             entry_id=entry.id,
             is_folder=False,
             is_mic=False,
             is_cancel_requested=is_cancel_requested,
         )
-        ui.app._jobs._finish_job(None)
+        ui.window._jobs._finish_job(None)
 
     finish("talk.mp3")
     finish("cancelled.mp3", is_cancel_requested=True)
@@ -874,9 +1047,9 @@ def test_each_file_of_a_watched_folder_is_notified(
         entry = ui.add(
             kind=kind.value, source=str(tmp_path), status=EntryStatus.PROCESSING
         )
-        ui.app._jobs._job = Job(entry_id=entry.id, is_folder=True, is_mic=False)
-        ui.app._jobs.on_file_transcribed(tmp_path / file_name, "Hello", [], "en")
-        ui.app._jobs._job = None
+        ui.window._jobs._job = Job(entry_id=entry.id, is_folder=True, is_mic=False)
+        ui.window._jobs.on_file_transcribed(tmp_path / file_name, "Hello", [], "en")
+        ui.window._jobs._job = None
 
     transcribe_file(AudioSource.WATCH, "new.mp3")
     # A folder that isn't watched is notified once all its files are done

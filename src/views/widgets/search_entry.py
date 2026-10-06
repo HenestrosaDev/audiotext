@@ -2,6 +2,7 @@ from typing import Any
 
 import customtkinter as ctk
 
+from views.localization import Text
 from views.style import icons, theme
 from views.widgets.placeholder import add_placeholder
 
@@ -16,7 +17,7 @@ class SearchEntry(ctk.CTkFrame):  # type: ignore[misc]
         self,
         master: Any,
         textvariable: ctk.StringVar,
-        placeholder_text: str,
+        placeholder_text: Text,
         height: int = 30,
         width: int = 200,
         corner_radius: int = 8,
