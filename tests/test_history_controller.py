@@ -5,29 +5,18 @@ from unittest.mock import MagicMock
 
 import pytest
 
-import controllers.history_controller as history_controller
 from controllers.history_controller import HistoryController
 from handlers.translation_handler import MANUAL
 from models.history import EntryStatus, HistoryEntry
-from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
+from tests.conftest import FakeSummarizer, FakeTranslator
 from utils.history_store import HistoryStore
 
 SEGMENTS = [
     TranscriptSegment(0.0, 1.0, "Hello", "SPEAKER_00"),
     TranscriptSegment(1.5, 3.0, "Bye", "SPEAKER_01"),
 ]
-
-
-class SyncThread:
-    """Runs the target of a thread when it's started, to wait for its result."""
-
-    def __init__(self, target: Callable[[], None], daemon: bool = False) -> None:
-        self._target = target
-
-    def start(self) -> None:
-        self._target()
 
 
 @pytest.fixture
@@ -43,11 +32,35 @@ def view() -> MagicMock:
 
 
 @pytest.fixture
+def summarizer() -> FakeSummarizer:
+    return FakeSummarizer()
+
+
+@pytest.fixture
+def translator() -> FakeTranslator:
+    return FakeTranslator()
+
+
+@pytest.fixture
+def tasks() -> list[Callable[[], None]]:
+    """The tasks started in the background, run by `run_tasks`."""
+    return []
+
+
+@pytest.fixture
 def history(
-    store: HistoryStore, view: MagicMock, monkeypatch: pytest.MonkeyPatch
+    store: HistoryStore,
+    view: MagicMock,
+    summarizer: FakeSummarizer,
+    translator: FakeTranslator,
+    tasks: list[Callable[[], None]],
 ) -> HistoryController:
-    monkeypatch.setattr(history_controller.threading, "Thread", SyncThread)
-    return HistoryController(store, view)
+    return HistoryController(store, view, summarizer, translator, tasks.append)
+
+
+def run_tasks(tasks: list[Callable[[], None]]) -> None:
+    while tasks:
+        tasks.pop(0)()
 
 
 def add(store: HistoryStore, **kwargs: Any) -> HistoryEntry:
@@ -86,19 +99,19 @@ def test_a_summary_is_saved_and_announced(
     history: HistoryController,
     store: HistoryStore,
     view: MagicMock,
-    monkeypatch: pytest.MonkeyPatch,
+    summarizer: FakeSummarizer,
+    tasks: list[Callable[[], None]],
 ) -> None:
-    summary = TranscriptSummary("A short talk.", (), (), "model", "")
-    monkeypatch.setattr(
-        history_controller.SummaryHandler,
-        "summarize",
-        staticmethod(lambda _text, _segments: summary),
-    )
     entry = add(store)
 
     history.summarize_entry(entry.id)
+    # Only one summary of each entry is made at a time
+    history.summarize_entry(entry.id)
+    assert history.is_summarizing(entry.id)
+    run_tasks(tasks)
 
-    assert get(store, entry.id).summary == summary.to_dict()
+    assert summarizer.texts == ["Hello\n\nBye"]
+    assert get(store, entry.id).summary == summarizer.summary.to_dict()
     assert not history.is_summarizing(entry.id)
     view.on_summary_finished.assert_called_once_with(get(store, entry.id), None)
 
@@ -107,17 +120,14 @@ def test_a_failed_summary_keeps_its_error_until_retried(
     history: HistoryController,
     store: HistoryStore,
     view: MagicMock,
-    monkeypatch: pytest.MonkeyPatch,
+    summarizer: FakeSummarizer,
+    tasks: list[Callable[[], None]],
 ) -> None:
-    def fail(_text: str, _segments: list[TranscriptSegment]) -> TranscriptSummary:
-        raise RuntimeError("No credit")
-
-    monkeypatch.setattr(
-        history_controller.SummaryHandler, "summarize", staticmethod(fail)
-    )
+    summarizer.error = RuntimeError("No credit")
     entry = add(store)
 
     history.summarize_entry(entry.id)
+    run_tasks(tasks)
 
     assert "No credit" in history.get_summary_error(entry.id)
     view.on_summary_finished.assert_called_once_with(
@@ -126,10 +136,48 @@ def test_a_failed_summary_keeps_its_error_until_retried(
     assert get(store, entry.id).summary == {}
 
     # The error is cleared when summarizing again, while the summary is made
-    monkeypatch.setattr(history_controller.threading, "Thread", MagicMock())
     history.summarize_entry(entry.id)
     assert history.get_summary_error(entry.id) == ""
     assert history.is_summarizing(entry.id)
+
+
+def test_a_translation_is_saved_and_announced(
+    history: HistoryController,
+    store: HistoryStore,
+    view: MagicMock,
+    translator: FakeTranslator,
+    tasks: list[Callable[[], None]],
+) -> None:
+    entry = add(store)
+
+    history.translate_entry(entry.id, "es", "deepl")
+    assert history.is_translating(entry.id)
+    run_tasks(tasks)
+
+    assert translator.requests == [("es", "deepl")]
+    assert get(store, entry.id).translation == translator.translation.to_dict()
+    assert not history.is_translating(entry.id)
+    view.on_translation_finished.assert_called_once_with(get(store, entry.id), None)
+
+
+def test_a_failed_translation_keeps_its_error(
+    history: HistoryController,
+    store: HistoryStore,
+    view: MagicMock,
+    translator: FakeTranslator,
+    tasks: list[Callable[[], None]],
+) -> None:
+    translator.error = OSError("No API key")
+    entry = add(store)
+
+    history.translate_entry(entry.id, "es", "deepl")
+    run_tasks(tasks)
+
+    assert "No API key" in history.get_translation_error(entry.id)
+    assert get(store, entry.id).translation == {}
+    view.on_translation_finished.assert_called_once_with(
+        get(store, entry.id), history.get_translation_error(entry.id)
+    )
 
 
 def test_a_manual_translation_keeps_the_timestamps(
