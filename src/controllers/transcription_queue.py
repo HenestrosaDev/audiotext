@@ -5,7 +5,6 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 from urllib.parse import parse_qs, unquote, urlsplit
 
-import utils.notifications as notifications
 from interfaces.history_view import TranscriptionQueueView
 from interfaces.transcription_runner import TranscriptionRunner
 from interfaces.transcription_view import TranscriptionView
@@ -16,7 +15,6 @@ from models.transcription_settings import TranscriptionSettings
 from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
 from utils.history_store import HistoryStore
-from utils.i18n import _
 from utils.validators import is_youtube_url
 
 
@@ -179,9 +177,7 @@ class TranscriptionQueue:
         if entry.kind == AudioSource.MIC.value and not (
             entry.media_path and Path(entry.media_path).is_file()
         ):
-            self.view.show_status(
-                _("The recording is no longer available."), is_error=True
-            )
+            self.view.on_recording_unavailable(entry)
             return
 
         self._store.update(entry, status=EntryStatus.QUEUED, error="")
@@ -314,31 +310,18 @@ class TranscriptionQueue:
                 self.view.refresh_sidebar()
 
             if job.is_mic:
-                self.view.on_mic_finished(
-                    None
-                    if final_status == EntryStatus.DONE
-                    else job.error or _("The transcription was cancelled.")
-                )
-
-            if final_status == EntryStatus.FAILED:
-                self.view.show_status(f"{entry.title}: {job.error}", is_error=True)
-            elif status_message:
-                self.view.show_status(f"{entry.title}: {status_message}")
+                self.view.on_mic_finished(entry)
+            self.view.on_transcription_finished(entry, status_message)
 
             # A folder that stops being watched is done, but nothing new is ready
             if final_status == EntryStatus.DONE and not job.is_cancel_requested:
-                self._notify_ready(entry)
+                self.view.on_transcription_ready(entry)
 
         self._run_next()
 
     def _is_watch_job(self, job: Job) -> bool:
         entry = self._store.get(job.entry_id)
         return entry is not None and entry.kind == AudioSource.WATCH.value
-
-    @staticmethod
-    def _notify_ready(entry: HistoryEntry) -> None:
-        if ConfigManager.get_config_system().notify_when_done:
-            notifications.notify(_("Transcription ready"), entry.title)
 
     # MICROPHONE
 
@@ -368,12 +351,7 @@ class TranscriptionQueue:
         self._store.add(entry)
         self.last_mic_entry_id = entry.id
 
-        self._job = Job(
-            entry_id=entry.id,
-            is_folder=False,
-            is_mic=True,
-            progress_message=_("Recording…"),
-        )
+        self._job = Job(entry_id=entry.id, is_folder=False, is_mic=True)
         self.view.refresh_sidebar()
         self._runner.prepare_for_transcription(
             settings.to_transcription(
@@ -409,7 +387,7 @@ class TranscriptionQueue:
         if self._job and (entry := self._store.get(self._job.entry_id)):
             self._store.update(entry, output_dir=str(folder))
         else:
-            self.view.show_status(_("Saved in {folder}.").format(folder=folder))
+            self.view.on_transcription_saved(folder)
 
     def show_status(self, message: str) -> None:
         self.view.show_status(message)
@@ -480,7 +458,7 @@ class TranscriptionQueue:
                 self.view.on_entry_changed(child.id)
                 # A watched folder is never done, so each of its files is notified
                 if self._is_watch_job(job):
-                    self._notify_ready(child)
+                    self.view.on_transcription_ready(child)
         elif entry := self._store.get(job.entry_id):
             self._store.update(entry, media_path=str(file_path), **result)
             if job.is_mic:

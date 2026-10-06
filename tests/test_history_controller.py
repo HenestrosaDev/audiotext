@@ -100,8 +100,7 @@ def test_a_summary_is_saved_and_announced(
 
     assert get(store, entry.id).summary == summary.to_dict()
     assert not history.is_summarizing(entry.id)
-    view.show_status.assert_called_once_with("The summary of “Talk” is ready.")
-    view.refresh_entry_view.assert_called_with(entry.id)
+    view.on_summary_finished.assert_called_once_with(get(store, entry.id), None)
 
 
 def test_a_failed_summary_keeps_its_error_until_retried(
@@ -121,7 +120,9 @@ def test_a_failed_summary_keeps_its_error_until_retried(
     history.summarize_entry(entry.id)
 
     assert "No credit" in history.get_summary_error(entry.id)
-    assert view.show_status.call_args.kwargs == {"is_error": True}
+    view.on_summary_finished.assert_called_once_with(
+        get(store, entry.id), history.get_summary_error(entry.id)
+    )
     assert get(store, entry.id).summary == {}
 
     # The error is cleared when summarizing again, while the summary is made

@@ -100,7 +100,8 @@ def test_a_failed_transcription_shows_its_error(
     entry = get(store, entry_id)
     assert entry.status == EntryStatus.FAILED
     assert entry.error == "The file is empty."
-    view.show_status.assert_called_with("a.mp3: The file is empty.", is_error=True)
+    view.on_transcription_finished.assert_called_once_with(entry, None)
+    view.on_transcription_ready.assert_not_called()
     assert not jobs.is_busy()
 
 
@@ -153,7 +154,9 @@ def test_a_recording_is_only_started_when_nothing_is_transcribed(
     jobs.on_file_transcribed(Path(entry.media_path), "Hi", [], "en")
     jobs.on_processed_transcription("Done")
     view.on_mic_text.assert_called_once_with("Hi")
-    view.on_mic_finished.assert_called_once_with(None)
+    view.on_mic_finished.assert_called_once_with(entry)
+    assert entry.status == EntryStatus.DONE
+    view.on_transcription_ready.assert_called_once_with(entry)
 
 
 def test_a_recording_that_is_no_longer_kept_is_not_retried(
@@ -172,6 +175,4 @@ def test_a_recording_that_is_no_longer_kept_is_not_retried(
     jobs.retry_entry(entry.id)
 
     assert get(store, entry.id).status == EntryStatus.FAILED
-    view.show_status.assert_called_once_with(
-        "The recording is no longer available.", is_error=True
-    )
+    view.on_recording_unavailable.assert_called_once_with(entry)

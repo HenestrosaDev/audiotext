@@ -1,6 +1,8 @@
 from collections.abc import Callable
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from models.history import HistoryEntry
 from views.ui_thread_queue import UiThreadQueue
 
 if TYPE_CHECKING:
@@ -47,6 +49,18 @@ class CurrentWindow:
     def refresh_entry_view(self, entry_id: str) -> None:
         self.window.refresh_entry_view(entry_id)
 
+    def on_reveal_failed(self, path: Path, error: Exception) -> None:
+        self.window.on_reveal_failed(path, error)
+
+    def on_open_folder_failed(self, folder: Path, error: Exception) -> None:
+        self.window.on_open_folder_failed(folder, error)
+
+    def on_summary_finished(self, entry: HistoryEntry, error: str | None) -> None:
+        self.window.on_summary_finished(entry, error)
+
+    def on_translation_finished(self, entry: HistoryEntry, error: str | None) -> None:
+        self.window.on_translation_finished(entry, error)
+
     # QUEUE
 
     def select_entry(self, entry_id: str) -> None:
@@ -54,6 +68,20 @@ class CurrentWindow:
 
     def refresh_progress(self, entry_id: str) -> None:
         self.window.refresh_progress(entry_id)
+
+    def on_recording_unavailable(self, entry: HistoryEntry) -> None:
+        self.window.on_recording_unavailable(entry)
+
+    def on_transcription_finished(
+        self, entry: HistoryEntry, status_message: str | None
+    ) -> None:
+        self.window.on_transcription_finished(entry, status_message)
+
+    def on_transcription_ready(self, entry: HistoryEntry) -> None:
+        self.window.on_transcription_ready(entry)
+
+    def on_transcription_saved(self, folder: Path) -> None:
+        self.window.on_transcription_saved(folder)
 
     # MICROPHONE
 
@@ -66,8 +94,8 @@ class CurrentWindow:
     def on_mic_text(self, text: str) -> None:
         self.window.on_mic_text(text)
 
-    def on_mic_finished(self, error: str | None) -> None:
-        self.window.on_mic_finished(error)
+    def on_mic_finished(self, entry: HistoryEntry) -> None:
+        self.window.on_mic_finished(entry)
 
     def on_recording_progress(self, elapsed_seconds: float, level: float) -> None:
         self.window.on_recording_progress(elapsed_seconds, level)
