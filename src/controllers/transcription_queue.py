@@ -57,8 +57,7 @@ class TranscriptionQueue:
     after the other, and records their progress and results in the history.
 
     It implements the interface that the controller uses to report the progress
-    (see `TranscriptionView`), and it's kept while the view is rebuilt (e.g. when
-    the interface language changes), so the queue isn't lost.
+    (see `TranscriptionView`).
     """
 
     def __init__(

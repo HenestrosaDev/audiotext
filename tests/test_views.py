@@ -781,7 +781,7 @@ def test_the_saved_description_is_shown_without_the_placeholder(ui: Ui) -> None:
 def test_a_failed_transcription_goes_back_to_its_settings(
     ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(ui.app._jobs, "_run_next", lambda: None)
+    monkeypatch.setattr(ui.window._jobs, "_run_next", lambda: None)
     settings = TranscriptionSettings(diarize=True, keywords="Audiotext")
     entry = ui.add(
         source=str(audio_file),
@@ -818,8 +818,8 @@ def test_a_failed_transcription_goes_back_to_its_settings(
     entry = ui.store.get(entry.id)
     assert entry.status == EntryStatus.QUEUED
     assert not entry.settings["diarize"]
-    assert ui.app._jobs._queue[-1] == entry.id
-    ui.app._jobs._queue.clear()
+    assert ui.window._jobs._queue[-1] == entry.id
+    ui.window._jobs._queue.clear()
 
 
 def test_a_summary_finished_while_the_language_changes_is_shown_in_it(
@@ -834,14 +834,14 @@ def test_a_summary_finished_while_the_language_changes_is_shown_in_it(
 
     # The summary finishes, but its result isn't shown before the language
     # changes, since the events of Tk aren't processed in the meantime
-    ui.app._history.summarize_entry(entry.id)
+    ui.window._history.summarize_entry(entry.id)
     assert summarizer.has_summarized.wait(5)
     time.sleep(0.1)
     with interface_language(ui, "es"):
         ui.pump(0.5)
 
         assert ui.store.get(entry.id).summary == summary.to_dict()
-        assert not ui.app._history.is_summarizing(entry.id)
+        assert not ui.window._history.is_summarizing(entry.id)
         assert ui.window.top_bar._status_message == "El resumen de «Entry» está listo."
 
 
@@ -1018,17 +1018,17 @@ def test_a_notification_is_sent_when_a_transcription_is_ready(
     monkeypatch: pytest.MonkeyPatch,
     sent_notifications: list[tuple[str, str]],
 ) -> None:
-    monkeypatch.setattr(ui.app._jobs, "_run_next", lambda: None)
+    monkeypatch.setattr(ui.window._jobs, "_run_next", lambda: None)
 
     def finish(title: str, is_cancel_requested: bool = False) -> None:
         entry = ui.add(title=title, status=EntryStatus.PROCESSING)
-        ui.app._jobs._job = Job(
+        ui.window._jobs._job = Job(
             entry_id=entry.id,
             is_folder=False,
             is_mic=False,
             is_cancel_requested=is_cancel_requested,
         )
-        ui.app._jobs._finish_job(None)
+        ui.window._jobs._finish_job(None)
 
     finish("talk.mp3")
     finish("cancelled.mp3", is_cancel_requested=True)
@@ -1047,9 +1047,9 @@ def test_each_file_of_a_watched_folder_is_notified(
         entry = ui.add(
             kind=kind.value, source=str(tmp_path), status=EntryStatus.PROCESSING
         )
-        ui.app._jobs._job = Job(entry_id=entry.id, is_folder=True, is_mic=False)
-        ui.app._jobs.on_file_transcribed(tmp_path / file_name, "Hello", [], "en")
-        ui.app._jobs._job = None
+        ui.window._jobs._job = Job(entry_id=entry.id, is_folder=True, is_mic=False)
+        ui.window._jobs.on_file_transcribed(tmp_path / file_name, "Hello", [], "en")
+        ui.window._jobs._job = None
 
     transcribe_file(AudioSource.WATCH, "new.mp3")
     # A folder that isn't watched is notified once all its files are done

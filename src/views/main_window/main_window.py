@@ -13,6 +13,7 @@ import customtkinter as ctk
 import utils.constants as c
 from controllers.history_controller import HistoryController
 from controllers.transcription_queue import TranscriptionQueue
+from interfaces.history_view import HistoryView, MainView
 from models.config.config_system import ConfigSystem
 from models.history import EntryStatus, HistoryEntry
 from models.transcription_settings import TranscriptionSettings
@@ -69,11 +70,11 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     of source, the history of transcriptions on the left and, on the right, the
     selected transcription or the steps to create a new one.
 
-    It shows the changes made by the controllers of the history and of the queue
-    of transcriptions (see `TranscriptionQueueView`). The sidebar and the views of
-    the entries pass their actions to the controllers directly, to `EntryDialogs`
-    if the user must be asked first (e.g. for a name), or to the window if they
-    change what's shown.
+    It shows the changes reported by the controllers of the history and of the
+    queue of transcriptions (see `MainView`), which the app creates for it. The
+    sidebar and the views of the entries pass their actions to the controllers
+    directly, to `EntryDialogs` if the user must be asked first (e.g. for a name),
+    or to the window if they change what's shown.
 
     It's created once: when the interface language changes, its texts are shown
     in the new one (see `views.localization`).
@@ -83,12 +84,17 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self,
         parent: Any,
         store: HistoryStore,
-        history: HistoryController,
-        jobs: TranscriptionQueue,
+        create_history: Callable[[HistoryView], HistoryController],
+        create_jobs: Callable[[MainView], TranscriptionQueue],
     ) -> None:
+        """
+        :param create_history: Creates the controller of the history, which
+                               reports its changes to the window.
+        :param create_jobs: Creates the queue of transcriptions, which reports
+                            their progress to the window.
+        """
         super().__init__(parent, corner_radius=0, fg_color=theme.WINDOW_BG)
         self._store = store
-        self._jobs = jobs
 
         self._page = Page.WELCOME
         self._new_views: dict[AudioSource, NewTranscriptionView] = {}
@@ -100,9 +106,13 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self._entry_view_id: str | None = None
         self._preferences: PreferencesDialog | None = None
 
-        # The callbacks of the background threads of the views, which aren't run
-        # once the window is destroyed
+        # The callbacks of the background threads of the views and of the
+        # controllers, which live as long as the window
         self._ui_queue = UiThreadQueue(self)
+        history = create_history(self)
+        jobs = create_jobs(self)
+        self._history = history
+        self._jobs = jobs
 
         self.grid_columnconfigure(2, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -358,6 +368,34 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     def show_status(self, message: str, is_error: bool = False) -> None:
         self.top_bar.show_status(message, is_error=is_error)
+
+    # WHAT THE CONTROLLERS REPORT ONCE SOMETHING FINISHES OR FAILS
+
+    def on_reveal_failed(self, path: Path, error: Exception) -> None:
+        self.messages.on_reveal_failed(path, error)
+
+    def on_open_folder_failed(self, folder: Path, error: Exception) -> None:
+        self.messages.on_open_folder_failed(folder, error)
+
+    def on_summary_finished(self, entry: HistoryEntry, error: str | None) -> None:
+        self.messages.on_summary_finished(entry, error)
+
+    def on_translation_finished(self, entry: HistoryEntry, error: str | None) -> None:
+        self.messages.on_translation_finished(entry, error)
+
+    def on_recording_unavailable(self, entry: HistoryEntry) -> None:
+        self.messages.on_recording_unavailable(entry)
+
+    def on_transcription_finished(
+        self, entry: HistoryEntry, status_message: str | None
+    ) -> None:
+        self.messages.on_transcription_finished(entry, status_message)
+
+    def on_transcription_ready(self, entry: HistoryEntry) -> None:
+        self.messages.on_transcription_ready(entry)
+
+    def on_transcription_saved(self, folder: Path) -> None:
+        self.messages.on_transcription_saved(folder)
 
     # SIDEBAR
 

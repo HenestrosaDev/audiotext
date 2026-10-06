@@ -25,9 +25,6 @@ class HistoryController:
     Renames, annotates, groups, corrects, summarizes, translates and deletes the
     entries of the history. The view asks the user for the values (e.g. the new
     name) and to confirm the deletions before calling it.
-
-    It's kept while the view is rebuilt (e.g. when the interface language
-    changes), so the summaries and translations in progress aren't lost.
     """
 
     def __init__(

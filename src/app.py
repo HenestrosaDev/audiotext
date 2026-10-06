@@ -22,7 +22,6 @@ from models.config.config_whisperx import ConfigWhisperX
 from utils.enums import ComputeType
 from utils.env_keys import migrate_env_file
 from utils.history_store import HistoryStore
-from views.main_window.current_window import CurrentWindow
 from views.main_window.main_window import MainWindow
 from views.style import theme
 
@@ -156,21 +155,17 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             config_dir / "history.json", config_dir / "media"
         )
 
-        # The controllers report to the window through it
-        self._current_window = CurrentWindow(self)
-        self._history = HistoryController(
-            self._history_store,
-            self._current_window,
-            summarizer=summarizer,
-            translator=translator,
+        store = self._history_store
+        self._view = MainWindow(
+            self,
+            store,
+            create_history=lambda view: HistoryController(
+                store, view, summarizer=summarizer, translator=translator
+            ),
+            create_jobs=lambda view: TranscriptionQueue(
+                store, view, create_runner=lambda queue: MainController(queue, view)
+            ),
         )
-        self._jobs = TranscriptionQueue(
-            self._history_store,
-            self._current_window,
-            create_runner=lambda jobs: MainController(jobs, self._current_window),
-        )
-        self._view = MainWindow(self, self._history_store, self._history, self._jobs)
-        self._current_window.window = self._view
         self._view.pack(fill="both", expand=True)
         if config_system.check_for_updates:
             self._view.check_for_updates()
