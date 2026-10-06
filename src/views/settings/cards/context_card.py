@@ -57,7 +57,7 @@ class ContextCard(SettingsCard):
             on_change=self._debounce_save,
         )
         if config_transcription.prompt:
-            self.tbx_prompt.insert("1.0", config_transcription.prompt)
+            self.tbx_prompt.set_text(config_transcription.prompt)
         self.tbx_prompt.grid(row=7, column=0, columnspan=2, padx=18, sticky=ctk.EW)
         self._hint(
             8, _("What the audio is about, such as its topic or setting."), (2, 16)

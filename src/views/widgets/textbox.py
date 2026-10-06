@@ -86,6 +86,18 @@ class CTkPlaceholderTextbox(CTkTextbox):
         self.bind("<<Modified>>", lambda _event: self._on_modified())
         self._show_placeholder()
 
+    def set_text(self, text: str) -> None:
+        """
+        Replaces the text, without calling `on_change`. The placeholder is shown
+        if it's empty.
+        """
+        self.delete("1.0", ctk.END)
+        self._is_placeholder_shown = False
+        self.insert("1.0", text)
+        self.edit_modified(False)
+        if self.focus_get() is not self._textbox:
+            self._show_placeholder()
+
     def get_text(self) -> str:
         """:return: The text typed by the user, without the placeholder."""
         if self._is_placeholder_shown:
