@@ -29,25 +29,15 @@ class HistoryController:
     changes), so the summaries and translations in progress aren't lost.
     """
 
-    def __init__(self, store: HistoryStore) -> None:
+    def __init__(self, store: HistoryStore, view: HistoryView) -> None:
         self._store = store
-        self._view: HistoryView | None = None
+        self.view = view
         # The entries being summarized, and why the last summary of each failed
         self._summarizing: set[str] = set()
         self._summary_errors: dict[str, str] = {}
         # The same for the translations
         self._translating: set[str] = set()
         self._translation_errors: dict[str, str] = {}
-
-    def attach_view(self, view: HistoryView) -> None:
-        """Shows the history in a view, replacing the previous one if it was rebuilt."""
-        self._view = view
-
-    @property
-    def view(self) -> HistoryView:
-        if self._view is None:
-            raise RuntimeError("The history has no view attached")
-        return self._view
 
     # ENTRIES
 
