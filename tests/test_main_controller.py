@@ -36,14 +36,22 @@ def whisperx_handler() -> MagicMock:
 
 
 @pytest.fixture
+def downloader() -> MagicMock:
+    return MagicMock()
+
+
+@pytest.fixture
 def controller(
-    fake_view: FakeView, whisperx_handler: MagicMock, monkeypatch: pytest.MonkeyPatch
+    fake_view: FakeView, whisperx_handler: MagicMock, downloader: MagicMock
 ) -> MainController:
-    # Run the background tasks synchronously to make the tests deterministic
-    monkeypatch.setattr(
-        MainController, "_start_background_task", staticmethod(lambda task: task())
+    return MainController(
+        fake_view,
+        fake_view,
+        whisperx_handler,
+        downloader=downloader,
+        # The background tasks are run right away to make the tests deterministic
+        start_task=lambda task: task(),
     )
-    return MainController(fake_view, fake_view, whisperx_handler)
 
 
 @pytest.fixture
@@ -196,21 +204,19 @@ class TestFileTranscription:
         self,
         controller: MainController,
         fake_view: FakeView,
-        whisperx_handler: MagicMock,
+        downloader: MagicMock,
         tmp_path: Path,
-        monkeypatch: pytest.MonkeyPatch,
     ) -> None:
         downloaded_file = tmp_path / "yt-audio.mp3"
         downloaded_file.touch()
-        download = MagicMock(return_value=downloaded_file)
-        monkeypatch.setattr(main_controller.UrlHandler, "download", download)
+        downloader.download.return_value = downloaded_file
         transcription = make_transcription(
             audio_source=AudioSource.YOUTUBE, url="https://youtu.be/id"
         )
 
         controller.prepare_for_transcription(transcription)
 
-        assert download.call_args.args[:2] == (
+        assert downloader.download.call_args.args[:2] == (
             "https://youtu.be/id",
             main_controller.URL_DOWNLOAD_PATH,
         )
@@ -222,15 +228,14 @@ class TestFileTranscription:
         controller: MainController,
         fake_view: FakeView,
         whisperx_handler: MagicMock,
+        downloader: MagicMock,
         tmp_path: Path,
-        monkeypatch: pytest.MonkeyPatch,
     ) -> None:
         media_path = tmp_path / "media" / "entry" / "video"
         downloaded_file = media_path.with_suffix(".mp4")
         downloaded_file.parent.mkdir(parents=True)
         downloaded_file.touch()
-        download = MagicMock(return_value=downloaded_file)
-        monkeypatch.setattr(main_controller.UrlHandler, "download", download)
+        downloader.download.return_value = downloaded_file
         segments = [TranscriptSegment(0, 1, "whisperx text")]
         whisperx_handler.segments = segments
         whisperx_handler.result_language = "en"
@@ -243,7 +248,7 @@ class TestFileTranscription:
             )
         )
 
-        assert download.call_args.args[1] == media_path
+        assert downloader.download.call_args.args[1] == media_path
         assert downloaded_file.exists()
         assert fake_view.downloaded_media == [downloaded_file]
         assert fake_view.transcribed_files == [

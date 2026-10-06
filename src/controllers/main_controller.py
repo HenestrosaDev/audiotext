@@ -18,9 +18,11 @@ from handlers.live_transcriber import LiveTranscriber
 from handlers.transcribers import create_transcribers
 from handlers.url_handler import UrlHandler
 from handlers.whisperx_handler import WhisperXHandler
+from interfaces.media_downloader import MediaDownloader
 from interfaces.transcriber import Transcriber
 from interfaces.transcription_view import RecordingView, TranscriptionView
 from models.transcription import Transcription, TranscriptionResult
+from utils.background import TaskStarter, start_in_background
 from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.enums import AudioSource, TranscriptionMethod
 from utils.errors import format_error
@@ -46,6 +48,8 @@ class MainController:
         recording_view: RecordingView,
         whisperx_handler: WhisperXHandler | None = None,
         transcribers: Mapping[TranscriptionMethod, Transcriber] | None = None,
+        downloader: MediaDownloader | None = None,
+        start_task: TaskStarter = start_in_background,
     ) -> None:
         """
         :param recording_view: Shows the recordings from the microphone while
@@ -55,6 +59,10 @@ class MainController:
                                  `config.ini`.
         :param transcribers: The transcriber of each transcription method. By
                              default, the ones of the app.
+        :param downloader: Downloads the media of the URLs. By default, from
+                           YouTube or from the URL itself.
+        :param start_task: Starts the transcriptions and the loading of the
+                           models without waiting for them.
         """
         self.view = view
         self.recording_view = recording_view
@@ -63,6 +71,8 @@ class MainController:
 
         self._whisperx_handler = whisperx_handler or WhisperXHandler()
         self._transcribers = transcribers or create_transcribers(self._whisperx_handler)
+        self._downloader = downloader or UrlHandler()
+        self._start_task = start_task
         self._mic_recorder = MicRecorder(
             LiveTranscriber(
                 on_text=lambda text: self._ui(self.recording_view.on_live_text, text),
@@ -91,9 +101,7 @@ class MainController:
         self._cancellation_token = CancellationToken()
         self._is_transcribing = True
 
-        self._start_background_task(
-            lambda: self._run_process(self._get_process(transcription))
-        )
+        self._start_task(lambda: self._run_process(self._get_process(transcription)))
 
     def cancel_transcription(self) -> None:
         """
@@ -126,7 +134,7 @@ class MainController:
 
         # The transcription in progress will load the model when it needs it
         if not self._is_transcribing:
-            self._start_background_task(self._preload_model)
+            self._start_task(self._preload_model)
 
     # PROCESSES
 
@@ -187,7 +195,7 @@ class MainController:
     def _transcribe_url(self, transcription: Transcription) -> str:
         assert transcription.url
         self._report_progress(_("Downloading…"), None)
-        file_path = UrlHandler.download(
+        file_path = self._downloader.download(
             transcription.url,
             transcription.media_path or URL_DOWNLOAD_PATH,
             self._cancellation_token,
@@ -323,10 +331,6 @@ class MainController:
                 )
 
     # VIEW UPDATES
-
-    @staticmethod
-    def _start_background_task(task: Callable[[], None]) -> None:
-        threading.Thread(target=task, daemon=True).start()
 
     def _ui(self, callback: Callable[..., Any], *args: Any) -> None:
         """

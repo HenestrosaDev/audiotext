@@ -16,6 +16,8 @@ class Transcription:
     audio_source: AudioSource | None = None
     audio_source_path: Path = Path("/")
     method: TranscriptionMethod | None = None
+    # Model of WhisperX (e.g. "large-v2"). If None, the configured one is used
+    model_size: str | None = None
     output_file_types: list[str] = field(default_factory=list)
     should_translate: bool = False
     should_diarize: bool = False
