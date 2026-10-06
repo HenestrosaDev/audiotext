@@ -31,7 +31,7 @@ class EntryDialogs:
 
     # ENTRIES
 
-    def rename_entry(self, entry_id: str) -> None:
+    def ask_to_rename_entry(self, entry_id: str) -> None:
         entry = self._store.get(entry_id)
         if entry is None:
             return
@@ -45,7 +45,7 @@ class EntryDialogs:
         if title:
             self._history.rename_entry(entry_id, title)
 
-    def edit_note(self, entry_id: str) -> None:
+    def ask_for_note(self, entry_id: str) -> None:
         entry = self._store.get(entry_id)
         if entry is None:
             return
@@ -59,7 +59,7 @@ class EntryDialogs:
         if note is not None:
             self._history.set_note(entry_id, note)
 
-    def delete_note(self, entry_id: str) -> None:
+    def confirm_delete_note(self, entry_id: str) -> None:
         entry = self._store.get(entry_id)
         if entry is None or not entry.note:
             return
@@ -71,7 +71,7 @@ class EntryDialogs:
         ):
             self._history.set_note(entry_id, "")
 
-    def edit_tag(self, entry_id: str) -> None:
+    def ask_for_tag(self, entry_id: str) -> None:
         entry = self._store.get(entry_id)
         if entry is None:
             return
@@ -87,7 +87,7 @@ class EntryDialogs:
         if tag is not None:
             self._history.set_tag(entry_id, tag)
 
-    def delete_entry(self, entry_id: str) -> None:
+    def confirm_delete_entry(self, entry_id: str) -> None:
         entry = self._store.get(entry_id)
         if entry is None:
             return
@@ -107,7 +107,7 @@ class EntryDialogs:
 
     # GROUPS
 
-    def create_group(self) -> str | None:
+    def ask_to_create_group(self) -> str | None:
         """:return: The ID of the new group, or None if the user cancelled."""
         name = TextDialog(
             self._parent,
@@ -118,11 +118,11 @@ class EntryDialogs:
         ).get_input()
         return self._history.create_group(name) if name else None
 
-    def move_to_new_group(self, entry_id: str) -> None:
-        if group_id := self.create_group():
+    def ask_to_move_to_new_group(self, entry_id: str) -> None:
+        if group_id := self.ask_to_create_group():
             self._history.move_to_group(entry_id, group_id)
 
-    def rename_group(self, group_id: str) -> None:
+    def ask_to_rename_group(self, group_id: str) -> None:
         group = self._store.get_group(group_id)
         if group is None:
             return
@@ -136,7 +136,7 @@ class EntryDialogs:
         if name:
             self._history.rename_group(group_id, name)
 
-    def delete_group(self, group_id: str) -> None:
+    def confirm_delete_group(self, group_id: str) -> None:
         group = self._store.get_group(group_id)
         if group is None:
             return

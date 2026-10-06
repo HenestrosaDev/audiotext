@@ -1116,20 +1116,22 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         menu.add_separator()
         menu.add_command(
             label=_("Rename…"),
-            command=lambda: self._actions.prompts.rename_entry(self.entry_id),
+            command=lambda: self._actions.prompts.ask_to_rename_entry(self.entry_id),
         )
         menu.add_command(
             label=_("Edit note…") if entry.note else _("Add note…"),
-            command=lambda: self._actions.prompts.edit_note(self.entry_id),
+            command=lambda: self._actions.prompts.ask_for_note(self.entry_id),
         )
         if entry.note:
             menu.add_command(
                 label=_("Delete note…"),
-                command=lambda: self._actions.prompts.delete_note(self.entry_id),
+                command=lambda: self._actions.prompts.confirm_delete_note(
+                    self.entry_id
+                ),
             )
         menu.add_command(
             label=_("Edit tag…"),
-            command=lambda: self._actions.prompts.edit_tag(self.entry_id),
+            command=lambda: self._actions.prompts.ask_for_tag(self.entry_id),
         )
         if entry.parent_id is None:
             menu.add_command(
@@ -1139,7 +1141,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         menu.add_separator()
         menu.add_command(
             label=_("Delete…"),
-            command=lambda: self._actions.prompts.delete_entry(self.entry_id),
+            command=lambda: self._actions.prompts.confirm_delete_entry(self.entry_id),
         )
         self._popup_below(menu, self.btn_more)
 

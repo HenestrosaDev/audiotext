@@ -61,7 +61,7 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
         self.lbl_title.grid(row=0, column=0, sticky=ctk.EW)
         bind_wraplength(self.lbl_title, margin=10, minimum=200)
         self.lbl_title.bind(
-            "<Double-Button-1>", lambda _event: prompts.rename_entry(entry.id)
+            "<Double-Button-1>", lambda _event: prompts.ask_to_rename_entry(entry.id)
         )
 
         meta = ctk.CTkFrame(self, fg_color="transparent")
@@ -88,7 +88,7 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
         self.pil_tag = Pill(actions, cursor="hand2")
         self.pil_tag.set_tag(entry.tag, source_label(entry.kind))
         self.pil_tag.grid(row=0, column=0)
-        self.pil_tag.bind("<Button-1>", lambda _event: prompts.edit_tag(entry.id))
+        self.pil_tag.bind("<Button-1>", lambda _event: prompts.ask_for_tag(entry.id))
         if not entry.note:
             ctk.CTkButton(
                 actions,
@@ -98,7 +98,7 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
                 width=0,
                 height=22,
                 font=theme.font(12),
-                command=lambda: prompts.edit_note(entry.id),
+                command=lambda: prompts.ask_for_note(entry.id),
                 **theme.GHOST_BUTTON,
             ).grid(row=0, column=1, padx=(8, 0))
 
@@ -126,14 +126,14 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
             lbl_note.grid(row=0, column=1, padx=(0, 4), pady=10, sticky=ctk.EW)
             bind_wraplength(lbl_note, margin=10, minimum=200)
             for widget in (note, lbl_note):
-                widget.bind("<Button-1>", lambda _event: prompts.edit_note(entry.id))
+                widget.bind("<Button-1>", lambda _event: prompts.ask_for_note(entry.id))
 
             note_actions = ctk.CTkFrame(note, fg_color="transparent")
             note_actions.grid(row=0, column=2, padx=(0, 8), pady=11, sticky=ctk.N)
             for column, (icon_name, command) in enumerate(
                 (
-                    ("pencil", lambda: prompts.edit_note(entry.id)),
-                    ("trash", lambda: prompts.delete_note(entry.id)),
+                    ("pencil", lambda: prompts.ask_for_note(entry.id)),
+                    ("trash", lambda: prompts.confirm_delete_note(entry.id)),
                 )
             ):
                 ctk.CTkButton(

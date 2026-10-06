@@ -35,10 +35,10 @@ class HistoryOrganizer(Protocol):
 class GroupPrompts(Protocol):
     """The actions on the groups that ask the user for a name or a confirmation."""
 
-    def create_group(self) -> str | None: ...
-    def move_to_new_group(self, entry_id: str) -> None: ...
-    def rename_group(self, group_id: str) -> None: ...
-    def delete_group(self, group_id: str) -> None: ...
+    def ask_to_create_group(self) -> str | None: ...
+    def ask_to_move_to_new_group(self, entry_id: str) -> None: ...
+    def ask_to_rename_group(self, group_id: str) -> None: ...
+    def confirm_delete_group(self, group_id: str) -> None: ...
 
 
 @dataclass(frozen=True)
@@ -146,7 +146,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             anchor=ctk.W,
             height=28,
             width=0,
-            command=self.actions.groups.create_group,
+            command=self.actions.groups.ask_to_create_group,
             **theme.GHOST_BUTTON,
         ).grid(row=0, column=0, sticky=ctk.W)
         self.lbl_count = ctk.CTkLabel(
@@ -284,16 +284,16 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         menu.add_command(label=_("Rename"), command=lambda: self.start_rename(entry_id))
         menu.add_command(
             label=_("Edit note…") if entry.note else _("Add note…"),
-            command=lambda: self.actions.prompts.edit_note(entry_id),
+            command=lambda: self.actions.prompts.ask_for_note(entry_id),
         )
         if entry.note:
             menu.add_command(
                 label=_("Delete note…"),
-                command=lambda: self.actions.prompts.delete_note(entry_id),
+                command=lambda: self.actions.prompts.confirm_delete_note(entry_id),
             )
         menu.add_command(
             label=_("Edit tag…"),
-            command=lambda: self.actions.prompts.edit_tag(entry_id),
+            command=lambda: self.actions.prompts.ask_for_tag(entry_id),
         )
 
         if not is_child:
@@ -321,7 +321,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             groups_menu.add_separator()
             groups_menu.add_command(
                 label=_("New group…"),
-                command=lambda: self.actions.groups.move_to_new_group(entry_id),
+                command=lambda: self.actions.groups.ask_to_move_to_new_group(entry_id),
             )
             menu.add_cascade(label=_("Move to group"), menu=groups_menu)
             self._menu_group_variable = current_group
@@ -350,7 +350,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         menu.add_separator()
         menu.add_command(
             label=_("Delete…"),
-            command=lambda: self.actions.prompts.delete_entry(entry_id),
+            command=lambda: self.actions.prompts.confirm_delete_entry(entry_id),
         )
 
         try:
@@ -363,11 +363,11 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         menu = tk.Menu(self, tearoff=False)
         menu.add_command(
             label=_("Rename group…"),
-            command=lambda: self.actions.groups.rename_group(group_id),
+            command=lambda: self.actions.groups.ask_to_rename_group(group_id),
         )
         menu.add_command(
             label=_("Delete group…"),
-            command=lambda: self.actions.groups.delete_group(group_id),
+            command=lambda: self.actions.groups.confirm_delete_group(group_id),
         )
         try:
             menu.tk_popup(event.x_root, event.y_root)

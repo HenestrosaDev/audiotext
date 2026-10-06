@@ -172,7 +172,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
             self.frm_actions,
             text=_("Delete"),
             width=90,
-            command=lambda: self._actions.prompts.delete_entry(entry.id),
+            command=lambda: self._actions.prompts.confirm_delete_entry(entry.id),
             **theme.SECONDARY_BUTTON,
         ).grid(row=0, column=2)
 

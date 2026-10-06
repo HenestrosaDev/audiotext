@@ -191,7 +191,7 @@ def test_the_actions_of_the_views_reach_the_history(
     ui.pump()
 
     # Renamed from the view of the entry, which asks for the name
-    ui.window._entry_view._actions.prompts.rename_entry(entry.id)
+    ui.window._entry_view._actions.prompts.ask_to_rename_entry(entry.id)
     ui.pump()
     assert ui.store.get(entry.id).title == "Renamed"
     assert ui.window._entry_view.header.lbl_title.cget("text") == "Renamed"
@@ -201,7 +201,7 @@ def test_the_actions_of_the_views_reach_the_history(
     ui.pump()
     assert ui.store.get(entry.id).is_pinned
 
-    ui.window.sidebar.actions.prompts.delete_entry(entry.id)
+    ui.window.sidebar.actions.prompts.confirm_delete_entry(entry.id)
     ui.pump()
     assert ui.store.get(entry.id) is None
     assert ui.window._entry_view is None
