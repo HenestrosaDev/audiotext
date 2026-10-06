@@ -22,7 +22,7 @@ from models.history import EntryStatus, HistoryEntry
 from models.summary import Chapter, TranscriptSummary
 from models.transcript_segment import TranscriptSegment, TranscriptWord
 from models.transcription_settings import TranscriptionSettings
-from tests.conftest import MemoryKeyring, make_tone
+from tests.conftest import FakeSummarizer, FakeTranslator, MemoryKeyring, make_tone
 from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
 from views.settings.cards.context_card import ContextCard
@@ -101,7 +101,23 @@ class Ui:
 
 
 @pytest.fixture(scope="module")
-def app(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Any]:
+def summarizer() -> FakeSummarizer:
+    """Summarizes the entries instead of a language model. It's shared by the tests."""
+    return FakeSummarizer()
+
+
+@pytest.fixture(scope="module")
+def translator() -> FakeTranslator:
+    """Translates the entries instead of a provider. It's shared by the tests."""
+    return FakeTranslator()
+
+
+@pytest.fixture(scope="module")
+def app(
+    tmp_path_factory: pytest.TempPathFactory,
+    summarizer: FakeSummarizer,
+    translator: FakeTranslator,
+) -> Iterator[Any]:
     """
     The app, shared by the tests, since Tk can only create its window once per
     process. Its settings, history and keys are kept apart from the real ones.
@@ -121,7 +137,7 @@ def app(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Any]:
         keyring.set_keyring(MemoryKeyring())
         import app as app_module
 
-        application = app_module.App()
+        application = app_module.App(summarizer, translator)
         yield application
         application.destroy()
         keyring.set_keyring(previous_keyring)
@@ -259,19 +275,17 @@ def test_the_transcript_can_be_searched_and_corrected(
 
 
 def test_a_summary_is_generated_and_exported(
-    ui: Ui, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ui: Ui,
+    summarizer: FakeSummarizer,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    import controllers.history_controller as history_controller
     import views.transcript.transcript_view as transcript_view
 
     summary = TranscriptSummary(
         "A short talk.", ("They greet",), (Chapter(0, "Greeting"),), "model", ""
     )
-    monkeypatch.setattr(
-        history_controller.SummaryHandler,
-        "summarize",
-        staticmethod(lambda _text, _segments: summary),
-    )
+    summarizer.summary = summary
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
     entry = ui.add(segments=SEGMENTS, text=TEXT)
     ui.window.select_entry(entry.id)
@@ -326,9 +340,11 @@ def test_the_summary_without_a_key_leads_to_the_settings(ui: Ui) -> None:
 
 
 def test_a_translation_is_shown_next_to_the_transcript(
-    ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
+    ui: Ui,
+    translator: FakeTranslator,
+    audio_file: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    import controllers.history_controller as history_controller
     import views.transcript.transcript_view as transcript_view
     from models.translation import TranscriptTranslation
     from views.transcript.translation_panel import TranslationRequest
@@ -336,22 +352,8 @@ def test_a_translation_is_shown_next_to_the_transcript(
     translation = TranscriptTranslation(
         "es", "Hola\n\nAdiós", translated("Hola", "Encantado.", "Adiós."), "deepl"
     )
-    requests: list[tuple[str, str]] = []
-
-    def translate(
-        _text: str,
-        _segments: list[TranscriptSegment],
-        _is_text_edited: bool,
-        language: str,
-        provider: str,
-        _model: str,
-    ) -> TranscriptTranslation:
-        requests.append((language, provider))
-        return translation
-
-    monkeypatch.setattr(
-        history_controller.TranslationHandler, "translate", staticmethod(translate)
-    )
+    translator.translation = translation
+    translator.requests.clear()
     monkeypatch.setattr(
         transcript_view.TranslateDialog,
         "get_result",
@@ -366,7 +368,7 @@ def test_a_translation_is_shown_next_to_the_transcript(
     view._on_translate_button()
     ui.pump(0.5)
 
-    assert requests == [("es", "deepl")]
+    assert translator.requests == [("es", "deepl")]
     assert entry.translation == translation.to_dict()
     assert view.translation_panel.winfo_ismapped()
     assert "Encantado." in view.translation_panel.text.tbx_transcript.get("1.0", "end")
@@ -775,22 +777,11 @@ def test_a_failed_transcription_goes_back_to_its_settings(
 
 
 def test_a_summary_finished_while_the_window_is_rebuilt_is_shown(
-    ui: Ui, monkeypatch: pytest.MonkeyPatch
+    ui: Ui, summarizer: FakeSummarizer
 ) -> None:
-    import threading
-
-    import controllers.history_controller as history_controller
-
     summary = TranscriptSummary("A short talk.", (), (), "model", "")
-    has_finished = threading.Event()
-
-    def summarize(_text: str, _segments: list[TranscriptSegment]) -> TranscriptSummary:
-        has_finished.set()
-        return summary
-
-    monkeypatch.setattr(
-        history_controller.SummaryHandler, "summarize", staticmethod(summarize)
-    )
+    summarizer.summary = summary
+    summarizer.has_summarized.clear()
     entry = ui.add(segments=SEGMENTS, text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
@@ -798,7 +789,7 @@ def test_a_summary_finished_while_the_window_is_rebuilt_is_shown(
     # The summary finishes, but its result isn't shown before the window is
     # rebuilt, since the events of Tk aren't processed in the meantime
     ui.app._history.summarize_entry(entry.id)
-    assert has_finished.wait(5)
+    assert summarizer.has_summarized.wait(5)
     time.sleep(0.1)
     old_window = ui.window
     ui.app._on_ui_language_change("en")

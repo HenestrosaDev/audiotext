@@ -1,4 +1,5 @@
 import shutil
+import threading
 from collections.abc import Callable, Iterator
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,9 @@ from pydub.generators import Sine
 
 import utils.env_keys as env_keys
 import utils.notifications as notifications
+from models.summary import TranscriptSummary
+from models.transcript_segment import TranscriptSegment
+from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -169,6 +173,52 @@ class FakeView:
 @pytest.fixture
 def fake_view() -> FakeView:
     return FakeView()
+
+
+class FakeSummarizer:
+    """Returns its summary, or raises its error, and records what it summarizes."""
+
+    def __init__(self) -> None:
+        self.summary = TranscriptSummary("A short talk.", (), (), "model", "")
+        self.error: Exception | None = None
+        self.texts: list[str] = []
+        # Set when it's called, since it's called from a background thread
+        self.has_summarized = threading.Event()
+
+    def summarize(
+        self, text: str, segments: list[TranscriptSegment]
+    ) -> TranscriptSummary:
+        self.texts.append(text)
+        self.has_summarized.set()
+        if self.error:
+            raise self.error
+        return self.summary
+
+
+class FakeTranslator:
+    """
+    Returns its translation, or raises its error, and records the language and
+    the provider of each request.
+    """
+
+    def __init__(self) -> None:
+        self.translation = TranscriptTranslation("es", "Hola", (), "deepl")
+        self.error: Exception | None = None
+        self.requests: list[tuple[str, str]] = []
+
+    def translate(
+        self,
+        text: str,
+        segments: list[TranscriptSegment],
+        is_text_edited: bool,
+        language: str,
+        provider: str,
+        model: str,
+    ) -> TranscriptTranslation:
+        self.requests.append((language, provider))
+        if self.error:
+            raise self.error
+        return self.translation
 
 
 def make_tone(duration_ms: int = 600) -> AudioSegment:

@@ -15,6 +15,8 @@ import utils.path_helper as ph
 from controllers.history_controller import HistoryController
 from controllers.main_controller import MainController
 from controllers.transcription_queue import TranscriptionQueue
+from interfaces.summarizer import Summarizer
+from interfaces.translator import Translator
 from models.config.config_system import ConfigSystem
 from models.config.config_whisperx import ConfigWhisperX
 from utils.enums import ComputeType
@@ -118,7 +120,17 @@ def configure_whisperx_device() -> None:
 
 
 class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        summarizer: Summarizer | None = None,
+        translator: Translator | None = None,
+    ) -> None:
+        """
+        :param summarizer: Summarizes the entries of the history. By default, with
+                           the configured language model.
+        :param translator: Translates the entries of the history. By default, with
+                           the provider chosen by the user.
+        """
         super().__init__()
 
         config_system = cm.ConfigManager.get_config_system()
@@ -147,7 +159,12 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         # The controllers are kept while the window is rebuilt, with what's in
         # progress, and always report to the window being shown
         self._current_window = CurrentWindow(self)
-        self._history = HistoryController(self._history_store, self._current_window)
+        self._history = HistoryController(
+            self._history_store,
+            self._current_window,
+            summarizer=summarizer,
+            translator=translator,
+        )
         self._jobs = TranscriptionQueue(
             self._history_store,
             self._current_window,
