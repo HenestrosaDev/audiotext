@@ -104,7 +104,7 @@ jobs:
             --gpu build/gpu/Audiotext \
             --out build/release \
             --name "$NAME-gpu" \
-            --format ${{ runner.os == 'Windows' && '7z' || 'tar.gz' }} \
+            --format ${{ runner.os == 'Windows' && '7z' || 'tar.xz' }} \
             --url-base "$URL_BASE" \
             --manifest build/gpu-addon.txt \
             --iss build/gpu-addon.iss

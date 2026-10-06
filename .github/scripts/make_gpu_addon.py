@@ -24,9 +24,14 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-# Uncompressed bytes per archive. The compression never makes them bigger than 2 GiB
-MAX_PART_SIZE = 1_900_000_000
 MAX_ASSET_SIZE = 2 * 1024**3
+# Compressed bytes per archive, as the sum of the compressed size of its files. 7z
+# compresses each file on its own (not solid) and xz in independent blocks, so an
+# archive is about as big as that sum. The margin covers the difference
+MAX_PART_SIZE = int(MAX_ASSET_SIZE * 0.97)
+# The files are compressed one by one to measure them, except the smaller ones, which
+# are thousands. Their uncompressed size is used, which is bigger
+MIN_MEASURED_SIZE = 1024**2
 REMOVE_LIST_NAME = "gpu-addon-remove.txt"
 
 
@@ -66,14 +71,14 @@ def entry_size(path: Path) -> int:
     return 0 if path.is_symlink() else path.stat().st_size
 
 
-def split_into_parts(paths: dict[str, Path]) -> list[list[str]]:
-    """Distributes the files into archives of `MAX_PART_SIZE` (first-fit decreasing)."""
+def split_into_parts(sizes: dict[str, int], max_size: int) -> list[list[str]]:
+    """Distributes the files into archives of `max_size` (first-fit decreasing)."""
     parts: list[list[str]] = []
     part_sizes: list[int] = []
-    for rel_path in sorted(paths, key=lambda p: entry_size(paths[p]), reverse=True):
-        size = entry_size(paths[rel_path])
+    for rel_path in sorted(sizes, key=lambda p: sizes[p], reverse=True):
+        size = sizes[rel_path]
         for i, part_size in enumerate(part_sizes):
-            if part_size + size <= MAX_PART_SIZE:
+            if part_size + size <= max_size:
                 parts[i].append(rel_path)
                 part_sizes[i] += size
                 break
@@ -95,11 +100,28 @@ def create_archive(root: Path, rel_paths: list[str], archive: Path, fmt: str) ->
             command = ["7z", "a", "-t7z", "-mx=5", "-ms=off", "-mmt=on", "-scsUTF-8"]
             command += [str(archive.resolve()), f"@{list_file.name}"]
         else:
-            command = ["tar", "-czf", str(archive.resolve()), "--no-recursion"]
-            command += ["-T", list_file.name]
+            # xz (LZMA2, like 7z) makes the CUDA libraries much smaller than gzip. -T0
+            # compresses with all the cores
+            command = ["tar", "-cf", str(archive.resolve()), "--no-recursion"]
+            command += ["--use-compress-program=xz -6 -T0", "-T", list_file.name]
         subprocess.run(command, cwd=root, check=True)
     finally:
         os.unlink(list_file.name)
+
+
+def compressed_sizes(root: Path, rel_paths: list[str], fmt: str) -> dict[str, int]:
+    """Returns the size of each file once compressed in an archive of its own."""
+    sizes = {}
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        archive = Path(tmp_dir, f"file.{fmt}")
+        for rel_path in rel_paths:
+            size = entry_size(root / rel_path)
+            if size >= MIN_MEASURED_SIZE:
+                create_archive(root, [rel_path], archive, fmt)
+                size = archive.stat().st_size
+                archive.unlink()
+            sizes[rel_path] = size
+    return sizes
 
 
 def format_size(size: int) -> str:
@@ -140,7 +162,7 @@ def main() -> None:
     parser.add_argument("--gpu", type=Path, required=True, help="GPU build")
     parser.add_argument("--out", type=Path, required=True, help="archives directory")
     parser.add_argument("--name", required=True, help="archives name, e.g. App-gpu")
-    parser.add_argument("--format", choices=["7z", "tar.gz"], required=True)
+    parser.add_argument("--format", choices=["7z", "tar.xz"], required=True)
     parser.add_argument("--url-base", required=True, help="URL of the release assets")
     parser.add_argument("--manifest", type=Path, help="manifest file to write")
     parser.add_argument("--iss", type=Path, help="Inno Setup include file to write")
@@ -161,20 +183,31 @@ def main() -> None:
     remove_list = args.gpu / REMOVE_LIST_NAME
     remove_list.write_text("".join(f"{p}\n" for p in removed), encoding="utf-8")
 
-    parts = split_into_parts(changed)
-    parts[0].insert(0, REMOVE_LIST_NAME)
+    sizes = compressed_sizes(args.gpu, sorted(changed), args.format)
+    print(f"{format_size(sum(sizes.values()))} once compressed")
 
     args.out.mkdir(parents=True, exist_ok=True)
-    archives = []
-    for i, rel_paths in enumerate(parts, start=1):
-        archive = args.out / f"{args.name}-{i}.{args.format}"
-        create_archive(args.gpu, rel_paths, archive, args.format)
-        size = archive.stat().st_size
-        if size > MAX_ASSET_SIZE:
-            raise SystemExit(f"{archive.name} is bigger than a GitHub release asset")
-        url = f"{args.url_base.rstrip('/')}/{archive.name}"
-        archives.append((archive, sha256(archive), size, url))
-        print(f"{archive.name}: {len(rel_paths)} files, {format_size(size)}")
+    max_size = MAX_PART_SIZE
+    for _ in range(3):
+        parts = split_into_parts(sizes, max_size)
+        parts[0].insert(0, REMOVE_LIST_NAME)
+        archives = []
+        for i, rel_paths in enumerate(parts, start=1):
+            archive = args.out / f"{args.name}-{i}.{args.format}"
+            create_archive(args.gpu, rel_paths, archive, args.format)
+            size = archive.stat().st_size
+            url = f"{args.url_base.rstrip('/')}/{archive.name}"
+            archives.append((archive, sha256(archive), size, url))
+            print(f"{archive.name}: {len(rel_paths)} files, {format_size(size)}")
+        if all(size <= MAX_ASSET_SIZE for _, _, size, _ in archives):
+            break
+        # The archives are bigger than measured, so they're created again smaller
+        for archive, _, _, _ in archives:
+            archive.unlink()
+        max_size = int(max_size * 0.95)
+        print("An archive is bigger than a GitHub release asset, splitting again")
+    else:
+        raise SystemExit("The archives are still bigger than a GitHub release asset")
 
     if args.manifest:
         args.manifest.write_text(
