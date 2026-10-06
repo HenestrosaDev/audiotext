@@ -24,15 +24,15 @@ class LiveCard(SettingsCard):
         on_change: Callable[[], None],
         config_whisperx: ConfigWhisperX,
     ) -> None:
-        super().__init__(master, _("Live text"), on_change)
+        super().__init__(master, lambda: _("Live text"), on_change)
         self.swi_live = self._switch(
             2,
-            _("Show the text while recording"),
+            lambda: _("Show the text while recording"),
             config_whisperx.live_transcription,
             ConfigWhisperX.Key.LIVE_TRANSCRIPTION,
         )
 
-        self.lbl_live_model = self._field_label(3, _("Live model"))
+        self.lbl_live_model = self._field_label(3, lambda: _("Live model"))
         self.omn_live_model = CTkOptionMenu(
             self,
             values=LIVE_MODEL_SIZES,

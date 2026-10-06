@@ -10,6 +10,7 @@ from views.entries.delegates import EntryActions
 from views.entries.entry_header import EntryHeader
 from views.entries.progress_card import ProgressCard
 from views.history.formatting import format_entry_date, status_icon, status_label
+from views.localization import localize, on_language_change
 from views.style import theme
 from views.widgets.scrollable_frame import CTkScrollableFrame
 
@@ -50,8 +51,9 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
         self.frm_buttons = ctk.CTkFrame(self.frm_summary, fg_color="transparent")
         self.frm_buttons.grid(row=0, column=1, sticky=ctk.E)
 
-        ctk.CTkLabel(
-            self, text=_("Files"), font=theme.font(15, "bold"), anchor=ctk.W
+        localize(
+            ctk.CTkLabel(self, font=theme.font(15, "bold"), anchor=ctk.W),
+            text=lambda: _("Files"),
         ).grid(row=3, column=0, padx=28, pady=(18, 6), sticky=ctk.W)
         self.frm_files = CTkScrollableFrame(
             self,
@@ -64,12 +66,15 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
         self.frm_files.grid_columnconfigure(1, weight=1)
 
         self._refresh(entry)
+        # The summary and the list of the files are built again
+        on_language_change(self, lambda: self._refresh(self._entry))
 
     def update_entry(self, entry: HistoryEntry) -> None:
         self.header.update_entry(entry)
         self._refresh(entry)
 
     def _refresh(self, entry: HistoryEntry) -> None:
+        self._entry = entry
         children = self._store.children(entry.id)
 
         if entry.status.is_active or entry.status in (

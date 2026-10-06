@@ -105,6 +105,34 @@ class CTkPlaceholderTextbox(CTkTextbox):
 
         return str(self.get("1.0", "end-1c"))
 
+    def configure(self, require_redraw: bool = False, **kwargs: Any) -> None:
+        """Also takes the `placeholder_text`, like the constructor."""
+        if "placeholder_text" in kwargs:
+            self._set_placeholder_text(kwargs.pop("placeholder_text"))
+        super().configure(require_redraw, **kwargs)
+
+    def cget(self, attribute_name: str) -> Any:
+        if attribute_name == "placeholder_text":
+            return self._placeholder_text
+        return super().cget(attribute_name)
+
+    def _set_placeholder_text(self, text: str) -> None:
+        if not self._is_placeholder_shown:
+            self._placeholder_text = text
+            # Otherwise, it's shown once the user leaves it, if it's empty
+            if str(self.tk.call("focus")) != str(self._textbox):
+                self._show_placeholder()
+            return
+
+        # The placeholder is replaced even if the textbox is disabled
+        state = self._textbox.cget("state")
+        self._textbox.configure(state=ctk.NORMAL)
+        self.delete("1.0", ctk.END)
+        self._is_placeholder_shown = False
+        self._placeholder_text = text
+        self._show_placeholder()
+        self._textbox.configure(state=state)
+
     def _draw(self, no_color_updates: bool = False) -> None:
         super()._draw(no_color_updates)
         # Also called on appearance mode changes, before the attribute exists

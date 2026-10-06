@@ -9,6 +9,7 @@ import numpy as np
 from utils.audio_player import AudioPlayer, PlaybackUnavailableError
 from utils.i18n import _
 from utils.time_format import format_timestamp
+from views.localization import Text, localize
 from views.style import icons, theme
 from views.widgets.option_menu import CTkOptionMenu
 
@@ -95,15 +96,17 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self.omn_speed.grid(row=0, column=5, padx=(12, 0))
 
         # Subtitles over the video, shown once a video is loaded
-        self.btn_subtitles = ctk.CTkButton(
-            controls,
-            text=_("Subtitles"),
-            image=icons.icon("subtitles", 15),
-            compound=ctk.LEFT,
-            width=0,
-            height=28,
-            command=on_toggle_subtitles,
-            **theme.SECONDARY_BUTTON,
+        self.btn_subtitles = localize(
+            ctk.CTkButton(
+                controls,
+                image=icons.icon("subtitles", 15),
+                compound=ctk.LEFT,
+                width=0,
+                height=28,
+                command=on_toggle_subtitles,
+                **theme.SECONDARY_BUTTON,
+            ),
+            text=lambda: _("Subtitles"),
         )
         self.btn_subtitle_options = ctk.CTkButton(
             controls,
@@ -117,12 +120,11 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
             command=lambda: on_subtitle_menu(self.btn_subtitle_options)
         )
 
-        self.lbl_hint = ctk.CTkLabel(
-            self,
-            text=_("Loading the audio…"),
-            font=theme.font(12),
-            text_color=theme.HINT_TEXT,
-            anchor=ctk.W,
+        self.lbl_hint = localize(
+            ctk.CTkLabel(
+                self, font=theme.font(12), text_color=theme.HINT_TEXT, anchor=ctk.W
+            ),
+            text=lambda: _("Loading the audio…"),
         )
         self.lbl_hint.grid(row=1, column=0, padx=30, pady=(0, 14), sticky=ctk.EW)
         self._set_enabled(False)
@@ -147,16 +149,18 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self._is_video = is_video
         self.sld_position.configure(to=max(self._player.duration, 0.01))
         self._set_enabled(True)
-        self.lbl_hint.configure(
-            text=_("Space: play/pause · ←/→: {seconds} s back/forward").format(
+        self.lbl_hint.configure(text_color=theme.HINT_TEXT)
+        localize(
+            self.lbl_hint,
+            text=lambda: _("Space: play/pause · ←/→: {seconds} s back/forward").format(
                 seconds=SEEK_STEP_SECONDS
             ),
-            text_color=theme.HINT_TEXT,
         )
         self.refresh()
 
-    def show_error(self, message: str) -> None:
-        self.lbl_hint.configure(text=message, text_color=theme.ERROR_TEXT)
+    def show_error(self, message: Text) -> None:
+        self.lbl_hint.configure(text_color=theme.ERROR_TEXT)
+        localize(self.lbl_hint, text=message)
 
     def show_subtitle_buttons(self, is_on: bool) -> None:
         self.btn_subtitles.grid(row=0, column=3, padx=(12, 0))
@@ -249,7 +253,9 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
     def _disable(self, error: Exception) -> None:
         logger.error("Could not play the audio", exc_info=error)
         self._set_enabled(False)
-        self.show_error(_("The audio can't be played: {error}").format(error=error))
+        self.show_error(
+            lambda: _("The audio can't be played: {error}").format(error=error)
+        )
 
     def _check_speed_change(self) -> None:
         thread = self._speed_change_thread

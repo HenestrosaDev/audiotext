@@ -156,8 +156,7 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             config_dir / "history.json", config_dir / "media"
         )
 
-        # The controllers are kept while the window is rebuilt, with what's in
-        # progress, and always report to the window being shown
+        # The controllers report to the window through it
         self._current_window = CurrentWindow(self)
         self._history = HistoryController(
             self._history_store,
@@ -170,7 +169,9 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             self._current_window,
             create_runner=lambda jobs: MainController(jobs, self._current_window),
         )
-        self._view = self._create_view()
+        self._view = MainWindow(self, self._history_store, self._history, self._jobs)
+        self._current_window.window = self._view
+        self._view.pack(fill="both", expand=True)
         if config_system.check_for_updates:
             self._view.check_for_updates()
 
@@ -297,40 +298,13 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         self._save_window_state()
         self.destroy()
 
-    def _create_view(self) -> MainWindow:
-        view = MainWindow(
-            self,
-            self._history_store,
-            self._history,
-            self._jobs,
-            on_ui_language_change=self._on_ui_language_change,
-        )
-        self._current_window.window = view
-        view.pack(fill="both", expand=True)
-        return view
-
-    def _on_ui_language_change(self, ui_language: str) -> None:
-        """
-        Rebuilds the window in the new interface language, keeping the content
-        entered by the user and the loaded models.
-        """
-        i18n.set_language(ui_language)
-
-        session_state = self._view.get_session_state()
-        self._view.destroy()
-
-        self._view = self._create_view()
-        self._view.restore_session_state(session_state)
-
     def _bind_shortcuts(self) -> None:
-        # The view is rebuilt when the language changes, so the shortcuts look it up
-        # when they are triggered
         shortcuts = {
-            f"<{SHORTCUT_MODIFIER}-Return>": lambda: self._view.trigger_main_action(),
-            f"<{SHORTCUT_MODIFIER}-s>": lambda: self._view.trigger_save(),
-            f"<{SHORTCUT_MODIFIER}-o>": lambda: self._view.trigger_browse(),
-            f"<{SHORTCUT_MODIFIER}-f>": lambda: self._view.trigger_search(),
-            "<Escape>": lambda: self._view.trigger_cancel(),
+            f"<{SHORTCUT_MODIFIER}-Return>": self._view.trigger_main_action,
+            f"<{SHORTCUT_MODIFIER}-s>": self._view.trigger_save,
+            f"<{SHORTCUT_MODIFIER}-o>": self._view.trigger_browse,
+            f"<{SHORTCUT_MODIFIER}-f>": self._view.trigger_search,
+            "<Escape>": self._view.trigger_cancel,
         }
 
         for sequence, action in shortcuts.items():
@@ -338,7 +312,7 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
 
         # Playback and navigation of the list, ignored while typing
         for sequence in ("<space>", "<Left>", "<Right>", "<Up>", "<Down>"):
-            self.bind_all(sequence, lambda event: self._view.handle_key(event), add="+")
+            self.bind_all(sequence, self._view.handle_key, add="+")
 
     def _enable_drag_and_drop(self) -> None:
         if DnDWrapper is object:

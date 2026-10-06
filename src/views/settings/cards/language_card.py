@@ -13,14 +13,12 @@ from models.transcription_settings import (
     TranslationMode,
 )
 from utils.i18n import _
+from views.localization import localize
 from views.settings.cards.base import SettingsCard
-from views.settings.option_labels import (
-    OptionLabels,
-    get_language_labels,
-    save_config,
-)
+from views.settings.option_labels import get_language_labels, save_config
 from views.style import theme
 from views.widgets.bindings import bind_wraplength
+from views.widgets.localized_options import LocalizedOptions
 from views.widgets.searchable_option_menu import CTkSearchableOptionMenu
 
 # Old versions stored the name of the language instead of its code
@@ -53,51 +51,48 @@ class LanguageCard(SettingsCard):
         on_change: Callable[[], None],
         config_transcription: ConfigTranscription,
     ) -> None:
-        super().__init__(master, _("Language"), on_change)
+        super().__init__(master, lambda: _("Language"), on_change)
 
-        language_labels = get_language_labels()
-        self._input_labels = OptionLabels(
-            {c.AUTO_DETECT_LANGUAGE: _("Auto-detect")} | language_labels
-        )
-        self._output_labels = OptionLabels(
-            {SAME_LANGUAGE: _("Same as the audio")} | language_labels
-        )
+        # The English names and the codes of the languages are also searched
         search_terms = {
-            language_labels[code]: f"{name} {code}"
-            for code, name in c.AUDIO_LANGUAGES.items()
+            code: f"{name} {code}" for code, name in c.AUDIO_LANGUAGES.items()
         }
 
-        self._field_label(2, _("Language of the audio"))
+        self._field_label(2, lambda: _("Language of the audio"))
         self.omn_input_language = CTkSearchableOptionMenu(
             self,
-            values=self._input_labels.labels,
-            title=_("Language of the audio"),
-            search_placeholder=_("Search language…"),
-            no_results_text=_("No languages found."),
-            search_terms=search_terms,
-            command=self._on_input_language_change,
+            values=[],
+            title=lambda: _("Language of the audio"),
+            search_placeholder=lambda: _("Search language…"),
+            no_results_text=lambda: _("No languages found."),
             dynamic_resizing=False,
         )
-        self.omn_input_language.set(
-            self._input_labels.label(get_configured_language(config_transcription))
+        self._input_languages = LocalizedOptions(
+            self.omn_input_language,
+            lambda: {c.AUTO_DETECT_LANGUAGE: _("Auto-detect")} | get_language_labels(),
+            get_configured_language(config_transcription),
+            search_terms=search_terms,
+            command=self._on_input_language_change,
         )
         self.omn_input_language.grid(
             row=3, column=0, columnspan=2, padx=18, sticky=ctk.EW
         )
 
-        self._field_label(4, _("Language of the transcription"))
+        self._field_label(4, lambda: _("Language of the transcription"))
         self.omn_output_language = CTkSearchableOptionMenu(
             self,
-            values=self._output_labels.labels,
-            title=_("Language of the transcription"),
-            search_placeholder=_("Search language…"),
-            no_results_text=_("No languages found."),
-            search_terms=search_terms,
-            command=self._on_output_language_change,
+            values=[],
+            title=lambda: _("Language of the transcription"),
+            search_placeholder=lambda: _("Search language…"),
+            no_results_text=lambda: _("No languages found."),
             dynamic_resizing=False,
         )
-        self.omn_output_language.set(
-            self._output_labels.label(config_transcription.output_language)
+        self._output_languages = LocalizedOptions(
+            self.omn_output_language,
+            lambda: {SAME_LANGUAGE: _("Same as the audio")} | get_language_labels(),
+            config_transcription.output_language,
+            search_terms=search_terms,
+            command=self._on_output_language_change,
         )
         self.omn_output_language.grid(
             row=5, column=0, columnspan=2, padx=18, sticky=ctk.EW
@@ -119,20 +114,23 @@ class LanguageCard(SettingsCard):
         )
         self.frm_translation.grid_columnconfigure(0, weight=1)
 
-        ctk.CTkLabel(
-            self.frm_translation, text=_("Translation"), font=theme.font(13, "bold")
+        localize(
+            ctk.CTkLabel(self.frm_translation, font=theme.font(13, "bold")),
+            text=lambda: _("Translation"),
         ).grid(row=0, column=0, padx=12, pady=(10, 0), sticky=ctk.W)
 
         # The mode chosen by the user, kept while another language forces a mode
         self._preferred_translation_mode = translation_mode
         self._translation_mode = ctk.StringVar(self, translation_mode)
-        self.rad_whisper_translation = ctk.CTkRadioButton(
-            self.frm_translation,
-            text=_("Translate with Whisper (recommended)"),
-            variable=self._translation_mode,
-            value=TranslationMode.WHISPER.value,
-            command=self._on_translation_mode_change,
-            font=theme.font(13),
+        self.rad_whisper_translation = localize(
+            ctk.CTkRadioButton(
+                self.frm_translation,
+                variable=self._translation_mode,
+                value=TranslationMode.WHISPER.value,
+                command=self._on_translation_mode_change,
+                font=theme.font(13),
+            ),
+            text=lambda: _("Translate with Whisper (recommended)"),
         )
         self.rad_whisper_translation.grid(
             row=1, column=0, padx=12, pady=(8, 0), sticky=ctk.W
@@ -167,12 +165,8 @@ class LanguageCard(SettingsCard):
     # SETTINGS
 
     def update_settings(self, settings: TranscriptionSettings) -> None:
-        settings.input_language = self._input_labels.value(
-            self.omn_input_language.get()
-        )
-        settings.output_language = self._output_labels.value(
-            self.omn_output_language.get()
-        )
+        settings.input_language = self._input_languages.get()
+        settings.output_language = self._output_languages.get()
         settings.translation_mode = self._translation_mode.get()
 
     def refresh(self, settings: TranscriptionSettings) -> None:
@@ -181,7 +175,7 @@ class LanguageCard(SettingsCard):
             return
 
         self.frm_translation.grid()
-        output_name = self._output_labels.label(settings.output_language)
+        output_name = self._output_languages.label(settings.output_language)
 
         if not settings.can_translate:
             self.rad_whisper_translation.grid_remove()
@@ -218,7 +212,7 @@ class LanguageCard(SettingsCard):
         if mode == TranslationMode.WHISPER:
             hint = _("Whisper transcribes and translates the audio in one step.")
         else:
-            english = self._output_labels.label(WHISPER_TRANSLATION_LANGUAGE)
+            english = self._output_languages.label(WHISPER_TRANSLATION_LANGUAGE)
             hint = _(
                 "Whisper can only translate into {english}. For other languages, it's "
                 "asked to write the transcription in {language} directly. It works "
@@ -228,16 +222,12 @@ class LanguageCard(SettingsCard):
 
     # EVENT HANDLERS
 
-    def _on_input_language_change(self, label: str) -> None:
-        self.omn_input_language.set(label)
-        save_config(ConfigTranscription.Key.LANGUAGE, self._input_labels.value(label))
+    def _on_input_language_change(self, language: str) -> None:
+        save_config(ConfigTranscription.Key.LANGUAGE, language)
         self._on_change()
 
-    def _on_output_language_change(self, label: str) -> None:
-        self.omn_output_language.set(label)
-        save_config(
-            ConfigTranscription.Key.OUTPUT_LANGUAGE, self._output_labels.value(label)
-        )
+    def _on_output_language_change(self, language: str) -> None:
+        save_config(ConfigTranscription.Key.OUTPUT_LANGUAGE, language)
         self._on_change()
 
     def _on_translation_mode_change(self) -> None:

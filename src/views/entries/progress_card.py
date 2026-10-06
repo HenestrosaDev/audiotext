@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Any
 
 import customtkinter as ctk
@@ -7,12 +8,14 @@ from utils.enums import AudioSource
 from utils.i18n import _
 from views.entries.delegates import EntryActions
 from views.history.formatting import status_icon, status_label
+from views.localization import on_language_change
 from views.style import icons, theme
 from views.widgets.bindings import bind_wraplength
 from views.widgets.stepper import Stepper
 
 
 def first_step_label(kind: str) -> str:
+    """The first step of the transcription of a kind of source."""
     return {
         AudioSource.FILE.value: _("Choose a file"),
         AudioSource.YOUTUBE.value: _("Enter the URL"),
@@ -42,7 +45,12 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
         self.grid_columnconfigure(0, weight=1)
 
         self.stepper = Stepper(
-            self, [first_step_label(entry.kind), _("Settings"), _("Transcribe")]
+            self,
+            [
+                partial(first_step_label, entry.kind),
+                lambda: _("Settings"),
+                lambda: _("Transcribe"),
+            ],
         )
         self.stepper.grid(row=0, column=0, padx=24, pady=(22, 0), sticky=ctk.EW)
 
@@ -84,6 +92,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
         self.lbl_tip.grid(row=5, column=0, padx=24, pady=(0, 20), sticky=ctk.EW)
 
         self.update_entry(entry)
+        on_language_change(self, lambda: self.update_entry(self._entry))
 
     def destroy(self) -> None:
         self.progress_bar.stop()
