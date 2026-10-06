@@ -15,7 +15,7 @@ from utils.transcript_editing import (
     replace_text,
     speakers,
 )
-from views.entries.delegates import TranscriptDelegate
+from views.entries.delegates import EntryActions
 from views.transcript.edit_dialogs import ReplaceDialog, SpeakersDialog
 from views.widgets.text_dialog import TextDialog
 
@@ -32,7 +32,7 @@ class TranscriptCorrectionsMixin:
     # Provided by the view
     entry_id: str
     _entry: HistoryEntry
-    _delegate: TranscriptDelegate
+    _actions: EntryActions
     _search_variable: ctk.StringVar
     text: "TranscriptText"
     _format_time: Callable[[float], str]
@@ -50,7 +50,7 @@ class TranscriptCorrectionsMixin:
             text = change_text(self.text.get_text())
         else:
             text = join_segments(segments)
-        self._delegate.update_transcript(self.entry_id, segments, text)
+        self._actions.transcript.update_transcript(self.entry_id, segments, text)
 
     def _count_matches(self, find: str, match_case: bool) -> int:
         entry = self._entry
@@ -75,7 +75,7 @@ class TranscriptCorrectionsMixin:
                 text, result.find, result.replacement, result.match_case
             ),
         )
-        self._delegate.show_status(_("Replaced."))
+        self._actions.window.show_status(_("Replaced."))
 
     def _rename_speakers(self) -> None:
         names = SpeakersDialog(self, speakers(self._entry.segments)).get_result()

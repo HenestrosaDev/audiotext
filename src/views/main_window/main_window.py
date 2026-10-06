@@ -6,18 +6,15 @@ from collections.abc import Callable
 from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
-from tkinter import messagebox
 from typing import Any
 
 import customtkinter as ctk
 
 import utils.constants as c
-import utils.notifications as notifications
 from controllers.history_controller import HistoryController
 from controllers.transcription_queue import TranscriptionQueue
 from models.config.config_system import ConfigSystem
 from models.history import EntryStatus, HistoryEntry
-from models.transcript_segment import TranscriptSegment
 from models.transcription_settings import TranscriptionSettings
 from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
@@ -25,10 +22,13 @@ from utils.env_keys import EnvKeys
 from utils.history_store import HistoryStore
 from utils.i18n import _
 from utils.update_checker import Release, UpdateCheckError, get_available_update
+from views.entries.delegates import EntryActions
 from views.entries.folder_view import FolderView
 from views.entries.status_view import StatusView
 from views.history.formatting import format_full_date
-from views.history.history_sidebar import HistorySidebar
+from views.history.history_sidebar import HistorySidebar, SidebarActions
+from views.main_window.entry_dialogs import EntryDialogs
+from views.main_window.status_messages import StatusMessages
 from views.main_window.top_bar import TopBar
 from views.main_window.welcome_view import WelcomeView
 from views.new_transcription.microphone_view import MicrophoneView, MicState
@@ -70,9 +70,10 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     selected transcription or the steps to create a new one.
 
     It shows the changes made by the controllers of the history and of the queue
-    of transcriptions (see `TranscriptionQueueView`), and passes them the actions
-    of the sidebar and of the views of the entries, asking the user for what they
-    need first (e.g. a name or a confirmation).
+    of transcriptions (see `TranscriptionQueueView`). The sidebar and the views of
+    the entries pass their actions to the controllers directly, to `EntryDialogs`
+    if the user must be asked first (e.g. for a name), or to the window if they
+    change what's shown.
     """
 
     def __init__(
@@ -85,7 +86,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     ) -> None:
         super().__init__(parent, corner_radius=0, fg_color=theme.WINDOW_BG)
         self._store = store
-        self._history = history
         self._jobs = jobs
         self._on_ui_language_change = on_ui_language_change
 
@@ -115,9 +115,30 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         )
         self.top_bar.grid(row=0, column=0, columnspan=3, sticky=ctk.EW)
 
+        # What the controllers report once something finishes or fails
+        self.messages = StatusMessages(self)
+        self._dialogs = EntryDialogs(self, store, history, jobs)
+        self._entry_actions = EntryActions(
+            files=history,
+            transcript=history,
+            jobs=jobs,
+            prompts=self._dialogs,
+            window=self,
+        )
+
         config_system = ConfigManager.get_config_system()
         self.sidebar = HistorySidebar(
-            self, store, self, width=config_system.sidebar_width
+            self,
+            store,
+            SidebarActions(
+                history=history,
+                files=history,
+                jobs=jobs,
+                prompts=self._dialogs,
+                groups=self._dialogs,
+                select_entry=self.select_entry,
+            ),
+            width=config_system.sidebar_width,
         )
         self.sidebar.grid(row=1, column=0, sticky=ctk.NS)
         # The divider of the sidebar is dragged to resize it
@@ -291,11 +312,13 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
         view: EntryView
         if view_class is TranscriptView:
-            view = TranscriptView(self.frm_content, entry, self, self.run_on_ui_thread)
+            view = TranscriptView(
+                self.frm_content, entry, self._entry_actions, self.run_on_ui_thread
+            )
         elif view_class is FolderView:
-            view = FolderView(self.frm_content, entry, self._store, self)
+            view = FolderView(self.frm_content, entry, self._store, self._entry_actions)
         else:
-            view = StatusView(self.frm_content, entry, self)
+            view = StatusView(self.frm_content, entry, self._entry_actions)
 
         self._entry_view = view
         self._entry_view_id = entry.id
@@ -416,40 +439,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             view.destroy()
         self._jobs.start(source, value, settings)
 
-    def retry_entry(self, entry_id: str) -> None:
-        self._jobs.retry_entry(entry_id)
-
-    def cancel_entry(self, entry_id: str) -> None:
-        self._jobs.cancel_entry(entry_id)
-
-    def get_progress(self, entry_id: str) -> float | None:
-        return self._jobs.get_progress(entry_id)
-
-    def get_progress_message(self, entry_id: str) -> tuple[str, float | None]:
-        return self._jobs.get_progress_message(entry_id)
-
-    def get_queue_position(self, entry_id: str) -> int | None:
-        return self._jobs.get_queue_position(entry_id)
-
-    def on_transcription_finished(
-        self, entry: HistoryEntry, status_message: str | None
-    ) -> None:
-        if entry.status == EntryStatus.FAILED:
-            self.show_status(f"{entry.title}: {entry.error}", is_error=True)
-        elif status_message:
-            self.show_status(f"{entry.title}: {status_message}")
-
-    @staticmethod
-    def on_transcription_ready(entry: HistoryEntry) -> None:
-        if ConfigManager.get_config_system().notify_when_done:
-            notifications.notify(_("Transcription ready"), entry.title)
-
-    def on_transcription_saved(self, folder: Path) -> None:
-        self.show_status(_("Saved in {folder}.").format(folder=folder))
-
-    def on_recording_unavailable(self, entry: HistoryEntry) -> None:
-        self.show_status(_("The recording is no longer available."), is_error=True)
-
     # MICROPHONE
 
     def _start_recording(
@@ -505,224 +494,6 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             self._mic_view.set_state(
                 MicState.FAILED, entry.error or _("The transcription was cancelled.")
             )
-
-    # ENTRIES
-
-    def rename_entry(self, entry_id: str, title: str) -> None:
-        self._history.rename_entry(entry_id, title)
-
-    def rename_entry_dialog(self, entry_id: str) -> None:
-        entry = self._store.get(entry_id)
-        if entry is None:
-            return
-        title = TextDialog(
-            self,
-            _("Rename"),
-            _("Name of the transcription:"),
-            entry.title,
-            allow_empty=False,
-        ).get_input()
-        if title:
-            self._history.rename_entry(entry_id, title)
-
-    def edit_note(self, entry_id: str) -> None:
-        entry = self._store.get(entry_id)
-        if entry is None:
-            return
-        note = TextDialog(
-            self,
-            _("Note"),
-            _("A note about “{title}”:").format(title=entry.title),
-            entry.note,
-            is_multiline=True,
-        ).get_input()
-        if note is not None:
-            self._history.set_note(entry_id, note)
-
-    def delete_note(self, entry_id: str) -> None:
-        entry = self._store.get(entry_id)
-        if entry is None or not entry.note:
-            return
-        if messagebox.askyesno(
-            _("Delete note"),
-            _("Delete the note of “{title}”?").format(title=entry.title),
-            icon=messagebox.WARNING,
-            parent=self.winfo_toplevel(),
-        ):
-            self._history.set_note(entry_id, "")
-
-    def edit_tag(self, entry_id: str) -> None:
-        entry = self._store.get(entry_id)
-        if entry is None:
-            return
-        tag = TextDialog(
-            self,
-            _("Tag"),
-            _("Tag of “{title}”. Leave it empty to show the kind of source.").format(
-                title=entry.title
-            ),
-            entry.tag,
-            suggestions=self._store.tags(),
-        ).get_input()
-        if tag is not None:
-            self._history.set_tag(entry_id, tag)
-
-    def toggle_pin(self, entry_id: str) -> None:
-        self._history.toggle_pin(entry_id)
-
-    def reveal_entry(self, entry_id: str) -> None:
-        self._history.reveal_entry(entry_id)
-
-    def open_folder(self, folder: Path) -> None:
-        self._history.open_folder(folder)
-
-    def on_reveal_failed(self, path: Path, error: Exception) -> None:
-        if isinstance(error, FileNotFoundError):
-            message = _("The file was moved or deleted: {path}").format(path=path)
-        else:
-            message = _("Could not open the file manager: {error}").format(error=error)
-        self.show_status(message, is_error=True)
-
-    def on_open_folder_failed(self, folder: Path, error: Exception) -> None:
-        self.show_status(
-            _("Could not open the folder: {error}").format(error=error), is_error=True
-        )
-
-    def delete_entry(self, entry_id: str) -> None:
-        entry = self._store.get(entry_id)
-        if entry is None:
-            return
-
-        message = _("Delete “{title}” from the history?").format(title=entry.title)
-        if entry.is_folder:
-            message += "\n\n" + _("The transcriptions of its files are deleted too.")
-        message += "\n\n" + _("Your audio, video and saved files are not deleted.")
-        if not messagebox.askyesno(
-            _("Delete transcription"), message, parent=self.winfo_toplevel()
-        ):
-            return
-
-        if entry.status.is_active:
-            self._jobs.cancel_entry(entry_id)
-        self._history.delete_entry(entry_id)
-
-    # TRANSCRIPT
-
-    def save_text(self, entry_id: str, text: str) -> None:
-        self._history.save_text(entry_id, text)
-
-    def update_transcript(
-        self, entry_id: str, segments: list[TranscriptSegment], text: str
-    ) -> None:
-        self._history.update_transcript(entry_id, segments, text)
-
-    def summarize_entry(self, entry_id: str) -> None:
-        self._history.summarize_entry(entry_id)
-
-    def is_summarizing(self, entry_id: str) -> bool:
-        return self._history.is_summarizing(entry_id)
-
-    def get_summary_error(self, entry_id: str) -> str:
-        return self._history.get_summary_error(entry_id)
-
-    def on_summary_finished(self, entry: HistoryEntry, error: str | None) -> None:
-        if error is None:
-            self.show_status(
-                _("The summary of “{title}” is ready.").format(title=entry.title)
-            )
-        else:
-            self.show_status(
-                _("Could not summarize “{title}”: {error}").format(
-                    title=entry.title, error=error
-                ),
-                is_error=True,
-            )
-        self.refresh_entry_view(entry.id)
-
-    def translate_entry(
-        self, entry_id: str, language: str, provider: str, model: str = ""
-    ) -> None:
-        self._history.translate_entry(entry_id, language, provider, model)
-
-    def start_manual_translation(self, entry_id: str, language: str) -> None:
-        self._history.start_manual_translation(entry_id, language)
-
-    def is_translating(self, entry_id: str) -> bool:
-        return self._history.is_translating(entry_id)
-
-    def get_translation_error(self, entry_id: str) -> str:
-        return self._history.get_translation_error(entry_id)
-
-    def on_translation_finished(self, entry: HistoryEntry, error: str | None) -> None:
-        if error is None:
-            self.show_status(
-                _("The translation of “{title}” is ready.").format(title=entry.title)
-            )
-        else:
-            self.show_status(
-                _("Could not translate “{title}”: {error}").format(
-                    title=entry.title, error=error
-                ),
-                is_error=True,
-            )
-        self.refresh_entry_view(entry.id)
-
-    def save_translation_text(self, entry_id: str, text: str) -> None:
-        self._history.save_translation_text(entry_id, text)
-
-    def update_translation(
-        self, entry_id: str, segments: list[TranscriptSegment], text: str
-    ) -> None:
-        self._history.update_translation(entry_id, segments, text)
-
-    def remove_translation(self, entry_id: str) -> None:
-        self._history.remove_translation(entry_id)
-
-    # GROUPS
-
-    def move_to_group(self, entry_id: str, group_id: str | None) -> None:
-        self._history.move_to_group(entry_id, group_id)
-
-    def move_to_new_group(self, entry_id: str) -> None:
-        if group_id := self.create_group():
-            self._history.move_to_group(entry_id, group_id)
-
-    def create_group(self) -> str | None:
-        name = TextDialog(
-            self,
-            _("New group"),
-            _("Name of the group:"),
-            ok_text=_("Create"),
-            allow_empty=False,
-        ).get_input()
-        return self._history.create_group(name) if name else None
-
-    def rename_group(self, group_id: str) -> None:
-        group = self._store.get_group(group_id)
-        if group is None:
-            return
-        name = TextDialog(
-            self,
-            _("Rename group"),
-            _("Name of the group:"),
-            group.name,
-            allow_empty=False,
-        ).get_input()
-        if name:
-            self._history.rename_group(group_id, name)
-
-    def delete_group(self, group_id: str) -> None:
-        group = self._store.get_group(group_id)
-        if group is None:
-            return
-        if messagebox.askyesno(
-            _("Delete group"),
-            _(
-                "Delete the group “{name}”? Its transcriptions are kept, without a group."
-            ).format(name=group.name),
-            parent=self.winfo_toplevel(),
-        ):
-            self._history.delete_group(group_id)
 
     # APP SHORTCUTS AND DRAG AND DROP
 
