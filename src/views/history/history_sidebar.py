@@ -12,6 +12,7 @@ from utils.i18n import _
 from views.entries.delegates import EntryFiles, EntryPrompts, JobControls
 from views.history.formatting import reveal_label
 from views.history.history_row import HistoryRow, SectionHeader
+from views.localization import localize, on_language_change
 from views.style import icons, theme
 from views.widgets.bindings import bind_wraplength
 from views.widgets.scrollable_frame import CTkScrollableFrame
@@ -105,6 +106,8 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         self._init_footer()
 
         self.refresh()
+        # The list is built again, with its sections, dates and statuses
+        on_language_change(self, self.refresh)
 
     def destroy(self) -> None:
         for after_id in (self._spinner_after_id, self._refresh_after_id):
@@ -124,7 +127,9 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             "write", lambda *_args: self._schedule_refresh()
         )
         search = SearchEntry(
-            frame, textvariable=self._search_variable, placeholder_text=_("Search")
+            frame,
+            textvariable=self._search_variable,
+            placeholder_text=lambda: _("Search"),
         )
         search.grid(row=0, column=0, sticky=ctk.EW)
         self.ent_search = search.entry
@@ -138,16 +143,18 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         footer.grid(row=3, column=0, padx=8, pady=8, sticky=ctk.EW)
         footer.grid_columnconfigure(1, weight=1)
 
-        ctk.CTkButton(
-            footer,
-            text=_("New group"),
-            image=icons.icon("plus", 14),
-            compound=ctk.LEFT,
-            anchor=ctk.W,
-            height=28,
-            width=0,
-            command=self.actions.groups.ask_to_create_group,
-            **theme.GHOST_BUTTON,
+        localize(
+            ctk.CTkButton(
+                footer,
+                image=icons.icon("plus", 14),
+                compound=ctk.LEFT,
+                anchor=ctk.W,
+                height=28,
+                width=0,
+                command=self.actions.groups.ask_to_create_group,
+                **theme.GHOST_BUTTON,
+            ),
+            text=lambda: _("New group"),
         ).grid(row=0, column=0, sticky=ctk.W)
         self.lbl_count = ctk.CTkLabel(
             footer, text="", font=theme.font(11), text_color=theme.HINT_TEXT

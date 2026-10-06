@@ -47,11 +47,11 @@ class EngineCard(SettingsCard):
         config_whisperx: ConfigWhisperX,
         config_whisper_api: ConfigWhisperApi,
     ) -> None:
-        super().__init__(master, _("Engine"), on_change)
+        super().__init__(master, lambda: _("Engine"), on_change)
         self._on_set_api_key = on_set_api_key
         self._on_model_change = on_model_change
 
-        self._field_label(2, _("Transcription method"))
+        self._field_label(2, lambda: _("Transcription method"))
         self.seg_method = ctk.CTkSegmentedButton(
             self,
             values=[method.value for method in TranscriptionMethod],
@@ -63,7 +63,7 @@ class EngineCard(SettingsCard):
         self.lbl_method_hint = self._hint(4)
 
         # The model of WhisperX or of the OpenAI API, in the same place
-        self.lbl_model = self._field_label(5, _("Model"))
+        self.lbl_model = self._field_label(5, lambda: _("Model"))
         self.omn_model_size = CTkOptionMenu(
             self,
             values=[size.value for size in ModelSize],

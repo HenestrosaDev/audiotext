@@ -1,7 +1,9 @@
 import customtkinter as ctk
 
+from views.localization import Text, localize
 
-def add_placeholder(entry: ctk.CTkEntry, variable: ctk.StringVar, text: str) -> None:
+
+def add_placeholder(entry: ctk.CTkEntry, variable: ctk.StringVar, text: Text) -> None:
     """
     Shows a placeholder in the entry while it's empty. CustomTkinter ignores the
     `placeholder_text` of the entries with a `textvariable`, so it's drawn as a
@@ -15,7 +17,6 @@ def add_placeholder(entry: ctk.CTkEntry, variable: ctk.StringVar, text: str) -> 
     text_field = entry._entry  # The tkinter entry inside the CustomTkinter one
     lbl_placeholder = ctk.CTkLabel(
         entry,
-        text=text,
         height=1,
         corner_radius=0,
         font=entry.cget("font"),
@@ -23,6 +24,7 @@ def add_placeholder(entry: ctk.CTkEntry, variable: ctk.StringVar, text: str) -> 
         text_color=entry_theme["placeholder_text_color"],
         cursor="xterm",
     )
+    localize(lbl_placeholder, text=text)
     lbl_placeholder.bind("<Button-1>", lambda _event: entry.focus_set())
 
     def refresh() -> None:

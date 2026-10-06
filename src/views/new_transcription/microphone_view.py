@@ -19,12 +19,18 @@ from utils.enums import TranscriptionMethod
 from utils.env_keys import EnvKeys
 from utils.i18n import _
 from utils.time_format import format_timestamp
+from views.localization import Text, localize
 from views.settings.settings_form import FormMode, SettingsForm
 from views.style import icons, theme
 from views.widgets.level_meter import LevelMeter
+from views.widgets.localized_options import LocalizedOptions
 from views.widgets.option_menu import CTkOptionMenu
 from views.widgets.stepper import Stepper
 from views.widgets.textbox import CTkTextbox
+
+# Values of the device menu while the devices are loaded and when there's none
+LOADING_DEVICES = "__loading__"
+NO_DEVICES = "__none__"
 
 RECORD_BUTTON_SIZE = 64
 SETTINGS_WIDTH = 380
@@ -68,20 +74,20 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         # Name of the last device chosen, selected again while it's connected
         self._saved_device = ConfigManager.get_config_transcription().mic_device
         self._level_monitor = LevelMonitor()
-        self._level_messages = {
+        self._level_messages: dict[InputLevel, tuple[Any, Text]] = {
             InputLevel.NO_SIGNAL: (
                 theme.STATUS_FAILED,
-                _("No sound. Check that the microphone is on and allowed."),
+                lambda: _("No sound. Check that the microphone is on and allowed."),
             ),
-            InputLevel.SILENCE: (theme.SUBTLE_BG, _("Waiting for speech…")),
+            InputLevel.SILENCE: (theme.SUBTLE_BG, lambda: _("Waiting for speech…")),
             InputLevel.TOO_QUIET: (
                 theme.STATUS_CANCELLED,
-                _("Too quiet. Speak louder or closer to the microphone."),
+                lambda: _("Too quiet. Speak louder or closer to the microphone."),
             ),
-            InputLevel.GOOD: (theme.STATUS_DONE, _("Good level")),
+            InputLevel.GOOD: (theme.STATUS_DONE, lambda: _("Good level")),
             InputLevel.TOO_LOUD: (
                 theme.STATUS_FAILED,
-                _("Too loud. Move away from the microphone."),
+                lambda: _("Too loud. Move away from the microphone."),
             ),
         }
 
@@ -123,21 +129,21 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             corner_radius=10,
             fg_color=theme.ACCENT,
         ).grid(row=0, column=0, rowspan=2, padx=(0, 14))
-        ctk.CTkLabel(
-            header,
-            text=_("Transcribe from the microphone"),
-            font=theme.font(22, "bold"),
+        localize(
+            ctk.CTkLabel(header, font=theme.font(22, "bold")),
+            text=lambda: _("Transcribe from the microphone"),
         ).grid(row=0, column=1, sticky=ctk.W)
-        ctk.CTkLabel(
-            header,
-            text=_(
+        localize(
+            ctk.CTkLabel(header, font=theme.font(13), text_color=theme.HINT_TEXT),
+            text=lambda: _(
                 "Record yourself or a meeting. The recording is kept in your history."
             ),
-            font=theme.font(13),
-            text_color=theme.HINT_TEXT,
         ).grid(row=1, column=1, sticky=ctk.W)
 
-        self.stepper = Stepper(self, [_("Settings"), _("Record"), _("Transcribe")])
+        self.stepper = Stepper(
+            self,
+            [lambda: _("Settings"), lambda: _("Record"), lambda: _("Transcribe")],
+        )
         self.stepper.grid(
             row=1, column=0, columnspan=2, padx=32, pady=(22, 18), sticky=ctk.EW
         )
@@ -161,10 +167,13 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         ctk.CTkLabel(
             device_row, text="", image=icons.icon("mic", 16, theme.ICON_MUTED)
         ).grid(row=0, column=0, padx=(0, 8))
-        self.omn_device = CTkOptionMenu(
-            device_row,
-            values=[_("Loading…")],
-            dynamic_resizing=False,
+        self.omn_device = CTkOptionMenu(device_row, values=[], dynamic_resizing=False)
+        # The devices by their name, which is kept in the configuration
+        self._device_options = LocalizedOptions(
+            self.omn_device,
+            self._device_labels,
+            LOADING_DEVICES,
+            values=[LOADING_DEVICES],
             command=self._on_device_selected,
         )
         self.omn_device.grid(row=0, column=1, sticky=ctk.EW)
@@ -230,8 +239,9 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         self.lbl_speech.grid(row=0, column=1)
 
         # Transcription
-        ctk.CTkLabel(
-            card, text=_("Transcription"), font=theme.font(15, "bold"), anchor=ctk.W
+        localize(
+            ctk.CTkLabel(card, font=theme.font(15, "bold"), anchor=ctk.W),
+            text=lambda: _("Transcription"),
         ).grid(row=3, column=0, padx=20, pady=(20, 6), sticky=ctk.W)
         self.tbx_text = CTkTextbox(
             card,
@@ -254,22 +264,23 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             anchor=ctk.W,
         )
         self.lbl_footer.grid(row=0, column=0, sticky=ctk.EW)
-        self.btn_copy = ctk.CTkButton(
-            footer,
-            text=_("Copy"),
-            image=icons.icon("copy", 14),
-            compound=ctk.LEFT,
-            width=0,
-            command=self._on_copy,
-            **theme.SECONDARY_BUTTON,
+        self.btn_copy = localize(
+            ctk.CTkButton(
+                footer,
+                image=icons.icon("copy", 14),
+                compound=ctk.LEFT,
+                width=0,
+                command=self._on_copy,
+                **theme.SECONDARY_BUTTON,
+            ),
+            text=lambda: _("Copy"),
         )
         self.btn_copy.grid(row=0, column=1, padx=(8, 0))
-        self.btn_open = ctk.CTkButton(
-            footer,
-            text=_("Open in history"),
-            width=0,
-            command=self._on_open_entry,
-            **theme.SECONDARY_BUTTON,
+        self.btn_open = localize(
+            ctk.CTkButton(
+                footer, width=0, command=self._on_open_entry, **theme.SECONDARY_BUTTON
+            ),
+            text=lambda: _("Open in history"),
         )
         self.btn_open.grid(row=0, column=2, padx=(8, 0))
 
@@ -284,11 +295,12 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             self._on_stop()
         elif self._state in (MicState.IDLE, MicState.DONE, MicState.FAILED):
             if self._is_busy():
-                self.lbl_footer.configure(
-                    text=_(
+                self.lbl_footer.configure(text_color=theme.ERROR_TEXT)
+                localize(
+                    self.lbl_footer,
+                    text=lambda: _(
                         "Wait until the current transcription finishes, or cancel it."
                     ),
-                    text_color=theme.ERROR_TEXT,
                 )
                 return
             if error := self.frm_settings.validate():
@@ -314,7 +326,7 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         self.level_meter.set_level(dbfs)
         color, text = self._level_messages[self._level_monitor.update(dbfs)]
         self.lbl_speech_dot.configure(fg_color=color)
-        self.lbl_speech.configure(text=text)
+        localize(self.lbl_speech, text=text)
 
     def show_text(self, text: str) -> None:
         self.tbx_text.configure(text_color=theme.TEXT)
@@ -338,10 +350,10 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         if self._state != MicState.RECORDING:
             return
         has_text = bool(self.tbx_text.get("1.0", ctk.END).strip())
-        if message or not has_text:
-            self.lbl_footer.configure(
-                text=message or self._placeholder(), text_color=theme.HINT_TEXT
-            )
+        if message:
+            self.lbl_footer.configure(text=message, text_color=theme.HINT_TEXT)
+        elif not has_text:
+            self._show_placeholder()
 
     def refresh_api_keys(self) -> None:
         self.frm_settings.refresh_api_keys()
@@ -373,30 +385,40 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
 
         if state == MicState.IDLE:
             self.stepper.set_current(0)
-            self.lbl_state.configure(
-                text=_("Press the button to start recording ({shortcut})").format(
-                    shortcut=f"{theme.SHORTCUT_MODIFIER_LABEL}↩"
-                )
+            localize(
+                self.lbl_state,
+                text=lambda: _(
+                    "Press the button to start recording ({shortcut})"
+                ).format(shortcut=f"{theme.SHORTCUT_MODIFIER_LABEL}↩"),
             )
             self.level_meter.reset()
-            self.lbl_speech.configure(text=_("The level is shown while recording"))
+            localize(
+                self.lbl_speech, text=lambda: _("The level is shown while recording")
+            )
         elif state == MicState.RECORDING:
             self.stepper.set_current(1)
-            self.lbl_state.configure(
-                text=_("Recording… Press the button to stop and transcribe.")
+            localize(
+                self.lbl_state,
+                text=lambda: _("Recording… Press the button to stop and transcribe."),
             )
         elif state == MicState.TRANSCRIBING:
             self.stepper.set_current(2)
-            self.lbl_state.configure(text=message or _("Transcribing…"))
+            if message:
+                self.lbl_state.configure(text=message)
+            else:
+                localize(self.lbl_state, text=lambda: _("Transcribing…"))
             self.level_meter.reset()
             self.lbl_speech_dot.configure(fg_color=theme.SUBTLE_BG)
             self.lbl_speech.configure(text="")
         elif state == MicState.DONE:
             self.stepper.set_current(3)
-            self.lbl_state.configure(text=_("Done. Press the button to record again."))
+            localize(
+                self.lbl_state,
+                text=lambda: _("Done. Press the button to record again."),
+            )
         else:
             self.stepper.set_current(2, is_error=True)
-            self.lbl_state.configure(text=_("Press the button to try again."))
+            localize(self.lbl_state, text=lambda: _("Press the button to try again."))
 
         self.lbl_footer.configure(
             text=message if state == MicState.FAILED else "",
@@ -407,19 +429,28 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         self.btn_copy.configure(state=ctk.NORMAL if has_result else ctk.DISABLED)
         has_text = bool(self.tbx_text.get("1.0", ctk.END).strip())
         if state in (MicState.IDLE, MicState.RECORDING) and not has_text:
-            self.lbl_footer.configure(
-                text=self._placeholder(), text_color=theme.HINT_TEXT
-            )
+            self._show_placeholder()
         elif state == MicState.TRANSCRIBING and has_text:
-            self.lbl_footer.configure(
-                text=_("Draft. It's replaced when the final transcription finishes."),
-                text_color=theme.HINT_TEXT,
+            self.lbl_footer.configure(text_color=theme.HINT_TEXT)
+            localize(
+                self.lbl_footer,
+                text=lambda: _(
+                    "Draft. It's replaced when the final transcription finishes."
+                ),
             )
 
-    def _placeholder(self) -> str:
-        if self._is_live:
-            return _("The text will appear here as you speak.")
-        return _("The transcription will appear here when you stop recording.")
+    def _show_placeholder(self) -> None:
+        """Explains, below the empty text, when the text is shown."""
+        is_live = self._is_live
+        self.lbl_footer.configure(text_color=theme.HINT_TEXT)
+        localize(
+            self.lbl_footer,
+            text=lambda: (
+                _("The text will appear here as you speak.")
+                if is_live
+                else _("The transcription will appear here when you stop recording.")
+            ),
+        )
 
     def _on_settings_change(self) -> None:
         # Called while the settings are created, before the view is ready
@@ -434,18 +465,25 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             settings.transcription_method == TranscriptionMethod.WHISPERX
             and settings.live_transcription
         )
+        steps: list[Text]
         if self._is_live:
-            steps = [_("Settings"), _("Record and transcribe"), _("Refine")]
+            steps = [
+                lambda: _("Settings"),
+                lambda: _("Record and transcribe"),
+                lambda: _("Refine"),
+            ]
         else:
-            steps = [_("Settings"), _("Record"), _("Transcribe")]
+            steps = [
+                lambda: _("Settings"),
+                lambda: _("Record"),
+                lambda: _("Transcribe"),
+            ]
         self.stepper.set_steps(steps)
         # Only the texts that depend on the choice are updated. `_apply_state`
         # refreshes the settings, which would call this again
         is_empty = not self.tbx_text.get("1.0", ctk.END).strip()
         if self._state == MicState.IDLE and is_empty:
-            self.lbl_footer.configure(
-                text=self._placeholder(), text_color=theme.HINT_TEXT
-            )
+            self._show_placeholder()
 
     def show_progress(self, message: str) -> None:
         if self._state == MicState.TRANSCRIBING:
@@ -465,47 +503,49 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             return
         self._devices = devices
         if not devices:
-            self.omn_device.configure(values=[_("No microphone found")])
-            self.omn_device.set(_("No microphone found"))
+            self._device_options.show_values([NO_DEVICES])
+            self._device_options.set(NO_DEVICES)
             self.omn_device.configure(state=ctk.DISABLED)
             return
 
-        self.omn_device.configure(
-            values=[self._device_label(device) for device in devices]
-        )
+        self._device_options.show_values([device.name for device in devices])
         # The saved device if it's still connected, or else the default one. The
         # saved device isn't replaced, so it's selected again when it's back
         selected = next(
             (d for d in devices if d.name == self._saved_device),
             next((d for d in devices if d.is_default), devices[0]),
         )
-        self.omn_device.set(self._device_label(selected))
+        self._device_options.set(selected.name)
         if self._state not in (MicState.RECORDING, MicState.TRANSCRIBING):
             self.omn_device.configure(state=ctk.NORMAL)
 
-    @staticmethod
-    def _device_label(device: InputDevice) -> str:
-        if not device.is_default:
-            return device.name
+    def _device_labels(self) -> dict[str, str]:
+        """The label of each device by its name, while loading or if there's none."""
         # Outside the f-string, so pybabel finds it on Python 3.10 and 3.11
         default = _("default")
-        return f"{device.name} ({default})"
+        return {
+            LOADING_DEVICES: _("Loading…"),
+            NO_DEVICES: _("No microphone found"),
+        } | {
+            device.name: f"{device.name} ({default})"
+            if device.is_default
+            else device.name
+            for device in self._devices
+        }
 
-    def _on_device_selected(self, label: str) -> None:
-        for device in self._devices:
-            if self._device_label(device) == label:
-                self._saved_device = device.name
-                ConfigManager.modify_value(
-                    ConfigTranscription.Key.SECTION,
-                    ConfigTranscription.Key.MIC_DEVICE,
-                    device.name,
-                )
-                return
+    def _on_device_selected(self, name: str) -> None:
+        if any(device.name == name for device in self._devices):
+            self._saved_device = name
+            ConfigManager.modify_value(
+                ConfigTranscription.Key.SECTION,
+                ConfigTranscription.Key.MIC_DEVICE,
+                name,
+            )
 
     def _selected_device_index(self) -> int | None:
-        selected = self.omn_device.get()
+        name = self._device_options.get()
         for device in self._devices:
-            if self._device_label(device) == selected:
+            if device.name == name:
                 return None if device.is_default else device.index
         return None
 

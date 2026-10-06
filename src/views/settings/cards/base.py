@@ -5,6 +5,7 @@ import customtkinter as ctk
 
 from models.transcription_settings import TranscriptionSettings
 from utils.config_manager import ConfigManager
+from views.localization import Text, localize
 from views.settings.option_labels import save_config
 from views.style import theme
 from views.widgets.bindings import bind_wraplength
@@ -20,9 +21,9 @@ class SettingsCard(ctk.CTkFrame):  # type: ignore[misc]
     def __init__(
         self,
         master: Any,
-        title: str,
+        title: Text,
         on_change: Callable[[], None],
-        subtitle: str = "",
+        subtitle: Text | None = None,
     ) -> None:
         """:param on_change: Called when an option changes, to refresh the form."""
         super().__init__(
@@ -37,54 +38,62 @@ class SettingsCard(ctk.CTkFrame):  # type: ignore[misc]
         self.interactive_widgets: list[Any] = []
         self.grid_columnconfigure(0, weight=1)
 
-        ctk.CTkLabel(self, text=title, font=theme.font(15, "bold"), anchor=ctk.W).grid(
-            row=0, column=0, columnspan=2, padx=18, pady=(16, 0), sticky=ctk.W
-        )
+        localize(
+            ctk.CTkLabel(self, font=theme.font(15, "bold"), anchor=ctk.W), text=title
+        ).grid(row=0, column=0, columnspan=2, padx=18, pady=(16, 0), sticky=ctk.W)
         if subtitle:
-            ctk.CTkLabel(
-                self,
+            localize(
+                ctk.CTkLabel(
+                    self,
+                    font=theme.font(12),
+                    text_color=theme.HINT_TEXT,
+                    anchor=ctk.W,
+                    justify=ctk.LEFT,
+                ),
                 text=subtitle,
-                font=theme.font(12),
-                text_color=theme.HINT_TEXT,
-                anchor=ctk.W,
-                justify=ctk.LEFT,
             ).grid(row=1, column=0, columnspan=2, padx=18, sticky=ctk.W)
 
     def update_settings(self, settings: TranscriptionSettings) -> None:
         """Sets the options of the card in the settings."""
 
     def refresh(self, settings: TranscriptionSettings) -> None:
-        """Shows the options that apply to the settings."""
+        """
+        Shows the options that apply to the settings. It's also called when the
+        interface language changes, to show the texts that depend on them.
+        """
 
     # HELPERS
 
-    def _field_label(self, row: int, text: str, master: Any = None) -> ctk.CTkLabel:
-        label = ctk.CTkLabel(
-            master or self, text=text, font=theme.font(13), anchor=ctk.W
+    def _field_label(self, row: int, text: Text, master: Any = None) -> ctk.CTkLabel:
+        label = localize(
+            ctk.CTkLabel(master or self, font=theme.font(13), anchor=ctk.W), text=text
         )
         label.grid(row=row, column=0, columnspan=2, padx=18, pady=(12, 2), sticky=ctk.W)
         return label
 
     def _hint(
-        self, row: int, text: str = "", pady: Any = (2, 0), master: Any = None
+        self, row: int, text: Text | None = None, pady: Any = (2, 0), master: Any = None
     ) -> ctk.CTkLabel:
+        """:param text: The hint, or None if it's set when the card is refreshed."""
         label = ctk.CTkLabel(
             master or self,
-            text=text,
+            text="",
             font=theme.font(12),
             text_color=theme.HINT_TEXT,
             anchor=ctk.W,
             justify=ctk.LEFT,
         )
+        if text:
+            localize(label, text=text)
         label.grid(row=row, column=0, columnspan=2, padx=18, pady=pady, sticky=ctk.EW)
         bind_wraplength(label, minimum=120)
         return label
 
     def _switch(
-        self, row: int, text: str, is_on: bool, key: ConfigManager.KeyType
+        self, row: int, text: Text, is_on: bool, key: ConfigManager.KeyType
     ) -> ctk.CTkSwitch:
         """A switch whose state is stored in the configuration."""
-        switch = ctk.CTkSwitch(self, text=text, font=theme.font(13))
+        switch = localize(ctk.CTkSwitch(self, font=theme.font(13)), text=text)
 
         def on_toggle() -> None:
             save_config(key, str(bool(switch.get())))

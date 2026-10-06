@@ -3,6 +3,7 @@ from typing import Any
 
 import customtkinter as ctk
 
+from views.localization import Text, localize
 from views.style import icons, theme
 
 
@@ -21,7 +22,7 @@ class Stepper(ctk.CTkFrame):  # type: ignore[misc]
 
     CIRCLE_SIZE = 26
 
-    def __init__(self, master: Any, steps: list[str], **kwargs: Any) -> None:
+    def __init__(self, master: Any, steps: list[Text], **kwargs: Any) -> None:
         super().__init__(master, fg_color="transparent", **kwargs)
 
         self._circles: list[ctk.CTkLabel] = []
@@ -48,7 +49,7 @@ class Stepper(ctk.CTkFrame):  # type: ignore[misc]
                 font=theme.font(12, "bold"),
             )
             circle.grid(row=0, column=0)
-            label = ctk.CTkLabel(step_frame, text=step, font=theme.font(13))
+            label = localize(ctk.CTkLabel(step_frame, font=theme.font(13)), text=step)
             label.grid(row=0, column=1, padx=(8, 0))
 
             self._circles.append(circle)
@@ -56,10 +57,10 @@ class Stepper(ctk.CTkFrame):  # type: ignore[misc]
 
         self.set_current(0)
 
-    def set_steps(self, steps: list[str]) -> None:
+    def set_steps(self, steps: list[Text]) -> None:
         """Renames the steps, which must be as many as before."""
         for label, step in zip(self._labels, steps, strict=True):
-            label.configure(text=step)
+            localize(label, text=step)
 
     def set_current(self, current: int, is_error: bool = False) -> None:
         """

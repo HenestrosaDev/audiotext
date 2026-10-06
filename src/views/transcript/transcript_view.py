@@ -42,6 +42,7 @@ from utils.transcript_editing import (
 from views.entries.delegates import EntryActions
 from views.entries.entry_header import EntryHeader
 from views.history.formatting import reveal_label
+from views.localization import Text, localize, on_language_change
 from views.settings.option_labels import save_config
 from views.settings.preferences_dialog import AI_TAB
 from views.style import icons, theme
@@ -63,6 +64,7 @@ from views.transcript.translation_panel import (
 )
 from views.transcript.video_pane import VideoPane
 from views.widgets.button import set_button_state
+from views.widgets.localized_options import LocalizedOptions
 from views.widgets.search_entry import SearchEntry
 from views.widgets.splitter import Splitter
 from views.widgets.text_dialog import TextDialog
@@ -194,6 +196,17 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._refresh_translation_subtitles()
         self._apply_mode()
         self._load_media()
+        on_language_change(self, self._on_language_change)
+
+    def _on_language_change(self) -> None:
+        """Shows again the texts built from the transcription and its state."""
+        self._refresh_match_widgets()
+        if self._mode == SUMMARY_MODE:
+            self._refresh_summary()
+        self._refresh_translation()
+        # The subtitles of the translation are named after its language
+        self._subtitled_translation = ("", ())
+        self._refresh_translation_subtitles()
 
     def destroy(self) -> None:
         self._is_destroyed = True
@@ -388,7 +401,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             toolbar,
             width=230,
             textvariable=self._search_variable,
-            placeholder_text=_("Search ({shortcut})").format(
+            placeholder_text=lambda: _("Search ({shortcut})").format(
                 shortcut=f"{theme.SHORTCUT_MODIFIER_LABEL}F"
             ),
         )
@@ -424,26 +437,30 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.btn_next_match.grid(row=0, column=3)
 
     def _init_actions(self, toolbar: ctk.CTkFrame) -> None:
-        self._mode_labels = {
-            TRANSCRIPT_MODE: _("Transcript"),
-            PLAIN_TEXT_MODE: _("Plain text"),
-            SUMMARY_MODE: _("Summary"),
-        }
-        self.seg_mode = ctk.CTkSegmentedButton(
-            toolbar, values=[""], command=self._on_mode_change, height=30
+        self.seg_mode = ctk.CTkSegmentedButton(toolbar, values=[""], height=30)
+        # The modes shown depend on the transcription (see `_show_content`)
+        self._modes = LocalizedOptions(
+            self.seg_mode,
+            lambda: {
+                TRANSCRIPT_MODE: _("Transcript"),
+                PLAIN_TEXT_MODE: _("Plain text"),
+                SUMMARY_MODE: _("Summary"),
+            },
+            values=[self._mode],
+            command=self._on_mode_change,
         )
         self.seg_mode.grid(row=0, column=5, padx=(10, 0))
 
         self.btn_translate = self._create_action_button(
-            toolbar, _("Translate"), "globe", self._on_translate_button
+            toolbar, lambda: _("Translate"), "globe", self._on_translate_button
         )
         self.btn_translate.grid(row=0, column=6, padx=(10, 0))
         self.btn_copy = self._create_action_button(
-            toolbar, _("Copy"), "copy", self._on_copy
+            toolbar, lambda: _("Copy"), "copy", self._on_copy
         )
         self.btn_copy.grid(row=0, column=7, padx=(8, 0))
         self.btn_export = self._create_action_button(
-            toolbar, _("Export"), "export", self.show_export_menu
+            toolbar, lambda: _("Export"), "export", self.show_export_menu
         )
         self.btn_export.grid(row=0, column=8, padx=(8, 0))
         self.btn_more = ctk.CTkButton(
@@ -459,17 +476,19 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     @staticmethod
     def _create_action_button(
-        toolbar: ctk.CTkFrame, text: str, icon_name: str, command: Callable[[], Any]
+        toolbar: ctk.CTkFrame, text: Text, icon_name: str, command: Callable[[], Any]
     ) -> ctk.CTkButton:
-        return ctk.CTkButton(
-            toolbar,
+        return localize(
+            ctk.CTkButton(
+                toolbar,
+                image=icons.icon(icon_name, 15),
+                compound=ctk.LEFT,
+                width=0,
+                height=30,
+                command=command,
+                **theme.SECONDARY_BUTTON,
+            ),
             text=text,
-            image=icons.icon(icon_name, 15),
-            compound=ctk.LEFT,
-            width=0,
-            height=30,
-            command=command,
-            **theme.SECONDARY_BUTTON,
         )
 
     # CONTENT AND MODES
@@ -494,13 +513,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         modes = [PLAIN_TEXT_MODE, SUMMARY_MODE]
         if entry.segments:
             modes.insert(0, TRANSCRIPT_MODE)
-        self.seg_mode.configure(values=[self._mode_labels[mode] for mode in modes])
+        self._modes.show_values(modes)
         if self._mode not in modes:
             self._mode = PLAIN_TEXT_MODE
-        self.seg_mode.set(self._mode_labels[self._mode])
+        self._modes.set(self._mode)
 
     def _apply_mode(self) -> None:
-        self.seg_mode.set(self._mode_labels[self._mode])
+        self._modes.set(self._mode)
         is_summary = self._mode == SUMMARY_MODE
 
         if is_summary:
@@ -519,12 +538,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         set_button_state(self.btn_translate, state)
         self._refresh_match_widgets()
 
-    def _on_mode_change(self, label: str) -> None:
-        self._mode = next(
-            mode
-            for mode, mode_label in self._mode_labels.items()
-            if mode_label == label
-        )
+    def _on_mode_change(self, mode: str) -> None:
+        self._mode = mode
         self._apply_mode()
 
     def _toggle_precise_timestamps(self) -> None:
@@ -977,9 +992,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
         if media_path is None or not media_path.is_file():
             self.player.show_error(
-                _("The audio isn't available: the source file was moved or deleted.")
-                if media_path
-                else _("The audio isn't available.")
+                lambda: (
+                    _(
+                        "The audio isn't available: the source file was moved or deleted."
+                    )
+                    if media_path
+                    else _("The audio isn't available.")
+                )
             )
             return
 
@@ -1021,7 +1040,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if samples is None:
             logger.error("Could not load %s", media_path, exc_info=error)
             self.player.show_error(
-                _("The audio can't be played: {error}").format(error=error)
+                lambda: _("The audio can't be played: {error}").format(error=error)
             )
             return
 
@@ -1161,13 +1180,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
         self.clipboard_clear()
         self.clipboard_append(self.text.get_text())
-        self.btn_copy.configure(
-            text=_("Copied"), image=icons.icon("check", 15, theme.STATUS_DONE)
-        )
+        self.btn_copy.configure(image=icons.icon("check", 15, theme.STATUS_DONE))
+        localize(self.btn_copy, text=lambda: _("Copied"))
         if self._copy_feedback_after_id:
             self.after_cancel(self._copy_feedback_after_id)
         self._copy_feedback_after_id = self.after(1500, self._reset_copy_button)
 
     def _reset_copy_button(self) -> None:
         self._copy_feedback_after_id = None
-        self.btn_copy.configure(text=_("Copy"), image=icons.icon("copy", 15))
+        self.btn_copy.configure(image=icons.icon("copy", 15))
+        localize(self.btn_copy, text=lambda: _("Copy"))

@@ -12,6 +12,7 @@ from views.history.formatting import (
     source_icon,
     source_label,
 )
+from views.localization import on_language_change
 from views.style import icons, theme
 from views.widgets.bindings import bind_wraplength
 from views.widgets.pill import Pill
@@ -38,6 +39,8 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
         # Known once the media is loaded
         self._duration: float | None = None
         self._build(entry)
+        # The dates and the names of the languages are in the interface language
+        on_language_change(self, lambda: self.update_entry(self._entry))
 
     def update_entry(self, entry: HistoryEntry) -> None:
         """Shows the changes of the entry, e.g. its new title or note."""
