@@ -1,4 +1,6 @@
 import tkinter as tk
+from collections.abc import Callable
+from dataclasses import dataclass
 from functools import partial
 from typing import Any, Protocol
 
@@ -7,6 +9,7 @@ import customtkinter as ctk
 from models.history import EntryStatus, HistoryEntry, HistoryGroup
 from utils.history_store import HistoryStore
 from utils.i18n import _
+from views.entries.delegates import EntryFiles, EntryPrompts, JobControls
 from views.history.formatting import reveal_label
 from views.history.history_row import HistoryRow, SectionHeader
 from views.style import icons, theme
@@ -21,25 +24,36 @@ PINNED_SECTION = "__pinned__"
 UNGROUPED_SECTION = "__ungrouped__"
 
 
-class SidebarDelegate(Protocol):
-    """The actions of the sidebar, implemented by the main window."""
+class HistoryOrganizer(Protocol):
+    """Renames, pins and groups the entries, without asking the user first."""
 
-    def select_entry(self, entry_id: str) -> None: ...
     def rename_entry(self, entry_id: str, title: str) -> None: ...
-    def edit_note(self, entry_id: str) -> None: ...
-    def delete_note(self, entry_id: str) -> None: ...
-    def edit_tag(self, entry_id: str) -> None: ...
-    def move_to_group(self, entry_id: str, group_id: str | None) -> None: ...
-    def move_to_new_group(self, entry_id: str) -> None: ...
     def toggle_pin(self, entry_id: str) -> None: ...
-    def reveal_entry(self, entry_id: str) -> None: ...
-    def retry_entry(self, entry_id: str) -> None: ...
-    def cancel_entry(self, entry_id: str) -> None: ...
-    def delete_entry(self, entry_id: str) -> None: ...
-    def create_group(self) -> None: ...
+    def move_to_group(self, entry_id: str, group_id: str | None) -> None: ...
+
+
+class GroupPrompts(Protocol):
+    """The actions on the groups that ask the user for a name or a confirmation."""
+
+    def create_group(self) -> str | None: ...
+    def move_to_new_group(self, entry_id: str) -> None: ...
     def rename_group(self, group_id: str) -> None: ...
     def delete_group(self, group_id: str) -> None: ...
-    def get_progress(self, entry_id: str) -> float | None: ...
+
+
+@dataclass(frozen=True)
+class SidebarActions:
+    """
+    Everything the sidebar can do, grouped by who does it: the controllers change
+    the data, while the window asks the user first or shows the selected entry.
+    """
+
+    history: HistoryOrganizer
+    files: EntryFiles
+    jobs: JobControls
+    prompts: EntryPrompts
+    groups: GroupPrompts
+    select_entry: Callable[[str], None]
 
 
 class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
@@ -53,7 +67,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         self,
         master: Any,
         store: HistoryStore,
-        delegate: SidebarDelegate,
+        actions: SidebarActions,
         width: int = theme.SIDEBAR_WIDTH,
     ) -> None:
         width = clamp_sidebar_width(width)
@@ -65,7 +79,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         )
         self.width = width
         self.store = store
-        self.delegate = delegate
+        self.actions = actions
         self.grid_propagate(False)
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -132,7 +146,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             anchor=ctk.W,
             height=28,
             width=0,
-            command=self.delegate.create_group,
+            command=self.actions.groups.create_group,
             **theme.GHOST_BUTTON,
         ).grid(row=0, column=0, sticky=ctk.W)
         self.lbl_count = ctk.CTkLabel(
@@ -253,7 +267,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         entry = self.store.get(entry_id)
         row = self._rows.get(entry_id)
         if entry and row:
-            self.delegate.select_entry(entry_id)
+            self.actions.select_entry(entry_id)
             row.start_rename(entry.title)
 
     # MENUS
@@ -263,28 +277,29 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         if entry is None:
             return "break"
 
-        self.delegate.select_entry(entry_id)
+        self.actions.select_entry(entry_id)
         menu = tk.Menu(self, tearoff=False)
         is_child = entry.parent_id is not None
 
         menu.add_command(label=_("Rename"), command=lambda: self.start_rename(entry_id))
         menu.add_command(
             label=_("Edit note…") if entry.note else _("Add note…"),
-            command=lambda: self.delegate.edit_note(entry_id),
+            command=lambda: self.actions.prompts.edit_note(entry_id),
         )
         if entry.note:
             menu.add_command(
                 label=_("Delete note…"),
-                command=lambda: self.delegate.delete_note(entry_id),
+                command=lambda: self.actions.prompts.delete_note(entry_id),
             )
         menu.add_command(
-            label=_("Edit tag…"), command=lambda: self.delegate.edit_tag(entry_id)
+            label=_("Edit tag…"),
+            command=lambda: self.actions.prompts.edit_tag(entry_id),
         )
 
         if not is_child:
             menu.add_command(
                 label=_("Unpin") if entry.is_pinned else _("Pin to the top"),
-                command=lambda: self.delegate.toggle_pin(entry_id),
+                command=lambda: self.actions.history.toggle_pin(entry_id),
             )
             groups_menu = tk.Menu(menu, tearoff=False)
             current_group = tk.StringVar(menu, entry.group_id or "")
@@ -292,19 +307,21 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
                 label=_("No group"),
                 value="",
                 variable=current_group,
-                command=lambda: self.delegate.move_to_group(entry_id, None),
+                command=lambda: self.actions.history.move_to_group(entry_id, None),
             )
             for group in self.store.groups:
                 groups_menu.add_radiobutton(
                     label=group.name,
                     value=group.id,
                     variable=current_group,
-                    command=partial(self.delegate.move_to_group, entry_id, group.id),
+                    command=partial(
+                        self.actions.history.move_to_group, entry_id, group.id
+                    ),
                 )
             groups_menu.add_separator()
             groups_menu.add_command(
                 label=_("New group…"),
-                command=lambda: self.delegate.move_to_new_group(entry_id),
+                command=lambda: self.actions.groups.move_to_new_group(entry_id),
             )
             menu.add_cascade(label=_("Move to group"), menu=groups_menu)
             self._menu_group_variable = current_group
@@ -313,7 +330,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         source_path = entry.source_path
         menu.add_command(
             label=reveal_label(),
-            command=lambda: self.delegate.reveal_entry(entry_id),
+            command=lambda: self.actions.files.reveal_entry(entry_id),
             state=tk.NORMAL if source_path and source_path.exists() else tk.DISABLED,
         )
 
@@ -322,17 +339,18 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
                 label=_("Stop watching")
                 if entry.status == EntryStatus.WATCHING
                 else _("Cancel"),
-                command=lambda: self.delegate.cancel_entry(entry_id),
+                command=lambda: self.actions.jobs.cancel_entry(entry_id),
             )
         elif not is_child:
             menu.add_command(
                 label=_("Transcribe again"),
-                command=lambda: self.delegate.retry_entry(entry_id),
+                command=lambda: self.actions.jobs.retry_entry(entry_id),
             )
 
         menu.add_separator()
         menu.add_command(
-            label=_("Delete…"), command=lambda: self.delegate.delete_entry(entry_id)
+            label=_("Delete…"),
+            command=lambda: self.actions.prompts.delete_entry(entry_id),
         )
 
         try:
@@ -345,11 +363,11 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         menu = tk.Menu(self, tearoff=False)
         menu.add_command(
             label=_("Rename group…"),
-            command=lambda: self.delegate.rename_group(group_id),
+            command=lambda: self.actions.groups.rename_group(group_id),
         )
         menu.add_command(
             label=_("Delete group…"),
-            command=lambda: self.delegate.delete_group(group_id),
+            command=lambda: self.actions.groups.delete_group(group_id),
         )
         try:
             menu.tk_popup(event.x_root, event.y_root)

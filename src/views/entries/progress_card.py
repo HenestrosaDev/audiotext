@@ -5,7 +5,7 @@ import customtkinter as ctk
 from models.history import EntryStatus, HistoryEntry
 from utils.enums import AudioSource
 from utils.i18n import _
-from views.entries.delegates import EntryDelegate
+from views.entries.delegates import EntryActions
 from views.history.formatting import status_icon, status_label
 from views.style import icons, theme
 from views.widgets.bindings import bind_wraplength
@@ -28,9 +28,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
     step of the stepper, the progress and the actions.
     """
 
-    def __init__(
-        self, master: Any, entry: HistoryEntry, delegate: EntryDelegate
-    ) -> None:
+    def __init__(self, master: Any, entry: HistoryEntry, actions: EntryActions) -> None:
         super().__init__(
             master,
             fg_color=theme.CARD_BG,
@@ -39,7 +37,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
             corner_radius=14,
         )
         self._entry = entry
-        self._delegate = delegate
+        self._actions = actions
         self._is_progress_indeterminate = False
         self.grid_columnconfigure(0, weight=1)
 
@@ -117,7 +115,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
                 self.frm_actions,
                 text=label,
                 width=110,
-                command=lambda: self._delegate.cancel_entry(entry.id),
+                command=lambda: self._actions.jobs.cancel_entry(entry.id),
                 **theme.DANGER_BUTTON,
             ).grid(row=0, column=0)
             self.lbl_tip.configure(
@@ -159,7 +157,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
                     image=icons.icon("chevron_left", 12),
                     compound=ctk.LEFT,
                     width=90,
-                    command=lambda: self._delegate.go_back_to_settings(entry.id),
+                    command=lambda: self._actions.window.go_back_to_settings(entry.id),
                     **theme.SECONDARY_BUTTON,
                 ).grid(row=0, column=0, padx=(0, 8))
             ctk.CTkButton(
@@ -168,13 +166,13 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
                 image=icons.icon("refresh", 14, theme.ICON_ON_ACCENT),
                 compound=ctk.LEFT,
                 width=110,
-                command=lambda: self._delegate.retry_entry(entry.id),
+                command=lambda: self._actions.jobs.retry_entry(entry.id),
             ).grid(row=0, column=1, padx=(0, 8))
         ctk.CTkButton(
             self.frm_actions,
             text=_("Delete"),
             width=90,
-            command=lambda: self._delegate.delete_entry(entry.id),
+            command=lambda: self._actions.prompts.delete_entry(entry.id),
             **theme.SECONDARY_BUTTON,
         ).grid(row=0, column=2)
 
@@ -183,7 +181,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
             return
 
         if self._entry.status == EntryStatus.QUEUED:
-            position = self._delegate.get_queue_position(self._entry.id)
+            position = self._actions.jobs.get_queue_position(self._entry.id)
             message = (
                 _("Waiting for {count} transcription(s) to finish.").format(
                     count=position
@@ -193,7 +191,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
             )
             fraction = None
         else:
-            message, fraction = self._delegate.get_progress_message(self._entry.id)
+            message, fraction = self._actions.jobs.get_progress_message(self._entry.id)
 
         self.lbl_message.configure(
             text=message or _("Starting…"), text_color=theme.HINT_TEXT

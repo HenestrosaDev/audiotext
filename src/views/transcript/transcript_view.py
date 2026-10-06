@@ -39,7 +39,7 @@ from utils.transcript_editing import (
     set_segment_timing,
     speakers,
 )
-from views.entries.delegates import TranscriptDelegate
+from views.entries.delegates import EntryActions
 from views.entries.entry_header import EntryHeader
 from views.history.formatting import reveal_label
 from views.settings.option_labels import save_config
@@ -109,13 +109,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self,
         master: Any,
         entry: HistoryEntry,
-        delegate: TranscriptDelegate,
+        actions: EntryActions,
         run_on_ui_thread: Callable[..., None],
     ) -> None:
         super().__init__(master, fg_color="transparent")
         self.entry_id = entry.id
         self._entry = entry
-        self._delegate = delegate
+        self._actions = actions
         self._run_on_ui_thread = run_on_ui_thread
         self._is_destroyed = False
         self._copy_feedback_after_id: str | None = None
@@ -129,7 +129,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             (),
         )
         self._is_translation_visible = bool(entry.translation) or (
-            delegate.is_translating(entry.id)
+            actions.transcript.is_translating(entry.id)
         )
         # The language being translated into, to show it while it's translated
         self._pending_translation_language: str | None = None
@@ -142,7 +142,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        self.header = EntryHeader(self, entry, delegate)
+        self.header = EntryHeader(self, entry, actions.prompts)
         self.header.grid(row=0, column=0, padx=28, pady=(22, 0), sticky=ctk.EW)
         self._init_body()
         self._init_toolbar()
@@ -175,7 +175,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_generate=self._generate_summary,
             on_chapter=self._play_from,
             on_copy=self._copy_summary,
-            on_settings=lambda: self._delegate.show_preferences(AI_TAB),
+            on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
             on_set_api_key=self._set_summary_api_key,
         )
         self.player = PlayerBar(
@@ -335,11 +335,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         try:
             path = export(Path(selected), file_type, document)
         except (OSError, ValueError) as e:
-            self._delegate.show_status(
+            self._actions.window.show_status(
                 _("Could not export: {error}").format(error=e), is_error=True
             )
             return
-        self._delegate.show_status(_("Exported to {path}").format(path=path))
+        self._actions.window.show_status(_("Exported to {path}").format(path=path))
 
     # WIDGETS
 
@@ -584,7 +584,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def _on_text_edit(self, text: str) -> None:
         if text != self._entry.text:
-            self._delegate.save_text(self.entry_id, text)
+            self._actions.transcript.save_text(self.entry_id, text)
 
     # SUMMARY
 
@@ -593,26 +593,26 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.summary_panel.show(
             TranscriptSummary.from_dict(self._entry.summary),
             provider=PROVIDERS[provider].name,
-            is_loading=self._delegate.is_summarizing(self.entry_id),
-            error=self._delegate.get_summary_error(self.entry_id),
+            is_loading=self._actions.transcript.is_summarizing(self.entry_id),
+            error=self._actions.transcript.get_summary_error(self.entry_id),
             can_generate=has_api_key(provider),
         )
 
     def _set_summary_api_key(self) -> None:
         provider = get_provider(ConfigManager.get_config_ai().summary_provider)
         if env_key := PROVIDERS[provider].env_key:
-            self._delegate.set_api_key(env_key)
+            self._actions.window.set_api_key(env_key)
 
     def _generate_summary(self) -> None:
         self.text.save_pending_text()
-        self._delegate.summarize_entry(self.entry_id)
+        self._actions.transcript.summarize_entry(self.entry_id)
         self._refresh_summary()
 
     def _copy_summary(self) -> None:
         if summary := TranscriptSummary.from_dict(self._entry.summary):
             self.clipboard_clear()
             self.clipboard_append(format_summary(summary))
-            self._delegate.show_status(_("Summary copied."))
+            self._actions.window.show_status(_("Summary copied."))
 
     # TRANSLATION
 
@@ -661,8 +661,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._refresh_translation()
 
     def _refresh_translation(self) -> None:
-        is_loading = self._delegate.is_translating(self.entry_id)
-        error = self._delegate.get_translation_error(self.entry_id)
+        is_loading = self._actions.transcript.is_translating(self.entry_id)
+        error = self._actions.transcript.get_translation_error(self.entry_id)
         # A translation in progress is shown, e.g. when going back to its entry
         if is_loading:
             self._set_translation_visible(True)
@@ -681,7 +681,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def _on_translate_button(self) -> None:
         translation = TranscriptTranslation.from_dict(self._entry.translation)
-        if translation is None and not self._delegate.is_translating(self.entry_id):
+        if translation is None and not self._actions.transcript.is_translating(
+            self.entry_id
+        ):
             self._open_translate_dialog()
             return
 
@@ -701,7 +703,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             command=self._open_translate_dialog,
             state=(
                 tk.DISABLED
-                if self._delegate.is_translating(self.entry_id)
+                if self._actions.transcript.is_translating(self.entry_id)
                 else tk.NORMAL
             ),
         )
@@ -751,21 +753,23 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self.player.show_subtitle_buttons(self.video.is_showing_subtitles)
 
     def _open_translate_dialog(self) -> None:
-        if self._delegate.is_translating(self.entry_id):
+        if self._actions.transcript.is_translating(self.entry_id):
             return
         self.text.save_pending_text()
         request = TranslateDialog(
             self,
             source_language=self._entry.language,
-            on_set_api_key=self._delegate.set_api_key,
-            on_settings=lambda: self._delegate.show_preferences(AI_TAB),
+            on_set_api_key=self._actions.window.set_api_key,
+            on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
         ).get_result()
         if request is None or self._is_destroyed:
             return
 
         save_config(ConfigAi.Key.TRANSLATION_LANGUAGE, request.language)
         if request.provider == MANUAL:
-            self._delegate.start_manual_translation(self.entry_id, request.language)
+            self._actions.transcript.start_manual_translation(
+                self.entry_id, request.language
+            )
             self._set_translation_visible(True)
             self._refresh_translation()
             return
@@ -782,7 +786,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             save_config(ConfigAi.Key.TRANSLATION_MODEL, "")
 
         self._pending_translation_language = request.language
-        self._delegate.translate_entry(
+        self._actions.transcript.translate_entry(
             self.entry_id, request.language, request.provider, model
         )
         self._set_translation_visible(True)
@@ -791,7 +795,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _on_translation_text_edit(self, text: str) -> None:
         translation = TranscriptTranslation.from_dict(self._entry.translation)
         if translation and text != translation.text:
-            self._delegate.save_translation_text(self.entry_id, text)
+            self._actions.transcript.save_translation_text(self.entry_id, text)
 
     def _show_translation_segment_menu(self, event: Any, idx: int) -> str:
         translation = TranscriptTranslation.from_dict(self._entry.translation)
@@ -842,7 +846,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         text = (
             translation.text if translation.is_text_edited else join_segments(segments)
         )
-        self._delegate.update_translation(self.entry_id, segments, text)
+        self._actions.transcript.update_translation(self.entry_id, segments, text)
 
     def _edit_translation_segment(self, idx: int) -> None:
         segments = self._translation_segments()
@@ -954,13 +958,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _delete_translation(self) -> None:
         self._is_translation_visible = False
         self._layout_texts()
-        self._delegate.remove_translation(self.entry_id)
+        self._actions.transcript.remove_translation(self.entry_id)
 
     def _copy_translation(self) -> None:
         if translation := TranscriptTranslation.from_dict(self._entry.translation):
             self.clipboard_clear()
             self.clipboard_append(translation.text)
-            self._delegate.show_status(
+            self._actions.window.show_status(
                 _("Translation into {language} copied.").format(
                     language=language_name(translation.language)
                 )
@@ -1098,43 +1102,44 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         source_path = entry.source_path
         menu.add_command(
             label=reveal_label(),
-            command=lambda: self._delegate.reveal_entry(self.entry_id),
+            command=lambda: self._actions.files.reveal_entry(self.entry_id),
             state=tk.NORMAL if source_path and source_path.exists() else tk.DISABLED,
         )
         output_dir = Path(entry.output_dir) if entry.output_dir else None
         menu.add_command(
             label=_("Open the folder of the saved files"),
             command=lambda: (
-                self._delegate.open_folder(output_dir) if output_dir else None
+                self._actions.files.open_folder(output_dir) if output_dir else None
             ),
             state=tk.NORMAL if output_dir and output_dir.is_dir() else tk.DISABLED,
         )
         menu.add_separator()
         menu.add_command(
             label=_("Rename…"),
-            command=lambda: self._delegate.rename_entry_dialog(self.entry_id),
+            command=lambda: self._actions.prompts.rename_entry(self.entry_id),
         )
         menu.add_command(
             label=_("Edit note…") if entry.note else _("Add note…"),
-            command=lambda: self._delegate.edit_note(self.entry_id),
+            command=lambda: self._actions.prompts.edit_note(self.entry_id),
         )
         if entry.note:
             menu.add_command(
                 label=_("Delete note…"),
-                command=lambda: self._delegate.delete_note(self.entry_id),
+                command=lambda: self._actions.prompts.delete_note(self.entry_id),
             )
         menu.add_command(
-            label=_("Edit tag…"), command=lambda: self._delegate.edit_tag(self.entry_id)
+            label=_("Edit tag…"),
+            command=lambda: self._actions.prompts.edit_tag(self.entry_id),
         )
         if entry.parent_id is None:
             menu.add_command(
                 label=_("Transcribe again"),
-                command=lambda: self._delegate.retry_entry(self.entry_id),
+                command=lambda: self._actions.jobs.retry_entry(self.entry_id),
             )
         menu.add_separator()
         menu.add_command(
             label=_("Delete…"),
-            command=lambda: self._delegate.delete_entry(self.entry_id),
+            command=lambda: self._actions.prompts.delete_entry(self.entry_id),
         )
         self._popup_below(menu, self.btn_more)
 
