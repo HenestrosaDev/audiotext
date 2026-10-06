@@ -1,19 +1,23 @@
 import logging
-import queue
 import threading
 import tkinter as tk
 import webbrowser
 from collections.abc import Callable
+from datetime import datetime
 from enum import Enum, auto
 from pathlib import Path
+from tkinter import messagebox
 from typing import Any
 
 import customtkinter as ctk
 
 import utils.constants as c
-from controllers.main_controller import MainController
+import utils.notifications as notifications
+from controllers.history_controller import HistoryController
+from controllers.transcription_queue import TranscriptionQueue
 from models.config.config_system import ConfigSystem
 from models.history import EntryStatus, HistoryEntry
+from models.transcript_segment import TranscriptSegment
 from models.transcription_settings import TranscriptionSettings
 from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
@@ -23,23 +27,21 @@ from utils.i18n import _
 from utils.update_checker import Release, UpdateCheckError, get_available_update
 from views.entries.folder_view import FolderView
 from views.entries.status_view import StatusView
+from views.history.formatting import format_full_date
 from views.history.history_sidebar import HistorySidebar
-from views.main_window.entry_actions import EntryActionsMixin
 from views.main_window.top_bar import TopBar
-from views.main_window.transcription_jobs import TranscriptionJobsMixin
 from views.main_window.welcome_view import WelcomeView
 from views.new_transcription.microphone_view import MicrophoneView, MicState
 from views.new_transcription.new_transcription_view import NewTranscriptionView
 from views.settings.preferences_dialog import PreferencesDialog, api_key_labels
 from views.style import theme
 from views.transcript.transcript_view import TranscriptView
+from views.ui_thread_queue import UiThreadQueue
 from views.widgets.splitter import Splitter
 from views.widgets.text_dialog import TextDialog
 
 logger = logging.getLogger(__name__)
 
-# How often the callbacks queued from background threads are run
-UI_QUEUE_POLL_INTERVAL_MS = 50
 # Width kept for the content when the sidebar is widened
 CONTENT_MIN_WIDTH = 420
 
@@ -61,29 +63,31 @@ def entry_view_class(entry: HistoryEntry) -> type[EntryView]:
     return StatusView
 
 
-class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # type: ignore[misc]
+class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     """
     The window of the app: the top bar to start a transcription from each kind
     of source, the history of transcriptions on the left and, on the right, the
     selected transcription or the steps to create a new one.
 
-    It also implements the interface that the controller uses to report the
-    progress (see `TranscriptionJobsMixin`), and the actions of the history (see
-    `EntryActionsMixin`).
+    It shows the changes made by the controllers of the history and of the queue
+    of transcriptions (see `TranscriptionQueueView`), and passes them the actions
+    of the sidebar and of the views of the entries, asking the user for what they
+    need first (e.g. a name or a confirmation).
     """
 
     def __init__(
         self,
         parent: Any,
         store: HistoryStore,
+        history: HistoryController,
+        jobs: TranscriptionQueue,
         on_ui_language_change: Callable[[str], None],
     ) -> None:
         super().__init__(parent, corner_radius=0, fg_color=theme.WINDOW_BG)
         self._store = store
+        self._history = history
+        self._jobs = jobs
         self._on_ui_language_change = on_ui_language_change
-        self._controller: MainController | None = None
-        self._init_jobs()
-        self._init_entry_actions()
 
         self._page = Page.WELCOME
         self._new_views: dict[AudioSource, NewTranscriptionView] = {}
@@ -96,10 +100,9 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
         self._preferences: PreferencesDialog | None = None
         self._available_update: Release | None = None
 
-        # Callbacks sent from background threads to be run on the Tkinter thread
-        self._ui_queue: queue.SimpleQueue[tuple[Callable[..., Any], tuple[Any, ...]]]
-        self._ui_queue = queue.SimpleQueue()
-        self._ui_queue_after_id: str | None = None
+        # The callbacks of the background threads of the views, which aren't run
+        # once the window is destroyed
+        self._ui_queue = UiThreadQueue(self)
 
         self.grid_columnconfigure(2, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -138,14 +141,9 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
         self.frm_content.grid_rowconfigure(0, weight=1)
 
         self.show_welcome()
-        self._process_ui_queue()
-
-    def set_controller(self, controller: MainController) -> None:
-        self._controller = controller
 
     def destroy(self) -> None:
-        if self._ui_queue_after_id:
-            self.after_cancel(self._ui_queue_after_id)
+        self._ui_queue.stop()
         super().destroy()
 
     # SESSION (the window is rebuilt when the interface language changes)
@@ -199,11 +197,11 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
                 self._mic_view = MicrophoneView(
                     self.frm_content,
                     on_start=self._start_recording,
-                    on_stop=self._stop_recording,
+                    on_stop=self._jobs.stop_recording,
                     on_open_entry=self._open_last_recording,
                     on_set_api_key=self._on_set_api_key,
                     on_model_change=self._request_model_preload,
-                    is_busy=self.is_busy,
+                    is_busy=self._jobs.is_busy,
                     run_on_ui_thread=self.run_on_ui_thread,
                 )
             self._show_page(Page.MIC, self._mic_view)
@@ -216,7 +214,7 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
                     on_start=self._start_transcription,
                     on_set_api_key=self._on_set_api_key,
                     on_model_change=self._request_model_preload,
-                    is_busy=self.is_busy,
+                    is_busy=self._jobs.is_busy,
                     run_on_ui_thread=self.run_on_ui_thread,
                 )
                 self._new_views[source] = view
@@ -244,7 +242,7 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
             source: AudioSource, value: str, settings: TranscriptionSettings
         ) -> None:
             self._close_back_view()
-            self._restart_entry(entry_id, source, value, settings)
+            self._jobs.restart(entry_id, source, value, settings)
 
         view = NewTranscriptionView(
             self.frm_content,
@@ -252,7 +250,7 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
             on_start=on_start,
             on_set_api_key=self._on_set_api_key,
             on_model_change=self._request_model_preload,
-            is_busy=self.is_busy,
+            is_busy=self._jobs.is_busy,
             run_on_ui_thread=self.run_on_ui_thread,
             initial_settings=TranscriptionSettings.from_dict(entry.settings),
         )
@@ -309,7 +307,7 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
         self._entry_view = None
         self._entry_view_id = None
 
-    def _on_entry_changed(self, entry_id: str, is_structural: bool = False) -> None:
+    def on_entry_changed(self, entry_id: str, is_structural: bool = False) -> None:
         """
         Updates the views after an entry changes.
 
@@ -320,9 +318,9 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
             self.sidebar.refresh()
         else:
             self.sidebar.update_entry(entry_id)
-        self._refresh_entry_view(entry_id)
+        self.refresh_entry_view(entry_id)
 
-    def _refresh_entry_view(self, entry_id: str) -> None:
+    def refresh_entry_view(self, entry_id: str) -> None:
         """Shows the changes of an entry (or of a file of it) in its view."""
         shown_id = self._entry_view_id
         if shown_id is None or self._entry_view is None:
@@ -351,10 +349,20 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
         else:
             self._entry_view.update_entry(shown)
 
+    def refresh_progress(self, entry_id: str) -> None:
+        self.sidebar.update_progress(entry_id)
+        if self._entry_view_id == entry_id and hasattr(
+            self._entry_view, "update_progress"
+        ):
+            self._entry_view.update_progress()
+
     def show_status(self, message: str, is_error: bool = False) -> None:
         self.top_bar.show_status(message, is_error=is_error)
 
     # SIDEBAR
+
+    def refresh_sidebar(self) -> None:
+        self.sidebar.refresh()
 
     def toggle_sidebar(self) -> None:
         is_visible = self.sidebar.winfo_ismapped()
@@ -396,22 +404,325 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
         Schedules a callback to be run on the Tkinter thread. Tkinter is not
         thread-safe, so background threads must use this method to update the UI.
         """
-        self._ui_queue.put((callback, args))
+        self._ui_queue.put(callback, *args)
 
-    def _process_ui_queue(self) -> None:
-        while True:
-            try:
-                callback, args = self._ui_queue.get_nowait()
-            except queue.Empty:
-                break
-            try:
-                callback(*args)
-            except Exception:
-                logger.exception("Error while updating the UI")
+    # TRANSCRIPTIONS
 
-        self._ui_queue_after_id = self.after(
-            UI_QUEUE_POLL_INTERVAL_MS, self._process_ui_queue
+    def _start_transcription(
+        self, source: AudioSource, value: str, settings: TranscriptionSettings
+    ) -> None:
+        # The next transcription from this source starts from the first step
+        if view := self._new_views.pop(source, None):
+            view.destroy()
+        self._jobs.start(source, value, settings)
+
+    def retry_entry(self, entry_id: str) -> None:
+        self._jobs.retry_entry(entry_id)
+
+    def cancel_entry(self, entry_id: str) -> None:
+        self._jobs.cancel_entry(entry_id)
+
+    def get_progress(self, entry_id: str) -> float | None:
+        return self._jobs.get_progress(entry_id)
+
+    def get_progress_message(self, entry_id: str) -> tuple[str, float | None]:
+        return self._jobs.get_progress_message(entry_id)
+
+    def get_queue_position(self, entry_id: str) -> int | None:
+        return self._jobs.get_queue_position(entry_id)
+
+    def on_transcription_finished(
+        self, entry: HistoryEntry, status_message: str | None
+    ) -> None:
+        if entry.status == EntryStatus.FAILED:
+            self.show_status(f"{entry.title}: {entry.error}", is_error=True)
+        elif status_message:
+            self.show_status(f"{entry.title}: {status_message}")
+
+    @staticmethod
+    def on_transcription_ready(entry: HistoryEntry) -> None:
+        if ConfigManager.get_config_system().notify_when_done:
+            notifications.notify(_("Transcription ready"), entry.title)
+
+    def on_transcription_saved(self, folder: Path) -> None:
+        self.show_status(_("Saved in {folder}.").format(folder=folder))
+
+    def on_recording_unavailable(self, entry: HistoryEntry) -> None:
+        self.show_status(_("The recording is no longer available."), is_error=True)
+
+    # MICROPHONE
+
+    def _start_recording(
+        self, settings: TranscriptionSettings, device_index: int | None
+    ) -> None:
+        if self._mic_view is None:
+            return
+        title = _("Recording · {date}").format(
+            date=format_full_date(datetime.now().astimezone())
         )
+        if self._jobs.start_recording(title, settings, device_index):
+            self._mic_view.set_state(MicState.RECORDING)
+
+    def _open_last_recording(self) -> None:
+        if self._jobs.last_mic_entry_id:
+            self.select_entry(self._jobs.last_mic_entry_id)
+
+    def is_recording(self) -> bool:
+        return self._mic_view is not None and self._mic_view.state == MicState.RECORDING
+
+    def on_recording_progress(self, elapsed_seconds: float, level: float) -> None:
+        if self._mic_view:
+            self._mic_view.on_recording_progress(elapsed_seconds, level)
+
+    def on_stop_recording_from_mic(self) -> None:
+        if self._mic_view and self._mic_view.state == MicState.RECORDING:
+            self._mic_view.set_state(
+                MicState.TRANSCRIBING, _("Processing the recording…")
+            )
+
+    def on_live_text(self, text: str) -> None:
+        if self._mic_view:
+            self._mic_view.show_live_text(text)
+
+    def on_live_status(self, message: str) -> None:
+        if self._mic_view:
+            self._mic_view.show_live_status(message)
+
+    def on_mic_progress(self, message: str) -> None:
+        if self._mic_view:
+            self._mic_view.show_progress(message)
+
+    def on_mic_text(self, text: str) -> None:
+        if self._mic_view:
+            self._mic_view.show_text(text)
+
+    def on_mic_finished(self, entry: HistoryEntry) -> None:
+        if self._mic_view is None:
+            return
+        if entry.status == EntryStatus.DONE:
+            self._mic_view.set_state(MicState.DONE)
+        else:
+            self._mic_view.set_state(
+                MicState.FAILED, entry.error or _("The transcription was cancelled.")
+            )
+
+    # ENTRIES
+
+    def rename_entry(self, entry_id: str, title: str) -> None:
+        self._history.rename_entry(entry_id, title)
+
+    def rename_entry_dialog(self, entry_id: str) -> None:
+        entry = self._store.get(entry_id)
+        if entry is None:
+            return
+        title = TextDialog(
+            self,
+            _("Rename"),
+            _("Name of the transcription:"),
+            entry.title,
+            allow_empty=False,
+        ).get_input()
+        if title:
+            self._history.rename_entry(entry_id, title)
+
+    def edit_note(self, entry_id: str) -> None:
+        entry = self._store.get(entry_id)
+        if entry is None:
+            return
+        note = TextDialog(
+            self,
+            _("Note"),
+            _("A note about “{title}”:").format(title=entry.title),
+            entry.note,
+            is_multiline=True,
+        ).get_input()
+        if note is not None:
+            self._history.set_note(entry_id, note)
+
+    def delete_note(self, entry_id: str) -> None:
+        entry = self._store.get(entry_id)
+        if entry is None or not entry.note:
+            return
+        if messagebox.askyesno(
+            _("Delete note"),
+            _("Delete the note of “{title}”?").format(title=entry.title),
+            icon=messagebox.WARNING,
+            parent=self.winfo_toplevel(),
+        ):
+            self._history.set_note(entry_id, "")
+
+    def edit_tag(self, entry_id: str) -> None:
+        entry = self._store.get(entry_id)
+        if entry is None:
+            return
+        tag = TextDialog(
+            self,
+            _("Tag"),
+            _("Tag of “{title}”. Leave it empty to show the kind of source.").format(
+                title=entry.title
+            ),
+            entry.tag,
+            suggestions=self._store.tags(),
+        ).get_input()
+        if tag is not None:
+            self._history.set_tag(entry_id, tag)
+
+    def toggle_pin(self, entry_id: str) -> None:
+        self._history.toggle_pin(entry_id)
+
+    def reveal_entry(self, entry_id: str) -> None:
+        self._history.reveal_entry(entry_id)
+
+    def open_folder(self, folder: Path) -> None:
+        self._history.open_folder(folder)
+
+    def on_reveal_failed(self, path: Path, error: Exception) -> None:
+        if isinstance(error, FileNotFoundError):
+            message = _("The file was moved or deleted: {path}").format(path=path)
+        else:
+            message = _("Could not open the file manager: {error}").format(error=error)
+        self.show_status(message, is_error=True)
+
+    def on_open_folder_failed(self, folder: Path, error: Exception) -> None:
+        self.show_status(
+            _("Could not open the folder: {error}").format(error=error), is_error=True
+        )
+
+    def delete_entry(self, entry_id: str) -> None:
+        entry = self._store.get(entry_id)
+        if entry is None:
+            return
+
+        message = _("Delete “{title}” from the history?").format(title=entry.title)
+        if entry.is_folder:
+            message += "\n\n" + _("The transcriptions of its files are deleted too.")
+        message += "\n\n" + _("Your audio, video and saved files are not deleted.")
+        if not messagebox.askyesno(
+            _("Delete transcription"), message, parent=self.winfo_toplevel()
+        ):
+            return
+
+        if entry.status.is_active:
+            self._jobs.cancel_entry(entry_id)
+        self._history.delete_entry(entry_id)
+
+    # TRANSCRIPT
+
+    def save_text(self, entry_id: str, text: str) -> None:
+        self._history.save_text(entry_id, text)
+
+    def update_transcript(
+        self, entry_id: str, segments: list[TranscriptSegment], text: str
+    ) -> None:
+        self._history.update_transcript(entry_id, segments, text)
+
+    def summarize_entry(self, entry_id: str) -> None:
+        self._history.summarize_entry(entry_id)
+
+    def is_summarizing(self, entry_id: str) -> bool:
+        return self._history.is_summarizing(entry_id)
+
+    def get_summary_error(self, entry_id: str) -> str:
+        return self._history.get_summary_error(entry_id)
+
+    def on_summary_finished(self, entry: HistoryEntry, error: str | None) -> None:
+        if error is None:
+            self.show_status(
+                _("The summary of “{title}” is ready.").format(title=entry.title)
+            )
+        else:
+            self.show_status(
+                _("Could not summarize “{title}”: {error}").format(
+                    title=entry.title, error=error
+                ),
+                is_error=True,
+            )
+        self.refresh_entry_view(entry.id)
+
+    def translate_entry(
+        self, entry_id: str, language: str, provider: str, model: str = ""
+    ) -> None:
+        self._history.translate_entry(entry_id, language, provider, model)
+
+    def start_manual_translation(self, entry_id: str, language: str) -> None:
+        self._history.start_manual_translation(entry_id, language)
+
+    def is_translating(self, entry_id: str) -> bool:
+        return self._history.is_translating(entry_id)
+
+    def get_translation_error(self, entry_id: str) -> str:
+        return self._history.get_translation_error(entry_id)
+
+    def on_translation_finished(self, entry: HistoryEntry, error: str | None) -> None:
+        if error is None:
+            self.show_status(
+                _("The translation of “{title}” is ready.").format(title=entry.title)
+            )
+        else:
+            self.show_status(
+                _("Could not translate “{title}”: {error}").format(
+                    title=entry.title, error=error
+                ),
+                is_error=True,
+            )
+        self.refresh_entry_view(entry.id)
+
+    def save_translation_text(self, entry_id: str, text: str) -> None:
+        self._history.save_translation_text(entry_id, text)
+
+    def update_translation(
+        self, entry_id: str, segments: list[TranscriptSegment], text: str
+    ) -> None:
+        self._history.update_translation(entry_id, segments, text)
+
+    def remove_translation(self, entry_id: str) -> None:
+        self._history.remove_translation(entry_id)
+
+    # GROUPS
+
+    def move_to_group(self, entry_id: str, group_id: str | None) -> None:
+        self._history.move_to_group(entry_id, group_id)
+
+    def move_to_new_group(self, entry_id: str) -> None:
+        if group_id := self.create_group():
+            self._history.move_to_group(entry_id, group_id)
+
+    def create_group(self) -> str | None:
+        name = TextDialog(
+            self,
+            _("New group"),
+            _("Name of the group:"),
+            ok_text=_("Create"),
+            allow_empty=False,
+        ).get_input()
+        return self._history.create_group(name) if name else None
+
+    def rename_group(self, group_id: str) -> None:
+        group = self._store.get_group(group_id)
+        if group is None:
+            return
+        name = TextDialog(
+            self,
+            _("Rename group"),
+            _("Name of the group:"),
+            group.name,
+            allow_empty=False,
+        ).get_input()
+        if name:
+            self._history.rename_group(group_id, name)
+
+    def delete_group(self, group_id: str) -> None:
+        group = self._store.get_group(group_id)
+        if group is None:
+            return
+        if messagebox.askyesno(
+            _("Delete group"),
+            _(
+                "Delete the group “{name}”? Its transcriptions are kept, without a group."
+            ).format(name=group.name),
+            parent=self.winfo_toplevel(),
+        ):
+            self._history.delete_group(group_id)
 
     # APP SHORTCUTS AND DRAG AND DROP
 
@@ -442,7 +753,7 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
             and self._mic_view
             and self._mic_view.state == MicState.RECORDING
         ):
-            self._stop_recording()
+            self._jobs.stop_recording()
 
     def trigger_search(self) -> None:
         if self._page == Page.ENTRY and isinstance(self._entry_view, TranscriptView):
@@ -570,7 +881,7 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
                 10, lambda: self._on_ui_language_change(language)
             ),
             on_model_change=self._request_model_preload,
-            can_change_language=not self.is_busy(),
+            can_change_language=not self._jobs.is_busy(),
             initial_tab=tab,
             on_ai_change=self._refresh_shown_entry,
             on_check_for_updates=self.check_for_updates,
@@ -579,7 +890,7 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
 
     def _refresh_shown_entry(self) -> None:
         if self._entry_view_id:
-            self._refresh_entry_view(self._entry_view_id)
+            self.refresh_entry_view(self._entry_view_id)
 
     def _on_date_format_change(self) -> None:
         self.sidebar.refresh()
@@ -616,5 +927,4 @@ class MainWindow(TranscriptionJobsMixin, EntryActionsMixin, ctk.CTkFrame):  # ty
         self._refresh_shown_entry()
 
     def _request_model_preload(self) -> None:
-        if self._controller and not self.is_busy():
-            self._controller.preload_model()
+        self._jobs.preload_model()
