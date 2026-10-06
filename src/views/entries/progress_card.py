@@ -5,7 +5,7 @@ import customtkinter as ctk
 
 from models.history import EntryStatus, HistoryEntry
 from utils.enums import AudioSource
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.entries.delegates import EntryActions
 from views.history.formatting import status_icon, status_label
 from views.localization import on_language_change
@@ -48,8 +48,8 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
             self,
             [
                 partial(first_step_label, entry.kind),
-                lambda: _("Settings"),
-                lambda: _("Transcribe"),
+                L_("Settings"),
+                L_("Transcribe"),
             ],
         )
         self.stepper.grid(row=0, column=0, padx=24, pady=(22, 0), sticky=ctk.EW)

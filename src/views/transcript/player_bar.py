@@ -7,7 +7,7 @@ import customtkinter as ctk
 import numpy as np
 
 from utils.audio_player import AudioPlayer, PlaybackUnavailableError
-from utils.i18n import _
+from utils.i18n import L_, _
 from utils.time_format import format_timestamp
 from views.localization import Text, localize
 from views.style import icons, theme
@@ -106,7 +106,7 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
                 command=on_toggle_subtitles,
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Subtitles"),
+            text=L_("Subtitles"),
         )
         self.btn_subtitle_options = ctk.CTkButton(
             controls,
@@ -124,7 +124,7 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
             ctk.CTkLabel(
                 self, font=theme.font(12), text_color=theme.HINT_TEXT, anchor=ctk.W
             ),
-            text=lambda: _("Loading the audio…"),
+            text=L_("Loading the audio…"),
         )
         self.lbl_hint.grid(row=1, column=0, padx=30, pady=(0, 14), sticky=ctk.EW)
         self._set_enabled(False)

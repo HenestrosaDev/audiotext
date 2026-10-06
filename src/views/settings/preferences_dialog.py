@@ -21,6 +21,7 @@ from utils.config_manager import ConfigManager
 from utils.enums import ComputeType, TimestampGranularities
 from utils.env_keys import EnvKeys
 from utils.i18n import (
+    L_,
     SYSTEM_LANGUAGE,
     UI_LANGUAGES,
     _,
@@ -158,7 +159,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._config_whisper_api = ConfigManager.get_config_whisper_api()
         self._config_ai = ConfigManager.get_config_ai()
 
-        localize(self, title=lambda: _("Preferences"))
+        localize(self, title=L_("Preferences"))
         self.geometry("640x560")
         self.minsize(560, 440)
         self.transient(master.winfo_toplevel())
@@ -172,13 +173,13 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         # The names of the tabs are their keys in the tab view, so they're
         # renamed when the language changes
         self._tab_texts: dict[str, Text] = {
-            GENERAL_TAB: lambda: _("General"),
-            AI_TAB: lambda: _("AI"),
-            API_KEYS_TAB: lambda: _("API keys"),
+            GENERAL_TAB: L_("General"),
+            AI_TAB: L_("AI"),
+            API_KEYS_TAB: L_("API keys"),
             WHISPERX_TAB: lambda: "WhisperX",
-            SUBTITLES_TAB: lambda: _("Subtitles"),
+            SUBTITLES_TAB: L_("Subtitles"),
             WHISPER_API_TAB: lambda: "Whisper API",
-            ABOUT_TAB: lambda: _("About"),
+            ABOUT_TAB: L_("About"),
         }
         self._tab_names = {tab: text() for tab, text in self._tab_texts.items()}
         tabs = {tab: self.tabs.add(name) for tab, name in self._tab_names.items()}
@@ -293,7 +294,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
     # TABS
 
     def _init_general(self, tab: Any) -> None:
-        frame = self._row(tab, 0, lambda: _("Appearance"))
+        frame = self._row(tab, 0, L_("Appearance"))
         menu = ctk.CTkSegmentedButton(frame, values=[])
         LocalizedOptions(
             menu,
@@ -306,10 +307,10 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             1,
-            lambda: _("Interface language"),
+            L_("Interface language"),
             None
             if self._can_change_language
-            else lambda: _("It can be changed when no transcription is in progress."),
+            else L_("It can be changed when no transcription is in progress."),
         )
         language_menu = CTkOptionMenu(
             frame,
@@ -333,10 +334,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             4,
-            lambda: _("Notifications"),
-            lambda: _(
-                "Shows a notification of the system when a transcription is ready."
-            ),
+            L_("Notifications"),
+            L_("Shows a notification of the system when a transcription is ready."),
         )
         self._switch(
             frame,
@@ -347,8 +346,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             5,
-            lambda: _("Updates"),
-            lambda: _("Checks for a new version when the app opens."),
+            L_("Updates"),
+            L_("Checks for a new version when the app opens."),
         )
         self._switch(
             frame,
@@ -364,7 +363,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         # Formats that look the same in the language (e.g. the short and the
         # medium ones in Japanese) are shown once
-        frame = self._row(tab, 2, lambda: _("Date format"))
+        frame = self._row(tab, 2, L_("Date format"))
         date_menu = CTkOptionMenu(frame, values=[])
         LocalizedOptions(
             date_menu,
@@ -381,8 +380,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             3,
-            lambda: _("Time format"),
-            lambda: _("Automatic uses the clock of the interface language."),
+            L_("Time format"),
+            L_("Automatic uses the clock of the interface language."),
         )
         time_menu = ctk.CTkSegmentedButton(frame, values=[])
         LocalizedOptions(
@@ -447,9 +446,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             # The buttons of the providers are replaced when they change
             buttons[:] = [button for button in buttons if button.winfo_exists()]
             is_set = bool(env_key.get_value(default=""))
-            text: Text = (
-                (lambda: "✓ " + _("Change…")) if is_set else (lambda: _("Set…"))
-            )
+            text: Text = (lambda: "✓ " + _("Change…")) if is_set else (L_("Set…"))
             for button in buttons:
                 localize(button, text=text)
 
@@ -459,7 +456,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._init_provider_rows(
             frame,
             row=0,
-            title=lambda: _("Summary"),
+            title=L_("Summary"),
             get_labels=lambda: dict(
                 sorted(ai_names.items(), key=lambda item: sort_key(item[1]))
             ),
@@ -484,7 +481,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._init_provider_rows(
             frame,
             row=3,
-            title=lambda: _("Translation"),
+            title=L_("Translation"),
             get_labels=translation_providers,
             provider=translation_provider,
             model=self._config_ai.translation_model,
@@ -496,13 +493,13 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         localize(
             ctk.CTkLabel(frame, font=theme.font(14, "bold"), anchor=ctk.W),
-            text=lambda: _("Ollama"),
+            text=L_("Ollama"),
         ).grid(row=6, column=0, padx=8, pady=(18, 0), sticky=ctk.W)
         row_frame = self._row(
             frame,
             7,
-            lambda: _("Server URL"),
-            lambda: _("Ollama runs the models on your computer, without an API key."),
+            L_("Server URL"),
+            L_("Ollama runs the models on your computer, without an API key."),
         )
         self._entry(
             row_frame,
@@ -533,15 +530,15 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         localize(
             ctk.CTkLabel(frame, font=theme.font(14, "bold"), anchor=ctk.W), text=title
         ).grid(row=row, column=0, padx=8, pady=(18 if row else 4, 0), sticky=ctk.W)
-        provider_frame = self._row(frame, row + 1, lambda: _("Provider"))
+        provider_frame = self._row(frame, row + 1, L_("Provider"))
         key_buttons = ctk.CTkFrame(provider_frame, fg_color="transparent")
         key_buttons.grid(row=0, column=2, rowspan=2)
 
         model_frame = self._row(
             frame,
             row + 2,
-            lambda: _("Model"),
-            lambda: _("The default model of the provider if empty."),
+            L_("Model"),
+            L_("The default model of the provider if empty."),
         )
         model_entry = ctk.CTkEntry(model_frame, width=200)
         model_entry.grid(row=0, column=1, rowspan=2, padx=(12, 0))
@@ -583,8 +580,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             0,
-            lambda: _("Compute type"),
-            lambda: _("float16 is faster on GPUs. int8 uses less memory."),
+            L_("Compute type"),
+            L_("float16 is faster on GPUs. int8 uses less memory."),
         )
         menu = CTkOptionMenu(
             frame,
@@ -600,8 +597,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             1,
-            lambda: _("Batch size"),
-            lambda: _("Lower it if you run out of memory."),
+            L_("Batch size"),
+            L_("Lower it if you run out of memory."),
         )
         self._entry(
             frame,
@@ -613,10 +610,10 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             2,
-            lambda: _("Use CPU"),
+            L_("Use CPU"),
             None
             if self._config_whisperx.can_use_gpu
-            else lambda: _("No CUDA GPU was found, so WhisperX runs on the CPU."),
+            else L_("No CUDA GPU was found, so WhisperX runs on the CPU."),
         )
         switch = self._switch(
             frame,
@@ -630,22 +627,22 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             0,
-            lambda: _("Highlight words"),
-            lambda: _("Underlines each word as it's said (.srt and .vtt)."),
+            L_("Highlight words"),
+            L_("Underlines each word as it's said (.srt and .vtt)."),
         )
         self._switch(
             frame,
             self._config_subtitles.highlight_words,
             lambda is_on: save_config(ConfigSubtitles.Key.HIGHLIGHT_WORDS, str(is_on)),
         )
-        frame = self._row(tab, 1, lambda: _("Max. line count"))
+        frame = self._row(tab, 1, L_("Max. line count"))
         self._entry(
             frame,
             self._config_subtitles.max_line_count,
             ConfigSubtitles.Key.MAX_LINE_COUNT,
             validators.is_valid_positive_int,
         )
-        frame = self._row(tab, 2, lambda: _("Max. line width"))
+        frame = self._row(tab, 2, L_("Max. line width"))
         self._entry(
             frame,
             self._config_subtitles.max_line_width,
@@ -657,8 +654,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             0,
-            lambda: _("Temperature"),
-            lambda: _("Between 0 and 1. Higher values are more random."),
+            L_("Temperature"),
+            L_("Between 0 and 1. Higher values are more random."),
         )
         self._entry(
             frame,
@@ -670,10 +667,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame = self._row(
             tab,
             1,
-            lambda: _("Timestamps of the words"),
-            lambda: _(
-                "Highlights each word while playing (whisper-1 model). Takes longer."
-            ),
+            L_("Timestamps of the words"),
+            L_("Highlights each word while playing (whisper-1 model). Takes longer."),
         )
         # The timestamps of the segments are always requested
         self._switch(
@@ -723,7 +718,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
                 ),
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Documentation"),
+            text=L_("Documentation"),
         ).grid(row=0, column=0, padx=6)
         ctk.CTkButton(
             links,
@@ -743,7 +738,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
                 command=lambda: webbrowser.open(c.DONATION_URL),
                 **theme.PRIMARY_BUTTON,
             ),
-            text=lambda: _("Donate"),
+            text=L_("Donate"),
         ).grid(row=0, column=2, padx=6)
 
         if self._on_check_for_updates is None:
@@ -757,7 +752,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
                 command=self._on_update_button,
                 **theme.SECONDARY_BUTTON,
             ),
-            text=lambda: _("Check for updates"),
+            text=L_("Check for updates"),
         )
         self.btn_update.grid(row=5, column=0, pady=(18, 0))
         self.lbl_update = ctk.CTkLabel(
@@ -776,7 +771,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         self.btn_update.configure(state=ctk.DISABLED)
         self.lbl_update.configure(text_color=theme.HINT_TEXT)
-        localize(self.lbl_update, text=lambda: _("Checking for updates…"))
+        localize(self.lbl_update, text=L_("Checking for updates…"))
         self._on_check_for_updates(self._on_update_checked)
 
     def _on_update_checked(self, release: Release | None, has_error: bool) -> None:
@@ -787,7 +782,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self.btn_update.configure(state=ctk.NORMAL)
         if has_error:
             self.lbl_update.configure(text_color=theme.ERROR_TEXT)
-            localize(self.lbl_update, text=lambda: _("Could not check for updates."))
+            localize(self.lbl_update, text=L_("Could not check for updates."))
         elif release:
             self._available_update = release
             self.btn_update.configure(
@@ -796,7 +791,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
                 text_color=theme.ICON_ON_ACCENT,
                 **theme.PRIMARY_BUTTON,
             )
-            localize(self.btn_update, text=lambda: _("Download"))
+            localize(self.btn_update, text=L_("Download"))
             self.lbl_update.configure(text_color=theme.TEXT)
             localize(
                 self.lbl_update,
@@ -806,7 +801,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             )
         else:
             self.lbl_update.configure(text_color=theme.HINT_TEXT)
-            localize(self.lbl_update, text=lambda: _("You have the latest version."))
+            localize(self.lbl_update, text=L_("You have the latest version."))
 
     def _on_appearance_change(self, mode: str) -> None:
         ctk.set_appearance_mode(mode)

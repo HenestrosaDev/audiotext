@@ -3,7 +3,7 @@ from typing import Any
 
 from models.config.config_transcription import ConfigTranscription
 from models.transcription_settings import TranscriptionSettings
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.settings.cards.base import SettingsCard
 
 
@@ -16,10 +16,10 @@ class FolderCard(SettingsCard):
         on_change: Callable[[], None],
         config_transcription: ConfigTranscription,
     ) -> None:
-        super().__init__(master, lambda: _("Folder"), on_change)
+        super().__init__(master, L_("Folder"), on_change)
         self.swi_watch = self._switch(
             2,
-            lambda: _("Watch the folder"),
+            L_("Watch the folder"),
             config_transcription.watch_folder,
             ConfigTranscription.Key.WATCH_FOLDER,
         )

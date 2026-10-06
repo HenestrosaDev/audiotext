@@ -5,7 +5,7 @@ from typing import Any
 import customtkinter as ctk
 
 from utils.enums import AudioSource
-from utils.i18n import _
+from utils.i18n import L_, _
 from views.localization import localize
 from views.style import icons, theme
 
@@ -69,7 +69,7 @@ class TopBar(ctk.CTkFrame):  # type: ignore[misc]
         frm_sources.grid(row=0, column=2, sticky=ctk.W)
         localize(
             ctk.CTkLabel(frm_sources, font=theme.font(12), text_color=theme.HINT_TEXT),
-            text=lambda: _("New transcription:"),
+            text=L_("New transcription:"),
         ).grid(row=0, column=0, padx=(0, 8))
 
         self._source_buttons: dict[AudioSource, tuple[ctk.CTkButton, str]] = {}
