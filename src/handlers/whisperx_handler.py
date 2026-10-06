@@ -182,7 +182,8 @@ class WhisperXHandler:
         Transcribe audio from a file using the WhisperX library.
 
         :param transcription: An instance of Transcription containing information about
-                              the audio file.
+                              the audio file. Its model, if any, replaces the
+                              configured one.
         :param on_progress: Called with the progress of each step of the process.
         :param cancellation_token: Checked between batches to abort the process.
         :raises ValueError: If no output file types are specified, or if the speakers
@@ -207,6 +208,13 @@ class WhisperXHandler:
 
         token = cancellation_token or CancellationToken()
         config_whisperx = self._config_provider()
+        # The model chosen for the transcription, which may differ from the
+        # configured one (e.g. an entry of the history transcribed again, or a
+        # watched folder while another model is chosen)
+        if transcription.model_size:
+            config_whisperx = dataclasses.replace(
+                config_whisperx, model_size=transcription.model_size
+            )
         device = self._get_device(config_whisperx)
         task = "translate" if transcription.should_translate else "transcribe"
 

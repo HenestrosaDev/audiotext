@@ -10,6 +10,7 @@ from controllers.transcription_queue import (
 )
 from models.history import EntryStatus, HistoryEntry
 from models.transcription_settings import TranscriptionSettings
+from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
 from utils.history_store import HistoryStore
 
@@ -87,6 +88,25 @@ def test_transcriptions_are_run_one_after_the_other(
     assert entry.text == "Hello"
     assert get(store, second).status == EntryStatus.PROCESSING
     assert controller.prepare_for_transcription.call_count == 2
+
+
+def test_an_entry_is_transcribed_again_with_its_own_model(
+    jobs: TranscriptionQueue,
+    store: HistoryStore,
+    view: MagicMock,
+    controller: MagicMock,
+) -> None:
+    jobs.start(AudioSource.FILE, "/a.mp3", TranscriptionSettings(model_size="tiny"))
+    entry_id: str = view.select_entry.call_args.args[0]
+    jobs.show_error("The file is empty.")
+    jobs.on_processed_transcription(None)
+
+    jobs.retry_entry(entry_id)
+
+    transcription = controller.prepare_for_transcription.call_args.args[0]
+    assert transcription.model_size == "tiny"
+    # The model chosen for the next transcription doesn't change
+    assert ConfigManager.get_config_whisperx().model_size == "large-v2"
 
 
 def test_a_failed_transcription_shows_its_error(

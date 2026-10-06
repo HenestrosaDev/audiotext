@@ -132,6 +132,17 @@ def test_live_transcription_is_only_for_the_microphone_with_whisperx() -> None:
     assert disabled.to_transcription(AudioSource.MIC, "").live_model_size is None
 
 
+def test_the_model_of_whisperx_is_passed() -> None:
+    settings = TranscriptionSettings(model_size="tiny")
+
+    assert settings.to_transcription(AudioSource.FILE, "/a.mp3").model_size == "tiny"
+
+    api = TranscriptionSettings(
+        method=TranscriptionMethod.WHISPER_API.value, model_size="tiny"
+    )
+    assert api.to_transcription(AudioSource.FILE, "/a.mp3").model_size is None
+
+
 def test_the_prompt_and_the_model_of_the_openai_api_are_passed() -> None:
     settings = TranscriptionSettings(
         method=TranscriptionMethod.WHISPER_API.value,
