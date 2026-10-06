@@ -1,17 +1,12 @@
-"""
-The queue of transcriptions of the main window, and the interface that the
-controller uses to report their progress.
-"""
-
 from collections import deque
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime
 from pathlib import Path, PurePosixPath
 from typing import TYPE_CHECKING, Any
 from urllib.parse import parse_qs, unquote, urlsplit
 
 import utils.notifications as notifications
+from interfaces.history_view import TranscriptionQueueView
 from models.config.config_whisperx import ConfigWhisperX
 from models.history import EntryStatus, HistoryEntry
 from models.transcript_segment import TranscriptSegment
@@ -21,13 +16,9 @@ from utils.enums import AudioSource
 from utils.history_store import HistoryStore
 from utils.i18n import _
 from utils.validators import is_youtube_url
-from views.history.formatting import format_full_date
-from views.new_transcription.microphone_view import MicrophoneView, MicState
 
 if TYPE_CHECKING:
     from controllers.main_controller import MainController
-    from views.history.history_sidebar import HistorySidebar
-    from views.new_transcription.new_transcription_view import NewTranscriptionView
 
 
 @dataclass
@@ -50,10 +41,6 @@ def default_title(source: AudioSource, value: str) -> str:
     """The title of a new entry: the name of the file or folder, or the URL."""
     if source == AudioSource.YOUTUBE:
         return value
-    if source == AudioSource.MIC:
-        return _("Recording · {date}").format(
-            date=format_full_date(datetime.now().astimezone())
-        )
     return Path(value).name or value
 
 
@@ -69,30 +56,41 @@ def media_name_for_url(url: str) -> str:
     return name or parts.hostname or "download"
 
 
-class TranscriptionJobsMixin:
+class TranscriptionQueue:
     """
     Keeps the queue of transcriptions waiting to be processed, starts them one
     after the other, and records their progress and results in the history.
+
+    It implements the interface that the controller uses to report the progress
+    (see `TranscriptionView`), and it's kept while the view is rebuilt (e.g. when
+    the interface language changes), so the queue isn't lost.
     """
 
-    # Provided by the main window
-    _store: HistoryStore
-    _controller: "MainController | None"
-    sidebar: "HistorySidebar"
-    _new_views: "dict[AudioSource, NewTranscriptionView]"
-    _mic_view: MicrophoneView | None
-    _entry_view: Any
-    _entry_view_id: str | None
-    select_entry: Callable[[str], None]
-    show_status: Callable[..., None]
-    _on_entry_changed: Callable[..., None]
-    _refresh_entry_view: Callable[[str], None]
-
-    def _init_jobs(self) -> None:
+    def __init__(self, store: HistoryStore) -> None:
+        self._store = store
+        self._view: TranscriptionQueueView | None = None
+        self._controller: MainController | None = None
         self._job: Job | None = None
         self._queue: deque[str] = deque()
         # The entry created for the last recording, opened from the microphone view
-        self._last_mic_entry_id: str | None = None
+        self.last_mic_entry_id: str | None = None
+
+    def attach_view(self, view: TranscriptionQueueView) -> None:
+        """Shows the queue in a view, replacing the previous one if it was rebuilt."""
+        self._view = view
+
+    @property
+    def view(self) -> TranscriptionQueueView:
+        if self._view is None:
+            raise RuntimeError("The queue of transcriptions has no view attached")
+        return self._view
+
+    def set_controller(self, controller: "MainController") -> None:
+        self._controller = controller
+
+    def preload_model(self) -> None:
+        if self._controller and not self.is_busy():
+            self._controller.preload_model()
 
     # QUEUE
 
@@ -116,22 +114,17 @@ class TranscriptionJobsMixin:
             return None
         return list(self._queue).index(entry_id) + (1 if self._job else 0)
 
-    def _start_transcription(
+    def start(
         self, source: AudioSource, value: str, settings: TranscriptionSettings
     ) -> None:
         """Adds a transcription from the steps of a new transcription."""
         entry = self._add_entry(source, value, settings)
-
-        # The next transcription from this source starts from the first step
-        if view := self._new_views.pop(source, None):
-            view.destroy()
-
         self._queue.append(entry.id)
-        self.sidebar.refresh()
-        self.select_entry(entry.id)
+        self.view.refresh_sidebar()
+        self.view.select_entry(entry.id)
         self._run_next()
 
-    def _restart_entry(
+    def restart(
         self,
         entry_id: str,
         source: AudioSource,
@@ -146,7 +139,7 @@ class TranscriptionJobsMixin:
         entry = self._store.get(entry_id)
         if entry is None or entry.status.is_active or entry.source != value:
             entry = self._add_entry(source, value, settings)
-            self.sidebar.refresh()
+            self.view.refresh_sidebar()
         else:
             self._store.update(
                 entry,
@@ -156,10 +149,10 @@ class TranscriptionJobsMixin:
                 status=EntryStatus.QUEUED,
                 error="",
             )
-            self._on_entry_changed(entry.id)
+            self.view.on_entry_changed(entry.id)
 
         self._queue.append(entry.id)
-        self.select_entry(entry.id)
+        self.view.select_entry(entry.id)
         self._run_next()
 
     def _add_entry(
@@ -191,13 +184,15 @@ class TranscriptionJobsMixin:
         if entry.kind == AudioSource.MIC.value and not (
             entry.media_path and Path(entry.media_path).is_file()
         ):
-            self.show_status(_("The recording is no longer available."), is_error=True)
+            self.view.show_status(
+                _("The recording is no longer available."), is_error=True
+            )
             return
 
         self._store.update(entry, status=EntryStatus.QUEUED, error="")
         self._queue.append(entry_id)
-        self._on_entry_changed(entry_id)
-        self.select_entry(entry_id)
+        self.view.on_entry_changed(entry_id)
+        self.view.select_entry(entry_id)
         self._run_next()
 
     def cancel_entry(self, entry_id: str) -> None:
@@ -207,19 +202,15 @@ class TranscriptionJobsMixin:
         job = self._job
 
         if job and entry_id in (job.entry_id, *job.children.values()):
-            if (
-                job.is_mic
-                and self._mic_view
-                and self._mic_view.state == MicState.RECORDING
-            ):
-                self._stop_recording()
+            if job.is_mic and self.view.is_recording():
+                self.stop_recording()
             job.is_cancel_requested = True
             if self._controller:
                 self._controller.cancel_transcription()
         elif entry_id in self._queue:
             self._queue.remove(entry_id)
             self._store.update(entry, status=EntryStatus.CANCELLED)
-            self._on_entry_changed(entry_id)
+            self.view.on_entry_changed(entry_id)
             self._refresh_queue_positions()
 
     def _run_next(self) -> None:
@@ -264,13 +255,13 @@ class TranscriptionJobsMixin:
             else EntryStatus.PROCESSING
         )
         self._store.update(entry, status=status, error="", method=settings.method)
-        self._on_entry_changed(entry.id)
+        self.view.on_entry_changed(entry.id)
         self._refresh_queue_positions()
         self._controller.prepare_for_transcription(transcription)
 
     def _refresh_queue_positions(self) -> None:
         for entry_id in self._queue:
-            self._refresh_progress(entry_id)
+            self.view.refresh_progress(entry_id)
 
     def _child_entry(
         self, file_path: Path, status: EntryStatus | None = None
@@ -324,23 +315,21 @@ class TranscriptionJobsMixin:
                     self._store.update(child, status=EntryStatus.CANCELLED)
 
             self._store.update(entry, status=final_status, error=job.error or "")
-            self._on_entry_changed(entry.id)
+            self.view.on_entry_changed(entry.id)
             if entry.is_folder:
-                self.sidebar.refresh()
+                self.view.refresh_sidebar()
 
-            if job.is_mic and self._mic_view:
-                if final_status == EntryStatus.DONE:
-                    self._mic_view.set_state(MicState.DONE)
-                else:
-                    self._mic_view.set_state(
-                        MicState.FAILED,
-                        job.error or _("The transcription was cancelled."),
-                    )
+            if job.is_mic:
+                self.view.on_mic_finished(
+                    None
+                    if final_status == EntryStatus.DONE
+                    else job.error or _("The transcription was cancelled.")
+                )
 
             if final_status == EntryStatus.FAILED:
-                self.show_status(f"{entry.title}: {job.error}", is_error=True)
+                self.view.show_status(f"{entry.title}: {job.error}", is_error=True)
             elif status_message:
-                self.show_status(f"{entry.title}: {status_message}")
+                self.view.show_status(f"{entry.title}: {status_message}")
 
             # A folder that stops being watched is done, but nothing new is ready
             if final_status == EntryStatus.DONE and not job.is_cancel_requested:
@@ -359,13 +348,19 @@ class TranscriptionJobsMixin:
 
     # MICROPHONE
 
-    def _start_recording(
-        self, settings: TranscriptionSettings, device_index: int | None
-    ) -> None:
-        if self.is_busy() or not self._controller or not self._mic_view:
-            return
+    def start_recording(
+        self, title: str, settings: TranscriptionSettings, device_index: int | None
+    ) -> bool:
+        """
+        Records from the microphone and transcribes the recording when it stops.
 
-        title = default_title(AudioSource.MIC, "")
+        :param title: The title of its entry.
+        :return: Whether the recording started, since only one transcription is
+                 processed at a time.
+        """
+        if self.is_busy() or not self._controller:
+            return False
+
         entry = HistoryEntry(
             kind=AudioSource.MIC.value,
             source="",
@@ -377,7 +372,7 @@ class TranscriptionJobsMixin:
         media_path = self._store.new_media_path(entry.id, f"{title}.wav")
         entry.media_path = str(media_path)
         self._store.add(entry)
-        self._last_mic_entry_id = entry.id
+        self.last_mic_entry_id = entry.id
 
         self._job = Job(
             entry_id=entry.id,
@@ -385,8 +380,7 @@ class TranscriptionJobsMixin:
             is_mic=True,
             progress_message=_("Recording…"),
         )
-        self.sidebar.refresh()
-        self._mic_view.set_state(MicState.RECORDING)
+        self.view.refresh_sidebar()
         self._controller.prepare_for_transcription(
             settings.to_transcription(
                 AudioSource.MIC,
@@ -395,16 +389,16 @@ class TranscriptionJobsMixin:
                 mic_device_index=device_index,
             )
         )
+        return True
 
-    def _open_last_recording(self) -> None:
-        if self._last_mic_entry_id:
-            self.select_entry(self._last_mic_entry_id)
-
-    def _stop_recording(self) -> None:
+    def stop_recording(self) -> None:
         if self._controller:
             self._controller.stop_recording_from_mic()
 
     # CONTROLLER INTERFACE
+
+    def run_on_ui_thread(self, callback: Callable[..., Any], *args: Any) -> None:
+        self.view.run_on_ui_thread(callback, *args)
 
     def on_processed_transcription(self, status: str | None = None) -> None:
         self._finish_job(status)
@@ -414,46 +408,24 @@ class TranscriptionJobsMixin:
         if job is None:
             return
         job.progress_message, job.progress_fraction = message, fraction
-        self._refresh_progress(job.entry_id)
-        if job.is_mic and self._mic_view:
-            self._mic_view.show_progress(message)
-
-    def _refresh_progress(self, entry_id: str) -> None:
-        self.sidebar.update_progress(entry_id)
-        if self._entry_view_id == entry_id and hasattr(
-            self._entry_view, "update_progress"
-        ):
-            self._entry_view.update_progress()
-
-    def on_recording_progress(self, elapsed_seconds: float, level: float) -> None:
-        if self._mic_view:
-            self._mic_view.on_recording_progress(elapsed_seconds, level)
-
-    def on_live_text(self, text: str) -> None:
-        if self._mic_view:
-            self._mic_view.show_live_text(text)
-
-    def on_live_status(self, message: str) -> None:
-        if self._mic_view:
-            self._mic_view.show_live_status(message)
-
-    def on_stop_recording_from_mic(self) -> None:
-        if self._mic_view and self._mic_view.state == MicState.RECORDING:
-            self._mic_view.set_state(
-                MicState.TRANSCRIBING, _("Processing the recording…")
-            )
+        self.view.refresh_progress(job.entry_id)
+        if job.is_mic:
+            self.view.on_mic_progress(message)
 
     def on_transcription_saved(self, folder: Path) -> None:
         if self._job and (entry := self._store.get(self._job.entry_id)):
             self._store.update(entry, output_dir=str(folder))
         else:
-            self.show_status(_("Saved in {folder}.").format(folder=folder))
+            self.view.show_status(_("Saved in {folder}.").format(folder=folder))
+
+    def show_status(self, message: str) -> None:
+        self.view.show_status(message)
 
     def show_error(self, message: str) -> None:
         if self._job is not None:
             self._job.error = message
         else:
-            self.show_status(message, is_error=True)
+            self.view.show_status(message, is_error=True)
 
     def display_text(self, text: str) -> None:
         """The results are received per file (see `on_file_transcribed`)."""
@@ -468,8 +440,8 @@ class TranscriptionJobsMixin:
             if child and child.status != EntryStatus.QUEUED:
                 self._store.update(child, status=EntryStatus.QUEUED, error="")
         if self._job:
-            self.sidebar.refresh()
-            self._refresh_entry_view(self._job.entry_id)
+            self.view.refresh_sidebar()
+            self.view.refresh_entry_view(self._job.entry_id)
 
     def on_file_started(self, file_path: Path) -> None:
         is_new = self._job is not None and str(file_path) not in self._job.children
@@ -479,8 +451,8 @@ class TranscriptionJobsMixin:
         self._job.current_child_id = child.id
         self._store.update(child, status=EntryStatus.PROCESSING, error="")
         if is_new:
-            self.sidebar.refresh()
-        self._on_entry_changed(child.id)
+            self.view.refresh_sidebar()
+        self.view.on_entry_changed(child.id)
 
     def on_file_transcribed(
         self,
@@ -512,16 +484,16 @@ class TranscriptionJobsMixin:
                     media_path=str(file_path),
                     **result,
                 )
-                self._on_entry_changed(child.id)
+                self.view.on_entry_changed(child.id)
                 # A watched folder is never done, so each of its files is notified
                 if self._is_watch_job(job):
                     self._notify_ready(child)
         elif entry := self._store.get(job.entry_id):
             self._store.update(entry, media_path=str(file_path), **result)
-            if job.is_mic and self._mic_view:
-                self._mic_view.show_text(text or "")
+            if job.is_mic:
+                self.view.on_mic_text(text or "")
 
     def on_file_failed(self, file_path: Path, error: str) -> None:
         if child := self._child_entry(file_path):
             self._store.update(child, status=EntryStatus.FAILED, error=error)
-            self._on_entry_changed(child.id)
+            self.view.on_entry_changed(child.id)

@@ -19,7 +19,7 @@ from handlers.transcribers import create_transcribers
 from handlers.url_handler import UrlHandler
 from handlers.whisperx_handler import WhisperXHandler
 from interfaces.transcriber import Transcriber
-from interfaces.transcription_view import TranscriptionView
+from interfaces.transcription_view import RecordingView, TranscriptionView
 from models.transcription import Transcription, TranscriptionResult
 from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.enums import AudioSource, TranscriptionMethod
@@ -43,10 +43,13 @@ class MainController:
     def __init__(
         self,
         view: TranscriptionView,
+        recording_view: RecordingView,
         whisperx_handler: WhisperXHandler | None = None,
         transcribers: Mapping[TranscriptionMethod, Transcriber] | None = None,
     ) -> None:
         """
+        :param recording_view: Shows the recordings from the microphone while
+                               they're being made.
         :param whisperx_handler: Transcribes with WhisperX and keeps its models
                                  loaded. By default, it uses the configuration of
                                  `config.ini`.
@@ -54,6 +57,7 @@ class MainController:
                              default, the ones of the app.
         """
         self.view = view
+        self.recording_view = recording_view
         self._is_transcribing = False
         self._cancellation_token = CancellationToken()
 
@@ -61,11 +65,13 @@ class MainController:
         self._transcribers = transcribers or create_transcribers(self._whisperx_handler)
         self._mic_recorder = MicRecorder(
             LiveTranscriber(
-                on_text=lambda text: self._ui(self.view.on_live_text, text),
-                on_status=lambda message: self._ui(self.view.on_live_status, message),
+                on_text=lambda text: self._ui(self.recording_view.on_live_text, text),
+                on_status=lambda message: self._ui(
+                    self.recording_view.on_live_status, message
+                ),
             ),
             on_progress=lambda elapsed_seconds, level: self._ui(
-                self.view.on_recording_progress, elapsed_seconds, level
+                self.recording_view.on_recording_progress, elapsed_seconds, level
             ),
         )
 
@@ -104,7 +110,7 @@ class MainController:
         right after.
         """
         self._mic_recorder.stop()
-        self.view.on_stop_recording_from_mic()
+        self.recording_view.on_stop_recording_from_mic()
 
     def preload_model(self) -> None:
         """
@@ -196,7 +202,7 @@ class MainController:
                 transcription, transcription.media_path or MIC_RECORDING_PATH
             )
         except Exception:
-            self._ui(self.view.on_stop_recording_from_mic)
+            self._ui(self.recording_view.on_stop_recording_from_mic)
             raise
 
         return self._transcribe_single_file(transcription, recording_path)

@@ -5,6 +5,22 @@ from typing import Any, Protocol
 from models.transcript_segment import TranscriptSegment
 
 
+class RecordingView(Protocol):
+    """
+    What the controller needs from a view to show a recording from the microphone
+    while it's being made. They're always called from the UI thread.
+    """
+
+    def on_recording_progress(self, elapsed_seconds: float, level: float) -> None: ...
+
+    def on_stop_recording_from_mic(self) -> None: ...
+
+    def on_live_text(self, text: str) -> None:
+        """Shows the text of the recording in progress, as it's said."""
+
+    def on_live_status(self, message: str) -> None: ...
+
+
 class TranscriptionView(Protocol):
     """
     What the controller needs from a view to report the progress and the result of
@@ -40,15 +56,6 @@ class TranscriptionView(Protocol):
         """
 
     def on_transcription_saved(self, folder: Path) -> None: ...
-
-    def on_recording_progress(self, elapsed_seconds: float, level: float) -> None: ...
-
-    def on_stop_recording_from_mic(self) -> None: ...
-
-    def on_live_text(self, text: str) -> None:
-        """Shows the text of the recording in progress, as it's said."""
-
-    def on_live_status(self, message: str) -> None: ...
 
     def on_media_downloaded(self, file_path: Path) -> None: ...
 

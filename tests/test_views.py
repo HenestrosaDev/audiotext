@@ -16,6 +16,7 @@ import pytest
 import utils.constants as c
 import utils.env_keys as env_keys
 import utils.update_checker as update_checker
+from controllers.transcription_queue import Job
 from models.config.config_system import ConfigSystem
 from models.history import EntryStatus, HistoryEntry
 from models.summary import Chapter, TranscriptSummary
@@ -24,7 +25,6 @@ from models.transcription_settings import TranscriptionSettings
 from tests.conftest import MemoryKeyring, make_tone
 from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
-from views.main_window.transcription_jobs import Job
 from views.settings.cards.context_card import ContextCard
 from views.settings.cards.engine_card import EngineCard
 from views.settings.cards.output_card import OutputCard
@@ -233,14 +233,14 @@ def test_the_transcript_can_be_searched_and_corrected(
 def test_a_summary_is_generated_and_exported(
     ui: Ui, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import views.main_window.entry_actions as entry_actions
+    import controllers.history_controller as history_controller
     import views.transcript.transcript_view as transcript_view
 
     summary = TranscriptSummary(
         "A short talk.", ("They greet",), (Chapter(0, "Greeting"),), "model", ""
     )
     monkeypatch.setattr(
-        entry_actions.SummaryHandler,
+        history_controller.SummaryHandler,
         "summarize",
         staticmethod(lambda _text, _segments: summary),
     )
@@ -300,7 +300,7 @@ def test_the_summary_without_a_key_leads_to_the_settings(ui: Ui) -> None:
 def test_a_translation_is_shown_next_to_the_transcript(
     ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import views.main_window.entry_actions as entry_actions
+    import controllers.history_controller as history_controller
     import views.transcript.transcript_view as transcript_view
     from models.translation import TranscriptTranslation
     from views.transcript.translation_panel import TranslationRequest
@@ -322,7 +322,7 @@ def test_a_translation_is_shown_next_to_the_transcript(
         return translation
 
     monkeypatch.setattr(
-        entry_actions.TranslationHandler, "translate", staticmethod(translate)
+        history_controller.TranslationHandler, "translate", staticmethod(translate)
     )
     monkeypatch.setattr(
         transcript_view.TranslateDialog,
@@ -679,7 +679,7 @@ def test_the_settings_follow_the_method_and_the_model(ui: Ui, tmp_path: Path) ->
 def test_a_failed_transcription_goes_back_to_its_settings(
     ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(ui.window, "_run_next", lambda: None)
+    monkeypatch.setattr(ui.app._jobs, "_run_next", lambda: None)
     settings = TranscriptionSettings(diarize=True, keywords="Audiotext")
     entry = ui.add(
         source=str(audio_file),
@@ -716,8 +716,8 @@ def test_a_failed_transcription_goes_back_to_its_settings(
     entry = ui.store.get(entry.id)
     assert entry.status == EntryStatus.QUEUED
     assert not entry.settings["diarize"]
-    assert ui.window._queue[-1] == entry.id
-    ui.window._queue.clear()
+    assert ui.app._jobs._queue[-1] == entry.id
+    ui.app._jobs._queue.clear()
 
 
 def test_the_preferences_and_the_interface_language(ui: Ui) -> None:
@@ -764,17 +764,17 @@ def test_a_notification_is_sent_when_a_transcription_is_ready(
     monkeypatch: pytest.MonkeyPatch,
     sent_notifications: list[tuple[str, str]],
 ) -> None:
-    monkeypatch.setattr(ui.window, "_run_next", lambda: None)
+    monkeypatch.setattr(ui.app._jobs, "_run_next", lambda: None)
 
     def finish(title: str, is_cancel_requested: bool = False) -> None:
         entry = ui.add(title=title, status=EntryStatus.PROCESSING)
-        ui.window._job = Job(
+        ui.app._jobs._job = Job(
             entry_id=entry.id,
             is_folder=False,
             is_mic=False,
             is_cancel_requested=is_cancel_requested,
         )
-        ui.window._finish_job(None)
+        ui.app._jobs._finish_job(None)
 
     finish("talk.mp3")
     finish("cancelled.mp3", is_cancel_requested=True)
@@ -793,9 +793,9 @@ def test_each_file_of_a_watched_folder_is_notified(
         entry = ui.add(
             kind=kind.value, source=str(tmp_path), status=EntryStatus.PROCESSING
         )
-        ui.window._job = Job(entry_id=entry.id, is_folder=True, is_mic=False)
-        ui.window.on_file_transcribed(tmp_path / file_name, "Hello", [], "en")
-        ui.window._job = None
+        ui.app._jobs._job = Job(entry_id=entry.id, is_folder=True, is_mic=False)
+        ui.app._jobs.on_file_transcribed(tmp_path / file_name, "Hello", [], "en")
+        ui.app._jobs._job = None
 
     transcribe_file(AudioSource.WATCH, "new.mp3")
     # A folder that isn't watched is notified once all its files are done

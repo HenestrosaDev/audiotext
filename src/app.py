@@ -12,7 +12,9 @@ import utils.config_manager as cm
 import utils.constants as c
 import utils.i18n as i18n
 import utils.path_helper as ph
+from controllers.history_controller import HistoryController
 from controllers.main_controller import MainController
+from controllers.transcription_queue import TranscriptionQueue
 from models.config.config_system import ConfigSystem
 from models.config.config_whisperx import ConfigWhisperX
 from utils.enums import ComputeType
@@ -141,9 +143,12 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             config_dir / "history.json", config_dir / "media"
         )
 
+        # They're kept while the window is rebuilt, with what's in progress
+        self._history = HistoryController(self._history_store)
+        self._jobs = TranscriptionQueue(self._history_store)
         self._view = self._create_view()
-        self._controller = MainController(self._view)
-        self._view.set_controller(self._controller)
+        self._controller = MainController(self._jobs, self._view)
+        self._jobs.set_controller(self._controller)
         if config_system.check_for_updates:
             self._view.check_for_updates()
 
@@ -274,8 +279,12 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         view = MainWindow(
             self,
             self._history_store,
+            self._history,
+            self._jobs,
             on_ui_language_change=self._on_ui_language_change,
         )
+        self._history.attach_view(view)
+        self._jobs.attach_view(view)
         view.pack(fill="both", expand=True)
         return view
 
@@ -290,8 +299,7 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         self._view.destroy()
 
         self._view = self._create_view()
-        self._view.set_controller(self._controller)
-        self._controller.view = self._view
+        self._controller.recording_view = self._view
         self._view.restore_session_state(session_state)
 
     def _bind_shortcuts(self) -> None:
