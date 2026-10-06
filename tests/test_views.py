@@ -808,6 +808,9 @@ def test_the_timing_dialog_only_accepts_valid_times(ui: Ui) -> None:
     from views.transcript.edit_dialogs import Timing, TimingDialog
 
     dialog = TimingDialog(ui.window, "Timing", "Save", "“Hola”", Timing(1.5, 3.0))
+    # On Windows, the window hides and shows again to change the color of its title
+    # bar when it's idle, and Tk crashes later if it's destroyed before that
+    ui.pump()
     start, end = dialog._variables
     assert start.get() == "00:00:01,500"
     assert dialog.btn_ok.cget("state") == "normal"
