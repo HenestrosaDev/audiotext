@@ -15,6 +15,7 @@ from functools import cache, partial
 from pathlib import Path
 from typing import Any
 
+import customtkinter as ctk
 import keyring
 import pytest
 
@@ -1051,6 +1052,13 @@ def test_a_new_version_is_shown_when_checking_for_updates(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     # No new version was found at startup
+    assert not ui.window.top_bar.btn_update.winfo_ismapped()
+
+    # Nor is it shown when the scaling changes (e.g. on Windows, at startup)
+    ctk.set_widget_scaling(1.25)
+    ui.pump()
+    ctk.set_widget_scaling(1.0)
+    ui.pump()
     assert not ui.window.top_bar.btn_update.winfo_ismapped()
 
     ui.window.show_preferences()

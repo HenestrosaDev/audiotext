@@ -1,7 +1,32 @@
+import functools
 import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
+
+
+def hide_console_windows() -> None:
+    """
+    Keeps the programs the app runs (e.g. FFmpeg, also when WhisperX or pydub run
+    it) from opening a console window on Windows, since the app has no console of
+    its own to share with them.
+    """
+    if sys.platform != "win32":
+        return
+
+    # Typed as Any, since mypy doesn't allow replacing a method
+    popen: Any = subprocess.Popen
+    popen_init = popen.__init__
+
+    @functools.wraps(popen_init)
+    def init(self: subprocess.Popen[Any], *args: Any, **kwargs: Any) -> None:
+        kwargs["creationflags"] = (
+            kwargs.get("creationflags", 0) | subprocess.CREATE_NO_WINDOW
+        )
+        popen_init(self, *args, **kwargs)
+
+    popen.__init__ = init
 
 
 def open_in_file_manager(path: Path) -> None:
