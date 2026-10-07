@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-07 00:13+0200\n"
+"POT-Creation-Date: 2026-10-07 11:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -1257,7 +1257,7 @@ msgstr "Automat"
 msgid "Set…"
 msgstr "Setează…"
 
-#: src/views/settings/cards/language_card.py:119
+#: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:471
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
@@ -1504,7 +1504,7 @@ msgstr "Cheie API setată"
 
 #: src/views/settings/cards/engine_card.py:140
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:382
+#: src/views/transcript/translation_panel.py:381
 msgid "Set API key…"
 msgstr "Setează cheia API…"
 
@@ -1535,55 +1535,53 @@ msgid "Language"
 msgstr "Limbă"
 
 #: src/views/settings/cards/language_card.py:61
-#: src/views/settings/cards/language_card.py:65
 msgid "Language of the audio"
 msgstr "Limba audio"
 
-#: src/views/settings/cards/language_card.py:66
-#: src/views/settings/cards/language_card.py:86
-#: src/views/transcript/translation_panel.py:336
+#: src/views/settings/cards/language_card.py:65
+#: src/views/settings/cards/language_card.py:84
+#: src/views/transcript/translation_panel.py:335
 msgid "Search language…"
 msgstr "Caută limba…"
 
-#: src/views/settings/cards/language_card.py:67
-#: src/views/settings/cards/language_card.py:87
-#: src/views/transcript/translation_panel.py:337
+#: src/views/settings/cards/language_card.py:66
+#: src/views/settings/cards/language_card.py:85
+#: src/views/transcript/translation_panel.py:336
 msgid "No languages found."
 msgstr "Nu s-au găsit limbi."
 
-#: src/views/settings/cards/language_card.py:72
+#: src/views/settings/cards/language_card.py:71
 msgid "Auto-detect"
 msgstr "Detectare automată"
 
-#: src/views/settings/cards/language_card.py:81
-#: src/views/settings/cards/language_card.py:85
+#: src/views/settings/cards/language_card.py:80
 msgid "Language of the transcription"
 msgstr "Limba transcrierii"
 
-#: src/views/settings/cards/language_card.py:92
+#: src/views/settings/cards/language_card.py:90
 msgid "Same as the audio"
 msgstr "La fel ca audio"
 
-#: src/views/settings/cards/language_card.py:133
+#: src/views/settings/cards/language_card.py:131
 msgid "Translate with Whisper (recommended)"
 msgstr "Tradu cu Whisper (recomandat)"
 
-#: src/views/settings/cards/language_card.py:185
+#: src/views/settings/cards/language_card.py:183
 msgid ""
 "The Google API can't translate. The transcription will be in the language"
 " of the audio."
 msgstr "API-ul Google nu poate traduce. Transcrierea va fi în limba audio."
 
-#: src/views/settings/cards/language_card.py:195
+#: src/views/settings/cards/language_card.py:193
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Scrie-o direct în limba: {language} (experimental)"
 
-#: src/views/settings/cards/language_card.py:213
+#: src/views/settings/cards/language_card.py:211
 msgid "Whisper transcribes and translates the audio in one step."
 msgstr "Whisper transcrie și traduce audio într-un singur pas."
 
-#: src/views/settings/cards/language_card.py:217
+#: src/views/settings/cards/language_card.py:215
 #, python-brace-format
 msgid ""
 "Whisper can only translate into {english}. For other languages, it's "
@@ -2149,23 +2147,19 @@ msgstr "Tradus manual"
 msgid "Translate into:"
 msgstr "Tradu în:"
 
-#: src/views/transcript/translation_panel.py:335
-msgid "Language of the translation"
-msgstr "Limba traducerii"
-
-#: src/views/transcript/translation_panel.py:351
+#: src/views/transcript/translation_panel.py:350
 msgid "Provider:"
 msgstr "Furnizor:"
 
-#: src/views/transcript/translation_panel.py:361
+#: src/views/transcript/translation_panel.py:360
 msgid "Myself, from scratch"
 msgstr "Eu însumi, de la zero"
 
-#: src/views/transcript/translation_panel.py:392
+#: src/views/transcript/translation_panel.py:391
 msgid "More options in the settings"
 msgstr "Mai multe opțiuni în setări"
 
-#: src/views/transcript/translation_panel.py:429
+#: src/views/transcript/translation_panel.py:428
 #, python-brace-format
 msgid "Set the API key of {provider} to translate with it."
 msgstr "Setați cheia API pentru {provider} pentru a traduce cu acesta."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-07 00:13+0200\n"
+"POT-Creation-Date: 2026-10-07 11:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -1253,7 +1253,7 @@ msgstr "Tự động"
 msgid "Set…"
 msgstr "Đặt…"
 
-#: src/views/settings/cards/language_card.py:119
+#: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:471
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
@@ -1494,7 +1494,7 @@ msgstr "Đã đặt khóa API"
 
 #: src/views/settings/cards/engine_card.py:140
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:382
+#: src/views/transcript/translation_panel.py:381
 msgid "Set API key…"
 msgstr "Đặt khóa API…"
 
@@ -1524,55 +1524,53 @@ msgid "Language"
 msgstr "Ngôn ngữ"
 
 #: src/views/settings/cards/language_card.py:61
-#: src/views/settings/cards/language_card.py:65
 msgid "Language of the audio"
 msgstr "Ngôn ngữ của âm thanh"
 
-#: src/views/settings/cards/language_card.py:66
-#: src/views/settings/cards/language_card.py:86
-#: src/views/transcript/translation_panel.py:336
+#: src/views/settings/cards/language_card.py:65
+#: src/views/settings/cards/language_card.py:84
+#: src/views/transcript/translation_panel.py:335
 msgid "Search language…"
 msgstr "Tìm ngôn ngữ…"
 
-#: src/views/settings/cards/language_card.py:67
-#: src/views/settings/cards/language_card.py:87
-#: src/views/transcript/translation_panel.py:337
+#: src/views/settings/cards/language_card.py:66
+#: src/views/settings/cards/language_card.py:85
+#: src/views/transcript/translation_panel.py:336
 msgid "No languages found."
 msgstr "Không tìm thấy ngôn ngữ."
 
-#: src/views/settings/cards/language_card.py:72
+#: src/views/settings/cards/language_card.py:71
 msgid "Auto-detect"
 msgstr "Tự động phát hiện"
 
-#: src/views/settings/cards/language_card.py:81
-#: src/views/settings/cards/language_card.py:85
+#: src/views/settings/cards/language_card.py:80
 msgid "Language of the transcription"
 msgstr "Ngôn ngữ của bản chép lời"
 
-#: src/views/settings/cards/language_card.py:92
+#: src/views/settings/cards/language_card.py:90
 msgid "Same as the audio"
 msgstr "Giống âm thanh"
 
-#: src/views/settings/cards/language_card.py:133
+#: src/views/settings/cards/language_card.py:131
 msgid "Translate with Whisper (recommended)"
 msgstr "Dịch bằng Whisper (khuyên dùng)"
 
-#: src/views/settings/cards/language_card.py:185
+#: src/views/settings/cards/language_card.py:183
 msgid ""
 "The Google API can't translate. The transcription will be in the language"
 " of the audio."
 msgstr "Google API không thể dịch. Bản chép lời sẽ ở ngôn ngữ của âm thanh."
 
-#: src/views/settings/cards/language_card.py:195
+#: src/views/settings/cards/language_card.py:193
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Viết trực tiếp bằng {language} (thử nghiệm)"
 
-#: src/views/settings/cards/language_card.py:213
+#: src/views/settings/cards/language_card.py:211
 msgid "Whisper transcribes and translates the audio in one step."
 msgstr "Whisper chép lời và dịch âm thanh trong một bước."
 
-#: src/views/settings/cards/language_card.py:217
+#: src/views/settings/cards/language_card.py:215
 #, python-brace-format
 msgid ""
 "Whisper can only translate into {english}. For other languages, it's "
@@ -2129,23 +2127,19 @@ msgstr "Được dịch thủ công"
 msgid "Translate into:"
 msgstr "Dịch sang:"
 
-#: src/views/transcript/translation_panel.py:335
-msgid "Language of the translation"
-msgstr "Ngôn ngữ của bản dịch"
-
-#: src/views/transcript/translation_panel.py:351
+#: src/views/transcript/translation_panel.py:350
 msgid "Provider:"
 msgstr "Nhà cung cấp:"
 
-#: src/views/transcript/translation_panel.py:361
+#: src/views/transcript/translation_panel.py:360
 msgid "Myself, from scratch"
 msgstr "Tự dịch từ đầu"
 
-#: src/views/transcript/translation_panel.py:392
+#: src/views/transcript/translation_panel.py:391
 msgid "More options in the settings"
 msgstr "Thêm tùy chọn trong phần cài đặt"
 
-#: src/views/transcript/translation_panel.py:429
+#: src/views/transcript/translation_panel.py:428
 #, python-brace-format
 msgid "Set the API key of {provider} to translate with it."
 msgstr "Đặt khóa API của {provider} để dịch bằng dịch vụ này."
