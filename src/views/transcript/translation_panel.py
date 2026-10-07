@@ -332,7 +332,6 @@ class TranslateDialog(_Dialog):
         self.omn_language = CTkSearchableOptionMenu(
             self.frm_body,
             values=[],
-            title=L_("Language of the translation"),
             search_placeholder=L_("Search language…"),
             no_results_text=L_("No languages found."),
             width=260,
