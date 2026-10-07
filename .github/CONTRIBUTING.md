@@ -136,6 +136,8 @@ pip install -r requirements-dev.txt
 pre-commit install
 ```
 
+Installing the hooks with `pre-commit install` is required: they run the same checks as the [Code Quality](workflows/code-quality.yml) workflow on the files of each commit, and stop the commit if any fails, so the problems are fixed before they reach a pull request. Git doesn't install them on its own when cloning, so it must be run once in each clone.
+
 Before opening a pull request, check that the hooks and the tests pass, since the [Code Quality](workflows/code-quality.yml) workflow runs them on each one:
 
 ```bash
