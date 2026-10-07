@@ -1,0 +1,74 @@
+name: PR Labels
+
+# Labels each pull request by the type of its title (e.g. `feat(ui): ...` gets
+# `enhancement`), so the notes of the releases are grouped by type (see
+# `.github/release.yml`). The label is updated when the title changes.
+#
+# - `!` before the colon (e.g. `feat!: ...`) also adds `breaking`.
+# - `chore(release): ...` gets `skip-changelog`, so the version bumps aren't listed.
+# - Titles without a type are left as they are, and are listed under "Other Changes".
+#
+# `pull_request_target`, so the pull requests from forks can be labeled too. It's safe
+# since the code of the pull request is never checked out
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+
+permissions:
+  pull-requests: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label the pull request by the type of its title
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.pull_request.number }}
+          # From the environment, so the title can't inject commands
+          TITLE: ${{ github.event.pull_request.title }}
+          CURRENT: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          managed=(enhancement bug performance refactor documentation build ci test style chore
+            revert breaking skip-changelog)
+
+          wanted=()
+          if [[ "$TITLE" =~ ^([a-z]+)(\(([^\)]*)\))?(!)?:\  ]]; then
+            type=${BASH_REMATCH[1]}
+            scope=${BASH_REMATCH[3]}
+            breaking=${BASH_REMATCH[4]}
+            case "$type" in
+              feat) wanted+=(enhancement) ;;
+              fix) wanted+=(bug) ;;
+              perf) wanted+=(performance) ;;
+              docs) wanted+=(documentation) ;;
+              refactor | build | ci | test | style | chore | revert) wanted+=("$type") ;;
+            esac
+            if [[ -n "$breaking" ]]; then
+              wanted+=(breaking)
+            fi
+            if [[ "$type" == chore && "$scope" == release ]]; then
+              wanted+=(skip-changelog)
+            fi
+          fi
+
+          args=()
+          for label in "${wanted[@]}"; do
+            # The labels that don't exist yet are created, since adding them would fail
+            gh label create "$label" 2>/dev/null || true
+            args+=(--add-label "$label")
+          done
+          IFS=, read -ra current <<< "$CURRENT"
+          for label in "${current[@]}"; do
+            if [[ " ${managed[*]} " == *" $label "* && " ${wanted[*]} " != *" $label "* ]]; then
+              args+=(--remove-label "$label")
+            fi
+          done
+
+          if (( ${#args[@]} )); then
+            gh pr edit "$NUMBER" "${args[@]}"
+          fi
