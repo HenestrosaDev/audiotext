@@ -453,11 +453,10 @@ On Windows and Linux, the installer offers to download GPU acceleration (CUDA) i
 5. Run `pip install -r requirements.txt` to install the dependencies.
    - `requirements.txt` installs PyTorch with CUDA support, which is a large download (several GB) on Linux and Windows. If you don't have an NVIDIA GPU, install the CPU-only build first by running `pip install torch==2.8.0 torchaudio==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cpu`. On macOS, there's no CUDA, so the CPU build is always used.
    - If you use [uv](https://docs.astral.sh/uv/) instead of pip, run `uv pip install --index-strategy unsafe-best-match -r requirements.txt`, since uv only looks for a package in the first index that has it by default.
-6. (Optional) If you intend to contribute to the project, run `pip install -r requirements-dev.txt` to install the development dependencies.
-7. (Optional) If you followed step 6, run `pre-commit install` to install the pre-commit hooks in your `.git/` directory.
-8. (Optional) The API keys can be set from the app. To set them beforehand, copy the `.env.example` file as `.env` to your user configuration folder (see the notes below) and fill them in. They can also be set as environment variables.
-9. Run `python src/app.py` to start the program. The first time a **WhisperX** model is used, it's downloaded (from ~75 MB for `tiny` to ~3 GB for `large-v2`), so it may take a while. To try the program quickly, choose the `tiny` model in the `Engine` settings of the transcription.
-10. (Optional) If you followed step 6, run `pytest` to run the test suite.
+6. If you intend to contribute to the project, run `pip install -r requirements-dev.txt` to install the development dependencies, and then `pre-commit install` to install the pre-commit hooks in your `.git/` directory. The hooks are required to contribute: they run the same checks as the [Code Quality](.github/workflows/code-quality.yml) workflow on each commit, so a commit that would fail them isn't created.
+7. (Optional) The API keys can be set from the app. To set them beforehand, copy the `.env.example` file as `.env` to your user configuration folder (see the notes below) and fill them in. They can also be set as environment variables.
+8. Run `python src/app.py` to start the program. The first time a **WhisperX** model is used, it's downloaded (from ~75 MB for `tiny` to ~3 GB for `large-v2`), so it may take a while. To try the program quickly, choose the `tiny` model in the `Engine` settings of the transcription.
+9. (Optional) If you followed step 6, run `pytest` to run the test suite.
 
 ### Notes
 
