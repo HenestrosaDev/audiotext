@@ -22,6 +22,7 @@ from models.config.config_whisperx import ConfigWhisperX
 from utils.enums import ComputeType
 from utils.env_keys import migrate_env_file
 from utils.history_store import HistoryStore
+from utils.system import hide_console_windows
 from views.main_window.main_window import MainWindow
 from views.style import theme
 
@@ -350,6 +351,7 @@ if __name__ == "__main__":
     # The bundled app is also run for the helper processes of multiprocessing (e.g.
     # the resource tracker used by PyTorch), which would otherwise open another window
     multiprocessing.freeze_support()
+    hide_console_windows()
 
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
