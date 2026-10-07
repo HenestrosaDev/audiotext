@@ -1,6 +1,6 @@
 [project]
 name = "audiotext"
-version = "3.1.0"
+version = "3.2.0"
 description = "Transcribe audio and video files, YouTube videos and microphone recordings."
 requires-python = ">=3.10,<3.14"
 license = "MIT"
