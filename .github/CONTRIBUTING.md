@@ -185,6 +185,8 @@ The **description** is short, starts with a lowercase verb in the imperative moo
 
 Breaking changes add a `!` after the type or scope (e.g. `feat(ui)!: redesign the interface`) and explain the change in a `BREAKING CHANGE:` footer.
 
+The titles of the pull requests follow the same format, since the [PR Labels](workflows/pr-labels.yml) workflow labels each pull request by its type, and the notes of the releases are grouped by those labels (see [release.yml](release.yml)).
+
 Each commit should do only one thing. For example, instead of a single "add contributing guides" commit, split it into:
 
 - `docs: add the contributing guide`
