@@ -15,7 +15,9 @@ def hide_console_windows() -> None:
     if sys.platform != "win32":
         return
 
-    popen_init = subprocess.Popen.__init__
+    # Typed as Any, since mypy doesn't allow replacing a method
+    popen: Any = subprocess.Popen
+    popen_init = popen.__init__
 
     @functools.wraps(popen_init)
     def init(self: subprocess.Popen[Any], *args: Any, **kwargs: Any) -> None:
@@ -24,7 +26,7 @@ def hide_console_windows() -> None:
         )
         popen_init(self, *args, **kwargs)
 
-    subprocess.Popen.__init__ = init  # type: ignore[method-assign]
+    popen.__init__ = init
 
 
 def open_in_file_manager(path: Path) -> None:
