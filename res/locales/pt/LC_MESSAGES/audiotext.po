@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-07 00:13+0200\n"
+"POT-Creation-Date: 2026-10-07 11:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -1255,7 +1255,7 @@ msgstr "Automático"
 msgid "Set…"
 msgstr "Definir…"
 
-#: src/views/settings/cards/language_card.py:119
+#: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:471
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
@@ -1500,7 +1500,7 @@ msgstr "Chave de API definida"
 
 #: src/views/settings/cards/engine_card.py:140
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:382
+#: src/views/transcript/translation_panel.py:381
 msgid "Set API key…"
 msgstr "Definir chave de API…"
 
@@ -1531,40 +1531,38 @@ msgid "Language"
 msgstr "Idioma"
 
 #: src/views/settings/cards/language_card.py:61
-#: src/views/settings/cards/language_card.py:65
 msgid "Language of the audio"
 msgstr "Idioma do áudio"
 
-#: src/views/settings/cards/language_card.py:66
-#: src/views/settings/cards/language_card.py:86
-#: src/views/transcript/translation_panel.py:336
+#: src/views/settings/cards/language_card.py:65
+#: src/views/settings/cards/language_card.py:84
+#: src/views/transcript/translation_panel.py:335
 msgid "Search language…"
 msgstr "Pesquisar idioma…"
 
-#: src/views/settings/cards/language_card.py:67
-#: src/views/settings/cards/language_card.py:87
-#: src/views/transcript/translation_panel.py:337
+#: src/views/settings/cards/language_card.py:66
+#: src/views/settings/cards/language_card.py:85
+#: src/views/transcript/translation_panel.py:336
 msgid "No languages found."
 msgstr "Nenhum idioma encontrado."
 
-#: src/views/settings/cards/language_card.py:72
+#: src/views/settings/cards/language_card.py:71
 msgid "Auto-detect"
 msgstr "Detectar automaticamente"
 
-#: src/views/settings/cards/language_card.py:81
-#: src/views/settings/cards/language_card.py:85
+#: src/views/settings/cards/language_card.py:80
 msgid "Language of the transcription"
 msgstr "Idioma da transcrição"
 
-#: src/views/settings/cards/language_card.py:92
+#: src/views/settings/cards/language_card.py:90
 msgid "Same as the audio"
 msgstr "O mesmo do áudio"
 
-#: src/views/settings/cards/language_card.py:133
+#: src/views/settings/cards/language_card.py:131
 msgid "Translate with Whisper (recommended)"
 msgstr "Traduzir com o Whisper (recomendado)"
 
-#: src/views/settings/cards/language_card.py:185
+#: src/views/settings/cards/language_card.py:183
 msgid ""
 "The Google API can't translate. The transcription will be in the language"
 " of the audio."
@@ -1572,16 +1570,16 @@ msgstr ""
 "A API do Google não pode traduzir. A transcrição ficará no idioma do "
 "áudio."
 
-#: src/views/settings/cards/language_card.py:195
+#: src/views/settings/cards/language_card.py:193
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Escrevê-la diretamente em {language} (experimental)"
 
-#: src/views/settings/cards/language_card.py:213
+#: src/views/settings/cards/language_card.py:211
 msgid "Whisper transcribes and translates the audio in one step."
 msgstr "O Whisper transcreve e traduz o áudio em uma única etapa."
 
-#: src/views/settings/cards/language_card.py:217
+#: src/views/settings/cards/language_card.py:215
 #, python-brace-format
 msgid ""
 "Whisper can only translate into {english}. For other languages, it's "
@@ -2143,23 +2141,19 @@ msgstr "Traduzido manualmente"
 msgid "Translate into:"
 msgstr "Traduzir para:"
 
-#: src/views/transcript/translation_panel.py:335
-msgid "Language of the translation"
-msgstr "Idioma da tradução"
-
-#: src/views/transcript/translation_panel.py:351
+#: src/views/transcript/translation_panel.py:350
 msgid "Provider:"
 msgstr "Provedor:"
 
-#: src/views/transcript/translation_panel.py:361
+#: src/views/transcript/translation_panel.py:360
 msgid "Myself, from scratch"
 msgstr "Eu mesmo, do zero"
 
-#: src/views/transcript/translation_panel.py:392
+#: src/views/transcript/translation_panel.py:391
 msgid "More options in the settings"
 msgstr "Mais opções nas configurações"
 
-#: src/views/transcript/translation_panel.py:429
+#: src/views/transcript/translation_panel.py:428
 #, python-brace-format
 msgid "Set the API key of {provider} to translate with it."
 msgstr "Defina a chave de API de {provider} para traduzir com ele."

@@ -36,6 +36,7 @@ from utils.i18n import DOMAIN, LOCALES_PATH, get_language
 from views.localization import set_interface_language
 from views.settings.cards.context_card import ContextCard
 from views.settings.cards.engine_card import EngineCard
+from views.settings.cards.language_card import LanguageCard
 from views.settings.cards.output_card import OutputCard
 from views.settings.preferences_dialog import AI_TAB, GENERAL_TAB
 from views.transcript.edit_dialogs import Replacement
@@ -734,6 +735,53 @@ def test_the_dialog_to_translate_asks_for_the_key_of_the_provider(ui: Ui) -> Non
     # The interface is in English, as is the transcription
     assert dialog._result.language == "es"
     ui.pump()
+
+
+def test_the_languages_are_searched_in_a_dropdown_of_the_window(
+    ui: Ui, tmp_path: Path
+) -> None:
+    ui.window.show_source(AudioSource.DIRECTORY)
+    ui.pump()
+    folder_view = ui.window._new_views[AudioSource.DIRECTORY]
+    folder_view.set_source(str(tmp_path), should_advance=True)
+    ui.pump()
+    form = folder_view.frm_settings
+    card = next(card for card in form._cards if isinstance(card, LanguageCard))
+    menu = card.omn_input_language
+
+    menu._clicked()
+    ui.pump()
+    dropdown = menu._dropdown
+    assert dropdown.winfo_toplevel() is menu.winfo_toplevel()
+    assert dropdown.winfo_ismapped()
+    # It's inside the window
+    assert dropdown.winfo_x() >= 0
+    assert dropdown.winfo_x() + dropdown.winfo_width() <= ui.window.winfo_width()
+    assert dropdown.winfo_y() >= 0
+    assert dropdown.winfo_y() + dropdown.winfo_height() <= ui.window.winfo_height()
+
+    dropdown._search_variable.set("spani")
+    dropdown._select_highlighted()
+    ui.pump()
+    assert not dropdown.winfo_exists()
+    assert menu.get() == "Spanish"
+
+    # A click outside closes it, without selecting anything
+    menu._clicked()
+    ui.pump()
+    dropdown = menu._dropdown
+    ui.window.top_bar.event_generate("<Button-1>", x=1, y=1)
+    ui.pump()
+    assert not dropdown.winfo_exists()
+    assert menu.get() == "Spanish"
+
+    # Clicking the option menu again closes it too
+    menu._clicked()
+    ui.pump()
+    dropdown = menu._dropdown
+    menu._clicked()
+    ui.pump()
+    assert not dropdown.winfo_exists()
 
 
 def test_the_settings_follow_the_method_and_the_model(ui: Ui, tmp_path: Path) -> None:

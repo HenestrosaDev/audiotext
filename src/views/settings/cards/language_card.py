@@ -62,7 +62,6 @@ class LanguageCard(SettingsCard):
         self.omn_input_language = CTkSearchableOptionMenu(
             self,
             values=[],
-            title=L_("Language of the audio"),
             search_placeholder=L_("Search language…"),
             no_results_text=L_("No languages found."),
             dynamic_resizing=False,
@@ -82,7 +81,6 @@ class LanguageCard(SettingsCard):
         self.omn_output_language = CTkSearchableOptionMenu(
             self,
             values=[],
-            title=L_("Language of the transcription"),
             search_placeholder=L_("Search language…"),
             no_results_text=L_("No languages found."),
             dynamic_resizing=False,
