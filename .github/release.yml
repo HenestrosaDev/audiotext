@@ -1,0 +1,42 @@
+# Sections of the notes that GitHub generates for a release, by the labels of the pull
+# requests. The PR Labels workflow labels each pull request by the type of its title
+# (see `.github/workflows/pr-labels.yml`). A pull request goes to the first section
+# that matches, so a breaking feature is only listed under the breaking changes.
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+  categories:
+    - title: Breaking Changes
+      labels:
+        - breaking
+    - title: Features
+      labels:
+        - enhancement
+    - title: Fixes
+      labels:
+        - bug
+    - title: Performance
+      labels:
+        - performance
+    - title: Refactoring
+      labels:
+        - refactor
+    - title: Documentation
+      labels:
+        - documentation
+    - title: Build and CI
+      labels:
+        - build
+        - ci
+        - dependencies
+    - title: Tests
+      labels:
+        - test
+    - title: Maintenance
+      labels:
+        - style
+        - chore
+    - title: Other Changes
+      labels:
+        - "*"
