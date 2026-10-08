@@ -11,7 +11,7 @@ Updates the translations of the interface after the texts of the code change:
 
 Run it from the root of the project:
 
-    python .github/scripts/update_translations.py
+    uv run .github/scripts/update_translations.py
 
 Then translate the empty and fuzzy entries that it lists, remove their `fuzzy`
 flag, and run it again to compile them. `tests/test_translations.py` fails while
