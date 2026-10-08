@@ -40,9 +40,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.2.0
+      # The Python of setup-python, with Tcl/Tk 8.6. The ones that uv downloads have Tk 9,
+      # which the tkinter of Python 3.10 doesn't support, and the one of Ubuntu lacks tkinter
+      - uses: actions/setup-python@v7
+        id: setup-python
         with:
           python-version: "3.12"
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ steps.setup-python.outputs.python-path }}
           enable-cache: true
       - name: Install system dependencies (PortAudio for sounddevice, FFmpeg for pydub)
         run: |
@@ -74,9 +80,15 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.2.0
+      # The Python of setup-python, with Tcl/Tk 8.6. The ones that uv downloads have Tk 9,
+      # which the tkinter of Python 3.10 doesn't support, and the one of Ubuntu lacks tkinter
+      - uses: actions/setup-python@v7
+        id: setup-python
         with:
           python-version: ${{ matrix.python-version }}
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ steps.setup-python.outputs.python-path }}
           enable-cache: true
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
