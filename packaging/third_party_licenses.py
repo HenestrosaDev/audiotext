@@ -2,7 +2,7 @@
 Writes the licenses of the third-party software bundled with the app, which most of
 them require to distribute along with it:
 
-- The Python packages of `requirements.txt` and their dependencies.
+- The Python packages of `pyproject.toml` and their dependencies.
 - Python and Tcl/Tk.
 - FFmpeg and FFprobe, and FLAC if it's installed (see `audiotext.spec`).
 - The native libraries bundled from the system (e.g. those of FFmpeg), with the package
@@ -32,6 +32,11 @@ from pathlib import Path
 from packaging.requirements import Requirement
 from packaging.utils import canonicalize_name
 
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
+
 ROOT = Path(__file__).resolve().parent.parent
 LICENSE_TEXTS_DIR = Path(__file__).resolve().parent / "licenses"
 
@@ -58,13 +63,10 @@ def _section(title: str, *parts: str) -> str:
 
 
 def _required_distributions() -> list[metadata.Distribution]:
-    """Returns the installed packages of `requirements.txt` and their dependencies."""
-    requirements_path = ROOT / "requirements.txt"
-    pending = [
-        Requirement(line)
-        for line in requirements_path.read_text(encoding="utf-8").splitlines()
-        if line.strip() and not line.startswith(("#", "-"))
-    ]
+    """Returns the installed packages of `pyproject.toml` and their dependencies."""
+    with (ROOT / "pyproject.toml").open("rb") as file:
+        dependencies: list[str] = tomllib.load(file)["project"]["dependencies"]
+    pending = [Requirement(dependency) for dependency in dependencies]
 
     distributions: dict[str, metadata.Distribution] = {}
     # The extras of each package already processed, to process it again if another
