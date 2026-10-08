@@ -164,8 +164,7 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   │   LICENSE
   │   pyproject.toml
   │   README.md
-  │   requirements-dev.txt
-  │   requirements.txt
+  │   uv.lock
   │
   ├───.github
   │   │   CONTRIBUTING.md
@@ -185,8 +184,7 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   │   │       make_gpu_addon.py
   │   │       smoke_test_app.py
   │   │       update_translations.py
-  │   │       use_cpu_torch.py
-  │   │
+  │   │   │
   │   └───workflows
   │           build.yml
   │           code-quality.yml
@@ -438,25 +436,13 @@ On Windows and Linux, the installer offers to download GPU acceleration (CUDA) i
    choco install ffmpeg
    ```
 2. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git` and change the current working directory to `audiotext` by running `cd audiotext`.
-3. (Optional but recommended) Create a Python virtual environment in the project root. If you're using `virtualenv`, you would run `virtualenv venv`. **Python 3.10 to 3.13** is required (WhisperX doesn't support Python 3.14 yet).
-4. (Optional but recommended) Activate the virtual environment:
-   ```bash
-   # on Windows
-   . venv/Scripts/activate
-   # if you get the error `FullyQualifiedErrorId : UnauthorizedAccess`, run this:
-   Set-ExecutionPolicy Unrestricted -Scope Process
-   # and then . venv/Scripts/activate
-
-   # on macOS and Linux
-   source venv/bin/activate
-   ```
-5. Run `pip install -r requirements.txt` to install the dependencies.
-   - `requirements.txt` installs PyTorch with CUDA support, which is a large download (several GB) on Linux and Windows. If you don't have an NVIDIA GPU, install the CPU-only build first by running `pip install torch==2.8.0 torchaudio==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cpu`. On macOS, there's no CUDA, so the CPU build is always used.
-   - If you use [uv](https://docs.astral.sh/uv/) instead of pip, run `uv pip install --index-strategy unsafe-best-match -r requirements.txt`, since uv only looks for a package in the first index that has it by default.
-6. If you intend to contribute to the project, run `pip install -r requirements-dev.txt` to install the development dependencies, and then `pre-commit install` to install the pre-commit hooks in your `.git/` directory. The hooks are required to contribute: they run the same checks as the [Code Quality](.github/workflows/code-quality.yml) workflow on each commit, so a commit that would fail them isn't created.
-7. (Optional) The API keys can be set from the app. To set them beforehand, copy the `.env.example` file as `.env` to your user configuration folder (see the notes below) and fill them in. They can also be set as environment variables.
-8. Run `python src/app.py` to start the program. The first time a **WhisperX** model is used, it's downloaded (from ~75 MB for `tiny` to ~3 GB for `large-v2`), so it may take a while. To try the program quickly, choose the `tiny` model in the `Engine` settings of the transcription.
-9. (Optional) If you followed step 6, run `pytest` to run the test suite.
+3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), which manages the dependencies and the virtual environment of the project. It also downloads a supported version of Python (**3.10 to 3.13**, since WhisperX doesn't support Python 3.14 yet) if you don't have one.
+4. Run `uv sync` to create the virtual environment (`.venv`) and install the dependencies, including the development ones.
+   - `uv sync` installs PyTorch with CUDA support, which is a large download (several GB) on Linux and Windows. If you don't have an NVIDIA GPU, run `uv sync --no-group cuda --group cpu` instead to install the CPU-only build. On macOS, there's no CUDA, so the CPU build is always used.
+5. If you intend to contribute to the project, run `uv run pre-commit install` to install the pre-commit hooks in your `.git/` directory. The hooks are required to contribute: they run the same checks as the [Code Quality](.github/workflows/code-quality.yml) workflow on each commit, so a commit that would fail them isn't created.
+6. (Optional) The API keys can be set from the app. To set them beforehand, copy the `.env.example` file as `.env` to your user configuration folder (see the notes below) and fill them in. They can also be set as environment variables.
+7. Run `uv run src/app.py` to start the program. The first time a **WhisperX** model is used, it's downloaded (from ~75 MB for `tiny` to ~3 GB for `large-v2`), so it may take a while. To try the program quickly, choose the `tiny` model in the `Engine` settings of the transcription.
+8. (Optional) Run `uv run pytest` to run the test suite.
 
 ### Notes
 
