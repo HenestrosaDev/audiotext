@@ -127,27 +127,27 @@ Don't forget to follow these principles:
 
 
 ## Setting Up the Development Environment
-Audiotext needs Python 3.10 to 3.13 and [FFmpeg](https://ffmpeg.org/). From the root of the project:
+Audiotext needs [uv](https://docs.astral.sh/uv/getting-started/installation/), Python 3.10 to 3.13 (uv downloads it if it's missing) and [FFmpeg](https://ffmpeg.org/). From the root of the project:
 
 ```bash
-python -m venv venv
-source venv/bin/activate        # venv\Scripts\activate on Windows
-pip install -r requirements-dev.txt
-pre-commit install
+uv sync                          # or `uv sync --no-group cuda --group cpu` without an NVIDIA GPU
+uv run pre-commit install
 ```
+
+`uv sync` creates the virtual environment in `.venv` with the dependencies of `uv.lock`, including the development ones. To add or update a dependency, change `pyproject.toml` (or run `uv add`), and commit the updated `uv.lock` along with it. The `uv-lock` hook fails if it's out of date.
 
 Installing the hooks with `pre-commit install` is required: they run the same checks as the [Code Quality](workflows/code-quality.yml) workflow on the files of each commit, and stop the commit if any fails, so the problems are fixed before they reach a pull request. Git doesn't install them on its own when cloning, so it must be run once in each clone.
 
 Before opening a pull request, check that the hooks and the tests pass, since the [Code Quality](workflows/code-quality.yml) workflow runs them on each one:
 
 ```bash
-pre-commit run --all-files
-pytest
+uv run pre-commit run --all-files
+uv run pytest
 ```
 
 The `main` branch is protected by the `no-commit-to-branch` hook, so work on a branch named after the type of the change (e.g. `feat/folder-watching` or `fix/windows-installer`).
 
-If you change the texts of the interface, run `python .github/scripts/update_translations.py` to update the catalogs of `res/locales` (its docstring explains the steps).
+If you change the texts of the interface, run `uv run .github/scripts/update_translations.py` to update the catalogs of `res/locales` (its docstring explains the steps).
 
 ## Styleguide
 ### Commit Messages
@@ -211,11 +211,11 @@ In an attempt to keep consistency and maintainability in the code-base, here are
 * Add tests for the changes in `tests/`.
 
 ## Building the Installers
-The scripts of the `packaging` folder create the file of each system from the app built by PyInstaller. Each one has to be run on its system, from the root of the project, in the virtual environment with the dependencies installed:
+The scripts of the `packaging` folder create the file of each system from the app built by PyInstaller. Each one has to be run on its system, from the root of the project:
 
 ```bash
-pip install pyinstaller
-pyinstaller audiotext.spec --noconfirm   # builds the app in dist/
+uv sync --group build                    # with `--no-group cuda --group cpu` for the CPU build
+uv run pyinstaller audiotext.spec --noconfirm   # builds the app in dist/
 ```
 
 | System | Command | Creates (in `dist/`) | Requires |
