@@ -9,7 +9,7 @@ on:
     paths:
       - "src/**"
       - "audiotext.spec"
-      - "requirements.txt"
+      - "uv.lock"
       - "res/**"
       - "pyproject.toml"
       - ".github/scripts/**"
@@ -20,7 +20,7 @@ on:
     paths:
       - "src/**"
       - "audiotext.spec"
-      - "requirements.txt"
+      - "uv.lock"
       - "res/**"
       - "pyproject.toml"
       - ".github/scripts/**"
@@ -47,10 +47,10 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: "3.12"
-          cache: pip
+          enable-cache: true
       # FFmpeg and FFprobe are bundled with the app
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
@@ -67,22 +67,19 @@ jobs:
           # Chocolatey adds shims to PATH, which run the executables from where the package
           # is installed and so only work on this computer. The actual ones are bundled
           echo "$ChocolateyInstall"'\lib\ffmpeg\tools\ffmpeg\bin' >> "$GITHUB_PATH"
-      - name: Use the CPU build of PyTorch, which is much smaller
-        run: python .github/scripts/use_cpu_torch.py
+      # The CPU build of PyTorch, which is much smaller
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt pyinstaller
+        run: uv sync --locked --no-default-groups --group build --group cpu
       - name: Build
-        run: pyinstaller audiotext.spec --noconfirm
+        run: uv run --no-sync pyinstaller audiotext.spec --noconfirm
       # On Windows, the app shows a dialog instead of closing when it fails to open, so
       # it can only be checked on the other systems
       - name: Check that the app opens (Linux)
         if: runner.os == 'Linux'
-        run: xvfb-run --auto-servernum python .github/scripts/smoke_test_app.py dist/Audiotext/Audiotext
+        run: xvfb-run --auto-servernum uv run --no-sync python .github/scripts/smoke_test_app.py dist/Audiotext/Audiotext
       - name: Check that the app opens (macOS)
         if: runner.os == 'macOS'
-        run: python .github/scripts/smoke_test_app.py dist/Audiotext.app/Contents/MacOS/Audiotext
+        run: uv run --no-sync python .github/scripts/smoke_test_app.py dist/Audiotext.app/Contents/MacOS/Audiotext
       - name: Upload the app
         uses: actions/upload-artifact@v7
         with:

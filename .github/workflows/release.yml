@@ -69,7 +69,8 @@ jobs:
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           df -h /
-      - uses: actions/setup-python@v7
+      # Without the cache, since the CUDA build of PyTorch would take most of it
+      - uses: astral-sh/setup-uv@v10.2.0
         with:
           python-version: "3.12"
       # FFmpeg and FFprobe are bundled with the app
@@ -91,15 +92,13 @@ jobs:
 
       - name: Build the GPU version
         if: matrix.gpu
-        run: bash .github/scripts/build_bundle.sh gpu
+        run: bash .github/scripts/build_bundle.sh gpu cuda
       - name: Build the CPU version
-        run: |
-          python .github/scripts/use_cpu_torch.py
-          bash .github/scripts/build_bundle.sh cpu
+        run: bash .github/scripts/build_bundle.sh cpu cpu
       - name: Create the GPU add-on
         if: matrix.gpu
         run: |
-          python .github/scripts/make_gpu_addon.py \
+          uv run --no-project python .github/scripts/make_gpu_addon.py \
             --cpu build/cpu/Audiotext \
             --gpu build/gpu/Audiotext \
             --out build/release \
