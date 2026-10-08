@@ -7,8 +7,8 @@ on:
     paths:
       - "src/**"
       - "tests/**"
-      - "requirements*.txt"
       - "pyproject.toml"
+      - "uv.lock"
       - "config.ini"
       - "res/locales/**"
       - ".pre-commit-config.yaml"
@@ -20,8 +20,8 @@ on:
     paths:
       - "src/**"
       - "tests/**"
-      - "requirements*.txt"
       - "pyproject.toml"
+      - "uv.lock"
       - "config.ini"
       - "res/locales/**"
       - ".pre-commit-config.yaml"
@@ -40,23 +40,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      # The Python of setup-python, with Tcl/Tk 8.6. The ones that uv downloads have Tk 9,
+      # which the tkinter of Python 3.10 doesn't support, and the one of Ubuntu lacks tkinter
       - uses: actions/setup-python@v7
+        id: setup-python
         with:
           python-version: "3.12"
-          cache: pip
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ steps.setup-python.outputs.python-path }}
+          enable-cache: true
       - name: Install system dependencies (PortAudio for sounddevice, FFmpeg for pydub)
         run: |
           sudo apt-get update
           sudo apt-get install -y libportaudio2 ffmpeg
-      - name: Use the CPU build of PyTorch, which is much smaller
-        run: python .github/scripts/use_cpu_torch.py
+      # The CPU build of PyTorch, which is much smaller
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
+        run: uv sync --locked --no-group cuda --group cpu
       - name: Run pre-commit
         run: |
-          SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
+          SKIP=no-commit-to-branch uv run --no-sync pre-commit run --all-files --show-diff-on-failure
 
   test:
     name: test (${{ matrix.os }}, Python ${{ matrix.python-version }})
@@ -77,10 +80,16 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v7
+      # The Python of setup-python, with Tcl/Tk 8.6. The ones that uv downloads have Tk 9,
+      # which the tkinter of Python 3.10 doesn't support, and the one of Ubuntu lacks tkinter
       - uses: actions/setup-python@v7
+        id: setup-python
         with:
           python-version: ${{ matrix.python-version }}
-          cache: pip
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ steps.setup-python.outputs.python-path }}
+          enable-cache: true
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -93,16 +102,13 @@ jobs:
       - name: Install system dependencies (Windows)
         if: runner.os == 'Windows'
         run: choco install ffmpeg --no-progress -y
-      - name: Use the CPU build of PyTorch, which is much smaller
-        run: python .github/scripts/use_cpu_torch.py
+      # The CPU build of PyTorch, which is much smaller
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
+        run: uv sync --locked --no-group cuda --group cpu
       - name: Run tests
         run: |
           if [ "$RUNNER_OS" = "Linux" ]; then
-            xvfb-run --auto-servernum pytest --cov=src --cov-report=term-missing
+            xvfb-run --auto-servernum uv run --no-sync pytest --cov=src --cov-report=term-missing
           else
-            pytest --cov=src --cov-report=term-missing
+            uv run --no-sync pytest --cov=src --cov-report=term-missing
           fi

@@ -69,9 +69,16 @@ jobs:
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           df -h /
+      # The Python of setup-python, with Tcl/Tk 8.6. The ones that uv downloads have Tk 9,
+      # which the tkinter of Python 3.10 doesn't support, and the one of Ubuntu lacks tkinter
       - uses: actions/setup-python@v7
+        id: setup-python
         with:
           python-version: "3.12"
+      # Without the cache, since the CUDA build of PyTorch would take most of it
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: ${{ steps.setup-python.outputs.python-path }}
       # FFmpeg and FFprobe are bundled with the app
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
@@ -91,15 +98,13 @@ jobs:
 
       - name: Build the GPU version
         if: matrix.gpu
-        run: bash .github/scripts/build_bundle.sh gpu
+        run: bash .github/scripts/build_bundle.sh gpu cuda
       - name: Build the CPU version
-        run: |
-          python .github/scripts/use_cpu_torch.py
-          bash .github/scripts/build_bundle.sh cpu
+        run: bash .github/scripts/build_bundle.sh cpu cpu
       - name: Create the GPU add-on
         if: matrix.gpu
         run: |
-          python .github/scripts/make_gpu_addon.py \
+          uv run --no-project python .github/scripts/make_gpu_addon.py \
             --cpu build/cpu/Audiotext \
             --gpu build/gpu/Audiotext \
             --out build/release \
