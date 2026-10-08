@@ -5,6 +5,79 @@ description = "Transcribe audio and video files, YouTube videos and microphone r
 requires-python = ">=3.10,<3.14"
 license = "MIT"
 license-files = ["LICENSE"]
+dependencies = [
+    "anthropic==1.11.0",
+    "audioop-lts==0.2.2; python_version >= '3.13'",
+    "babel==2.18.0",
+    "customtkinter==6.0.0",
+    "keyring==25.7.0",
+    "openai==3.24.0",
+    "pydub==0.25.1",
+    "python-docx==1.2.0",
+    "python-dotenv==1.2.4",
+    "pytubefix==11.2.0",
+    "sounddevice==0.5.6",
+    "SpeechRecognition==3.17.0",
+    "tkinterdnd2==0.6.3",
+    "torch==2.8.0",
+    "torchaudio==2.8.0",
+    "torchvision==0.23.0",
+    "whisperx==3.8.6",
+]
+
+[dependency-groups]
+dev = [
+    "mypy==2.4.0",
+    "pre-commit==4.6.2",
+    "pytest==9.1.1",
+    "pytest-cov==7.1.0",
+]
+build = [
+    "pyinstaller==6.22.3",
+    "tomli==2.5.0; python_version < '3.11'",
+]
+# The build of PyTorch: CPU or CUDA (NVIDIA GPUs). macOS only has the CPU one
+cpu = ["torch==2.8.0", "torchaudio==2.8.0", "torchvision==0.23.0"]
+cuda = ["torch==2.8.0", "torchaudio==2.8.0", "torchvision==0.23.0"]
+
+[tool.uv]
+# Audiotext is an app, not a package to install
+package = false
+default-groups = ["dev", "cuda"]
+conflicts = [[{ group = "cpu" }, { group = "cuda" }]]
+
+[tool.uv.sources]
+# macOS only has the CPU build, in PyPI
+torch = [
+    { index = "pytorch-cpu", group = "cpu", marker = "sys_platform != 'darwin'" },
+    { index = "pytorch-cu128", group = "cuda", marker = "sys_platform != 'darwin'" },
+    { index = "pypi", marker = "sys_platform == 'darwin'" },
+]
+torchaudio = [
+    { index = "pytorch-cpu", group = "cpu", marker = "sys_platform != 'darwin'" },
+    { index = "pytorch-cu128", group = "cuda", marker = "sys_platform != 'darwin'" },
+    { index = "pypi", marker = "sys_platform == 'darwin'" },
+]
+torchvision = [
+    { index = "pytorch-cpu", group = "cpu", marker = "sys_platform != 'darwin'" },
+    { index = "pytorch-cu128", group = "cuda", marker = "sys_platform != 'darwin'" },
+    { index = "pypi", marker = "sys_platform == 'darwin'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+explicit = true
 
 [tool.ruff]
 target-version = "py310"
