@@ -470,16 +470,16 @@ When [running it from the source code](#setting-up-the-project-locally), **Audio
 
 ```bash
 # Transcribe a file. The text is also printed, so it can be redirected
-python src/cli.py transcribe interview.mp3 --language es --output-types txt,srt
+uv run src/cli.py transcribe interview.mp3 --language es --output-types txt,srt
 
 # Transcribe the files of a folder identifying the speakers
-python src/cli.py transcribe recordings/ --diarize --speakers 2 --output-dir transcriptions/
+uv run src/cli.py transcribe recordings/ --diarize --speakers 2 --output-dir transcriptions/
 
 # Transcribe the files added to a folder until stopped with Ctrl+C
-python src/cli.py watch inbox/ --output-types srt
+uv run src/cli.py watch inbox/ --output-types srt
 ```
 
-Run `python src/cli.py transcribe --help` to see all the options, or see [the command-line interface](https://getaudiotext.com/en/reference/cli/).
+Run `uv run src/cli.py transcribe --help` to see all the options, or see [the command-line interface](https://getaudiotext.com/en/reference/cli/).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -518,7 +518,7 @@ The interface is translated with [gettext](https://www.gnu.org/software/gettext/
 After the texts of the code change, or after editing a `.po` file (e.g. with [Poedit](https://poedit.net/)), run:
 
 ```bash
-python .github/scripts/update_translations.py
+uv run .github/scripts/update_translations.py
 ```
 
 It extracts the texts into the template, updates the catalogs, compiles them and lists the texts that are still to translate or review (new texts are empty, and changed ones are marked as `fuzzy`). Those are shown in English until they're translated and their `fuzzy` flag is removed. The tests (`tests/test_translations.py`) fail while a catalog is out of date or a translation doesn't keep the placeholders of the original text (e.g. `{count}`).
@@ -526,8 +526,8 @@ It extracts the texts into the template, updates the catalogs, compiles them and
 To add a language, create its catalog, add it to `UI_LANGUAGES` in `src/utils/i18n.py`, translate it and run the script:
 
 ```bash
-pybabel init -i res/locales/audiotext.pot -d res/locales -D audiotext -l <code>
-python .github/scripts/update_translations.py
+uv run pybabel init -i res/locales/audiotext.pot -d res/locales -D audiotext -l <code>
+uv run .github/scripts/update_translations.py
 ```
 
 ### Documentation Website
