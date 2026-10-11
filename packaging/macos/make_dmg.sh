@@ -5,9 +5,9 @@
 # To create it locally, build the app and run this script from the root of the project:
 #
 #   pyinstaller audiotext.spec --noconfirm
-#   packaging/macos.sh
+#   packaging/macos/make_dmg.sh
 #
-# Usage: packaging/macos.sh [app] [output directory]
+# Usage: packaging/macos/make_dmg.sh [app] [output directory]
 #   app               The app built by PyInstaller (default: dist/Audiotext.app)
 #   output directory  Where the disk image is created (default: dist)
 

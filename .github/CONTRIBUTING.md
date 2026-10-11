@@ -220,9 +220,9 @@ uv run pyinstaller audiotext.spec --noconfirm   # builds the app in dist/
 
 | System | Command | Creates (in `dist/`) | Requires |
 | --- | --- | --- | --- |
-| macOS | `packaging/macos.sh` | `Audiotext-X.Y.Z-macos-arm64.dmg` | - |
-| Windows | `iscc packaging\windows.iss` | `Audiotext-X.Y.Z-windows-x64-setup.exe` | [Inno Setup](https://jrsoftware.org/isinfo.php) 6.5 or later |
-| Linux | `packaging/linux.sh` | `Audiotext-X.Y.Z-linux-x86_64.tar.gz` (with `packaging/linux-install.sh` as `install.sh`) | - |
+| macOS | `packaging/macos/make_dmg.sh` | `Audiotext-X.Y.Z-macos-arm64.dmg` | - |
+| Windows | `iscc packaging\windows\installer.iss` | `Audiotext-X.Y.Z-windows-x64-setup.exe` | [Inno Setup](https://jrsoftware.org/isinfo.php) 6.5 or later |
+| Linux | `packaging/linux/make_archive.sh` | `Audiotext-X.Y.Z-linux-x86_64.tar.gz` (with the installer `packaging/linux/install.sh`) | - |
 
 The version is the one of `pyproject.toml`. The installers built this way contain the PyTorch build installed in the virtual environment (CUDA or CPU) and don't offer the GPU add-on, which only the [Release](workflows/release.yml) workflow creates, since it needs both builds and the URL of the release.
 

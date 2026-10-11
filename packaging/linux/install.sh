@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Installs Audiotext for the current user, adding it to the applications menu.
-# `packaging/linux.sh` includes it in the Linux archive as `install.sh`.
+# `packaging/linux/make_archive.sh` includes it in the Linux archive.
 #
 # The app included is the CPU build. If there's an NVIDIA GPU, it offers to download
 # the GPU add-on from the GitHub release, which turns it into the GPU (CUDA) build.
