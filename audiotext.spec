@@ -10,7 +10,7 @@ from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy
 
 import sys ; sys.setrecursionlimit(sys.getrecursionlimit() * 5)
 
-sys.path.insert(0, "packaging")
+sys.path.insert(0, "packaging/licenses")
 from third_party_licenses import write_third_party_licenses
 
 # The version of the app, which is set in `pyproject.toml`

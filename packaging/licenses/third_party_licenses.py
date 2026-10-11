@@ -12,12 +12,12 @@ Some of them are GPL or LGPL (e.g. FFmpeg, also the one included in PyAV), so th
 notice starts with an offer of their source code and ends with the full text of those
 licenses.
 
-`packaging/licenses/` contains the texts of the licenses that aren't always installed
-along with the software.
+The folder of this script contains the texts of the licenses that aren't always
+installed along with the software.
 
 `audiotext.spec` calls it when building the app. To check the result:
 
-    python packaging/third_party_licenses.py [output file]
+    python packaging/licenses/third_party_licenses.py [output file]
 """
 
 import re
@@ -37,8 +37,8 @@ if sys.version_info >= (3, 11):
 else:
     import tomli as tomllib
 
-ROOT = Path(__file__).resolve().parent.parent
-LICENSE_TEXTS_DIR = Path(__file__).resolve().parent / "licenses"
+ROOT = Path(__file__).resolve().parents[2]
+LICENSE_TEXTS_DIR = Path(__file__).resolve().parent
 
 # The files of a package that contain its license, or the licenses of the code it
 # includes (e.g. `LICENSE`, `LICENSE-MIT.txt`, `COPYING.LESSER` or `NOTICE`)

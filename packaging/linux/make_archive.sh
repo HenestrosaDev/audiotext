@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Creates the Linux archive of Audiotext, which contains the app and its installer
-# (`linux-install.sh`, renamed to `install.sh`).
+# (`install.sh`).
 #
 # To create it locally, build the app and run this script from the root of the project:
 #
 #   pyinstaller audiotext.spec --noconfirm
-#   packaging/linux.sh
+#   packaging/linux/make_archive.sh
 #
-# Usage: packaging/linux.sh [app] [output directory] [GPU add-on manifest]
+# Usage: packaging/linux/make_archive.sh [app] [output directory] [GPU add-on manifest]
 #   app                 The app built by PyInstaller (default: dist/Audiotext)
 #   output directory    Where the archive is created (default: dist)
 #   GPU add-on manifest Created by `.github/scripts/make_gpu_addon.py`. Without it, the
@@ -26,7 +26,7 @@ staging_dir="$(mktemp -d)"
 trap 'rm -rf "$staging_dir"' EXIT
 mkdir "$staging_dir/$name"
 cp -a "$app" "$staging_dir/$name/Audiotext"
-cp packaging/linux-install.sh "$staging_dir/$name/install.sh"
+cp packaging/linux/install.sh "$staging_dir/$name/install.sh"
 if [[ -n $gpu_manifest ]]; then
 	cp "$gpu_manifest" "$staging_dir/$name/gpu-addon.txt"
 fi
