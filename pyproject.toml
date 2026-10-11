@@ -36,6 +36,8 @@ build = [
     "pyinstaller==6.22.3",
     "tomli==2.5.0; python_version < '3.11'",
 ]
+# The disk image of macOS (see packaging/macos/make_dmg.sh)
+dmg = ["dmgbuild==1.6.7", "pillow==12.3.0"]
 # The build of PyTorch: CPU or CUDA (NVIDIA GPUs). macOS only has the CPU one
 cpu = ["torch==2.8.0", "torchaudio==2.8.0", "torchvision==0.23.0"]
 cuda = ["torch==2.8.0", "torchaudio==2.8.0", "torchvision==0.23.0"]

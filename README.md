@@ -202,7 +202,11 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   │   │       make_archive.sh
   │   │
   │   ├───macos
+  │   │       dmg-background.png
+  │   │       dmg-background@2x.png
+  │   │       dmg_settings.py
   │   │       make_dmg.sh
+  │   │       make_dmg_background.py
   │   │
   │   └───windows
   │           ChineseSimplified.isl (Inno Setup messages missing from Inno Setup 6)
