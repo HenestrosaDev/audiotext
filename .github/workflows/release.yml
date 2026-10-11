@@ -118,7 +118,7 @@ jobs:
       # The same scripts that create the files locally (see `packaging/`)
       - name: Create the disk image (macOS)
         if: runner.os == 'macOS'
-        run: packaging/macos.sh build/cpu/Audiotext.app build/release
+        run: packaging/macos/make_dmg.sh build/cpu/Audiotext.app build/release
       # PowerShell, since Git Bash would mangle the /D arguments as if they were paths
       - name: Create the installer (Windows)
         if: runner.os == 'Windows'
@@ -127,11 +127,11 @@ jobs:
           $iscc = Get-ChildItem "${env:ProgramFiles(x86)}\Inno Setup *\ISCC.exe", "$env:ProgramFiles\Inno Setup *\ISCC.exe" -ErrorAction SilentlyContinue |
             Sort-Object FullName | Select-Object -Last 1
           & $iscc.FullName "/DBundleDir=$PWD\build\cpu\Audiotext" "/DOutputDir=$PWD\build\release" `
-            "/DGpuAddon=$PWD\build\gpu-addon.iss" packaging\windows.iss
+            "/DGpuAddon=$PWD\build\gpu-addon.iss" packaging\windows\installer.iss
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Create the archive (Linux)
         if: runner.os == 'Linux'
-        run: packaging/linux.sh build/cpu/Audiotext build/release build/gpu-addon.txt
+        run: packaging/linux/make_archive.sh build/cpu/Audiotext build/release build/gpu-addon.txt
 
       - name: Upload the release files
         uses: actions/upload-artifact@v7

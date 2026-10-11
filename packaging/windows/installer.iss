@@ -8,7 +8,7 @@
 ; To create the installer locally, build the app and compile this script:
 ;
 ;   pyinstaller audiotext.spec --noconfirm
-;   iscc packaging\windows.iss
+;   iscc packaging\windows\installer.iss
 ;
 ; The installer is created in `dist\`. These defines (/D<name>=<value>) change the
 ; defaults, which is what the Release workflow does:
@@ -23,7 +23,7 @@
   #error Inno Setup 6.5 or later is required
 #endif
 
-#define RootDir AddBackslash(SourcePath) + ".."
+#define RootDir AddBackslash(SourcePath) + "..\.."
 
 #ifndef AppVersion
   ; `pyproject.toml` is close enough to an INI file to read the version this way
@@ -75,7 +75,7 @@ ArchiveExtraction=enhanced/nopassword
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "catalan"; MessagesFile: "compiler:Languages\Catalan.isl"
 ; Inno Setup 6 only has it among the unofficial translations (from is-6_7_3)
-Name: "chinesesimplified"; MessagesFile: "{#RootDir}\packaging\languages\ChineseSimplified.isl"
+Name: "chinesesimplified"; MessagesFile: "{#RootDir}\packaging\windows\ChineseSimplified.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 Name: "dutch"; MessagesFile: "compiler:Languages\Dutch.isl"
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
