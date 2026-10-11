@@ -193,15 +193,20 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   ├───docs/ (images of this README)
   │
   ├───packaging
-  │   │   linux-install.sh
-  │   │   linux.sh
-  │   │   macos.sh
-  │   │   third_party_licenses.py
-  │   │   windows.iss
+  │   ├───licenses
+  │   │       third_party_licenses.py
+  │   │       <license>.txt (license texts of the bundled third-party software)
   │   │
-  │   ├───languages/ (Inno Setup messages missing from Inno Setup 6)
+  │   ├───linux
+  │   │       install.sh
+  │   │       make_archive.sh
   │   │
-  │   └───licenses/ (license texts of the bundled third-party software)
+  │   ├───macos
+  │   │       make_dmg.sh
+  │   │
+  │   └───windows
+  │           ChineseSimplified.isl (Inno Setup messages missing from Inno Setup 6)
+  │           installer.iss
   │
   ├───res
   │   ├───img
