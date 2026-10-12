@@ -61,14 +61,7 @@ class HistoryRow(ctk.CTkFrame):  # type: ignore[misc]
         # Folders have a chevron to show their files
         if entry.is_folder:
             self.btn_chevron = ctk.CTkLabel(
-                self,
-                text="",
-                width=16,
-                image=icons.icon(
-                    "chevron_down" if is_expanded else "chevron_right",
-                    12,
-                    theme.ICON_MUTED,
-                ),
+                self, text="", width=16, image=_chevron_icon(is_expanded, 12)
             )
             self.btn_chevron.grid(
                 row=0, column=0, padx=(6, 0), sticky=ctk.N, pady=(10, 0)
@@ -298,6 +291,11 @@ class HistoryRow(ctk.CTkFrame):  # type: ignore[misc]
             color = "transparent"
         self.configure(fg_color=color)
 
+    def set_expanded(self, is_expanded: bool) -> None:
+        """Points the chevron of a folder down when its files are shown."""
+        if chevron := getattr(self, "btn_chevron", None):
+            chevron.configure(image=_chevron_icon(is_expanded, 12))
+
     def _on_click(self, event: Any) -> None:
         if getattr(event, "widget", None) is getattr(self, "btn_chevron", None):
             return
@@ -350,17 +348,10 @@ class SectionHeader(ctk.CTkFrame):  # type: ignore[misc]
         super().__init__(master, fg_color="transparent", cursor="hand2")
         self.grid_columnconfigure(1, weight=1)
 
-        chevron = ctk.CTkLabel(
-            self,
-            text="",
-            width=14,
-            image=icons.icon(
-                "chevron_right" if is_collapsed else "chevron_down",
-                10,
-                theme.ICON_MUTED,
-            ),
+        self.lbl_chevron = ctk.CTkLabel(
+            self, text="", width=14, image=_chevron_icon(not is_collapsed, 10)
         )
-        chevron.grid(row=0, column=0, padx=(8, 4))
+        self.lbl_chevron.grid(row=0, column=0, padx=(8, 4))
         ctk.CTkLabel(
             self,
             text=theme.fit_text(title, theme.font(12, "bold"), sidebar.width - 90),
@@ -386,3 +377,12 @@ class SectionHeader(ctk.CTkFrame):  # type: ignore[misc]
                     widget, lambda event: sidebar.show_group_menu(event, group.id)
                 )
                 stack.extend(widget.winfo_children())
+
+    def set_collapsed(self, is_collapsed: bool) -> None:
+        self.lbl_chevron.configure(image=_chevron_icon(not is_collapsed, 10))
+
+
+def _chevron_icon(is_expanded: bool, size: int) -> ctk.CTkImage:
+    return icons.icon(
+        "chevron_down" if is_expanded else "chevron_right", size, theme.ICON_MUTED
+    )

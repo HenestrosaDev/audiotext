@@ -90,6 +90,16 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         self._selected_id: str | None = None
         self._expanded_folders: set[str] = set()
         self._collapsed_sections: set[str] = set()
+        # The sections of the list and the files of its folders are only built
+        # when they're first shown, and then hidden and shown again instead of
+        # rebuilding the whole list
+        self._section_entry_ids: dict[str, list[str]] = {}
+        self._section_grid_rows: dict[str, int] = {}
+        self._section_headers: dict[str, SectionHeader] = {}
+        self._section_bodies: dict[str, ctk.CTkFrame] = {}
+        self._folder_slots: dict[str, tuple[ctk.CTkFrame, int]] = {}
+        self._folder_children: dict[str, ctk.CTkFrame] = {}
+        self._has_headers = False
         self._spinner_frame = 0
         self._spinner_after_id: str | None = None
         self._refresh_after_id: str | None = None
@@ -197,6 +207,16 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             widget.destroy()
         self._rows.clear()
         self._visible_ids.clear()
+        for widgets in (
+            self._section_entry_ids,
+            self._section_grid_rows,
+            self._section_headers,
+            self._section_bodies,
+            self._folder_slots,
+            self._folder_children,
+        ):
+            widgets.clear()
+        self._has_headers = False
 
         query = self._search_variable.get().strip()
         top_level = self.store.top_level()
@@ -216,6 +236,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             )
         else:
             self._build_sections(top_level)
+            self._update_visible_ids()
 
         self._refresh_selection()
         self._refresh_spinner()
@@ -245,30 +266,35 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         # The files of a folder are shown when one of them is selected
         entry = self.store.get(entry_id)
         if entry and entry.parent_id and entry.parent_id not in self._expanded_folders:
-            self._expanded_folders.add(entry.parent_id)
-            self.refresh()
+            self._set_folder_expanded(entry.parent_id, True)
             return
 
         self._refresh_selection()
 
     def expand_folder(self, entry_id: str) -> None:
         if entry_id not in self._expanded_folders:
-            self._expanded_folders.add(entry_id)
-            self.refresh()
+            self._set_folder_expanded(entry_id, True)
 
     def toggle_folder(self, entry_id: str) -> None:
-        if entry_id in self._expanded_folders:
-            self._expanded_folders.discard(entry_id)
-        else:
-            self._expanded_folders.add(entry_id)
-        self.refresh()
+        self._set_folder_expanded(entry_id, entry_id not in self._expanded_folders)
 
     def toggle_section(self, key: str) -> None:
-        if key in self._collapsed_sections:
-            self._collapsed_sections.discard(key)
-        else:
+        is_collapsed = key not in self._collapsed_sections
+        if is_collapsed:
             self._collapsed_sections.add(key)
-        self.refresh()
+        else:
+            self._collapsed_sections.discard(key)
+
+        if header := self._section_headers.get(key):
+            header.set_collapsed(is_collapsed)
+        if is_collapsed:
+            if body := self._section_bodies.get(key):
+                body.grid_remove()
+        elif key in self._section_bodies:
+            self._section_bodies[key].grid()
+        elif key in self._section_grid_rows:
+            self._build_section_body(key)
+        self._after_layout_change()
 
     def start_rename(self, entry_id: str) -> None:
         entry = self.store.get(entry_id)
@@ -406,12 +432,12 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         if ungrouped or not sections:
             sections.append((UNGROUPED_SECTION, _("Transcriptions"), ungrouped, None))
 
-        has_headers = len(sections) > 1
+        self._has_headers = len(sections) > 1
         row = 0
         for key, title, entries, section_group in sections:
-            is_collapsed = key in self._collapsed_sections
-            if has_headers:
-                SectionHeader(
+            is_collapsed = self._is_section_collapsed(key)
+            if self._has_headers:
+                header = SectionHeader(
                     self.frm_list,
                     self,
                     key,
@@ -419,62 +445,135 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
                     len(entries),
                     is_collapsed,
                     section_group,
-                ).grid(row=row, column=0, sticky=ctk.EW, pady=(10 if row else 2, 2))
-                row += 1
-            if is_collapsed and has_headers:
-                continue
-            if not entries and section_group is not None:
-                lbl_empty = ctk.CTkLabel(
-                    self.frm_list,
-                    text=_(
-                        "Empty. To add a transcription, right-click it and choose "
-                        "“Move to group”."
-                    ),
-                    font=theme.font(11),
-                    text_color=theme.HINT_TEXT,
-                    anchor=ctk.W,
-                    justify=ctk.LEFT,
                 )
-                lbl_empty.grid(row=row, column=0, padx=26, pady=(0, 4), sticky=ctk.EW)
-                bind_wraplength(lbl_empty)
+                header.grid(
+                    row=row, column=0, sticky=ctk.EW, pady=(10 if row else 2, 2)
+                )
+                self._section_headers[key] = header
                 row += 1
-            for entry in entries:
-                row = self._add_entry_rows(entry, row)
+            self._section_entry_ids[key] = [entry.id for entry in entries]
+            self._section_grid_rows[key] = row
+            if not is_collapsed:
+                self._build_section_body(key)
+            row += 1
 
-    def _add_entry_rows(self, entry: HistoryEntry, row: int) -> int:
-        is_expanded = entry.id in self._expanded_folders
-        self._add_row(entry, row, is_expanded=is_expanded)
-        row += 1
+    def _build_section_body(self, key: str) -> None:
+        """Builds the rows of a section, below its header."""
+        body = ctk.CTkFrame(self.frm_list, fg_color="transparent", corner_radius=0)
+        body.grid(row=self._section_grid_rows[key], column=0, sticky=ctk.EW)
+        body.grid_columnconfigure(0, weight=1)
+        self._section_bodies[key] = body
 
-        if entry.is_folder and is_expanded:
-            children = self.store.children(entry.id)
-            if not children:
-                ctk.CTkLabel(
-                    self.frm_list,
-                    text=_("No files yet"),
-                    font=theme.font(11),
-                    text_color=theme.HINT_TEXT,
-                ).grid(row=row, column=0, padx=44, sticky=ctk.W)
+        entries = [
+            entry
+            for entry_id in self._section_entry_ids[key]
+            if (entry := self.store.get(entry_id)) is not None
+        ]
+        if not entries and key not in (PINNED_SECTION, UNGROUPED_SECTION):
+            lbl_empty = ctk.CTkLabel(
+                body,
+                text=_(
+                    "Empty. To add a transcription, right-click it and choose "
+                    "“Move to group”."
+                ),
+                font=theme.font(11),
+                text_color=theme.HINT_TEXT,
+                anchor=ctk.W,
+                justify=ctk.LEFT,
+            )
+            lbl_empty.grid(row=0, column=0, padx=26, pady=(0, 4), sticky=ctk.EW)
+            bind_wraplength(lbl_empty)
+
+        row = 0
+        for entry in entries:
+            self._add_row(
+                body, entry, row, is_expanded=entry.id in self._expanded_folders
+            )
+            row += 1
+            if entry.is_folder:
+                # The files go in the row below the folder, even while hidden
+                self._folder_slots[entry.id] = (body, row)
+                if entry.id in self._expanded_folders:
+                    self._build_folder_children(entry.id)
                 row += 1
-            for child in children:
-                self._add_row(child, row, is_child=True)
-                row += 1
 
-        return row
+    def _build_folder_children(self, entry_id: str) -> None:
+        master, row = self._folder_slots[entry_id]
+        frame = ctk.CTkFrame(master, fg_color="transparent", corner_radius=0)
+        frame.grid(row=row, column=0, sticky=ctk.EW)
+        frame.grid_columnconfigure(0, weight=1)
+        self._folder_children[entry_id] = frame
+
+        children = self.store.children(entry_id)
+        if not children:
+            ctk.CTkLabel(
+                frame,
+                text=_("No files yet"),
+                font=theme.font(11),
+                text_color=theme.HINT_TEXT,
+            ).grid(row=0, column=0, padx=44, sticky=ctk.W)
+        for child_row, child in enumerate(children):
+            self._add_row(frame, child, child_row, is_child=True)
+
+    def _set_folder_expanded(self, entry_id: str, is_expanded: bool) -> None:
+        if is_expanded:
+            self._expanded_folders.add(entry_id)
+        else:
+            self._expanded_folders.discard(entry_id)
+
+        # The search results don't show the files of the folders
+        if entry_id not in self._folder_slots:
+            return
+
+        if row := self._rows.get(entry_id):
+            row.set_expanded(is_expanded)
+        if not is_expanded:
+            if frame := self._folder_children.get(entry_id):
+                frame.grid_remove()
+        elif entry_id in self._folder_children:
+            self._folder_children[entry_id].grid()
+        else:
+            self._build_folder_children(entry_id)
+        self._after_layout_change()
+
+    def _after_layout_change(self) -> None:
+        self._update_visible_ids()
+        self._refresh_selection()
+        self._refresh_spinner()
+
+    def _is_section_collapsed(self, key: str) -> bool:
+        return self._has_headers and key in self._collapsed_sections
+
+    def _update_visible_ids(self) -> None:
+        """Lists the shown entries in order, to move through them with the keys."""
+        visible_ids: list[str] = []
+        for key, entry_ids in self._section_entry_ids.items():
+            if self._is_section_collapsed(key):
+                continue
+            for entry_id in entry_ids:
+                visible_ids.append(entry_id)
+                if (
+                    entry_id in self._folder_slots
+                    and entry_id in self._expanded_folders
+                ):
+                    visible_ids.extend(
+                        child.id for child in self.store.children(entry_id)
+                    )
+        self._visible_ids = visible_ids
 
     def _add_row(
         self,
+        master: Any,
         entry: HistoryEntry,
         row: int,
         is_child: bool = False,
         is_expanded: bool = False,
     ) -> None:
         widget = HistoryRow(
-            self.frm_list, self, entry, is_child=is_child, is_expanded=is_expanded
+            master, self, entry, is_child=is_child, is_expanded=is_expanded
         )
         widget.grid(row=row, column=0, sticky=ctk.EW, padx=(0, 6), pady=1)
         self._rows[entry.id] = widget
-        self._visible_ids.append(entry.id)
 
     def _build_search_results(self, query: str) -> None:
         results = []
@@ -493,7 +592,8 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             return
 
         for row, (entry, is_child) in enumerate(results):
-            self._add_row(entry, row, is_child=is_child)
+            self._add_row(self.frm_list, entry, row, is_child=is_child)
+        self._visible_ids = [entry.id for entry, _is_child in results]
 
     def _build_empty_state(self, title: str, message: str) -> None:
         frame = ctk.CTkFrame(self.frm_list, fg_color="transparent")
