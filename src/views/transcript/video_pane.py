@@ -1,5 +1,4 @@
 import tkinter as tk
-import tkinter.font as tkfont
 from collections.abc import Callable
 from functools import partial
 from pathlib import Path
@@ -20,6 +19,9 @@ SUBTITLE_MIN_FONT_SIZE = 11
 SUBTITLE_BACKGROUND = "background"
 SUBTITLE_OUTLINE = "outline"
 SUBTITLE_BACKGROUND_OPACITY = 0.6
+# While the frame of a position is being decoded, it's checked again this often
+FRAME_POLL_INTERVAL_MS = 4
+FRAME_POLL_ATTEMPTS = 8
 
 
 class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
@@ -58,6 +60,9 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         self._photo: ImageTk.PhotoImage | None = None
         self._photo_size: tuple[int, int] = (0, 0)
         self._position = 0.0
+        self._poll_after_id: str | None = None
+        # Whether the subtitle changed since the last frame was drawn
+        self._is_subtitle_outdated = False
         self._subtitle_text = ""
         # Area of the video darkened behind the subtitles
         self._subtitle_box: tuple[int, int, int, int] | None = None
@@ -84,9 +89,9 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         self._subtitle_item = self.cnv_video.create_text(
             0, 0, fill="#FFFFFF", state=tk.HIDDEN
         )
-        self._subtitle_font = tkfont.Font(
-            family=ctk.CTkFont().cget("family"), size=-16, weight="bold"
-        )
+        # A description of the font instead of a named font, since changing a named
+        # font makes Tk lay out every widget of the app again
+        self._subtitle_font_family = ctk.CTkFont().cget("family")
         self.cnv_video.bind("<Button-1>", lambda _event: on_click())
         self.bind("<Button-1>", lambda _event: on_click())
         self.bind("<Configure>", lambda _event: self.draw_frame(force=True))
@@ -107,6 +112,7 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         self._source.request(0)
 
     def close(self) -> None:
+        self._cancel_poll()
         if self._source:
             self._source.close()
             self._source = None
@@ -159,20 +165,25 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         if self._source is None:
             return
         self._source.request(position)
-        self._update_subtitle()
-        self.draw_frame()
+        self._update_subtitle(redraw=False)
+        self._draw_when_decoded(FRAME_POLL_ATTEMPTS)
 
-    def draw_frame(self, force: bool = False) -> None:
-        """Draws the last decoded frame, if it changed or `force` is True."""
+    def draw_frame(self, force: bool = False) -> bool:
+        """
+        Draws the last decoded frame, if it changed or `force` is True.
+
+        :return: Whether it was drawn.
+        """
         if self._source is None:
-            return
+            return False
         frame_number = self._source.frame_number
         if frame_number == self._frame_number and not force:
-            return
+            return False
         source = self._source.latest_frame
         if source is None:
-            return
+            return False
         self._frame_number = frame_number
+        self._is_subtitle_outdated = False
 
         box_width = max(self.winfo_width() - 8, 2)
         box_height = max(self.winfo_height() - 8, 2)
@@ -204,6 +215,29 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
             self.cnv_video.itemconfigure(self._video_item, image=self._photo)
         else:
             self._photo.paste(image)
+        return True
+
+    def _draw_when_decoded(self, attempts: int) -> None:
+        """
+        Draws the requested frame as soon as it's decoded. Otherwise, the frame
+        would wait for the next position of the playback, and the video would
+        freeze for a moment whenever a position took longer to show.
+        """
+        self._cancel_poll()
+        if self.draw_frame():
+            return
+        if attempts > 0:
+            self._poll_after_id = self.after(
+                FRAME_POLL_INTERVAL_MS, self._draw_when_decoded, attempts - 1
+            )
+        elif self._is_subtitle_outdated:
+            # No new frame (e.g. paused), but the subtitle is drawn on it
+            self.draw_frame(force=True)
+
+    def _cancel_poll(self) -> None:
+        if self._poll_after_id:
+            self.after_cancel(self._poll_after_id)
+            self._poll_after_id = None
 
     # SUBTITLES
 
@@ -307,7 +341,12 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         self._on_subtitles_change()
         self._update_subtitle(force=True)
 
-    def _update_subtitle(self, force: bool = False) -> None:
+    def _update_subtitle(self, force: bool = False, redraw: bool = True) -> None:
+        """
+        :param redraw: Whether to draw the frame again now. Otherwise, it's drawn
+                       with the next one, since the background of the subtitle is
+                       part of it.
+        """
         track = (
             self._translation_track
             if self._translation_track and self.is_showing_translation
@@ -318,7 +357,10 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         if text != self._subtitle_text or force:
             self._subtitle_text = text
             self._layout_subtitle()
-            self.draw_frame(force=True)
+            if redraw:
+                self.draw_frame(force=True)
+            else:
+                self._is_subtitle_outdated = True
 
     def _layout_subtitle(self) -> None:
         """Places the subtitle over the video, as the user configured it."""
@@ -338,7 +380,6 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         font_size = max(
             round(min(width, height) * relative_size), SUBTITLE_MIN_FONT_SIZE
         )
-        self._subtitle_font.configure(size=-font_size)
 
         is_top = config.subtitle_position == "top"
         margin = max(round(height * 0.05), 6)
@@ -346,7 +387,7 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         y = margin if is_top else height - margin
         options: dict[str, Any] = {
             "text": self._subtitle_text,
-            "font": self._subtitle_font,
+            "font": (self._subtitle_font_family, -font_size, "bold"),
             "width": round(width * 0.86),
             "anchor": tk.N if is_top else tk.S,
             "justify": tk.CENTER,

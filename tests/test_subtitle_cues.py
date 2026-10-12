@@ -54,3 +54,20 @@ def test_track_finds_the_cue_being_shown() -> None:
     assert track.at(2.5) is None
     assert track.at(3.0) == Cue(3.0, 4.0, "b")
     assert track.at(4.0) is None
+
+
+def test_words_added_at_the_end_are_shown_for_some_time() -> None:
+    # An edit appends words with no time, at the end of the segment
+    words = (
+        TranscriptWord(0.0, 1.0, "Hello"),
+        TranscriptWord(1.0, 2.0, "world."),
+        TranscriptWord(2.0, 2.0, "Bye"),
+        TranscriptWord(2.0, 2.0, "now"),
+    )
+    segment = TranscriptSegment(0.0, 2.0, "Hello world. Bye now", words=words)
+
+    cues = build_cues([segment], 12)
+
+    assert [cue.text for cue in cues] == ["Hello world.", "Bye now"]
+    assert all(cue.start < cue.end for cue in cues)
+    assert cues[-1].end == 2.0
