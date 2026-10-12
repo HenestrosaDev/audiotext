@@ -162,6 +162,10 @@ def ui(app: Any) -> Iterator[Ui]:
 
     yield ui
 
+    # A dialog left open, whose input was faked, would keep the clicks of the
+    # next tests
+    if dialog := app.grab_current():
+        dialog.destroy()
     # Each test starts from the welcome page and an empty history
     ui.window.show_welcome()
     for entry in ui.store.top_level():
@@ -304,6 +308,66 @@ def test_the_actions_of_the_views_reach_the_history(
     ui.pump()
     assert ui.store.get(entry.id) is None
     assert ui.window._entry_view is None
+
+
+def test_the_sections_and_folders_of_the_sidebar_are_folded_in_place(
+    ui: Ui, audio_file: Path
+) -> None:
+    sidebar = ui.window.sidebar
+    group = ui.store.add_group("Work")
+    try:
+        entry = ui.add(title="Grouped", group_id=group.id)
+        folder = ui.add(
+            title="Folder",
+            kind=AudioSource.DIRECTORY.value,
+            source=str(audio_file.parent),
+        )
+        child = ui.add(title="talk.wav", parent_id=folder.id, text="x")
+        ui.pump()
+        row = sidebar._rows[entry.id]
+        assert sidebar.visible_entry_ids == [entry.id, folder.id]
+
+        # Clicked on its name and then on its chevron, the rows are hidden and
+        # shown again, not built again
+        header = sidebar._section_headers[group.id]
+        lbl_title = header.grid_slaves(row=0, column=1)[0]
+        lbl_title._label.event_generate("<Button-1>", x=2, y=2)
+        ui.pump()
+        assert not sidebar._section_bodies[group.id].winfo_ismapped()
+        assert sidebar.visible_entry_ids == [folder.id]
+        header.lbl_chevron._canvas.event_generate("<Button-1>", x=2, y=2)
+        ui.pump()
+        assert sidebar._section_bodies[group.id].winfo_ismapped()
+        # Also on the empty space between its name and its count
+        empty_space = {"x": header.winfo_width() // 2, "y": 2}
+        header._canvas.event_generate("<Button-1>", **empty_space)
+        ui.pump()
+        assert sidebar.visible_entry_ids == [folder.id]
+        header._canvas.event_generate("<Button-1>", **empty_space)
+        ui.pump()
+        assert sidebar._rows[entry.id] is row
+        assert row.winfo_ismapped()
+        assert sidebar.visible_entry_ids == [entry.id, folder.id]
+
+        # The files of a folder are built when it's first expanded
+        assert child.id not in sidebar._rows
+        sidebar.toggle_folder(folder.id)
+        ui.pump()
+        child_row = sidebar._rows[child.id]
+        assert child_row.winfo_ismapped()
+        assert sidebar.visible_entry_ids == [entry.id, folder.id, child.id]
+        sidebar.toggle_folder(folder.id)
+        ui.pump()
+        assert not child_row.winfo_ismapped()
+        assert sidebar.visible_entry_ids == [entry.id, folder.id]
+
+        # Selecting a file shows the files of its folder
+        sidebar.set_selected(child.id)
+        ui.pump()
+        assert sidebar._rows[child.id] is child_row
+        assert child_row.winfo_ismapped()
+    finally:
+        ui.store.delete_group(group.id)
 
 
 def test_the_transcript_can_be_searched_and_corrected(
