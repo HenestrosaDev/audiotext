@@ -337,6 +337,14 @@ def test_the_sections_and_folders_of_the_sidebar_are_folded_in_place(
         assert sidebar.visible_entry_ids == [folder.id]
         header.lbl_chevron._canvas.event_generate("<Button-1>", x=2, y=2)
         ui.pump()
+        assert sidebar._section_bodies[group.id].winfo_ismapped()
+        # Also on the empty space between its name and its count
+        empty_space = {"x": header.winfo_width() // 2, "y": 2}
+        header._canvas.event_generate("<Button-1>", **empty_space)
+        ui.pump()
+        assert sidebar.visible_entry_ids == [folder.id]
+        header._canvas.event_generate("<Button-1>", **empty_space)
+        ui.pump()
         assert sidebar._rows[entry.id] is row
         assert row.winfo_ismapped()
         assert sidebar.visible_entry_ids == [entry.id, folder.id]
