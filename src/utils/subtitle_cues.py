@@ -88,10 +88,18 @@ def _segment_cues(segment: TranscriptSegment, max_chars: int) -> list[Cue]:
                 cues.append(
                     Cue(segment.start if idx == 0 else start, next_start, chunk)
                 )
-        return cues
+        # Words added by an edit take no time, so a cue of them would never be shown
+        if all(cue.start < cue.end for cue in cues):
+            return cues
 
-    # Otherwise, the duration of the segment is shared by the length of each cue,
-    # which is shown until the next one starts
+    return _cues_by_length(segment, text, max_chars)
+
+
+def _cues_by_length(segment: TranscriptSegment, text: str, max_chars: int) -> list[Cue]:
+    """
+    Shares the duration of the segment by the length of each cue, which is shown
+    until the next one starts.
+    """
     ranges = _split_text(text, max_chars)
     duration = segment.end - segment.start
     starts = [segment.start + duration * start / len(text) for start, _end in ranges]
