@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-07 11:15+0200\n"
+"POT-Creation-Date: 2026-10-12 14:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -267,7 +267,7 @@ msgid "No audio was recorded."
 msgstr "녹음된 오디오가 없습니다."
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:446
+#: src/views/settings/preferences_dialog.py:460
 #: src/views/transcript/summary_panel.py:189
 #: src/views/transcript/transcript_view.py:447
 msgid "Summary"
@@ -789,7 +789,7 @@ msgid "New transcription:"
 msgstr "새 받아쓰기:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:785
+#: src/views/settings/preferences_dialog.py:799
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "버전 {version} 사용 가능"
@@ -965,7 +965,7 @@ msgstr "폴더 선택…"
 
 #: src/views/new_transcription/new_transcription_view.py:234
 #: src/views/settings/cards/output_card.py:98
-#: src/views/settings/preferences_dialog.py:436
+#: src/views/settings/preferences_dialog.py:450
 msgid "Change…"
 msgstr "변경…"
 
@@ -1055,68 +1055,68 @@ msgid "Enter a URL that starts with http:// or https://"
 msgstr "http:// 또는 https://로 시작하는 URL을 입력하세요"
 
 #: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:68
+#: src/views/settings/preferences_dialog.py:73
 msgid "OpenAI API key"
 msgstr "OpenAI API 키"
 
-#: src/views/settings/preferences_dialog.py:70
+#: src/views/settings/preferences_dialog.py:75
 msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
 msgstr "Whisper API 및 OpenAI로 요약하고 번역하는 데 필요합니다."
 
-#: src/views/settings/preferences_dialog.py:74
+#: src/views/settings/preferences_dialog.py:79
 msgid "Anthropic API key"
 msgstr "Anthropic API 키"
 
-#: src/views/settings/preferences_dialog.py:75
+#: src/views/settings/preferences_dialog.py:80
 msgid "Required to summarize and translate with Claude."
 msgstr "Claude로 요약하고 번역하는 데 필요합니다."
 
-#: src/views/settings/preferences_dialog.py:78
+#: src/views/settings/preferences_dialog.py:83
 msgid "DeepSeek API key"
 msgstr "DeepSeek API 키"
 
-#: src/views/settings/preferences_dialog.py:79
+#: src/views/settings/preferences_dialog.py:84
 msgid "Required to summarize and translate with DeepSeek."
 msgstr "DeepSeek로 요약하고 번역하는 데 필요합니다."
 
-#: src/views/settings/preferences_dialog.py:82
+#: src/views/settings/preferences_dialog.py:87
 msgid "Gemini API key"
 msgstr "Gemini API 키"
 
-#: src/views/settings/preferences_dialog.py:84
+#: src/views/settings/preferences_dialog.py:89
 msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr "Gemini로 요약하고 번역하는 데 필요합니다(Google AI Studio에서 발급)."
 
-#: src/views/settings/preferences_dialog.py:88
+#: src/views/settings/preferences_dialog.py:93
 msgid "Mistral API key"
 msgstr "Mistral API 키"
 
-#: src/views/settings/preferences_dialog.py:89
+#: src/views/settings/preferences_dialog.py:94
 msgid "Required to summarize and translate with Mistral."
 msgstr "Mistral로 요약하고 번역하는 데 필요합니다."
 
-#: src/views/settings/preferences_dialog.py:92
+#: src/views/settings/preferences_dialog.py:97
 msgid "xAI API key"
 msgstr "xAI API 키"
 
-#: src/views/settings/preferences_dialog.py:93
+#: src/views/settings/preferences_dialog.py:98
 msgid "Required to summarize and translate with Grok."
 msgstr "Grok으로 요약하고 번역하는 데 필요합니다."
 
-#: src/views/settings/preferences_dialog.py:96
+#: src/views/settings/preferences_dialog.py:101
 msgid "DeepL API key"
 msgstr "DeepL API 키"
 
-#: src/views/settings/preferences_dialog.py:97
+#: src/views/settings/preferences_dialog.py:102
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "DeepL로 번역하는 데 필요합니다. 무료 요금제의 키도 사용할 수 있습니다."
 
 #: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:100
+#: src/views/settings/preferences_dialog.py:105
 msgid "Google API key"
 msgstr "Google API 키"
 
-#: src/views/settings/preferences_dialog.py:102
+#: src/views/settings/preferences_dialog.py:107
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1125,223 +1125,227 @@ msgstr ""
 "Translation API)으로 번역하려면 필요합니다."
 
 #: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:106
+#: src/views/settings/preferences_dialog.py:111
 msgid "Hugging Face token"
 msgstr "Hugging Face 토큰"
 
-#: src/views/settings/preferences_dialog.py:108
+#: src/views/settings/preferences_dialog.py:113
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
 msgstr "WhisperX로 화자를 식별하는 데 필요합니다(pyannote/speaker-diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:160
+#: src/views/settings/preferences_dialog.py:165
 msgid "Preferences"
 msgstr "환경설정"
 
-#: src/views/settings/preferences_dialog.py:174
+#: src/views/settings/preferences_dialog.py:179
 msgid "General"
 msgstr "일반"
 
-#: src/views/settings/preferences_dialog.py:175
+#: src/views/settings/preferences_dialog.py:180
 msgid "AI"
 msgstr "AI"
 
-#: src/views/settings/preferences_dialog.py:176
+#: src/views/settings/preferences_dialog.py:181
 msgid "API keys"
 msgstr "API 키"
 
-#: src/views/settings/preferences_dialog.py:178
+#: src/views/settings/preferences_dialog.py:183
 #: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "자막"
 
-#: src/views/settings/preferences_dialog.py:180
+#: src/views/settings/preferences_dialog.py:185
 msgid "About"
 msgstr "정보"
 
-#: src/views/settings/preferences_dialog.py:295
+#: src/views/settings/preferences_dialog.py:300
 msgid "Appearance"
 msgstr "모양"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "System"
 msgstr "시스템"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "Light"
 msgstr "밝게"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "Dark"
 msgstr "어둡게"
 
-#: src/views/settings/preferences_dialog.py:305
+#: src/views/settings/preferences_dialog.py:310
+msgid "Interface size"
+msgstr "인터페이스 크기"
+
+#: src/views/settings/preferences_dialog.py:319
 msgid "Interface language"
 msgstr "인터페이스 언어"
 
-#: src/views/settings/preferences_dialog.py:311
+#: src/views/settings/preferences_dialog.py:325
 msgid "System language"
 msgstr "시스템 언어"
 
-#: src/views/settings/preferences_dialog.py:324
+#: src/views/settings/preferences_dialog.py:338
 msgid "Notifications"
 msgstr "알림"
 
-#: src/views/settings/preferences_dialog.py:325
+#: src/views/settings/preferences_dialog.py:339
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "받아쓰기가 완료되면 시스템 알림을 표시합니다."
 
-#: src/views/settings/preferences_dialog.py:336
+#: src/views/settings/preferences_dialog.py:350
 msgid "Updates"
 msgstr "업데이트"
 
-#: src/views/settings/preferences_dialog.py:337
+#: src/views/settings/preferences_dialog.py:351
 msgid "Checks for a new version when the app opens."
 msgstr "앱을 열 때 새 버전이 있는지 확인합니다."
 
-#: src/views/settings/preferences_dialog.py:353
+#: src/views/settings/preferences_dialog.py:367
 msgid "Date format"
 msgstr "날짜 형식"
 
-#: src/views/settings/preferences_dialog.py:370
+#: src/views/settings/preferences_dialog.py:384
 msgid "Time format"
 msgstr "시간 형식"
 
-#: src/views/settings/preferences_dialog.py:371
+#: src/views/settings/preferences_dialog.py:385
 msgid "Automatic uses the clock of the interface language."
 msgstr "자동은 인터페이스 언어의 시계 형식을 사용합니다."
 
-#: src/views/settings/preferences_dialog.py:377
+#: src/views/settings/preferences_dialog.py:391
 msgid "Automatic"
 msgstr "자동"
 
-#: src/views/settings/preferences_dialog.py:436
+#: src/views/settings/preferences_dialog.py:450
 msgid "Set…"
 msgstr "설정…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:471
+#: src/views/settings/preferences_dialog.py:485
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "번역"
 
-#: src/views/settings/preferences_dialog.py:483
+#: src/views/settings/preferences_dialog.py:497
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:488
+#: src/views/settings/preferences_dialog.py:502
 msgid "Server URL"
 msgstr "서버 URL"
 
-#: src/views/settings/preferences_dialog.py:489
+#: src/views/settings/preferences_dialog.py:503
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama는 API 키 없이 컴퓨터에서 모델을 실행합니다."
 
-#: src/views/settings/preferences_dialog.py:520
+#: src/views/settings/preferences_dialog.py:534
 msgid "Provider"
 msgstr "제공자"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:527
+#: src/views/settings/preferences_dialog.py:541
 msgid "Model"
 msgstr "모델"
 
-#: src/views/settings/preferences_dialog.py:528
+#: src/views/settings/preferences_dialog.py:542
 msgid "The default model of the provider if empty."
 msgstr "비어 있으면 제공자의 기본 모델이 사용됩니다."
 
-#: src/views/settings/preferences_dialog.py:570
+#: src/views/settings/preferences_dialog.py:584
 msgid "Compute type"
 msgstr "연산 유형"
 
-#: src/views/settings/preferences_dialog.py:571
+#: src/views/settings/preferences_dialog.py:585
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16은 GPU에서 더 빠릅니다. int8은 메모리를 덜 사용합니다."
 
-#: src/views/settings/preferences_dialog.py:587
+#: src/views/settings/preferences_dialog.py:601
 msgid "Batch size"
 msgstr "배치 크기"
 
-#: src/views/settings/preferences_dialog.py:588
+#: src/views/settings/preferences_dialog.py:602
 msgid "Lower it if you run out of memory."
 msgstr "메모리가 부족하면 낮추세요."
 
-#: src/views/settings/preferences_dialog.py:600
+#: src/views/settings/preferences_dialog.py:614
 msgid "Use CPU"
 msgstr "CPU 사용"
 
-#: src/views/settings/preferences_dialog.py:603
+#: src/views/settings/preferences_dialog.py:617
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "CUDA GPU를 찾을 수 없어 WhisperX가 CPU에서 실행됩니다."
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:631
 msgid "Highlight words"
 msgstr "단어 강조"
 
-#: src/views/settings/preferences_dialog.py:618
+#: src/views/settings/preferences_dialog.py:632
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "말하는 단어에 밑줄을 표시합니다(.srt 및 .vtt)."
 
-#: src/views/settings/preferences_dialog.py:625
+#: src/views/settings/preferences_dialog.py:639
 msgid "Max. line count"
 msgstr "최대 줄 수"
 
-#: src/views/settings/preferences_dialog.py:632
+#: src/views/settings/preferences_dialog.py:646
 msgid "Max. line width"
 msgstr "최대 줄 너비"
 
-#: src/views/settings/preferences_dialog.py:644
+#: src/views/settings/preferences_dialog.py:658
 msgid "Temperature"
 msgstr "온도"
 
-#: src/views/settings/preferences_dialog.py:645
+#: src/views/settings/preferences_dialog.py:659
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "0에서 1 사이입니다. 값이 클수록 더 무작위적입니다."
 
-#: src/views/settings/preferences_dialog.py:657
+#: src/views/settings/preferences_dialog.py:671
 msgid "Timestamps of the words"
 msgstr "단어 타임스탬프"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:672
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "재생 중 각 단어를 강조합니다(whisper-1 모델). 시간이 더 걸립니다."
 
-#: src/views/settings/preferences_dialog.py:688
+#: src/views/settings/preferences_dialog.py:702
 #, python-brace-format
 msgid "Version {version}"
 msgstr "버전 {version}"
 
-#: src/views/settings/preferences_dialog.py:692
+#: src/views/settings/preferences_dialog.py:706
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "제작: {author}"
 
-#: src/views/settings/preferences_dialog.py:708
+#: src/views/settings/preferences_dialog.py:722
 msgid "Documentation"
 msgstr "문서"
 
-#: src/views/settings/preferences_dialog.py:728
+#: src/views/settings/preferences_dialog.py:742
 msgid "Donate"
 msgstr "후원하기"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:756
 msgid "Check for updates"
 msgstr "업데이트 확인"
 
-#: src/views/settings/preferences_dialog.py:761
+#: src/views/settings/preferences_dialog.py:775
 msgid "Checking for updates…"
 msgstr "업데이트 확인 중…"
 
-#: src/views/settings/preferences_dialog.py:772
+#: src/views/settings/preferences_dialog.py:786
 msgid "Could not check for updates."
 msgstr "업데이트를 확인할 수 없습니다."
 
-#: src/views/settings/preferences_dialog.py:781
+#: src/views/settings/preferences_dialog.py:795
 msgid "Download"
 msgstr "다운로드"
 
-#: src/views/settings/preferences_dialog.py:791
+#: src/views/settings/preferences_dialog.py:805
 msgid "You have the latest version."
 msgstr "최신 버전을 사용 중입니다."
 
@@ -1795,19 +1799,19 @@ msgstr "다시 생성"
 msgid "Generated by {model} · {date}"
 msgstr "{model} 생성 · {date}"
 
-#: src/views/transcript/transcript_text.py:186
+#: src/views/transcript/transcript_text.py:193
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "세그먼트를 클릭하면 재생합니다. 마우스 오른쪽 버튼을 클릭하면 편집합니다."
 
-#: src/views/transcript/transcript_text.py:191
+#: src/views/transcript/transcript_text.py:198
 msgid "The plain text has been edited; the transcript keeps the original."
 msgstr "일반 텍스트가 편집되었습니다. 대본에는 원본이 유지됩니다."
 
-#: src/views/transcript/transcript_text.py:199
+#: src/views/transcript/transcript_text.py:206
 msgid "You can edit the text. The changes are saved automatically."
 msgstr "텍스트를 편집할 수 있습니다. 변경 사항은 자동으로 저장됩니다."
 
-#: src/views/transcript/transcript_text.py:202
+#: src/views/transcript/transcript_text.py:209
 msgid ""
 "Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
 "transcribe-diarize models of the Whisper API."
@@ -1815,7 +1819,7 @@ msgstr ""
 "타임스탬프는 WhisperX와 Whisper API의 whisper-1 및 gpt-4o-transcribe-diarize 모델에서만"
 " 사용할 수 있습니다."
 
-#: src/views/transcript/transcript_text.py:371
+#: src/views/transcript/transcript_text.py:386
 msgid "This transcription has no timestamps."
 msgstr "이 받아쓰기에는 타임스탬프가 없습니다."
 

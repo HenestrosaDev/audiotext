@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-07 11:15+0200\n"
+"POT-Creation-Date: 2026-10-12 14:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -282,7 +282,7 @@ msgid "No audio was recorded."
 msgstr "Non è stato registrato alcun audio."
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:446
+#: src/views/settings/preferences_dialog.py:460
 #: src/views/transcript/summary_panel.py:189
 #: src/views/transcript/transcript_view.py:447
 msgid "Summary"
@@ -814,7 +814,7 @@ msgid "New transcription:"
 msgstr "Nuova trascrizione:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:785
+#: src/views/settings/preferences_dialog.py:799
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "La versione {version} è disponibile"
@@ -998,7 +998,7 @@ msgstr "Scegli una cartella…"
 
 #: src/views/new_transcription/new_transcription_view.py:234
 #: src/views/settings/cards/output_card.py:98
-#: src/views/settings/preferences_dialog.py:436
+#: src/views/settings/preferences_dialog.py:450
 msgid "Change…"
 msgstr "Cambia…"
 
@@ -1088,72 +1088,72 @@ msgid "Enter a URL that starts with http:// or https://"
 msgstr "Inserisci un URL che inizi con http:// o https://"
 
 #: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:68
+#: src/views/settings/preferences_dialog.py:73
 msgid "OpenAI API key"
 msgstr "Chiave API di OpenAI"
 
-#: src/views/settings/preferences_dialog.py:70
+#: src/views/settings/preferences_dialog.py:75
 msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
 msgstr "Necessaria per l'API Whisper e per riassumere e tradurre con OpenAI."
 
-#: src/views/settings/preferences_dialog.py:74
+#: src/views/settings/preferences_dialog.py:79
 msgid "Anthropic API key"
 msgstr "Chiave API di Anthropic"
 
-#: src/views/settings/preferences_dialog.py:75
+#: src/views/settings/preferences_dialog.py:80
 msgid "Required to summarize and translate with Claude."
 msgstr "Necessaria per riassumere e tradurre con Claude."
 
-#: src/views/settings/preferences_dialog.py:78
+#: src/views/settings/preferences_dialog.py:83
 msgid "DeepSeek API key"
 msgstr "Chiave API di DeepSeek"
 
-#: src/views/settings/preferences_dialog.py:79
+#: src/views/settings/preferences_dialog.py:84
 msgid "Required to summarize and translate with DeepSeek."
 msgstr "Necessaria per riassumere e tradurre con DeepSeek."
 
-#: src/views/settings/preferences_dialog.py:82
+#: src/views/settings/preferences_dialog.py:87
 msgid "Gemini API key"
 msgstr "Chiave API di Gemini"
 
-#: src/views/settings/preferences_dialog.py:84
+#: src/views/settings/preferences_dialog.py:89
 msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr ""
 "Necessaria per riassumere e tradurre con Gemini (si ottiene in Google AI "
 "Studio)."
 
-#: src/views/settings/preferences_dialog.py:88
+#: src/views/settings/preferences_dialog.py:93
 msgid "Mistral API key"
 msgstr "Chiave API di Mistral"
 
-#: src/views/settings/preferences_dialog.py:89
+#: src/views/settings/preferences_dialog.py:94
 msgid "Required to summarize and translate with Mistral."
 msgstr "Necessaria per riassumere e tradurre con Mistral."
 
-#: src/views/settings/preferences_dialog.py:92
+#: src/views/settings/preferences_dialog.py:97
 msgid "xAI API key"
 msgstr "Chiave API di xAI"
 
-#: src/views/settings/preferences_dialog.py:93
+#: src/views/settings/preferences_dialog.py:98
 msgid "Required to summarize and translate with Grok."
 msgstr "Necessaria per riassumere e tradurre con Grok."
 
-#: src/views/settings/preferences_dialog.py:96
+#: src/views/settings/preferences_dialog.py:101
 msgid "DeepL API key"
 msgstr "Chiave API di DeepL"
 
-#: src/views/settings/preferences_dialog.py:97
+#: src/views/settings/preferences_dialog.py:102
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr ""
 "Necessaria per tradurre con DeepL. Funzionano anche le chiavi del piano "
 "gratuito."
 
 #: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:100
+#: src/views/settings/preferences_dialog.py:105
 msgid "Google API key"
 msgstr "Chiave API di Google"
 
-#: src/views/settings/preferences_dialog.py:102
+#: src/views/settings/preferences_dialog.py:107
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1163,11 +1163,11 @@ msgstr ""
 "Translation API)."
 
 #: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:106
+#: src/views/settings/preferences_dialog.py:111
 msgid "Hugging Face token"
 msgstr "Token di Hugging Face"
 
-#: src/views/settings/preferences_dialog.py:108
+#: src/views/settings/preferences_dialog.py:113
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1175,217 +1175,221 @@ msgstr ""
 "Necessario per identificare i parlanti con WhisperX (pyannote/speaker-"
 "diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:160
+#: src/views/settings/preferences_dialog.py:165
 msgid "Preferences"
 msgstr "Preferenze"
 
-#: src/views/settings/preferences_dialog.py:174
+#: src/views/settings/preferences_dialog.py:179
 msgid "General"
 msgstr "Generale"
 
-#: src/views/settings/preferences_dialog.py:175
+#: src/views/settings/preferences_dialog.py:180
 msgid "AI"
 msgstr "IA"
 
-#: src/views/settings/preferences_dialog.py:176
+#: src/views/settings/preferences_dialog.py:181
 msgid "API keys"
 msgstr "Chiavi API"
 
-#: src/views/settings/preferences_dialog.py:178
+#: src/views/settings/preferences_dialog.py:183
 #: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "Sottotitoli"
 
-#: src/views/settings/preferences_dialog.py:180
+#: src/views/settings/preferences_dialog.py:185
 msgid "About"
 msgstr "Informazioni"
 
-#: src/views/settings/preferences_dialog.py:295
+#: src/views/settings/preferences_dialog.py:300
 msgid "Appearance"
 msgstr "Aspetto"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "System"
 msgstr "Sistema"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "Light"
 msgstr "Chiaro"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "Dark"
 msgstr "Scuro"
 
-#: src/views/settings/preferences_dialog.py:305
+#: src/views/settings/preferences_dialog.py:310
+msgid "Interface size"
+msgstr "Dimensione dell'interfaccia"
+
+#: src/views/settings/preferences_dialog.py:319
 msgid "Interface language"
 msgstr "Lingua dell'interfaccia"
 
-#: src/views/settings/preferences_dialog.py:311
+#: src/views/settings/preferences_dialog.py:325
 msgid "System language"
 msgstr "Lingua di sistema"
 
-#: src/views/settings/preferences_dialog.py:324
+#: src/views/settings/preferences_dialog.py:338
 msgid "Notifications"
 msgstr "Notifiche"
 
-#: src/views/settings/preferences_dialog.py:325
+#: src/views/settings/preferences_dialog.py:339
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "Mostra una notifica di sistema quando una trascrizione è pronta."
 
-#: src/views/settings/preferences_dialog.py:336
+#: src/views/settings/preferences_dialog.py:350
 msgid "Updates"
 msgstr "Aggiornamenti"
 
-#: src/views/settings/preferences_dialog.py:337
+#: src/views/settings/preferences_dialog.py:351
 msgid "Checks for a new version when the app opens."
 msgstr "Controlla se è disponibile una nuova versione all'apertura dell'app."
 
-#: src/views/settings/preferences_dialog.py:353
+#: src/views/settings/preferences_dialog.py:367
 msgid "Date format"
 msgstr "Formato della data"
 
-#: src/views/settings/preferences_dialog.py:370
+#: src/views/settings/preferences_dialog.py:384
 msgid "Time format"
 msgstr "Formato dell'ora"
 
-#: src/views/settings/preferences_dialog.py:371
+#: src/views/settings/preferences_dialog.py:385
 msgid "Automatic uses the clock of the interface language."
 msgstr "Automatico usa l'orologio della lingua dell'interfaccia."
 
-#: src/views/settings/preferences_dialog.py:377
+#: src/views/settings/preferences_dialog.py:391
 msgid "Automatic"
 msgstr "Automatico"
 
-#: src/views/settings/preferences_dialog.py:436
+#: src/views/settings/preferences_dialog.py:450
 msgid "Set…"
 msgstr "Imposta…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:471
+#: src/views/settings/preferences_dialog.py:485
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "Traduzione"
 
-#: src/views/settings/preferences_dialog.py:483
+#: src/views/settings/preferences_dialog.py:497
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:488
+#: src/views/settings/preferences_dialog.py:502
 msgid "Server URL"
 msgstr "URL del server"
 
-#: src/views/settings/preferences_dialog.py:489
+#: src/views/settings/preferences_dialog.py:503
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama esegue i modelli sul tuo computer, senza chiave API."
 
-#: src/views/settings/preferences_dialog.py:520
+#: src/views/settings/preferences_dialog.py:534
 msgid "Provider"
 msgstr "Fornitore"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:527
+#: src/views/settings/preferences_dialog.py:541
 msgid "Model"
 msgstr "Modello"
 
-#: src/views/settings/preferences_dialog.py:528
+#: src/views/settings/preferences_dialog.py:542
 msgid "The default model of the provider if empty."
 msgstr "Se vuoto, il modello predefinito del fornitore."
 
-#: src/views/settings/preferences_dialog.py:570
+#: src/views/settings/preferences_dialog.py:584
 msgid "Compute type"
 msgstr "Tipo di calcolo"
 
-#: src/views/settings/preferences_dialog.py:571
+#: src/views/settings/preferences_dialog.py:585
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 è più veloce sulle GPU. int8 usa meno memoria."
 
-#: src/views/settings/preferences_dialog.py:587
+#: src/views/settings/preferences_dialog.py:601
 msgid "Batch size"
 msgstr "Dimensione del batch"
 
-#: src/views/settings/preferences_dialog.py:588
+#: src/views/settings/preferences_dialog.py:602
 msgid "Lower it if you run out of memory."
 msgstr "Riducilo se esaurisci la memoria."
 
-#: src/views/settings/preferences_dialog.py:600
+#: src/views/settings/preferences_dialog.py:614
 msgid "Use CPU"
 msgstr "Usa la CPU"
 
-#: src/views/settings/preferences_dialog.py:603
+#: src/views/settings/preferences_dialog.py:617
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr ""
 "Non è stata trovata nessuna GPU CUDA, quindi WhisperX viene eseguito "
 "sulla CPU."
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:631
 msgid "Highlight words"
 msgstr "Evidenzia le parole"
 
-#: src/views/settings/preferences_dialog.py:618
+#: src/views/settings/preferences_dialog.py:632
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "Sottolinea ogni parola mentre viene pronunciata (.srt e .vtt)."
 
-#: src/views/settings/preferences_dialog.py:625
+#: src/views/settings/preferences_dialog.py:639
 msgid "Max. line count"
 msgstr "N. max di righe"
 
-#: src/views/settings/preferences_dialog.py:632
+#: src/views/settings/preferences_dialog.py:646
 msgid "Max. line width"
 msgstr "Larghezza max riga"
 
-#: src/views/settings/preferences_dialog.py:644
+#: src/views/settings/preferences_dialog.py:658
 msgid "Temperature"
 msgstr "Temperatura"
 
-#: src/views/settings/preferences_dialog.py:645
+#: src/views/settings/preferences_dialog.py:659
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "Tra 0 e 1. Valori più alti sono più casuali."
 
-#: src/views/settings/preferences_dialog.py:657
+#: src/views/settings/preferences_dialog.py:671
 msgid "Timestamps of the words"
 msgstr "Marcatori temporali delle parole"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:672
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr ""
 "Evidenzia ogni parola durante la riproduzione (modello whisper-1). "
 "Richiede più tempo."
 
-#: src/views/settings/preferences_dialog.py:688
+#: src/views/settings/preferences_dialog.py:702
 #, python-brace-format
 msgid "Version {version}"
 msgstr "Versione {version}"
 
-#: src/views/settings/preferences_dialog.py:692
+#: src/views/settings/preferences_dialog.py:706
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "Creato da {author}"
 
-#: src/views/settings/preferences_dialog.py:708
+#: src/views/settings/preferences_dialog.py:722
 msgid "Documentation"
 msgstr "Documentazione"
 
-#: src/views/settings/preferences_dialog.py:728
+#: src/views/settings/preferences_dialog.py:742
 msgid "Donate"
 msgstr "Dona"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:756
 msgid "Check for updates"
 msgstr "Controlla aggiornamenti"
 
-#: src/views/settings/preferences_dialog.py:761
+#: src/views/settings/preferences_dialog.py:775
 msgid "Checking for updates…"
 msgstr "Ricerca di aggiornamenti in corso…"
 
-#: src/views/settings/preferences_dialog.py:772
+#: src/views/settings/preferences_dialog.py:786
 msgid "Could not check for updates."
 msgstr "Impossibile controllare gli aggiornamenti."
 
-#: src/views/settings/preferences_dialog.py:781
+#: src/views/settings/preferences_dialog.py:795
 msgid "Download"
 msgstr "Scarica"
 
-#: src/views/settings/preferences_dialog.py:791
+#: src/views/settings/preferences_dialog.py:805
 msgid "You have the latest version."
 msgstr "Hai l'ultima versione."
 
@@ -1874,21 +1878,21 @@ msgstr "Rigenera"
 msgid "Generated by {model} · {date}"
 msgstr "Generato da {model} · {date}"
 
-#: src/views/transcript/transcript_text.py:186
+#: src/views/transcript/transcript_text.py:193
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "Fai clic su un segmento per riprodurlo. Fai clic destro per modificarlo."
 
-#: src/views/transcript/transcript_text.py:191
+#: src/views/transcript/transcript_text.py:198
 msgid "The plain text has been edited; the transcript keeps the original."
 msgstr ""
 "Il testo semplice è stato modificato; la trascrizione conserva "
 "l'originale."
 
-#: src/views/transcript/transcript_text.py:199
+#: src/views/transcript/transcript_text.py:206
 msgid "You can edit the text. The changes are saved automatically."
 msgstr "Puoi modificare il testo. Le modifiche vengono salvate automaticamente."
 
-#: src/views/transcript/transcript_text.py:202
+#: src/views/transcript/transcript_text.py:209
 msgid ""
 "Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
 "transcribe-diarize models of the Whisper API."
@@ -1896,7 +1900,7 @@ msgstr ""
 "I marcatori temporali sono disponibili solo con WhisperX e con i modelli "
 "whisper-1 e gpt-4o-transcribe-diarize dell'API Whisper."
 
-#: src/views/transcript/transcript_text.py:371
+#: src/views/transcript/transcript_text.py:386
 msgid "This transcription has no timestamps."
 msgstr "Questa trascrizione non ha marcatori temporali."
 
