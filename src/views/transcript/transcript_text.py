@@ -127,6 +127,13 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._configure_tags()
         on_language_change(self, self._on_language_change)
 
+    def _set_scaling(
+        self, new_widget_scaling: float, new_window_scaling: float
+    ) -> None:
+        super()._set_scaling(new_widget_scaling, new_window_scaling)
+        # The size of the interface changed (see `PreferencesDialog`)
+        self._tag_fonts()
+
     def destroy(self) -> None:
         if self._save_text_after_id:
             self.after_cancel(self._save_text_after_id)
@@ -333,7 +340,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
     def _configure_tags(self) -> None:
         textbox = self.tbx_transcript
         textbox.tag_config("timestamp", foreground=self._color(theme.HINT_TEXT))
-        self._tag_font("timestamp", theme.font(12, family=theme.MONOSPACE_FAMILY))
+        self._tag_fonts()
         textbox.tag_config("empty_segment", foreground=self._color(theme.HINT_TEXT))
         textbox.tag_config("current", background=self._color(CURRENT_SEGMENT_COLOR))
         textbox.tag_config("current_word", background=self._color(CURRENT_WORD_COLOR))
@@ -344,11 +351,19 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                 "current_match", background=self._color(CURRENT_MATCH_COLOR)
             )
 
+    def _tag_fonts(self) -> None:
+        """Sets the fonts of the tags, with the scaled size of the interface."""
+        self._tag_font("timestamp", theme.font(12, family=theme.MONOSPACE_FAMILY))
+        for tag in self.tbx_transcript.tag_names():
+            if tag.startswith("speaker_"):
+                self._tag_font(tag, theme.font(13, "bold"))
+
     def _tag_font(self, tag: str, font: ctk.CTkFont) -> None:
         # CTkTextbox forbids fonts in the tags, since they don't follow its
         # scaling, so they're set on the Tk widget with the scaled size
-        textbox = self.tbx_transcript
-        textbox._textbox.tag_config(tag, font=textbox._apply_font_scaling(font))
+        self.tbx_transcript._textbox.tag_config(
+            tag, font=self._apply_font_scaling(font)
+        )
 
     def _render_transcript(self) -> None:
         textbox = self.tbx_transcript

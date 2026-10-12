@@ -131,9 +131,12 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         :param translator: Translates the entries of the history. By default, with
                            the provider chosen by the user.
         """
+        config_system = cm.ConfigManager.get_config_system()
+        # Before the window is created, so it isn't scaled again once it's shown
+        ctk.set_widget_scaling(config_system.ui_scale / 100)
+
         super().__init__()
 
-        config_system = cm.ConfigManager.get_config_system()
         i18n.set_language(config_system.ui_language)
 
         # Modes: "System", "Dark", "Light"

@@ -17,6 +17,10 @@ class TimeFormat(Enum):
     HOURS_24 = "24"
 
 
+# Sizes of the interface that can be chosen, as percentages of the default one
+UI_SCALES = (80, 90, 100, 110, 125, 150, 175, 200)
+
+
 class SubtitleTrack(Enum):
     """The text shown as the subtitles of a video."""
 
@@ -29,6 +33,8 @@ class ConfigSystem:
     appearance_mode: str
     # Added in later versions, so they have a default for older `config.ini` files
     ui_language: str = "system"
+    # Size of the interface, as a percentage of the default one (see `UI_SCALES`)
+    ui_scale: int = 100
     is_sidebar_collapsed: bool = False
     sidebar_width: int = 290
     # Part of the transcription view taken by the video: its height when the
@@ -67,6 +73,7 @@ class ConfigSystem:
         SECTION = "system"
         APPEARANCE_MODE = "appearance_mode"
         UI_LANGUAGE = "ui_language"
+        UI_SCALE = "ui_scale"
         IS_SIDEBAR_COLLAPSED = "is_sidebar_collapsed"
         SIDEBAR_WIDTH = "sidebar_width"
         LANDSCAPE_VIDEO_RATIO = "landscape_video_ratio"
