@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-07 11:15+0200\n"
+"POT-Creation-Date: 2026-10-12 14:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -277,7 +277,7 @@ msgid "No audio was recorded."
 msgstr "Nebyl nahrán žádný zvuk."
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:446
+#: src/views/settings/preferences_dialog.py:460
 #: src/views/transcript/summary_panel.py:189
 #: src/views/transcript/transcript_view.py:447
 msgid "Summary"
@@ -807,7 +807,7 @@ msgid "New transcription:"
 msgstr "Nový přepis:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:785
+#: src/views/settings/preferences_dialog.py:799
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "Je k dispozici verze {version}"
@@ -987,7 +987,7 @@ msgstr "Vybrat složku…"
 
 #: src/views/new_transcription/new_transcription_view.py:234
 #: src/views/settings/cards/output_card.py:98
-#: src/views/settings/preferences_dialog.py:436
+#: src/views/settings/preferences_dialog.py:450
 msgid "Change…"
 msgstr "Změnit…"
 
@@ -1077,70 +1077,70 @@ msgid "Enter a URL that starts with http:// or https://"
 msgstr "Zadejte URL, která začíná http:// nebo https://"
 
 #: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:68
+#: src/views/settings/preferences_dialog.py:73
 msgid "OpenAI API key"
 msgstr "Klíč OpenAI API"
 
-#: src/views/settings/preferences_dialog.py:70
+#: src/views/settings/preferences_dialog.py:75
 msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
 msgstr "Vyžadován pro Whisper API a pro shrnutí a překlad pomocí OpenAI."
 
-#: src/views/settings/preferences_dialog.py:74
+#: src/views/settings/preferences_dialog.py:79
 msgid "Anthropic API key"
 msgstr "Klíč API Anthropic"
 
-#: src/views/settings/preferences_dialog.py:75
+#: src/views/settings/preferences_dialog.py:80
 msgid "Required to summarize and translate with Claude."
 msgstr "Vyžadován pro shrnutí a překlad pomocí Claude."
 
-#: src/views/settings/preferences_dialog.py:78
+#: src/views/settings/preferences_dialog.py:83
 msgid "DeepSeek API key"
 msgstr "Klíč API DeepSeek"
 
-#: src/views/settings/preferences_dialog.py:79
+#: src/views/settings/preferences_dialog.py:84
 msgid "Required to summarize and translate with DeepSeek."
 msgstr "Vyžadován pro shrnutí a překlad pomocí DeepSeek."
 
-#: src/views/settings/preferences_dialog.py:82
+#: src/views/settings/preferences_dialog.py:87
 msgid "Gemini API key"
 msgstr "Klíč API Gemini"
 
-#: src/views/settings/preferences_dialog.py:84
+#: src/views/settings/preferences_dialog.py:89
 msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr ""
 "Vyžadován pro shrnutí a překlad pomocí Gemini (získáte jej v Google AI "
 "Studio)."
 
-#: src/views/settings/preferences_dialog.py:88
+#: src/views/settings/preferences_dialog.py:93
 msgid "Mistral API key"
 msgstr "Klíč API Mistral"
 
-#: src/views/settings/preferences_dialog.py:89
+#: src/views/settings/preferences_dialog.py:94
 msgid "Required to summarize and translate with Mistral."
 msgstr "Vyžadován pro shrnutí a překlad pomocí Mistral."
 
-#: src/views/settings/preferences_dialog.py:92
+#: src/views/settings/preferences_dialog.py:97
 msgid "xAI API key"
 msgstr "Klíč API xAI"
 
-#: src/views/settings/preferences_dialog.py:93
+#: src/views/settings/preferences_dialog.py:98
 msgid "Required to summarize and translate with Grok."
 msgstr "Vyžadován pro shrnutí a překlad pomocí Grok."
 
-#: src/views/settings/preferences_dialog.py:96
+#: src/views/settings/preferences_dialog.py:101
 msgid "DeepL API key"
 msgstr "Klíč API DeepL"
 
-#: src/views/settings/preferences_dialog.py:97
+#: src/views/settings/preferences_dialog.py:102
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "Vyžadován pro překlad pomocí DeepL. Fungují i klíče bezplatného tarifu."
 
 #: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:100
+#: src/views/settings/preferences_dialog.py:105
 msgid "Google API key"
 msgstr "Klíč Google API"
 
-#: src/views/settings/preferences_dialog.py:102
+#: src/views/settings/preferences_dialog.py:107
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1149,11 +1149,11 @@ msgstr ""
 " Vyžadován pro překlad pomocí Překladače Google (Cloud Translation API)."
 
 #: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:106
+#: src/views/settings/preferences_dialog.py:111
 msgid "Hugging Face token"
 msgstr "Token Hugging Face"
 
-#: src/views/settings/preferences_dialog.py:108
+#: src/views/settings/preferences_dialog.py:113
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1161,213 +1161,217 @@ msgstr ""
 "Vyžadován pro rozpoznávání mluvčích pomocí WhisperX (pyannote/speaker-"
 "diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:160
+#: src/views/settings/preferences_dialog.py:165
 msgid "Preferences"
 msgstr "Předvolby"
 
-#: src/views/settings/preferences_dialog.py:174
+#: src/views/settings/preferences_dialog.py:179
 msgid "General"
 msgstr "Obecné"
 
-#: src/views/settings/preferences_dialog.py:175
+#: src/views/settings/preferences_dialog.py:180
 msgid "AI"
 msgstr "AI"
 
-#: src/views/settings/preferences_dialog.py:176
+#: src/views/settings/preferences_dialog.py:181
 msgid "API keys"
 msgstr "Klíče API"
 
-#: src/views/settings/preferences_dialog.py:178
+#: src/views/settings/preferences_dialog.py:183
 #: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "Titulky"
 
-#: src/views/settings/preferences_dialog.py:180
+#: src/views/settings/preferences_dialog.py:185
 msgid "About"
 msgstr "O aplikaci"
 
-#: src/views/settings/preferences_dialog.py:295
+#: src/views/settings/preferences_dialog.py:300
 msgid "Appearance"
 msgstr "Vzhled"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "System"
 msgstr "Systém"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "Light"
 msgstr "Světlý"
 
-#: src/views/settings/preferences_dialog.py:299
+#: src/views/settings/preferences_dialog.py:304
 msgid "Dark"
 msgstr "Tmavý"
 
-#: src/views/settings/preferences_dialog.py:305
+#: src/views/settings/preferences_dialog.py:310
+msgid "Interface size"
+msgstr "Velikost rozhraní"
+
+#: src/views/settings/preferences_dialog.py:319
 msgid "Interface language"
 msgstr "Jazyk rozhraní"
 
-#: src/views/settings/preferences_dialog.py:311
+#: src/views/settings/preferences_dialog.py:325
 msgid "System language"
 msgstr "Jazyk systému"
 
-#: src/views/settings/preferences_dialog.py:324
+#: src/views/settings/preferences_dialog.py:338
 msgid "Notifications"
 msgstr "Oznámení"
 
-#: src/views/settings/preferences_dialog.py:325
+#: src/views/settings/preferences_dialog.py:339
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "Zobrazí systémové oznámení, když je přepis hotový."
 
-#: src/views/settings/preferences_dialog.py:336
+#: src/views/settings/preferences_dialog.py:350
 msgid "Updates"
 msgstr "Aktualizace"
 
-#: src/views/settings/preferences_dialog.py:337
+#: src/views/settings/preferences_dialog.py:351
 msgid "Checks for a new version when the app opens."
 msgstr "Při otevření aplikace zkontroluje, zda je k dispozici nová verze."
 
-#: src/views/settings/preferences_dialog.py:353
+#: src/views/settings/preferences_dialog.py:367
 msgid "Date format"
 msgstr "Formát data"
 
-#: src/views/settings/preferences_dialog.py:370
+#: src/views/settings/preferences_dialog.py:384
 msgid "Time format"
 msgstr "Formát času"
 
-#: src/views/settings/preferences_dialog.py:371
+#: src/views/settings/preferences_dialog.py:385
 msgid "Automatic uses the clock of the interface language."
 msgstr "Automaticky se použije formát času jazyka rozhraní."
 
-#: src/views/settings/preferences_dialog.py:377
+#: src/views/settings/preferences_dialog.py:391
 msgid "Automatic"
 msgstr "Automaticky"
 
-#: src/views/settings/preferences_dialog.py:436
+#: src/views/settings/preferences_dialog.py:450
 msgid "Set…"
 msgstr "Nastavit…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:471
+#: src/views/settings/preferences_dialog.py:485
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "Překlad"
 
-#: src/views/settings/preferences_dialog.py:483
+#: src/views/settings/preferences_dialog.py:497
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:488
+#: src/views/settings/preferences_dialog.py:502
 msgid "Server URL"
 msgstr "URL serveru"
 
-#: src/views/settings/preferences_dialog.py:489
+#: src/views/settings/preferences_dialog.py:503
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama spouští modely ve vašem počítači, bez klíče API."
 
-#: src/views/settings/preferences_dialog.py:520
+#: src/views/settings/preferences_dialog.py:534
 msgid "Provider"
 msgstr "Poskytovatel"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:527
+#: src/views/settings/preferences_dialog.py:541
 msgid "Model"
 msgstr "Model"
 
-#: src/views/settings/preferences_dialog.py:528
+#: src/views/settings/preferences_dialog.py:542
 msgid "The default model of the provider if empty."
 msgstr "Pokud je prázdné, výchozí model poskytovatele."
 
-#: src/views/settings/preferences_dialog.py:570
+#: src/views/settings/preferences_dialog.py:584
 msgid "Compute type"
 msgstr "Typ výpočtu"
 
-#: src/views/settings/preferences_dialog.py:571
+#: src/views/settings/preferences_dialog.py:585
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 je rychlejší na GPU. int8 využívá méně paměti."
 
-#: src/views/settings/preferences_dialog.py:587
+#: src/views/settings/preferences_dialog.py:601
 msgid "Batch size"
 msgstr "Velikost dávky"
 
-#: src/views/settings/preferences_dialog.py:588
+#: src/views/settings/preferences_dialog.py:602
 msgid "Lower it if you run out of memory."
 msgstr "Snižte, pokud dojde paměť."
 
-#: src/views/settings/preferences_dialog.py:600
+#: src/views/settings/preferences_dialog.py:614
 msgid "Use CPU"
 msgstr "Použít CPU"
 
-#: src/views/settings/preferences_dialog.py:603
+#: src/views/settings/preferences_dialog.py:617
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "Nebyla nalezena žádná GPU s CUDA, proto WhisperX běží na CPU."
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:631
 msgid "Highlight words"
 msgstr "Zvýrazňovat slova"
 
-#: src/views/settings/preferences_dialog.py:618
+#: src/views/settings/preferences_dialog.py:632
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "Podtrhuje každé slovo ve chvíli, kdy zazní (.srt a .vtt)."
 
-#: src/views/settings/preferences_dialog.py:625
+#: src/views/settings/preferences_dialog.py:639
 msgid "Max. line count"
 msgstr "Max. počet řádků"
 
-#: src/views/settings/preferences_dialog.py:632
+#: src/views/settings/preferences_dialog.py:646
 msgid "Max. line width"
 msgstr "Max. šířka řádku"
 
-#: src/views/settings/preferences_dialog.py:644
+#: src/views/settings/preferences_dialog.py:658
 msgid "Temperature"
 msgstr "Teplota"
 
-#: src/views/settings/preferences_dialog.py:645
+#: src/views/settings/preferences_dialog.py:659
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "Mezi 0 a 1. Vyšší hodnoty jsou náhodnější."
 
-#: src/views/settings/preferences_dialog.py:657
+#: src/views/settings/preferences_dialog.py:671
 msgid "Timestamps of the words"
 msgstr "Časové značky slov"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:672
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Při přehrávání zvýrazňuje každé slovo (model whisper-1). Trvá déle."
 
-#: src/views/settings/preferences_dialog.py:688
+#: src/views/settings/preferences_dialog.py:702
 #, python-brace-format
 msgid "Version {version}"
 msgstr "Verze {version}"
 
-#: src/views/settings/preferences_dialog.py:692
+#: src/views/settings/preferences_dialog.py:706
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "Vytvořil {author}"
 
-#: src/views/settings/preferences_dialog.py:708
+#: src/views/settings/preferences_dialog.py:722
 msgid "Documentation"
 msgstr "Dokumentace"
 
-#: src/views/settings/preferences_dialog.py:728
+#: src/views/settings/preferences_dialog.py:742
 msgid "Donate"
 msgstr "Přispět"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:756
 msgid "Check for updates"
 msgstr "Zkontrolovat aktualizace"
 
-#: src/views/settings/preferences_dialog.py:761
+#: src/views/settings/preferences_dialog.py:775
 msgid "Checking for updates…"
 msgstr "Hledání aktualizací…"
 
-#: src/views/settings/preferences_dialog.py:772
+#: src/views/settings/preferences_dialog.py:786
 msgid "Could not check for updates."
 msgstr "Nepodařilo se zkontrolovat aktualizace."
 
-#: src/views/settings/preferences_dialog.py:781
+#: src/views/settings/preferences_dialog.py:795
 msgid "Download"
 msgstr "Stáhnout"
 
-#: src/views/settings/preferences_dialog.py:791
+#: src/views/settings/preferences_dialog.py:805
 msgid "You have the latest version."
 msgstr "Máte nejnovější verzi."
 
@@ -1846,21 +1850,21 @@ msgstr "Vygenerovat znovu"
 msgid "Generated by {model} · {date}"
 msgstr "Vygeneroval {model} · {date}"
 
-#: src/views/transcript/transcript_text.py:186
+#: src/views/transcript/transcript_text.py:193
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr ""
 "Kliknutím na segment ho přehrajete. Kliknutím pravým tlačítkem ho "
 "upravíte."
 
-#: src/views/transcript/transcript_text.py:191
+#: src/views/transcript/transcript_text.py:198
 msgid "The plain text has been edited; the transcript keeps the original."
 msgstr "Prostý text byl upraven; přepis s časy zachovává originál."
 
-#: src/views/transcript/transcript_text.py:199
+#: src/views/transcript/transcript_text.py:206
 msgid "You can edit the text. The changes are saved automatically."
 msgstr "Text můžete upravit. Změny se ukládají automaticky."
 
-#: src/views/transcript/transcript_text.py:202
+#: src/views/transcript/transcript_text.py:209
 msgid ""
 "Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
 "transcribe-diarize models of the Whisper API."
@@ -1868,7 +1872,7 @@ msgstr ""
 "Časové značky jsou k dispozici pouze s WhisperX a s modely whisper-1 a "
 "gpt-4o-transcribe-diarize rozhraní Whisper API."
 
-#: src/views/transcript/transcript_text.py:371
+#: src/views/transcript/transcript_text.py:386
 msgid "This transcription has no timestamps."
 msgstr "Tento přepis nemá časové značky."
 

@@ -957,6 +957,28 @@ def test_the_preferences_change_the_interface_language(ui: Ui) -> None:
     assert ui.window.sidebar.lbl_count.cget("text") == "0 transcriptions"
 
 
+def test_the_preferences_change_the_size_of_the_interface(ui: Ui) -> None:
+    ui.window.show_preferences(GENERAL_TAB)
+    ui.pump()
+    preferences = ui.window._preferences
+    default_scaling = ui.window.sidebar._get_widget_scaling()
+    try:
+        # As if the user chose it in the menu of the sizes
+        preferences._on_scale_change(125)
+        ui.pump()
+
+        assert ConfigManager.get_config_system().ui_scale == 125
+        assert ui.window.sidebar._get_widget_scaling() == default_scaling * 1.25
+        assert preferences._get_widget_scaling() == default_scaling * 1.25
+        assert not ui.errors
+    finally:
+        preferences._on_scale_change(100)
+        preferences.destroy()
+        ui.pump()
+
+    assert ui.window.sidebar._get_widget_scaling() == default_scaling
+
+
 def test_the_open_views_keep_their_state_in_another_language(
     ui: Ui, tmp_path: Path
 ) -> None:

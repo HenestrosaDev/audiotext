@@ -14,7 +14,12 @@ from handlers.translation_handler import get_ai_provider, translation_providers
 from handlers.translation_handler import get_env_key as get_translation_env_key
 from models.config.config_ai import ConfigAi
 from models.config.config_subtitles import ConfigSubtitles
-from models.config.config_system import ConfigSystem, DateFormat, TimeFormat
+from models.config.config_system import (
+    UI_SCALES,
+    ConfigSystem,
+    DateFormat,
+    TimeFormat,
+)
 from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
 from utils.config_manager import ConfigManager
@@ -302,7 +307,16 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         )
         menu.grid(row=0, column=1, rowspan=2, padx=(12, 0))
 
-        frame = self._row(tab, 1, L_("Interface language"))
+        frame = self._row(tab, 1, L_("Interface size"))
+        scale_menu = CTkOptionMenu(
+            frame,
+            values=[f"{scale}%" for scale in UI_SCALES],
+            command=lambda label: self._on_scale_change(int(label.rstrip("%"))),
+        )
+        scale_menu.set(f"{self._config_system.ui_scale}%")
+        scale_menu.grid(row=0, column=1, rowspan=2, padx=(12, 0))
+
+        frame = self._row(tab, 2, L_("Interface language"))
         language_menu = CTkOptionMenu(frame, values=[])
         # The languages are named in their own language
         LocalizedOptions(
@@ -320,7 +334,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         frame = self._row(
             tab,
-            4,
+            5,
             L_("Notifications"),
             L_("Shows a notification of the system when a transcription is ready."),
         )
@@ -332,7 +346,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         frame = self._row(
             tab,
-            5,
+            6,
             L_("Updates"),
             L_("Checks for a new version when the app opens."),
         )
@@ -350,7 +364,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         # Formats that look the same in the language (e.g. the short and the
         # medium ones in Japanese) are shown once
-        frame = self._row(tab, 2, L_("Date format"))
+        frame = self._row(tab, 3, L_("Date format"))
         date_menu = CTkOptionMenu(frame, values=[])
         LocalizedOptions(
             date_menu,
@@ -366,7 +380,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         frame = self._row(
             tab,
-            3,
+            4,
             L_("Time format"),
             L_("Automatic uses the clock of the interface language."),
         )
@@ -793,6 +807,10 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
     def _on_appearance_change(self, mode: str) -> None:
         ctk.set_appearance_mode(mode)
         save_config(ConfigSystem.Key.APPEARANCE_MODE, mode)
+
+    def _on_scale_change(self, scale: int) -> None:
+        ctk.set_widget_scaling(scale / 100)
+        save_config(ConfigSystem.Key.UI_SCALE, str(scale))
 
     def _on_language_change(self, language: str) -> None:
         save_config(ConfigSystem.Key.UI_LANGUAGE, language)
