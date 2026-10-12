@@ -21,9 +21,11 @@ def bind_recursive(widget: Any, sequence: str, callback: Callable[[Any], Any]) -
 
     The `bind` of the CustomTkinter widgets also binds their inner canvas and Tk
     label, which are descendants too, so the callback would run twice per event.
+    So the Tk widgets are bound instead, including the canvas of the frames, which
+    `CTkFrame.winfo_children` leaves out.
     """
     tk.Misc.bind(widget, sequence, callback, add="+")
-    for child in widget.winfo_children():
+    for child in tk.Misc.winfo_children(widget):
         bind_recursive(child, sequence, callback)
 
 
