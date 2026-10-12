@@ -828,7 +828,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             state=tk.NORMAL if segment.text else tk.DISABLED,
         )
         menu.add_command(
-            label=_("Edit the text…") if segment.text else _("Translate the text…"),
+            label=_("Edit text…") if segment.text else _("Translate text…"),
             command=lambda: self._edit_translation_segment(idx),
         )
         menu.add_command(
@@ -884,7 +884,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         start, end = self._format_time(segment.start), self._format_time(segment.end)
         text = TextDialog(
             self,
-            _("Edit the text") if segment.text else _("Translate the text"),
+            _("Edit text") if segment.text else _("Translate text"),
             _("Translation of “{text}”, said from {start} to {end}:").format(
                 text=original, start=start, end=end
             )
@@ -1091,9 +1091,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             label=_("Play from here"), command=lambda: self._play_from(segment.start)
         )
         menu.add_command(label=_("Copy"), command=lambda: self._copy_text(segment.text))
-        menu.add_command(
-            label=_("Edit the text…"), command=lambda: self._edit_segment(idx)
-        )
+        menu.add_command(label=_("Edit text…"), command=lambda: self._edit_segment(idx))
         if segment.speaker:
             menu.add_command(label=_("Rename speakers…"), command=self._rename_speakers)
         try:
