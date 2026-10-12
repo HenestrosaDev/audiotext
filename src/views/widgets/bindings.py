@@ -1,5 +1,6 @@
 """Helpers to bind events to the widgets of the interface."""
 
+import tkinter as tk
 from collections.abc import Callable
 from typing import Any
 
@@ -15,8 +16,13 @@ def bind_context_menu(widget: Any, callback: Callable[[Any], Any]) -> None:
 
 
 def bind_recursive(widget: Any, sequence: str, callback: Callable[[Any], Any]) -> None:
-    """Binds an event to a widget and all its descendants."""
-    widget.bind(sequence, callback, add="+")
+    """
+    Binds an event to a widget and all its descendants, once each.
+
+    The `bind` of the CustomTkinter widgets also binds their inner canvas and Tk
+    label, which are descendants too, so the callback would run twice per event.
+    """
+    tk.Misc.bind(widget, sequence, callback, add="+")
     for child in widget.winfo_children():
         bind_recursive(child, sequence, callback)
 
