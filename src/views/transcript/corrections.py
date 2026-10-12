@@ -91,7 +91,7 @@ class TranscriptCorrectionsMixin:
         segment = self._entry.segments[idx]
         text = TextDialog(
             self,
-            _("Edit the text"),
+            _("Edit text"),
             _("Text said at {time}:").format(time=self._format_time(segment.start)),
             segment.text,
             is_multiline=True,
