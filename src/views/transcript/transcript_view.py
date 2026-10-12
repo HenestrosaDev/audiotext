@@ -823,6 +823,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             label=_("Play from here"), command=lambda: self._play_from(segment.start)
         )
         menu.add_command(
+            label=_("Copy"),
+            command=lambda: self._copy_text(segment.text),
+            state=tk.NORMAL if segment.text else tk.DISABLED,
+        )
+        menu.add_command(
             label=_("Edit the text…") if segment.text else _("Translate the text…"),
             command=lambda: self._edit_translation_segment(idx),
         )
@@ -1085,6 +1090,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         menu.add_command(
             label=_("Play from here"), command=lambda: self._play_from(segment.start)
         )
+        menu.add_command(label=_("Copy"), command=lambda: self._copy_text(segment.text))
         menu.add_command(
             label=_("Edit the text…"), command=lambda: self._edit_segment(idx)
         )
@@ -1095,6 +1101,10 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         finally:
             menu.grab_release()
         return "break"
+
+    def _copy_text(self, text: str) -> None:
+        self.clipboard_clear()
+        self.clipboard_append(text.strip())
 
     def _show_more_menu(self) -> None:
         entry = self._entry
