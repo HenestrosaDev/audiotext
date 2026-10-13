@@ -51,7 +51,7 @@ class ConfigSystem:
     subtitle_track: str = "original"
     # Whether the timestamps of the transcripts are precise to the millisecond
     # (`HH:MM:SS,mmm`, like the subtitles) instead of simplified (`MM:SS`)
-    precise_timestamps: bool = False
+    precise_timestamps: bool = True
     # How the dates and the times are shown (see `DateFormat` and `TimeFormat`)
     date_format: str = DateFormat.MEDIUM.value
     time_format: str = TimeFormat.AUTO.value

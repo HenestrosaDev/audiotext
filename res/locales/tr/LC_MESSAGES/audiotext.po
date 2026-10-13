@@ -2084,8 +2084,8 @@ msgid "Find and replace…"
 msgstr "Bul ve değiştir…"
 
 #: src/views/transcript/transcript_view.py:1122
-msgid "Precise timestamps (00:00:01,000)"
-msgstr "Hassas zaman damgaları (00:00:01,000)"
+msgid "Precise timestamps (HH:MM:SS,mmm)"
+msgstr "Hassas zaman damgaları (HH:MM:SS,mmm)"
 
 #: src/views/transcript/transcript_view.py:1145
 msgid "Rename…"
