@@ -1,10 +1,11 @@
 import pytest
 
-from models.transcript_segment import TranscriptSegment, TranscriptWord
+from models.transcript_segment import ReviewMark, TranscriptSegment, TranscriptWord
 from utils.transcript_editing import (
     delete_segment,
     edit_segment,
     edit_segment_part,
+    edit_word,
     insert_segment,
     overlapping_segments,
     realign_words,
@@ -15,6 +16,7 @@ from utils.transcript_editing import (
     set_segment_timing,
     speakers,
     split_segment,
+    word_range,
 )
 
 WORDS = (
@@ -55,6 +57,79 @@ def test_realign_words_with_inserted_and_deleted_words() -> None:
         TranscriptWord(1.0, 1.5, "users."),
     )
     assert realign_words((), "Anything") == ()
+
+
+SCORED = (
+    TranscriptWord(0.0, 0.5, "Hello", 0.9),
+    TranscriptWord(0.5, 1.0, "wisper", 0.2),
+    TranscriptWord(1.0, 1.5, "users.", 0.8),
+)
+
+
+def test_an_edited_word_keeps_its_score_and_is_reviewed() -> None:
+    words = realign_words(SCORED, "Hello Whisper users.")
+
+    assert words == (
+        SCORED[0],
+        TranscriptWord(0.5, 1.0, "Whisper", 0.2, ReviewMark.EDITED),
+        SCORED[2],
+    )
+
+
+def test_editing_a_word_that_isnt_flagged_only_marks_it() -> None:
+    # Whether it's flagged depends on the threshold: it's marked either way, so
+    # it's never highlighted, and it counts as before
+    words = realign_words(SCORED, "Hi wisper users.")
+
+    assert words[0] == TranscriptWord(0.0, 0.5, "Hi", 0.9, ReviewMark.EDITED)
+    assert words[1:] == SCORED[1:]
+
+
+def test_a_split_word_is_counted_once() -> None:
+    words = realign_words(SCORED, "Hello whis per users.")
+
+    assert words[1:3] == (
+        TranscriptWord(0.5, 0.75, "whis", 0.2, ReviewMark.EDITED),
+        TranscriptWord(0.75, 1.0, "per", None, ReviewMark.EDITED),
+    )
+
+
+def test_merged_words_keep_their_lowest_score_once() -> None:
+    words = realign_words(SCORED, "Hellowisper users.")
+
+    assert words[0] == TranscriptWord(0.0, 1.0, "Hellowisper", 0.2, ReviewMark.EDITED)
+    assert words[1] == SCORED[2]
+
+
+def test_the_inserted_words_have_no_score() -> None:
+    words = realign_words(SCORED, "Hello wisper users. Bye")
+
+    assert words[3] == TranscriptWord(1.5, 1.5, "Bye")
+
+
+def test_the_unaligned_words_have_no_score_nor_review() -> None:
+    # WhisperX can't align some words (e.g. numbers), which have no score
+    words = (TranscriptWord(0.0, 0.5, "In", 0.9), TranscriptWord(0.5, 0.5, "1984"))
+
+    assert realign_words(words, "In 1985")[1] == TranscriptWord(0.5, 0.5, "1985")
+    assert realign_words(words, "In 19 85")[1:] == (
+        TranscriptWord(0.5, 0.5, "19"),
+        TranscriptWord(0.5, 0.5, "85"),
+    )
+
+
+def test_an_edited_segment_keeps_its_score_and_is_reviewed() -> None:
+    segments = [
+        TranscriptSegment(0.0, 1.0, "Hello wisper", "SPEAKER_00", score=0.3),
+        TranscriptSegment(1.0, 2.0, "Bye.", "SPEAKER_00", score=0.9),
+    ]
+
+    edited = edit_segment(segments, 0, "Hello Whisper")
+    renamed = rename_speakers(segments, {"SPEAKER_00": "Ana"})
+
+    assert (edited[0].score, edited[0].reviewed) == (0.3, ReviewMark.EDITED)
+    assert edited[1] is segments[1]
+    assert [segment.reviewed for segment in renamed] == [None, None]
 
 
 def test_replace_in_segments_updates_the_text_and_the_words() -> None:
@@ -183,3 +258,36 @@ def test_overlapping_segments() -> None:
     assert [s.text for s in overlapping_segments(TIMED, 0.5, 2.0)] == ["One", "Two"]
     # Touching a segment isn't overlapping it
     assert overlapping_segments(TIMED, 1.0, 1.5) == []
+
+
+def test_word_range_tells_apart_the_same_word() -> None:
+    words = (
+        TranscriptWord(0.0, 0.5, "no", 0.9),
+        TranscriptWord(0.5, 1.0, "no,", 0.2),
+        TranscriptWord(1.0, 1.0, "42"),
+    )
+    segment = TranscriptSegment(0.0, 1.0, "no no, 42", words=words)
+
+    assert word_range(segment, 0) == (0, 2)
+    assert word_range(segment, 1) == (3, 6)
+    assert word_range(segment, 2) == (7, 9)
+    assert word_range(segment, 3) is None
+
+
+def test_edit_word_corrects_only_that_word() -> None:
+    segments = [TranscriptSegment(0.0, 1.5, "Hello wisper users.", words=SCORED)]
+
+    [segment] = edit_word(segments, 0, 1, " Whisper ")
+
+    assert segment.text == "Hello Whisper users."
+    assert segment.words[1] == TranscriptWord(
+        0.5, 1.0, "Whisper", 0.2, ReviewMark.EDITED
+    )
+
+
+def test_edit_word_doesnt_remove_a_word() -> None:
+    # A word is removed by editing its segment
+    segments = [TranscriptSegment(0.0, 1.5, "Hello wisper users.", words=SCORED)]
+
+    with pytest.raises(ValueError):
+        edit_word(segments, 0, 1, "  ")

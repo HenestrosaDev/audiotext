@@ -128,6 +128,22 @@ class HistoryController:
             self._store.update(entry, segments=segments, text=text)
             self.view.on_entry_changed(entry_id)
 
+    def review_transcript(
+        self, entry_id: str, segments: list[TranscriptSegment]
+    ) -> None:
+        """
+        Saves the reviews of the low confidence words of a transcription, whose
+        text doesn't change. They're written with `save_reviews`, since they're
+        made one after another.
+        """
+        if entry := self._store.get(entry_id):
+            self._store.update(entry, defer_save=True, segments=segments)
+            self.view.on_entry_changed(entry_id)
+
+    def save_reviews(self) -> None:
+        """Writes the reviews that weren't written yet."""
+        self._store.flush()
+
     # SUMMARIES
 
     def summarize_entry(self, entry_id: str) -> None:
@@ -236,7 +252,7 @@ class HistoryController:
             language=language,
             text="",
             segments=tuple(
-                replace(segment, text="", words=())
+                replace(segment, text="", words=(), score=None, reviewed=None)
                 for segment in (entry.segments if segments is None else segments)
             ),
             provider=MANUAL,

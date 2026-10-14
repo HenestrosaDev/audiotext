@@ -268,6 +268,8 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             self._saved_window_state = window_state
 
     def _on_close(self) -> None:
+        # The reviews of a transcription are written a moment after they're made
+        self._history_store.flush()
         if self._save_window_state_job:
             self.after_cancel(self._save_window_state_job)
         self._save_window_state()
@@ -279,6 +281,8 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             f"<{SHORTCUT_MODIFIER}-s>": self._view.trigger_save,
             f"<{SHORTCUT_MODIFIER}-o>": self._view.trigger_browse,
             f"<{SHORTCUT_MODIFIER}-f>": self._view.trigger_search,
+            f"<{SHORTCUT_MODIFIER}-j>": lambda: self._view.trigger_low_confidence(1),
+            f"<{SHORTCUT_MODIFIER}-J>": lambda: self._view.trigger_low_confidence(-1),
             "<Escape>": self._view.trigger_cancel,
         }
 

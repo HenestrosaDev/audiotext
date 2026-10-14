@@ -82,6 +82,7 @@ GHOST_BUTTON = {
 IS_MACOS = sys.platform == "darwin"
 SHORTCUT_MODIFIER = "Command" if IS_MACOS else "Control"
 SHORTCUT_MODIFIER_LABEL = "⌘" if IS_MACOS else "Ctrl+"
+SHIFT_LABEL = "⇧" if IS_MACOS else "Shift+"
 # Right click (and the two-finger tap of a trackpad) is <Button-3>, except on macOS
 # with Tk 8.6 and older, where it's <Button-2>
 _RIGHT_CLICK_EVENT = (

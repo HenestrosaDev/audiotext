@@ -20,6 +20,9 @@ class TimeFormat(Enum):
 # Sizes of the interface that can be chosen, as percentages of the default one
 UI_SCALES = (80, 90, 100, 110, 125, 150, 175, 200)
 
+# Scores that can be chosen to highlight the words below them, as percentages
+LOW_CONFIDENCE_THRESHOLDS = (20, 30, 40, 50, 60, 70)
+
 
 class SubtitleTrack(Enum):
     """The text shown as the subtitles of a video."""
@@ -56,6 +59,13 @@ class ConfigSystem:
     sync_scroll: bool = True
     # Whether the window to find and replace stays above the main window
     is_find_pinned: bool = True
+    # Whether to highlight the words of the transcripts that may be wrong, whose
+    # alignment score is below the threshold (a percentage, see
+    # `LOW_CONFIDENCE_THRESHOLDS`)
+    highlight_low_confidence: bool = True
+    low_confidence_threshold: int = 40
+    # Whether going to a low confidence word plays it, with a moment around it
+    review_auto_play: bool = True
     # How the dates and the times are shown (see `DateFormat` and `TimeFormat`)
     date_format: str = DateFormat.MEDIUM.value
     time_format: str = TimeFormat.AUTO.value
@@ -94,6 +104,9 @@ class ConfigSystem:
         PRECISE_TIMESTAMPS = "precise_timestamps"
         SYNC_SCROLL = "sync_scroll"
         IS_FIND_PINNED = "is_find_pinned"
+        HIGHLIGHT_LOW_CONFIDENCE = "highlight_low_confidence"
+        LOW_CONFIDENCE_THRESHOLD = "low_confidence_threshold"
+        REVIEW_AUTO_PLAY = "review_auto_play"
         DATE_FORMAT = "date_format"
         TIME_FORMAT = "time_format"
         WINDOW_GEOMETRY = "window_geometry"
