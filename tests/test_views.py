@@ -1293,10 +1293,14 @@ def test_the_low_confidence_options_need_the_scores_of_the_words(
             )
         ]
 
-    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    # Its words were timed before the scores were kept
+    entry = ui.add(segments=SEGMENTS, text=TEXT, method="WhisperX")
     ui.window.select_entry(entry.id)
     ui.pump()
     assert states() == [tk.DISABLED] * 4
+    # A note says why
+    hint = "Transcribe it again to score its words"
+    assert menus[-1].entrycget(hint, "state") == tk.DISABLED
 
     words = (TranscriptWord(0.0, 1.0, "Hello", 0.9),)
     entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
