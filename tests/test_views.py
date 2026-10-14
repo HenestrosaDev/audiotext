@@ -2218,8 +2218,11 @@ def test_a_dialog_opens_centered_over_the_main_window(ui: Ui) -> None:
     dialog = _open_text_dialog(ui)
     owner = ui.window.winfo_toplevel()
     x, y = _position(dialog)
-    center_x = owner.winfo_rootx() + owner.winfo_width() // 2
-    assert abs(x + dialog.winfo_width() // 2 - center_x) <= 2
+    width = dialog.winfo_width()
+    centered_x = owner.winfo_rootx() + (owner.winfo_width() - width) // 2
+    # Moved into the screen when the main window is partly off it, like on the
+    # small screen of the CI
+    assert abs(x - min(centered_x, dialog.winfo_screenwidth() - width)) <= 2
     assert owner.winfo_rooty() < y < owner.winfo_rooty() + owner.winfo_height()
     dialog.destroy()
     # It wasn't moved, so its position isn't stored
