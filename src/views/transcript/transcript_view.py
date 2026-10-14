@@ -11,6 +11,7 @@ import customtkinter as ctk
 import numpy as np
 
 from handlers.ai_providers import PROVIDERS, get_provider, has_api_key
+from handlers.openai_api_handler import WHISPER_1
 from handlers.summary_handler import format_summary
 from handlers.translation_handler import MANUAL
 from models.config.config_ai import ConfigAi
@@ -20,6 +21,7 @@ from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment, has_scores, join_segments
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
+from utils.enums import TranscriptionMethod
 from utils.exporters import (
     SUMMARY_EXPORTERS,
     ExportDocument,
@@ -115,6 +117,31 @@ def transcript_parts(
     """The parts of the segments shown in the transcript: their subtitles."""
     config = ConfigManager.get_config_subtitles()
     return split_segments(segments, *line_limits(config, segments, is_vertical))
+
+
+def low_confidence_hint(entry: HistoryEntry) -> str | None:
+    """
+    :return: Why the words of a transcription that may be wrong can't be
+        highlighted, as it has no scores, or `None` if they can.
+    """
+    segments = entry.segments
+    if has_scores(segments):
+        return None
+
+    if entry.method == TranscriptionMethod.WHISPERX.value and not any(
+        segment.words for segment in segments
+    ):
+        if entry.settings.get("align_words"):
+            return _("There is no alignment model for its language")
+        return _("Turn on “Word-level timings” and transcribe it again")
+    # Transcribed before the scores were kept
+    if entry.method == TranscriptionMethod.WHISPERX.value or (
+        entry.method == TranscriptionMethod.WHISPER_API.value
+        and entry.model_name == WHISPER_1
+        and segments
+    ):
+        return _("Transcribe it again to score its words")
+    return _("Only WhisperX and whisper-1 score the words")
 
 
 def export_labels() -> dict[str, str]:
@@ -1641,6 +1668,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                     else tk.DISABLED
                 ),
             )
+        # Says why they're disabled, as a note
+        if hint := low_confidence_hint(self._entry):
+            menu.add_command(label=hint, state=tk.DISABLED)
 
     def _copy_text(self, text: str) -> None:
         self.clipboard_clear()
