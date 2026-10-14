@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 10:25+0200\n"
+"POT-Creation-Date: 2026-10-14 10:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -1261,13 +1261,14 @@ msgstr "API कुंजी बदलें…"
 #: src/views/settings/preferences_dialog.py:452
 #: src/views/settings/preferences_dialog.py:465
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:381
+#: src/views/transcript/translation_panel.py:400
+#: src/views/transcript/translation_panel.py:472
 msgid "Set API key…"
 msgstr "API कुंजी सेट करें…"
 
 #: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:514
-#: src/views/transcript/translation_panel.py:168
+#: src/views/transcript/translation_panel.py:170
 msgid "Translation"
 msgstr "अनुवाद"
 
@@ -1539,13 +1540,13 @@ msgstr "ऑडियो की भाषा"
 
 #: src/views/settings/cards/language_card.py:65
 #: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:335
+#: src/views/transcript/translation_panel.py:338
 msgid "Search language…"
 msgstr "भाषा खोजें…"
 
 #: src/views/settings/cards/language_card.py:66
 #: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:336
+#: src/views/transcript/translation_panel.py:339
 msgid "No languages found."
 msgstr "कोई भाषा नहीं मिली।"
 
@@ -1955,7 +1956,7 @@ msgid "Plain text"
 msgstr "सादा टेक्स्ट"
 
 #: src/views/transcript/transcript_view.py:455
-#: src/views/transcript/translation_panel.py:322
+#: src/views/transcript/translation_panel.py:324
 msgid "Translate"
 msgstr "अनुवाद करें"
 
@@ -2094,66 +2095,80 @@ msgstr "नाम बदलें…"
 msgid "Copied"
 msgstr "कॉपी हो गया"
 
-#: src/views/transcript/translation_panel.py:131
+#: src/views/transcript/translation_panel.py:133
 msgid "Not translated yet"
 msgstr "अभी तक अनुवाद नहीं हुआ"
 
-#: src/views/transcript/translation_panel.py:156
+#: src/views/transcript/translation_panel.py:158
 #, python-brace-format
 msgid "Translating into {language}…"
 msgstr "{language} में अनुवाद हो रहा है…"
 
-#: src/views/transcript/translation_panel.py:160
+#: src/views/transcript/translation_panel.py:162
 msgid "Translating…"
 msgstr "अनुवाद हो रहा है…"
 
-#: src/views/transcript/translation_panel.py:163
+#: src/views/transcript/translation_panel.py:165
 msgid "It takes a moment."
 msgstr "इसमें थोड़ा समय लगेगा।"
 
-#: src/views/transcript/translation_panel.py:165
+#: src/views/transcript/translation_panel.py:167
 msgid "The transcription is being translated. It takes a moment."
 msgstr "ट्रांसक्रिप्शन का अनुवाद हो रहा है। इसमें थोड़ा समय लगेगा।"
 
-#: src/views/transcript/translation_panel.py:172
+#: src/views/transcript/translation_panel.py:174
 msgid "There is no translation yet."
 msgstr "अभी तक कोई अनुवाद नहीं है।"
 
-#: src/views/transcript/translation_panel.py:174
+#: src/views/transcript/translation_panel.py:176
 msgid "Translate…"
 msgstr "अनुवाद करें…"
 
-#: src/views/transcript/translation_panel.py:277
+#: src/views/transcript/translation_panel.py:279
 #, python-brace-format
 msgid "Segments left to translate: {count}. Right-click one to translate it."
 msgstr ""
 "अनुवाद के लिए बचे सेगमेंट: {count}। अनुवाद करने के लिए किसी एक पर "
 "राइट-क्लिक करें।"
 
-#: src/views/transcript/translation_panel.py:284
-msgid "Translated manually"
-msgstr "मैन्युअल रूप से अनूदित"
+#: src/views/transcript/translation_panel.py:286
+#: src/views/transcript/translation_panel.py:365
+msgid "Manual"
+msgstr "मैन्युअल"
 
-#: src/views/transcript/translation_panel.py:330
+#: src/views/transcript/translation_panel.py:333
 msgid "Translate into:"
 msgstr "इस भाषा में अनुवाद करें:"
 
-#: src/views/transcript/translation_panel.py:350
-msgid "Provider:"
-msgstr "प्रदाता:"
+#: src/views/transcript/translation_panel.py:354
+msgid "Translate with:"
+msgstr "इससे अनुवाद करें:"
 
-#: src/views/transcript/translation_panel.py:360
-msgid "Myself, from scratch"
-msgstr "स्वयं, शुरू से"
-
-#: src/views/transcript/translation_panel.py:391
+#: src/views/transcript/translation_panel.py:411
 msgid "More options in the settings"
 msgstr "सेटिंग्स में और विकल्प"
 
-#: src/views/transcript/translation_panel.py:428
+#: src/views/transcript/translation_panel.py:442
 #, python-brace-format
-msgid "Set the API key of {provider} to translate with it."
-msgstr "{provider} से अनुवाद करने के लिए उसकी API कुंजी सेट करें।"
+msgid "No API key for {provider}."
+msgstr "{provider} की API कुंजी नहीं है।"
+
+#: src/views/transcript/translation_panel.py:449
+msgid "Creates empty segments with the original timestamps for you to fill in."
+msgstr "मूल टाइमस्टैम्प के साथ खाली सेगमेंट बनाता है, जिन्हें आप भरेंगे।"
+
+#: src/views/transcript/translation_panel.py:459
+#, python-brace-format
+msgid "Uses the model {model}."
+msgstr "मॉडल {model} का उपयोग करता है।"
+
+#: src/views/transcript/translation_panel.py:462
+msgid "Translates each segment, keeping its timestamps."
+msgstr "हर सेगमेंट का अनुवाद करता है, उसके टाइमस्टैम्प बनाए रखते हुए।"
+
+#: src/views/transcript/translation_panel.py:474
+msgid "Set…"
+msgstr "सेट करें…"
 
 #: src/views/transcript/video_pane.py:260
 msgid "Show subtitles on the video"
