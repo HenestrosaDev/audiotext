@@ -20,13 +20,6 @@ def _pattern(find: str, match_case: bool) -> re.Pattern[str]:
     return re.compile(re.escape(find), 0 if match_case else re.IGNORECASE)
 
 
-def count_matches(text: str, find: str, match_case: bool = False) -> int:
-    if not find:
-        return 0
-
-    return len(_pattern(find, match_case).findall(text))
-
-
 def replace_text(
     text: str, find: str, replacement: str, match_case: bool = False
 ) -> str:
@@ -141,6 +134,32 @@ def edit_segment_part(
     return edit_segment(
         segments, idx, segment_text[:first] + text.strip() + segment_text[last:]
     )
+
+
+def replace_range(
+    segments: list[TranscriptSegment],
+    idx: int,
+    first: int,
+    last: int,
+    replacement: str,
+    allow_empty: bool = False,
+) -> list[TranscriptSegment]:
+    """
+    Replaces a range of the text of a segment, e.g. a match of a search.
+
+    :param allow_empty: Whether the segment can be left without text, e.g. one of
+                        a translation, which can be translated later.
+    :raises ValueError: If the segment is left without text, and it can't be.
+    """
+    text = segments[idx].text
+    new_text = text[:first] + replacement + text[last:]
+    if not new_text.strip() and not allow_empty:
+        raise ValueError("The text of a segment can't be empty")
+
+    return [
+        _with_text(segment, new_text) if segment_idx == idx else segment
+        for segment_idx, segment in enumerate(segments)
+    ]
 
 
 def split_segment(
