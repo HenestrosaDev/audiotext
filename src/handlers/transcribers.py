@@ -60,16 +60,19 @@ class WhisperXTranscriber:
             transcription, on_progress, cancellation_token
         )
         return TranscriptionResult(
-            text, self._handler.segments, self._handler.result_language
+            text,
+            self._handler.segments,
+            self._handler.result_language,
+            raw=self._handler.raw_result,
         )
 
     def save(
         self, result: TranscriptionResult, transcription: Transcription, file_path: Path
     ) -> None:
-        # The WhisperX writers need the result of the handler, which has the timings
-        # of the words and the speakers. The controller saves each file right after
-        # transcribing it, so the handler still keeps it
+        # The WhisperX writers need the result as WhisperX returns it, which has
+        # the timings of the words and the speakers
         self._handler.save_transcription(
+            result=result.raw,
             file_path=file_path,
             output_file_types=transcription.output_file_types,
             should_overwrite=transcription.should_overwrite,

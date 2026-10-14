@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 from models.transcript_segment import TranscriptSegment
 from utils.enums import AudioSource, TranscriptionMethod
@@ -72,6 +73,9 @@ class TranscriptionResult:
     language: str | None = None
     # The duration of the audio in seconds, if known
     duration: float = 0.0
+    # The result as the transcription method returns it, for the methods that
+    # save it with their own writers (WhisperX)
+    raw: Any = field(default=None, compare=False, repr=False)
 
 
 def split_keywords(text: str) -> list[str]:
