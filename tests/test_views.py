@@ -1328,6 +1328,8 @@ def test_the_low_confidence_options_need_the_scores_of_the_words(
 
 
 def test_the_review_bar_shows_the_state_of_the_review(ui: Ui) -> None:
+    from models.review import set_review
+    from models.transcript_segment import ReviewMark
     from views.transcript.transcript_text import PLAIN_TEXT_MODE, TRANSCRIPT_MODE
 
     words = (
@@ -1382,13 +1384,20 @@ def test_the_review_bar_shows_the_state_of_the_review(ui: Ui) -> None:
     ]
 
     # The reviewed words are no longer highlighted
-    view._reviewed.update(text.key for text in view._review.flagged)
-    view._refresh_review()
+    view._actions.transcript.update_transcript(
+        entry.id,
+        set_review(view._entry.segments, view._review.flagged, ReviewMark.ACCEPTED),
+        TEXT,
+    )
+    ui.pump()
     assert status() == "All reviewed · 2 of 2"
     assert is_shown(bar.btn_review_again)
     assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
     bar.btn_review_again.invoke()
+    ui.pump()
     assert status() == "2 of 2 to review"
+    # Which is kept with the transcription
+    assert ui.store.get(entry.id).segments[0].words[1].reviewed is None
 
 
 def test_the_review_bar_never_counts_without_scores(ui: Ui) -> None:

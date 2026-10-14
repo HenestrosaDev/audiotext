@@ -3,16 +3,19 @@ The review of the low confidence texts of a transcription: the words that may be
 wrong (or the whole segments, for the engines that only score segments), which
 the user goes through to correct them or accept them as they are.
 
-Everything the interface shows of the review (the counter, the highlights, the
-texts to go to) is derived from `build_review`, so it always agrees.
+Whether a text was reviewed is kept in the transcription, on the word (or the
+segment), so it's saved with it and follows the text when it's corrected (see
+`ReviewMark` and `utils.transcript_editing`). Everything the interface shows of
+the review (the counter, the highlights, the texts to go to) is derived from
+`build_review`, so it always agrees.
 """
 
 import bisect
-from collections.abc import Collection, Sequence
-from dataclasses import dataclass
+from collections.abc import Iterable, Sequence
+from dataclasses import dataclass, replace
 from enum import Enum
 
-from models.transcript_segment import TranscriptSegment, has_scores
+from models.transcript_segment import ReviewMark, TranscriptSegment, has_scores
 
 
 class ReviewState(Enum):
@@ -32,7 +35,7 @@ class ReviewState(Enum):
 class FlaggedText:
     """A word that may be wrong, or a whole segment if only segments are scored."""
 
-    # Identifies the text while the transcription changes (see `review_key`)
+    # Finds the text where the transcription is shown (see `review_key`)
     key: str
     segment_idx: int
     # `None` for a whole segment
@@ -40,6 +43,8 @@ class FlaggedText:
     start: float
     end: float
     text: str
+    # How the user reviewed it, if they did
+    review: ReviewMark | None = None
 
 
 @dataclass(frozen=True)
@@ -58,11 +63,18 @@ class Review:
     def total(self) -> int:
         return len(self.flagged)
 
+    @property
+    def accepted(self) -> tuple[FlaggedText, ...]:
+        """The texts accepted as they are, which can be reviewed again."""
+        return tuple(
+            text for text in self.flagged if text.review == ReviewMark.ACCEPTED
+        )
+
 
 def review_key(start: float, text: str) -> str:
     """
-    Identifies a text by when it starts (to the millisecond) and what it says,
-    which don't change when other segments are edited, split or deleted.
+    Identifies a text by when it starts (to the millisecond) and what it says, to
+    find it among the parts of the segments shown (e.g. their subtitles).
     """
     return f"{round(start * 1000)}:{text}"
 
@@ -92,6 +104,7 @@ def flagged_texts(
                         word.start,
                         word.end,
                         word.text,
+                        word.reviewed,
                     )
                 )
 
@@ -109,6 +122,7 @@ def flagged_texts(
                     segment.start,
                     segment.end,
                     segment.text,
+                    segment.reviewed,
                 )
             )
 
@@ -118,15 +132,11 @@ def flagged_texts(
 
 
 def build_review(
-    segments: Sequence[TranscriptSegment],
-    is_highlighted: bool,
-    min_score: float,
-    reviewed: Collection[str],
+    segments: Sequence[TranscriptSegment], is_highlighted: bool, min_score: float
 ) -> Review:
     """
     :param is_highlighted: Whether the low confidence texts are highlighted.
     :param min_score: The score below which a text may be wrong.
-    :param reviewed: The keys of the texts that the user reviewed.
     """
     # Without scores there's nothing to count, whatever the other options
     if not has_scores(list(segments)):
@@ -138,9 +148,41 @@ def build_review(
     if not flagged:
         return Review(ReviewState.NOTHING_FLAGGED)
 
-    unreviewed = tuple(text for text in flagged if text.key not in reviewed)
+    unreviewed = tuple(text for text in flagged if text.review is None)
     state = ReviewState.ACTIVE if unreviewed else ReviewState.ALL_REVIEWED
     return Review(state, flagged, unreviewed)
+
+
+def set_review(
+    segments: Sequence[TranscriptSegment],
+    texts: Iterable[FlaggedText],
+    mark: ReviewMark | None,
+) -> list[TranscriptSegment]:
+    """
+    Marks how texts were reviewed, or that they weren't (`None`).
+
+    :param texts: Flagged texts of these `segments`.
+    :return: The segments with the texts marked.
+    """
+    marks: dict[int, dict[int | None, ReviewMark | None]] = {}
+    for text in texts:
+        marks.setdefault(text.segment_idx, {})[text.word_idx] = mark
+
+    result = list(segments)
+    for segment_idx, segment_marks in marks.items():
+        segment = result[segment_idx]
+        words = tuple(
+            replace(word, reviewed=segment_marks[word_idx])
+            if word_idx in segment_marks
+            else word
+            for word_idx, word in enumerate(segment.words)
+        )
+        result[segment_idx] = replace(
+            segment,
+            words=words,
+            reviewed=segment_marks.get(None, segment.reviewed),
+        )
+    return result
 
 
 def step_to(

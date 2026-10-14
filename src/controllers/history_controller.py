@@ -236,7 +236,7 @@ class HistoryController:
             language=language,
             text="",
             segments=tuple(
-                replace(segment, text="", words=(), score=None)
+                replace(segment, text="", words=(), score=None, reviewed=None)
                 for segment in (entry.segments if segments is None else segments)
             ),
             provider=MANUAL,

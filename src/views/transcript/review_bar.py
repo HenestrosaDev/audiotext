@@ -144,7 +144,9 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             self.frm_arrows.grid(row=0, column=2, padx=(12, 0))
         if state == ReviewState.NOTHING_FLAGGED:
             self.btn_adjust.grid(row=0, column=4, padx=(0, 6))
-        elif state == ReviewState.ALL_REVIEWED:
+        # The edited words stay reviewed, so only the accepted ones can be
+        # reviewed again
+        elif state == ReviewState.ALL_REVIEWED and review.accepted:
             self.btn_review_again.grid(row=0, column=4, padx=(0, 6))
 
     def _adjust_threshold(self) -> None:

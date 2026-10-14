@@ -6,9 +6,11 @@ from models.review import (
     build_review,
     flagged_texts,
     review_key,
+    set_review,
     step_to,
 )
-from models.transcript_segment import TranscriptSegment, TranscriptWord
+from models.transcript_segment import ReviewMark, TranscriptSegment, TranscriptWord
+from utils.transcript_editing import edit_segment
 
 SEGMENTS = [
     TranscriptSegment(
@@ -70,35 +72,72 @@ def test_the_threshold_changes_the_flagged_texts() -> None:
 
 
 def test_the_counter_leaves_out_the_reviewed_texts() -> None:
-    review = build_review(SEGMENTS, True, 0.4, {review_key(0.5, "wisper")})
+    flagged = build_review(SEGMENTS, True, 0.4).flagged
+    segments = set_review(SEGMENTS, flagged[:2], ReviewMark.ACCEPTED)
+
+    review = build_review(segments, True, 0.4)
 
     assert review.state == ReviewState.ACTIVE
-    assert (review.remaining, review.total) == (2, 3)
+    assert (review.remaining, review.total) == (1, 3)
+    assert texts(review.unreviewed) == ["Bye"]
+    assert texts(review.accepted) == ["wisper", "Nice to meet you."]
+
+
+def test_set_review_marks_words_and_segments() -> None:
+    flagged = build_review(SEGMENTS, True, 0.4).flagged
+
+    segments = set_review(SEGMENTS, flagged, ReviewMark.ACCEPTED)
+
+    assert segments[0].words[1].reviewed == ReviewMark.ACCEPTED
+    assert segments[0].words[0].reviewed is None
+    assert segments[1].reviewed == ReviewMark.ACCEPTED
+    assert segments[2].words[0].reviewed == ReviewMark.ACCEPTED
+    # And the marks can be cleared
+    assert set_review(segments, flagged, None) == SEGMENTS
+
+
+def test_the_reviews_are_kept_when_the_threshold_changes() -> None:
+    flagged = build_review(SEGMENTS, True, 0.4).flagged
+    segments = set_review(SEGMENTS, flagged[:1], ReviewMark.ACCEPTED)
+
+    assert (build_review(segments, True, 0.25).remaining) == 1
+    review = build_review(segments, True, 0.95)
+    assert (review.remaining, review.total) == (3, 4)
+
+
+def test_an_edited_word_never_needs_review_again() -> None:
+    segments = edit_segment(SEGMENTS, 0, "Hello Whisper")
+
+    review = build_review(segments, True, 0.4)
+
+    assert texts(review.flagged)[0] == "Whisper"
     assert texts(review.unreviewed) == ["Nice to meet you.", "Bye"]
+    # Only the accepted ones can be reviewed again
+    assert review.accepted == ()
 
 
-def test_the_reviewed_texts_dont_count_at_another_threshold() -> None:
-    reviewed = {review_key(0.5, "wisper")}
+def test_unaligned_words_are_never_flagged() -> None:
+    # WhisperX can't align some words (e.g. numbers), which have no score
+    words = (TranscriptWord(0, 1, "In", 0.9), TranscriptWord(1, 1, "1984"))
+    segment = TranscriptSegment(0, 1, "In 1984", words=words)
 
-    review = build_review(SEGMENTS, True, 0.25, reviewed)
-
-    assert (review.remaining, review.total) == (1, 1)
+    # Not even below the highest threshold
+    assert texts(build_review([segment], True, 1.0).flagged) == ["In"]
 
 
 @pytest.mark.parametrize(
-    ("segments", "is_highlighted", "min_score", "reviewed", "state"),
+    ("segments", "is_highlighted", "min_score", "state"),
     [
-        ([TranscriptSegment(0, 1, "Hello")], True, 0.4, set(), ReviewState.NO_DATA),
+        ([TranscriptSegment(0, 1, "Hello")], True, 0.4, ReviewState.NO_DATA),
         # Without scores, there's nothing to turn on
-        ([TranscriptSegment(0, 1, "Hello")], False, 0.4, set(), ReviewState.NO_DATA),
-        (SEGMENTS, False, 0.4, set(), ReviewState.OFF),
-        (SEGMENTS, True, 0.1, set(), ReviewState.NOTHING_FLAGGED),
-        (SEGMENTS, True, 0.4, set(), ReviewState.ACTIVE),
+        ([TranscriptSegment(0, 1, "Hello")], False, 0.4, ReviewState.NO_DATA),
+        (SEGMENTS, False, 0.4, ReviewState.OFF),
+        (SEGMENTS, True, 0.1, ReviewState.NOTHING_FLAGGED),
+        (SEGMENTS, True, 0.4, ReviewState.ACTIVE),
         (
-            SEGMENTS,
+            set_review(SEGMENTS, flagged_texts(SEGMENTS, 0.4), ReviewMark.ACCEPTED),
             True,
             0.4,
-            {"500:wisper", "1500:Nice to meet you.", "3500:Bye"},
             ReviewState.ALL_REVIEWED,
         ),
     ],
@@ -107,10 +146,9 @@ def test_the_state_of_the_review(
     segments: list[TranscriptSegment],
     is_highlighted: bool,
     min_score: float,
-    reviewed: set[str],
     state: ReviewState,
 ) -> None:
-    review = build_review(segments, is_highlighted, min_score, reviewed)
+    review = build_review(segments, is_highlighted, min_score)
 
     assert review.state == state
     # Only a review with flagged texts counts them
