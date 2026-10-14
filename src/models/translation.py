@@ -12,12 +12,12 @@ class TranscriptTranslation:
     language: str
     # The translated text of the transcription
     text: str
-    # The translated segments, sorted by their start. They start with the
-    # timestamps of the segments of the transcription, but the user can change
-    # them, add segments and delete them, since a translation often needs another
-    # timing (e.g. subtitles that take longer to read). Empty if the transcription
-    # has no timestamps or its text was edited, in which case the edited text is
-    # translated
+    # The translated segments, sorted by their start. They start as the sentences
+    # of the transcription, with the timestamps of its segments, but the user can
+    # change them, add segments and delete them, since a translation often needs
+    # another timing (e.g. subtitles that take longer to read). Empty if the
+    # transcription has no timestamps or its text was edited, in which case the
+    # edited text is translated
     segments: tuple[TranscriptSegment, ...] = ()
     # The provider and the model that translated it, e.g. "deepl" and "", or
     # "manual" if the user translates it from scratch, starting with empty texts
