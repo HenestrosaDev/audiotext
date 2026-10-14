@@ -672,6 +672,8 @@ class TestSaveTranscription:
             file_path=tmp_path / "audio",
             output_file_types=["srt", "txt"],
             should_overwrite=True,
+            # The transcribed file is an audio
+            is_vertical=False,
         )
 
 

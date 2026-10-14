@@ -6,13 +6,15 @@ exported at any time.
 
 import json
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from io import BytesIO
 from pathlib import Path
 
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
+from utils.config_manager import ConfigManager
 from utils.i18n import _
+from utils.subtitle_cues import Cue, build_cues, line_limits
 from utils.time_format import format_subtitle_time, format_timestamp
 
 # A paragraph of a document is closed after a pause this long, or once it's this
@@ -32,6 +34,8 @@ class ExportDocument:
     # The text edited by the user is the one exported in the formats without
     # timestamps, since the segments keep the original transcription
     is_text_edited: bool = False
+    # Whether the video is taller than it's wide, which narrows its subtitles
+    is_vertical: bool = False
 
 
 @dataclass(frozen=True)
@@ -46,20 +50,42 @@ def _cue_text(segment: TranscriptSegment) -> str:
     return f"[{segment.speaker}]: {segment.text}" if segment.speaker else segment.text
 
 
-def segments_to_srt(segments: list[TranscriptSegment]) -> str:
+def subtitle_cues(
+    segments: list[TranscriptSegment], is_vertical: bool = False
+) -> list[Cue]:
+    """The segments split into subtitles, as the user configured them."""
+    config = ConfigManager.get_config_subtitles()
+    width, count = line_limits(config, segments, is_vertical)
+    cues = []
+    for segment in segments:
+        segment_cues = build_cues([segment], width, count)
+        # The speaker is added after splitting, so the subtitles are the ones
+        # shown with the transcript and over the video, which show it apart
+        if segment.speaker and segment_cues:
+            first = segment_cues[0]
+            segment_cues[0] = replace(first, text=f"[{segment.speaker}]: {first.text}")
+        cues.extend(segment_cues)
+    return cues
+
+
+def segments_to_srt(
+    segments: list[TranscriptSegment], is_vertical: bool = False
+) -> str:
     cues = [
-        f"{idx}\n{format_subtitle_time(s.start, ',')} --> "
-        f"{format_subtitle_time(s.end, ',')}\n{_cue_text(s)}\n"
-        for idx, s in enumerate(segments, start=1)
+        f"{idx}\n{format_subtitle_time(cue.start, ',')} --> "
+        f"{format_subtitle_time(cue.end, ',')}\n{cue.text}\n"
+        for idx, cue in enumerate(subtitle_cues(segments, is_vertical), start=1)
     ]
     return "\n".join(cues)
 
 
-def segments_to_vtt(segments: list[TranscriptSegment]) -> str:
+def segments_to_vtt(
+    segments: list[TranscriptSegment], is_vertical: bool = False
+) -> str:
     cues = [
-        f"{format_subtitle_time(s.start, '.')} --> "
-        f"{format_subtitle_time(s.end, '.')}\n{_cue_text(s)}\n"
-        for s in segments
+        f"{format_subtitle_time(cue.start, '.')} --> "
+        f"{format_subtitle_time(cue.end, '.')}\n{cue.text}\n"
+        for cue in subtitle_cues(segments, is_vertical)
     ]
     return "WEBVTT\n\n" + "\n".join(cues)
 
@@ -110,11 +136,11 @@ def paragraphs(document: ExportDocument) -> list[Paragraph]:
 
 
 def to_srt(document: ExportDocument) -> str:
-    return segments_to_srt(document.segments)
+    return segments_to_srt(document.segments, document.is_vertical)
 
 
 def to_vtt(document: ExportDocument) -> str:
-    return segments_to_vtt(document.segments)
+    return segments_to_vtt(document.segments, document.is_vertical)
 
 
 def to_tsv(document: ExportDocument) -> str:

@@ -24,6 +24,7 @@ import utils.env_keys as env_keys
 import utils.i18n as i18n
 import utils.update_checker as update_checker
 from controllers.transcription_queue import Job
+from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.history import EntryStatus, HistoryEntry
 from models.summary import Chapter, TranscriptSummary
@@ -703,6 +704,43 @@ def test_the_segments_of_a_translation_have_their_own_timing(
     ui.pump()
     assert len(segments()) == 3
     assert "¿Qué tal?" not in segments()
+
+
+def test_the_subtitles_are_split_again_when_their_size_changes(ui: Ui) -> None:
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    assert view.video._cue_track.at(2.5).text == "Nice to meet you."
+
+    # As if the user changed them in the preferences
+    for key, value in (
+        (ConfigSubtitles.Key.MAX_LINE_WIDTH, "10"),
+        (ConfigSubtitles.Key.MAX_LINE_COUNT, "1"),
+    ):
+        ConfigManager.modify_value(ConfigSubtitles.Key.SECTION, key, value)
+    ui.window._on_subtitles_change()
+    ui.pump()
+    assert view.video._cue_track.at(2.5).text == "meet you."
+
+
+def test_the_subtitles_of_a_vertical_video_are_narrower(ui: Ui) -> None:
+    ConfigManager.modify_value(
+        ConfigSubtitles.Key.SECTION, ConfigSubtitles.Key.MAX_LINE_WIDTH_VERTICAL, "10"
+    )
+    ConfigManager.modify_value(
+        ConfigSubtitles.Key.SECTION, ConfigSubtitles.Key.MAX_LINE_COUNT_VERTICAL, "1"
+    )
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    assert view.video._cue_track.at(2.5).text == "Nice to meet you."
+
+    # Once the media is loaded and its video is vertical
+    view._set_vertical()
+    ui.pump()
+    assert view.video._cue_track.at(2.5).text == "meet you."
 
 
 def test_the_timestamps_can_be_precise(ui: Ui) -> None:
