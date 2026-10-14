@@ -20,6 +20,9 @@ class TimeFormat(Enum):
 # Sizes of the interface that can be chosen, as percentages of the default one
 UI_SCALES = (80, 90, 100, 110, 125, 150, 175, 200)
 
+# Scores that can be chosen to highlight the words below them, as percentages
+LOW_CONFIDENCE_THRESHOLDS = (20, 30, 40, 50, 60, 70)
+
 
 class SubtitleTrack(Enum):
     """The text shown as the subtitles of a video."""
@@ -52,6 +55,11 @@ class ConfigSystem:
     # Whether the timestamps of the transcripts are precise to the millisecond
     # (`HH:MM:SS,mmm`, like the subtitles) instead of simplified (`MM:SS`)
     precise_timestamps: bool = False
+    # Whether to highlight the words of the transcripts that may be wrong, whose
+    # alignment score is below the threshold (a percentage, see
+    # `LOW_CONFIDENCE_THRESHOLDS`)
+    highlight_low_confidence: bool = True
+    low_confidence_threshold: int = 40
     # How the dates and the times are shown (see `DateFormat` and `TimeFormat`)
     date_format: str = DateFormat.MEDIUM.value
     time_format: str = TimeFormat.AUTO.value
@@ -84,6 +92,8 @@ class ConfigSystem:
         SUBTITLE_STYLE = "subtitle_style"
         SUBTITLE_TRACK = "subtitle_track"
         PRECISE_TIMESTAMPS = "precise_timestamps"
+        HIGHLIGHT_LOW_CONFIDENCE = "highlight_low_confidence"
+        LOW_CONFIDENCE_THRESHOLD = "low_confidence_threshold"
         DATE_FORMAT = "date_format"
         TIME_FORMAT = "time_format"
         WINDOW_GEOMETRY = "window_geometry"

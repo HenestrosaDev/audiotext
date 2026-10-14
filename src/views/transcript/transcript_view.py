@@ -15,7 +15,7 @@ from handlers.ai_providers import PROVIDERS, get_provider, has_api_key
 from handlers.summary_handler import format_summary
 from handlers.translation_handler import MANUAL
 from models.config.config_ai import ConfigAi
-from models.config.config_system import ConfigSystem
+from models.config.config_system import LOW_CONFIDENCE_THRESHOLDS, ConfigSystem
 from models.history import HistoryEntry
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment, join_segments
@@ -139,6 +139,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
         self._config_system = ConfigManager.get_config_system()
         self._precise_variable: tk.BooleanVar | None = None
+        self._low_confidence_variable: tk.BooleanVar | None = None
+        self._threshold_variable: tk.IntVar | None = None
         self._subtitles_variable: tk.BooleanVar | None = None
 
         self.grid_columnconfigure(0, weight=1)
@@ -188,6 +190,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
         self.player.grid(row=2, column=0, sticky=ctk.EW)
         self._apply_precise_timestamps()
+        self._apply_low_confidence()
 
         self.layout.layout()
         self._show_content()
@@ -553,6 +556,27 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         is_precise = self._config_system.precise_timestamps
         self.text.set_precise_timestamps(is_precise)
         self.translation_panel.set_precise_timestamps(is_precise)
+
+    def _toggle_low_confidence(self) -> None:
+        is_highlighted = not self._config_system.highlight_low_confidence
+        self._config_system.highlight_low_confidence = is_highlighted
+        save_config(ConfigSystem.Key.HIGHLIGHT_LOW_CONFIDENCE, str(is_highlighted))
+        self._apply_low_confidence()
+        self._refresh_match_widgets()
+
+    def _set_low_confidence_threshold(self, threshold: int) -> None:
+        self._config_system.low_confidence_threshold = threshold
+        save_config(ConfigSystem.Key.LOW_CONFIDENCE_THRESHOLD, str(threshold))
+        self._apply_low_confidence()
+        self._refresh_match_widgets()
+
+    def _apply_low_confidence(self) -> None:
+        config = self._config_system
+        self.text.set_low_confidence_score(
+            config.low_confidence_threshold / 100
+            if config.highlight_low_confidence
+            else None
+        )
 
     def _format_time(self, seconds: float) -> str:
         """Formats the start of a segment as the user chose to show them."""
@@ -1100,6 +1124,50 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             menu.grab_release()
         return "break"
 
+    def _add_low_confidence_items(self, menu: tk.Menu) -> None:
+        """
+        Adds the options to highlight the words that may be wrong, which are only
+        enabled if the words of the transcription have a score.
+        """
+        has_scores = any(
+            word.score is not None
+            for segment in self._entry.segments
+            for word in segment.words
+        )
+        config = self._config_system
+
+        self._low_confidence_variable = tk.BooleanVar(
+            menu, value=config.highlight_low_confidence
+        )
+        menu.add_checkbutton(
+            label=_("Highlight low-confidence words"),
+            command=self._toggle_low_confidence,
+            variable=self._low_confidence_variable,
+            state=tk.NORMAL if has_scores else tk.DISABLED,
+        )
+
+        threshold_menu = tk.Menu(menu, tearoff=False)
+        self._threshold_variable = tk.IntVar(
+            menu, value=config.low_confidence_threshold
+        )
+        for threshold in LOW_CONFIDENCE_THRESHOLDS:
+            threshold_menu.add_radiobutton(
+                # The score below which the words are highlighted
+                label=_("Below {percent}%").format(percent=threshold),
+                command=partial(self._set_low_confidence_threshold, threshold),
+                variable=self._threshold_variable,
+                value=threshold,
+            )
+        menu.add_cascade(
+            label=_("Low-confidence threshold"),
+            menu=threshold_menu,
+            state=(
+                tk.NORMAL
+                if has_scores and config.highlight_low_confidence
+                else tk.DISABLED
+            ),
+        )
+
     def _copy_text(self, text: str) -> None:
         self.clipboard_clear()
         self.clipboard_append(text.strip())
@@ -1124,6 +1192,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             variable=self._precise_variable,
             state=tk.NORMAL if entry.segments else tk.DISABLED,
         )
+        self._add_low_confidence_items(menu)
         menu.add_separator()
 
         source_path = entry.source_path

@@ -11,6 +11,7 @@ import time
 import tkinter as tk
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
+from dataclasses import replace
 from functools import cache, partial
 from pathlib import Path
 from typing import Any
@@ -737,6 +738,43 @@ def test_the_timestamps_can_be_precise(ui: Ui) -> None:
     assert "00:00:01,500" not in transcript.get("1.0", "end")
 
 
+def test_the_low_confidence_words_are_highlighted(ui: Ui) -> None:
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    segments = [replace(SEGMENTS[0], words=words), *SEGMENTS[1:]]
+    entry = ui.add(segments=segments, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    transcript = view.text.tbx_transcript
+
+    def highlighted() -> list[str]:
+        ranges = transcript.tag_ranges("low_confidence")
+        return [
+            transcript.get(start, end)
+            for start, end in zip(ranges[::2], ranges[1::2], strict=True)
+        ]
+
+    # Only the words below the threshold (40% by default)
+    assert highlighted() == ["wisper"]
+
+    view._set_low_confidence_threshold(20)
+    ui.pump()
+    assert highlighted() == []
+    assert ConfigManager.get_config_system().low_confidence_threshold == 20
+
+    view._set_low_confidence_threshold(95)
+    ui.pump()
+    assert highlighted() == ["Hello", "wisper"]
+
+    view._toggle_low_confidence()
+    ui.pump()
+    assert highlighted() == []
+    assert not ConfigManager.get_config_system().highlight_low_confidence
+
+
 def test_the_precise_timestamps_option_is_checked_when_they_are_shown(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -755,6 +793,38 @@ def test_the_precise_timestamps_option_is_checked_when_they_are_shown(
     gc.collect()
     assert view._precise_variable is not None
     assert view._precise_variable.get()
+
+
+def test_the_low_confidence_options_need_the_scores_of_the_words(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_view import TranscriptView
+
+    menus: list[tk.Menu] = []
+    monkeypatch.setattr(
+        TranscriptView,
+        "_popup_below",
+        staticmethod(lambda menu, _widget: menus.append(menu)),
+    )
+
+    def states() -> list[str]:
+        ui.window._entry_view._show_more_menu()
+        menu = menus[-1]
+        return [
+            str(menu.entrycget(label, "state"))
+            for label in ("Highlight low-confidence words", "Low-confidence threshold")
+        ]
+
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    assert states() == [tk.DISABLED, tk.DISABLED]
+
+    words = (TranscriptWord(0.0, 1.0, "Hello", 0.9),)
+    entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    assert states() == [tk.NORMAL, tk.NORMAL]
 
 
 def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(
