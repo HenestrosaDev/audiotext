@@ -12,6 +12,8 @@ from handlers.translation_handler import (
     GOOGLE_TRANSLATE,
     TranslationHandler,
     chunk,
+    context_after,
+    context_before,
     get_env_key,
     has_api_key,
     translate_texts,
@@ -86,6 +88,30 @@ def test_the_segments_are_translated_keeping_their_timestamps(
     assert "into Spanish" in calls[0]["instructions"]
 
 
+def test_the_segments_are_translated_by_sentence(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls = fake_llm(monkeypatch)
+
+    translation = TranslationHandler.translate(
+        "It is a significant advance in the field. Yes.",
+        [
+            TranscriptSegment(0.0, 2.0, "It is a significant advance in the"),
+            TranscriptSegment(2.0, 4.0, "field. Yes."),
+        ],
+        is_text_edited=False,
+        language="es",
+        provider="openai",
+    )
+
+    assert calls[0]["texts"] == ["It is a significant advance in the field.", "Yes."]
+    assert [(s.start, s.text) for s in translation.segments] == [
+        (0.0, "IT IS A SIGNIFICANT ADVANCE IN THE FIELD."),
+        (pytest.approx(3.0909, abs=1e-3), "YES."),
+    ]
+    assert translation.segments[-1].end == 4.0
+
+
 def test_the_edited_text_is_translated_line_by_line(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -141,6 +167,38 @@ def test_a_reply_with_missing_translations_is_retried_in_halves(
     assert [call["texts"] for call in calls][0] == ["a", "b", "c"]
 
 
+def test_a_model_that_merges_sentences_is_retried_until_each_one_is_translated(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def reply(texts: list[str]) -> dict[str, Any]:
+        # The model returns one line less than it got, unless it gets one
+        if len(texts) > 1:
+            return {"translations": [" ".join(texts[:2]), *texts[2:]]}
+        return {"translations": [texts[0].upper()]}
+
+    calls = fake_llm(monkeypatch, reply)
+
+    translation = TranslationHandler.translate(
+        "",
+        [
+            TranscriptSegment(0.0, 2.0, "It is a big advance in the"),
+            TranscriptSegment(2.0, 4.0, "field. Yes. Of"),
+            TranscriptSegment(4.0, 5.0, "course."),
+        ],
+        is_text_edited=False,
+        language="es",
+        provider="openai",
+    )
+
+    assert [s.text for s in translation.segments] == [
+        "IT IS A BIG ADVANCE IN THE FIELD.",
+        "YES.",
+        "OF COURSE.",
+    ]
+    assert translation.segments[-1].end == 5.0
+    assert len(calls) > 1
+
+
 def test_a_reply_without_translations_raises(monkeypatch: pytest.MonkeyPatch) -> None:
     fake_llm(monkeypatch, {"other": []})
 
@@ -192,10 +250,103 @@ def test_deepl_uses_the_server_of_the_plan_of_the_key(
     assert requests == [
         (
             url,
-            {"text": ["Hello", "Bye"], "target_lang": "EN-US"},
+            {
+                "text": ["Hello", "Bye"],
+                "target_lang": "EN-US",
+                "context": "Hello Bye",
+            },
             {"Authorization": f"DeepL-Auth-Key {key}"},
         )
     ]
+
+
+def test_deepl_gets_the_text_around_each_chunk_as_context(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    contexts: list[str] = []
+
+    def post_json(url: str, payload: dict[str, Any], headers: dict[str, str]) -> Any:
+        contexts.append(payload["context"])
+        return {"translations": [{"text": text} for text in payload["text"]]}
+
+    monkeypatch.setattr(translation_handler, "_post_json", post_json)
+    monkeypatch.setattr(translation_handler, "MAX_DEEPL_CHUNK_ITEMS", 2)
+    monkeypatch.setenv("DEEPL_API_KEY", "abc")
+
+    translate_texts(["One.", "Two.", "Three.", "Four.", "Five."], "es", DEEPL)
+
+    assert contexts == [
+        "One. Two. Three. Four. Five.",
+        "One. Two. Three. Four. Five.",
+        "One. Two. Three. Four. Five.",
+    ]
+
+
+def test_language_models_get_the_text_around_each_chunk_as_context(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    contents: list[dict[str, Any]] = []
+
+    def complete_json(*args: Any) -> dict[str, Any]:
+        content = json.loads(args[3])
+        contents.append(content)
+        return {"translations": content["texts"]}
+
+    monkeypatch.setattr(translation_handler, "complete_json", complete_json)
+    monkeypatch.setattr(translation_handler, "MAX_LLM_CHUNK_ITEMS", 2)
+
+    translate_texts(["One.", "Two.", "Three.", "Four.", "Five."], "es", "openai")
+
+    assert contents == [
+        {"texts": ["One.", "Two."], "context_after": "Three. Four. Five."},
+        {
+            "texts": ["Three.", "Four."],
+            "context_before": "One. Two.",
+            "context_after": "Five.",
+        },
+        {"texts": ["Five."], "context_before": "One. Two. Three. Four."},
+    ]
+    assert "context_before" in translation_handler.LLM_INSTRUCTIONS
+
+
+def test_the_halves_of_a_retried_chunk_are_context_of_each_other(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def reply(texts: list[str]) -> dict[str, Any]:
+        if len(texts) > 1:
+            return {"translations": []}
+        return {"translations": texts}
+
+    calls: list[dict[str, Any]] = []
+
+    def complete_json(*args: Any) -> dict[str, Any]:
+        content = json.loads(args[3])
+        calls.append(content)
+        return reply(content["texts"])
+
+    monkeypatch.setattr(translation_handler, "complete_json", complete_json)
+
+    translation_handler._translate_llm(
+        ["a", "b"], "es", AiProvider.OPENAI, "model", "before", "after"
+    )
+
+    assert calls[1:] == [
+        {"texts": ["a"], "context_before": "before", "context_after": "b after"},
+        {"texts": ["b"], "context_before": "before a", "context_after": "after"},
+    ]
+
+
+def test_the_context_is_limited_to_the_nearest_texts(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(translation_handler, "MAX_CONTEXT_CHARS", 10)
+
+    assert context_before(["aaaa", "bbbb", "cccc"]) == "bbbb cccc"
+    assert context_after(["aaaa", "bbbb", "cccc"]) == "aaaa bbbb"
+    # A text longer than the limit is cut on the side away from the chunk
+    assert context_before(["x" * 5 + "y" * 10]) == "y" * 10
+    assert context_after(["y" * 10 + "x" * 5]) == "y" * 10
+    assert context_before([]) == context_after([]) == ""
 
 
 def test_deepl_rejects_the_languages_it_doesnt_support(
