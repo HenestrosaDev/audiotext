@@ -173,6 +173,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self.tabs.grid(row=0, column=0, padx=16, pady=(8, 16), sticky=ctk.NSEW)
 
         self._key_buttons: dict[EnvKeys, list[ctk.CTkButton]] = {}
+        self._key_width: float | None = None
         # The names of the tabs are their keys in the tab view, so they're
         # renamed when the language changes
         self._tab_texts: dict[str, Text] = {
@@ -195,6 +196,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._init_about(tabs[ABOUT_TAB])
         self._refresh_key_buttons()
         on_language_change(self, self._rename_tabs)
+        on_language_change(self, self._fit_key_buttons)
         if initial_tab:
             self.show_tab(initial_tab)
 
@@ -422,7 +424,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         """A button that sets the API key, showing whether it's set."""
         button = ctk.CTkButton(
             frame,
-            width=110,
+            width=self._key_button_width(),
             command=lambda: self._set_key(env_key),
             **theme.SECONDARY_BUTTON,
         )
@@ -447,9 +449,36 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             # The buttons of the providers are replaced when they change
             buttons[:] = [button for button in buttons if button.winfo_exists()]
             is_set = bool(env_key.get_value(default=""))
-            text: Text = (lambda: "✓ " + _("Change…")) if is_set else (L_("Set…"))
+            text = L_("Change API key…") if is_set else L_("Set API key…")
             for button in buttons:
                 localize(button, text=text)
+
+    def _key_button_width(self) -> float:
+        """
+        The width of the buttons of the keys, the one of their longest text, so
+        they're as wide as each other whether the key is set or not.
+        """
+        if self._key_width is None:
+            # Measured with a button that isn't shown, so the others don't change
+            probe = ctk.CTkButton(self, width=0, **theme.SECONDARY_BUTTON)
+            widths = []
+            for text in (_("Set API key…"), _("Change API key…")):
+                probe.configure(text=text)
+                probe.update_idletasks()
+                widths.append(probe.winfo_reqwidth())
+            # In unscaled pixels, as the width of the buttons is given
+            self._key_width = max(widths) / probe._get_widget_scaling()
+            probe.destroy()
+        return self._key_width
+
+    def _fit_key_buttons(self) -> None:
+        """Gives the buttons of the keys the width of their texts in the language."""
+        self._key_width = None
+        width = self._key_button_width()
+        for buttons in self._key_buttons.values():
+            for button in buttons:
+                if button.winfo_exists():
+                    button.configure(width=width)
 
     def _init_ai(self, tab: Any) -> None:
         frame = self._scrollable(tab)
@@ -554,8 +583,13 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         def show_provider(value: str) -> None:
             for widget in key_buttons.winfo_children():
                 widget.destroy()
+            # Without a key (e.g. Ollama), its space is removed too, as an empty
+            # frame keeps the size of the button it had
             if env_key := get_env_key(value):
                 self._key_button(key_buttons, env_key, column=0)
+                key_buttons.grid()
+            else:
+                key_buttons.grid_remove()
             self._refresh_key_buttons()
             # DeepL and Google Translate have no models to choose
             has_models = bool(get_default_model(value))

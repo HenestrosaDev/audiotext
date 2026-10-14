@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-12 18:23+0200\n"
+"POT-Creation-Date: 2026-10-14 10:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -281,7 +281,7 @@ msgid "No audio was recorded."
 msgstr "Аудіо не записано."
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:460
+#: src/views/settings/preferences_dialog.py:489
 #: src/views/transcript/summary_panel.py:189
 #: src/views/transcript/transcript_view.py:447
 msgid "Summary"
@@ -811,7 +811,7 @@ msgid "New transcription:"
 msgstr "Нова транскрипція:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:799
+#: src/views/settings/preferences_dialog.py:833
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "Доступна версія {version}"
@@ -993,7 +993,6 @@ msgstr "Вибрати папку…"
 
 #: src/views/new_transcription/new_transcription_view.py:234
 #: src/views/settings/cards/output_card.py:98
-#: src/views/settings/preferences_dialog.py:450
 msgid "Change…"
 msgstr "Змінити…"
 
@@ -1176,213 +1175,222 @@ msgstr ""
 msgid "Preferences"
 msgstr "Уподобання"
 
-#: src/views/settings/preferences_dialog.py:179
+#: src/views/settings/preferences_dialog.py:180
 msgid "General"
 msgstr "Загальні"
 
-#: src/views/settings/preferences_dialog.py:180
+#: src/views/settings/preferences_dialog.py:181
 msgid "AI"
 msgstr "ШІ"
 
-#: src/views/settings/preferences_dialog.py:181
+#: src/views/settings/preferences_dialog.py:182
 msgid "API keys"
 msgstr "Ключі API"
 
-#: src/views/settings/preferences_dialog.py:183
+#: src/views/settings/preferences_dialog.py:184
 #: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "Субтитри"
 
-#: src/views/settings/preferences_dialog.py:185
+#: src/views/settings/preferences_dialog.py:186
 msgid "About"
 msgstr "Про програму"
 
-#: src/views/settings/preferences_dialog.py:300
+#: src/views/settings/preferences_dialog.py:302
 msgid "Appearance"
 msgstr "Оформлення"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "System"
 msgstr "Системна"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Light"
 msgstr "Світла"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Dark"
 msgstr "Темна"
 
-#: src/views/settings/preferences_dialog.py:310
+#: src/views/settings/preferences_dialog.py:312
 msgid "Interface size"
 msgstr "Розмір інтерфейсу"
 
-#: src/views/settings/preferences_dialog.py:319
+#: src/views/settings/preferences_dialog.py:321
 msgid "Interface language"
 msgstr "Мова інтерфейсу"
 
-#: src/views/settings/preferences_dialog.py:325
+#: src/views/settings/preferences_dialog.py:327
 msgid "System language"
 msgstr "Мова системи"
 
-#: src/views/settings/preferences_dialog.py:338
+#: src/views/settings/preferences_dialog.py:340
 msgid "Notifications"
 msgstr "Сповіщення"
 
-#: src/views/settings/preferences_dialog.py:339
+#: src/views/settings/preferences_dialog.py:341
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "Показує системне сповіщення, коли транскрипція готова."
 
-#: src/views/settings/preferences_dialog.py:350
+#: src/views/settings/preferences_dialog.py:352
 msgid "Updates"
 msgstr "Оновлення"
 
-#: src/views/settings/preferences_dialog.py:351
+#: src/views/settings/preferences_dialog.py:353
 msgid "Checks for a new version when the app opens."
 msgstr "Перевіряє наявність нової версії під час запуску застосунку."
 
-#: src/views/settings/preferences_dialog.py:367
+#: src/views/settings/preferences_dialog.py:369
 msgid "Date format"
 msgstr "Формат дати"
 
-#: src/views/settings/preferences_dialog.py:384
+#: src/views/settings/preferences_dialog.py:386
 msgid "Time format"
 msgstr "Формат часу"
 
-#: src/views/settings/preferences_dialog.py:385
+#: src/views/settings/preferences_dialog.py:387
 msgid "Automatic uses the clock of the interface language."
 msgstr "Автоматично — використовується формат часу мови інтерфейсу."
 
-#: src/views/settings/preferences_dialog.py:391
+#: src/views/settings/preferences_dialog.py:393
 msgid "Automatic"
 msgstr "Автоматично"
 
-#: src/views/settings/preferences_dialog.py:450
-msgid "Set…"
-msgstr "Задати…"
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+msgid "Change API key…"
+msgstr "Змінити ключ API…"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/translation_panel.py:381
+msgid "Set API key…"
+msgstr "Задати ключ API…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:485
+#: src/views/settings/preferences_dialog.py:514
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "Переклад"
 
-#: src/views/settings/preferences_dialog.py:497
+#: src/views/settings/preferences_dialog.py:526
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:502
+#: src/views/settings/preferences_dialog.py:531
 msgid "Server URL"
 msgstr "URL сервера"
 
-#: src/views/settings/preferences_dialog.py:503
+#: src/views/settings/preferences_dialog.py:532
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama запускає моделі на вашому комп'ютері, без ключа API."
 
-#: src/views/settings/preferences_dialog.py:534
+#: src/views/settings/preferences_dialog.py:563
 msgid "Provider"
 msgstr "Постачальник"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:541
+#: src/views/settings/preferences_dialog.py:570
 msgid "Model"
 msgstr "Модель"
 
-#: src/views/settings/preferences_dialog.py:542
+#: src/views/settings/preferences_dialog.py:571
 msgid "The default model of the provider if empty."
 msgstr "Якщо порожньо — типова модель постачальника."
 
-#: src/views/settings/preferences_dialog.py:584
+#: src/views/settings/preferences_dialog.py:618
 msgid "Compute type"
 msgstr "Тип обчислень"
 
-#: src/views/settings/preferences_dialog.py:585
+#: src/views/settings/preferences_dialog.py:619
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 швидший на GPU. int8 використовує менше пам'яті."
 
-#: src/views/settings/preferences_dialog.py:601
+#: src/views/settings/preferences_dialog.py:635
 msgid "Batch size"
 msgstr "Розмір пакета"
 
-#: src/views/settings/preferences_dialog.py:602
+#: src/views/settings/preferences_dialog.py:636
 msgid "Lower it if you run out of memory."
 msgstr "Зменште, якщо бракує пам'яті."
 
-#: src/views/settings/preferences_dialog.py:614
+#: src/views/settings/preferences_dialog.py:648
 msgid "Use CPU"
 msgstr "Використовувати CPU"
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:651
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "GPU з підтримкою CUDA не знайдено, тому WhisperX працює на CPU."
 
-#: src/views/settings/preferences_dialog.py:631
+#: src/views/settings/preferences_dialog.py:665
 msgid "Highlight words"
 msgstr "Виділяти слова"
 
-#: src/views/settings/preferences_dialog.py:632
+#: src/views/settings/preferences_dialog.py:666
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "Підкреслює кожне слово в момент вимовляння (.srt і .vtt)."
 
-#: src/views/settings/preferences_dialog.py:639
+#: src/views/settings/preferences_dialog.py:673
 msgid "Max. line count"
 msgstr "Макс. кількість рядків"
 
-#: src/views/settings/preferences_dialog.py:646
+#: src/views/settings/preferences_dialog.py:680
 msgid "Max. line width"
 msgstr "Макс. ширина рядка"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:692
 msgid "Temperature"
 msgstr "Температура"
 
-#: src/views/settings/preferences_dialog.py:659
+#: src/views/settings/preferences_dialog.py:693
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "Від 0 до 1. Що вище значення, то випадковіший результат."
 
-#: src/views/settings/preferences_dialog.py:671
+#: src/views/settings/preferences_dialog.py:705
 msgid "Timestamps of the words"
 msgstr "Часові мітки слів"
 
-#: src/views/settings/preferences_dialog.py:672
+#: src/views/settings/preferences_dialog.py:706
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Виділяє кожне слово під час відтворення (модель whisper-1). Триває довше."
 
-#: src/views/settings/preferences_dialog.py:702
+#: src/views/settings/preferences_dialog.py:736
 #, python-brace-format
 msgid "Version {version}"
 msgstr "Версія {version}"
 
-#: src/views/settings/preferences_dialog.py:706
+#: src/views/settings/preferences_dialog.py:740
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "Автор: {author}"
 
-#: src/views/settings/preferences_dialog.py:722
+#: src/views/settings/preferences_dialog.py:756
 msgid "Documentation"
 msgstr "Документація"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:776
 msgid "Donate"
 msgstr "Підтримати"
 
-#: src/views/settings/preferences_dialog.py:756
+#: src/views/settings/preferences_dialog.py:790
 msgid "Check for updates"
 msgstr "Перевірити оновлення"
 
-#: src/views/settings/preferences_dialog.py:775
+#: src/views/settings/preferences_dialog.py:809
 msgid "Checking for updates…"
 msgstr "Перевірка оновлень…"
 
-#: src/views/settings/preferences_dialog.py:786
+#: src/views/settings/preferences_dialog.py:820
 msgid "Could not check for updates."
 msgstr "Не вдалося перевірити оновлення."
 
-#: src/views/settings/preferences_dialog.py:795
+#: src/views/settings/preferences_dialog.py:829
 msgid "Download"
 msgstr "Завантажити"
 
-#: src/views/settings/preferences_dialog.py:805
+#: src/views/settings/preferences_dialog.py:839
 msgid "You have the latest version."
 msgstr "У вас остання версія."
 
@@ -1503,12 +1511,6 @@ msgstr ""
 #: src/views/settings/cards/engine_card.py:140
 msgid "API key set"
 msgstr "Ключ API задано"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:381
-msgid "Set API key…"
-msgstr "Задати ключ API…"
 
 #: src/views/settings/cards/folder_card.py:22
 msgid "Watch the folder"

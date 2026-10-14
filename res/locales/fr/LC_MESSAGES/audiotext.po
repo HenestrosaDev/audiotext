@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-12 18:23+0200\n"
+"POT-Creation-Date: 2026-10-14 10:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -287,7 +287,7 @@ msgid "No audio was recorded."
 msgstr "Aucun audio n’a été enregistré."
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:460
+#: src/views/settings/preferences_dialog.py:489
 #: src/views/transcript/summary_panel.py:189
 #: src/views/transcript/transcript_view.py:447
 msgid "Summary"
@@ -819,7 +819,7 @@ msgid "New transcription:"
 msgstr "Nouvelle transcription :"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:799
+#: src/views/settings/preferences_dialog.py:833
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "La version {version} est disponible"
@@ -1005,7 +1005,6 @@ msgstr "Choisir un dossier…"
 
 #: src/views/new_transcription/new_transcription_view.py:234
 #: src/views/settings/cards/output_card.py:98
-#: src/views/settings/preferences_dialog.py:450
 msgid "Change…"
 msgstr "Modifier…"
 
@@ -1186,215 +1185,224 @@ msgstr ""
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/views/settings/preferences_dialog.py:179
+#: src/views/settings/preferences_dialog.py:180
 msgid "General"
 msgstr "Général"
 
-#: src/views/settings/preferences_dialog.py:180
+#: src/views/settings/preferences_dialog.py:181
 msgid "AI"
 msgstr "IA"
 
-#: src/views/settings/preferences_dialog.py:181
+#: src/views/settings/preferences_dialog.py:182
 msgid "API keys"
 msgstr "Clés API"
 
-#: src/views/settings/preferences_dialog.py:183
+#: src/views/settings/preferences_dialog.py:184
 #: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "Sous-titres"
 
-#: src/views/settings/preferences_dialog.py:185
+#: src/views/settings/preferences_dialog.py:186
 msgid "About"
 msgstr "À propos"
 
-#: src/views/settings/preferences_dialog.py:300
+#: src/views/settings/preferences_dialog.py:302
 msgid "Appearance"
 msgstr "Apparence"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "System"
 msgstr "Système"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Light"
 msgstr "Clair"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Dark"
 msgstr "Sombre"
 
-#: src/views/settings/preferences_dialog.py:310
+#: src/views/settings/preferences_dialog.py:312
 msgid "Interface size"
 msgstr "Taille de l'interface"
 
-#: src/views/settings/preferences_dialog.py:319
+#: src/views/settings/preferences_dialog.py:321
 msgid "Interface language"
 msgstr "Langue de l’interface"
 
-#: src/views/settings/preferences_dialog.py:325
+#: src/views/settings/preferences_dialog.py:327
 msgid "System language"
 msgstr "Langue du système"
 
-#: src/views/settings/preferences_dialog.py:338
+#: src/views/settings/preferences_dialog.py:340
 msgid "Notifications"
 msgstr "Notifications"
 
-#: src/views/settings/preferences_dialog.py:339
+#: src/views/settings/preferences_dialog.py:341
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "Affiche une notification du système lorsqu'une transcription est prête."
 
-#: src/views/settings/preferences_dialog.py:350
+#: src/views/settings/preferences_dialog.py:352
 msgid "Updates"
 msgstr "Mises à jour"
 
-#: src/views/settings/preferences_dialog.py:351
+#: src/views/settings/preferences_dialog.py:353
 msgid "Checks for a new version when the app opens."
 msgstr ""
 "Vérifie si une nouvelle version est disponible à l'ouverture de "
 "l'application."
 
-#: src/views/settings/preferences_dialog.py:367
+#: src/views/settings/preferences_dialog.py:369
 msgid "Date format"
 msgstr "Format de la date"
 
-#: src/views/settings/preferences_dialog.py:384
+#: src/views/settings/preferences_dialog.py:386
 msgid "Time format"
 msgstr "Format de l'heure"
 
-#: src/views/settings/preferences_dialog.py:385
+#: src/views/settings/preferences_dialog.py:387
 msgid "Automatic uses the clock of the interface language."
 msgstr "Automatique utilise l'horloge de la langue de l'interface."
 
-#: src/views/settings/preferences_dialog.py:391
+#: src/views/settings/preferences_dialog.py:393
 msgid "Automatic"
 msgstr "Automatique"
 
-#: src/views/settings/preferences_dialog.py:450
-msgid "Set…"
-msgstr "Configurer…"
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+msgid "Change API key…"
+msgstr "Modifier la clé API…"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/translation_panel.py:381
+msgid "Set API key…"
+msgstr "Configurer la clé API…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:485
+#: src/views/settings/preferences_dialog.py:514
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "Traduction"
 
-#: src/views/settings/preferences_dialog.py:497
+#: src/views/settings/preferences_dialog.py:526
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:502
+#: src/views/settings/preferences_dialog.py:531
 msgid "Server URL"
 msgstr "URL du serveur"
 
-#: src/views/settings/preferences_dialog.py:503
+#: src/views/settings/preferences_dialog.py:532
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama exécute les modèles sur votre ordinateur, sans clé API."
 
-#: src/views/settings/preferences_dialog.py:534
+#: src/views/settings/preferences_dialog.py:563
 msgid "Provider"
 msgstr "Fournisseur"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:541
+#: src/views/settings/preferences_dialog.py:570
 msgid "Model"
 msgstr "Modèle"
 
-#: src/views/settings/preferences_dialog.py:542
+#: src/views/settings/preferences_dialog.py:571
 msgid "The default model of the provider if empty."
 msgstr "Le modèle par défaut du fournisseur si vide."
 
-#: src/views/settings/preferences_dialog.py:584
+#: src/views/settings/preferences_dialog.py:618
 msgid "Compute type"
 msgstr "Type de calcul"
 
-#: src/views/settings/preferences_dialog.py:585
+#: src/views/settings/preferences_dialog.py:619
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 est plus rapide sur les GPU. int8 utilise moins de mémoire."
 
-#: src/views/settings/preferences_dialog.py:601
+#: src/views/settings/preferences_dialog.py:635
 msgid "Batch size"
 msgstr "Taille de lot"
 
-#: src/views/settings/preferences_dialog.py:602
+#: src/views/settings/preferences_dialog.py:636
 msgid "Lower it if you run out of memory."
 msgstr "Réduisez-la si la mémoire est insuffisante."
 
-#: src/views/settings/preferences_dialog.py:614
+#: src/views/settings/preferences_dialog.py:648
 msgid "Use CPU"
 msgstr "Utiliser le CPU"
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:651
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "Aucun GPU CUDA n’a été trouvé, WhisperX s’exécute donc sur le processeur."
 
-#: src/views/settings/preferences_dialog.py:631
+#: src/views/settings/preferences_dialog.py:665
 msgid "Highlight words"
 msgstr "Surligner les mots"
 
-#: src/views/settings/preferences_dialog.py:632
+#: src/views/settings/preferences_dialog.py:666
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "Souligne chaque mot au moment où il est prononcé (.srt et .vtt)."
 
-#: src/views/settings/preferences_dialog.py:639
+#: src/views/settings/preferences_dialog.py:673
 msgid "Max. line count"
 msgstr "Nb max. de lignes"
 
-#: src/views/settings/preferences_dialog.py:646
+#: src/views/settings/preferences_dialog.py:680
 msgid "Max. line width"
 msgstr "Nb max. de caractères par ligne"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:692
 msgid "Temperature"
 msgstr "Température"
 
-#: src/views/settings/preferences_dialog.py:659
+#: src/views/settings/preferences_dialog.py:693
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "Entre 0 et 1. Les valeurs élevées sont plus aléatoires."
 
-#: src/views/settings/preferences_dialog.py:671
+#: src/views/settings/preferences_dialog.py:705
 msgid "Timestamps of the words"
 msgstr "Horodatage des mots"
 
-#: src/views/settings/preferences_dialog.py:672
+#: src/views/settings/preferences_dialog.py:706
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Surligne chaque mot pendant la lecture (modèle whisper-1). Plus long."
 
-#: src/views/settings/preferences_dialog.py:702
+#: src/views/settings/preferences_dialog.py:736
 #, python-brace-format
 msgid "Version {version}"
 msgstr "Version {version}"
 
-#: src/views/settings/preferences_dialog.py:706
+#: src/views/settings/preferences_dialog.py:740
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "Créé par {author}"
 
-#: src/views/settings/preferences_dialog.py:722
+#: src/views/settings/preferences_dialog.py:756
 msgid "Documentation"
 msgstr "Documentation"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:776
 msgid "Donate"
 msgstr "Faire un don"
 
-#: src/views/settings/preferences_dialog.py:756
+#: src/views/settings/preferences_dialog.py:790
 msgid "Check for updates"
 msgstr "Rechercher des mises à jour"
 
-#: src/views/settings/preferences_dialog.py:775
+#: src/views/settings/preferences_dialog.py:809
 msgid "Checking for updates…"
 msgstr "Recherche de mises à jour…"
 
-#: src/views/settings/preferences_dialog.py:786
+#: src/views/settings/preferences_dialog.py:820
 msgid "Could not check for updates."
 msgstr "Impossible de rechercher des mises à jour."
 
-#: src/views/settings/preferences_dialog.py:795
+#: src/views/settings/preferences_dialog.py:829
 msgid "Download"
 msgstr "Télécharger"
 
-#: src/views/settings/preferences_dialog.py:805
+#: src/views/settings/preferences_dialog.py:839
 msgid "You have the latest version."
 msgstr "Vous avez la dernière version."
 
@@ -1515,12 +1523,6 @@ msgstr ""
 #: src/views/settings/cards/engine_card.py:140
 msgid "API key set"
 msgstr "Clé API configurée"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:381
-msgid "Set API key…"
-msgstr "Configurer la clé API…"
 
 #: src/views/settings/cards/folder_card.py:22
 msgid "Watch the folder"
