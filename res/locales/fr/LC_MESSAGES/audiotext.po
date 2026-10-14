@@ -2115,8 +2115,8 @@ msgid "Find and replace…"
 msgstr "Rechercher et remplacer…"
 
 #: src/views/transcript/transcript_view.py:1122
-msgid "Precise timestamps (00:00:01,000)"
-msgstr "Horodatages précis (00:00:01,000)"
+msgid "Precise timestamps (HH:MM:SS,mmm)"
+msgstr "Horodatages précis (HH:MM:SS,mmm)"
 
 #: src/views/transcript/transcript_view.py:1145
 msgid "Rename…"

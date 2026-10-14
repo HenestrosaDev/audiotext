@@ -672,9 +672,8 @@ def test_the_segments_of_a_translation_have_their_own_timing(
     ]
     # The transcription keeps its timing
     assert entry.segments == SEGMENTS
-    assert "00:04 – 00:06" in view.translation_panel.text.tbx_transcript.get(
-        "1.0", "end"
-    )
+    translated_text = view.translation_panel.text.tbx_transcript.get("1.0", "end")
+    assert "00:00:04,000 – 00:00:06,000" in translated_text
     view._on_translation_segment_click(2)
     assert played == [4.0]
 
@@ -718,23 +717,24 @@ def test_the_timestamps_can_be_precise(ui: Ui) -> None:
     view = ui.window._entry_view
     transcript = view.text.tbx_transcript
     translated_text = view.translation_panel.text.tbx_transcript
-    # They show when each segment starts and ends
+    # They show when each segment starts and ends, precise by default
     # On their own line, with the speaker, above the text
-    assert "00:01 – 00:03   SPEAKER_01\nNice to meet you." in transcript.get(
-        "1.0", "end"
-    )
-
-    view._toggle_precise_timestamps()
-    ui.pump()
     assert "00:00:01,500 – 00:00:03,000   SPEAKER_01\n" in transcript.get("1.0", "end")
     assert "00:00:01,500 – 00:00:03,000   SPEAKER_01\n" in translated_text.get(
         "1.0", "end"
     )
-    assert ConfigManager.get_config_system().precise_timestamps
 
     view._toggle_precise_timestamps()
     ui.pump()
-    assert "00:00:01,500" not in transcript.get("1.0", "end")
+    assert "00:01 – 00:03   SPEAKER_01\nNice to meet you." in transcript.get(
+        "1.0", "end"
+    )
+    assert "00:00:01,500" not in translated_text.get("1.0", "end")
+    assert not ConfigManager.get_config_system().precise_timestamps
+
+    view._toggle_precise_timestamps()
+    ui.pump()
+    assert "00:00:01,500" in transcript.get("1.0", "end")
 
 
 def test_the_precise_timestamps_option_is_checked_when_they_are_shown(
@@ -748,13 +748,17 @@ def test_the_precise_timestamps_option_is_checked_when_they_are_shown(
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
-    view._toggle_precise_timestamps()
     monkeypatch.setattr(TranscriptView, "_popup_below", lambda *_args: None)
 
     view._show_more_menu()
     gc.collect()
     assert view._precise_variable is not None
     assert view._precise_variable.get()
+
+    view._toggle_precise_timestamps()
+    view._show_more_menu()
+    gc.collect()
+    assert not view._precise_variable.get()
 
 
 def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(
