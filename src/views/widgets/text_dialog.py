@@ -6,6 +6,7 @@ import customtkinter as ctk
 from utils.i18n import _
 from views.style import theme
 from views.widgets.textbox import CTkTextbox
+from views.widgets.window import place_dialog
 
 
 class TextDialog(ctk.CTkToplevel):  # type: ignore[misc]
@@ -27,6 +28,8 @@ class TextDialog(ctk.CTkToplevel):  # type: ignore[misc]
         is_secret: bool = False,
     ) -> None:
         super().__init__(master)
+        # Shown by `place_dialog` once it's built, already in its place
+        self.withdraw()
         self._result: str | None = None
         self._is_multiline = is_multiline
         self._allow_empty = allow_empty
@@ -104,5 +107,6 @@ class TextDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
     def get_input(self) -> str | None:
         """Waits until the dialog is closed. :return: The text, or None if cancelled."""
+        place_dialog(self, self.master)
         self.master.wait_window(self)
         return self._result

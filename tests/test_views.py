@@ -1202,6 +1202,7 @@ def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(
 def test_the_dialog_to_translate_asks_for_the_key_of_the_provider(ui: Ui) -> None:
     from utils.env_keys import EnvKeys
     from views.transcript.translation_panel import TranslateDialog
+    from views.widgets.window import place_dialog
 
     asked: list[EnvKeys] = []
     dialog = TranslateDialog(
@@ -1210,6 +1211,8 @@ def test_the_dialog_to_translate_asks_for_the_key_of_the_provider(ui: Ui) -> Non
         on_set_api_key=asked.append,
         on_settings=lambda: None,
     )
+    # Shown as `wait` does, without waiting for it to close
+    place_dialog(dialog, ui.window)
     ui.pump()
     dialog.omn_provider.set("DeepL")
     dialog._refresh()
@@ -2190,3 +2193,70 @@ def test_the_video_can_be_subtitled_with_the_translation(ui: Ui) -> None:
     ui.pump()
     assert not video.has_translation_subtitles
     assert video._subtitle_text == "Nice to meet you."
+
+
+def _open_text_dialog(ui: Ui) -> Any:
+    """Opens a dialog to type a text without waiting for it to close."""
+    from views.widgets.text_dialog import TextDialog
+    from views.widgets.window import place_dialog
+
+    dialog = TextDialog(ui.window, "Title", "Message")
+    place_dialog(dialog, ui.window)
+    ui.pump()
+    return dialog
+
+
+def _position(window: Any) -> tuple[int, int]:
+    from views.widgets.window import _parse_position
+
+    position = _parse_position(window.wm_geometry())
+    assert position
+    return position
+
+
+def test_a_dialog_opens_centered_over_the_main_window(ui: Ui) -> None:
+    dialog = _open_text_dialog(ui)
+    owner = ui.window.winfo_toplevel()
+    x, y = _position(dialog)
+    width = dialog.winfo_width()
+    centered_x = owner.winfo_rootx() + (owner.winfo_width() - width) // 2
+    # Moved into the screen when the main window is partly off it, like on the
+    # small screen of the CI
+    assert abs(x - min(centered_x, dialog.winfo_screenwidth() - width)) <= 2
+    assert owner.winfo_rooty() < y < owner.winfo_rooty() + owner.winfo_height()
+    dialog.destroy()
+    # It wasn't moved, so its position isn't stored
+    assert not ConfigManager.get_config_system().dialog_positions
+
+
+def test_a_dialog_opens_where_it_was_moved(ui: Ui) -> None:
+    from views.widgets.window import POSITION_SAVE_DELAY_MS
+
+    dialog = _open_text_dialog(ui)
+    dialog.geometry("+150+120")
+    ui.pump(POSITION_SAVE_DELAY_MS / 1000 + 0.3)
+    assert ConfigManager.get_config_system().dialog_positions == ["TextDialog+150+120"]
+    dialog.destroy()
+
+    dialog = _open_text_dialog(ui)
+    assert _position(dialog) == (150, 120)
+    dialog.destroy()
+
+
+def test_a_dialog_closed_right_after_it_is_moved_keeps_its_position(ui: Ui) -> None:
+    dialog = _open_text_dialog(ui)
+    dialog.geometry("+-40+130")
+    ui.pump(0.1)
+    dialog.destroy()
+    assert ConfigManager.get_config_system().dialog_positions == ["TextDialog+-40+130"]
+
+
+def test_a_dialog_moved_off_the_screen_opens_centered(ui: Ui) -> None:
+    ConfigManager.modify_value(
+        ConfigSystem.Key.SECTION,
+        ConfigSystem.Key.DIALOG_POSITIONS,
+        "FindDialog+200+200, TextDialog+-90000+0",
+    )
+    dialog = _open_text_dialog(ui)
+    assert _position(dialog)[0] > 0
+    dialog.destroy()
