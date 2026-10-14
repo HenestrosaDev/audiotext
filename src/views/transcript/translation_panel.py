@@ -38,6 +38,11 @@ def language_name(code: str) -> str:
     return get_language_name(code, fallback=c.AUDIO_LANGUAGES.get(code, code))
 
 
+def format_ratio(ratio: float) -> str:
+    """How much is translated, e.g. "42%", rounded down so 100% means all of it."""
+    return f"{int(ratio * 100)}%"
+
+
 def has_timed_texts(translation: TranscriptTranslation) -> bool:
     """Whether some segment of the translation has a text, to subtitle it."""
     return any(segment.text for segment in translation.segments)
@@ -60,7 +65,9 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         on_copy: Callable[[], None],
         on_export: Callable[[Any], None],
         on_translate: Callable[[], None],
+        on_regenerate: Callable[[], None],
         on_close: Callable[[], None],
+        on_select: Callable[[str], None],
     ) -> None:
         """
         :param on_segment_click: Called with the index of a clicked segment of the
@@ -70,9 +77,12 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         :param on_text_edit: Called with the plain text after the user edits it.
         :param on_export: Called with the button below which the formats to
                           export it are shown.
-        :param on_translate: Called to translate it again, e.g. into another
-                             language.
+        :param on_translate: Called to choose another language to translate it
+                             into.
+        :param on_regenerate: Called to translate it again, into the same
+                              language.
         :param on_close: Called to hide the panel.
+        :param on_select: Called with the language of the translation to show.
         """
         super().__init__(
             master,
@@ -82,6 +92,11 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             corner_radius=12,
         )
         self._on_translate = on_translate
+        self._on_select = on_select
+        # The language of each option of the menu of the translations
+        self._languages: dict[str, str] = {}
+        # The option of the translation shown
+        self._selected_label = ""
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
@@ -96,6 +111,16 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             header, text="", font=theme.font(14, "bold"), anchor=ctk.W
         )
         self.lbl_title.grid(row=0, column=1, sticky=ctk.W)
+        # Chooses the translation shown, when there is one, in place of the title
+        self.omn_language = CTkOptionMenu(
+            header,
+            values=[],
+            height=28,
+            font=theme.font(14, "bold"),
+            command=self._choose_option,
+        )
+        self.omn_language.grid(row=0, column=1, sticky=ctk.W)
+        self.omn_language.grid_remove()
         self.lbl_source = ctk.CTkLabel(
             header,
             text="",
@@ -109,7 +134,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         self.btn_export = self._icon_button(
             header, 4, "export", lambda: on_export(self.btn_export)
         )
-        self.btn_translate = self._icon_button(header, 5, "refresh", on_translate)
+        self.btn_regenerate = self._icon_button(header, 5, "refresh", on_regenerate)
         self._icon_button(header, 6, "x_circle", on_close)
 
         self.lbl_details = ctk.CTkLabel(
@@ -142,18 +167,22 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
 
     def show(
         self,
+        language: str | None,
         translation: TranscriptTranslation | None,
         is_loading: bool,
         error: str,
-        pending_language: str | None,
+        languages: dict[str, str] | None = None,
     ) -> None:
         """
-        :param is_loading: Whether a translation is in progress.
-        :param error: Why the last translation failed, if it did.
-        :param pending_language: The language being translated into, if known.
+        :param language: The language of the translation shown, or being made.
+        :param translation: The translation into it, if there is one.
+        :param is_loading: Whether it's being translated into it.
+        :param error: Why the last translation into it failed, if it did.
+        :param languages: The label of each language that the user can choose,
+                          in order. Without them, the panel is titled instead.
         """
+        self._show_languages(language, languages or {})
         if is_loading:
-            language = pending_language or (translation and translation.language)
             self.lbl_title.configure(
                 text=_("Translating into {language}…").format(
                     language=language_name(language)
@@ -192,7 +221,17 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         has_translation = translation is not None and not is_loading
         for button in (self.btn_copy, self.btn_export):
             button.configure(state=ctk.NORMAL if has_translation else ctk.DISABLED)
-        self.btn_translate.configure(state=ctk.DISABLED if is_loading else ctk.NORMAL)
+        # A manual translation can't be translated again
+        can_regenerate = (
+            has_translation
+            and translation is not None
+            and translation.provider != MANUAL
+        )
+        # Shown only when it can be used
+        if can_regenerate:
+            self.btn_regenerate.grid()
+        else:
+            self.btn_regenerate.grid_remove()
 
     def set_mode(self, mode: str) -> None:
         self.text.set_mode(mode)
@@ -207,6 +246,32 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
     def highlight(self, position: float, is_playing: bool) -> None:
         if self.text.winfo_ismapped():
             self.text.highlight(position, is_playing)
+
+    # LANGUAGES
+
+    def _show_languages(self, language: str | None, languages: dict[str, str]) -> None:
+        """Shows the menu of the translations, with the one of the language chosen."""
+        if not languages:
+            self._languages = {}
+            self.omn_language.grid_remove()
+            self.lbl_title.grid()
+            return
+
+        self._languages = {label: code for code, label in languages.items()}
+        self._selected_label = languages.get(language or "", "")
+        add_label = _("Translate into another language…")
+        self.omn_language.configure(values=[*languages.values(), add_label])
+        self.omn_language.set(self._selected_label)
+        self.lbl_title.grid_remove()
+        self.omn_language.grid()
+
+    def _choose_option(self, label: str) -> None:
+        if language := self._languages.get(label):
+            self._on_select(language)
+            return
+        # The option to translate it into another language, which isn't kept
+        self.omn_language.set(self._selected_label)
+        self._on_translate()
 
     # STATES
 

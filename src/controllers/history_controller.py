@@ -9,6 +9,7 @@ from handlers.translation_handler import MANUAL, TranslationHandler
 from interfaces.history_view import HistoryView
 from interfaces.summarizer import Summarizer
 from interfaces.translator import Translator
+from models.history import HistoryEntry
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
@@ -51,9 +52,9 @@ class HistoryController:
         # The entries being summarized, and why the last summary of each failed
         self._summarizing: set[str] = set()
         self._summary_errors: dict[str, str] = {}
-        # The same for the translations
-        self._translating: set[str] = set()
-        self._translation_errors: dict[str, str] = {}
+        # The same for the translations, by the entry and the language
+        self._translating: set[tuple[str, str]] = set()
+        self._translation_errors: dict[tuple[str, str], str] = {}
 
     # ENTRIES
 
@@ -179,13 +180,18 @@ class HistoryController:
     def translate_entry(
         self, entry_id: str, language: str, provider: str, model: str = ""
     ) -> None:
-        """Translates a transcription in the background."""
+        """
+        Translates a transcription in the background. It can be translated into
+        other languages at the same time, and a translation into the same language
+        is replaced.
+        """
         entry = self._store.get(entry_id)
-        if entry is None or entry_id in self._translating:
+        if entry is None or self.is_translating(entry_id, language):
             return
 
-        self._translating.add(entry_id)
-        self._translation_errors.pop(entry_id, None)
+        key = (entry_id, language)
+        self._translating.add(key)
+        self._translation_errors.pop(key, None)
         text, segments, is_text_edited = (
             entry.text,
             entry.segments,
@@ -203,7 +209,7 @@ class HistoryController:
                 logger.error("Could not translate %s", entry_id, exc_info=e)
                 error = format_error(e)
             self.view.run_on_ui_thread(
-                self._on_translation_finished, entry_id, translation, error
+                self._on_translation_finished, entry_id, language, translation, error
             )
 
         self._start_task(translate)
@@ -214,10 +220,10 @@ class HistoryController:
         keeps its timestamps, with an empty text.
         """
         entry = self._store.get(entry_id)
-        if entry is None or entry_id in self._translating:
+        if entry is None or self.is_translating(entry_id, language):
             return
 
-        self._translation_errors.pop(entry_id, None)
+        self._translation_errors.pop((entry_id, language), None)
         translation = TranscriptTranslation(
             language=language,
             text="",
@@ -227,64 +233,84 @@ class HistoryController:
             provider=MANUAL,
             created_at=datetime.now().astimezone().isoformat(timespec="seconds"),
         )
-        self._store.update(entry, translation=translation.to_dict())
+        self._save_translation(entry, translation)
         self.view.refresh_entry_view(entry_id)
 
-    def is_translating(self, entry_id: str) -> bool:
-        return entry_id in self._translating
+    def is_translating(self, entry_id: str, language: str) -> bool:
+        return (entry_id, language) in self._translating
 
-    def get_translation_error(self, entry_id: str) -> str:
-        return self._translation_errors.get(entry_id, "")
+    def translating_languages(self, entry_id: str) -> list[str]:
+        """The languages that a transcription is being translated into."""
+        return sorted(lang for key, lang in self._translating if key == entry_id)
 
-    def save_translation_text(self, entry_id: str, text: str) -> None:
-        """Saves the text of the translation edited by the user."""
+    def get_translation_error(self, entry_id: str, language: str) -> str:
+        return self._translation_errors.get((entry_id, language), "")
+
+    def save_translation_text(self, entry_id: str, language: str, text: str) -> None:
+        """Saves the text of a translation edited by the user."""
         entry = self._store.get(entry_id)
-        translation = entry and TranscriptTranslation.from_dict(entry.translation)
+        translation = entry and entry.get_translation(language)
         if entry and translation:
-            self._store.update(
-                entry,
-                translation=replace(
-                    translation, text=text, is_text_edited=True
-                ).to_dict(),
+            self._save_translation(
+                entry, replace(translation, text=text, is_text_edited=True)
             )
 
     def update_translation(
-        self, entry_id: str, segments: list[TranscriptSegment], text: str
+        self,
+        entry_id: str,
+        language: str,
+        segments: list[TranscriptSegment],
+        text: str,
     ) -> None:
         """
         Saves the corrections of a translation, e.g. an edited, retimed, added or
         deleted segment.
         """
         entry = self._store.get(entry_id)
-        translation = entry and TranscriptTranslation.from_dict(entry.translation)
+        translation = entry and entry.get_translation(language)
         if entry and translation:
-            self._store.update(
-                entry,
-                translation=replace(
-                    translation, segments=tuple(segments), text=text
-                ).to_dict(),
+            self._save_translation(
+                entry, replace(translation, segments=tuple(segments), text=text)
             )
             self.view.refresh_entry_view(entry_id)
 
-    def remove_translation(self, entry_id: str) -> None:
+    def remove_translation(self, entry_id: str, language: str) -> None:
         if entry := self._store.get(entry_id):
-            self._translation_errors.pop(entry_id, None)
-            self._store.update(entry, translation={})
+            self._translation_errors.pop((entry_id, language), None)
+            translations = dict(entry.translations)
+            translations.pop(language, None)
+            self._store.update(entry, translations=translations)
             self.view.refresh_entry_view(entry_id)
 
-    def _on_translation_finished(
-        self, entry_id: str, translation: TranscriptTranslation | None, error: str
+    def _save_translation(
+        self, entry: HistoryEntry, translation: TranscriptTranslation
     ) -> None:
-        self._translating.discard(entry_id)
+        """Adds a translation, or replaces the one into its language in its place."""
+        self._store.update(
+            entry,
+            translations={
+                **entry.translations,
+                translation.language: translation.to_dict(),
+            },
+        )
+
+    def _on_translation_finished(
+        self,
+        entry_id: str,
+        language: str,
+        translation: TranscriptTranslation | None,
+        error: str,
+    ) -> None:
+        self._translating.discard((entry_id, language))
         entry = self._store.get(entry_id)
         if entry is None:
             return
 
         if translation:
-            self._store.update(entry, translation=translation.to_dict())
+            self._save_translation(entry, translation)
             self.view.on_translation_finished(entry, None)
         else:
-            self._translation_errors[entry_id] = error
+            self._translation_errors[(entry_id, language)] = error
             self.view.on_translation_finished(entry, error)
 
     # GROUPS

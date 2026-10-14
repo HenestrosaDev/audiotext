@@ -9,7 +9,6 @@ from controllers.history_controller import HistoryController
 from handlers.translation_handler import MANUAL
 from models.history import EntryStatus, HistoryEntry
 from models.transcript_segment import TranscriptSegment
-from models.translation import TranscriptTranslation
 from tests.conftest import FakeSummarizer, FakeTranslator
 from utils.history_store import HistoryStore
 
@@ -151,12 +150,12 @@ def test_a_translation_is_saved_and_announced(
     entry = add(store)
 
     history.translate_entry(entry.id, "es", "deepl")
-    assert history.is_translating(entry.id)
+    assert history.is_translating(entry.id, "es")
     run_tasks(tasks)
 
     assert translator.requests == [("es", "deepl")]
-    assert get(store, entry.id).translation == translator.translation.to_dict()
-    assert not history.is_translating(entry.id)
+    assert get(store, entry.id).translations == {"es": translator.translation.to_dict()}
+    assert not history.is_translating(entry.id, "es")
     view.on_translation_finished.assert_called_once_with(get(store, entry.id), None)
 
 
@@ -173,11 +172,43 @@ def test_a_failed_translation_keeps_its_error(
     history.translate_entry(entry.id, "es", "deepl")
     run_tasks(tasks)
 
-    assert "No API key" in history.get_translation_error(entry.id)
-    assert get(store, entry.id).translation == {}
+    assert "No API key" in history.get_translation_error(entry.id, "es")
+    assert history.get_translation_error(entry.id, "fr") == ""
+    assert get(store, entry.id).translations == {}
     view.on_translation_finished.assert_called_once_with(
-        get(store, entry.id), history.get_translation_error(entry.id)
+        get(store, entry.id), history.get_translation_error(entry.id, "es")
     )
+
+
+def test_a_transcription_is_translated_into_several_languages_at_once(
+    history: HistoryController,
+    store: HistoryStore,
+    tasks: list[Callable[[], None]],
+) -> None:
+    entry = add(store)
+
+    history.translate_entry(entry.id, "es", "deepl")
+    history.translate_entry(entry.id, "fr", "deepl")
+    # Already being translated into it
+    history.translate_entry(entry.id, "es", "deepl")
+    assert len(tasks) == 2
+    assert history.translating_languages(entry.id) == ["es", "fr"]
+    run_tasks(tasks)
+
+    assert history.translating_languages(entry.id) == []
+    assert list(get(store, entry.id).translations) == ["es", "fr"]
+
+    # Translating into a language again replaces its translation, in its place
+    history.translate_entry(entry.id, "es", "openai")
+    run_tasks(tasks)
+    assert list(get(store, entry.id).translations) == ["es", "fr"]
+
+    history.update_translation(entry.id, "fr", [], "Bonjour")
+    translation = get(store, entry.id).get_translation("fr")
+    assert translation is not None and translation.text == "Bonjour"
+
+    history.remove_translation(entry.id, "es")
+    assert list(get(store, entry.id).translations) == ["fr"]
 
 
 def test_a_manual_translation_keeps_the_timestamps(
@@ -187,7 +218,7 @@ def test_a_manual_translation_keeps_the_timestamps(
 
     history.start_manual_translation(entry.id, "es")
 
-    translation = TranscriptTranslation.from_dict(get(store, entry.id).translation)
+    translation = get(store, entry.id).get_translation("es")
     assert translation is not None
     assert translation.provider == MANUAL
     assert [(s.start, s.end, s.text) for s in translation.segments] == [
@@ -195,8 +226,8 @@ def test_a_manual_translation_keeps_the_timestamps(
         (1.5, 3.0, ""),
     ]
 
-    history.remove_translation(entry.id)
-    assert get(store, entry.id).translation == {}
+    history.remove_translation(entry.id, "es")
+    assert get(store, entry.id).translations == {}
 
 
 def test_deleting_a_file_of_a_folder_refreshes_the_folder(
