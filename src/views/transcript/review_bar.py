@@ -11,8 +11,6 @@ from views.transcript.transcript_text import LOW_CONFIDENCE_COLOR
 from views.widgets.button import icon_button, set_button_state
 
 BAR_HEIGHT = 40
-# The key that accepts a low confidence word, as the keyboard names it
-ACCEPT_KEY_LABEL = "Return" if theme.IS_MACOS else "Enter"
 
 
 class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
@@ -32,6 +30,7 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         on_adjust_threshold: Callable[[Any], None],
         on_review_again: Callable[[], None],
         on_undo: Callable[[], Any],
+        on_accept_remaining: Callable[[], None],
         on_auto_play_change: Callable[[bool], None],
         on_only_flagged_change: Callable[[bool], None],
         is_auto_play: bool,
@@ -43,6 +42,7 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         :param on_adjust_threshold: Shows the thresholds below the widget given.
         :param on_review_again: Forgets which words were accepted.
         :param on_undo: Undoes the last review.
+        :param on_accept_remaining: Accepts all the words left to review.
         :param on_auto_play_change: Called with whether going to a word plays it.
         :param on_only_flagged_change: Called with whether only the segments with
             words to review are shown.
@@ -110,9 +110,15 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             ),
             text=L_("Undo"),
         )
-        self.lbl_accept_hint = localize(
-            ctk.CTkLabel(self, font=theme.font(12), text_color=theme.HINT_TEXT),
-            text=lambda: _("{key} — accept as is").format(key=ACCEPT_KEY_LABEL),
+        self.btn_accept_remaining = localize(
+            ctk.CTkButton(
+                self,
+                width=0,
+                height=28,
+                command=on_accept_remaining,
+                **theme.SECONDARY_BUTTON,
+            ),
+            text=L_("Accept remaining"),
         )
 
         self.btn_adjust = localize(
@@ -167,7 +173,7 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             self.chk_only_flagged,
             self.chk_auto_play,
             self.btn_undo,
-            self.lbl_accept_hint,
+            self.btn_accept_remaining,
             self.btn_adjust,
             self.btn_review_again,
             self.btn_enable,
@@ -206,7 +212,7 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             self.chk_only_flagged.grid(row=0, column=3, padx=(12, 0))
         if state == ReviewState.ACTIVE:
             self.chk_auto_play.grid(row=0, column=4, padx=(12, 0))
-            self.lbl_accept_hint.grid(row=0, column=7, padx=(0, 12))
+            self.btn_accept_remaining.grid(row=0, column=7, padx=(0, 6))
         # After accepting the last word too
         if can_undo and state in (ReviewState.ACTIVE, ReviewState.ALL_REVIEWED):
             self.btn_undo.grid(row=0, column=5, padx=(8, 0))
