@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 22:32+0200\n"
+"POT-Creation-Date: 2026-10-14 22:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -265,7 +265,7 @@ msgstr "未录制到任何音频。"
 
 #: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:720
+#: src/views/transcript/transcript_view.py:728
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "转写"
@@ -273,9 +273,9 @@ msgstr "转写"
 #: src/utils/exporters.py:195 src/utils/exporters.py:223
 #: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:504
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:543
 #: src/views/transcript/transcript_view.py:548
-#: src/views/transcript/transcript_view.py:762
+#: src/views/transcript/transcript_view.py:553
+#: src/views/transcript/transcript_view.py:770
 msgid "Summary"
 msgstr "摘要"
 
@@ -323,14 +323,14 @@ msgid "{count} failed"
 msgstr "{count} 个失败"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:2217
+#: src/views/transcript/transcript_view.py:2261
 msgid "Open the folder of the saved files"
 msgstr "打开已保存文件所在的文件夹"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:673
-#: src/views/transcript/transcript_view.py:2178
+#: src/views/transcript/transcript_view.py:678
+#: src/views/transcript/transcript_view.py:2222
 msgid "Transcribe again"
 msgstr "重新转写"
 
@@ -546,22 +546,22 @@ msgid "Rename"
 msgstr "重命名"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2229
+#: src/views/transcript/transcript_view.py:2273
 msgid "Edit note…"
 msgstr "编辑备注…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2229
+#: src/views/transcript/transcript_view.py:2273
 msgid "Add note…"
 msgstr "添加备注…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:2234
+#: src/views/transcript/transcript_view.py:2278
 msgid "Delete note…"
 msgstr "删除备注…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:2240
+#: src/views/transcript/transcript_view.py:2284
 msgid "Edit tag…"
 msgstr "编辑标签…"
 
@@ -586,7 +586,7 @@ msgid "Move to group"
 msgstr "移到分组"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:2245
+#: src/views/transcript/transcript_view.py:2289
 msgid "Delete…"
 msgstr "删除…"
 
@@ -857,9 +857,9 @@ msgstr "录下你自己或一场会议。录音会保存在历史记录中。"
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:663
-#: src/views/transcript/transcript_view.py:1682
-#: src/views/transcript/transcript_view.py:2098
+#: src/views/transcript/transcript_view.py:668
+#: src/views/transcript/transcript_view.py:1726
+#: src/views/transcript/transcript_view.py:2142
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "复制"
@@ -1156,7 +1156,7 @@ msgstr "API 密钥"
 
 #: src/views/settings/preferences_dialog.py:188
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:760
+#: src/views/transcript/transcript_view.py:768
 msgid "Subtitles"
 msgstr "字幕"
 
@@ -1689,7 +1689,7 @@ msgid "Choose where to save the transcriptions"
 msgstr "选择转写的保存位置"
 
 #: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1779
+#: src/views/transcript/transcript_view.py:1823
 msgid "Edit text"
 msgstr "编辑文本"
 
@@ -1703,7 +1703,7 @@ msgid "Rename speakers"
 msgstr "重命名说话人"
 
 #: src/views/transcript/edit_dialogs.py:74
-#: src/views/transcript/transcript_view.py:1808
+#: src/views/transcript/transcript_view.py:1852
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "保存"
@@ -1785,8 +1785,8 @@ msgstr "正在加载音频…"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "空格：播放/暂停 · ←/→：后退/前进 {seconds} 秒"
 
-#: src/views/transcript/player_bar.py:406
-#: src/views/transcript/transcript_view.py:2029
+#: src/views/transcript/player_bar.py:410
+#: src/views/transcript/transcript_view.py:2073
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "无法播放音频:{error}"
@@ -1856,13 +1856,13 @@ msgid "Find ({shortcut})"
 msgstr "查找 ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:666
+#: src/views/transcript/transcript_view.py:671
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "导出"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1366
+#: src/views/transcript/transcript_view.py:1410
 msgid "Regenerate the summary"
 msgstr "重新生成摘要"
 
@@ -1907,19 +1907,19 @@ msgstr "转写内容很长，因此只总结了开头部分。"
 msgid "Generated by {model} · {date}"
 msgstr "由 {model} 生成 · {date}"
 
-#: src/views/transcript/transcript_text.py:324
+#: src/views/transcript/transcript_text.py:336
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "点击片段即可播放。右键点击即可编辑。"
 
-#: src/views/transcript/transcript_text.py:329
+#: src/views/transcript/transcript_text.py:341
 msgid "The plain text has been edited; the transcript keeps the original."
 msgstr "纯文本已被编辑；逐字稿保留原始内容。"
 
-#: src/views/transcript/transcript_text.py:335
+#: src/views/transcript/transcript_text.py:347
 msgid "You can edit the text. The changes are saved automatically."
 msgstr "你可以编辑文本。更改会自动保存。"
 
-#: src/views/transcript/transcript_text.py:340
+#: src/views/transcript/transcript_text.py:352
 msgid ""
 "Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
 "transcribe-diarize models of the Whisper API."
@@ -1927,7 +1927,7 @@ msgstr ""
 "时间戳仅适用于 WhisperX 以及 Whisper API 的 whisper-1 和 gpt-4o-transcribe-diarize "
 "模型。"
 
-#: src/views/transcript/transcript_text.py:792
+#: src/views/transcript/transcript_text.py:825
 msgid "This transcription has no timestamps."
 msgstr "此转写没有时间戳。"
 
@@ -1984,250 +1984,250 @@ msgstr "表格 (.tsv)"
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:345
+#: src/views/transcript/transcript_view.py:350
 msgid "Stop scrolling the translation with the transcription"
 msgstr "停止让译文与转录内容同步滚动"
 
-#: src/views/transcript/transcript_view.py:347
+#: src/views/transcript/transcript_view.py:352
 msgid "Scroll the translation with the transcription"
 msgstr "让译文与转录内容同步滚动"
 
-#: src/views/transcript/transcript_view.py:513
+#: src/views/transcript/transcript_view.py:518
 msgid "Export transcription"
 msgstr "导出转写"
 
-#: src/views/transcript/transcript_view.py:534
+#: src/views/transcript/transcript_view.py:539
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "导出{language}翻译"
 
-#: src/views/transcript/transcript_view.py:547
+#: src/views/transcript/transcript_view.py:552
 msgid "Export summary"
 msgstr "导出摘要"
 
-#: src/views/transcript/transcript_view.py:584
+#: src/views/transcript/transcript_view.py:589
 msgid "All files"
 msgstr "所有文件"
 
-#: src/views/transcript/transcript_view.py:593
+#: src/views/transcript/transcript_view.py:598
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "无法导出：{error}"
 
-#: src/views/transcript/transcript_view.py:596
+#: src/views/transcript/transcript_view.py:601
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "已导出到 {path}"
 
-#: src/views/transcript/transcript_view.py:658
+#: src/views/transcript/transcript_view.py:663
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "查找和替换（{shortcut}）"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:701
+#: src/views/transcript/transcript_view.py:709
 msgid "No low-confidence words left to review"
 msgstr "没有需要检查的低置信度词了"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:711
+#: src/views/transcript/transcript_view.py:719
 msgid "Show all segments"
 msgstr "显示所有片段"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:747
+#: src/views/transcript/transcript_view.py:755
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "上一个低置信度的词 ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:749
+#: src/views/transcript/transcript_view.py:757
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "下一个低置信度的词 ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:761
+#: src/views/transcript/transcript_view.py:769
 msgid "Plain text"
 msgstr "纯文本"
 
-#: src/views/transcript/transcript_view.py:770
+#: src/views/transcript/transcript_view.py:778
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "翻译"
 
-#: src/views/transcript/transcript_view.py:1270
+#: src/views/transcript/transcript_view.py:1314
 msgid "Find and replace in the transcription"
 msgstr "在转录内容中查找和替换"
 
-#: src/views/transcript/transcript_view.py:1280
+#: src/views/transcript/transcript_view.py:1324
 msgid "Find and replace in the translation"
 msgstr "在译文中查找和替换"
 
-#: src/views/transcript/transcript_view.py:1281
+#: src/views/transcript/transcript_view.py:1325
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "在{language}译文中查找和替换"
 
-#: src/views/transcript/transcript_view.py:1294
+#: src/views/transcript/transcript_view.py:1338
 msgid "Find in the summary"
 msgstr "在摘要中查找"
 
-#: src/views/transcript/transcript_view.py:1367
+#: src/views/transcript/transcript_view.py:1411
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "要重新生成摘要吗？当前摘要将被替换。"
 
-#: src/views/transcript/transcript_view.py:1525
+#: src/views/transcript/transcript_view.py:1569
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "隐藏翻译"
 
-#: src/views/transcript/transcript_view.py:1530
+#: src/views/transcript/transcript_view.py:1574
 msgid "Show the translation"
 msgstr "显示翻译"
 
-#: src/views/transcript/transcript_view.py:1534
+#: src/views/transcript/transcript_view.py:1578
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "翻译成其他语言…"
 
-#: src/views/transcript/transcript_view.py:1545
+#: src/views/transcript/transcript_view.py:1589
 msgid "Show it as the subtitles of the video"
 msgstr "显示为视频字幕"
 
-#: src/views/transcript/transcript_view.py:1552
+#: src/views/transcript/transcript_view.py:1596
 msgid "Delete the translation"
 msgstr "删除翻译"
 
-#: src/views/transcript/transcript_view.py:1679
-#: src/views/transcript/transcript_view.py:2096
+#: src/views/transcript/transcript_view.py:1723
+#: src/views/transcript/transcript_view.py:2140
 msgid "Play from here"
 msgstr "从此处播放"
 
-#: src/views/transcript/transcript_view.py:1687
-#: src/views/transcript/transcript_view.py:2099
+#: src/views/transcript/transcript_view.py:1731
+#: src/views/transcript/transcript_view.py:2143
 msgid "Edit text…"
 msgstr "编辑文本…"
 
-#: src/views/transcript/transcript_view.py:1687
+#: src/views/transcript/transcript_view.py:1731
 msgid "Translate text…"
 msgstr "翻译文本…"
 
-#: src/views/transcript/transcript_view.py:1691
+#: src/views/transcript/transcript_view.py:1735
 msgid "Edit the timing…"
 msgstr "编辑时间…"
 
-#: src/views/transcript/transcript_view.py:1695
+#: src/views/transcript/transcript_view.py:1739
 msgid "Add a segment after…"
 msgstr "在后面添加片段…"
 
-#: src/views/transcript/transcript_view.py:1700
-#: src/views/transcript/transcript_view.py:1865
+#: src/views/transcript/transcript_view.py:1744
+#: src/views/transcript/transcript_view.py:1909
 msgid "Delete the segment"
 msgstr "删除片段"
 
-#: src/views/transcript/transcript_view.py:1779
+#: src/views/transcript/transcript_view.py:1823
 msgid "Translate text"
 msgstr "翻译文本"
 
-#: src/views/transcript/transcript_view.py:1780
+#: src/views/transcript/transcript_view.py:1824
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "“{text}”的翻译，从 {start} 到 {end}："
 
-#: src/views/transcript/transcript_view.py:1784
+#: src/views/transcript/transcript_view.py:1828
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "从 {start} 到 {end} 的片段的翻译："
 
-#: src/views/transcript/transcript_view.py:1807
+#: src/views/transcript/transcript_view.py:1851
 msgid "Edit the timing"
 msgstr "编辑时间"
 
-#: src/views/transcript/transcript_view.py:1833
+#: src/views/transcript/transcript_view.py:1877
 msgid "Add a segment"
 msgstr "添加片段"
 
-#: src/views/transcript/transcript_view.py:1834
+#: src/views/transcript/transcript_view.py:1878
 msgid "Add"
 msgstr "添加"
 
-#: src/views/transcript/transcript_view.py:1835
+#: src/views/transcript/transcript_view.py:1879
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "新片段位于 {time} 的片段之后："
 
-#: src/views/transcript/transcript_view.py:1866
+#: src/views/transcript/transcript_view.py:1910
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "删除片段“{text}”？"
 
-#: src/views/transcript/transcript_view.py:1922
+#: src/views/transcript/transcript_view.py:1966
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "{time} 的片段，尚未翻译。"
 
-#: src/views/transcript/transcript_view.py:1958
+#: src/views/transcript/transcript_view.py:2002
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "重新翻译"
 
-#: src/views/transcript/transcript_view.py:1960
+#: src/views/transcript/transcript_view.py:2004
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
 "the translation will be lost."
 msgstr "要将转录内容重新翻译为{language}吗？对译文所做的更改将丢失。"
 
-#: src/views/transcript/transcript_view.py:1983
+#: src/views/transcript/transcript_view.py:2027
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "音频不可用：源文件已被移动或删除。"
 
-#: src/views/transcript/transcript_view.py:1986
+#: src/views/transcript/transcript_view.py:2030
 msgid "The audio isn't available."
 msgstr "音频不可用。"
 
-#: src/views/transcript/transcript_view.py:2101
-#: src/views/transcript/transcript_view.py:2191
+#: src/views/transcript/transcript_view.py:2145
+#: src/views/transcript/transcript_view.py:2235
 msgid "Rename speakers…"
 msgstr "重命名说话人…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2120
+#: src/views/transcript/transcript_view.py:2164
 msgid "Highlight low-confidence words"
 msgstr "突出显示低置信度的词"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2128
+#: src/views/transcript/transcript_view.py:2172
 msgid "Low-confidence threshold"
 msgstr "低置信度阈值"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2137
+#: src/views/transcript/transcript_view.py:2181
 msgid "Next low-confidence word"
 msgstr "下一个低置信度的词"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2138
+#: src/views/transcript/transcript_view.py:2182
 msgid "Previous low-confidence word"
 msgstr "上一个低置信度的词"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2164
+#: src/views/transcript/transcript_view.py:2208
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "低于 {percent}%"
 
-#: src/views/transcript/transcript_view.py:2180
+#: src/views/transcript/transcript_view.py:2224
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "要重新转录“{title}”吗？对其文本所做的更改将丢失。"
 
-#: src/views/transcript/transcript_view.py:2201
+#: src/views/transcript/transcript_view.py:2245
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "精确时间戳 (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:2225
+#: src/views/transcript/transcript_view.py:2269
 msgid "Rename…"
 msgstr "重命名…"
 
@@ -2354,11 +2354,17 @@ msgid "Outline"
 msgstr "描边"
 
 # Needs review by a native speaker
-#: src/views/transcript/word_popover.py:58
+#: src/views/transcript/word_popover.py:67
 msgid "Replay"
 msgstr "重新播放"
 
 # Needs review by a native speaker
-#: src/views/transcript/word_popover.py:70
+#: src/views/transcript/word_popover.py:72
+#, python-brace-format
+msgid "Replay ({shortcut})"
+msgstr "重新播放 ({shortcut})"
+
+# Needs review by a native speaker
+#: src/views/transcript/word_popover.py:85
 msgid "Accept"
 msgstr "接受"

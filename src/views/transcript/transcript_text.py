@@ -78,8 +78,15 @@ def find_matches(
     count = tk.IntVar(textbox)
     start = "1.0"
     while True:
+        # Also in the text hidden (see `show_only`), which is shown when a search
+        # goes to it
         start = textbox.search(
-            query, start, stopindex=ctk.END, nocase=not match_case, count=count
+            query,
+            start,
+            stopindex=ctk.END,
+            nocase=not match_case,
+            count=count,
+            elide=True,
         )
         if not start or not count.get():
             break
@@ -113,6 +120,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         on_text_edit: Callable[[str], None] | None = None,
         on_scroll: Callable[[], None] | None = None,
         on_flagged_click: Callable[[FlaggedText], None] | None = None,
+        on_reveal: Callable[[int], None] | None = None,
         show_usage_hints: bool = True,
         empty_segment_text: Text | None = None,
     ) -> None:
@@ -124,6 +132,9 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         :param on_scroll: Called when the visible text scrolls.
         :param on_flagged_click: Called with a low confidence text that is
                                  clicked, instead of `on_segment_click`.
+        :param on_reveal: Called with the index of a segment of the transcription
+                          that is hidden (see `show_only`) and has to be shown,
+                          e.g. because a search went to it.
         :param show_usage_hints: Whether to explain above the text how to use it
                                  (e.g. that its segments can be clicked).
         :param empty_segment_text: Shown, dimmed, in place of the text of a
@@ -141,6 +152,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._on_text_edit = on_text_edit
         self._on_scroll = on_scroll
         self._on_flagged_click = on_flagged_click
+        self._on_reveal = on_reveal
         self._show_usage_hints = show_usage_hints
         self._empty_segment_text = empty_segment_text
 
@@ -614,6 +626,20 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox = self._visible_textbox
         textbox.tag_remove("current_match", "1.0", ctk.END)
         textbox.tag_add("current_match", start, end)
+        # A match in a hidden segment is shown, or going to it would do nothing
+        if (
+            textbox is self.tbx_transcript
+            and self._on_reveal
+            and "hidden" in textbox.tag_names(start)
+        ):
+            idx = (
+                bisect.bisect_right(
+                    self._segment_indexes, _index_key(start), key=_index_key
+                )
+                - 1
+            )
+            if 0 <= idx < len(self._source_indexes):
+                self._on_reveal(self._source_indexes[idx])
         textbox.see(start)
 
     def set_flagged(self, texts: tuple[FlaggedText, ...]) -> None:
@@ -675,17 +701,24 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
 
     def flagged_box(self, text: FlaggedText) -> tuple[int, int, int] | None:
         """
-        Where a low confidence text starts in the transcript, if it's visible:
-        its left, its top and its height, in the coordinates of `text_widget`.
+        Where a low confidence text is in the transcript, if it's visible: the
+        left of its start, its top, and its bottom (which is lower than its first
+        line if it wraps), in the coordinates of `text_widget`.
         """
         if not self.is_flagged_visible(text):
             return None
         textbox = self.tbx_transcript._textbox
-        for start, _end in self._flagged_ranges(text):
-            if box := textbox.bbox(start):
-                x, y, _width, height = box
-                return int(x), int(y), int(height)
-        return None
+        boxes = [
+            box
+            for start, end in self._flagged_ranges(text)
+            for box in (textbox.bbox(start), textbox.bbox(f"{end}-1c"))
+            if box
+        ]
+        if not boxes:
+            return None
+        x, top = int(boxes[0][0]), int(min(box[1] for box in boxes))
+        bottom = int(max(box[1] + box[3] for box in boxes))
+        return x, top, bottom
 
     @property
     def text_widget(self) -> tk.Text:

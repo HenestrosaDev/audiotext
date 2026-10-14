@@ -175,24 +175,22 @@ def edit_word(
     segments: list[TranscriptSegment], idx: int, word_idx: int, text: str
 ) -> list[TranscriptSegment]:
     """
-    Changes a word of a segment, or removes it if `text` is empty.
+    Changes a word of a segment.
 
-    :raises ValueError: If the word isn't in the text, or the segment would be
-        left without text.
+    :raises ValueError: If the word isn't in the text, or `text` is empty: a word
+        is removed by editing its segment.
     """
     found = word_range(segments[idx], word_idx)
     if found is None:
         raise ValueError("The word isn't in the text of its segment")
+    if not text.strip():
+        raise ValueError("The text of a word can't be empty")
 
     first, last = found
     segment_text = segments[idx].text
-    before, after = segment_text[:first], segment_text[last:]
-    if not text.strip():
-        # Without leaving two spaces where it was
-        before, after = before.rstrip(), after.lstrip()
-        if before and after and after[0].isalnum():
-            before += " "
-    return edit_segment(segments, idx, before + text.strip() + after)
+    return edit_segment(
+        segments, idx, segment_text[:first] + text.strip() + segment_text[last:]
+    )
 
 
 def edit_segment_part(

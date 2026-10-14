@@ -297,11 +297,15 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         width = self.cnv_marks.winfo_width()
         if duration <= 0 or width <= 1:
             return None
-        # The slider moves the center of its button between its ends
+        # The slider moves the center of its button between its ends. Its corner
+        # radius is as big as its height allows (the theme sets 1000 for "round")
         slider = self.sld_position
-        inset = slider._apply_widget_scaling(
-            slider.cget("button_corner_radius") + slider.cget("button_length") / 2
+        radius = min(
+            slider.cget("button_corner_radius"),
+            slider.cget("height") / 2,
+            slider.cget("width") / 2,
         )
+        inset = slider._apply_widget_scaling(radius + slider.cget("button_length") / 2)
         fraction = min(max(seconds / duration, 0), 1)
         return float(inset + fraction * (width - 2 * inset))
 

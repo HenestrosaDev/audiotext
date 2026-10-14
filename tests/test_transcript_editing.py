@@ -285,10 +285,9 @@ def test_edit_word_corrects_only_that_word() -> None:
     )
 
 
-def test_edit_word_removes_a_word_without_leaving_two_spaces() -> None:
+def test_edit_word_doesnt_remove_a_word() -> None:
+    # A word is removed by editing its segment
     segments = [TranscriptSegment(0.0, 1.5, "Hello wisper users.", words=SCORED)]
 
-    assert edit_word(segments, 0, 1, "")[0].text == "Hello users."
-    assert edit_word(segments, 0, 2, "")[0].text == "Hello wisper"
     with pytest.raises(ValueError):
-        edit_word([TranscriptSegment(0, 1, "Hi", words=SCORED[:1])], 0, 0, "")
+        edit_word(segments, 0, 1, "  ")

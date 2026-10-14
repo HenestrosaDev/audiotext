@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 22:32+0200\n"
+"POT-Creation-Date: 2026-10-14 22:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -281,7 +281,7 @@ msgstr "Inget ljud spelades in."
 
 #: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:720
+#: src/views/transcript/transcript_view.py:728
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Transkribering"
@@ -289,9 +289,9 @@ msgstr "Transkribering"
 #: src/utils/exporters.py:195 src/utils/exporters.py:223
 #: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:504
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:543
 #: src/views/transcript/transcript_view.py:548
-#: src/views/transcript/transcript_view.py:762
+#: src/views/transcript/transcript_view.py:553
+#: src/views/transcript/transcript_view.py:770
 msgid "Summary"
 msgstr "Sammanfattning"
 
@@ -339,14 +339,14 @@ msgid "{count} failed"
 msgstr "{count} misslyckade"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:2217
+#: src/views/transcript/transcript_view.py:2261
 msgid "Open the folder of the saved files"
 msgstr "Öppna mappen med sparade filer"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:673
-#: src/views/transcript/transcript_view.py:2178
+#: src/views/transcript/transcript_view.py:678
+#: src/views/transcript/transcript_view.py:2222
 msgid "Transcribe again"
 msgstr "Transkribera igen"
 
@@ -564,22 +564,22 @@ msgid "Rename"
 msgstr "Byt namn"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2229
+#: src/views/transcript/transcript_view.py:2273
 msgid "Edit note…"
 msgstr "Redigera anteckning…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2229
+#: src/views/transcript/transcript_view.py:2273
 msgid "Add note…"
 msgstr "Lägg till anteckning…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:2234
+#: src/views/transcript/transcript_view.py:2278
 msgid "Delete note…"
 msgstr "Radera anteckning…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:2240
+#: src/views/transcript/transcript_view.py:2284
 msgid "Edit tag…"
 msgstr "Redigera etikett…"
 
@@ -604,7 +604,7 @@ msgid "Move to group"
 msgstr "Flytta till grupp"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:2245
+#: src/views/transcript/transcript_view.py:2289
 msgid "Delete…"
 msgstr "Ta bort…"
 
@@ -885,9 +885,9 @@ msgstr "Spela in dig själv eller ett möte. Inspelningen sparas i din historik.
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:663
-#: src/views/transcript/transcript_view.py:1682
-#: src/views/transcript/transcript_view.py:2098
+#: src/views/transcript/transcript_view.py:668
+#: src/views/transcript/transcript_view.py:1726
+#: src/views/transcript/transcript_view.py:2142
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Kopiera"
@@ -1190,7 +1190,7 @@ msgstr "API-nycklar"
 
 #: src/views/settings/preferences_dialog.py:188
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:760
+#: src/views/transcript/transcript_view.py:768
 msgid "Subtitles"
 msgstr "Undertexter"
 
@@ -1752,7 +1752,7 @@ msgid "Choose where to save the transcriptions"
 msgstr "Välj var transkriberingarna ska sparas"
 
 #: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1779
+#: src/views/transcript/transcript_view.py:1823
 msgid "Edit text"
 msgstr "Redigera text"
 
@@ -1766,7 +1766,7 @@ msgid "Rename speakers"
 msgstr "Byt namn på talare"
 
 #: src/views/transcript/edit_dialogs.py:74
-#: src/views/transcript/transcript_view.py:1808
+#: src/views/transcript/transcript_view.py:1852
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "Spara"
@@ -1848,8 +1848,8 @@ msgstr "Läser in ljudet…"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Blanksteg: spela upp/pausa · ←/→: {seconds} s bakåt/framåt"
 
-#: src/views/transcript/player_bar.py:406
-#: src/views/transcript/transcript_view.py:2029
+#: src/views/transcript/player_bar.py:410
+#: src/views/transcript/transcript_view.py:2073
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Ljudet kan inte spelas upp: {error}"
@@ -1919,13 +1919,13 @@ msgid "Find ({shortcut})"
 msgstr "Sök ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:666
+#: src/views/transcript/transcript_view.py:671
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "Exportera"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1366
+#: src/views/transcript/transcript_view.py:1410
 msgid "Regenerate the summary"
 msgstr "Generera sammanfattningen igen"
 
@@ -1974,21 +1974,21 @@ msgstr "Transkriberingen är mycket lång, så bara början har sammanfattats."
 msgid "Generated by {model} · {date}"
 msgstr "Skapad av {model} · {date}"
 
-#: src/views/transcript/transcript_text.py:324
+#: src/views/transcript/transcript_text.py:336
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr ""
 "Klicka på ett segment för att spela upp det. Högerklicka för att redigera"
 " det."
 
-#: src/views/transcript/transcript_text.py:329
+#: src/views/transcript/transcript_text.py:341
 msgid "The plain text has been edited; the transcript keeps the original."
 msgstr "Den oformaterade texten har redigerats; transkriptet behåller originalet."
 
-#: src/views/transcript/transcript_text.py:335
+#: src/views/transcript/transcript_text.py:347
 msgid "You can edit the text. The changes are saved automatically."
 msgstr "Du kan redigera texten. Ändringarna sparas automatiskt."
 
-#: src/views/transcript/transcript_text.py:340
+#: src/views/transcript/transcript_text.py:352
 msgid ""
 "Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
 "transcribe-diarize models of the Whisper API."
@@ -1996,7 +1996,7 @@ msgstr ""
 "Tidsstämplar är endast tillgängliga med WhisperX och modellerna whisper-1"
 " och gpt-4o-transcribe-diarize i Whisper-API:et."
 
-#: src/views/transcript/transcript_text.py:792
+#: src/views/transcript/transcript_text.py:825
 msgid "This transcription has no timestamps."
 msgstr "Den här transkriberingen har inga tidsstämplar."
 
@@ -2053,195 +2053,195 @@ msgstr "Tabell (.tsv)"
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:345
+#: src/views/transcript/transcript_view.py:350
 msgid "Stop scrolling the translation with the transcription"
 msgstr "Sluta rulla översättningen med transkriptionen"
 
-#: src/views/transcript/transcript_view.py:347
+#: src/views/transcript/transcript_view.py:352
 msgid "Scroll the translation with the transcription"
 msgstr "Rulla översättningen med transkriptionen"
 
-#: src/views/transcript/transcript_view.py:513
+#: src/views/transcript/transcript_view.py:518
 msgid "Export transcription"
 msgstr "Exportera transkribering"
 
-#: src/views/transcript/transcript_view.py:534
+#: src/views/transcript/transcript_view.py:539
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Exportera översättningen till {language}"
 
-#: src/views/transcript/transcript_view.py:547
+#: src/views/transcript/transcript_view.py:552
 msgid "Export summary"
 msgstr "Exportera sammanfattningen"
 
-#: src/views/transcript/transcript_view.py:584
+#: src/views/transcript/transcript_view.py:589
 msgid "All files"
 msgstr "Alla filer"
 
-#: src/views/transcript/transcript_view.py:593
+#: src/views/transcript/transcript_view.py:598
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Det gick inte att exportera: {error}"
 
-#: src/views/transcript/transcript_view.py:596
+#: src/views/transcript/transcript_view.py:601
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Exporterad till {path}"
 
-#: src/views/transcript/transcript_view.py:658
+#: src/views/transcript/transcript_view.py:663
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Sök och ersätt ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:701
+#: src/views/transcript/transcript_view.py:709
 msgid "No low-confidence words left to review"
 msgstr "Inga ord med låg säkerhet kvar att granska"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:711
+#: src/views/transcript/transcript_view.py:719
 msgid "Show all segments"
 msgstr "Visa alla segment"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:747
+#: src/views/transcript/transcript_view.py:755
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Föregående ord med låg säkerhet ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:749
+#: src/views/transcript/transcript_view.py:757
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Nästa ord med låg säkerhet ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:761
+#: src/views/transcript/transcript_view.py:769
 msgid "Plain text"
 msgstr "Oformaterad text"
 
-#: src/views/transcript/transcript_view.py:770
+#: src/views/transcript/transcript_view.py:778
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Översätt"
 
-#: src/views/transcript/transcript_view.py:1270
+#: src/views/transcript/transcript_view.py:1314
 msgid "Find and replace in the transcription"
 msgstr "Sök och ersätt i transkriptionen"
 
-#: src/views/transcript/transcript_view.py:1280
+#: src/views/transcript/transcript_view.py:1324
 msgid "Find and replace in the translation"
 msgstr "Sök och ersätt i översättningen"
 
-#: src/views/transcript/transcript_view.py:1281
+#: src/views/transcript/transcript_view.py:1325
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Sök och ersätt i översättningen till {language}"
 
-#: src/views/transcript/transcript_view.py:1294
+#: src/views/transcript/transcript_view.py:1338
 msgid "Find in the summary"
 msgstr "Sök i sammanfattningen"
 
-#: src/views/transcript/transcript_view.py:1367
+#: src/views/transcript/transcript_view.py:1411
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Generera sammanfattningen igen? Den nuvarande ersätts."
 
-#: src/views/transcript/transcript_view.py:1525
+#: src/views/transcript/transcript_view.py:1569
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Dölj översättningen"
 
-#: src/views/transcript/transcript_view.py:1530
+#: src/views/transcript/transcript_view.py:1574
 msgid "Show the translation"
 msgstr "Visa översättningen"
 
-#: src/views/transcript/transcript_view.py:1534
+#: src/views/transcript/transcript_view.py:1578
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Översätt till ett annat språk…"
 
-#: src/views/transcript/transcript_view.py:1545
+#: src/views/transcript/transcript_view.py:1589
 msgid "Show it as the subtitles of the video"
 msgstr "Visa den som videons undertexter"
 
-#: src/views/transcript/transcript_view.py:1552
+#: src/views/transcript/transcript_view.py:1596
 msgid "Delete the translation"
 msgstr "Ta bort översättningen"
 
-#: src/views/transcript/transcript_view.py:1679
-#: src/views/transcript/transcript_view.py:2096
+#: src/views/transcript/transcript_view.py:1723
+#: src/views/transcript/transcript_view.py:2140
 msgid "Play from here"
 msgstr "Spela upp härifrån"
 
-#: src/views/transcript/transcript_view.py:1687
-#: src/views/transcript/transcript_view.py:2099
+#: src/views/transcript/transcript_view.py:1731
+#: src/views/transcript/transcript_view.py:2143
 msgid "Edit text…"
 msgstr "Redigera text…"
 
-#: src/views/transcript/transcript_view.py:1687
+#: src/views/transcript/transcript_view.py:1731
 msgid "Translate text…"
 msgstr "Översätt text…"
 
-#: src/views/transcript/transcript_view.py:1691
+#: src/views/transcript/transcript_view.py:1735
 msgid "Edit the timing…"
 msgstr "Redigera tiderna…"
 
-#: src/views/transcript/transcript_view.py:1695
+#: src/views/transcript/transcript_view.py:1739
 msgid "Add a segment after…"
 msgstr "Lägg till ett segment efter…"
 
-#: src/views/transcript/transcript_view.py:1700
-#: src/views/transcript/transcript_view.py:1865
+#: src/views/transcript/transcript_view.py:1744
+#: src/views/transcript/transcript_view.py:1909
 msgid "Delete the segment"
 msgstr "Radera segmentet"
 
-#: src/views/transcript/transcript_view.py:1779
+#: src/views/transcript/transcript_view.py:1823
 msgid "Translate text"
 msgstr "Översätt text"
 
-#: src/views/transcript/transcript_view.py:1780
+#: src/views/transcript/transcript_view.py:1824
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Översättning av ”{text}”, sagt från {start} till {end}:"
 
-#: src/views/transcript/transcript_view.py:1784
+#: src/views/transcript/transcript_view.py:1828
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Översättning av segmentet från {start} till {end}:"
 
-#: src/views/transcript/transcript_view.py:1807
+#: src/views/transcript/transcript_view.py:1851
 msgid "Edit the timing"
 msgstr "Redigera tiderna"
 
-#: src/views/transcript/transcript_view.py:1833
+#: src/views/transcript/transcript_view.py:1877
 msgid "Add a segment"
 msgstr "Lägg till ett segment"
 
-#: src/views/transcript/transcript_view.py:1834
+#: src/views/transcript/transcript_view.py:1878
 msgid "Add"
 msgstr "Lägg till"
 
-#: src/views/transcript/transcript_view.py:1835
+#: src/views/transcript/transcript_view.py:1879
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Det nya segmentet hamnar efter det vid {time}:"
 
-#: src/views/transcript/transcript_view.py:1866
+#: src/views/transcript/transcript_view.py:1910
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "Radera segmentet ”{text}”?"
 
-#: src/views/transcript/transcript_view.py:1922
+#: src/views/transcript/transcript_view.py:1966
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "Segmentet vid {time}, inte översatt ännu."
 
-#: src/views/transcript/transcript_view.py:1958
+#: src/views/transcript/transcript_view.py:2002
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Översätt igen"
 
-#: src/views/transcript/transcript_view.py:1960
+#: src/views/transcript/transcript_view.py:2004
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2250,55 +2250,55 @@ msgstr ""
 "Översätta transkriptionen till {language} igen? Ändringarna i "
 "översättningen går förlorade."
 
-#: src/views/transcript/transcript_view.py:1983
+#: src/views/transcript/transcript_view.py:2027
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Ljudet är inte tillgängligt: källfilen har flyttats eller tagits bort."
 
-#: src/views/transcript/transcript_view.py:1986
+#: src/views/transcript/transcript_view.py:2030
 msgid "The audio isn't available."
 msgstr "Ljudet är inte tillgängligt."
 
-#: src/views/transcript/transcript_view.py:2101
-#: src/views/transcript/transcript_view.py:2191
+#: src/views/transcript/transcript_view.py:2145
+#: src/views/transcript/transcript_view.py:2235
 msgid "Rename speakers…"
 msgstr "Byt namn på talare…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2120
+#: src/views/transcript/transcript_view.py:2164
 msgid "Highlight low-confidence words"
 msgstr "Markera ord med låg säkerhet"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2128
+#: src/views/transcript/transcript_view.py:2172
 msgid "Low-confidence threshold"
 msgstr "Tröskel för låg säkerhet"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2137
+#: src/views/transcript/transcript_view.py:2181
 msgid "Next low-confidence word"
 msgstr "Nästa ord med låg säkerhet"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2138
+#: src/views/transcript/transcript_view.py:2182
 msgid "Previous low-confidence word"
 msgstr "Föregående ord med låg säkerhet"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2164
+#: src/views/transcript/transcript_view.py:2208
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "Under {percent} %"
 
-#: src/views/transcript/transcript_view.py:2180
+#: src/views/transcript/transcript_view.py:2224
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Transkribera ”{title}” igen? Ändringarna i texten går förlorade."
 
-#: src/views/transcript/transcript_view.py:2201
+#: src/views/transcript/transcript_view.py:2245
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Exakta tidsstämplar (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:2225
+#: src/views/transcript/transcript_view.py:2269
 msgid "Rename…"
 msgstr "Byt namn…"
 
@@ -2427,11 +2427,17 @@ msgid "Outline"
 msgstr "Kontur"
 
 # Needs review by a native speaker
-#: src/views/transcript/word_popover.py:58
+#: src/views/transcript/word_popover.py:67
 msgid "Replay"
 msgstr "Spela upp igen"
 
 # Needs review by a native speaker
-#: src/views/transcript/word_popover.py:70
+#: src/views/transcript/word_popover.py:72
+#, python-brace-format
+msgid "Replay ({shortcut})"
+msgstr "Spela upp igen ({shortcut})"
+
+# Needs review by a native speaker
+#: src/views/transcript/word_popover.py:85
 msgid "Accept"
 msgstr "Godkänn"

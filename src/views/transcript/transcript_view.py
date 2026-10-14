@@ -294,10 +294,15 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._review_save_after_id: str | None = None
         # The correction being made in the window to find and replace, if any
         self._find_edit: str | None = None
-        # Whether only the segments with words to review are shown, and the one
-        # whose last word was just reviewed, kept until the user moves on
+        # Whether only the segments with words to review are shown, and the ones
+        # shown anyway until the user goes to another word: the one whose last
+        # word was just reviewed, and the ones a search went to
         self._only_flagged = False
         self._kept_segment: int | None = None
+        self._revealed_segments: set[int] = set()
+        # The size of the window when the popover opened, to close it if the
+        # window is resized
+        self._window_size = (0, 0)
         self._find_dialog: FindDialog | None = None
         self._subtitles_variable: tk.BooleanVar | None = None
 
@@ -681,7 +686,10 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_text_edit=self._on_text_edit,
             on_scroll=self._on_transcript_scroll,
             on_flagged_click=self._open_word_popover,
+            on_reveal=self._reveal_segment,
         )
+        # The text wraps again, so the popover would no longer be on its word
+        self.text.text_widget.bind("<Configure>", self._on_transcript_resize, add="+")
         self.word_popover = WordPopover(
             self.text,
             on_commit=self._commit_word,
@@ -820,6 +828,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         has_new_segments = (
             self._shown_content is None or entry.segments is not self._shown_content[0]
         )
+        # The transcript is rendered again, so the popover would be misplaced
+        self.word_popover.hide()
         if has_new_segments:
             self._parts = transcript_parts(entry.segments, self._is_vertical)
         self._shown_content = content
@@ -1038,6 +1048,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._refresh_find_dialog()
 
     def _apply_precise_timestamps(self) -> None:
+        # The transcript is rendered again, so the popover would be misplaced
+        self.word_popover.hide()
         is_precise = self._config_system.precise_timestamps
         self.text.set_precise_timestamps(is_precise)
         self.translation_panel.set_precise_timestamps(is_precise)
@@ -1101,14 +1113,36 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self._go_to_flagged(text, is_quiet=self._find_edit is not None)
 
     def _move_on(self) -> None:
-        """The user goes to another word, so the segment kept is no longer."""
-        if self._kept_segment is not None:
+        """The user goes to another word, so the segments kept are no longer."""
+        if self._kept_segment is not None or self._revealed_segments:
             self._kept_segment = None
+            self._revealed_segments.clear()
             self._refresh_filter()
+
+    def _reveal_segment(self, segment_idx: int) -> None:
+        """Shows a segment that the filter hides, e.g. one a search went to."""
+        self._revealed_segments.add(segment_idx)
+        self._refresh_filter()
+
+    def _on_transcript_resize(self, _event: Any) -> None:
+        """
+        Closes the popover if the window is resized, which wraps the text again.
+        Otherwise (e.g. the scrollbars of the text appear), it follows its word.
+        """
+        if not self.word_popover.is_open:
+            return
+        window = self.winfo_toplevel()
+        if (window.winfo_width(), window.winfo_height()) != self._window_size:
+            self.word_popover.close()
+        elif self._current_flagged:
+            self.word_popover.place_at(
+                self.text.text_widget, self.text.flagged_box(self._current_flagged)
+            )
 
     def _set_only_flagged(self, is_on: bool) -> None:
         self._only_flagged = is_on
         self._kept_segment = None
+        self._revealed_segments.clear()
         self._refresh_filter()
         if self._current_flagged:
             self.text.show_flagged(self._current_flagged)
@@ -1124,6 +1158,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             ReviewState.ALL_REVIEWED,
         )
         sources = {text.segment_idx for text in review.unreviewed}
+        sources |= self._revealed_segments
         if self._kept_segment is not None:
             sources.add(self._kept_segment)
         shown = self.text.show_only(sources if is_filtered else None)
@@ -1173,7 +1208,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._move_on()
         self._go_to_flagged(text, focus=False)
         if box := self.text.flagged_box(text):
-            self.word_popover.open(text.text, self.text.text_widget, box)
+            window = self.winfo_toplevel()
+            self._window_size = (window.winfo_width(), window.winfo_height())
+            self.word_popover.open(
+                text.text, self.text.text_widget, box, is_segment=text.word_idx is None
+            )
 
     def _commit_word(self, value: str) -> None:
         """Saves the word corrected in the popover, or accepts it if unchanged."""
@@ -1183,6 +1222,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             return
         if value.strip() == text.text:
             self._accept_from_popover()
+            return
+        # Removing a word (or a segment) is done by editing its segment: a stray
+        # Backspace here would remove it without being noticed
+        if not value.strip():
+            self.bell()
             return
 
         try:
