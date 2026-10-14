@@ -96,13 +96,16 @@ def find_index(starts: list[float], position: float) -> int | None:
     return idx if idx >= 0 else None
 
 
-def is_low_confidence(word: TranscriptWord, min_score: float | None) -> bool:
+def is_low_confidence(
+    item: TranscriptWord | TranscriptSegment, min_score: float | None
+) -> bool:
     """
-    :param min_score: The score below which a word may be wrong, or `None` if the
-        low confidence words are not highlighted.
-    :return: Whether the word may be wrong. Words without a score are not.
+    :param item: A word, or a segment for the engines that only score segments.
+    :param min_score: The score below which a text may be wrong, or `None` if the
+        low confidence texts are not highlighted.
+    :return: Whether the text may be wrong. Texts without a score are not.
     """
-    return min_score is not None and word.score is not None and word.score < min_score
+    return min_score is not None and item.score is not None and item.score < min_score
 
 
 class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
@@ -685,7 +688,8 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                 )
             textbox.insert(ctk.END, "\n", segment_tag)
 
-            self._text_starts.append(textbox.index("end-1c"))
+            text_start = textbox.index("end-1c")
+            self._text_starts.append(text_start)
             if segment.words:
                 word_entries.extend(self._insert_words(segment, segment_tag))
             elif not segment.text:
@@ -697,6 +701,9 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                 )
             else:
                 textbox.insert(ctk.END, segment.text, (segment_tag, "text"))
+            # The engines that only score segments highlight their whole text
+            if segment.text and is_low_confidence(segment, self._low_confidence_score):
+                textbox.tag_add("low_confidence", text_start, "end-1c")
             textbox.insert(ctk.END, "\n\n")
 
             textbox.tag_bind(

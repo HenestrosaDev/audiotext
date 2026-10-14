@@ -1153,6 +1153,15 @@ def test_the_timestamps_can_be_precise(ui: Ui) -> None:
     assert "00:00:01,500" in transcript.get("1.0", "end")
 
 
+def tagged_texts(textbox: Any, tag: str) -> list[str]:
+    """The texts of a textbox with a tag."""
+    ranges = textbox.tag_ranges(tag)
+    return [
+        textbox.get(start, end)
+        for start, end in zip(ranges[::2], ranges[1::2], strict=True)
+    ]
+
+
 def test_the_low_confidence_words_are_highlighted(ui: Ui) -> None:
     words = (
         TranscriptWord(0.0, 0.5, "Hello", 0.9),
@@ -1163,14 +1172,9 @@ def test_the_low_confidence_words_are_highlighted(ui: Ui) -> None:
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
-    transcript = view.text.tbx_transcript
 
     def highlighted() -> list[str]:
-        ranges = transcript.tag_ranges("low_confidence")
-        return [
-            transcript.get(start, end)
-            for start, end in zip(ranges[::2], ranges[1::2], strict=True)
-        ]
+        return tagged_texts(view.text.tbx_transcript, "low_confidence")
 
     # Only the words below the threshold (40% by default)
     assert highlighted() == ["wisper"]
@@ -1214,6 +1218,17 @@ def test_the_precise_timestamps_option_is_checked_when_they_are_shown(
     assert not view._precise_variable.get()
 
 
+def test_the_low_confidence_segments_are_highlighted_whole(ui: Ui) -> None:
+    # The OpenAI API only scores the segments
+    segments = [SEGMENTS[0], replace(SEGMENTS[1], score=0.2), SEGMENTS[2]]
+    entry = ui.add(segments=segments, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    transcript = ui.window._entry_view.text.tbx_transcript
+
+    assert tagged_texts(transcript, "low_confidence") == ["Nice to meet you."]
+
+
 def test_the_low_confidence_options_need_the_scores_of_the_words(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -1231,19 +1246,22 @@ def test_the_low_confidence_options_need_the_scores_of_the_words(
         menu = menus[-1]
         return [
             str(menu.entrycget(label, "state"))
-            for label in ("Highlight low-confidence words", "Low-confidence threshold")
+            for label in (
+                "Highlight low-confidence words",
+                "Low-confidence threshold",
+            )
         ]
 
     entry = ui.add(segments=SEGMENTS, text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
-    assert states() == [tk.DISABLED, tk.DISABLED]
+    assert states() == [tk.DISABLED] * 2
 
     words = (TranscriptWord(0.0, 1.0, "Hello", 0.9),)
     entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
-    assert states() == [tk.NORMAL, tk.NORMAL]
+    assert states() == [tk.NORMAL] * 2
 
 
 def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(

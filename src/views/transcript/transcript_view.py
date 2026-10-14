@@ -17,7 +17,7 @@ from models.config.config_ai import ConfigAi
 from models.config.config_system import LOW_CONFIDENCE_THRESHOLDS, ConfigSystem
 from models.history import HistoryEntry
 from models.summary import TranscriptSummary
-from models.transcript_segment import TranscriptSegment, join_segments
+from models.transcript_segment import TranscriptSegment, has_scores, join_segments
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 from utils.exporters import (
@@ -1570,13 +1570,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _add_low_confidence_items(self, menu: tk.Menu) -> None:
         """
         Adds the options to highlight the words that may be wrong, which are only
-        enabled if the words of the transcription have a score.
+        enabled if the transcription has scores.
         """
-        has_scores = any(
-            word.score is not None
-            for segment in self._entry.segments
-            for word in segment.words
-        )
+        is_scored = has_scores(self._entry.segments)
         config = self._config_system
 
         self._low_confidence_variable = tk.BooleanVar(
@@ -1586,7 +1582,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             label=_("Highlight low-confidence words"),
             command=self._toggle_low_confidence,
             variable=self._low_confidence_variable,
-            state=tk.NORMAL if has_scores else tk.DISABLED,
+            state=tk.NORMAL if is_scored else tk.DISABLED,
         )
 
         threshold_menu = tk.Menu(menu, tearoff=False)
@@ -1606,7 +1602,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             menu=threshold_menu,
             state=(
                 tk.NORMAL
-                if has_scores and config.highlight_low_confidence
+                if is_scored and config.highlight_low_confidence
                 else tk.DISABLED
             ),
         )

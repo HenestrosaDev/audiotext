@@ -71,6 +71,19 @@ def test_realign_words_only_keeps_the_scores_of_the_unchanged_words() -> None:
     ]
 
 
+def test_the_score_of_a_segment_is_lost_when_its_text_is_edited() -> None:
+    segments = [
+        TranscriptSegment(0.0, 1.0, "Hello wisper", "SPEAKER_00", score=0.3),
+        TranscriptSegment(1.0, 2.0, "Bye.", "SPEAKER_00", score=0.9),
+    ]
+
+    edited = edit_segment(segments, 0, "Hello Whisper")
+    renamed = rename_speakers(segments, {"SPEAKER_00": "Ana"})
+
+    assert [segment.score for segment in edited] == [None, 0.9]
+    assert [segment.score for segment in renamed] == [0.3, 0.9]
+
+
 def test_replace_in_segments_updates_the_text_and_the_words() -> None:
     segments = [
         TranscriptSegment(0.0, 1.5, "Hello wisper users.", words=WORDS),
