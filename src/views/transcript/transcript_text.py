@@ -5,7 +5,7 @@ from typing import Any
 
 import customtkinter as ctk
 
-from models.transcript_segment import TranscriptSegment
+from models.transcript_segment import TranscriptSegment, TranscriptWord
 from utils.i18n import _
 from utils.time_format import format_segment_range
 from views.localization import Text, on_language_change
@@ -19,6 +19,8 @@ CURRENT_SEGMENT_COLOR = ("#E3EEFC", "#1E3450")
 CURRENT_WORD_COLOR = ("#B9D5FA", "#2F5C93")
 MATCH_COLOR = ("#FFF3B0", "#5C4B00")
 CURRENT_MATCH_COLOR = ("#FFC94D", "#A07800")
+# (light, dark) color of the words that may be wrong, to proofread them first
+LOW_CONFIDENCE_COLOR = ("#C2410C", "#FDBA74")
 SPEAKER_COLORS = [
     ("#1565C0", "#64B5F6"),
     ("#2E7D32", "#81C784"),
@@ -31,11 +33,19 @@ SPEAKER_COLORS = [
 TRANSCRIPT_MODE = "transcript"
 PLAIN_TEXT_MODE = "plain"
 
+# Words whose alignment score is below this are highlighted as low confidence
+LOW_CONFIDENCE_SCORE = 0.4
+
 
 def find_index(starts: list[float], position: float) -> int | None:
     """:return: The index of the last item that starts before the position."""
     idx = bisect.bisect_right(starts, position) - 1
     return idx if idx >= 0 else None
+
+
+def is_low_confidence(word: TranscriptWord) -> bool:
+    """:return: Whether the word may be wrong. Words without a score are not."""
+    return word.score is not None and word.score < LOW_CONFIDENCE_SCORE
 
 
 class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
@@ -344,6 +354,11 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox.tag_config("empty_segment", foreground=self._color(theme.HINT_TEXT))
         textbox.tag_config("current", background=self._color(CURRENT_SEGMENT_COLOR))
         textbox.tag_config("current_word", background=self._color(CURRENT_WORD_COLOR))
+        textbox.tag_config(
+            "low_confidence",
+            foreground=self._color(LOW_CONFIDENCE_COLOR),
+            underline=True,
+        )
 
         for textbox in (self.tbx_transcript, self.tbx_plain):
             textbox.tag_config("match", background=self._color(MATCH_COLOR))
@@ -448,8 +463,8 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
     ) -> list[tuple[float, str, str]]:
         """
         Inserts the text of a segment, recording the position of each word to
-        highlight it while playing. Words are looked up in the text, so its
-        spacing and punctuation are kept.
+        highlight it while playing, and highlighting the low confidence words.
+        Words are looked up in the text, so its spacing and punctuation are kept.
         """
         textbox = self.tbx_transcript
         text = segment.text
@@ -463,7 +478,13 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             if position > cursor:
                 textbox.insert(ctk.END, text[cursor:position], segment_tag)
             start_index = textbox.index("end-1c")
-            textbox.insert(ctk.END, word.text, segment_tag)
+            textbox.insert(
+                ctk.END,
+                word.text,
+                (segment_tag, "low_confidence")
+                if is_low_confidence(word)
+                else segment_tag,
+            )
             entries.append((word.start, start_index, textbox.index("end-1c")))
             cursor = position + len(word.text)
 
