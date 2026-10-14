@@ -11,6 +11,7 @@ import time
 import tkinter as tk
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
+from dataclasses import replace
 from functools import cache, partial
 from pathlib import Path
 from typing import Any
@@ -1152,6 +1153,47 @@ def test_the_timestamps_can_be_precise(ui: Ui) -> None:
     assert "00:00:01,500" in transcript.get("1.0", "end")
 
 
+def tagged_texts(textbox: Any, tag: str) -> list[str]:
+    """The texts of a textbox with a tag."""
+    ranges = textbox.tag_ranges(tag)
+    return [
+        textbox.get(start, end)
+        for start, end in zip(ranges[::2], ranges[1::2], strict=True)
+    ]
+
+
+def test_the_low_confidence_words_are_highlighted(ui: Ui) -> None:
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    segments = [replace(SEGMENTS[0], words=words), *SEGMENTS[1:]]
+    entry = ui.add(segments=segments, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+
+    def highlighted() -> list[str]:
+        return tagged_texts(view.text.tbx_transcript, "low_confidence")
+
+    # Only the words below the threshold (40% by default)
+    assert highlighted() == ["wisper"]
+
+    view._set_low_confidence_threshold(20)
+    ui.pump()
+    assert highlighted() == []
+    assert ConfigManager.get_config_system().low_confidence_threshold == 20
+
+    view._set_low_confidence_threshold(95)
+    ui.pump()
+    assert highlighted() == ["Hello", "wisper"]
+
+    view._toggle_low_confidence()
+    ui.pump()
+    assert highlighted() == []
+    assert not ConfigManager.get_config_system().highlight_low_confidence
+
+
 def test_the_precise_timestamps_option_is_checked_when_they_are_shown(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -1174,6 +1216,439 @@ def test_the_precise_timestamps_option_is_checked_when_they_are_shown(
     view._show_more_menu()
     gc.collect()
     assert not view._precise_variable.get()
+
+
+def test_the_low_confidence_segments_are_highlighted_whole(ui: Ui) -> None:
+    # The OpenAI API only scores the segments
+    segments = [SEGMENTS[0], replace(SEGMENTS[1], score=0.2), SEGMENTS[2]]
+    entry = ui.add(segments=segments, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    transcript = ui.window._entry_view.text.tbx_transcript
+
+    assert tagged_texts(transcript, "low_confidence") == ["Nice to meet you."]
+
+
+def test_the_low_confidence_texts_can_be_gone_through(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE, TRANSCRIPT_MODE
+
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    segments = [
+        replace(SEGMENTS[0], words=words),
+        replace(SEGMENTS[1], score=0.2),
+        SEGMENTS[2],
+    ]
+    entry = ui.add(segments=segments, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    clips: list[tuple[float, float]] = []
+    seeks: list[float] = []
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+    monkeypatch.setattr(view.player, "seek", seeks.append)
+
+    def go_to(step: int) -> str:
+        ui.window.trigger_low_confidence(step)
+        ui.pump()
+        [text] = tagged_texts(view.text.tbx_transcript, "current_low_confidence")
+        return text
+
+    # They are only shown in the transcript, so it's shown
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    assert go_to(1) == "wisper"
+    assert view._mode == TRANSCRIPT_MODE
+    assert go_to(1) == "Nice to meet you."
+    # It goes around at the end and at the start
+    assert go_to(1) == "wisper"
+    assert go_to(-1) == "Nice to meet you."
+    # Each one is played with a moment around it
+    assert clips == [(-1.0, 2.5), (0.0, 4.5), (-1.0, 2.5), (0.0, 4.5)]
+
+    # Without auto-play, the player only goes to them
+    view.review_bar.chk_auto_play.toggle()
+    assert not ConfigManager.get_config_system().review_auto_play
+    assert go_to(1) == "wisper"
+    assert seeks == [0.5]
+    assert len(clips) == 4
+
+
+def review_segments() -> list[TranscriptSegment]:
+    """Three low confidence texts: a word, and two segments scored whole."""
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    return [
+        replace(SEGMENTS[0], words=words),
+        replace(SEGMENTS[1], score=0.2),
+        replace(SEGMENTS[2], score=0.1),
+    ]
+
+
+def open_review(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> Any:
+    """The view of a transcription to review, without playing its audio."""
+    entry = ui.add(segments=review_segments(), text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    monkeypatch.setattr(view.player, "play_clip", lambda *_clip: None)
+    return view
+
+
+def current_text(view: Any) -> str | None:
+    texts = tagged_texts(view.text.tbx_transcript, "current_low_confidence")
+    return texts[0] if texts else None
+
+
+def press_return(ui: Ui, view: Any) -> None:
+    textbox = view.text.tbx_transcript._textbox
+    textbox.focus_force()
+    ui.pump()
+    textbox.event_generate("<Return>")
+    ui.pump()
+
+
+def test_return_accepts_the_word_gone_to_and_goes_to_the_next(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    status = view.review_bar.lbl_status
+
+    # Without a word gone to, it does nothing
+    press_return(ui, view)
+    assert status.cget("text") == "3 of 3 to review"
+
+    view.go_to_low_confidence(1)
+    press_return(ui, view)
+    assert status.cget("text") == "2 of 3 to review"
+    assert current_text(view) == "Nice to meet you."
+    assert tagged_texts(view.text.tbx_transcript, "low_confidence") == [
+        "Nice to meet you.",
+        "Bye wisper.",
+    ]
+
+    press_return(ui, view)
+    press_return(ui, view)
+    # The last one ends the review, without going around
+    assert status.cget("text") == "All reviewed · 3 of 3"
+    assert current_text(view) is None
+    assert view._current_flagged is None
+    press_return(ui, view)
+    assert status.cget("text") == "All reviewed · 3 of 3"
+
+
+def test_return_is_only_handled_by_the_transcript(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    view.go_to_low_confidence(1)
+
+    # Typing in the plain text doesn't accept the word
+    plain = view.text.tbx_plain._textbox
+    view._on_mode_change("plain")
+    plain.focus_force()
+    ui.pump()
+    plain.event_generate("<Return>")
+    ui.pump()
+    assert view.review_bar.review.remaining == 3
+
+
+def test_reviewing_many_words_writes_once_and_doesnt_render_again(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from utils.history_store import HistoryStore
+    from views.transcript.transcript_text import TranscriptText
+
+    view = open_review(ui, monkeypatch)
+    entry_id = view.entry_id
+    renders: list[None] = []
+    saves: list[None] = []
+    render = TranscriptText._render_transcript
+    save = HistoryStore.save
+    monkeypatch.setattr(
+        TranscriptText,
+        "_render_transcript",
+        lambda self: (renders.append(None), render(self))[1],
+    )
+    monkeypatch.setattr(
+        HistoryStore, "save", lambda self: (saves.append(None), save(self))[1]
+    )
+
+    view.go_to_low_confidence(1)
+    for _idx in range(3):
+        assert view.accept_current()
+    ui.pump()
+
+    assert renders == []
+    # Written a moment later, once
+    assert saves == []
+    view._save_reviews()
+    assert len(saves) == 1
+
+    # Showing another transcription writes the pending reviews
+    view.go_to_low_confidence(1)
+    view._review_again()
+    ui.window.select_entry(ui.add(segments=SEGMENTS, text=TEXT).id)
+    ui.pump()
+    assert len(saves) == 2
+    reloaded = HistoryStore(ui.store.file_path, ui.store.media_dir).get(entry_id)
+    assert reloaded is not None
+    assert reloaded.segments[1].reviewed is None
+
+
+def test_the_last_review_can_be_undone(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> None:
+    from models.transcript_segment import ReviewMark
+    from utils.transcript_editing import edit_segment
+
+    view = open_review(ui, monkeypatch)
+    bar = view.review_bar
+
+    view.go_to_low_confidence(1)
+    assert not bar.btn_undo.grid_info()
+    view.accept_current()
+    assert bar.btn_undo.grid_info()
+    assert view.undo_review()
+    assert bar.lbl_status.cget("text") == "3 of 3 to review"
+    assert current_text(view) == "wisper"
+    assert not view.undo_review()
+
+    # Correcting the word gone to reviews it, and goes to the next one
+    view._update_transcript(
+        edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
+    )
+    ui.pump()
+    word = view._entry.segments[0].words[1]
+    assert (word.text, word.score, word.reviewed) == ("Whisper", 0.3, ReviewMark.EDITED)
+    assert bar.lbl_status.cget("text") == "2 of 3 to review"
+    assert current_text(view) == "Nice to meet you."
+    # Undoing it brings back the word with its score, not reviewed
+    assert view.undo_review()
+    assert view._entry.segments[0].words[1] == words_of_review()[1]
+    assert current_text(view) == "wisper"
+
+
+def words_of_review() -> tuple[TranscriptWord, ...]:
+    return review_segments()[0].words
+
+
+def test_reviewing_again_keeps_the_corrected_words(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from utils.transcript_editing import edit_segment
+
+    view = open_review(ui, monkeypatch)
+    view._update_transcript(
+        edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
+    )
+    view.go_to_low_confidence(1)
+    view.accept_current()
+    view.accept_current()
+    ui.pump()
+    bar = view.review_bar
+    assert bar.lbl_status.cget("text") == "All reviewed · 3 of 3"
+    assert bar.btn_review_again.cget("text") == "Review accepted words again"
+
+    bar.btn_review_again.invoke()
+    ui.pump()
+    # Not a full reset: the corrected word stays reviewed
+    assert bar.lbl_status.cget("text") == "2 of 3 to review"
+
+
+def test_the_low_confidence_options_need_the_scores_of_the_words(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_view import TranscriptView
+
+    menus: list[tk.Menu] = []
+    monkeypatch.setattr(
+        TranscriptView,
+        "_popup_below",
+        staticmethod(lambda menu, _widget: menus.append(menu)),
+    )
+
+    def labels() -> list[str]:
+        ui.window._entry_view._show_more_menu()
+        menu = menus[-1]
+        return [
+            str(menu.entrycget(idx, "label"))
+            for idx in range(int(menu.index("end")) + 1)
+            if menu.type(idx) != "separator"
+        ]
+
+    def states() -> list[str]:
+        menu = menus[-1]
+        return [
+            str(menu.entrycget(label, "state"))
+            for label in ("Highlight low-confidence words", "Low-confidence threshold")
+        ]
+
+    # Its words were timed before the scores were kept
+    entry = ui.add(segments=SEGMENTS, text=TEXT, method="WhisperX")
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    labels()
+    assert states() == [tk.DISABLED] * 2
+    # A note says why
+    hint = "Transcribe it again to score its words"
+    assert menus[-1].entrycget(hint, "state") == tk.DISABLED
+
+    words = (TranscriptWord(0.0, 1.0, "Hello", 0.1),)
+    entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    shown = labels()
+    assert states() == [tk.NORMAL] * 2
+    assert hint not in shown
+    # The review bar goes to the words
+    assert "Next low-confidence word" not in shown
+    assert "Previous low-confidence word" not in shown
+
+
+def test_the_review_buttons_say_what_they_do_on_hover(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.style import theme
+    from views.widgets import tooltip
+
+    monkeypatch.setattr(tooltip, "TOOLTIP_DELAY_MS", 0)
+    view = open_review(ui, monkeypatch)
+    bar = view.review_bar
+    modifier, shift = theme.SHORTCUT_MODIFIER_LABEL, theme.SHIFT_LABEL
+    previous = f"{shift}{modifier}J" if theme.IS_MACOS else f"{modifier}{shift}J"
+
+    for button, text in (
+        (bar.btn_previous, f"Previous low-confidence word ({previous})"),
+        (bar.btn_next, f"Next low-confidence word ({modifier}J)"),
+    ):
+        # Where the pointer is over the button, which handles it
+        button._canvas.event_generate("<Enter>")
+        ui.pump()
+        window = button._tooltip._window
+        assert window is not None
+        [label] = window.winfo_children()
+        assert label.cget("text") == text
+        button._canvas.event_generate("<Leave>")
+        ui.pump()
+
+
+def test_the_remaining_words_can_be_accepted_at_once(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from models.transcript_segment import ReviewMark
+    from utils.transcript_editing import edit_segment
+
+    view = open_review(ui, monkeypatch)
+    bar = view.review_bar
+    # One corrected, which stays as it is
+    view._update_transcript(
+        edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
+    )
+    assert bar.btn_accept_remaining.grid_info()
+
+    bar.btn_accept_remaining.invoke()
+    ui.pump()
+    assert bar.lbl_status.cget("text") == "All reviewed · 3 of 3"
+    assert not bar.btn_accept_remaining.grid_info()
+    assert current_text(view) is None
+    segments = view._entry.segments
+    assert segments[0].words[1].reviewed == ReviewMark.EDITED
+    assert [segments[1].reviewed, segments[2].reviewed] == [ReviewMark.ACCEPTED] * 2
+    assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
+
+    # Undone at once too, back to the first of them
+    assert view.undo_review()
+    assert bar.lbl_status.cget("text") == "2 of 3 to review"
+    assert current_text(view) == "Nice to meet you."
+
+
+def test_the_review_bar_shows_the_state_of_the_review(ui: Ui) -> None:
+    from models.review import set_review
+    from models.transcript_segment import ReviewMark
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE, TRANSCRIPT_MODE
+
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    segments = [
+        replace(SEGMENTS[0], words=words),
+        replace(SEGMENTS[1], score=0.2),
+        SEGMENTS[2],
+    ]
+    entry = ui.add(segments=segments, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    bar = view.review_bar
+
+    def status() -> str:
+        return str(bar.lbl_status.cget("text")) if bar.lbl_status.grid_info() else ""
+
+    def is_shown(widget: Any) -> bool:
+        return bool(widget.grid_info())
+
+    assert status() == "2 of 2 to review"
+    assert is_shown(bar.frm_arrows)
+    assert bar.btn_next.cget("state") == tk.NORMAL
+
+    # It's only above the subtitles
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    assert not is_shown(bar)
+    view._on_mode_change(TRANSCRIPT_MODE)
+    assert is_shown(bar)
+
+    # The threshold changes it right away
+    view._set_low_confidence_threshold(20)
+    assert status() == "No low-confidence words at this threshold"
+    assert bar.btn_next.cget("state") == tk.DISABLED
+    assert is_shown(bar.btn_adjust)
+    view._set_low_confidence_threshold(40)
+    assert status() == "2 of 2 to review"
+
+    # Without the highlighting, it's a link that turns it on
+    view._toggle_low_confidence()
+    assert status() == ""
+    assert is_shown(bar.btn_enable)
+    assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
+    bar.btn_enable.invoke()
+    assert status() == "2 of 2 to review"
+    assert tagged_texts(view.text.tbx_transcript, "low_confidence") == [
+        "wisper",
+        "Nice to meet you.",
+    ]
+
+    # The reviewed words are no longer highlighted
+    view._actions.transcript.update_transcript(
+        entry.id,
+        set_review(view._entry.segments, view._review.flagged, ReviewMark.ACCEPTED),
+        TEXT,
+    )
+    ui.pump()
+    assert status() == "All reviewed · 2 of 2"
+    assert is_shown(bar.btn_review_again)
+    assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
+    bar.btn_review_again.invoke()
+    ui.pump()
+    assert status() == "2 of 2 to review"
+    # Which is kept with the transcription
+    assert ui.store.get(entry.id).segments[0].words[1].reviewed is None
+
+
+def test_the_review_bar_never_counts_without_scores(ui: Ui) -> None:
+    entry = ui.add(segments=SEGMENTS, text=TEXT, method="WhisperX")
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    bar = ui.window._entry_view.review_bar
+
+    assert bar.lbl_status.cget("text") == (
+        "Confidence data isn’t available for this transcript"
+    )
+    assert not bar.frm_arrows.grid_info()
 
 
 def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(
@@ -2193,6 +2668,603 @@ def test_the_video_can_be_subtitled_with_the_translation(ui: Ui) -> None:
     ui.pump()
     assert not video.has_translation_subtitles
     assert video._subtitle_text == "Nice to meet you."
+
+
+class FakePlayer:
+    """Plays nothing: its position only moves when it's set."""
+
+    def __init__(self) -> None:
+        self.position = 0.0
+        self.is_playing = False
+        self.duration = 60.0
+        self.speed = 1.0
+
+    def seek(self, seconds: float) -> None:
+        self.position = seconds
+
+    def play(self) -> None:
+        self.is_playing = True
+
+    def pause(self) -> None:
+        self.is_playing = False
+
+    def toggle(self) -> None:
+        self.is_playing = not self.is_playing
+
+    def close(self) -> None:
+        pass
+
+
+def test_a_clip_pauses_at_its_end_unless_the_user_takes_over(ui: Ui) -> None:
+    from views.transcript.player_bar import PlayerBar
+
+    bar = PlayerBar(
+        ui.window,
+        on_tick=lambda _position, _is_playing: None,
+        on_toggle_subtitles=lambda: None,
+        on_subtitle_menu=lambda _anchor: None,
+    )
+    player = FakePlayer()
+    bar._player = player
+    try:
+        bar.play_clip(-1.0, 2.0)
+        assert (player.position, player.is_playing) == (0.0, True)
+        player.position = 1.0
+        bar.refresh()
+        assert player.is_playing
+        player.position = 2.0
+        bar.refresh()
+        assert not player.is_playing
+
+        # Another clip replaces it, instead of stopping at both ends
+        bar.play_clip(5.0, 8.0)
+        bar.play_clip(10.0, 13.0)
+        player.position = 8.5
+        bar.refresh()
+        assert player.is_playing
+
+        # Playing, pausing or moving the audio cancels the end of the clip
+        for take_over in (
+            lambda: (bar.toggle_playback(), bar.toggle_playback()),
+            lambda: bar.seek_relative(1),
+            lambda: bar.seek(11.0),
+            lambda: bar.play_from(11.0),
+        ):
+            bar.play_clip(10.0, 13.0)
+            take_over()
+            player.play()
+            player.position = 13.5
+            bar.refresh()
+            assert player.is_playing, take_over
+    finally:
+        bar._player = None
+        bar.destroy()
+
+
+def test_return_only_accepts_a_visible_word(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Long enough to scroll the word away
+    filler = [
+        TranscriptSegment(10.0 + idx, 10.5 + idx, f"Line {idx}.") for idx in range(80)
+    ]
+    entry = ui.add(segments=[*review_segments()[:1], *filler], text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    monkeypatch.setattr(view.player, "play_clip", lambda *_clip: None)
+    view.go_to_low_confidence(1)
+    ui.pump()
+
+    view.text.tbx_transcript._textbox.yview_moveto(1.0)
+    ui.pump()
+    assert not view.text.is_flagged_visible(view._current_flagged)
+    # The first Return shows the word, without accepting it
+    press_return(ui, view)
+    assert view.review_bar.review.remaining == 1
+    assert view.text.is_flagged_visible(view._current_flagged)
+    press_return(ui, view)
+    assert view.review_bar.review.remaining == 0
+
+
+def test_undoing_goes_back_to_the_word_and_plays_it(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    clips: list[tuple[float, float]] = []
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+
+    view.go_to_low_confidence(1)
+    view.accept_current()
+    # It went on to the next one
+    assert current_text(view) == "Nice to meet you."
+    assert view.undo_review()
+    assert current_text(view) == "wisper"
+    assert clips == [(-1.0, 2.5), (0.0, 4.5), (-1.0, 2.5)]
+
+
+def test_replacing_from_the_find_window_reviews_quietly(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    clips: list[tuple[float, float]] = []
+    focuses: list[None] = []
+    view.go_to_low_confidence(1)
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+    monkeypatch.setattr(view.text, "focus_text", lambda: focuses.append(None))
+
+    # Replacing the word gone to is a review: it can be undone
+    view.text.search("wisper")
+    view._replace_current("Whisper")
+    ui.pump()
+    assert view.review_bar.review.remaining == 2
+    assert current_text(view) == "Nice to meet you."
+    assert view.review_bar.btn_undo.grid_info()
+    # But the window to find keeps the focus, and the audio isn't played
+    assert (clips, focuses) == ([], [])
+    assert view.undo_review()
+    assert current_text(view) == "wisper"
+
+    # Replacing a text everywhere isn't, even if it corrects the word gone to
+    clips.clear()
+    view._replace_all("wisper", "Whisper", False)
+    ui.pump()
+    # The word, and the segment scored whole that says it
+    assert view.review_bar.review.remaining == 1
+    assert current_text(view) == "Nice to meet you."
+    assert not view.review_bar.btn_undo.grid_info()
+    assert not view.undo_review()
+    assert clips == []
+
+
+def test_a_word_no_longer_flagged_cant_be_accepted(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    view.go_to_low_confidence(1)
+    assert current_text(view) == "wisper"
+
+    # Its score (0.3) is no longer below the threshold, unlike the others
+    view._set_low_confidence_threshold(25)
+    assert current_text(view) is None
+    press_return(ui, view)
+    review = view.review_bar.review
+    assert (review.remaining, review.total) == (2, 2)
+    assert not view.accept_current()
+
+
+def test_closing_the_app_writes_the_pending_reviews() -> None:
+    from types import SimpleNamespace
+    from unittest.mock import MagicMock
+
+    from app import App
+
+    # Command + Q and the Quit item of the menu close it the same way
+    app = SimpleNamespace(
+        _history_store=MagicMock(),
+        _save_window_state_job=None,
+        _save_window_state=MagicMock(),
+        destroy=MagicMock(),
+    )
+
+    App._on_close(app)  # type: ignore[arg-type]
+
+    app._history_store.flush.assert_called_once()
+    app.destroy.assert_called_once()
+
+
+def shown_texts(view: Any) -> list[str]:
+    """The texts of the segments that the filter doesn't hide."""
+    text = view.text
+    textbox = text.tbx_transcript._textbox
+    return [
+        segment.text
+        for segment, (start, _end) in zip(
+            text._segments, text._text_ranges, strict=True
+        )
+        if "hidden" not in textbox.tag_names(start)
+    ]
+
+
+def test_only_the_segments_with_words_to_review_can_be_shown(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_text import TranscriptText
+
+    view = open_review(ui, monkeypatch)
+    bar = view.review_bar
+    renders: list[None] = []
+    render = TranscriptText._render_transcript
+    monkeypatch.setattr(
+        TranscriptText,
+        "_render_transcript",
+        lambda self: (renders.append(None), render(self))[1],
+    )
+    all_texts = ["Hello wisper", "Nice to meet you.", "Bye wisper."]
+    assert shown_texts(view) == all_texts
+
+    bar.chk_only_flagged.toggle()
+    view.go_to_low_confidence(1)
+    view.accept_current()
+    # The segment just reviewed stays, until the user moves on
+    assert shown_texts(view) == all_texts
+    assert current_text(view) == "Nice to meet you."
+    view.accept_current()
+    assert shown_texts(view) == ["Nice to meet you.", "Bye wisper."]
+    view.go_to_low_confidence(1)
+    assert shown_texts(view) == ["Bye wisper."]
+
+    # None left
+    view.accept_current()
+    assert shown_texts(view) == ["Bye wisper."]
+    assert not view.frm_review_empty.winfo_ismapped()
+    view._set_only_flagged(True)
+    ui.pump()
+    assert shown_texts(view) == []
+    assert view.frm_review_empty.winfo_ismapped()
+    # Which can show all of them again
+    [label, button] = view.frm_review_empty.winfo_children()
+    assert label.cget("text") == "No low-confidence words left to review"
+    button.invoke()
+    ui.pump()
+    assert shown_texts(view) == all_texts
+    assert not view.frm_review_empty.winfo_ismapped()
+    assert not bar._only_flagged_variable.get()
+
+    # Without words to review, it doesn't hide anything
+    view._set_only_flagged(True)
+    view._set_low_confidence_threshold(5)
+    assert shown_texts(view) == all_texts
+    # Filtering doesn't render the transcript again
+    assert renders == []
+
+
+def test_the_words_to_review_are_marked_on_the_timeline(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.player_bar import MarkKind
+
+    view = open_review(ui, monkeypatch)
+
+    def marks() -> list[tuple[float, MarkKind]]:
+        return [(mark.seconds, mark.kind) for mark in view.player._marks]
+
+    assert marks() == [
+        (0.5, MarkKind.PENDING),
+        (1.5, MarkKind.PENDING),
+        (3.5, MarkKind.PENDING),
+    ]
+    view.go_to_low_confidence(1)
+    view.accept_current()
+    assert marks() == [
+        (0.5, MarkKind.DONE),
+        (1.5, MarkKind.CURRENT),
+        (3.5, MarkKind.PENDING),
+    ]
+    # Clicking a mark goes to its word
+    view._on_mark_click(2)
+    assert current_text(view) == "Bye wisper."
+    assert marks()[2] == (3.5, MarkKind.CURRENT)
+    # They follow the threshold
+    view._set_low_confidence_threshold(15)
+    assert marks() == [(3.5, MarkKind.CURRENT)]
+    view._toggle_low_confidence()
+    assert marks() == []
+
+
+def test_the_marks_are_drawn_by_kind_and_can_be_clicked(ui: Ui) -> None:
+    from views.transcript.player_bar import MarkKind, PlayerBar, TimelineMark
+
+    bar = PlayerBar(
+        ui.window,
+        on_tick=lambda _position, _is_playing: None,
+        on_toggle_subtitles=lambda: None,
+        on_subtitle_menu=lambda _anchor: None,
+    )
+    bar.grid(row=9, column=0, sticky="ew")
+    bar._player = FakePlayer()
+    clicked: list[int] = []
+    try:
+        ui.pump()
+        bar.set_marks(
+            [
+                TimelineMark(15.0, MarkKind.DONE),
+                TimelineMark(30.0, MarkKind.PENDING),
+                TimelineMark(45.0, MarkKind.CURRENT),
+            ],
+            {kind: ("#000000", "#FFFFFF") for kind in MarkKind},
+            clicked.append,
+        )
+        canvas = bar.cnv_marks
+        heights = sorted(
+            round(canvas.coords(item)[3] - canvas.coords(item)[1])
+            for item in canvas.find_withtag("mark")
+        )
+        # They differ in height, not only in color
+        assert heights == [6, 10, 16]
+
+        x = bar._mark_x(30.0)
+        assert x is not None
+        bar._on_marks_click(type("Event", (), {"x": x + 3})())
+        bar._on_marks_click(type("Event", (), {"x": x + 40})())
+        assert clicked == [1]
+    finally:
+        bar._player = None
+        bar.destroy()
+
+
+def click_flagged(ui: Ui, view: Any, text: str) -> None:
+    """Clicks a low confidence text, which opens its popover."""
+    textbox = view.text.tbx_transcript._textbox
+    [flagged] = [t for t in view._review.unreviewed if t.text == text]
+    start = view.text._flagged_ranges(flagged)[0][0]
+    textbox.mark_set(tk.CURRENT, f"{start}+1c")
+    view.text._on_click(0)
+    ui.pump()
+
+
+def test_a_word_can_be_corrected_where_it_is(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from models.transcript_segment import ReviewMark
+
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+    segment_clicks: list[float] = []
+    monkeypatch.setattr(view, "_play_from", segment_clicks.append)
+
+    click_flagged(ui, view, "wisper")
+    assert popover.is_open
+    assert popover.winfo_ismapped()
+    assert popover.ent_text.get() == "wisper"
+    # The word is the one gone to, but it's the field that has the focus
+    assert current_text(view) == "wisper"
+    assert view.focus_get() is popover.ent_text._entry
+
+    # Escape closes it without changes, back to the transcript
+    popover.ent_text._entry.event_generate("<Escape>")
+    ui.pump()
+    assert not popover.is_open
+    assert view.focus_get() is view.text.tbx_transcript._textbox
+    assert view.review_bar.review.remaining == 3
+
+    # Return saves the correction, which reviews it, and goes to the next word
+    click_flagged(ui, view, "wisper")
+    popover.ent_text.delete(0, "end")
+    popover.ent_text.insert(0, "Whisper")
+    popover.ent_text._entry.event_generate("<Return>")
+    ui.pump()
+    assert not popover.is_open
+    word = view._entry.segments[0].words[1]
+    assert (word.text, word.score, word.reviewed) == ("Whisper", 0.3, ReviewMark.EDITED)
+    assert current_text(view) == "Nice to meet you."
+    assert view.focus_get() is view.text.tbx_transcript._textbox
+    # Which can be undone
+    assert view.undo_review()
+    assert view._entry.segments[0].text == "Hello wisper"
+
+    # Unchanged, Return accepts it
+    click_flagged(ui, view, "wisper")
+    popover.ent_text._entry.event_generate("<Return>")
+    ui.pump()
+    assert view._entry.segments[0].words[1].reviewed == ReviewMark.ACCEPTED
+
+    # A segment scored whole can't be left without text
+    click_flagged(ui, view, "Nice to meet you.")
+    popover.ent_text.delete(0, "end")
+    popover._on_return(None)
+    assert popover.is_open
+    popover.btn_accept.invoke()
+    ui.pump()
+    assert not popover.is_open
+    assert view._entry.segments[1].reviewed == ReviewMark.ACCEPTED
+
+    # Clicking away only closes it, without playing
+    click_flagged(ui, view, "Bye wisper.")
+    view._on_segment_click(0)
+    assert not popover.is_open
+    assert segment_clicks == []
+    assert view.review_bar.review.remaining == 1
+
+
+def test_the_popover_replays_the_word(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> None:
+    view = open_review(ui, monkeypatch)
+    clips: list[tuple[float, float]] = []
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+
+    click_flagged(ui, view, "wisper")
+    view.word_popover.btn_replay.invoke()
+    # Played when it's opened (with auto-play on) and again
+    assert clips == [(-1.0, 2.5), (-1.0, 2.5)]
+
+
+def test_the_marks_stay_aligned_with_the_slider_when_it_resizes(ui: Ui) -> None:
+    from views.transcript.player_bar import MarkKind, PlayerBar, TimelineMark
+
+    window = ctk.CTkToplevel(ui.window)
+    bar = PlayerBar(
+        window,
+        on_tick=lambda _position, _is_playing: None,
+        on_toggle_subtitles=lambda: None,
+        on_subtitle_menu=lambda _anchor: None,
+    )
+    bar.pack(fill="x")
+    player = FakePlayer()
+    bar._player = player
+    bar.sld_position.configure(to=player.duration)
+    slider = bar.sld_position
+    try:
+        bar.set_marks(
+            [TimelineMark(seconds, MarkKind.PENDING) for seconds in (0, 30, 60)],
+            {kind: ("#000000", "#FFFFFF") for kind in MarkKind},
+            lambda _idx: None,
+        )
+        for width in (900, 1400, 640):
+            window.geometry(f"{width}x160")
+            ui.pump()
+            assert bar.cnv_marks.winfo_x() == slider.winfo_x()
+            assert bar.cnv_marks.winfo_width() == slider.winfo_width()
+            drawn = sorted(
+                (lambda coords: (coords[0] + coords[2]) / 2)(bar.cnv_marks.coords(item))
+                for item in bar.cnv_marks.find_withtag("mark")
+            )
+            for seconds, mark_x in zip((0, 30, 60), drawn, strict=True):
+                # Where the button of the slider is drawn at that moment
+                slider.set(seconds)
+                ui.pump()
+                canvas = slider._canvas
+                points = canvas.coords(canvas.find_withtag("slider_parts")[0])[0::2]
+                assert mark_x == pytest.approx((min(points) + max(points)) / 2, abs=1)
+    finally:
+        bar._player = None
+        window.destroy()
+
+
+def test_a_search_shows_the_segment_it_goes_to(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    plain = TranscriptSegment(6.0, 7.0, "Plain words here.")
+    entry = ui.add(segments=[*review_segments(), plain], text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    monkeypatch.setattr(view.player, "play_clip", lambda *_clip: None)
+    view.review_bar.chk_only_flagged.toggle()
+    assert "Plain words here." not in shown_texts(view)
+
+    view.text.search("Plain")
+    assert "Plain words here." in shown_texts(view)
+    # Until the user goes to another word
+    view.go_to_low_confidence(1)
+    assert "Plain words here." not in shown_texts(view)
+
+
+def test_the_popover_doesnt_remove_words(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+    bells: list[None] = []
+    monkeypatch.setattr(view, "bell", lambda: bells.append(None))
+
+    click_flagged(ui, view, "wisper")
+    popover.ent_text.delete(0, "end")
+    popover._on_return(None)
+    assert popover.is_open
+    assert bells == [None]
+    assert view._entry.segments[0].text == "Hello wisper"
+
+
+def test_another_word_switches_the_popover_discarding_what_was_typed(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+
+    click_flagged(ui, view, "wisper")
+    popover.ent_text.insert("end", "typed")
+    click_flagged(ui, view, "Bye wisper.")
+
+    assert popover.is_open
+    assert popover.ent_text.get() == "Bye wisper."
+    assert current_text(view) == "Bye wisper."
+    assert view._entry.segments == review_segments()
+    assert view.review_bar.review.remaining == 3
+    # A whole segment takes a wider field
+    assert popover.ent_text.cget("width") > 200
+
+
+def test_the_popover_stays_inside_the_text(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+    anchor = view.text.text_widget
+    click_flagged(ui, view, "wisper")
+    width, height = anchor.winfo_width(), anchor.winfo_height()
+
+    # At the bottom right of the text, it's shown above the word, inside it
+    popover.place_at(anchor, (width - 5, height - 30, height - 10))
+    ui.pump()
+    info = popover.place_info()
+    x, y = int(info["x"]), int(info["y"])
+    assert x + popover.winfo_reqwidth() <= width
+    assert y + popover.winfo_reqheight() <= height - 30
+    assert x >= 0 and y >= 0
+
+
+def test_the_popover_closes_when_its_word_moves_or_goes(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE
+
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+
+    def reopen(case: str = "") -> None:
+        click_flagged(ui, view, "wisper")
+        assert popover.is_open, case
+
+    window = ui.window.winfo_toplevel()
+
+    def resize_window() -> None:
+        # A maximized window (as the app opens by default) ignores a new size on
+        # Windows, so it's restored first, like the user would
+        size = (window.winfo_width(), window.winfo_height())
+        window.state("normal")
+        ui.pump()
+        window.geometry(f"{window.winfo_width() - 40}x{window.winfo_height()}")
+        ui.pump()
+        assert (window.winfo_width(), window.winfo_height()) != size
+
+    closes = {
+        "switching to another tab": lambda: view._on_mode_change(PLAIN_TEXT_MODE),
+        # Its word is no longer below the threshold
+        "raising the threshold": lambda: view._set_low_confidence_threshold(25),
+        "turning the highlighting off": view._toggle_low_confidence,
+        "rendering the transcript again": view._toggle_precise_timestamps,
+        # The text wraps again
+        "resizing the window": resize_window,
+    }
+    for case, close in closes.items():
+        view._on_mode_change("transcript")
+        view._config_system.highlight_low_confidence = True
+        view._set_low_confidence_threshold(40)
+        # Shown before it's clicked
+        ui.pump()
+        reopen(case)
+        close()
+        ui.pump()
+        assert not popover.is_open, case
+        assert not popover.winfo_ismapped(), case
+
+    # And with the transcription, when another one is shown
+    view._on_mode_change("transcript")
+    ui.pump()
+    reopen()
+    ui.window.select_entry(ui.add(segments=SEGMENTS, text=TEXT).id)
+    ui.pump()
+    assert not popover.winfo_exists()
+
+
+def test_the_popover_replays_with_a_key(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.style import theme
+
+    view = open_review(ui, monkeypatch)
+    clips: list[tuple[float, float]] = []
+    click_flagged(ui, view, "wisper")
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+
+    field = view.word_popover.ent_text._entry
+    field.focus_force()
+    ui.pump()
+    field.event_generate(f"<{theme.SHORTCUT_MODIFIER}-r>")
+    ui.pump()
+    assert clips == [(-1.0, 2.5)]
+    # Without typing in the field
+    assert view.word_popover.ent_text.get() == "wisper"
 
 
 def _open_text_dialog(ui: Ui) -> Any:

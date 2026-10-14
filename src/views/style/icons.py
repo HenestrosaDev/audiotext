@@ -110,6 +110,10 @@ def _chevron_down(d: Draw) -> None:
     _line(d, [(14, 24), (32, 42), (50, 24)], width=6)
 
 
+def _chevron_up(d: Draw) -> None:
+    _line(d, [(14, 40), (32, 22), (50, 40)], width=6)
+
+
 def _chevron_left(d: Draw) -> None:
     _line(d, [(40, 14), (22, 32), (40, 50)], width=6)
 
@@ -142,6 +146,12 @@ def _alert_circle(d: Draw) -> None:
     d.ellipse((4, 4, 60, 60), fill=ON)
     d.rounded_rectangle((28, 15, 36, 38), radius=4, fill=OFF)
     d.ellipse((27, 42, 37, 52), fill=OFF)
+
+
+def _warning(d: Draw) -> None:
+    d.polygon([(32, 5), (61, 57), (3, 57)], fill=ON)
+    d.rounded_rectangle((28, 21, 36, 40), radius=4, fill=OFF)
+    d.ellipse((27, 44, 37, 54), fill=OFF)
 
 
 def _clock(d: Draw) -> None:
@@ -290,6 +300,7 @@ ICONS: dict[str, Callable[[Draw], None]] = {
     "note": _note,
     "chevron_right": _chevron_right,
     "chevron_down": _chevron_down,
+    "chevron_up": _chevron_up,
     "chevron_left": _chevron_left,
     "play": _play,
     "pause": _pause,
@@ -297,6 +308,7 @@ ICONS: dict[str, Callable[[Draw], None]] = {
     "check_circle": _check_circle,
     "x_circle": _x_circle,
     "alert_circle": _alert_circle,
+    "warning": _warning,
     "clock": _clock,
     "calendar": _calendar,
     "globe": _globe,

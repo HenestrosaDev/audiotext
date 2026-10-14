@@ -1,4 +1,10 @@
-from models.transcript_segment import TranscriptSegment, join_segments
+from models.transcript_segment import (
+    ReviewMark,
+    TranscriptSegment,
+    TranscriptWord,
+    has_scores,
+    join_segments,
+)
 
 
 def test_joins_the_text_of_the_segments() -> None:
@@ -34,3 +40,84 @@ def test_segments_without_speaker_have_no_label() -> None:
 
 def test_empty_transcription() -> None:
     assert join_segments([]) == ""
+
+
+def test_the_words_keep_their_score() -> None:
+    segment = TranscriptSegment(
+        0,
+        1,
+        "Hello world",
+        words=(TranscriptWord(0, 0.5, "Hello", 0.9), TranscriptWord(0.5, 1, "world")),
+    )
+
+    data = segment.to_dict()
+
+    assert data["words"] == [[0, 0.5, "Hello", 0.9], [0.5, 1, "world"]]
+    assert TranscriptSegment.from_dict(data) == segment
+
+
+def test_reads_the_words_saved_without_score() -> None:
+    data = {"start": 0, "end": 1, "text": "Hello", "words": [[0, 1, "Hello"]]}
+
+    segment = TranscriptSegment.from_dict(data)
+
+    assert segment.words == (TranscriptWord(0, 1, "Hello"),)
+
+
+def test_the_segments_keep_their_score() -> None:
+    segment = TranscriptSegment(0, 1, "Hello", score=0.25)
+
+    data = segment.to_dict()
+
+    assert data["score"] == 0.25
+    assert TranscriptSegment.from_dict(data) == segment
+    assert "score" not in TranscriptSegment(0, 1, "Hello").to_dict()
+
+
+def test_has_scores_if_a_segment_or_a_word_has_one() -> None:
+    word = TranscriptWord(0, 1, "Hello", 0.9)
+
+    assert has_scores([TranscriptSegment(0, 1, "Hello", words=(word,))])
+    assert has_scores([TranscriptSegment(0, 1, "Hello", score=0.9)])
+    assert not has_scores([TranscriptSegment(0, 1, "Hello")])
+    assert not has_scores([])
+
+
+def test_the_reviews_are_kept() -> None:
+    segment = TranscriptSegment(
+        0,
+        1,
+        "Hello world",
+        words=(
+            TranscriptWord(0, 0.5, "Hello", 0.2, ReviewMark.ACCEPTED),
+            TranscriptWord(0.5, 1, "world", 0.3, ReviewMark.EDITED),
+            TranscriptWord(1, 1, "now"),
+        ),
+        score=0.1,
+        reviewed=ReviewMark.EDITED,
+    )
+
+    data = segment.to_dict()
+
+    assert data["words"] == [
+        [0, 0.5, "Hello", 0.2, "accepted"],
+        [0.5, 1, "world", 0.3, "edited"],
+        [1, 1, "now"],
+    ]
+    assert data["reviewed"] == "edited"
+    assert TranscriptSegment.from_dict(data) == segment
+
+
+def test_unknown_reviews_are_ignored() -> None:
+    data = {
+        "start": 0,
+        "end": 1,
+        "text": "Hello",
+        "words": [[0, 1, "Hello", 0.2, "someday"]],
+        "reviewed": "someday",
+    }
+
+    segment = TranscriptSegment.from_dict(data)
+
+    assert segment.reviewed is None
+    assert segment.words[0] == TranscriptWord(0, 1, "Hello", 0.2)

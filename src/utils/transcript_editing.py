@@ -5,15 +5,20 @@ change, and segments can be added to it or deleted from it.
 
 The segments keep the timings of their words, which highlight each word while
 playing and are needed by the subtitles. When the text of a segment changes, the
-words that didn't change keep their timings, and the new ones take the timings of
-the words they replace.
+words that didn't change are kept as they are, and the new ones take the timings
+of the words they replace.
+
+The corrected words keep the score of the words they replace, marked as edited
+(see `models.review`), so a review counts them as reviewed instead of dropping
+them. A word split in several (or several merged into one) is counted once: only
+the first new word keeps the (lowest) score. Inserted words have no score.
 """
 
 import difflib
 import re
 from dataclasses import replace
 
-from models.transcript_segment import TranscriptSegment, TranscriptWord
+from models.transcript_segment import ReviewMark, TranscriptSegment, TranscriptWord
 
 
 def _pattern(find: str, match_case: bool) -> re.Pattern[str]:
@@ -38,7 +43,7 @@ def realign_words(
 
     :param words: The words of the segment before the change.
     :param new_text: The new text of the segment.
-    :return: The words of the new text, with their timings.
+    :return: The words of the new text, with their timings and their scores.
     """
     if not words:
         return ()
@@ -51,16 +56,27 @@ def realign_words(
 
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
         if tag == "equal":
+            result.extend(words[i1:i2])
+        elif tag == "replace" and i2 - i1 == j2 - j1:
+            # Each word corrected on its own keeps its timing and its score
             result.extend(
-                TranscriptWord(word.start, word.end, token)
+                _edited(token, word.start, word.end, word.score)
                 for word, token in zip(words[i1:i2], new_tokens[j1:j2], strict=True)
             )
         elif tag == "replace":
-            # The new words share the time of the words they replace
+            # Split or merged: the new words share the time of the words they
+            # replace, and the first one keeps their lowest score
             start, end = words[i1].start, words[i2 - 1].end
             step = (end - start) / (j2 - j1)
+            scores = [word.score for word in words[i1:i2] if word.score is not None]
             result.extend(
-                TranscriptWord(start + step * idx, start + step * (idx + 1), token)
+                _edited(
+                    token,
+                    start + step * idx,
+                    start + step * (idx + 1),
+                    min(scores) if scores and idx == 0 else None,
+                    is_scored=bool(scores),
+                )
                 for idx, token in enumerate(new_tokens[j1:j2])
             )
         elif tag == "insert":
@@ -73,17 +89,37 @@ def realign_words(
     return tuple(result)
 
 
+def _edited(
+    text: str,
+    start: float,
+    end: float,
+    score: float | None,
+    is_scored: bool | None = None,
+) -> TranscriptWord:
+    """
+    A word corrected by the user. It's marked as edited if it replaces a scored
+    word, so it's reviewed, and no longer highlighted.
+
+    :param is_scored: Whether the words it replaces have a score, if it doesn't
+        keep it (e.g. the second half of a split word).
+    """
+    is_scored = score is not None if is_scored is None else is_scored
+    return TranscriptWord(
+        start, end, text, score, ReviewMark.EDITED if is_scored else None
+    )
+
+
 def _with_text(segment: TranscriptSegment, text: str) -> TranscriptSegment:
     text = text.strip()
     if text == segment.text:
         return segment
 
-    return TranscriptSegment(
-        segment.start,
-        segment.end,
-        text,
-        segment.speaker,
-        realign_words(segment.words, text),
+    # A scored segment keeps its score, reviewed, as the user corrected it
+    return replace(
+        segment,
+        text=text,
+        words=realign_words(segment.words, text),
+        reviewed=ReviewMark.EDITED if segment.score is not None else segment.reviewed,
     )
 
 
@@ -114,6 +150,47 @@ def edit_segment(
         _with_text(segment, text) if segment_idx == idx else segment
         for segment_idx, segment in enumerate(segments)
     ]
+
+
+def word_range(segment: TranscriptSegment, word_idx: int) -> tuple[int, int] | None:
+    """
+    Where a word is in the text of its segment. Words are looked up in order, like
+    when they're shown, so the same word said twice is told apart.
+
+    :return: Its start and its end in the text, or `None` if it isn't there.
+    """
+    text = segment.text
+    cursor = 0
+    for idx, word in enumerate(segment.words):
+        position = text.find(word.text, cursor) if word.text else -1
+        if position < 0:
+            continue
+        if idx == word_idx:
+            return position, position + len(word.text)
+        cursor = position + len(word.text)
+    return None
+
+
+def edit_word(
+    segments: list[TranscriptSegment], idx: int, word_idx: int, text: str
+) -> list[TranscriptSegment]:
+    """
+    Changes a word of a segment.
+
+    :raises ValueError: If the word isn't in the text, or `text` is empty: a word
+        is removed by editing its segment.
+    """
+    found = word_range(segments[idx], word_idx)
+    if found is None:
+        raise ValueError("The word isn't in the text of its segment")
+    if not text.strip():
+        raise ValueError("The text of a word can't be empty")
+
+    first, last = found
+    segment_text = segments[idx].text
+    return edit_segment(
+        segments, idx, segment_text[:first] + text.strip() + segment_text[last:]
+    )
 
 
 def edit_segment_part(
@@ -247,9 +324,7 @@ def rename_speakers(
         raise ValueError("The name of a speaker can't be empty")
 
     return [
-        TranscriptSegment(s.start, s.end, s.text, names[s.speaker], s.words)
-        if s.speaker in names
-        else s
+        replace(s, speaker=names[s.speaker]) if s.speaker in names else s
         for s in segments
     ]
 

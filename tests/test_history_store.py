@@ -4,7 +4,8 @@ from pathlib import Path
 import pytest
 
 from models.history import EntryStatus, HistoryEntry
-from models.transcript_segment import TranscriptSegment, TranscriptWord
+from models.review import ReviewState, build_review, set_review
+from models.transcript_segment import ReviewMark, TranscriptSegment, TranscriptWord
 from utils.history_store import HistoryStore, sanitize_file_name
 
 
@@ -189,3 +190,40 @@ def test_the_summary_survives_a_reload(store: HistoryStore) -> None:
 
     assert reloaded is not None
     assert reloaded.summary == summary
+
+
+def test_the_review_of_a_transcription_survives_a_reload(store: HistoryStore) -> None:
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.2),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    segments = [TranscriptSegment(0.0, 1.0, "Hello wisper", words=words)]
+    review = build_review(segments, True, 0.4)
+    entry = store.add(
+        make_entry(
+            status=EntryStatus.DONE,
+            segments=set_review(segments, review.flagged[:1], ReviewMark.ACCEPTED),
+        )
+    )
+
+    reloaded = reload(store).get(entry.id)
+
+    assert reloaded is not None
+    review = build_review(reloaded.segments, True, 0.4)
+    assert review.state == ReviewState.ACTIVE
+    assert (review.remaining, review.total) == (1, 2)
+
+
+def test_the_transcriptions_saved_without_reviews_have_none(
+    store: HistoryStore,
+) -> None:
+    data = make_entry(status=EntryStatus.DONE).to_dict()
+    data["segments"] = [
+        {"start": 0, "end": 1, "text": "Hi", "words": [[0, 1, "Hi", 0.2]]}
+    ]
+    store.file_path.write_text(json.dumps({"entries": [data]}), encoding="utf-8")
+
+    [entry] = reload(store).entries
+
+    review = build_review(entry.segments, True, 0.4)
+    assert (review.remaining, review.total) == (1, 1)

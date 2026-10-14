@@ -1,4 +1,5 @@
 import json
+import math
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock
@@ -41,7 +42,9 @@ def audio_file(tmp_path: Path) -> Path:
     return path
 
 
-def verbose_segment(start: float, end: float, text: str) -> dict[str, Any]:
+def verbose_segment(
+    start: float, end: float, text: str, avg_logprob: float = 0.0
+) -> dict[str, Any]:
     return {
         "id": 0,
         "seek": 0,
@@ -50,7 +53,7 @@ def verbose_segment(start: float, end: float, text: str) -> dict[str, Any]:
         "text": text,
         "tokens": [],
         "temperature": 0.0,
-        "avg_logprob": 0.0,
+        "avg_logprob": avg_logprob,
         "compression_ratio": 1.0,
         "no_speech_prob": 0.0,
     }
@@ -125,10 +128,14 @@ def test_whisper_returns_segments_with_their_words(
     assert result.language == "en"
     assert result.segments == [
         TranscriptSegment(
-            0.0, 0.2, "Hello", words=(TranscriptWord(0.0, 0.2, "Hello"),)
+            0.0, 0.2, "Hello", words=(TranscriptWord(0.0, 0.2, "Hello"),), score=1.0
         ),
         TranscriptSegment(
-            0.2, 0.5, "world.", words=(TranscriptWord(0.25, 0.5, "world."),)
+            0.2,
+            0.5,
+            "world.",
+            words=(TranscriptWord(0.25, 0.5, "world."),),
+            score=1.0,
         ),
     ]
     params = request_params(openai_client)
@@ -452,3 +459,15 @@ def test_render_response_without_segments_uses_a_single_cue() -> None:
     assert render_response(transcript, "srt") == (
         "1\n00:00:00,000 --> 00:00:03,000\nHello.\n"
     )
+
+
+def test_the_segments_are_scored_by_the_probability_of_their_tokens(
+    openai_client: MagicMock, audio_file: Path
+) -> None:
+    openai_client.audio.transcriptions.create.return_value = verbose_response(
+        [verbose_segment(0.0, 0.5, " Hello", avg_logprob=math.log(0.25))]
+    )
+
+    result = OpenAiApiHandler.transcribe_file(make_transcription(audio_file))
+
+    assert result.segments[0].score == pytest.approx(0.25)
