@@ -516,7 +516,7 @@ def test_a_translation_is_shown_next_to_the_transcript(
     ui.pump(0.5)
 
     assert translator.requests == [("es", "deepl")]
-    assert entry.translation == translation.to_dict()
+    assert entry.translations == {"es": translation.to_dict()}
     assert view.translation_panel.winfo_ismapped()
     assert "Encantado." in view.translation_panel.text.tbx_transcript.get("1.0", "end")
     assert ConfigManager.get_config_ai().translation_provider == "deepl"
@@ -537,7 +537,70 @@ def test_a_translation_is_shown_next_to_the_transcript(
 
     view._delete_translation()
     ui.pump()
-    assert entry.translation == {}
+    assert entry.translations == {}
+
+
+def test_a_transcription_has_a_translation_into_each_language(
+    ui: Ui, translator: FakeTranslator, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import views.transcript.transcript_view as transcript_view
+    from models.translation import TranscriptTranslation
+    from views.transcript.translation_panel import TranslationRequest
+
+    spanish = TranscriptTranslation(
+        "es", "", translated("Hola", "Encantado.", "Adiós."), "deepl"
+    )
+    french = TranscriptTranslation("fr", "", translated("Bonjour", "", ""), "manual")
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={"es": spanish.to_dict(), "fr": french.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    panel = view.translation_panel
+    shown = panel.text.tbx_transcript
+
+    # The last one made is shown, and the menu tells how much of each is done
+    assert panel.omn_language.get() == "French · 25%"
+    assert panel.omn_language.cget("values") == [
+        "Spanish · 100%",
+        "French · 25%",
+        "Translate into another language…",
+    ]
+    assert "Bonjour" in shown.get("1.0", "end")
+
+    panel._choose_option("Spanish · 100%")
+    ui.pump()
+    assert "Encantado." in shown.get("1.0", "end")
+    # The segments of the translation shown are the ones edited
+    monkeypatch.setattr(transcript_view.TextDialog, "get_input", lambda _self: "Chao")
+    view._edit_translation_segment(2)
+    ui.pump()
+    edited = entry.get_translation("es")
+    assert edited is not None
+    assert edited.segments[2].text == "Chao"
+    assert entry.get_translation("fr") == french
+
+    # Another language is added, keeping the others
+    translator.translation = spanish
+    monkeypatch.setattr(
+        transcript_view.TranslateDialog,
+        "get_result",
+        lambda _self: TranslationRequest("de", "deepl"),
+    )
+    panel._choose_option("Translate into another language…")
+    ui.pump()
+    assert list(entry.translations) == ["es", "fr", "de"]
+    assert panel.omn_language.get() == "German · 100%"
+
+    # Deleting one shows the last one left
+    view._delete_translation()
+    ui.pump()
+    assert list(entry.translations) == ["es", "fr"]
+    assert panel.winfo_ismapped()
+    assert panel.omn_language.get() == "French · 25%"
 
 
 def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -551,7 +614,11 @@ def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) ->
         translated("Hola wisper", "Encantado.", "Adiós wisper."),
         "deepl",
     )
-    entry = ui.add(segments=SEGMENTS, text=TEXT, translation=translation.to_dict())
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
@@ -562,7 +629,7 @@ def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) ->
     )
     view._edit_translation_segment(0)
     ui.pump()
-    edited = TranscriptTranslation.from_dict(entry.translation)
+    edited = entry.get_translation("es")
     assert edited is not None
     assert edited.segments[0].text == "Hola Whisper"
     assert edited.text.startswith("[SPEAKER_00]: Hola Whisper")
@@ -579,14 +646,14 @@ def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) ->
     plain.insert("1.0", "Hola a todos")
     view.translation_panel.text._schedule_text_save()
     view.translation_panel.save_pending_text()
-    edited = TranscriptTranslation.from_dict(entry.translation)
+    edited = entry.get_translation("es")
     assert edited is not None
     assert edited.text == "Hola a todos"
     assert edited.is_text_edited
 
     view._edit_translation_segment(1)
     ui.pump()
-    edited = TranscriptTranslation.from_dict(entry.translation)
+    edited = entry.get_translation("es")
     assert edited is not None
     assert edited.segments[1].text == "Hola Whisper"
     assert edited.text == "Hola a todos"
@@ -596,7 +663,6 @@ def test_a_transcription_can_be_translated_from_scratch(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     import views.transcript.transcript_view as transcript_view
-    from models.translation import TranscriptTranslation
     from views.transcript.translation_panel import TranslationRequest
 
     monkeypatch.setattr(
@@ -613,7 +679,7 @@ def test_a_transcription_can_be_translated_from_scratch(
     ui.pump()
 
     # Each segment keeps its timestamps, with an empty text to fill in
-    translation = TranscriptTranslation.from_dict(entry.translation)
+    translation = entry.get_translation("es")
     assert translation is not None
     assert translation.provider == "manual"
     assert translation.segments == translated("", "", "")
@@ -628,7 +694,7 @@ def test_a_transcription_can_be_translated_from_scratch(
     monkeypatch.setattr(transcript_view.TextDialog, "get_input", lambda _self: "Adiós")
     view._edit_translation_segment(2)
     ui.pump()
-    translation = TranscriptTranslation.from_dict(entry.translation)
+    translation = entry.get_translation("es")
     assert translation is not None
     assert translation.segments == translated("", "", "Adiós")
     assert translation.text == "[SPEAKER_00]: Adiós"
@@ -648,7 +714,11 @@ def test_the_segments_of_a_translation_have_their_own_timing(
         translated("Hola wisper", "Encantado.", "Adiós wisper."),
         "deepl",
     )
-    entry = ui.add(segments=SEGMENTS, text=TEXT, translation=translation.to_dict())
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
@@ -656,7 +726,7 @@ def test_the_segments_of_a_translation_have_their_own_timing(
     monkeypatch.setattr(view.player, "play_from", played.append)
 
     def segments() -> tuple[TranscriptSegment, ...]:
-        edited = TranscriptTranslation.from_dict(entry.translation)
+        edited = entry.get_translation("es")
         assert edited is not None
         return edited.segments
 
@@ -694,7 +764,7 @@ def test_the_segments_of_a_translation_have_their_own_timing(
     ui.pump()
     assert segments()[0] == TranscriptSegment(0.5, 1.4, "¿Qué tal?", "SPEAKER_01")
     assert "Hello wisper" in messages[0]
-    edited = TranscriptTranslation.from_dict(entry.translation)
+    edited = entry.get_translation("es")
     assert edited is not None
     assert edited.text.startswith("[SPEAKER_01]: ¿Qué tal? Encantado.")
 
@@ -749,7 +819,11 @@ def test_the_timestamps_can_be_precise(ui: Ui) -> None:
     translation = TranscriptTranslation(
         "es", "Hola", translated("Hola", "Encantado.", "Adiós.")
     )
-    entry = ui.add(segments=SEGMENTS, text=TEXT, translation=translation.to_dict())
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
@@ -807,7 +881,11 @@ def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(
     translation = TranscriptTranslation(
         "es", "Hola", provider="deepl", created_at="2026-10-04T13:30:00+00:00"
     )
-    entry = ui.add(segments=SEGMENTS, text=TEXT, translation=translation.to_dict())
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
     ui.window.select_entry(entry.id)
     ui.pump()
     panel = ui.window._entry_view.translation_panel
@@ -1315,7 +1393,7 @@ def test_every_page_is_shown_in_another_language(ui: Ui, audio_file: Path) -> No
             segments=SEGMENTS,
             text=TEXT,
             media_path=str(audio_file),
-            translation=translation.to_dict(),
+            translations={translation.language: translation.to_dict()},
         ),
         ui.add(
             title="Recordings",
@@ -1347,7 +1425,7 @@ def test_every_page_is_shown_in_another_language(ui: Ui, audio_file: Path) -> No
         transcript = ui.window._entry_view
         transcript._on_mode_change("transcript")
         ui.pump()
-        assert transcript.translation_panel.lbl_title.cget("text") == "Francés"
+        assert transcript.translation_panel.omn_language.get().startswith("Francés")
         assert (
             "Sin traducir todavía"
             in transcript.translation_panel.text.tbx_transcript.get("1.0", "end")
@@ -1465,6 +1543,60 @@ def test_the_timing_dialog_only_accepts_valid_times(ui: Ui) -> None:
     ui.pump()
 
 
+def test_a_translation_is_generated_again_from_its_header(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import views.transcript.transcript_view as transcript_view
+    from models.translation import TranscriptTranslation
+
+    translation = TranscriptTranslation(
+        "es", "Hola", translated("Hola", "", ""), "deepl", model="m"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    panel = view.translation_panel
+
+    translations: list[tuple[str, ...]] = []
+    monkeypatch.setattr(
+        view._actions.transcript,
+        "translate_entry",
+        lambda *args: translations.append(args),
+    )
+    # Only after confirming it, since the current one is replaced
+    answers = iter([False, True])
+    monkeypatch.setattr(
+        transcript_view.messagebox, "askyesno", lambda *_a, **_k: next(answers)
+    )
+
+    assert panel.btn_regenerate.cget("state") == ctk.NORMAL
+    panel.btn_regenerate.invoke()
+    panel.btn_regenerate.invoke()
+    assert translations == [(entry.id, "es", "deepl", "m")]
+
+
+def test_a_manual_translation_cant_be_generated_again(ui: Ui) -> None:
+    from models.translation import TranscriptTranslation
+
+    translation = TranscriptTranslation(
+        "es", "Hola", translated("Hola", "", ""), "manual"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    # Hidden, rather than disabled
+    assert not ui.window._entry_view.translation_panel.btn_regenerate.winfo_ismapped()
+
+
 def test_a_translation_is_exported_like_the_transcription(
     ui: Ui, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -1477,12 +1609,16 @@ def test_a_translation_is_exported_like_the_transcription(
     translation = TranscriptTranslation(
         "es", "Hola wisper Adiós.", translated("Hola wisper", "", "Adiós."), "manual"
     )
-    entry = ui.add(segments=SEGMENTS, text=TEXT, translation=translation.to_dict())
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
 
-    # The export menu has the formats of the translation in a submenu
+    # Each panel exports its own text, with the same formats
     menus: list[tk.Menu] = []
     monkeypatch.setattr(
         TranscriptView,
@@ -1490,13 +1626,11 @@ def test_a_translation_is_exported_like_the_transcription(
         staticmethod(lambda menu, _widget: menus.append(menu)),
     )
     view.show_export_menu()
-    assert menus[0].entrycget("end", "label") == "Translation into Spanish"
-    submenu = menus[0].nametowidget(menus[0].entrycget("end", "menu"))
-    assert submenu.entrycget("end", "label") == "JSON (.json)"
     view.show_translation_export_menu(view.translation_panel.btn_export)
-    assert menus[1].index("end") == submenu.index("end")
-    # On Windows, Tk crashes if a menu with a cascade is destroyed before it has
-    # been built, which happens when it's idle, as the menus aren't shown here
+    for menu in menus:
+        assert menu.entrycget("end", "label") == "JSON (.json)"
+        assert menu.type("end") == "command"
+    assert menus[0].index("end") == menus[1].index("end")
     ui.pump()
     for menu in menus:
         menu.destroy()
@@ -1528,7 +1662,11 @@ def test_the_video_can_be_subtitled_with_the_translation(ui: Ui) -> None:
     translation = TranscriptTranslation(
         "es", "", translated("Hola", "Encantado.", "Adiós."), "deepl"
     )
-    entry = ui.add(segments=SEGMENTS, text=TEXT, translation=translation.to_dict())
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
