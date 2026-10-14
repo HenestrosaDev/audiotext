@@ -9,9 +9,11 @@ from typing import Any
 import customtkinter as ctk
 
 import utils.constants as c
+from handlers.ai_providers import resolve_model
 from handlers.translation_handler import (
     DEEPL,
     MANUAL,
+    get_ai_provider,
     get_env_key,
     has_api_key,
     translation_providers,
@@ -19,7 +21,7 @@ from handlers.translation_handler import (
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 from utils.env_keys import EnvKeys
-from utils.i18n import L_, _, get_language, get_language_name
+from utils.i18n import L_, _, get_language, get_language_name, sort_key
 from views.history.formatting import format_full_date
 from views.settings.option_labels import get_language_labels
 from views.style import icons, theme
@@ -281,7 +283,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
     def _describe(translation: TranscriptTranslation) -> str:
         """The provider and the model that translated it, and when."""
         if translation.provider == MANUAL:
-            provider = _("Translated manually")
+            provider = _("Manual")
         else:
             provider = translation_providers().get(
                 translation.provider, translation.provider
@@ -325,6 +327,7 @@ class TranslateDialog(_Dialog):
         self._result: TranslationRequest | None = None
 
         config = ConfigManager.get_config_ai()
+        self._config = config
 
         ctk.CTkLabel(
             self.frm_body, text=_("Translate into:"), font=theme.font(13)
@@ -347,9 +350,9 @@ class TranslateDialog(_Dialog):
         )
         self.omn_language.grid(row=0, column=1, pady=4, sticky=ctk.EW)
 
-        ctk.CTkLabel(self.frm_body, text=_("Provider:"), font=theme.font(13)).grid(
-            row=1, column=0, padx=(0, 10), pady=4, sticky=ctk.W
-        )
+        ctk.CTkLabel(
+            self.frm_body, text=_("Translate with:"), font=theme.font(13)
+        ).grid(row=1, column=0, padx=(0, 10), pady=4, sticky=ctk.W)
         provider = config.translation_provider
         if provider not in translation_providers():
             provider = DEEPL
@@ -357,12 +360,29 @@ class TranslateDialog(_Dialog):
         # The user can also translate it, from empty segments with the timestamps
         self._providers = LocalizedOptions(
             self.omn_provider,
-            lambda: {**translation_providers(), MANUAL: _("Myself, from scratch")},
+            lambda: dict(
+                sorted(
+                    {**translation_providers(), MANUAL: _("Manual")}.items(),
+                    key=lambda item: sort_key(item[1]),
+                )
+            ),
             provider,
             command=lambda _provider: self._refresh(),
         )
         self.omn_provider.grid(row=1, column=1, pady=4, sticky=ctk.EW)
 
+        # What translating with the provider does
+        self.lbl_hint = ctk.CTkLabel(
+            self.frm_body,
+            text="",
+            font=theme.font(12),
+            text_color=theme.HINT_TEXT,
+            anchor=ctk.W,
+            justify=ctk.LEFT,
+            wraplength=260,
+        )
+        self.lbl_hint.grid(row=2, column=1, pady=(6, 0), sticky=ctk.W)
+        # Shown instead of the hint, in a single line to keep its height
         self.frm_key = ctk.CTkFrame(self.frm_body, fg_color="transparent")
         self.frm_key.grid(row=2, column=1, pady=(6, 0), sticky=ctk.EW)
         self.frm_key.grid_columnconfigure(0, weight=1)
@@ -373,9 +393,8 @@ class TranslateDialog(_Dialog):
             text_color=theme.ERROR_TEXT,
             anchor=ctk.W,
             justify=ctk.LEFT,
-            wraplength=260,
         )
-        self.lbl_key.grid(row=0, column=0, sticky=ctk.W)
+        self.lbl_key.grid(row=0, column=0, padx=(0, 8), sticky=ctk.W)
         self.btn_key = ctk.CTkButton(
             self.frm_key,
             text=_("Set API key…"),
@@ -384,7 +403,8 @@ class TranslateDialog(_Dialog):
             command=self._set_api_key,
             **theme.SECONDARY_BUTTON,
         )
-        self.btn_key.grid(row=1, column=0, pady=(6, 0), sticky=ctk.W)
+        self.btn_key.grid(row=0, column=1, sticky=ctk.E)
+        self._reserve_hint_row()
 
         ctk.CTkButton(
             self.frm_body,
@@ -418,19 +438,83 @@ class TranslateDialog(_Dialog):
     def _provider(self) -> str:
         return self._providers.get()
 
+    def _key_message(self, provider: str) -> str:
+        return _("No API key for {provider}.").format(
+            provider=self._providers.label(provider)
+        )
+
+    def _hint(self, provider: str) -> str:
+        if provider == MANUAL:
+            return _(
+                "Creates empty segments with the original timestamps for you to "
+                "fill in."
+            )
+        if ai_provider := get_ai_provider(provider):
+            # The configured model only applies to its provider
+            model = (
+                self._config.translation_model
+                if provider == self._config.translation_provider
+                else ""
+            )
+            return _("Uses the model {model}.").format(
+                model=resolve_model(ai_provider, model)
+            )
+        return _("Translates each segment, keeping its timestamps.")
+
+    def _reserve_hint_row(self) -> None:
+        """
+        Keeps the height of the longest hint or warning of the API key, so the
+        dialog doesn't change its size when the provider does. The button of the
+        key is shortened if its warning would be taller than the hints.
+        """
+        providers = [*translation_providers(), MANUAL]
+        hints_height = self._tallest(self.lbl_hint, self._hint, providers)
+        key_height = self._fit_key_button(_("Set API key…"), providers)
+        if key_height > hints_height:
+            key_height = self._fit_key_button(_("Set…"), providers)
+        # Plus the padding above it
+        self.frm_body.grid_rowconfigure(2, minsize=max(hints_height, key_height) + 6)
+
+    def _fit_key_button(self, text: str, providers: list[str]) -> int:
+        """:return: The height of the warning of the key, with the button."""
+        self.btn_key.configure(text=text)
+        self.frm_body.update_idletasks()
+        # The warning wraps in the space left by the button (in unscaled pixels)
+        scaling = self.btn_key._get_widget_scaling()
+        self.lbl_key.configure(
+            wraplength=260 - (self.btn_key.winfo_reqwidth() / scaling) - 8
+        )
+        return self._tallest(self.frm_key, self._key_message, providers, self.lbl_key)
+
+    def _tallest(
+        self,
+        widget: Any,
+        get_text: Callable[[str], str],
+        providers: list[str],
+        label: Any = None,
+    ) -> int:
+        """:return: The height of the widget with the longest text of a provider."""
+        height = 0
+        for provider in providers:
+            (label or widget).configure(text=get_text(provider))
+            self.frm_body.update_idletasks()
+            height = max(height, widget.winfo_reqheight())
+        return height
+
+    def _needs_api_key(self) -> bool:
+        return self._provider != MANUAL and not has_api_key(self._provider)
+
     def _refresh(self) -> None:
-        provider = self._provider
-        if provider == MANUAL or has_api_key(provider):
+        if self._needs_api_key():
+            self.lbl_key.configure(text=self._key_message(self._provider))
+            self.frm_key.grid()
+            self.lbl_hint.grid_remove()
+            self.btn_ok.configure(state=ctk.DISABLED)
+        else:
+            self.lbl_hint.configure(text=self._hint(self._provider))
+            self.lbl_hint.grid()
             self.frm_key.grid_remove()
             self.btn_ok.configure(state=ctk.NORMAL)
-        else:
-            self.lbl_key.configure(
-                text=_("Set the API key of {provider} to translate with it.").format(
-                    provider=self._providers.label(provider)
-                )
-            )
-            self.frm_key.grid()
-            self.btn_ok.configure(state=ctk.DISABLED)
 
     def _set_api_key(self) -> None:
         if env_key := get_env_key(self._provider):
@@ -449,7 +533,7 @@ class TranslateDialog(_Dialog):
         self.omn_language.focus_set()
 
     def _ok(self) -> None:
-        if self._provider != MANUAL and not has_api_key(self._provider):
+        if self._needs_api_key():
             return
         self._result = TranslationRequest(
             language=self._languages.get(),
