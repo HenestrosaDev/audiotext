@@ -1,7 +1,7 @@
 import logging
 import threading
 import tkinter as tk
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, messagebox
@@ -127,6 +127,15 @@ def export_labels() -> dict[str, str]:
         "tsv": _("Table (.tsv)"),
         "json": _("JSON (.json)"),
     }
+
+
+def sorted_export_labels(file_types: Iterable[str]) -> list[tuple[str, str]]:
+    """The file types with their labels, sorted by the (translated) label."""
+    labels = export_labels()
+    return sorted(
+        ((file_type, labels[file_type]) for file_type in file_types),
+        key=lambda item: item[1].casefold(),
+    )
 
 
 class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[misc]
@@ -332,12 +341,10 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._popup_below(menu, anchor)
 
     def show_summary_export_menu(self, anchor: Any) -> None:
-        labels = export_labels()
         menu = tk.Menu(self, tearoff=False)
-        for file_type in SUMMARY_EXPORTERS:
+        for file_type, label in sorted_export_labels(SUMMARY_EXPORTERS):
             menu.add_command(
-                label=labels[file_type],
-                command=partial(self.export_summary, file_type),
+                label=label, command=partial(self.export_summary, file_type)
             )
         self._popup_below(menu, anchor)
 
@@ -355,11 +362,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _add_export_commands(
         menu: tk.Menu, has_segments: bool, command: Callable[[str], None]
     ) -> None:
-        labels = export_labels()
-        for file_type in available_formats(has_segments):
-            menu.add_command(
-                label=labels[file_type], command=partial(command, file_type)
-            )
+        for file_type, label in sorted_export_labels(available_formats(has_segments)):
+            menu.add_command(label=label, command=partial(command, file_type))
 
     def export(self, file_type: str) -> None:
         self.text.save_pending_text()
