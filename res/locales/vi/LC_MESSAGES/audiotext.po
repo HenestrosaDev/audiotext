@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 23:49+0200\n"
+"POT-Creation-Date: 2026-10-15 00:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -283,17 +283,17 @@ msgstr "Không ghi được âm thanh nào."
 
 #: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:712
+#: src/views/transcript/transcript_view.py:716
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Chép lời"
 
 #: src/utils/exporters.py:195 src/utils/exporters.py:223
-#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:504
+#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:507
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:532
-#: src/views/transcript/transcript_view.py:537
-#: src/views/transcript/transcript_view.py:755
+#: src/views/transcript/transcript_view.py:536
+#: src/views/transcript/transcript_view.py:541
+#: src/views/transcript/transcript_view.py:759
 msgid "Summary"
 msgstr "Bản tóm tắt"
 
@@ -341,14 +341,14 @@ msgid "{count} failed"
 msgstr "{count} thất bại"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:2255
+#: src/views/transcript/transcript_view.py:2259
 msgid "Open the folder of the saved files"
 msgstr "Mở thư mục chứa các tệp đã lưu"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:662
-#: src/views/transcript/transcript_view.py:2216
+#: src/views/transcript/transcript_view.py:666
+#: src/views/transcript/transcript_view.py:2220
 msgid "Transcribe again"
 msgstr "Chép lời lại"
 
@@ -409,7 +409,7 @@ msgstr "Dừng theo dõi"
 
 #: src/views/entries/progress_card.py:121
 #: src/views/history/history_sidebar.py:374
-#: src/views/transcript/edit_dialogs.py:38 src/views/widgets/text_dialog.py:60
+#: src/views/transcript/edit_dialogs.py:41 src/views/widgets/text_dialog.py:63
 msgid "Cancel"
 msgstr "Hủy"
 
@@ -566,22 +566,22 @@ msgid "Rename"
 msgstr "Đổi tên"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2267
+#: src/views/transcript/transcript_view.py:2271
 msgid "Edit note…"
 msgstr "Chỉnh sửa ghi chú…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2267
+#: src/views/transcript/transcript_view.py:2271
 msgid "Add note…"
 msgstr "Thêm ghi chú…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:2272
+#: src/views/transcript/transcript_view.py:2276
 msgid "Delete note…"
 msgstr "Xóa ghi chú…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:2278
+#: src/views/transcript/transcript_view.py:2282
 msgid "Edit tag…"
 msgstr "Chỉnh sửa nhãn…"
 
@@ -606,7 +606,7 @@ msgid "Move to group"
 msgstr "Chuyển vào nhóm"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:2283
+#: src/views/transcript/transcript_view.py:2287
 msgid "Delete…"
 msgstr "Xóa…"
 
@@ -637,8 +637,8 @@ msgid "No files yet"
 msgstr "Chưa có tệp nào"
 
 #: src/views/history/history_sidebar.py:589
-#: src/views/transcript/find_dialog.py:183
-#: src/views/transcript/find_dialog.py:230
+#: src/views/transcript/find_dialog.py:187
+#: src/views/transcript/find_dialog.py:234
 msgid "No results"
 msgstr "Không có kết quả"
 
@@ -819,7 +819,7 @@ msgid "New transcription:"
 msgstr "Bản chép lời mới:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:906
+#: src/views/settings/preferences_dialog.py:909
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "Đã có phiên bản {version}"
@@ -887,9 +887,9 @@ msgstr ""
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:652
-#: src/views/transcript/transcript_view.py:1734
-#: src/views/transcript/transcript_view.py:2150
+#: src/views/transcript/transcript_view.py:656
+#: src/views/transcript/transcript_view.py:1738
+#: src/views/transcript/transcript_view.py:2154
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Sao chép"
@@ -1092,68 +1092,68 @@ msgid "Enter a URL that starts with http:// or https://"
 msgstr "Nhập URL bắt đầu bằng http:// hoặc https://"
 
 #: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:73
+#: src/views/settings/preferences_dialog.py:74
 msgid "OpenAI API key"
 msgstr "Khóa OpenAI API"
 
-#: src/views/settings/preferences_dialog.py:75
+#: src/views/settings/preferences_dialog.py:76
 msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
 msgstr "Bắt buộc cho Whisper API, và để tóm tắt và dịch bằng OpenAI."
 
-#: src/views/settings/preferences_dialog.py:79
+#: src/views/settings/preferences_dialog.py:80
 msgid "Anthropic API key"
 msgstr "Khóa API Anthropic"
 
-#: src/views/settings/preferences_dialog.py:80
+#: src/views/settings/preferences_dialog.py:81
 msgid "Required to summarize and translate with Claude."
 msgstr "Bắt buộc để tóm tắt và dịch bằng Claude."
 
-#: src/views/settings/preferences_dialog.py:83
+#: src/views/settings/preferences_dialog.py:84
 msgid "DeepSeek API key"
 msgstr "Khóa API DeepSeek"
 
-#: src/views/settings/preferences_dialog.py:84
+#: src/views/settings/preferences_dialog.py:85
 msgid "Required to summarize and translate with DeepSeek."
 msgstr "Bắt buộc để tóm tắt và dịch bằng DeepSeek."
 
-#: src/views/settings/preferences_dialog.py:87
+#: src/views/settings/preferences_dialog.py:88
 msgid "Gemini API key"
 msgstr "Khóa API Gemini"
 
-#: src/views/settings/preferences_dialog.py:89
+#: src/views/settings/preferences_dialog.py:90
 msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr "Bắt buộc để tóm tắt và dịch bằng Gemini (lấy từ Google AI Studio)."
 
-#: src/views/settings/preferences_dialog.py:93
+#: src/views/settings/preferences_dialog.py:94
 msgid "Mistral API key"
 msgstr "Khóa API Mistral"
 
-#: src/views/settings/preferences_dialog.py:94
+#: src/views/settings/preferences_dialog.py:95
 msgid "Required to summarize and translate with Mistral."
 msgstr "Bắt buộc để tóm tắt và dịch bằng Mistral."
 
-#: src/views/settings/preferences_dialog.py:97
+#: src/views/settings/preferences_dialog.py:98
 msgid "xAI API key"
 msgstr "Khóa API xAI"
 
-#: src/views/settings/preferences_dialog.py:98
+#: src/views/settings/preferences_dialog.py:99
 msgid "Required to summarize and translate with Grok."
 msgstr "Bắt buộc để tóm tắt và dịch bằng Grok."
 
-#: src/views/settings/preferences_dialog.py:101
+#: src/views/settings/preferences_dialog.py:102
 msgid "DeepL API key"
 msgstr "Khóa API DeepL"
 
-#: src/views/settings/preferences_dialog.py:102
+#: src/views/settings/preferences_dialog.py:103
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "Bắt buộc để dịch bằng DeepL. Khóa của gói miễn phí cũng dùng được."
 
 #: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:105
+#: src/views/settings/preferences_dialog.py:106
 msgid "Google API key"
 msgstr "Khóa Google API"
 
-#: src/views/settings/preferences_dialog.py:107
+#: src/views/settings/preferences_dialog.py:108
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1162,11 +1162,11 @@ msgstr ""
 "dùng. Bắt buộc để dịch bằng Google Dịch (Cloud Translation API)."
 
 #: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:111
+#: src/views/settings/preferences_dialog.py:112
 msgid "Hugging Face token"
 msgstr "Token Hugging Face"
 
-#: src/views/settings/preferences_dialog.py:113
+#: src/views/settings/preferences_dialog.py:114
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1174,100 +1174,100 @@ msgstr ""
 "Bắt buộc để nhận diện người nói bằng WhisperX (pyannote/speaker-"
 "diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:169
+#: src/views/settings/preferences_dialog.py:172
 msgid "Preferences"
 msgstr "Tùy chọn ưu tiên"
 
-#: src/views/settings/preferences_dialog.py:184
+#: src/views/settings/preferences_dialog.py:186
 msgid "General"
 msgstr "Chung"
 
-#: src/views/settings/preferences_dialog.py:185
+#: src/views/settings/preferences_dialog.py:187
 msgid "AI"
 msgstr "AI"
 
-#: src/views/settings/preferences_dialog.py:186
+#: src/views/settings/preferences_dialog.py:188
 msgid "API keys"
 msgstr "Khóa API"
 
-#: src/views/settings/preferences_dialog.py:188
+#: src/views/settings/preferences_dialog.py:190
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:753
+#: src/views/transcript/transcript_view.py:757
 msgid "Subtitles"
 msgstr "Phụ đề"
 
-#: src/views/settings/preferences_dialog.py:190
+#: src/views/settings/preferences_dialog.py:192
 msgid "About"
 msgstr "Giới thiệu"
 
-#: src/views/settings/preferences_dialog.py:317
+#: src/views/settings/preferences_dialog.py:320
 msgid "Appearance"
 msgstr "Chế độ hiển thị"
 
-#: src/views/settings/preferences_dialog.py:321
+#: src/views/settings/preferences_dialog.py:324
 msgid "System"
 msgstr "Hệ thống"
 
-#: src/views/settings/preferences_dialog.py:321
+#: src/views/settings/preferences_dialog.py:324
 msgid "Light"
 msgstr "Sáng"
 
-#: src/views/settings/preferences_dialog.py:321
+#: src/views/settings/preferences_dialog.py:324
 msgid "Dark"
 msgstr "Tối"
 
-#: src/views/settings/preferences_dialog.py:327
+#: src/views/settings/preferences_dialog.py:330
 msgid "Interface size"
 msgstr "Kích thước giao diện"
 
-#: src/views/settings/preferences_dialog.py:336
+#: src/views/settings/preferences_dialog.py:339
 msgid "Interface language"
 msgstr "Ngôn ngữ giao diện"
 
-#: src/views/settings/preferences_dialog.py:342
+#: src/views/settings/preferences_dialog.py:345
 msgid "System language"
 msgstr "Ngôn ngữ hệ thống"
 
-#: src/views/settings/preferences_dialog.py:355
+#: src/views/settings/preferences_dialog.py:358
 msgid "Notifications"
 msgstr "Thông báo"
 
-#: src/views/settings/preferences_dialog.py:356
+#: src/views/settings/preferences_dialog.py:359
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "Hiển thị thông báo của hệ thống khi bản chép lời đã sẵn sàng."
 
-#: src/views/settings/preferences_dialog.py:367
+#: src/views/settings/preferences_dialog.py:370
 msgid "Updates"
 msgstr "Cập nhật"
 
-#: src/views/settings/preferences_dialog.py:368
+#: src/views/settings/preferences_dialog.py:371
 msgid "Checks for a new version when the app opens."
 msgstr "Kiểm tra phiên bản mới khi mở ứng dụng."
 
-#: src/views/settings/preferences_dialog.py:384
+#: src/views/settings/preferences_dialog.py:387
 msgid "Date format"
 msgstr "Định dạng ngày"
 
-#: src/views/settings/preferences_dialog.py:401
+#: src/views/settings/preferences_dialog.py:404
 msgid "Time format"
 msgstr "Định dạng giờ"
 
-#: src/views/settings/preferences_dialog.py:402
+#: src/views/settings/preferences_dialog.py:405
 msgid "Automatic uses the clock of the interface language."
 msgstr "Tự động dùng đồng hồ của ngôn ngữ giao diện."
 
-#: src/views/settings/preferences_dialog.py:408
+#: src/views/settings/preferences_dialog.py:411
 msgid "Automatic"
 msgstr "Tự động"
 
-#: src/views/settings/preferences_dialog.py:467
-#: src/views/settings/preferences_dialog.py:480
+#: src/views/settings/preferences_dialog.py:470
+#: src/views/settings/preferences_dialog.py:483
 msgid "Change API key…"
 msgstr "Đổi khóa API…"
 
 #: src/views/settings/cards/engine_card.py:140
-#: src/views/settings/preferences_dialog.py:467
-#: src/views/settings/preferences_dialog.py:480
+#: src/views/settings/preferences_dialog.py:470
+#: src/views/settings/preferences_dialog.py:483
 #: src/views/transcript/summary_panel.py:299
 #: src/views/transcript/translation_panel.py:485
 #: src/views/transcript/translation_panel.py:557
@@ -1275,145 +1275,145 @@ msgid "Set API key…"
 msgstr "Đặt khóa API…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:529
+#: src/views/settings/preferences_dialog.py:532
 #: src/views/transcript/translation_panel.py:232
 msgid "Translation"
 msgstr "Bản dịch"
 
-#: src/views/settings/preferences_dialog.py:541
+#: src/views/settings/preferences_dialog.py:544
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:546
+#: src/views/settings/preferences_dialog.py:549
 msgid "Server URL"
 msgstr "URL máy chủ"
 
-#: src/views/settings/preferences_dialog.py:547
+#: src/views/settings/preferences_dialog.py:550
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama chạy các mô hình trên máy tính của bạn, không cần khóa API."
 
-#: src/views/settings/preferences_dialog.py:578
+#: src/views/settings/preferences_dialog.py:581
 msgid "Provider"
 msgstr "Nhà cung cấp"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:585
+#: src/views/settings/preferences_dialog.py:588
 msgid "Model"
 msgstr "Mô hình"
 
-#: src/views/settings/preferences_dialog.py:586
+#: src/views/settings/preferences_dialog.py:589
 msgid "The default model of the provider if empty."
 msgstr "Nếu để trống, dùng mô hình mặc định của nhà cung cấp."
 
-#: src/views/settings/preferences_dialog.py:633
+#: src/views/settings/preferences_dialog.py:636
 msgid "Compute type"
 msgstr "Kiểu tính toán"
 
-#: src/views/settings/preferences_dialog.py:634
+#: src/views/settings/preferences_dialog.py:637
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 nhanh hơn trên GPU. int8 dùng ít bộ nhớ hơn."
 
-#: src/views/settings/preferences_dialog.py:650
+#: src/views/settings/preferences_dialog.py:653
 msgid "Batch size"
 msgstr "Kích thước lô"
 
-#: src/views/settings/preferences_dialog.py:651
+#: src/views/settings/preferences_dialog.py:654
 msgid "Lower it if you run out of memory."
 msgstr "Giảm xuống nếu hết bộ nhớ."
 
-#: src/views/settings/preferences_dialog.py:663
+#: src/views/settings/preferences_dialog.py:666
 msgid "Use CPU"
 msgstr "Dùng CPU"
 
-#: src/views/settings/preferences_dialog.py:666
+#: src/views/settings/preferences_dialog.py:669
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "Không tìm thấy GPU CUDA nên WhisperX chạy trên CPU."
 
-#: src/views/settings/preferences_dialog.py:681
+#: src/views/settings/preferences_dialog.py:684
 msgid "Highlight words"
 msgstr "Đánh dấu từ"
 
-#: src/views/settings/preferences_dialog.py:682
+#: src/views/settings/preferences_dialog.py:685
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "Gạch chân từng từ khi được nói (.srt và .vtt)."
 
-#: src/views/settings/preferences_dialog.py:701
+#: src/views/settings/preferences_dialog.py:704
 msgid "Landscape"
 msgstr "Ngang"
 
-#: src/views/settings/preferences_dialog.py:701
+#: src/views/settings/preferences_dialog.py:704
 msgid "Portrait"
 msgstr "Dọc"
 
-#: src/views/settings/preferences_dialog.py:709
+#: src/views/settings/preferences_dialog.py:712
 msgid "Max. lines per subtitle"
 msgstr "Số dòng tối đa mỗi phụ đề"
 
-#: src/views/settings/preferences_dialog.py:714
+#: src/views/settings/preferences_dialog.py:717
 msgid "Max. characters per line"
 msgstr "Số ký tự tối đa mỗi dòng"
 
-#: src/views/settings/preferences_dialog.py:719
+#: src/views/settings/preferences_dialog.py:722
 msgid "Chinese, Japanese and Korean"
 msgstr "Tiếng Trung, Nhật và Hàn"
 
-#: src/views/settings/preferences_dialog.py:756
+#: src/views/settings/preferences_dialog.py:759
 msgid ""
 "Chinese, Japanese and Korean characters are about twice as wide as Latin "
 "ones."
 msgstr "Ký tự tiếng Trung, Nhật và Hàn rộng gần gấp đôi ký tự Latinh."
 
-#: src/views/settings/preferences_dialog.py:765
+#: src/views/settings/preferences_dialog.py:768
 msgid "Temperature"
 msgstr "Nhiệt độ"
 
-#: src/views/settings/preferences_dialog.py:766
+#: src/views/settings/preferences_dialog.py:769
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "Từ 0 đến 1. Giá trị càng cao càng ngẫu nhiên."
 
-#: src/views/settings/preferences_dialog.py:778
+#: src/views/settings/preferences_dialog.py:781
 msgid "Timestamps of the words"
 msgstr "Dấu thời gian của từ"
 
-#: src/views/settings/preferences_dialog.py:779
+#: src/views/settings/preferences_dialog.py:782
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Đánh dấu từng từ khi phát (mô hình whisper-1). Mất nhiều thời gian hơn."
 
-#: src/views/settings/preferences_dialog.py:809
+#: src/views/settings/preferences_dialog.py:812
 #, python-brace-format
 msgid "Version {version}"
 msgstr "Phiên bản {version}"
 
-#: src/views/settings/preferences_dialog.py:813
+#: src/views/settings/preferences_dialog.py:816
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "Tạo bởi {author}"
 
-#: src/views/settings/preferences_dialog.py:829
+#: src/views/settings/preferences_dialog.py:832
 msgid "Documentation"
 msgstr "Tài liệu"
 
-#: src/views/settings/preferences_dialog.py:849
+#: src/views/settings/preferences_dialog.py:852
 msgid "Donate"
 msgstr "Ủng hộ"
 
-#: src/views/settings/preferences_dialog.py:863
+#: src/views/settings/preferences_dialog.py:866
 msgid "Check for updates"
 msgstr "Kiểm tra cập nhật"
 
-#: src/views/settings/preferences_dialog.py:882
+#: src/views/settings/preferences_dialog.py:885
 msgid "Checking for updates…"
 msgstr "Đang kiểm tra cập nhật…"
 
-#: src/views/settings/preferences_dialog.py:893
+#: src/views/settings/preferences_dialog.py:896
 msgid "Could not check for updates."
 msgstr "Không thể kiểm tra cập nhật."
 
-#: src/views/settings/preferences_dialog.py:902
+#: src/views/settings/preferences_dialog.py:905
 msgid "Download"
 msgstr "Tải xuống"
 
-#: src/views/settings/preferences_dialog.py:912
+#: src/views/settings/preferences_dialog.py:915
 msgid "You have the latest version."
 msgstr "Bạn đang dùng phiên bản mới nhất."
 
@@ -1744,7 +1744,7 @@ msgid "Choose where to save the transcriptions"
 msgstr "Chọn nơi lưu các bản chép lời"
 
 #: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1831
+#: src/views/transcript/transcript_view.py:1835
 msgid "Edit text"
 msgstr "Chỉnh sửa văn bản"
 
@@ -1753,17 +1753,17 @@ msgstr "Chỉnh sửa văn bản"
 msgid "Text said at {time}:"
 msgstr "Văn bản được nói lúc {time}:"
 
-#: src/views/transcript/edit_dialogs.py:74
+#: src/views/transcript/edit_dialogs.py:78
 msgid "Rename speakers"
 msgstr "Đổi tên người nói"
 
-#: src/views/transcript/edit_dialogs.py:74
-#: src/views/transcript/transcript_view.py:1860
-#: src/views/widgets/text_dialog.py:66
+#: src/views/transcript/edit_dialogs.py:78
+#: src/views/transcript/transcript_view.py:1864
+#: src/views/widgets/text_dialog.py:69
 msgid "Save"
 msgstr "Lưu"
 
-#: src/views/transcript/edit_dialogs.py:81
+#: src/views/transcript/edit_dialogs.py:85
 msgid ""
 "Give a name to each speaker. Giving two speakers the same name merges "
 "them."
@@ -1771,65 +1771,65 @@ msgstr ""
 "Đặt tên cho từng người nói. Đặt cùng một tên cho hai người nói sẽ gộp họ "
 "lại."
 
-#: src/views/transcript/edit_dialogs.py:151
+#: src/views/transcript/edit_dialogs.py:155
 msgid "Start:"
 msgstr "Bắt đầu:"
 
-#: src/views/transcript/edit_dialogs.py:151
+#: src/views/transcript/edit_dialogs.py:155
 msgid "End:"
 msgstr "Kết thúc:"
 
-#: src/views/transcript/edit_dialogs.py:190
+#: src/views/transcript/edit_dialogs.py:194
 msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
 msgstr "Nhập thời gian dạng 00:01:05,900, 01:05,9 hoặc 65.9."
 
-#: src/views/transcript/edit_dialogs.py:192
+#: src/views/transcript/edit_dialogs.py:196
 msgid "The segment must end after it starts."
 msgstr "Đoạn phải kết thúc sau khi bắt đầu."
 
-#: src/views/transcript/find_dialog.py:77
+#: src/views/transcript/find_dialog.py:80
 msgid "Find:"
 msgstr "Tìm:"
 
-#: src/views/transcript/find_dialog.py:80
+#: src/views/transcript/find_dialog.py:83
 msgid "Replace with:"
 msgstr "Thay thế bằng:"
 
-#: src/views/transcript/find_dialog.py:90
+#: src/views/transcript/find_dialog.py:93
 msgid "Match case"
 msgstr "Phân biệt hoa thường"
 
-#: src/views/transcript/find_dialog.py:105
+#: src/views/transcript/find_dialog.py:108
 msgid "Stay on top"
 msgstr "Luôn ở trên cùng"
 
-#: src/views/transcript/find_dialog.py:110
+#: src/views/transcript/find_dialog.py:113
 msgid "Unpin from the main window"
 msgstr "Bỏ giữ trên cửa sổ chính"
 
-#: src/views/transcript/find_dialog.py:112
+#: src/views/transcript/find_dialog.py:115
 msgid "Keep above the main window"
 msgstr "Giữ trên cửa sổ chính"
 
-#: src/views/transcript/find_dialog.py:123
+#: src/views/transcript/find_dialog.py:126
 msgid "Replace"
 msgstr "Thay thế"
 
-#: src/views/transcript/find_dialog.py:128
+#: src/views/transcript/find_dialog.py:131
 msgid "Replace all"
 msgstr "Thay thế tất cả"
 
-#: src/views/transcript/find_dialog.py:185
-#: src/views/transcript/find_dialog.py:231
+#: src/views/transcript/find_dialog.py:189
+#: src/views/transcript/find_dialog.py:235
 #, python-brace-format
 msgid "{current} of {total}"
 msgstr "{current}/{total}"
 
-#: src/views/transcript/find_dialog.py:246
+#: src/views/transcript/find_dialog.py:250
 msgid "Previous match"
 msgstr "Kết quả trước"
 
-#: src/views/transcript/find_dialog.py:253
+#: src/views/transcript/find_dialog.py:257
 msgid "Next match"
 msgstr "Kết quả tiếp theo"
 
@@ -1843,7 +1843,7 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Phím cách: phát/tạm dừng · ←/→: lùi/tới {seconds} giây"
 
 #: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:2081
+#: src/views/transcript/transcript_view.py:2085
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Không thể phát âm thanh: {error}"
@@ -1911,13 +1911,13 @@ msgid "Find ({shortcut})"
 msgstr "Tìm ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:655
+#: src/views/transcript/transcript_view.py:659
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "Xuất"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1418
+#: src/views/transcript/transcript_view.py:1422
 msgid "Regenerate the summary"
 msgstr "Tạo lại bản tóm tắt"
 
@@ -2038,195 +2038,195 @@ msgstr "Bảng (.tsv)"
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:334
+#: src/views/transcript/transcript_view.py:343
 msgid "Stop scrolling the translation with the transcription"
 msgstr "Ngừng cuộn bản dịch cùng với bản chép lời"
 
-#: src/views/transcript/transcript_view.py:336
+#: src/views/transcript/transcript_view.py:345
 msgid "Scroll the translation with the transcription"
 msgstr "Cuộn bản dịch cùng với bản chép lời"
 
-#: src/views/transcript/transcript_view.py:502
+#: src/views/transcript/transcript_view.py:506
 msgid "Export transcription"
 msgstr "Xuất bản chép lời"
 
-#: src/views/transcript/transcript_view.py:523
+#: src/views/transcript/transcript_view.py:527
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Xuất bản dịch sang {language}"
 
-#: src/views/transcript/transcript_view.py:536
+#: src/views/transcript/transcript_view.py:540
 msgid "Export summary"
 msgstr "Xuất bản tóm tắt"
 
-#: src/views/transcript/transcript_view.py:573
+#: src/views/transcript/transcript_view.py:577
 msgid "All files"
 msgstr "Tất cả tệp"
 
-#: src/views/transcript/transcript_view.py:582
+#: src/views/transcript/transcript_view.py:586
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Không thể xuất: {error}"
 
-#: src/views/transcript/transcript_view.py:585
+#: src/views/transcript/transcript_view.py:589
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Đã xuất sang {path}"
 
-#: src/views/transcript/transcript_view.py:647
+#: src/views/transcript/transcript_view.py:651
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Tìm và thay thế ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:693
+#: src/views/transcript/transcript_view.py:697
 msgid "No low-confidence words left to review"
 msgstr "Không còn từ nào có độ tin cậy thấp cần xem lại"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:703
+#: src/views/transcript/transcript_view.py:707
 msgid "Show all segments"
 msgstr "Hiện tất cả các đoạn"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:740
+#: src/views/transcript/transcript_view.py:744
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Từ có độ tin cậy thấp trước đó ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:742
+#: src/views/transcript/transcript_view.py:746
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Từ có độ tin cậy thấp tiếp theo ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:754
+#: src/views/transcript/transcript_view.py:758
 msgid "Plain text"
 msgstr "Văn bản thuần"
 
-#: src/views/transcript/transcript_view.py:763
+#: src/views/transcript/transcript_view.py:767
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Dịch"
 
-#: src/views/transcript/transcript_view.py:1322
+#: src/views/transcript/transcript_view.py:1326
 msgid "Find and replace in the transcription"
 msgstr "Tìm và thay thế trong bản chép lời"
 
-#: src/views/transcript/transcript_view.py:1332
+#: src/views/transcript/transcript_view.py:1336
 msgid "Find and replace in the translation"
 msgstr "Tìm và thay thế trong bản dịch"
 
-#: src/views/transcript/transcript_view.py:1333
+#: src/views/transcript/transcript_view.py:1337
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Tìm và thay thế trong bản dịch sang {language}"
 
-#: src/views/transcript/transcript_view.py:1346
+#: src/views/transcript/transcript_view.py:1350
 msgid "Find in the summary"
 msgstr "Tìm trong bản tóm tắt"
 
-#: src/views/transcript/transcript_view.py:1419
+#: src/views/transcript/transcript_view.py:1423
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Tạo lại bản tóm tắt? Bản hiện tại sẽ bị thay thế."
 
-#: src/views/transcript/transcript_view.py:1577
+#: src/views/transcript/transcript_view.py:1581
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Ẩn bản dịch"
 
-#: src/views/transcript/transcript_view.py:1582
+#: src/views/transcript/transcript_view.py:1586
 msgid "Show the translation"
 msgstr "Hiển thị bản dịch"
 
-#: src/views/transcript/transcript_view.py:1586
+#: src/views/transcript/transcript_view.py:1590
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Dịch sang ngôn ngữ khác…"
 
-#: src/views/transcript/transcript_view.py:1597
+#: src/views/transcript/transcript_view.py:1601
 msgid "Show it as the subtitles of the video"
 msgstr "Hiển thị làm phụ đề của video"
 
-#: src/views/transcript/transcript_view.py:1604
+#: src/views/transcript/transcript_view.py:1608
 msgid "Delete the translation"
 msgstr "Xóa bản dịch"
 
-#: src/views/transcript/transcript_view.py:1731
-#: src/views/transcript/transcript_view.py:2148
+#: src/views/transcript/transcript_view.py:1735
+#: src/views/transcript/transcript_view.py:2152
 msgid "Play from here"
 msgstr "Phát từ đây"
 
-#: src/views/transcript/transcript_view.py:1739
-#: src/views/transcript/transcript_view.py:2151
+#: src/views/transcript/transcript_view.py:1743
+#: src/views/transcript/transcript_view.py:2155
 msgid "Edit text…"
 msgstr "Chỉnh sửa văn bản…"
 
-#: src/views/transcript/transcript_view.py:1739
+#: src/views/transcript/transcript_view.py:1743
 msgid "Translate text…"
 msgstr "Dịch văn bản…"
 
-#: src/views/transcript/transcript_view.py:1743
+#: src/views/transcript/transcript_view.py:1747
 msgid "Edit the timing…"
 msgstr "Chỉnh sửa thời gian…"
 
-#: src/views/transcript/transcript_view.py:1747
+#: src/views/transcript/transcript_view.py:1751
 msgid "Add a segment after…"
 msgstr "Thêm một đoạn phía sau…"
 
-#: src/views/transcript/transcript_view.py:1752
-#: src/views/transcript/transcript_view.py:1917
+#: src/views/transcript/transcript_view.py:1756
+#: src/views/transcript/transcript_view.py:1921
 msgid "Delete the segment"
 msgstr "Xóa đoạn"
 
-#: src/views/transcript/transcript_view.py:1831
+#: src/views/transcript/transcript_view.py:1835
 msgid "Translate text"
 msgstr "Dịch văn bản"
 
-#: src/views/transcript/transcript_view.py:1832
+#: src/views/transcript/transcript_view.py:1836
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Bản dịch của \"{text}\", được nói từ {start} đến {end}:"
 
-#: src/views/transcript/transcript_view.py:1836
+#: src/views/transcript/transcript_view.py:1840
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Bản dịch của đoạn từ {start} đến {end}:"
 
-#: src/views/transcript/transcript_view.py:1859
+#: src/views/transcript/transcript_view.py:1863
 msgid "Edit the timing"
 msgstr "Chỉnh sửa thời gian"
 
-#: src/views/transcript/transcript_view.py:1885
+#: src/views/transcript/transcript_view.py:1889
 msgid "Add a segment"
 msgstr "Thêm một đoạn"
 
-#: src/views/transcript/transcript_view.py:1886
+#: src/views/transcript/transcript_view.py:1890
 msgid "Add"
 msgstr "Thêm"
 
-#: src/views/transcript/transcript_view.py:1887
+#: src/views/transcript/transcript_view.py:1891
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Đoạn mới nằm sau đoạn lúc {time}:"
 
-#: src/views/transcript/transcript_view.py:1918
+#: src/views/transcript/transcript_view.py:1922
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "Xóa đoạn \"{text}\"?"
 
-#: src/views/transcript/transcript_view.py:1974
+#: src/views/transcript/transcript_view.py:1978
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "Đoạn lúc {time}, chưa được dịch."
 
-#: src/views/transcript/transcript_view.py:2010
+#: src/views/transcript/transcript_view.py:2014
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Dịch lại"
 
-#: src/views/transcript/transcript_view.py:2012
+#: src/views/transcript/transcript_view.py:2016
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2235,45 +2235,45 @@ msgstr ""
 "Dịch lại bản chép lời sang {language}? Các thay đổi trong bản dịch sẽ bị "
 "mất."
 
-#: src/views/transcript/transcript_view.py:2035
+#: src/views/transcript/transcript_view.py:2039
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Âm thanh không khả dụng: tệp nguồn đã bị di chuyển hoặc xóa."
 
-#: src/views/transcript/transcript_view.py:2038
+#: src/views/transcript/transcript_view.py:2042
 msgid "The audio isn't available."
 msgstr "Âm thanh không khả dụng."
 
-#: src/views/transcript/transcript_view.py:2153
-#: src/views/transcript/transcript_view.py:2229
+#: src/views/transcript/transcript_view.py:2157
+#: src/views/transcript/transcript_view.py:2233
 msgid "Rename speakers…"
 msgstr "Đổi tên người nói…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2172
+#: src/views/transcript/transcript_view.py:2176
 msgid "Highlight low-confidence words"
 msgstr "Đánh dấu các từ có độ tin cậy thấp"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2180
+#: src/views/transcript/transcript_view.py:2184
 msgid "Low-confidence threshold"
 msgstr "Ngưỡng độ tin cậy thấp"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2202
+#: src/views/transcript/transcript_view.py:2206
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "Dưới {percent}%"
 
-#: src/views/transcript/transcript_view.py:2218
+#: src/views/transcript/transcript_view.py:2222
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Chép lời lại “{title}”? Các thay đổi trong văn bản sẽ bị mất."
 
-#: src/views/transcript/transcript_view.py:2239
+#: src/views/transcript/transcript_view.py:2243
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Dấu thời gian chính xác (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:2263
+#: src/views/transcript/transcript_view.py:2267
 msgid "Rename…"
 msgstr "Đổi tên…"
 

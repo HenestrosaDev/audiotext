@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 23:49+0200\n"
+"POT-Creation-Date: 2026-10-15 00:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -282,17 +282,17 @@ msgstr "Nu s-a înregistrat niciun sunet."
 
 #: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:712
+#: src/views/transcript/transcript_view.py:716
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Transcriere"
 
 #: src/utils/exporters.py:195 src/utils/exporters.py:223
-#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:504
+#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:507
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:532
-#: src/views/transcript/transcript_view.py:537
-#: src/views/transcript/transcript_view.py:755
+#: src/views/transcript/transcript_view.py:536
+#: src/views/transcript/transcript_view.py:541
+#: src/views/transcript/transcript_view.py:759
 msgid "Summary"
 msgstr "Rezumat"
 
@@ -340,14 +340,14 @@ msgid "{count} failed"
 msgstr "Eșuate: {count}"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:2255
+#: src/views/transcript/transcript_view.py:2259
 msgid "Open the folder of the saved files"
 msgstr "Deschide dosarul fișierelor salvate"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:662
-#: src/views/transcript/transcript_view.py:2216
+#: src/views/transcript/transcript_view.py:666
+#: src/views/transcript/transcript_view.py:2220
 msgid "Transcribe again"
 msgstr "Transcrie din nou"
 
@@ -408,7 +408,7 @@ msgstr "Oprește monitorizarea"
 
 #: src/views/entries/progress_card.py:121
 #: src/views/history/history_sidebar.py:374
-#: src/views/transcript/edit_dialogs.py:38 src/views/widgets/text_dialog.py:60
+#: src/views/transcript/edit_dialogs.py:41 src/views/widgets/text_dialog.py:63
 msgid "Cancel"
 msgstr "Anulează"
 
@@ -565,22 +565,22 @@ msgid "Rename"
 msgstr "Redenumește"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2267
+#: src/views/transcript/transcript_view.py:2271
 msgid "Edit note…"
 msgstr "Editează nota…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2267
+#: src/views/transcript/transcript_view.py:2271
 msgid "Add note…"
 msgstr "Adaugă notă…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:2272
+#: src/views/transcript/transcript_view.py:2276
 msgid "Delete note…"
 msgstr "Șterge nota…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:2278
+#: src/views/transcript/transcript_view.py:2282
 msgid "Edit tag…"
 msgstr "Editează eticheta…"
 
@@ -605,7 +605,7 @@ msgid "Move to group"
 msgstr "Mută în grup"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:2283
+#: src/views/transcript/transcript_view.py:2287
 msgid "Delete…"
 msgstr "Șterge…"
 
@@ -636,8 +636,8 @@ msgid "No files yet"
 msgstr "Încă niciun fișier"
 
 #: src/views/history/history_sidebar.py:589
-#: src/views/transcript/find_dialog.py:183
-#: src/views/transcript/find_dialog.py:230
+#: src/views/transcript/find_dialog.py:187
+#: src/views/transcript/find_dialog.py:234
 msgid "No results"
 msgstr "Niciun rezultat"
 
@@ -816,7 +816,7 @@ msgid "New transcription:"
 msgstr "Transcriere nouă:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:906
+#: src/views/settings/preferences_dialog.py:909
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "Versiunea {version} este disponibilă"
@@ -888,9 +888,9 @@ msgstr ""
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:652
-#: src/views/transcript/transcript_view.py:1734
-#: src/views/transcript/transcript_view.py:2150
+#: src/views/transcript/transcript_view.py:656
+#: src/views/transcript/transcript_view.py:1738
+#: src/views/transcript/transcript_view.py:2154
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Copiază"
@@ -1091,72 +1091,72 @@ msgid "Enter a URL that starts with http:// or https://"
 msgstr "Introduceți un URL care începe cu http:// sau https://"
 
 #: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:73
+#: src/views/settings/preferences_dialog.py:74
 msgid "OpenAI API key"
 msgstr "Cheie API OpenAI"
 
-#: src/views/settings/preferences_dialog.py:75
+#: src/views/settings/preferences_dialog.py:76
 msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
 msgstr "Necesară pentru API-ul Whisper și pentru a rezuma și traduce cu OpenAI."
 
-#: src/views/settings/preferences_dialog.py:79
+#: src/views/settings/preferences_dialog.py:80
 msgid "Anthropic API key"
 msgstr "Cheie API Anthropic"
 
-#: src/views/settings/preferences_dialog.py:80
+#: src/views/settings/preferences_dialog.py:81
 msgid "Required to summarize and translate with Claude."
 msgstr "Necesară pentru a rezuma și traduce cu Claude."
 
-#: src/views/settings/preferences_dialog.py:83
+#: src/views/settings/preferences_dialog.py:84
 msgid "DeepSeek API key"
 msgstr "Cheie API DeepSeek"
 
-#: src/views/settings/preferences_dialog.py:84
+#: src/views/settings/preferences_dialog.py:85
 msgid "Required to summarize and translate with DeepSeek."
 msgstr "Necesară pentru a rezuma și traduce cu DeepSeek."
 
-#: src/views/settings/preferences_dialog.py:87
+#: src/views/settings/preferences_dialog.py:88
 msgid "Gemini API key"
 msgstr "Cheie API Gemini"
 
-#: src/views/settings/preferences_dialog.py:89
+#: src/views/settings/preferences_dialog.py:90
 msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr ""
 "Necesară pentru a rezuma și traduce cu Gemini (se obține din Google AI "
 "Studio)."
 
-#: src/views/settings/preferences_dialog.py:93
+#: src/views/settings/preferences_dialog.py:94
 msgid "Mistral API key"
 msgstr "Cheie API Mistral"
 
-#: src/views/settings/preferences_dialog.py:94
+#: src/views/settings/preferences_dialog.py:95
 msgid "Required to summarize and translate with Mistral."
 msgstr "Necesară pentru a rezuma și traduce cu Mistral."
 
-#: src/views/settings/preferences_dialog.py:97
+#: src/views/settings/preferences_dialog.py:98
 msgid "xAI API key"
 msgstr "Cheie API xAI"
 
-#: src/views/settings/preferences_dialog.py:98
+#: src/views/settings/preferences_dialog.py:99
 msgid "Required to summarize and translate with Grok."
 msgstr "Necesară pentru a rezuma și traduce cu Grok."
 
-#: src/views/settings/preferences_dialog.py:101
+#: src/views/settings/preferences_dialog.py:102
 msgid "DeepL API key"
 msgstr "Cheie API DeepL"
 
-#: src/views/settings/preferences_dialog.py:102
+#: src/views/settings/preferences_dialog.py:103
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr ""
 "Necesară pentru a traduce cu DeepL. Funcționează și cheile planului "
 "gratuit."
 
 #: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:105
+#: src/views/settings/preferences_dialog.py:106
 msgid "Google API key"
 msgstr "Cheie API Google"
 
-#: src/views/settings/preferences_dialog.py:107
+#: src/views/settings/preferences_dialog.py:108
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1166,11 +1166,11 @@ msgstr ""
 " API)."
 
 #: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:111
+#: src/views/settings/preferences_dialog.py:112
 msgid "Hugging Face token"
 msgstr "Token Hugging Face"
 
-#: src/views/settings/preferences_dialog.py:113
+#: src/views/settings/preferences_dialog.py:114
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1178,100 +1178,100 @@ msgstr ""
 "Necesar pentru a identifica vorbitorii cu WhisperX (pyannote/speaker-"
 "diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:169
+#: src/views/settings/preferences_dialog.py:172
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: src/views/settings/preferences_dialog.py:184
+#: src/views/settings/preferences_dialog.py:186
 msgid "General"
 msgstr "General"
 
-#: src/views/settings/preferences_dialog.py:185
+#: src/views/settings/preferences_dialog.py:187
 msgid "AI"
 msgstr "IA"
 
-#: src/views/settings/preferences_dialog.py:186
+#: src/views/settings/preferences_dialog.py:188
 msgid "API keys"
 msgstr "Chei API"
 
-#: src/views/settings/preferences_dialog.py:188
+#: src/views/settings/preferences_dialog.py:190
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:753
+#: src/views/transcript/transcript_view.py:757
 msgid "Subtitles"
 msgstr "Subtitrări"
 
-#: src/views/settings/preferences_dialog.py:190
+#: src/views/settings/preferences_dialog.py:192
 msgid "About"
 msgstr "Despre"
 
-#: src/views/settings/preferences_dialog.py:317
+#: src/views/settings/preferences_dialog.py:320
 msgid "Appearance"
 msgstr "Aspect"
 
-#: src/views/settings/preferences_dialog.py:321
+#: src/views/settings/preferences_dialog.py:324
 msgid "System"
 msgstr "Sistem"
 
-#: src/views/settings/preferences_dialog.py:321
+#: src/views/settings/preferences_dialog.py:324
 msgid "Light"
 msgstr "Luminos"
 
-#: src/views/settings/preferences_dialog.py:321
+#: src/views/settings/preferences_dialog.py:324
 msgid "Dark"
 msgstr "Întunecat"
 
-#: src/views/settings/preferences_dialog.py:327
+#: src/views/settings/preferences_dialog.py:330
 msgid "Interface size"
 msgstr "Dimensiunea interfeței"
 
-#: src/views/settings/preferences_dialog.py:336
+#: src/views/settings/preferences_dialog.py:339
 msgid "Interface language"
 msgstr "Limba interfeței"
 
-#: src/views/settings/preferences_dialog.py:342
+#: src/views/settings/preferences_dialog.py:345
 msgid "System language"
 msgstr "Limba sistemului"
 
-#: src/views/settings/preferences_dialog.py:355
+#: src/views/settings/preferences_dialog.py:358
 msgid "Notifications"
 msgstr "Notificări"
 
-#: src/views/settings/preferences_dialog.py:356
+#: src/views/settings/preferences_dialog.py:359
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "Afișează o notificare de sistem când o transcriere este gata."
 
-#: src/views/settings/preferences_dialog.py:367
+#: src/views/settings/preferences_dialog.py:370
 msgid "Updates"
 msgstr "Actualizări"
 
-#: src/views/settings/preferences_dialog.py:368
+#: src/views/settings/preferences_dialog.py:371
 msgid "Checks for a new version when the app opens."
 msgstr "Verifică dacă există o versiune nouă la deschiderea aplicației."
 
-#: src/views/settings/preferences_dialog.py:384
+#: src/views/settings/preferences_dialog.py:387
 msgid "Date format"
 msgstr "Formatul datei"
 
-#: src/views/settings/preferences_dialog.py:401
+#: src/views/settings/preferences_dialog.py:404
 msgid "Time format"
 msgstr "Formatul orei"
 
-#: src/views/settings/preferences_dialog.py:402
+#: src/views/settings/preferences_dialog.py:405
 msgid "Automatic uses the clock of the interface language."
 msgstr "Automat folosește ceasul limbii interfeței."
 
-#: src/views/settings/preferences_dialog.py:408
+#: src/views/settings/preferences_dialog.py:411
 msgid "Automatic"
 msgstr "Automat"
 
-#: src/views/settings/preferences_dialog.py:467
-#: src/views/settings/preferences_dialog.py:480
+#: src/views/settings/preferences_dialog.py:470
+#: src/views/settings/preferences_dialog.py:483
 msgid "Change API key…"
 msgstr "Schimbă cheia API…"
 
 #: src/views/settings/cards/engine_card.py:140
-#: src/views/settings/preferences_dialog.py:467
-#: src/views/settings/preferences_dialog.py:480
+#: src/views/settings/preferences_dialog.py:470
+#: src/views/settings/preferences_dialog.py:483
 #: src/views/transcript/summary_panel.py:299
 #: src/views/transcript/translation_panel.py:485
 #: src/views/transcript/translation_panel.py:557
@@ -1279,89 +1279,89 @@ msgid "Set API key…"
 msgstr "Setează cheia API…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:529
+#: src/views/settings/preferences_dialog.py:532
 #: src/views/transcript/translation_panel.py:232
 msgid "Translation"
 msgstr "Traducere"
 
-#: src/views/settings/preferences_dialog.py:541
+#: src/views/settings/preferences_dialog.py:544
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:546
+#: src/views/settings/preferences_dialog.py:549
 msgid "Server URL"
 msgstr "URL-ul serverului"
 
-#: src/views/settings/preferences_dialog.py:547
+#: src/views/settings/preferences_dialog.py:550
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama rulează modelele pe computerul dumneavoastră, fără cheie API."
 
-#: src/views/settings/preferences_dialog.py:578
+#: src/views/settings/preferences_dialog.py:581
 msgid "Provider"
 msgstr "Furnizor"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:585
+#: src/views/settings/preferences_dialog.py:588
 msgid "Model"
 msgstr "Model"
 
-#: src/views/settings/preferences_dialog.py:586
+#: src/views/settings/preferences_dialog.py:589
 msgid "The default model of the provider if empty."
 msgstr "Dacă este gol, modelul implicit al furnizorului."
 
-#: src/views/settings/preferences_dialog.py:633
+#: src/views/settings/preferences_dialog.py:636
 msgid "Compute type"
 msgstr "Tip de calcul"
 
-#: src/views/settings/preferences_dialog.py:634
+#: src/views/settings/preferences_dialog.py:637
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 este mai rapid pe GPU. int8 folosește mai puțină memorie."
 
-#: src/views/settings/preferences_dialog.py:650
+#: src/views/settings/preferences_dialog.py:653
 msgid "Batch size"
 msgstr "Dimensiunea lotului"
 
-#: src/views/settings/preferences_dialog.py:651
+#: src/views/settings/preferences_dialog.py:654
 msgid "Lower it if you run out of memory."
 msgstr "Reduceți valoarea dacă rămâneți fără memorie."
 
-#: src/views/settings/preferences_dialog.py:663
+#: src/views/settings/preferences_dialog.py:666
 msgid "Use CPU"
 msgstr "Folosește CPU"
 
-#: src/views/settings/preferences_dialog.py:666
+#: src/views/settings/preferences_dialog.py:669
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "Nu s-a găsit niciun GPU CUDA, așa că WhisperX rulează pe CPU."
 
-#: src/views/settings/preferences_dialog.py:681
+#: src/views/settings/preferences_dialog.py:684
 msgid "Highlight words"
 msgstr "Evidențiază cuvintele"
 
-#: src/views/settings/preferences_dialog.py:682
+#: src/views/settings/preferences_dialog.py:685
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "Subliniază fiecare cuvânt pe măsură ce este rostit (.srt și .vtt)."
 
-#: src/views/settings/preferences_dialog.py:701
+#: src/views/settings/preferences_dialog.py:704
 msgid "Landscape"
 msgstr "Orizontal"
 
-#: src/views/settings/preferences_dialog.py:701
+#: src/views/settings/preferences_dialog.py:704
 msgid "Portrait"
 msgstr "Vertical"
 
-#: src/views/settings/preferences_dialog.py:709
+#: src/views/settings/preferences_dialog.py:712
 msgid "Max. lines per subtitle"
 msgstr "Nr. max. de rânduri pe subtitrare"
 
-#: src/views/settings/preferences_dialog.py:714
+#: src/views/settings/preferences_dialog.py:717
 msgid "Max. characters per line"
 msgstr "Nr. max. de caractere pe rând"
 
-#: src/views/settings/preferences_dialog.py:719
+#: src/views/settings/preferences_dialog.py:722
 msgid "Chinese, Japanese and Korean"
 msgstr "Chineză, japoneză și coreeană"
 
-#: src/views/settings/preferences_dialog.py:756
+#: src/views/settings/preferences_dialog.py:759
 msgid ""
 "Chinese, Japanese and Korean characters are about twice as wide as Latin "
 "ones."
@@ -1369,59 +1369,59 @@ msgstr ""
 "Caracterele chinezești, japoneze și coreene sunt de aproximativ două ori "
 "mai late decât cele latine."
 
-#: src/views/settings/preferences_dialog.py:765
+#: src/views/settings/preferences_dialog.py:768
 msgid "Temperature"
 msgstr "Temperatură"
 
-#: src/views/settings/preferences_dialog.py:766
+#: src/views/settings/preferences_dialog.py:769
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "Între 0 și 1. Valorile mai mari sunt mai aleatorii."
 
-#: src/views/settings/preferences_dialog.py:778
+#: src/views/settings/preferences_dialog.py:781
 msgid "Timestamps of the words"
 msgstr "Marcaje de timp ale cuvintelor"
 
-#: src/views/settings/preferences_dialog.py:779
+#: src/views/settings/preferences_dialog.py:782
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr ""
 "Evidențiază fiecare cuvânt în timpul redării (modelul whisper-1). Durează"
 " mai mult."
 
-#: src/views/settings/preferences_dialog.py:809
+#: src/views/settings/preferences_dialog.py:812
 #, python-brace-format
 msgid "Version {version}"
 msgstr "Versiunea {version}"
 
-#: src/views/settings/preferences_dialog.py:813
+#: src/views/settings/preferences_dialog.py:816
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "Creat de {author}"
 
-#: src/views/settings/preferences_dialog.py:829
+#: src/views/settings/preferences_dialog.py:832
 msgid "Documentation"
 msgstr "Documentație"
 
-#: src/views/settings/preferences_dialog.py:849
+#: src/views/settings/preferences_dialog.py:852
 msgid "Donate"
 msgstr "Donează"
 
-#: src/views/settings/preferences_dialog.py:863
+#: src/views/settings/preferences_dialog.py:866
 msgid "Check for updates"
 msgstr "Caută actualizări"
 
-#: src/views/settings/preferences_dialog.py:882
+#: src/views/settings/preferences_dialog.py:885
 msgid "Checking for updates…"
 msgstr "Se caută actualizări…"
 
-#: src/views/settings/preferences_dialog.py:893
+#: src/views/settings/preferences_dialog.py:896
 msgid "Could not check for updates."
 msgstr "Nu s-au putut căuta actualizări."
 
-#: src/views/settings/preferences_dialog.py:902
+#: src/views/settings/preferences_dialog.py:905
 msgid "Download"
 msgstr "Descarcă"
 
-#: src/views/settings/preferences_dialog.py:912
+#: src/views/settings/preferences_dialog.py:915
 msgid "You have the latest version."
 msgstr "Ai cea mai recentă versiune."
 
@@ -1762,7 +1762,7 @@ msgid "Choose where to save the transcriptions"
 msgstr "Alegeți unde se salvează transcrierile"
 
 #: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1831
+#: src/views/transcript/transcript_view.py:1835
 msgid "Edit text"
 msgstr "Editează textul"
 
@@ -1771,17 +1771,17 @@ msgstr "Editează textul"
 msgid "Text said at {time}:"
 msgstr "Text rostit la {time}:"
 
-#: src/views/transcript/edit_dialogs.py:74
+#: src/views/transcript/edit_dialogs.py:78
 msgid "Rename speakers"
 msgstr "Redenumește vorbitorii"
 
-#: src/views/transcript/edit_dialogs.py:74
-#: src/views/transcript/transcript_view.py:1860
-#: src/views/widgets/text_dialog.py:66
+#: src/views/transcript/edit_dialogs.py:78
+#: src/views/transcript/transcript_view.py:1864
+#: src/views/widgets/text_dialog.py:69
 msgid "Save"
 msgstr "Salvează"
 
-#: src/views/transcript/edit_dialogs.py:81
+#: src/views/transcript/edit_dialogs.py:85
 msgid ""
 "Give a name to each speaker. Giving two speakers the same name merges "
 "them."
@@ -1789,65 +1789,65 @@ msgstr ""
 "Dați un nume fiecărui vorbitor. Dacă dați același nume la doi vorbitori, "
 "aceștia sunt combinați."
 
-#: src/views/transcript/edit_dialogs.py:151
+#: src/views/transcript/edit_dialogs.py:155
 msgid "Start:"
 msgstr "Început:"
 
-#: src/views/transcript/edit_dialogs.py:151
+#: src/views/transcript/edit_dialogs.py:155
 msgid "End:"
 msgstr "Sfârșit:"
 
-#: src/views/transcript/edit_dialogs.py:190
+#: src/views/transcript/edit_dialogs.py:194
 msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
 msgstr "Scrieți timpii ca 00:01:05,900, 01:05,9 sau 65.9."
 
-#: src/views/transcript/edit_dialogs.py:192
+#: src/views/transcript/edit_dialogs.py:196
 msgid "The segment must end after it starts."
 msgstr "Segmentul trebuie să se termine după ce începe."
 
-#: src/views/transcript/find_dialog.py:77
+#: src/views/transcript/find_dialog.py:80
 msgid "Find:"
 msgstr "Caută:"
 
-#: src/views/transcript/find_dialog.py:80
+#: src/views/transcript/find_dialog.py:83
 msgid "Replace with:"
 msgstr "Înlocuiește cu:"
 
-#: src/views/transcript/find_dialog.py:90
+#: src/views/transcript/find_dialog.py:93
 msgid "Match case"
 msgstr "Potrivire majuscule"
 
-#: src/views/transcript/find_dialog.py:105
+#: src/views/transcript/find_dialog.py:108
 msgid "Stay on top"
 msgstr "Păstrează deasupra"
 
-#: src/views/transcript/find_dialog.py:110
+#: src/views/transcript/find_dialog.py:113
 msgid "Unpin from the main window"
 msgstr "Nu mai păstra deasupra ferestrei principale"
 
-#: src/views/transcript/find_dialog.py:112
+#: src/views/transcript/find_dialog.py:115
 msgid "Keep above the main window"
 msgstr "Păstrează deasupra ferestrei principale"
 
-#: src/views/transcript/find_dialog.py:123
+#: src/views/transcript/find_dialog.py:126
 msgid "Replace"
 msgstr "Înlocuiește"
 
-#: src/views/transcript/find_dialog.py:128
+#: src/views/transcript/find_dialog.py:131
 msgid "Replace all"
 msgstr "Înlocuiește tot"
 
-#: src/views/transcript/find_dialog.py:185
-#: src/views/transcript/find_dialog.py:231
+#: src/views/transcript/find_dialog.py:189
+#: src/views/transcript/find_dialog.py:235
 #, python-brace-format
 msgid "{current} of {total}"
 msgstr "{current} din {total}"
 
-#: src/views/transcript/find_dialog.py:246
+#: src/views/transcript/find_dialog.py:250
 msgid "Previous match"
 msgstr "Rezultatul anterior"
 
-#: src/views/transcript/find_dialog.py:253
+#: src/views/transcript/find_dialog.py:257
 msgid "Next match"
 msgstr "Rezultatul următor"
 
@@ -1861,7 +1861,7 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spațiu: redare/pauză · ←/→: {seconds} s înapoi/înainte"
 
 #: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:2081
+#: src/views/transcript/transcript_view.py:2085
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Audio nu poate fi redat: {error}"
@@ -1929,13 +1929,13 @@ msgid "Find ({shortcut})"
 msgstr "Caută ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:655
+#: src/views/transcript/transcript_view.py:659
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "Exportă"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1418
+#: src/views/transcript/transcript_view.py:1422
 msgid "Regenerate the summary"
 msgstr "Regenerează rezumatul"
 
@@ -2058,195 +2058,195 @@ msgstr "Tabel (.tsv)"
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:334
+#: src/views/transcript/transcript_view.py:343
 msgid "Stop scrolling the translation with the transcription"
 msgstr "Nu mai derula traducerea împreună cu transcrierea"
 
-#: src/views/transcript/transcript_view.py:336
+#: src/views/transcript/transcript_view.py:345
 msgid "Scroll the translation with the transcription"
 msgstr "Derulează traducerea împreună cu transcrierea"
 
-#: src/views/transcript/transcript_view.py:502
+#: src/views/transcript/transcript_view.py:506
 msgid "Export transcription"
 msgstr "Exportă transcrierea"
 
-#: src/views/transcript/transcript_view.py:523
+#: src/views/transcript/transcript_view.py:527
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Exportă traducerea în limba {language}"
 
-#: src/views/transcript/transcript_view.py:536
+#: src/views/transcript/transcript_view.py:540
 msgid "Export summary"
 msgstr "Exportă rezumatul"
 
-#: src/views/transcript/transcript_view.py:573
+#: src/views/transcript/transcript_view.py:577
 msgid "All files"
 msgstr "Toate fișierele"
 
-#: src/views/transcript/transcript_view.py:582
+#: src/views/transcript/transcript_view.py:586
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Nu s-a putut exporta: {error}"
 
-#: src/views/transcript/transcript_view.py:585
+#: src/views/transcript/transcript_view.py:589
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Exportat în {path}"
 
-#: src/views/transcript/transcript_view.py:647
+#: src/views/transcript/transcript_view.py:651
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Caută și înlocuiește ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:693
+#: src/views/transcript/transcript_view.py:697
 msgid "No low-confidence words left to review"
 msgstr "Nu mai sunt cuvinte cu încredere scăzută de verificat"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:703
+#: src/views/transcript/transcript_view.py:707
 msgid "Show all segments"
 msgstr "Arată toate segmentele"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:740
+#: src/views/transcript/transcript_view.py:744
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Cuvântul anterior cu încredere scăzută ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:742
+#: src/views/transcript/transcript_view.py:746
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Următorul cuvânt cu încredere scăzută ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:754
+#: src/views/transcript/transcript_view.py:758
 msgid "Plain text"
 msgstr "Text simplu"
 
-#: src/views/transcript/transcript_view.py:763
+#: src/views/transcript/transcript_view.py:767
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Tradu"
 
-#: src/views/transcript/transcript_view.py:1322
+#: src/views/transcript/transcript_view.py:1326
 msgid "Find and replace in the transcription"
 msgstr "Caută și înlocuiește în transcriere"
 
-#: src/views/transcript/transcript_view.py:1332
+#: src/views/transcript/transcript_view.py:1336
 msgid "Find and replace in the translation"
 msgstr "Caută și înlocuiește în traducere"
 
-#: src/views/transcript/transcript_view.py:1333
+#: src/views/transcript/transcript_view.py:1337
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Caută și înlocuiește în traducerea în {language}"
 
-#: src/views/transcript/transcript_view.py:1346
+#: src/views/transcript/transcript_view.py:1350
 msgid "Find in the summary"
 msgstr "Caută în rezumat"
 
-#: src/views/transcript/transcript_view.py:1419
+#: src/views/transcript/transcript_view.py:1423
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Regenerezi rezumatul? Cel actual va fi înlocuit."
 
-#: src/views/transcript/transcript_view.py:1577
+#: src/views/transcript/transcript_view.py:1581
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Ascunde traducerea"
 
-#: src/views/transcript/transcript_view.py:1582
+#: src/views/transcript/transcript_view.py:1586
 msgid "Show the translation"
 msgstr "Afișează traducerea"
 
-#: src/views/transcript/transcript_view.py:1586
+#: src/views/transcript/transcript_view.py:1590
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Tradu în altă limbă…"
 
-#: src/views/transcript/transcript_view.py:1597
+#: src/views/transcript/transcript_view.py:1601
 msgid "Show it as the subtitles of the video"
 msgstr "Afișeaz-o ca subtitrări ale videoclipului"
 
-#: src/views/transcript/transcript_view.py:1604
+#: src/views/transcript/transcript_view.py:1608
 msgid "Delete the translation"
 msgstr "Șterge traducerea"
 
-#: src/views/transcript/transcript_view.py:1731
-#: src/views/transcript/transcript_view.py:2148
+#: src/views/transcript/transcript_view.py:1735
+#: src/views/transcript/transcript_view.py:2152
 msgid "Play from here"
 msgstr "Redă de aici"
 
-#: src/views/transcript/transcript_view.py:1739
-#: src/views/transcript/transcript_view.py:2151
+#: src/views/transcript/transcript_view.py:1743
+#: src/views/transcript/transcript_view.py:2155
 msgid "Edit text…"
 msgstr "Editează textul…"
 
-#: src/views/transcript/transcript_view.py:1739
+#: src/views/transcript/transcript_view.py:1743
 msgid "Translate text…"
 msgstr "Tradu textul…"
 
-#: src/views/transcript/transcript_view.py:1743
+#: src/views/transcript/transcript_view.py:1747
 msgid "Edit the timing…"
 msgstr "Editează temporizarea…"
 
-#: src/views/transcript/transcript_view.py:1747
+#: src/views/transcript/transcript_view.py:1751
 msgid "Add a segment after…"
 msgstr "Adaugă un segment după…"
 
-#: src/views/transcript/transcript_view.py:1752
-#: src/views/transcript/transcript_view.py:1917
+#: src/views/transcript/transcript_view.py:1756
+#: src/views/transcript/transcript_view.py:1921
 msgid "Delete the segment"
 msgstr "Șterge segmentul"
 
-#: src/views/transcript/transcript_view.py:1831
+#: src/views/transcript/transcript_view.py:1835
 msgid "Translate text"
 msgstr "Tradu textul"
 
-#: src/views/transcript/transcript_view.py:1832
+#: src/views/transcript/transcript_view.py:1836
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Traducerea pentru „{text}”, rostit de la {start} la {end}:"
 
-#: src/views/transcript/transcript_view.py:1836
+#: src/views/transcript/transcript_view.py:1840
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Traducerea segmentului de la {start} la {end}:"
 
-#: src/views/transcript/transcript_view.py:1859
+#: src/views/transcript/transcript_view.py:1863
 msgid "Edit the timing"
 msgstr "Editează temporizarea"
 
-#: src/views/transcript/transcript_view.py:1885
+#: src/views/transcript/transcript_view.py:1889
 msgid "Add a segment"
 msgstr "Adaugă un segment"
 
-#: src/views/transcript/transcript_view.py:1886
+#: src/views/transcript/transcript_view.py:1890
 msgid "Add"
 msgstr "Adaugă"
 
-#: src/views/transcript/transcript_view.py:1887
+#: src/views/transcript/transcript_view.py:1891
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Noul segment vine după cel de la {time}:"
 
-#: src/views/transcript/transcript_view.py:1918
+#: src/views/transcript/transcript_view.py:1922
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "Ștergeți segmentul „{text}”?"
 
-#: src/views/transcript/transcript_view.py:1974
+#: src/views/transcript/transcript_view.py:1978
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "Segmentul de la {time}, netradus încă."
 
-#: src/views/transcript/transcript_view.py:2010
+#: src/views/transcript/transcript_view.py:2014
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Tradu din nou"
 
-#: src/views/transcript/transcript_view.py:2012
+#: src/views/transcript/transcript_view.py:2016
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2255,45 +2255,45 @@ msgstr ""
 "Traduci din nou transcrierea în {language}? Modificările aduse traducerii"
 " se vor pierde."
 
-#: src/views/transcript/transcript_view.py:2035
+#: src/views/transcript/transcript_view.py:2039
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Audio nu este disponibil: fișierul sursă a fost mutat sau șters."
 
-#: src/views/transcript/transcript_view.py:2038
+#: src/views/transcript/transcript_view.py:2042
 msgid "The audio isn't available."
 msgstr "Audio nu este disponibil."
 
-#: src/views/transcript/transcript_view.py:2153
-#: src/views/transcript/transcript_view.py:2229
+#: src/views/transcript/transcript_view.py:2157
+#: src/views/transcript/transcript_view.py:2233
 msgid "Rename speakers…"
 msgstr "Redenumește vorbitorii…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2172
+#: src/views/transcript/transcript_view.py:2176
 msgid "Highlight low-confidence words"
 msgstr "Evidențiază cuvintele cu încredere scăzută"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2180
+#: src/views/transcript/transcript_view.py:2184
 msgid "Low-confidence threshold"
 msgstr "Prag de încredere scăzută"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2202
+#: src/views/transcript/transcript_view.py:2206
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "Sub {percent}%"
 
-#: src/views/transcript/transcript_view.py:2218
+#: src/views/transcript/transcript_view.py:2222
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Transcrii din nou „{title}”? Modificările aduse textului se vor pierde."
 
-#: src/views/transcript/transcript_view.py:2239
+#: src/views/transcript/transcript_view.py:2243
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Marcaje de timp precise (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:2263
+#: src/views/transcript/transcript_view.py:2267
 msgid "Rename…"
 msgstr "Redenumește…"
 
