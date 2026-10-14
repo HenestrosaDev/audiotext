@@ -230,6 +230,25 @@ def test_a_manual_translation_keeps_the_timestamps(
     assert get(store, entry.id).translations == {}
 
 
+def test_a_manual_translation_keeps_the_timestamps_of_the_given_segments(
+    history: HistoryController, store: HistoryStore
+) -> None:
+    entry = add(store)
+    subtitles = [
+        TranscriptSegment(0.0, 0.5, "Hello"),
+        TranscriptSegment(0.5, 1.0, "world"),
+    ]
+
+    history.start_manual_translation(entry.id, "es", subtitles)
+
+    translation = get(store, entry.id).get_translation("es")
+    assert translation is not None
+    assert [(s.start, s.end, s.text) for s in translation.segments] == [
+        (0.0, 0.5, ""),
+        (0.5, 1.0, ""),
+    ]
+
+
 def test_deleting_a_file_of_a_folder_refreshes_the_folder(
     history: HistoryController, store: HistoryStore, view: MagicMock
 ) -> None:

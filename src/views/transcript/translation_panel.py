@@ -18,6 +18,7 @@ from handlers.translation_handler import (
     has_api_key,
     translation_providers,
 )
+from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 from utils.env_keys import EnvKeys
@@ -171,6 +172,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         translation: TranscriptTranslation | None,
         is_loading: bool,
         error: str,
+        segments: list[TranscriptSegment] | None = None,
         languages: dict[str, str] | None = None,
     ) -> None:
         """
@@ -178,6 +180,8 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         :param translation: The translation into it, if there is one.
         :param is_loading: Whether it's being translated into it.
         :param error: Why the last translation into it failed, if it did.
+        :param segments: The segments shown, if not the ones of the translation
+                         (e.g. split into subtitles).
         :param languages: The label of each language that the user can choose,
                           in order. Without them, the panel is titled instead.
         """
@@ -205,7 +209,8 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
                 action=(_("Translate…"), self._on_translate),
             )
         else:
-            segments = list(translation.segments)
+            if segments is None:
+                segments = list(translation.segments)
             self.lbl_title.configure(text=language_name(translation.language))
             self.lbl_source.configure(text=self._describe(translation))
             self._set_details(
