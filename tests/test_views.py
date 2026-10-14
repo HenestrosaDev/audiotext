@@ -1247,7 +1247,9 @@ def test_the_low_confidence_texts_can_be_gone_through(
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
+    clips: list[tuple[float, float]] = []
     seeks: list[float] = []
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
     monkeypatch.setattr(view.player, "seek", seeks.append)
 
     def go_to(step: int) -> str:
@@ -1264,8 +1266,197 @@ def test_the_low_confidence_texts_can_be_gone_through(
     # It goes around at the end and at the start
     assert go_to(1) == "wisper"
     assert go_to(-1) == "Nice to meet you."
-    # The player goes to when they are said, without playing
-    assert seeks == [0.5, 1.5, 0.5, 1.5]
+    # Each one is played with a moment around it
+    assert clips == [(-1.0, 2.5), (0.0, 4.5), (-1.0, 2.5), (0.0, 4.5)]
+
+    # Without auto-play, the player only goes to them
+    view.review_bar.chk_auto_play.toggle()
+    assert not ConfigManager.get_config_system().review_auto_play
+    assert go_to(1) == "wisper"
+    assert seeks == [0.5]
+    assert len(clips) == 4
+
+
+def review_segments() -> list[TranscriptSegment]:
+    """Three low confidence texts: a word, and two segments scored whole."""
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    return [
+        replace(SEGMENTS[0], words=words),
+        replace(SEGMENTS[1], score=0.2),
+        replace(SEGMENTS[2], score=0.1),
+    ]
+
+
+def open_review(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> Any:
+    """The view of a transcription to review, without playing its audio."""
+    entry = ui.add(segments=review_segments(), text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    monkeypatch.setattr(view.player, "play_clip", lambda *_clip: None)
+    return view
+
+
+def current_text(view: Any) -> str | None:
+    texts = tagged_texts(view.text.tbx_transcript, "current_low_confidence")
+    return texts[0] if texts else None
+
+
+def press_return(ui: Ui, view: Any) -> None:
+    textbox = view.text.tbx_transcript._textbox
+    textbox.focus_force()
+    ui.pump()
+    textbox.event_generate("<Return>")
+    ui.pump()
+
+
+def test_return_accepts_the_word_gone_to_and_goes_to_the_next(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    status = view.review_bar.lbl_status
+
+    # Without a word gone to, it does nothing
+    press_return(ui, view)
+    assert status.cget("text") == "3 of 3 to review"
+
+    view.go_to_low_confidence(1)
+    press_return(ui, view)
+    assert status.cget("text") == "2 of 3 to review"
+    assert current_text(view) == "Nice to meet you."
+    assert tagged_texts(view.text.tbx_transcript, "low_confidence") == [
+        "Nice to meet you.",
+        "Bye wisper.",
+    ]
+
+    press_return(ui, view)
+    press_return(ui, view)
+    # The last one ends the review, without going around
+    assert status.cget("text") == "All reviewed · 3 of 3"
+    assert current_text(view) is None
+    assert view._current_flagged is None
+    press_return(ui, view)
+    assert status.cget("text") == "All reviewed · 3 of 3"
+
+
+def test_return_is_only_handled_by_the_transcript(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    view.go_to_low_confidence(1)
+
+    # Typing in the plain text doesn't accept the word
+    plain = view.text.tbx_plain._textbox
+    view._on_mode_change("plain")
+    plain.focus_force()
+    ui.pump()
+    plain.event_generate("<Return>")
+    ui.pump()
+    assert view.review_bar.review.remaining == 3
+
+
+def test_reviewing_many_words_writes_once_and_doesnt_render_again(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from utils.history_store import HistoryStore
+    from views.transcript.transcript_text import TranscriptText
+
+    view = open_review(ui, monkeypatch)
+    entry_id = view.entry_id
+    renders: list[None] = []
+    saves: list[None] = []
+    render = TranscriptText._render_transcript
+    save = HistoryStore.save
+    monkeypatch.setattr(
+        TranscriptText,
+        "_render_transcript",
+        lambda self: (renders.append(None), render(self))[1],
+    )
+    monkeypatch.setattr(
+        HistoryStore, "save", lambda self: (saves.append(None), save(self))[1]
+    )
+
+    view.go_to_low_confidence(1)
+    for _idx in range(3):
+        assert view.accept_current()
+    ui.pump()
+
+    assert renders == []
+    # Written a moment later, once
+    assert saves == []
+    view._save_reviews()
+    assert len(saves) == 1
+
+    # Showing another transcription writes the pending reviews
+    view.go_to_low_confidence(1)
+    view._review_again()
+    ui.window.select_entry(ui.add(segments=SEGMENTS, text=TEXT).id)
+    ui.pump()
+    assert len(saves) == 2
+    reloaded = HistoryStore(ui.store.file_path, ui.store.media_dir).get(entry_id)
+    assert reloaded is not None
+    assert reloaded.segments[1].reviewed is None
+
+
+def test_the_last_review_can_be_undone(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> None:
+    from models.transcript_segment import ReviewMark
+    from utils.transcript_editing import edit_segment
+
+    view = open_review(ui, monkeypatch)
+    bar = view.review_bar
+
+    view.go_to_low_confidence(1)
+    assert not bar.btn_undo.grid_info()
+    view.accept_current()
+    assert bar.btn_undo.grid_info()
+    assert view.undo_review()
+    assert bar.lbl_status.cget("text") == "3 of 3 to review"
+    assert current_text(view) == "wisper"
+    assert not view.undo_review()
+
+    # Correcting the word gone to reviews it, and goes to the next one
+    view._update_transcript(
+        edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
+    )
+    ui.pump()
+    word = view._entry.segments[0].words[1]
+    assert (word.text, word.score, word.reviewed) == ("Whisper", 0.3, ReviewMark.EDITED)
+    assert bar.lbl_status.cget("text") == "2 of 3 to review"
+    assert current_text(view) == "Nice to meet you."
+    # Undoing it brings back the word with its score, not reviewed
+    assert view.undo_review()
+    assert view._entry.segments[0].words[1] == words_of_review()[1]
+    assert current_text(view) == "wisper"
+
+
+def words_of_review() -> tuple[TranscriptWord, ...]:
+    return review_segments()[0].words
+
+
+def test_reviewing_again_keeps_the_corrected_words(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from utils.transcript_editing import edit_segment
+
+    view = open_review(ui, monkeypatch)
+    view._update_transcript(
+        edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
+    )
+    view.go_to_low_confidence(1)
+    view.accept_current()
+    view.accept_current()
+    ui.pump()
+    bar = view.review_bar
+    assert bar.lbl_status.cget("text") == "All reviewed · 3 of 3"
+    assert bar.btn_review_again.cget("text") == "Review accepted words again"
+
+    bar.btn_review_again.invoke()
+    ui.pump()
+    # Not a full reset: the corrected word stays reviewed
+    assert bar.lbl_status.cget("text") == "2 of 3 to review"
 
 
 def test_the_low_confidence_options_need_the_scores_of_the_words(
@@ -2426,3 +2617,74 @@ def test_the_video_can_be_subtitled_with_the_translation(ui: Ui) -> None:
     ui.pump()
     assert not video.has_translation_subtitles
     assert video._subtitle_text == "Nice to meet you."
+
+
+class FakePlayer:
+    """Plays nothing: its position only moves when it's set."""
+
+    def __init__(self) -> None:
+        self.position = 0.0
+        self.is_playing = False
+        self.duration = 60.0
+        self.speed = 1.0
+
+    def seek(self, seconds: float) -> None:
+        self.position = seconds
+
+    def play(self) -> None:
+        self.is_playing = True
+
+    def pause(self) -> None:
+        self.is_playing = False
+
+    def toggle(self) -> None:
+        self.is_playing = not self.is_playing
+
+    def close(self) -> None:
+        pass
+
+
+def test_a_clip_pauses_at_its_end_unless_the_user_takes_over(ui: Ui) -> None:
+    from views.transcript.player_bar import PlayerBar
+
+    bar = PlayerBar(
+        ui.window,
+        on_tick=lambda _position, _is_playing: None,
+        on_toggle_subtitles=lambda: None,
+        on_subtitle_menu=lambda _anchor: None,
+    )
+    player = FakePlayer()
+    bar._player = player
+    try:
+        bar.play_clip(-1.0, 2.0)
+        assert (player.position, player.is_playing) == (0.0, True)
+        player.position = 1.0
+        bar.refresh()
+        assert player.is_playing
+        player.position = 2.0
+        bar.refresh()
+        assert not player.is_playing
+
+        # Another clip replaces it, instead of stopping at both ends
+        bar.play_clip(5.0, 8.0)
+        bar.play_clip(10.0, 13.0)
+        player.position = 8.5
+        bar.refresh()
+        assert player.is_playing
+
+        # Playing, pausing or moving the audio cancels the end of the clip
+        for take_over in (
+            lambda: (bar.toggle_playback(), bar.toggle_playback()),
+            lambda: bar.seek_relative(1),
+            lambda: bar.seek(11.0),
+            lambda: bar.play_from(11.0),
+        ):
+            bar.play_clip(10.0, 13.0)
+            take_over()
+            player.play()
+            player.position = 13.5
+            bar.refresh()
+            assert player.is_playing, take_over
+    finally:
+        bar._player = None
+        bar.destroy()

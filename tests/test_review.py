@@ -4,6 +4,8 @@ from models.review import (
     FlaggedText,
     ReviewState,
     build_review,
+    differ_only_in_reviews,
+    edited_count,
     flagged_texts,
     review_key,
     set_review,
@@ -187,3 +189,18 @@ def test_step_to_starts_from_a_text_no_longer_flagged() -> None:
 
     assert step_to(unreviewed, reviewed, 0, 1) == flagged[2]
     assert step_to(unreviewed, reviewed, 0, -1) == flagged[0]
+
+
+def test_differ_only_in_reviews() -> None:
+    reviewed = set_review(SEGMENTS, flagged_texts(SEGMENTS, 0.4), ReviewMark.ACCEPTED)
+
+    assert differ_only_in_reviews(SEGMENTS, reviewed)
+    assert not differ_only_in_reviews(SEGMENTS, edit_segment(SEGMENTS, 0, "Hi wisper"))
+    assert not differ_only_in_reviews(SEGMENTS, SEGMENTS[:2])
+
+
+def test_edited_count() -> None:
+    assert edited_count(SEGMENTS) == 0
+    # A word, and a segment scored whole
+    segments = edit_segment(edit_segment(SEGMENTS, 0, "Hi wisper"), 1, "Nice.")
+    assert edited_count(segments) == 2

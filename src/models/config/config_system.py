@@ -64,6 +64,8 @@ class ConfigSystem:
     # `LOW_CONFIDENCE_THRESHOLDS`)
     highlight_low_confidence: bool = True
     low_confidence_threshold: int = 40
+    # Whether going to a low confidence word plays it, with a moment around it
+    review_auto_play: bool = True
     # How the dates and the times are shown (see `DateFormat` and `TimeFormat`)
     date_format: str = DateFormat.MEDIUM.value
     time_format: str = TimeFormat.AUTO.value
@@ -100,6 +102,7 @@ class ConfigSystem:
         IS_FIND_PINNED = "is_find_pinned"
         HIGHLIGHT_LOW_CONFIDENCE = "highlight_low_confidence"
         LOW_CONFIDENCE_THRESHOLD = "low_confidence_threshold"
+        REVIEW_AUTO_PLAY = "review_auto_play"
         DATE_FORMAT = "date_format"
         TIME_FORMAT = "time_format"
         WINDOW_GEOMETRY = "window_geometry"

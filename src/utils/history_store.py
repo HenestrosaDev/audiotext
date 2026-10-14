@@ -35,6 +35,8 @@ class HistoryStore:
         self.media_dir = media_dir
         self._entries: dict[str, HistoryEntry] = {}
         self._groups: dict[str, HistoryGroup] = {}
+        # Whether there are changes that weren't written yet (see `flush`)
+        self._has_unsaved_changes = False
 
         self._load()
 
@@ -82,15 +84,25 @@ class HistoryStore:
             self._entries[entry.id] = entry
         self.save()
 
-    def update(self, entry: HistoryEntry, **changes: Any) -> HistoryEntry:
-        """Changes the given attributes of an entry and saves the history."""
+    def update(
+        self, entry: HistoryEntry, defer_save: bool = False, **changes: Any
+    ) -> HistoryEntry:
+        """
+        Changes the given attributes of an entry and saves the history.
+
+        :param defer_save: Whether to write the history later (with `flush`, or
+            with the next save), for changes made one after another.
+        """
         for name, value in changes.items():
             if not hasattr(entry, name):
                 raise AttributeError(f"HistoryEntry has no attribute {name!r}")
             setattr(entry, name, value)
 
         self._entries[entry.id] = entry
-        self.save()
+        if defer_save:
+            self._has_unsaved_changes = True
+        else:
+            self.save()
         return entry
 
     def delete(self, entry_id: str) -> list[str]:
@@ -158,7 +170,13 @@ class HistoryStore:
 
     # PERSISTENCE
 
+    def flush(self) -> None:
+        """Writes the changes whose saving was deferred, if any."""
+        if self._has_unsaved_changes:
+            self.save()
+
     def save(self) -> None:
+        self._has_unsaved_changes = False
         data = {
             "version": FILE_VERSION,
             "groups": [asdict(group) for group in self._groups.values()],

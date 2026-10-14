@@ -362,6 +362,17 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         """Whether the widget is the text of the transcript (not the plain one)."""
         return widget is self.tbx_transcript._textbox
 
+    def bind_transcript_key(self, sequence: str, callback: Callable[[], bool]) -> None:
+        """
+        Handles a key while the transcript has the focus, and only then, so it
+        doesn't change what's typed elsewhere (e.g. in the plain text).
+
+        :param callback: Returns whether it handled the key.
+        """
+        self.tbx_transcript._textbox.bind(
+            sequence, lambda _event: "break" if callback() else None, add="+"
+        )
+
     def focus_text(self) -> None:
         self._visible_textbox.focus_set()
 

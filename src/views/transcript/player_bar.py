@@ -57,6 +57,8 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self._refresh_after_id: str | None = None
         self._speed_change_thread: threading.Thread | None = None
         self._speed_change_error: Exception | None = None
+        # Where the clip being played stops (see `play_clip`), if one is
+        self._clip_end: float | None = None
 
         self.grid_columnconfigure(0, weight=1)
         controls = ctk.CTkFrame(self, fg_color="transparent")
@@ -178,6 +180,7 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
     def toggle_playback(self) -> None:
         if self._player is None:
             return
+        self._clip_end = None
         try:
             self._player.toggle()
         except PlaybackUnavailableError as e:
@@ -187,6 +190,7 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
     def seek_relative(self, seconds: float) -> None:
         if self._player is None:
             return
+        self._clip_end = None
         self._player.seek(self._player.position + seconds)
         self.refresh()
 
@@ -194,17 +198,35 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         """Moves to a position, without playing or pausing."""
         if self._player is None:
             return
+        self._clip_end = None
         self._player.seek(seconds)
         self.refresh()
 
     def play_from(self, seconds: float) -> None:
         if self._player is None:
             return
+        self._clip_end = None
         self._player.seek(seconds)
         try:
             self._player.play()
         except PlaybackUnavailableError as e:
             self._disable(e)
+        self.refresh()
+
+    def play_clip(self, start: float, end: float) -> None:
+        """
+        Plays from `start` and pauses at `end`, unless the user plays, pauses or
+        moves the audio before. Playing another clip replaces it.
+        """
+        if self._player is None:
+            return
+        self._player.seek(max(start, 0))
+        try:
+            self._player.play()
+        except PlaybackUnavailableError as e:
+            self._disable(e)
+            return
+        self._clip_end = end
         self.refresh()
 
     def handle_key(self, key: str) -> bool:
@@ -230,6 +252,13 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self._check_speed_change()
         position = self._player.position
         is_playing = self._player.is_playing
+        # The end of the clip, checked on each refresh: there's no timer to stop
+        if self._clip_end is not None:
+            if is_playing and position >= self._clip_end:
+                self._player.pause()
+                is_playing = False
+            if not is_playing:
+                self._clip_end = None
 
         self.btn_play.configure(
             image=icons.icon(
@@ -289,6 +318,7 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         # Paused while dragging, so the position and the frame follow the slider
         # without playing the audio
         self._was_playing_before_drag = self._player.is_playing
+        self._clip_end = None
         self._player.pause()
         self.refresh()
 
