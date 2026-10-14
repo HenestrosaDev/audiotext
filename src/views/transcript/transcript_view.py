@@ -81,7 +81,7 @@ from views.transcript.translation_panel import (
     language_name,
 )
 from views.transcript.video_pane import VideoPane
-from views.widgets.button import icon_button, set_button_state
+from views.widgets.button import icon_button, set_button_state, show_toggled
 from views.widgets.localized_options import LocalizedOptions
 from views.widgets.splitter import Splitter
 from views.widgets.text_dialog import TextDialog
@@ -92,7 +92,8 @@ SUMMARY_MODE = "summary"
 # Part of the width taken by the text when its translation is shown next to it
 DEFAULT_TRANSLATION_RATIO = 0.5
 MIN_TRANSLATION_RATIO = 0.2
-TRANSLATION_SPLITTER_THICKNESS = 16
+# Wide enough for the button to scroll the texts together, which is on it
+TRANSLATION_SPLITTER_THICKNESS = 32
 # How long a segment added to the translation lasts by default, if there is no gap
 # to fill until the next one
 NEW_SEGMENT_SECONDS = 2.0
@@ -196,6 +197,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_segment_click=self._on_translation_segment_click,
             on_segment_menu=self._show_translation_segment_menu,
             on_text_edit=self._on_translation_text_edit,
+            on_scroll=self._on_translation_scroll,
             on_search=self._find_in_translation,
             on_copy=self._copy_translation,
             on_export=self._show_translation_export_menu,
@@ -210,6 +212,19 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_drag=self._on_translation_splitter_drag,
             on_reset=self._reset_translation_ratio,
             thickness=TRANSLATION_SPLITTER_THICKNESS,
+        )
+        # Between the transcript and its translation, at the height of their
+        # headers, since it links them
+        self.btn_sync_scroll = icon_button(
+            self.frm_texts,
+            "link",
+            self._toggle_sync_scroll,
+            lambda: (
+                _("Stop scrolling the translation with the transcription")
+                if self._config_system.sync_scroll
+                else _("Scroll the translation with the transcription")
+            ),
+            is_round=True,
         )
         self.summary_panel = SummaryPanel(
             self.frm_text_pane,
@@ -229,6 +244,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_subtitle_menu=self.video.show_subtitle_menu,
         )
         self.player.grid(row=2, column=0, sticky=ctk.EW)
+        show_toggled(self.btn_sync_scroll, "link", self._config_system.sync_scroll)
         self.text.bind_interaction(lambda: self._set_active_text(self.text))
         self.translation_panel.text.bind_interaction(
             lambda: self._set_active_text(self.translation_panel.text)
@@ -527,6 +543,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_segment_click=self._on_segment_click,
             on_segment_menu=self._show_segment_menu,
             on_text_edit=self._on_text_edit,
+            on_scroll=self._on_transcript_scroll,
         )
         # It's inside the card
         self.text.configure(fg_color="transparent", border_width=0)
@@ -815,12 +832,18 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if not self._is_translation_visible:
             self.translation_splitter.grid_forget()
             self.translation_panel.grid_forget()
+            self.btn_sync_scroll.place_forget()
             frame.grid_columnconfigure(0, weight=1, uniform="")
             frame.grid_columnconfigure(2, weight=0, uniform="")
             return
 
         self.translation_splitter.grid(row=0, column=1, sticky=ctk.NS)
         self.translation_panel.grid(row=0, column=2, sticky=ctk.NSEW)
+        # Centered on the handle, aligned with the buttons of the headers
+        self.btn_sync_scroll.place(
+            in_=self.translation_splitter, relx=0.5, y=8, anchor=ctk.N
+        )
+        self.btn_sync_scroll.lift()
         self._apply_translation_ratio()
 
     def _apply_translation_ratio(self) -> None:
@@ -976,6 +999,31 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 command=self._delete_translation,
             )
         self._popup_below(menu, self.btn_translate)
+
+    def _toggle_sync_scroll(self) -> None:
+        is_synced = not self._config_system.sync_scroll
+        self._config_system.sync_scroll = is_synced
+        save_config(ConfigSystem.Key.SYNC_SCROLL, str(is_synced))
+        show_toggled(self.btn_sync_scroll, "link", is_synced)
+        if is_synced:
+            self._on_transcript_scroll()
+
+    def _on_transcript_scroll(self) -> None:
+        # The translation panel is created after the transcript
+        if hasattr(self, "translation_panel"):
+            self._sync_scroll(self.text, self.translation_panel.text)
+
+    def _on_translation_scroll(self) -> None:
+        self._sync_scroll(self.translation_panel.text, self.text)
+
+    def _sync_scroll(self, source: TranscriptText, target: TranscriptText) -> None:
+        """Scrolls the transcription and its translation together, if chosen."""
+        if (
+            self._config_system.sync_scroll
+            and self._is_translation_visible
+            and target.winfo_ismapped()
+        ):
+            target.scroll_to_anchor(source.scroll_anchor())
 
     def _toggle_translation_subtitles(self) -> None:
         if self.video.is_showing_subtitles and self.video.is_showing_translation:

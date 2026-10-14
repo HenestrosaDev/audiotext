@@ -2043,6 +2043,61 @@ def test_a_manual_translation_cant_be_generated_again(ui: Ui) -> None:
     assert not ui.window._entry_view.translation_panel.btn_regenerate.winfo_ismapped()
 
 
+def test_the_translation_scrolls_with_the_transcription(ui: Ui) -> None:
+    from models.translation import TranscriptTranslation
+
+    segments = [
+        TranscriptSegment(float(i), i + 1.0, f"Segment {i}", "SPEAKER_00")
+        for i in range(80)
+    ]
+    # Shorter texts, so the same segment is at a different height
+    translated_segments = tuple(
+        TranscriptSegment(s.start, s.end, f"S{i}", s.speaker)
+        for i, s in enumerate(segments)
+    )
+    translation = TranscriptTranslation("es", "S", translated_segments, "manual")
+    entry = ui.add(
+        segments=segments,
+        text="text",
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    original = view.text
+    copy = view.translation_panel.text
+
+    original.tbx_transcript.yview_moveto(0.5)
+    ui.pump()
+    kind, time = original.scroll_anchor()
+    assert kind == "time"
+    assert time > 10
+    assert copy.scroll_anchor()[1] == pytest.approx(time, abs=1)
+
+    # From the button in the header of the translation, shown pressed while on
+    button = view.btn_sync_scroll
+    assert button.winfo_ismapped()
+    # A circle inside the handle between the panels, so its corners don't cover
+    # them
+    splitter = view.translation_splitter
+    assert button.winfo_width() == button.winfo_height()
+    assert splitter.winfo_x() <= button.winfo_x()
+    assert (
+        button.winfo_x() + button.winfo_width()
+        <= splitter.winfo_x() + splitter.winfo_width()
+    )
+    assert button.cget("fg_color") != "transparent"
+    button.invoke()
+    assert not view._config_system.sync_scroll
+    assert button.cget("fg_color") == "transparent"
+    original.tbx_transcript.yview_moveto(0)
+    ui.pump()
+    assert copy.scroll_anchor()[1] == pytest.approx(time, abs=1)
+    view._toggle_sync_scroll()
+    ui.pump()
+    assert copy.scroll_anchor()[1] == pytest.approx(0, abs=1)
+
+
 def test_a_translation_is_exported_like_the_transcription(
     ui: Ui, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

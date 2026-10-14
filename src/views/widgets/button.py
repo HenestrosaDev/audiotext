@@ -32,21 +32,49 @@ def set_button_state(button: ctk.CTkButton, state: str) -> None:
                 widget.configure(cursor=cursor)
 
 
+class _RoundButton(ctk.CTkButton):  # type: ignore[misc]
+    """
+    A button as wide as it's tall, with its corners rounded into a circle.
+
+    CTkButton keeps a margin as wide as its corner radius on each side of its
+    content, which would make it wider than tall, so its corners would cover
+    what's around it.
+    """
+
+    def _create_grid(self) -> None:
+        super()._create_grid()
+        minsize = self._apply_widget_scaling(self._border_width + 1)
+        self.grid_columnconfigure(0, minsize=minsize)
+        self.grid_columnconfigure(4, minsize=minsize)
+
+
 def icon_button(
     master: Any,
     icon_name: str,
     command: Callable[[], Any],
     tooltip: Text,
+    is_round: bool = False,
 ) -> ctk.CTkButton:
-    """A small button with an icon, which shows what it does on hover."""
-    button = ctk.CTkButton(
+    """
+    A small button with an icon, which shows what it does on hover.
+
+    :param is_round: Whether it's a circle with a border, e.g. to float between
+                     two panels.
+    """
+    size = 28
+    style = (
+        theme.SECONDARY_BUTTON | {"corner_radius": size // 2}
+        if is_round
+        else theme.GHOST_BUTTON
+    )
+    button = (_RoundButton if is_round else ctk.CTkButton)(
         master,
         text="",
-        width=28,
-        height=28,
+        width=size,
+        height=size,
         image=icons.icon(icon_name, 14),
         command=command,
-        **theme.GHOST_BUTTON,
+        **style,
     )
     button._tooltip = Tooltip(button, tooltip)
     return button
