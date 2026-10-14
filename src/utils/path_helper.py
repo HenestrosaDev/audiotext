@@ -13,16 +13,18 @@ def get_root_path() -> Path:
     :rtype: Path
     """
     if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
-        root_path = Path(sys._MEIPASS)
-    else:
-        root_path = Path(__file__).parent.parent.parent
+        return Path(sys._MEIPASS)
+    return Path(__file__).parent.parent.parent
 
-    # Add the root path to the PATH in order to allow macOS to pick up the binaries,
-    # since `.app` bundles launched from Finder get a very limited shell environment.
-    # https://github.com/orgs/pyinstaller/discussions/8773
-    os.environ["PATH"] += os.pathsep + str(root_path)
 
-    return root_path
+def add_to_path(directory: Path) -> None:
+    """
+    Adds a directory to the PATH, so the binaries in it (e.g. FFmpeg) are found.
+    It's only added once.
+    """
+    paths = os.environ.get("PATH", "").split(os.pathsep)
+    if str(directory) not in paths:
+        os.environ["PATH"] = os.pathsep.join([*filter(None, paths), str(directory)])
 
 
 def get_user_config_dir() -> Path:
@@ -51,3 +53,9 @@ def get_user_config_dir() -> Path:
 IMG_RELATIVE_PATH = "res/img"
 
 ROOT_PATH = get_root_path()
+
+# The binaries of the app (e.g. FFmpeg) are added to the PATH on import, since
+# `.app` bundles launched from Finder get a very limited shell environment
+# (https://github.com/orgs/pyinstaller/discussions/8773), and pydub looks for
+# FFmpeg as soon as it's imported, before any entry point could run
+add_to_path(ROOT_PATH)
