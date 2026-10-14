@@ -6,7 +6,8 @@ from typing import Any
 
 import customtkinter as ctk
 
-from models.transcript_segment import TranscriptSegment, TranscriptWord
+from models.review import FlaggedText, review_key
+from models.transcript_segment import TranscriptSegment
 from utils.i18n import _
 from utils.time_format import format_segment_range
 from views.localization import Text, on_language_change
@@ -96,18 +97,6 @@ def find_index(starts: list[float], position: float) -> int | None:
     return idx if idx >= 0 else None
 
 
-def is_low_confidence(
-    item: TranscriptWord | TranscriptSegment, min_score: float | None
-) -> bool:
-    """
-    :param item: A word, or a segment for the engines that only score segments.
-    :param min_score: The score below which a text may be wrong, or `None` if the
-        low confidence texts are not highlighted.
-    :return: Whether the text may be wrong. Texts without a score are not.
-    """
-    return min_score is not None and item.score is not None and item.score < min_score
-
-
 class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
     """
     The text of a transcription, in two modes: the transcript, with the timestamps
@@ -164,9 +153,15 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._is_text_edited = False
         self._mode = PLAIN_TEXT_MODE
         self._is_precise = False
-        self._low_confidence_score: float | None = None
-        # The start of the low confidence text that was gone to, if any
-        self._current_low_confidence: str | None = None
+        # The segment of the transcription that each segment shown is part of
+        self._source_indexes: list[int] = []
+        # Where the text of each segment shown starts and ends
+        self._text_ranges: list[tuple[str, str]] = []
+        # Where each word is, by its segment of the transcription and its key
+        self._word_positions: dict[tuple[int, str], list[tuple[str, str]]] = {}
+        # The low confidence texts highlighted, and the one gone to, if any
+        self._flagged: tuple[FlaggedText, ...] = ()
+        self._current_flagged: FlaggedText | None = None
         self._query = ""
         self._match_case = False
         self._matches: list[tuple[str, str]] = []
@@ -241,10 +236,22 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         return bool(self._segments)
 
     def set_content(
-        self, segments: list[TranscriptSegment], text: str, is_text_edited: bool
+        self,
+        segments: list[TranscriptSegment],
+        text: str,
+        is_text_edited: bool,
+        source_indexes: list[int] | None = None,
     ) -> None:
-        """Shows the transcription, keeping the mode and the search."""
+        """
+        Shows the transcription, keeping the mode and the search.
+
+        :param source_indexes: The segment of the transcription that each segment
+            shown is part of, if they're split (e.g. into subtitles).
+        """
         self._segments = segments
+        self._source_indexes = (
+            source_indexes if source_indexes is not None else list(range(len(segments)))
+        )
         self._segment_starts = [segment.start for segment in segments]
         self._is_text_edited = is_text_edited
         self._current_segment = self._current_word = None
@@ -265,18 +272,6 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         if is_precise == self._is_precise:
             return
         self._is_precise = is_precise
-        self._current_segment = self._current_word = None
-        self._render_transcript()
-        self.search(self._query, self._match_case, self._current_match)
-
-    def set_low_confidence_score(self, min_score: float | None) -> None:
-        """
-        Highlights the words whose score is below `min_score`, or none if it's
-        `None`.
-        """
-        if min_score == self._low_confidence_score:
-            return
-        self._low_confidence_score = min_score
         self._current_segment = self._current_word = None
         self._render_transcript()
         self.search(self._query, self._match_case, self._current_match)
@@ -604,60 +599,46 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox.tag_add("current_match", start, end)
         textbox.see(start)
 
-    def go_to_low_confidence(self, step: int) -> float | None:
+    def set_flagged(self, texts: tuple[FlaggedText, ...]) -> None:
         """
-        Shows the next (or the previous) low confidence text of the transcript,
-        after the one that was gone to, or the segment being played. It goes
-        around when it reaches the end (or the start).
+        Highlights the low confidence texts, moving the highlights without
+        rendering the transcript again.
+        """
+        self._flagged = texts
+        if self._current_flagged not in texts:
+            self._current_flagged = None
+        self._apply_flagged()
 
-        :param step: 1 to go to the next text, -1 to go to the previous one.
-        :return: When the text is said, in seconds, or `None` if there is none.
-        """
+    def show_flagged(self, text: FlaggedText) -> None:
+        """Highlights a low confidence text more than the others, and shows it."""
+        self._current_flagged = text
+        self._apply_flagged()
+        if ranges := self._flagged_ranges(text):
+            self.tbx_transcript.see(ranges[0][0])
+
+    def _apply_flagged(self) -> None:
         textbox = self.tbx_transcript
-        if self._mode != TRANSCRIPT_MODE or not textbox.tag_ranges("low_confidence"):
-            return None
+        for tag in ("low_confidence", "current_low_confidence"):
+            textbox.tag_remove(tag, "1.0", ctk.END)
+        for text in self._flagged:
+            for start, end in self._flagged_ranges(text):
+                textbox.tag_add("low_confidence", start, end)
+        if self._current_flagged:
+            for start, end in self._flagged_ranges(self._current_flagged):
+                textbox.tag_add("current_low_confidence", start, end)
 
-        position = self._current_low_confidence
-        if position is None and self._current_segment is not None:
-            position = self._text_starts[self._current_segment]
+    def _flagged_ranges(self, text: FlaggedText) -> list[tuple[str, str]]:
+        """Where a low confidence text is: a word, or all the parts of a segment."""
+        if text.word_idx is not None:
+            return self._word_positions.get((text.segment_idx, text.key), [])
 
-        if step > 0:
-            after = f"{position}+1c" if position else "1.0"
-            found = textbox.tag_nextrange("low_confidence", after) or (
-                textbox.tag_nextrange("low_confidence", "1.0")
+        return [
+            text_range
+            for source_idx, text_range in zip(
+                self._source_indexes, self._text_ranges, strict=True
             )
-        else:
-            before = position or ctk.END
-            found = textbox.tag_prevrange("low_confidence", before) or (
-                textbox.tag_prevrange("low_confidence", ctk.END)
-            )
-        start, end = (str(index) for index in found)
-
-        self._current_low_confidence = start
-        textbox.tag_remove("current_low_confidence", "1.0", ctk.END)
-        textbox.tag_add("current_low_confidence", start, end)
-        textbox.see(start)
-        return self._time_at(start)
-
-    def _time_at(self, index: str) -> float:
-        """When the text at an index of the transcript is said, in seconds."""
-        for (word_start, _word_end), seconds in zip(
-            self._word_ranges, self._word_starts, strict=True
-        ):
-            if word_start == index:
-                return seconds
-
-        # The text of a whole segment (or a word that wasn't found)
-        key = _index_key(index)
-        idx = max(
-            (
-                i
-                for i, start in enumerate(self._text_starts)
-                if _index_key(start) <= key
-            ),
-            default=0,
-        )
-        return self._segments[idx].start
+            if source_idx == text.segment_idx and text_range[0] != text_range[1]
+        ]
 
     # RENDERING
 
@@ -681,8 +662,12 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             foreground=self._color(LOW_CONFIDENCE_COLOR),
             underline=True,
         )
+        # Not only its color sets it apart: it's also bold and outlined
         textbox.tag_config(
-            "current_low_confidence", background=self._color(CURRENT_MATCH_COLOR)
+            "current_low_confidence",
+            background=self._color(CURRENT_MATCH_COLOR),
+            relief="solid",
+            borderwidth=1,
         )
 
         for textbox in (self.tbx_transcript, self.tbx_plain):
@@ -694,6 +679,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
     def _tag_fonts(self) -> None:
         """Sets the fonts of the tags, with the scaled size of the interface."""
         self._tag_font("timestamp", theme.font(12, family=theme.MONOSPACE_FAMILY))
+        self._tag_font("current_low_confidence", theme.font(15, "bold"))
         for tag in self.tbx_transcript.tag_names():
             if tag.startswith("speaker_"):
                 self._tag_font(tag, theme.font(13, "bold"))
@@ -709,7 +695,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox = self.tbx_transcript
         textbox.configure(state=ctk.NORMAL)
         textbox.delete("1.0", ctk.END)
-        self._current_low_confidence = None
+        self._word_positions = {}
         for tag in textbox.tag_names():
             if tag.startswith("segment_"):
                 textbox.tag_delete(tag)
@@ -728,10 +714,12 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             textbox.configure(state=ctk.DISABLED)
             self._word_starts, self._word_ranges = [], []
             self._segment_indexes, self._text_starts = [], []
+            self._text_ranges = []
             return
 
         word_entries: list[tuple[float, str, str]] = []
         self._segment_indexes, self._text_starts = [], []
+        self._text_ranges = []
         for idx, segment in enumerate(self._segments):
             segment_tag = f"segment_{idx}"
             self._segment_indexes.append(textbox.index("end-1c"))
@@ -752,7 +740,9 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             text_start = textbox.index("end-1c")
             self._text_starts.append(text_start)
             if segment.words:
-                word_entries.extend(self._insert_words(segment, segment_tag))
+                word_entries.extend(
+                    self._insert_words(segment, segment_tag, self._source_indexes[idx])
+                )
             elif not segment.text:
                 empty_text = self._empty_segment_text
                 textbox.insert(
@@ -762,9 +752,9 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                 )
             else:
                 textbox.insert(ctk.END, segment.text, (segment_tag, "text"))
-            # The engines that only score segments highlight their whole text
-            if segment.text and is_low_confidence(segment, self._low_confidence_score):
-                textbox.tag_add("low_confidence", text_start, "end-1c")
+            self._text_ranges.append(
+                (text_start, textbox.index("end-1c") if segment.text else text_start)
+            )
             textbox.insert(ctk.END, "\n\n")
 
             textbox.tag_bind(
@@ -791,15 +781,18 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox.tag_raise("current_low_confidence")
         textbox.tag_raise("match")
         textbox.tag_raise("current_match")
+        self._apply_flagged()
         textbox.configure(state=ctk.DISABLED)
 
     def _insert_words(
-        self, segment: TranscriptSegment, segment_tag: str
+        self, segment: TranscriptSegment, segment_tag: str, source_idx: int
     ) -> list[tuple[float, str, str]]:
         """
         Inserts the text of a segment, recording the position of each word to
-        highlight it while playing, and highlighting the low confidence words.
-        Words are looked up in the text, so its spacing and punctuation are kept.
+        highlight it while playing, or if it may be wrong. Words are looked up in
+        the text, so its spacing and punctuation are kept.
+
+        :param source_idx: The segment of the transcription it's part of.
         """
         textbox = self.tbx_transcript
         text = segment.text
@@ -814,14 +807,12 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             if position > cursor:
                 textbox.insert(ctk.END, text[cursor:position], tags)
             start_index = textbox.index("end-1c")
-            textbox.insert(
-                ctk.END,
-                word.text,
-                (*tags, "low_confidence")
-                if is_low_confidence(word, self._low_confidence_score)
-                else tags,
-            )
-            entries.append((word.start, start_index, textbox.index("end-1c")))
+            textbox.insert(ctk.END, word.text, tags)
+            end_index = textbox.index("end-1c")
+            entries.append((word.start, start_index, end_index))
+            self._word_positions.setdefault(
+                (source_idx, review_key(word.start, word.text)), []
+            ).append((start_index, end_index))
             cursor = position + len(word.text)
 
         if cursor < len(text):
