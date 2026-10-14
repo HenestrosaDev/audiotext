@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-12 18:23+0200\n"
+"POT-Creation-Date: 2026-10-14 10:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -274,7 +274,7 @@ msgid "No audio was recorded."
 msgstr "Tidak ada audio yang direkam."
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:460
+#: src/views/settings/preferences_dialog.py:489
 #: src/views/transcript/summary_panel.py:189
 #: src/views/transcript/transcript_view.py:447
 msgid "Summary"
@@ -805,7 +805,7 @@ msgid "New transcription:"
 msgstr "Transkripsi baru:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:799
+#: src/views/settings/preferences_dialog.py:833
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "Versi {version} tersedia"
@@ -987,7 +987,6 @@ msgstr "Pilih folder…"
 
 #: src/views/new_transcription/new_transcription_view.py:234
 #: src/views/settings/cards/output_card.py:98
-#: src/views/settings/preferences_dialog.py:450
 msgid "Change…"
 msgstr "Ubah…"
 
@@ -1170,215 +1169,224 @@ msgstr ""
 msgid "Preferences"
 msgstr "Preferensi"
 
-#: src/views/settings/preferences_dialog.py:179
+#: src/views/settings/preferences_dialog.py:180
 msgid "General"
 msgstr "Umum"
 
-#: src/views/settings/preferences_dialog.py:180
+#: src/views/settings/preferences_dialog.py:181
 msgid "AI"
 msgstr "AI"
 
-#: src/views/settings/preferences_dialog.py:181
+#: src/views/settings/preferences_dialog.py:182
 msgid "API keys"
 msgstr "Kunci API"
 
-#: src/views/settings/preferences_dialog.py:183
+#: src/views/settings/preferences_dialog.py:184
 #: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "Subtitle"
 
-#: src/views/settings/preferences_dialog.py:185
+#: src/views/settings/preferences_dialog.py:186
 msgid "About"
 msgstr "Tentang"
 
-#: src/views/settings/preferences_dialog.py:300
+#: src/views/settings/preferences_dialog.py:302
 msgid "Appearance"
 msgstr "Tampilan"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "System"
 msgstr "Sistem"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Light"
 msgstr "Terang"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Dark"
 msgstr "Gelap"
 
-#: src/views/settings/preferences_dialog.py:310
+#: src/views/settings/preferences_dialog.py:312
 msgid "Interface size"
 msgstr "Ukuran antarmuka"
 
-#: src/views/settings/preferences_dialog.py:319
+#: src/views/settings/preferences_dialog.py:321
 msgid "Interface language"
 msgstr "Bahasa antarmuka"
 
-#: src/views/settings/preferences_dialog.py:325
+#: src/views/settings/preferences_dialog.py:327
 msgid "System language"
 msgstr "Bahasa sistem"
 
-#: src/views/settings/preferences_dialog.py:338
+#: src/views/settings/preferences_dialog.py:340
 msgid "Notifications"
 msgstr "Notifikasi"
 
-#: src/views/settings/preferences_dialog.py:339
+#: src/views/settings/preferences_dialog.py:341
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "Menampilkan notifikasi sistem saat transkripsi siap."
 
-#: src/views/settings/preferences_dialog.py:350
+#: src/views/settings/preferences_dialog.py:352
 msgid "Updates"
 msgstr "Pembaruan"
 
-#: src/views/settings/preferences_dialog.py:351
+#: src/views/settings/preferences_dialog.py:353
 msgid "Checks for a new version when the app opens."
 msgstr "Memeriksa versi baru saat aplikasi dibuka."
 
-#: src/views/settings/preferences_dialog.py:367
+#: src/views/settings/preferences_dialog.py:369
 msgid "Date format"
 msgstr "Format tanggal"
 
-#: src/views/settings/preferences_dialog.py:384
+#: src/views/settings/preferences_dialog.py:386
 msgid "Time format"
 msgstr "Format waktu"
 
-#: src/views/settings/preferences_dialog.py:385
+#: src/views/settings/preferences_dialog.py:387
 msgid "Automatic uses the clock of the interface language."
 msgstr "Otomatis menggunakan format jam bahasa antarmuka."
 
-#: src/views/settings/preferences_dialog.py:391
+#: src/views/settings/preferences_dialog.py:393
 msgid "Automatic"
 msgstr "Otomatis"
 
-#: src/views/settings/preferences_dialog.py:450
-msgid "Set…"
-msgstr "Atur…"
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+msgid "Change API key…"
+msgstr "Ubah kunci API…"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/translation_panel.py:381
+msgid "Set API key…"
+msgstr "Atur kunci API…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:485
+#: src/views/settings/preferences_dialog.py:514
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "Terjemahan"
 
-#: src/views/settings/preferences_dialog.py:497
+#: src/views/settings/preferences_dialog.py:526
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:502
+#: src/views/settings/preferences_dialog.py:531
 msgid "Server URL"
 msgstr "URL server"
 
-#: src/views/settings/preferences_dialog.py:503
+#: src/views/settings/preferences_dialog.py:532
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama menjalankan model di komputer Anda, tanpa kunci API."
 
-#: src/views/settings/preferences_dialog.py:534
+#: src/views/settings/preferences_dialog.py:563
 msgid "Provider"
 msgstr "Penyedia"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:541
+#: src/views/settings/preferences_dialog.py:570
 msgid "Model"
 msgstr "Model"
 
-#: src/views/settings/preferences_dialog.py:542
+#: src/views/settings/preferences_dialog.py:571
 msgid "The default model of the provider if empty."
 msgstr "Jika kosong, model default penyedia."
 
-#: src/views/settings/preferences_dialog.py:584
+#: src/views/settings/preferences_dialog.py:618
 msgid "Compute type"
 msgstr "Jenis komputasi"
 
-#: src/views/settings/preferences_dialog.py:585
+#: src/views/settings/preferences_dialog.py:619
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 lebih cepat di GPU. int8 menggunakan lebih sedikit memori."
 
-#: src/views/settings/preferences_dialog.py:601
+#: src/views/settings/preferences_dialog.py:635
 msgid "Batch size"
 msgstr "Ukuran batch"
 
-#: src/views/settings/preferences_dialog.py:602
+#: src/views/settings/preferences_dialog.py:636
 msgid "Lower it if you run out of memory."
 msgstr "Turunkan jika memori habis."
 
-#: src/views/settings/preferences_dialog.py:614
+#: src/views/settings/preferences_dialog.py:648
 msgid "Use CPU"
 msgstr "Gunakan CPU"
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:651
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "Tidak ditemukan GPU CUDA, jadi WhisperX berjalan di CPU."
 
-#: src/views/settings/preferences_dialog.py:631
+#: src/views/settings/preferences_dialog.py:665
 msgid "Highlight words"
 msgstr "Sorot kata"
 
-#: src/views/settings/preferences_dialog.py:632
+#: src/views/settings/preferences_dialog.py:666
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "Menggarisbawahi setiap kata saat diucapkan (.srt dan .vtt)."
 
-#: src/views/settings/preferences_dialog.py:639
+#: src/views/settings/preferences_dialog.py:673
 msgid "Max. line count"
 msgstr "Maks. jumlah baris"
 
-#: src/views/settings/preferences_dialog.py:646
+#: src/views/settings/preferences_dialog.py:680
 msgid "Max. line width"
 msgstr "Maks. lebar baris"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:692
 msgid "Temperature"
 msgstr "Temperatur"
 
-#: src/views/settings/preferences_dialog.py:659
+#: src/views/settings/preferences_dialog.py:693
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "Antara 0 dan 1. Nilai yang lebih tinggi lebih acak."
 
-#: src/views/settings/preferences_dialog.py:671
+#: src/views/settings/preferences_dialog.py:705
 msgid "Timestamps of the words"
 msgstr "Stempel waktu kata"
 
-#: src/views/settings/preferences_dialog.py:672
+#: src/views/settings/preferences_dialog.py:706
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr ""
 "Menyorot setiap kata saat diputar (model whisper-1). Membutuhkan waktu "
 "lebih lama."
 
-#: src/views/settings/preferences_dialog.py:702
+#: src/views/settings/preferences_dialog.py:736
 #, python-brace-format
 msgid "Version {version}"
 msgstr "Versi {version}"
 
-#: src/views/settings/preferences_dialog.py:706
+#: src/views/settings/preferences_dialog.py:740
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "Dibuat oleh {author}"
 
-#: src/views/settings/preferences_dialog.py:722
+#: src/views/settings/preferences_dialog.py:756
 msgid "Documentation"
 msgstr "Dokumentasi"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:776
 msgid "Donate"
 msgstr "Donasi"
 
-#: src/views/settings/preferences_dialog.py:756
+#: src/views/settings/preferences_dialog.py:790
 msgid "Check for updates"
 msgstr "Periksa pembaruan"
 
-#: src/views/settings/preferences_dialog.py:775
+#: src/views/settings/preferences_dialog.py:809
 msgid "Checking for updates…"
 msgstr "Memeriksa pembaruan…"
 
-#: src/views/settings/preferences_dialog.py:786
+#: src/views/settings/preferences_dialog.py:820
 msgid "Could not check for updates."
 msgstr "Tidak dapat memeriksa pembaruan."
 
-#: src/views/settings/preferences_dialog.py:795
+#: src/views/settings/preferences_dialog.py:829
 msgid "Download"
 msgstr "Unduh"
 
-#: src/views/settings/preferences_dialog.py:805
+#: src/views/settings/preferences_dialog.py:839
 msgid "You have the latest version."
 msgstr "Anda memiliki versi terbaru."
 
@@ -1499,12 +1507,6 @@ msgstr ""
 #: src/views/settings/cards/engine_card.py:140
 msgid "API key set"
 msgstr "Kunci API sudah diatur"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:381
-msgid "Set API key…"
-msgstr "Atur kunci API…"
 
 #: src/views/settings/cards/folder_card.py:22
 msgid "Watch the folder"

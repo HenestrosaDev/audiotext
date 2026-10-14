@@ -38,7 +38,7 @@ from views.settings.cards.context_card import ContextCard
 from views.settings.cards.engine_card import EngineCard
 from views.settings.cards.language_card import LanguageCard
 from views.settings.cards.output_card import OutputCard
-from views.settings.preferences_dialog import AI_TAB, GENERAL_TAB
+from views.settings.preferences_dialog import AI_TAB, API_KEYS_TAB, GENERAL_TAB
 from views.transcript.edit_dialogs import Replacement
 
 
@@ -1023,6 +1023,74 @@ def test_the_preferences_change_the_interface_language(ui: Ui) -> None:
 
     assert ConfigManager.get_config_system().ui_language == "en"
     assert ui.window.sidebar.lbl_count.cget("text") == "0 transcriptions"
+
+
+def test_the_buttons_of_the_api_keys_say_what_they_do(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from utils.env_keys import EnvKeys
+
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    monkeypatch.delenv("DEEPL_API_KEY", raising=False)
+    ui.window.show_preferences(API_KEYS_TAB)
+    ui.pump()
+    preferences = ui.window._preferences
+    try:
+        buttons = preferences._key_buttons
+        assert buttons[EnvKeys.OPENAI_API_KEY][0].cget("text") == "Change API key…"
+        assert buttons[EnvKeys.DEEPL_API_KEY][0].cget("text") == "Set API key…"
+        # They're as wide as each other, whatever they say
+        widths = {button.winfo_width() for row in buttons.values() for button in row}
+        assert len(widths) == 1
+    finally:
+        preferences.destroy()
+        ui.pump()
+
+
+def test_a_provider_without_a_key_leaves_no_space_for_its_button(ui: Ui) -> None:
+    import tkinter
+
+    from views.widgets.option_menu import CTkOptionMenu
+
+    ui.window.show_preferences(AI_TAB)
+    ui.pump()
+    preferences = ui.window._preferences
+    try:
+        tab = preferences.tabs.tab(preferences._tab_names[AI_TAB])
+
+        def menus(widget: Any) -> list[Any]:
+            found = [widget] if isinstance(widget, CTkOptionMenu) else []
+            for child in widget.winfo_children():
+                found += menus(child)
+            return found
+
+        # The menu of the provider of the summaries
+        menu = menus(tab)[0]
+        row = menu.master
+
+        def gap() -> int:
+            ui.pump()
+            return row.winfo_width() - (menu.winfo_x() + menu.winfo_width())
+
+        assert gap() > 0
+        menu._command("Ollama (local)")
+        assert gap() == 0
+        menu._command("OpenAI")
+        assert gap() > 0
+
+        # The buttons of the keys keep their size while the provider changes
+        resized: list[int] = []
+        for buttons in preferences._key_buttons.values():
+            for button in buttons:
+                tkinter.Misc.bind(
+                    button, "<Configure>", lambda e: resized.append(e.width), "+"
+                )
+        menu._command("Claude")
+        ui.pump()
+        assert not resized
+    finally:
+        preferences.destroy()
+        ui.pump()
 
 
 def test_the_preferences_change_the_size_of_the_interface(ui: Ui) -> None:

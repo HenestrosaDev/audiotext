@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-12 18:23+0200\n"
+"POT-Creation-Date: 2026-10-14 10:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -264,7 +264,7 @@ msgid "No audio was recorded."
 msgstr "未录制到任何音频。"
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:460
+#: src/views/settings/preferences_dialog.py:489
 #: src/views/transcript/summary_panel.py:189
 #: src/views/transcript/transcript_view.py:447
 msgid "Summary"
@@ -786,7 +786,7 @@ msgid "New transcription:"
 msgstr "新转写："
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:799
+#: src/views/settings/preferences_dialog.py:833
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "版本 {version} 可用"
@@ -964,7 +964,6 @@ msgstr "选择文件夹…"
 
 #: src/views/new_transcription/new_transcription_view.py:234
 #: src/views/settings/cards/output_card.py:98
-#: src/views/settings/preferences_dialog.py:450
 msgid "Change…"
 msgstr "更改…"
 
@@ -1138,213 +1137,222 @@ msgstr "使用 WhisperX 识别说话人时必需（pyannote/speaker-diarization-
 msgid "Preferences"
 msgstr "偏好设置"
 
-#: src/views/settings/preferences_dialog.py:179
+#: src/views/settings/preferences_dialog.py:180
 msgid "General"
 msgstr "常规"
 
-#: src/views/settings/preferences_dialog.py:180
+#: src/views/settings/preferences_dialog.py:181
 msgid "AI"
 msgstr "AI"
 
-#: src/views/settings/preferences_dialog.py:181
+#: src/views/settings/preferences_dialog.py:182
 msgid "API keys"
 msgstr "API 密钥"
 
-#: src/views/settings/preferences_dialog.py:183
+#: src/views/settings/preferences_dialog.py:184
 #: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "字幕"
 
-#: src/views/settings/preferences_dialog.py:185
+#: src/views/settings/preferences_dialog.py:186
 msgid "About"
 msgstr "关于"
 
-#: src/views/settings/preferences_dialog.py:300
+#: src/views/settings/preferences_dialog.py:302
 msgid "Appearance"
 msgstr "外观"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "System"
 msgstr "跟随系统"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Light"
 msgstr "浅色"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Dark"
 msgstr "深色"
 
-#: src/views/settings/preferences_dialog.py:310
+#: src/views/settings/preferences_dialog.py:312
 msgid "Interface size"
 msgstr "界面大小"
 
-#: src/views/settings/preferences_dialog.py:319
+#: src/views/settings/preferences_dialog.py:321
 msgid "Interface language"
 msgstr "界面语言"
 
-#: src/views/settings/preferences_dialog.py:325
+#: src/views/settings/preferences_dialog.py:327
 msgid "System language"
 msgstr "系统语言"
 
-#: src/views/settings/preferences_dialog.py:338
+#: src/views/settings/preferences_dialog.py:340
 msgid "Notifications"
 msgstr "通知"
 
-#: src/views/settings/preferences_dialog.py:339
+#: src/views/settings/preferences_dialog.py:341
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "转写完成时显示系统通知。"
 
-#: src/views/settings/preferences_dialog.py:350
+#: src/views/settings/preferences_dialog.py:352
 msgid "Updates"
 msgstr "更新"
 
-#: src/views/settings/preferences_dialog.py:351
+#: src/views/settings/preferences_dialog.py:353
 msgid "Checks for a new version when the app opens."
 msgstr "打开应用时检查是否有新版本。"
 
-#: src/views/settings/preferences_dialog.py:367
+#: src/views/settings/preferences_dialog.py:369
 msgid "Date format"
 msgstr "日期格式"
 
-#: src/views/settings/preferences_dialog.py:384
+#: src/views/settings/preferences_dialog.py:386
 msgid "Time format"
 msgstr "时间格式"
 
-#: src/views/settings/preferences_dialog.py:385
+#: src/views/settings/preferences_dialog.py:387
 msgid "Automatic uses the clock of the interface language."
 msgstr "“自动”使用界面语言的时钟格式。"
 
-#: src/views/settings/preferences_dialog.py:391
+#: src/views/settings/preferences_dialog.py:393
 msgid "Automatic"
 msgstr "自动"
 
-#: src/views/settings/preferences_dialog.py:450
-msgid "Set…"
-msgstr "设置…"
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+msgid "Change API key…"
+msgstr "更改 API 密钥…"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/translation_panel.py:381
+msgid "Set API key…"
+msgstr "设置 API 密钥…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:485
+#: src/views/settings/preferences_dialog.py:514
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "翻译"
 
-#: src/views/settings/preferences_dialog.py:497
+#: src/views/settings/preferences_dialog.py:526
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:502
+#: src/views/settings/preferences_dialog.py:531
 msgid "Server URL"
 msgstr "服务器 URL"
 
-#: src/views/settings/preferences_dialog.py:503
+#: src/views/settings/preferences_dialog.py:532
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama 在你的电脑上运行模型，无需 API 密钥。"
 
-#: src/views/settings/preferences_dialog.py:534
+#: src/views/settings/preferences_dialog.py:563
 msgid "Provider"
 msgstr "提供商"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:541
+#: src/views/settings/preferences_dialog.py:570
 msgid "Model"
 msgstr "模型"
 
-#: src/views/settings/preferences_dialog.py:542
+#: src/views/settings/preferences_dialog.py:571
 msgid "The default model of the provider if empty."
 msgstr "留空则使用提供商的默认模型。"
 
-#: src/views/settings/preferences_dialog.py:584
+#: src/views/settings/preferences_dialog.py:618
 msgid "Compute type"
 msgstr "计算类型"
 
-#: src/views/settings/preferences_dialog.py:585
+#: src/views/settings/preferences_dialog.py:619
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 在 GPU 上更快。int8 占用更少内存。"
 
-#: src/views/settings/preferences_dialog.py:601
+#: src/views/settings/preferences_dialog.py:635
 msgid "Batch size"
 msgstr "批处理大小"
 
-#: src/views/settings/preferences_dialog.py:602
+#: src/views/settings/preferences_dialog.py:636
 msgid "Lower it if you run out of memory."
 msgstr "内存不足时请调低。"
 
-#: src/views/settings/preferences_dialog.py:614
+#: src/views/settings/preferences_dialog.py:648
 msgid "Use CPU"
 msgstr "使用 CPU"
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:651
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "未找到 CUDA GPU，因此 WhisperX 在 CPU 上运行。"
 
-#: src/views/settings/preferences_dialog.py:631
+#: src/views/settings/preferences_dialog.py:665
 msgid "Highlight words"
 msgstr "高亮单词"
 
-#: src/views/settings/preferences_dialog.py:632
+#: src/views/settings/preferences_dialog.py:666
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "在说出每个单词时为其加下划线（.srt 和 .vtt）。"
 
-#: src/views/settings/preferences_dialog.py:639
+#: src/views/settings/preferences_dialog.py:673
 msgid "Max. line count"
 msgstr "最大行数"
 
-#: src/views/settings/preferences_dialog.py:646
+#: src/views/settings/preferences_dialog.py:680
 msgid "Max. line width"
 msgstr "最大行宽"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:692
 msgid "Temperature"
 msgstr "温度"
 
-#: src/views/settings/preferences_dialog.py:659
+#: src/views/settings/preferences_dialog.py:693
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "介于 0 到 1 之间。值越高，随机性越强。"
 
-#: src/views/settings/preferences_dialog.py:671
+#: src/views/settings/preferences_dialog.py:705
 msgid "Timestamps of the words"
 msgstr "单词时间戳"
 
-#: src/views/settings/preferences_dialog.py:672
+#: src/views/settings/preferences_dialog.py:706
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "播放时高亮每个单词（whisper-1 模型）。耗时更长。"
 
-#: src/views/settings/preferences_dialog.py:702
+#: src/views/settings/preferences_dialog.py:736
 #, python-brace-format
 msgid "Version {version}"
 msgstr "版本 {version}"
 
-#: src/views/settings/preferences_dialog.py:706
+#: src/views/settings/preferences_dialog.py:740
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "作者：{author}"
 
-#: src/views/settings/preferences_dialog.py:722
+#: src/views/settings/preferences_dialog.py:756
 msgid "Documentation"
 msgstr "文档"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:776
 msgid "Donate"
 msgstr "捐赠"
 
-#: src/views/settings/preferences_dialog.py:756
+#: src/views/settings/preferences_dialog.py:790
 msgid "Check for updates"
 msgstr "检查更新"
 
-#: src/views/settings/preferences_dialog.py:775
+#: src/views/settings/preferences_dialog.py:809
 msgid "Checking for updates…"
 msgstr "正在检查更新…"
 
-#: src/views/settings/preferences_dialog.py:786
+#: src/views/settings/preferences_dialog.py:820
 msgid "Could not check for updates."
 msgstr "无法检查更新。"
 
-#: src/views/settings/preferences_dialog.py:795
+#: src/views/settings/preferences_dialog.py:829
 msgid "Download"
 msgstr "下载"
 
-#: src/views/settings/preferences_dialog.py:805
+#: src/views/settings/preferences_dialog.py:839
 msgid "You have the latest version."
 msgstr "你使用的是最新版本。"
 
@@ -1453,12 +1461,6 @@ msgstr "在 Google 的服务器上运行。API 密钥是可选的；不设置则
 #: src/views/settings/cards/engine_card.py:140
 msgid "API key set"
 msgstr "已设置 API 密钥"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:381
-msgid "Set API key…"
-msgstr "设置 API 密钥…"
 
 #: src/views/settings/cards/folder_card.py:22
 msgid "Watch the folder"

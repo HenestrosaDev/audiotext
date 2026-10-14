@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-12 18:23+0200\n"
+"POT-Creation-Date: 2026-10-14 10:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -281,7 +281,7 @@ msgid "No audio was recorded."
 msgstr "Nu s-a înregistrat niciun sunet."
 
 #: src/utils/exporters.py:149 src/utils/exporters.py:186
-#: src/views/settings/preferences_dialog.py:460
+#: src/views/settings/preferences_dialog.py:489
 #: src/views/transcript/summary_panel.py:189
 #: src/views/transcript/transcript_view.py:447
 msgid "Summary"
@@ -811,7 +811,7 @@ msgid "New transcription:"
 msgstr "Transcriere nouă:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:799
+#: src/views/settings/preferences_dialog.py:833
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "Versiunea {version} este disponibilă"
@@ -997,7 +997,6 @@ msgstr "Alege un dosar…"
 
 #: src/views/new_transcription/new_transcription_view.py:234
 #: src/views/settings/cards/output_card.py:98
-#: src/views/settings/preferences_dialog.py:450
 msgid "Change…"
 msgstr "Schimbă…"
 
@@ -1178,215 +1177,224 @@ msgstr ""
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: src/views/settings/preferences_dialog.py:179
+#: src/views/settings/preferences_dialog.py:180
 msgid "General"
 msgstr "General"
 
-#: src/views/settings/preferences_dialog.py:180
+#: src/views/settings/preferences_dialog.py:181
 msgid "AI"
 msgstr "IA"
 
-#: src/views/settings/preferences_dialog.py:181
+#: src/views/settings/preferences_dialog.py:182
 msgid "API keys"
 msgstr "Chei API"
 
-#: src/views/settings/preferences_dialog.py:183
+#: src/views/settings/preferences_dialog.py:184
 #: src/views/transcript/player_bar.py:109
 msgid "Subtitles"
 msgstr "Subtitrări"
 
-#: src/views/settings/preferences_dialog.py:185
+#: src/views/settings/preferences_dialog.py:186
 msgid "About"
 msgstr "Despre"
 
-#: src/views/settings/preferences_dialog.py:300
+#: src/views/settings/preferences_dialog.py:302
 msgid "Appearance"
 msgstr "Aspect"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "System"
 msgstr "Sistem"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Light"
 msgstr "Luminos"
 
-#: src/views/settings/preferences_dialog.py:304
+#: src/views/settings/preferences_dialog.py:306
 msgid "Dark"
 msgstr "Întunecat"
 
-#: src/views/settings/preferences_dialog.py:310
+#: src/views/settings/preferences_dialog.py:312
 msgid "Interface size"
 msgstr "Dimensiunea interfeței"
 
-#: src/views/settings/preferences_dialog.py:319
+#: src/views/settings/preferences_dialog.py:321
 msgid "Interface language"
 msgstr "Limba interfeței"
 
-#: src/views/settings/preferences_dialog.py:325
+#: src/views/settings/preferences_dialog.py:327
 msgid "System language"
 msgstr "Limba sistemului"
 
-#: src/views/settings/preferences_dialog.py:338
+#: src/views/settings/preferences_dialog.py:340
 msgid "Notifications"
 msgstr "Notificări"
 
-#: src/views/settings/preferences_dialog.py:339
+#: src/views/settings/preferences_dialog.py:341
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "Afișează o notificare de sistem când o transcriere este gata."
 
-#: src/views/settings/preferences_dialog.py:350
+#: src/views/settings/preferences_dialog.py:352
 msgid "Updates"
 msgstr "Actualizări"
 
-#: src/views/settings/preferences_dialog.py:351
+#: src/views/settings/preferences_dialog.py:353
 msgid "Checks for a new version when the app opens."
 msgstr "Verifică dacă există o versiune nouă la deschiderea aplicației."
 
-#: src/views/settings/preferences_dialog.py:367
+#: src/views/settings/preferences_dialog.py:369
 msgid "Date format"
 msgstr "Formatul datei"
 
-#: src/views/settings/preferences_dialog.py:384
+#: src/views/settings/preferences_dialog.py:386
 msgid "Time format"
 msgstr "Formatul orei"
 
-#: src/views/settings/preferences_dialog.py:385
+#: src/views/settings/preferences_dialog.py:387
 msgid "Automatic uses the clock of the interface language."
 msgstr "Automat folosește ceasul limbii interfeței."
 
-#: src/views/settings/preferences_dialog.py:391
+#: src/views/settings/preferences_dialog.py:393
 msgid "Automatic"
 msgstr "Automat"
 
-#: src/views/settings/preferences_dialog.py:450
-msgid "Set…"
-msgstr "Setează…"
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+msgid "Change API key…"
+msgstr "Schimbă cheia API…"
+
+#: src/views/settings/cards/engine_card.py:140
+#: src/views/settings/preferences_dialog.py:452
+#: src/views/settings/preferences_dialog.py:465
+#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/translation_panel.py:381
+msgid "Set API key…"
+msgstr "Setează cheia API…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:485
+#: src/views/settings/preferences_dialog.py:514
 #: src/views/transcript/translation_panel.py:168
 msgid "Translation"
 msgstr "Traducere"
 
-#: src/views/settings/preferences_dialog.py:497
+#: src/views/settings/preferences_dialog.py:526
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:502
+#: src/views/settings/preferences_dialog.py:531
 msgid "Server URL"
 msgstr "URL-ul serverului"
 
-#: src/views/settings/preferences_dialog.py:503
+#: src/views/settings/preferences_dialog.py:532
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama rulează modelele pe computerul dumneavoastră, fără cheie API."
 
-#: src/views/settings/preferences_dialog.py:534
+#: src/views/settings/preferences_dialog.py:563
 msgid "Provider"
 msgstr "Furnizor"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:541
+#: src/views/settings/preferences_dialog.py:570
 msgid "Model"
 msgstr "Model"
 
-#: src/views/settings/preferences_dialog.py:542
+#: src/views/settings/preferences_dialog.py:571
 msgid "The default model of the provider if empty."
 msgstr "Dacă este gol, modelul implicit al furnizorului."
 
-#: src/views/settings/preferences_dialog.py:584
+#: src/views/settings/preferences_dialog.py:618
 msgid "Compute type"
 msgstr "Tip de calcul"
 
-#: src/views/settings/preferences_dialog.py:585
+#: src/views/settings/preferences_dialog.py:619
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 este mai rapid pe GPU. int8 folosește mai puțină memorie."
 
-#: src/views/settings/preferences_dialog.py:601
+#: src/views/settings/preferences_dialog.py:635
 msgid "Batch size"
 msgstr "Dimensiunea lotului"
 
-#: src/views/settings/preferences_dialog.py:602
+#: src/views/settings/preferences_dialog.py:636
 msgid "Lower it if you run out of memory."
 msgstr "Reduceți valoarea dacă rămâneți fără memorie."
 
-#: src/views/settings/preferences_dialog.py:614
+#: src/views/settings/preferences_dialog.py:648
 msgid "Use CPU"
 msgstr "Folosește CPU"
 
-#: src/views/settings/preferences_dialog.py:617
+#: src/views/settings/preferences_dialog.py:651
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "Nu s-a găsit niciun GPU CUDA, așa că WhisperX rulează pe CPU."
 
-#: src/views/settings/preferences_dialog.py:631
+#: src/views/settings/preferences_dialog.py:665
 msgid "Highlight words"
 msgstr "Evidențiază cuvintele"
 
-#: src/views/settings/preferences_dialog.py:632
+#: src/views/settings/preferences_dialog.py:666
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "Subliniază fiecare cuvânt pe măsură ce este rostit (.srt și .vtt)."
 
-#: src/views/settings/preferences_dialog.py:639
+#: src/views/settings/preferences_dialog.py:673
 msgid "Max. line count"
 msgstr "Nr. max. de rânduri"
 
-#: src/views/settings/preferences_dialog.py:646
+#: src/views/settings/preferences_dialog.py:680
 msgid "Max. line width"
 msgstr "Lățime max. a rândului"
 
-#: src/views/settings/preferences_dialog.py:658
+#: src/views/settings/preferences_dialog.py:692
 msgid "Temperature"
 msgstr "Temperatură"
 
-#: src/views/settings/preferences_dialog.py:659
+#: src/views/settings/preferences_dialog.py:693
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "Între 0 și 1. Valorile mai mari sunt mai aleatorii."
 
-#: src/views/settings/preferences_dialog.py:671
+#: src/views/settings/preferences_dialog.py:705
 msgid "Timestamps of the words"
 msgstr "Marcaje de timp ale cuvintelor"
 
-#: src/views/settings/preferences_dialog.py:672
+#: src/views/settings/preferences_dialog.py:706
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr ""
 "Evidențiază fiecare cuvânt în timpul redării (modelul whisper-1). Durează"
 " mai mult."
 
-#: src/views/settings/preferences_dialog.py:702
+#: src/views/settings/preferences_dialog.py:736
 #, python-brace-format
 msgid "Version {version}"
 msgstr "Versiunea {version}"
 
-#: src/views/settings/preferences_dialog.py:706
+#: src/views/settings/preferences_dialog.py:740
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "Creat de {author}"
 
-#: src/views/settings/preferences_dialog.py:722
+#: src/views/settings/preferences_dialog.py:756
 msgid "Documentation"
 msgstr "Documentație"
 
-#: src/views/settings/preferences_dialog.py:742
+#: src/views/settings/preferences_dialog.py:776
 msgid "Donate"
 msgstr "Donează"
 
-#: src/views/settings/preferences_dialog.py:756
+#: src/views/settings/preferences_dialog.py:790
 msgid "Check for updates"
 msgstr "Caută actualizări"
 
-#: src/views/settings/preferences_dialog.py:775
+#: src/views/settings/preferences_dialog.py:809
 msgid "Checking for updates…"
 msgstr "Se caută actualizări…"
 
-#: src/views/settings/preferences_dialog.py:786
+#: src/views/settings/preferences_dialog.py:820
 msgid "Could not check for updates."
 msgstr "Nu s-au putut căuta actualizări."
 
-#: src/views/settings/preferences_dialog.py:795
+#: src/views/settings/preferences_dialog.py:829
 msgid "Download"
 msgstr "Descarcă"
 
-#: src/views/settings/preferences_dialog.py:805
+#: src/views/settings/preferences_dialog.py:839
 msgid "You have the latest version."
 msgstr "Ai cea mai recentă versiune."
 
@@ -1507,12 +1515,6 @@ msgstr ""
 #: src/views/settings/cards/engine_card.py:140
 msgid "API key set"
 msgstr "Cheie API setată"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:381
-msgid "Set API key…"
-msgstr "Setează cheia API…"
 
 #: src/views/settings/cards/folder_card.py:22
 msgid "Watch the folder"
