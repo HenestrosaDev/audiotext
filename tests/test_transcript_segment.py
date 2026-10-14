@@ -1,4 +1,4 @@
-from models.transcript_segment import TranscriptSegment, join_segments
+from models.transcript_segment import TranscriptSegment, TranscriptWord, join_segments
 
 
 def test_joins_the_text_of_the_segments() -> None:
@@ -34,3 +34,25 @@ def test_segments_without_speaker_have_no_label() -> None:
 
 def test_empty_transcription() -> None:
     assert join_segments([]) == ""
+
+
+def test_the_words_keep_their_score() -> None:
+    segment = TranscriptSegment(
+        0,
+        1,
+        "Hello world",
+        words=(TranscriptWord(0, 0.5, "Hello", 0.9), TranscriptWord(0.5, 1, "world")),
+    )
+
+    data = segment.to_dict()
+
+    assert data["words"] == [[0, 0.5, "Hello", 0.9], [0.5, 1, "world"]]
+    assert TranscriptSegment.from_dict(data) == segment
+
+
+def test_reads_the_words_saved_without_score() -> None:
+    data = {"start": 0, "end": 1, "text": "Hello", "words": [[0, 1, "Hello"]]}
+
+    segment = TranscriptSegment.from_dict(data)
+
+    assert segment.words == (TranscriptWord(0, 1, "Hello"),)

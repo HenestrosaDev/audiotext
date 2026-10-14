@@ -62,6 +62,20 @@ def test_realign_words_with_inserted_and_deleted_words() -> None:
     assert realign_words((), "Anything") == ()
 
 
+def test_realign_words_only_keeps_the_scores_of_the_unchanged_words() -> None:
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.2),
+        TranscriptWord(1.0, 1.5, "users.", 0.8),
+    )
+
+    assert [word.score for word in realign_words(words, "Hello Whisper users.")] == [
+        0.9,
+        None,
+        0.8,
+    ]
+
+
 def test_replace_in_segments_updates_the_text_and_the_words() -> None:
     segments = [
         TranscriptSegment(0.0, 1.5, "Hello wisper users.", words=WORDS),

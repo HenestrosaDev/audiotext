@@ -5,8 +5,9 @@ change, and segments can be added to it or deleted from it.
 
 The segments keep the timings of their words, which highlight each word while
 playing and are needed by the subtitles. When the text of a segment changes, the
-words that didn't change keep their timings, and the new ones take the timings of
-the words they replace.
+words that didn't change keep their timings and scores, and the new ones take the
+timings of the words they replace. The new words have no score, as they were
+corrected by the user.
 """
 
 import difflib
@@ -59,7 +60,7 @@ def realign_words(
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
         if tag == "equal":
             result.extend(
-                TranscriptWord(word.start, word.end, token)
+                TranscriptWord(word.start, word.end, token, word.score)
                 for word, token in zip(words[i1:i2], new_tokens[j1:j2], strict=True)
             )
         elif tag == "replace":

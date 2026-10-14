@@ -126,7 +126,7 @@ class WhisperXHandler:
     def _get_words(segment: Any) -> tuple[TranscriptWord, ...]:
         """
         Returns the words of an aligned segment. Some words (e.g. numbers) can't be
-        aligned, so they take the timings of the previous word.
+        aligned, so they take the timings of the previous word and have no score.
         """
         words = []
         previous_end = float(segment["start"])
@@ -134,7 +134,8 @@ class WhisperXHandler:
         for word in segment.get("words", []):
             start = float(word.get("start", previous_end))
             end = float(word.get("end", start))
-            words.append(TranscriptWord(start, end, str(word["word"]).strip()))
+            score = float(word["score"]) if word.get("score") is not None else None
+            words.append(TranscriptWord(start, end, str(word["word"]).strip(), score))
             previous_end = end
 
         return tuple(words)

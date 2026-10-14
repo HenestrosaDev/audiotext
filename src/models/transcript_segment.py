@@ -9,6 +9,23 @@ class TranscriptWord:
     start: float
     end: float
     text: str
+    # How well the word matches the audio, from 0 to 1. Only available if the word
+    # was aligned, and lost when the word is edited
+    score: float | None = None
+
+    def to_list(self) -> list[Any]:
+        if self.score is None:
+            return [self.start, self.end, self.text]
+
+        return [self.start, self.end, self.text, self.score]
+
+    @classmethod
+    def from_list(cls, data: list[Any]) -> "TranscriptWord":
+        # The words saved before the scores were added have no score
+        start, end, text, *rest = data
+        score = float(rest[0]) if rest and rest[0] is not None else None
+
+        return cls(float(start), float(end), str(text), score)
 
 
 @dataclass(frozen=True)
@@ -29,7 +46,7 @@ class TranscriptSegment:
         if self.speaker:
             data["speaker"] = self.speaker
         if self.words:
-            data["words"] = [[w.start, w.end, w.text] for w in self.words]
+            data["words"] = [word.to_list() for word in self.words]
 
         return data
 
@@ -41,8 +58,7 @@ class TranscriptSegment:
             text=str(data["text"]),
             speaker=data.get("speaker"),
             words=tuple(
-                TranscriptWord(float(start), float(end), str(text))
-                for start, end, text in data.get("words", [])
+                TranscriptWord.from_list(word) for word in data.get("words", [])
             ),
         )
 

@@ -10,6 +10,7 @@ import pytest
 import handlers.whisperx_handler as whisperx_handler
 from handlers.whisperx_handler import WhisperXHandler, is_model_downloaded
 from models.config.config_whisperx import ConfigWhisperX
+from models.transcript_segment import TranscriptWord
 from models.transcription import Transcription
 from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.config_manager import ConfigManager
@@ -393,3 +394,19 @@ class TestDiarization:
 
         with pytest.raises(ValueError, match="accepted the conditions"):
             WhisperXHandler().transcribe_file(make_transcription(should_diarize=True))
+
+
+def test_the_words_keep_their_alignment_score() -> None:
+    segment = {
+        "start": 0.0,
+        "words": [
+            {"word": " Hello", "start": 0.0, "end": 0.5, "score": 0.9},
+            # Numbers can't be aligned, so they have no timings nor score
+            {"word": "42"},
+        ],
+    }
+
+    assert WhisperXHandler._get_words(segment) == (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 0.5, "42"),
+    )
