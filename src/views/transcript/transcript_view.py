@@ -165,38 +165,22 @@ class UndoStep:
 
     segments: list[TranscriptSegment]
     text: str
-    # To check that nothing changed since, and the text reviewed, to go back to it
+    # To check that nothing changed since, and the text reviewed (the first one,
+    # if several were), to go back to it
     reviewed_segments: list[TranscriptSegment]
     flagged: FlaggedText
     # Whether the review only changed the marks (accepting the text), or the text
     is_accept: bool
 
 
-# The shortcuts to go to the next and the previous low confidence word, as they're
-# shown (e.g. in a tooltip), and as the menus take them: macOS draws the keys of
-# the menus from their names
+# The shortcuts to go to the next and the previous low confidence word, as the
+# tooltips of the buttons of the review show them
 NEXT_FLAGGED_SHORTCUT = f"{theme.SHORTCUT_MODIFIER_LABEL}J"
 PREVIOUS_FLAGGED_SHORTCUT = (
     f"{theme.SHIFT_LABEL}{theme.SHORTCUT_MODIFIER_LABEL}J"
     if theme.IS_MACOS
     else f"{theme.SHORTCUT_MODIFIER_LABEL}{theme.SHIFT_LABEL}J"
 )
-NEXT_FLAGGED_ACCELERATOR = "Command-J" if theme.IS_MACOS else NEXT_FLAGGED_SHORTCUT
-PREVIOUS_FLAGGED_ACCELERATOR = (
-    "Shift-Command-J" if theme.IS_MACOS else PREVIOUS_FLAGGED_SHORTCUT
-)
-
-
-def review_hint(review: Review) -> str | None:
-    """
-    :return: Why there are no low confidence words to go to, if the transcription
-        has scores and they're highlighted, or `None` if there are.
-    """
-    if review.state == ReviewState.NOTHING_FLAGGED:
-        return _("No low-confidence words at this threshold")
-    if review.state == ReviewState.ALL_REVIEWED:
-        return _("All the low-confidence words are reviewed")
-    return None
 
 
 def low_confidence_hint(entry: HistoryEntry) -> str | None:
@@ -748,6 +732,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             ),
             on_review_again=self._review_again,
             on_undo=self.undo_review,
+            on_accept_remaining=self._accept_remaining,
             on_auto_play_change=self._set_review_auto_play,
             on_only_flagged_change=self._set_only_flagged,
             is_auto_play=self._config_system.review_auto_play,
@@ -955,6 +940,29 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._actions.transcript.review_transcript(self.entry_id, segments)
         self._schedule_review_save()
         return True
+
+    def _accept_remaining(self) -> None:
+        """
+        Accepts as they are all the low confidence texts left to review, which can
+        be undone like accepting one.
+        """
+        review = self._review
+        if review.state != ReviewState.ACTIVE:
+            return
+
+        segments = set_review(
+            self._entry.segments, review.unreviewed, ReviewMark.ACCEPTED
+        )
+        first = self._current_flagged or review.unreviewed[0]
+        self._undo = UndoStep(
+            self._entry.segments, self._entry.text, segments, first, is_accept=True
+        )
+        # None is left to go to
+        self._current_flagged = None
+        self.word_popover.hide()
+        self._actions.transcript.review_transcript(self.entry_id, segments)
+        self._schedule_review_save()
+        self.text.focus_text()
 
     def undo_review(self) -> bool:
         """
@@ -2151,8 +2159,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def _add_low_confidence_items(self, menu: tk.Menu) -> None:
         """
-        Adds the options to highlight the words that may be wrong, and to go to
-        them, which are only enabled if the transcription has scores.
+        Adds the options to highlight the words that may be wrong, which are only
+        enabled if the transcription has scores. The review bar goes to them.
         """
         is_scored = has_scores(self._entry.segments)
         config = self._config_system
@@ -2177,22 +2185,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 else tk.DISABLED
             ),
         )
-        for label, accelerator, step in (
-            (_("Next low-confidence word"), NEXT_FLAGGED_ACCELERATOR, 1),
-            (_("Previous low-confidence word"), PREVIOUS_FLAGGED_ACCELERATOR, -1),
-        ):
-            menu.add_command(
-                label=label,
-                accelerator=accelerator,
-                command=partial(self.go_to_low_confidence, step),
-                state=(
-                    tk.NORMAL
-                    if self._review.state == ReviewState.ACTIVE
-                    else tk.DISABLED
-                ),
-            )
         # Says why they're disabled, as a note: menus have no tooltips
-        if hint := low_confidence_hint(self._entry) or review_hint(self._review):
+        if hint := low_confidence_hint(self._entry):
             menu.add_command(label=hint, state=tk.DISABLED)
 
     def _threshold_menu(self, master: Any) -> tk.Menu:

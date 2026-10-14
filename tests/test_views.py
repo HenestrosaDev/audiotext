@@ -1471,51 +1471,99 @@ def test_the_low_confidence_options_need_the_scores_of_the_words(
         staticmethod(lambda menu, _widget: menus.append(menu)),
     )
 
-    def states() -> list[str]:
+    def labels() -> list[str]:
         ui.window._entry_view._show_more_menu()
         menu = menus[-1]
         return [
+            str(menu.entrycget(idx, "label"))
+            for idx in range(int(menu.index("end")) + 1)
+            if menu.type(idx) != "separator"
+        ]
+
+    def states() -> list[str]:
+        menu = menus[-1]
+        return [
             str(menu.entrycget(label, "state"))
-            for label in (
-                "Highlight low-confidence words",
-                "Low-confidence threshold",
-                "Next low-confidence word",
-                "Previous low-confidence word",
-            )
+            for label in ("Highlight low-confidence words", "Low-confidence threshold")
         ]
 
     # Its words were timed before the scores were kept
     entry = ui.add(segments=SEGMENTS, text=TEXT, method="WhisperX")
     ui.window.select_entry(entry.id)
     ui.pump()
-    assert states() == [tk.DISABLED] * 4
+    labels()
+    assert states() == [tk.DISABLED] * 2
     # A note says why
     hint = "Transcribe it again to score its words"
-    assert menus[-1].entrycget(hint, "state") == tk.DISABLED
-
-    # Nothing to go to below the threshold
-    words = (TranscriptWord(0.0, 1.0, "Hello", 0.9),)
-    entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
-    ui.window.select_entry(entry.id)
-    ui.pump()
-    assert states() == [tk.NORMAL, tk.NORMAL, tk.DISABLED, tk.DISABLED]
-    hint = "No low-confidence words at this threshold"
     assert menus[-1].entrycget(hint, "state") == tk.DISABLED
 
     words = (TranscriptWord(0.0, 1.0, "Hello", 0.1),)
     entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
-    assert states() == [tk.NORMAL] * 4
-    # The whole shortcuts, which macOS draws from the names of the keys
-    accelerators = [
-        menus[-1].entrycget(label, "accelerator")
-        for label in ("Next low-confidence word", "Previous low-confidence word")
-    ]
-    if sys.platform == "darwin":
-        assert accelerators == ["Command-J", "Shift-Command-J"]
-    else:
-        assert accelerators == ["Ctrl+J", "Ctrl+Shift+J"]
+    shown = labels()
+    assert states() == [tk.NORMAL] * 2
+    assert hint not in shown
+    # The review bar goes to the words
+    assert "Next low-confidence word" not in shown
+    assert "Previous low-confidence word" not in shown
+
+
+def test_the_review_buttons_say_what_they_do_on_hover(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.style import theme
+    from views.widgets import tooltip
+
+    monkeypatch.setattr(tooltip, "TOOLTIP_DELAY_MS", 0)
+    view = open_review(ui, monkeypatch)
+    bar = view.review_bar
+    modifier, shift = theme.SHORTCUT_MODIFIER_LABEL, theme.SHIFT_LABEL
+    previous = f"{shift}{modifier}J" if theme.IS_MACOS else f"{modifier}{shift}J"
+
+    for button, text in (
+        (bar.btn_previous, f"Previous low-confidence word ({previous})"),
+        (bar.btn_next, f"Next low-confidence word ({modifier}J)"),
+    ):
+        # Where the pointer is over the button, which handles it
+        button._canvas.event_generate("<Enter>")
+        ui.pump()
+        window = button._tooltip._window
+        assert window is not None
+        [label] = window.winfo_children()
+        assert label.cget("text") == text
+        button._canvas.event_generate("<Leave>")
+        ui.pump()
+
+
+def test_the_remaining_words_can_be_accepted_at_once(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from models.transcript_segment import ReviewMark
+    from utils.transcript_editing import edit_segment
+
+    view = open_review(ui, monkeypatch)
+    bar = view.review_bar
+    # One corrected, which stays as it is
+    view._update_transcript(
+        edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
+    )
+    assert bar.btn_accept_remaining.grid_info()
+
+    bar.btn_accept_remaining.invoke()
+    ui.pump()
+    assert bar.lbl_status.cget("text") == "All reviewed · 3 of 3"
+    assert not bar.btn_accept_remaining.grid_info()
+    assert current_text(view) is None
+    segments = view._entry.segments
+    assert segments[0].words[1].reviewed == ReviewMark.EDITED
+    assert [segments[1].reviewed, segments[2].reviewed] == [ReviewMark.ACCEPTED] * 2
+    assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
+
+    # Undone at once too, back to the first of them
+    assert view.undo_review()
+    assert bar.lbl_status.cget("text") == "2 of 3 to review"
+    assert current_text(view) == "Nice to meet you."
 
 
 def test_the_review_bar_shows_the_state_of_the_review(ui: Ui) -> None:
