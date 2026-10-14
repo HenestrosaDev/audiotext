@@ -148,8 +148,8 @@ def summary_from_data(
 
 
 class SummaryHandler:
-    @staticmethod
     def summarize(
+        self,
         text: str,
         segments: list[TranscriptSegment],
         provider: AiProvider | None = None,

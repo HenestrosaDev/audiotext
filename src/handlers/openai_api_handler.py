@@ -26,7 +26,7 @@ from pydub import AudioSegment
 from pydub.silence import detect_silence
 
 import utils.config_manager as cm
-from handlers.audio_handler import AudioHandler
+from handlers.audio_handler import load_audio_file
 from models.config.config_whisper_api import ConfigWhisperApi
 from models.transcript_segment import TranscriptSegment, TranscriptWord, join_segments
 from models.transcription import Transcription
@@ -318,8 +318,8 @@ def _parse_segments(data: dict[str, Any], offset: float) -> list[TranscriptSegme
 
 
 class OpenAiApiHandler:
-    @staticmethod
     def transcribe_file(
+        self,
         transcription: Transcription,
         on_progress: ProgressCallback = ignore_progress,
         cancellation_token: CancellationToken | None = None,
@@ -343,7 +343,7 @@ class OpenAiApiHandler:
 
         on_progress(_("Loading audio…"), None)
         audio = (
-            AudioHandler.load_audio_file(transcription.audio_source_path)
+            load_audio_file(transcription.audio_source_path)
             .set_channels(1)
             .set_frame_rate(EXPORT_FRAME_RATE)
         )
@@ -376,7 +376,7 @@ class OpenAiApiHandler:
                 )
 
             chunk = audio[start_ms:end_ms]
-            response = OpenAiApiHandler._request(
+            response = self._request(
                 client,
                 model,
                 chunk,
@@ -393,8 +393,8 @@ class OpenAiApiHandler:
             chunk_segments = _parse_segments(data, offset=start_ms / 1000)
 
             if model.has_speakers:
-                chunk_segments = OpenAiApiHandler._label_speakers(chunk_segments)
-                OpenAiApiHandler._add_speaker_samples(
+                chunk_segments = self._label_speakers(chunk_segments)
+                self._add_speaker_samples(
                     speaker_samples, chunk, chunk_segments, offset_ms=start_ms
                 )
 

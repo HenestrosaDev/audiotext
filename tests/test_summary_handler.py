@@ -53,7 +53,7 @@ def test_summarize_sends_the_transcript_with_its_timestamps(
         },
     )
 
-    summary = SummaryHandler.summarize("Welcome. Music.", SEGMENTS)
+    summary = SummaryHandler().summarize("Welcome. Music.", SEGMENTS)
 
     assert summary.summary == "A show."
     assert summary.key_points == ("Welcome",)
@@ -77,7 +77,7 @@ def test_summarize_without_timestamps_has_no_chapters(
         {"summary": "Short.", "chapters": [{"start": 0, "title": "Ignored"}]},
     )
 
-    summary = SummaryHandler.summarize("Some text.", [], model="other-model")
+    summary = SummaryHandler().summarize("Some text.", [], model="other-model")
 
     assert summary.chapters == ()
     kwargs = openai_client.chat.completions.create.call_args.kwargs
@@ -89,7 +89,7 @@ def test_summarize_without_timestamps_has_no_chapters(
 def test_long_transcriptions_are_cut(openai_client: MagicMock) -> None:
     reply(openai_client, {"summary": "Long."})
 
-    summary = SummaryHandler.summarize("a" * (MAX_INPUT_CHARS + 10), [])
+    summary = SummaryHandler().summarize("a" * (MAX_INPUT_CHARS + 10), [])
 
     content = openai_client.chat.completions.create.call_args.kwargs["messages"][1][
         "content"
@@ -100,14 +100,14 @@ def test_long_transcriptions_are_cut(openai_client: MagicMock) -> None:
 
 def test_empty_text_raises(openai_client: MagicMock) -> None:
     with pytest.raises(ValueError, match="no text"):
-        SummaryHandler.summarize("  ", [])
+        SummaryHandler().summarize("  ", [])
 
     openai_client.chat.completions.create.assert_not_called()
 
 
 def test_summarize_without_api_key_raises() -> None:
     with pytest.raises(OSError):
-        SummaryHandler.summarize("Text.", [])
+        SummaryHandler().summarize("Text.", [])
 
 
 @pytest.mark.parametrize("content", ["not json", "[]", '{"summary": ""}', "{}"])

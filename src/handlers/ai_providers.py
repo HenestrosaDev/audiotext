@@ -80,10 +80,14 @@ def get_provider(value: str) -> AiProvider:
         return AiProvider.OPENAI
 
 
+def is_key_available(env_key: EnvKeys | None) -> bool:
+    """Whether the key is set, or isn't needed (None, e.g. a local provider)."""
+    return env_key is None or bool(env_key.get_value(default=""))
+
+
 def has_api_key(provider: AiProvider) -> bool:
     """Whether the provider can be used: its key is set, or it doesn't need one."""
-    env_key = PROVIDERS[provider].env_key
-    return env_key is None or bool(env_key.get_value(default=""))
+    return is_key_available(PROVIDERS[provider].env_key)
 
 
 def resolve_model(provider: AiProvider, model: str | None) -> str:
