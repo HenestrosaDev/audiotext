@@ -670,6 +670,24 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._mode = mode
         self._apply_mode()
 
+    def go_to_low_confidence(self, step: int) -> None:
+        """
+        Goes to the next (or the previous) low confidence text of the transcript,
+        so the user can listen to it and correct it.
+
+        :param step: 1 to go to the next text, -1 to go to the previous one.
+        """
+        if not self._entry.segments:
+            return
+        # Only the transcript shows them
+        if self._mode != TRANSCRIPT_MODE:
+            self._modes.set(TRANSCRIPT_MODE)
+            self._on_mode_change(TRANSCRIPT_MODE)
+
+        seconds = self.text.go_to_low_confidence(step)
+        if seconds is not None:
+            self.player.seek(seconds)
+
     def _toggle_precise_timestamps(self) -> None:
         is_precise = not self._config_system.precise_timestamps
         self._config_system.precise_timestamps = is_precise
@@ -1569,8 +1587,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def _add_low_confidence_items(self, menu: tk.Menu) -> None:
         """
-        Adds the options to highlight the words that may be wrong, which are only
-        enabled if the transcription has scores.
+        Adds the options to highlight the words that may be wrong, and to go to
+        them, which are only enabled if the transcription has scores.
         """
         is_scored = has_scores(self._entry.segments)
         config = self._config_system
@@ -1606,6 +1624,23 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 else tk.DISABLED
             ),
         )
+        modifier, shift = theme.SHORTCUT_MODIFIER_LABEL, theme.SHIFT_LABEL
+        # macOS shows the Shift key first (⇧⌘J), the others after Ctrl (Ctrl+Shift+J)
+        modifiers = f"{shift}{modifier}" if theme.IS_MACOS else f"{modifier}{shift}"
+        for label, accelerator, step in (
+            (_("Next low-confidence word"), f"{modifier}J", 1),
+            (_("Previous low-confidence word"), f"{modifiers}J", -1),
+        ):
+            menu.add_command(
+                label=label,
+                accelerator=accelerator,
+                command=partial(self.go_to_low_confidence, step),
+                state=(
+                    tk.NORMAL
+                    if is_scored and config.highlight_low_confidence
+                    else tk.DISABLED
+                ),
+            )
 
     def _copy_text(self, text: str) -> None:
         self.clipboard_clear()

@@ -303,6 +303,8 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             f"<{SHORTCUT_MODIFIER}-s>": self._view.trigger_save,
             f"<{SHORTCUT_MODIFIER}-o>": self._view.trigger_browse,
             f"<{SHORTCUT_MODIFIER}-f>": self._view.trigger_search,
+            f"<{SHORTCUT_MODIFIER}-j>": lambda: self._view.trigger_low_confidence(1),
+            f"<{SHORTCUT_MODIFIER}-J>": lambda: self._view.trigger_low_confidence(-1),
             "<Escape>": self._view.trigger_cancel,
         }
 

@@ -190,6 +190,13 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self._player.seek(self._player.position + seconds)
         self.refresh()
 
+    def seek(self, seconds: float) -> None:
+        """Moves to a position, without playing or pausing."""
+        if self._player is None:
+            return
+        self._player.seek(seconds)
+        self.refresh()
+
     def play_from(self, seconds: float) -> None:
         if self._player is None:
             return

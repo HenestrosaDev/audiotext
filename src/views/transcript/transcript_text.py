@@ -165,6 +165,8 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._mode = PLAIN_TEXT_MODE
         self._is_precise = False
         self._low_confidence_score: float | None = None
+        # The start of the low confidence text that was gone to, if any
+        self._current_low_confidence: str | None = None
         self._query = ""
         self._match_case = False
         self._matches: list[tuple[str, str]] = []
@@ -602,6 +604,61 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox.tag_add("current_match", start, end)
         textbox.see(start)
 
+    def go_to_low_confidence(self, step: int) -> float | None:
+        """
+        Shows the next (or the previous) low confidence text of the transcript,
+        after the one that was gone to, or the segment being played. It goes
+        around when it reaches the end (or the start).
+
+        :param step: 1 to go to the next text, -1 to go to the previous one.
+        :return: When the text is said, in seconds, or `None` if there is none.
+        """
+        textbox = self.tbx_transcript
+        if self._mode != TRANSCRIPT_MODE or not textbox.tag_ranges("low_confidence"):
+            return None
+
+        position = self._current_low_confidence
+        if position is None and self._current_segment is not None:
+            position = self._text_starts[self._current_segment]
+
+        if step > 0:
+            after = f"{position}+1c" if position else "1.0"
+            found = textbox.tag_nextrange("low_confidence", after) or (
+                textbox.tag_nextrange("low_confidence", "1.0")
+            )
+        else:
+            before = position or ctk.END
+            found = textbox.tag_prevrange("low_confidence", before) or (
+                textbox.tag_prevrange("low_confidence", ctk.END)
+            )
+        start, end = (str(index) for index in found)
+
+        self._current_low_confidence = start
+        textbox.tag_remove("current_low_confidence", "1.0", ctk.END)
+        textbox.tag_add("current_low_confidence", start, end)
+        textbox.see(start)
+        return self._time_at(start)
+
+    def _time_at(self, index: str) -> float:
+        """When the text at an index of the transcript is said, in seconds."""
+        for (word_start, _word_end), seconds in zip(
+            self._word_ranges, self._word_starts, strict=True
+        ):
+            if word_start == index:
+                return seconds
+
+        # The text of a whole segment (or a word that wasn't found)
+        key = _index_key(index)
+        idx = max(
+            (
+                i
+                for i, start in enumerate(self._text_starts)
+                if _index_key(start) <= key
+            ),
+            default=0,
+        )
+        return self._segments[idx].start
+
     # RENDERING
 
     @property
@@ -623,6 +680,9 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             "low_confidence",
             foreground=self._color(LOW_CONFIDENCE_COLOR),
             underline=True,
+        )
+        textbox.tag_config(
+            "current_low_confidence", background=self._color(CURRENT_MATCH_COLOR)
         )
 
         for textbox in (self.tbx_transcript, self.tbx_plain):
@@ -649,6 +709,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox = self.tbx_transcript
         textbox.configure(state=ctk.NORMAL)
         textbox.delete("1.0", ctk.END)
+        self._current_low_confidence = None
         for tag in textbox.tag_names():
             if tag.startswith("segment_"):
                 textbox.tag_delete(tag)
@@ -727,6 +788,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
 
         # The search highlights are shown above the playback ones
         textbox.tag_raise("current_word")
+        textbox.tag_raise("current_low_confidence")
         textbox.tag_raise("match")
         textbox.tag_raise("current_match")
         textbox.configure(state=ctk.DISABLED)

@@ -1229,6 +1229,45 @@ def test_the_low_confidence_segments_are_highlighted_whole(ui: Ui) -> None:
     assert tagged_texts(transcript, "low_confidence") == ["Nice to meet you."]
 
 
+def test_the_low_confidence_texts_can_be_gone_through(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE, TRANSCRIPT_MODE
+
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    segments = [
+        replace(SEGMENTS[0], words=words),
+        replace(SEGMENTS[1], score=0.2),
+        SEGMENTS[2],
+    ]
+    entry = ui.add(segments=segments, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    seeks: list[float] = []
+    monkeypatch.setattr(view.player, "seek", seeks.append)
+
+    def go_to(step: int) -> str:
+        ui.window.trigger_low_confidence(step)
+        ui.pump()
+        [text] = tagged_texts(view.text.tbx_transcript, "current_low_confidence")
+        return text
+
+    # They are only shown in the transcript, so it's shown
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    assert go_to(1) == "wisper"
+    assert view._mode == TRANSCRIPT_MODE
+    assert go_to(1) == "Nice to meet you."
+    # It goes around at the end and at the start
+    assert go_to(1) == "wisper"
+    assert go_to(-1) == "Nice to meet you."
+    # The player goes to when they are said, without playing
+    assert seeks == [0.5, 1.5, 0.5, 1.5]
+
+
 def test_the_low_confidence_options_need_the_scores_of_the_words(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -1249,19 +1288,21 @@ def test_the_low_confidence_options_need_the_scores_of_the_words(
             for label in (
                 "Highlight low-confidence words",
                 "Low-confidence threshold",
+                "Next low-confidence word",
+                "Previous low-confidence word",
             )
         ]
 
     entry = ui.add(segments=SEGMENTS, text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
-    assert states() == [tk.DISABLED] * 2
+    assert states() == [tk.DISABLED] * 4
 
     words = (TranscriptWord(0.0, 1.0, "Hello", 0.9),)
     entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
-    assert states() == [tk.NORMAL] * 2
+    assert states() == [tk.NORMAL] * 4
 
 
 def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(

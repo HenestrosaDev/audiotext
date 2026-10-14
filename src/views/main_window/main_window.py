@@ -549,6 +549,10 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
                 self.toggle_sidebar()
             self.sidebar.focus_search()
 
+    def trigger_low_confidence(self, step: int) -> None:
+        if self._page == Page.ENTRY and isinstance(self._entry_view, TranscriptView):
+            self._entry_view.go_to_low_confidence(step)
+
     def handle_key(self, event: Any) -> str | None:
         """
         Handles the keys of the playback and of the list, unless the user is
