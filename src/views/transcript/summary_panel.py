@@ -1,3 +1,4 @@
+import tkinter as tk
 from collections.abc import Callable
 from datetime import datetime
 from typing import Any
@@ -5,13 +6,149 @@ from typing import Any
 import customtkinter as ctk
 
 from models.summary import TranscriptSummary
-from utils.i18n import _
+from utils.i18n import L_, _
 from utils.time_format import format_timestamp
 from views.history.formatting import format_full_date
+from views.localization import localize
 from views.style import icons, theme
+from views.transcript.transcript_text import find_matches
 from views.widgets.bindings import bind_wraplength
+from views.widgets.button import icon_button, set_button_state
 from views.widgets.option_menu import skip_scrollbar_forced_layout
 from views.widgets.scrollable_frame import CTkScrollableFrame
+from views.widgets.textbox import CTkTextbox
+
+# (light, dark) colors of the matches of a search, like in the transcript
+MATCH_COLOR = ("#FFF3B0", "#5C4B00")
+CURRENT_MATCH_COLOR = ("#FFC94D", "#A07800")
+
+
+class SummaryText(CTkTextbox):
+    """
+    The summary, its key points and its chapters, which can be selected and
+    searched, but not edited. Clicking the start of a chapter plays it.
+    """
+
+    def __init__(self, master: Any, on_chapter: Callable[[float], None]) -> None:
+        super().__init__(
+            master,
+            wrap=ctk.WORD,
+            font=theme.font(14),
+            fg_color="transparent",
+            border_spacing=10,
+            activate_scrollbars=True,
+            state=ctk.DISABLED,
+        )
+        self._on_chapter = on_chapter
+        self._matches: list[tuple[str, str]] = []
+        self._current_match: int | None = None
+
+        self._textbox.configure(spacing1=2, spacing3=2)
+        self.tag_config("bullet", lmargin1=8, lmargin2=26, spacing3=4)
+        self.tag_config("chapter_start", foreground=self._color(theme.ACCENT_TEXT))
+        self.tag_config("match", background=self._color(MATCH_COLOR))
+        self.tag_config("current_match", background=self._color(CURRENT_MATCH_COLOR))
+        self._tag_fonts()
+
+    def _set_scaling(
+        self, new_widget_scaling: float, new_window_scaling: float
+    ) -> None:
+        super()._set_scaling(new_widget_scaling, new_window_scaling)
+        # The size of the interface changed (see `PreferencesDialog`)
+        self._tag_fonts()
+
+    def _color(self, pair: tuple[str, str]) -> str:
+        value: str = self._apply_appearance_mode(pair)
+        return value
+
+    def _tag_fonts(self) -> None:
+        # CTkTextbox forbids fonts in the tags, since they don't follow its
+        # scaling, so they're set on the Tk widget with the scaled size
+        self._textbox.tag_config(
+            "heading",
+            font=self._apply_font_scaling(theme.font(15, "bold")),
+            spacing1=16,
+            spacing3=6,
+        )
+        self._textbox.tag_config(
+            "chapter_start",
+            font=self._apply_font_scaling(
+                theme.font(12, family=theme.MONOSPACE_FAMILY)
+            ),
+        )
+
+    def set_summary(self, summary: TranscriptSummary) -> None:
+        self.configure(state=ctk.NORMAL)
+        self.delete("1.0", ctk.END)
+        for tag in self.tag_names():
+            if tag.startswith("chapter_") and tag != "chapter_start":
+                self.tag_delete(tag)
+
+        # Its title is the one of the panel
+        self.insert(ctk.END, summary.summary)
+        if summary.key_points:
+            self.insert(ctk.END, "\n" + _("Key points"), "heading")
+            for point in summary.key_points:
+                self.insert(ctk.END, f"\n•  {point}", "bullet")
+        if summary.chapters:
+            self.insert(ctk.END, "\n" + _("Chapters"), "heading")
+            for idx, chapter in enumerate(summary.chapters):
+                tag = f"chapter_{idx}"
+                self.insert(ctk.END, "\n")
+                self.insert(
+                    ctk.END, format_timestamp(chapter.start), ("chapter_start", tag)
+                )
+                self.insert(ctk.END, f"  {chapter.title}")
+                self.tag_bind(
+                    tag,
+                    "<ButtonRelease-1>",
+                    lambda _event, start=chapter.start: self._on_chapter(start),
+                )
+                self.tag_bind(
+                    tag, "<Enter>", lambda _event: self.configure(cursor="hand2")
+                )
+                self.tag_bind(tag, "<Leave>", lambda _event: self.configure(cursor=""))
+        self.configure(state=ctk.DISABLED)
+        self._matches, self._current_match = [], None
+
+    # SEARCH (see `SearchableText`)
+
+    @property
+    def match_status(self) -> tuple[int | None, int]:
+        return self._current_match, len(self._matches)
+
+    def search(
+        self, query: str, match_case: bool = False, current: int | None = None
+    ) -> None:
+        self.tag_remove("match", "1.0", ctk.END)
+        self.tag_remove("current_match", "1.0", ctk.END)
+        # Its own `search` is the one of the find dialog
+        self._matches = find_matches(self._textbox, query, match_case)
+        self._current_match = None
+        if self._matches:
+            if current is None:
+                self.go_to_match(1)
+            else:
+                self._current_match = min(current, len(self._matches) - 1)
+                self.go_to_match(0)
+
+    def go_to_match(self, step: int) -> None:
+        if not self._matches:
+            return
+        if self._current_match is None:
+            self._current_match = 0 if step > 0 else len(self._matches) - 1
+        else:
+            self._current_match = (self._current_match + step) % len(self._matches)
+        start, end = self._matches[self._current_match]
+        self.tag_remove("current_match", "1.0", ctk.END)
+        self.tag_add("current_match", start, end)
+        self.see(start)
+
+    def selected_text(self) -> str:
+        try:
+            return str(self.get(ctk.SEL_FIRST, ctk.SEL_LAST))
+        except tk.TclError:
+            return ""
 
 
 class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
@@ -25,8 +162,11 @@ class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
         self,
         master: Any,
         on_generate: Callable[[], None],
+        on_regenerate: Callable[[], None],
         on_chapter: Callable[[float], None],
+        on_search: Callable[[], None],
         on_copy: Callable[[], None],
+        on_export: Callable[[Any], None],
         on_settings: Callable[[], None],
         on_set_api_key: Callable[[], None],
     ) -> None:
@@ -38,17 +178,60 @@ class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
             corner_radius=12,
         )
         self._on_generate = on_generate
-        self._on_chapter = on_chapter
-        self._on_copy = on_copy
         self._on_settings = on_settings
         self._on_set_api_key = on_set_api_key
 
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+
+        # Like the header of the transcript and of its translation
+        header = ctk.CTkFrame(self, fg_color="transparent")
+        header.grid(row=0, column=0, padx=(16, 8), pady=(8, 0), sticky=ctk.EW)
+        header.grid_columnconfigure(1, weight=1)
+        ctk.CTkLabel(
+            header, text="", image=icons.icon("text", 15, theme.ICON_MUTED)
+        ).grid(row=0, column=0, padx=(0, 6))
+        localize(
+            ctk.CTkLabel(header, font=theme.font(14, "bold"), anchor=ctk.W),
+            text=L_("Summary"),
+        ).grid(row=0, column=1, sticky=ctk.W)
+        self.btn_search = icon_button(
+            header,
+            "search",
+            on_search,
+            lambda: _("Find ({shortcut})").format(
+                shortcut=f"{theme.SHORTCUT_MODIFIER_LABEL}F"
+            ),
+        )
+        self.btn_copy = icon_button(header, "copy", on_copy, L_("Copy"))
+        self.btn_export = icon_button(
+            header, "export", lambda: on_export(self.btn_export), L_("Export")
+        )
+        self.btn_regenerate = icon_button(
+            header, "refresh", on_regenerate, L_("Regenerate the summary")
+        )
+        self._buttons = (self.btn_search, self.btn_copy, self.btn_export)
+        for column, button in enumerate((*self._buttons, self.btn_regenerate), start=2):
+            button.grid(row=0, column=column, padx=(2, 0))
+
+        # Who generated it and when, in the row of the hints of the transcript
+        self.lbl_details = ctk.CTkLabel(
+            self,
+            text="",
+            font=theme.font(12),
+            text_color=theme.HINT_TEXT,
+            anchor=ctk.W,
+            justify=ctk.LEFT,
+        )
+        self.lbl_details.grid(row=1, column=0, padx=16, pady=(2, 0), sticky=ctk.EW)
+        bind_wraplength(self.lbl_details, minimum=150)
+
         self.frm_content = CTkScrollableFrame(self, fg_color="transparent")
         skip_scrollbar_forced_layout(self.frm_content)
-        self.frm_content.grid(row=0, column=0, padx=2, pady=2, sticky=ctk.NSEW)
+        self.frm_content.grid(row=2, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
         self.frm_content.grid_columnconfigure(0, weight=1)
+        # Shown instead of the messages, once there is a summary
+        self.text = SummaryText(self, on_chapter)
 
     def show(
         self,
@@ -67,6 +250,22 @@ class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
         """
         for widget in self.frm_content.winfo_children():
             widget.destroy()
+
+        has_summary = summary is not None and not is_loading
+        for button in self._buttons:
+            set_button_state(button, ctk.NORMAL if has_summary else ctk.DISABLED)
+        # Shown only when there is a summary to generate again
+        if has_summary:
+            self.btn_regenerate.grid()
+        else:
+            self.btn_regenerate.grid_remove()
+        if has_summary:
+            self.frm_content.grid_remove()
+            self.text.grid(row=2, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
+        else:
+            self.lbl_details.grid_remove()
+            self.text.grid_remove()
+            self.frm_content.grid()
 
         if is_loading:
             self._show_message(
@@ -102,7 +301,8 @@ class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
                 ],
             )
         else:
-            self._show_summary(summary, error)
+            self._show_details(summary, error)
+            self.text.set_summary(summary)
 
     # STATES
 
@@ -163,109 +363,19 @@ class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
                     **(theme.PRIMARY_BUTTON if column == 0 else theme.SECONDARY_BUTTON),
                 ).grid(row=0, column=column, padx=4)
 
-    def _show_summary(self, summary: TranscriptSummary, error: str) -> None:
-        row = 0
-
-        def section(title: str) -> None:
-            nonlocal row
-            ctk.CTkLabel(
-                self.frm_content, text=title, font=theme.font(15, "bold"), anchor=ctk.W
-            ).grid(row=row, column=0, padx=18, pady=(16, 6), sticky=ctk.W)
-            row += 1
-
-        def paragraph(text: str, padx: Any = 18, pady: Any = 0) -> None:
-            nonlocal row
-            label = ctk.CTkLabel(
-                self.frm_content,
-                text=text,
-                font=theme.font(14),
-                anchor=ctk.W,
-                justify=ctk.LEFT,
-            )
-            label.grid(row=row, column=0, padx=padx, pady=pady, sticky=ctk.EW)
-            bind_wraplength(label, margin=10, minimum=200)
-            row += 1
-
-        section(_("Summary"))
-        paragraph(summary.summary)
-        if summary.is_partial:
-            hint = ctk.CTkLabel(
-                self.frm_content,
-                text=_(
+    def _show_details(self, summary: TranscriptSummary, error: str) -> None:
+        """Shows who generated it and when, or why it couldn't be regenerated."""
+        if error:
+            text, color = error, theme.ERROR_TEXT
+        else:
+            text, color = self._describe(summary), theme.HINT_TEXT
+            if summary.is_partial:
+                text += "\n" + _(
                     "The transcription is very long, so only its beginning was "
                     "summarized."
-                ),
-                font=theme.font(12),
-                text_color=theme.HINT_TEXT,
-                anchor=ctk.W,
-            )
-            hint.grid(row=row, column=0, padx=18, pady=(4, 0), sticky=ctk.EW)
-            row += 1
-
-        if summary.key_points:
-            section(_("Key points"))
-            for point in summary.key_points:
-                paragraph(f"•  {point}", padx=(24, 18), pady=(0, 4))
-
-        if summary.chapters:
-            section(_("Chapters"))
-            for chapter in summary.chapters:
-                chapter_row = ctk.CTkFrame(self.frm_content, fg_color="transparent")
-                chapter_row.grid(row=row, column=0, padx=14, sticky=ctk.EW)
-                chapter_row.grid_columnconfigure(1, weight=1)
-                ctk.CTkButton(
-                    chapter_row,
-                    text=format_timestamp(chapter.start),
-                    width=64,
-                    height=26,
-                    font=theme.font(12, family=theme.MONOSPACE_FAMILY),
-                    command=lambda start=chapter.start: self._on_chapter(start),
-                    **theme.SECONDARY_BUTTON,
-                ).grid(row=0, column=0, pady=2)
-                ctk.CTkLabel(
-                    chapter_row, text=chapter.title, font=theme.font(14), anchor=ctk.W
-                ).grid(row=0, column=1, padx=(10, 0), sticky=ctk.W)
-                row += 1
-
-        footer = ctk.CTkFrame(self.frm_content, fg_color="transparent")
-        footer.grid(row=row, column=0, padx=18, pady=(20, 16), sticky=ctk.EW)
-        footer.grid_columnconfigure(0, weight=1)
-        ctk.CTkLabel(
-            footer,
-            text=self._describe(summary),
-            font=theme.font(12),
-            text_color=theme.HINT_TEXT,
-            anchor=ctk.W,
-        ).grid(row=0, column=0, sticky=ctk.W)
-        ctk.CTkButton(
-            footer,
-            text=_("Copy"),
-            image=icons.icon("copy", 14),
-            compound=ctk.LEFT,
-            width=0,
-            height=28,
-            command=self._on_copy,
-            **theme.SECONDARY_BUTTON,
-        ).grid(row=0, column=1, padx=(8, 0))
-        ctk.CTkButton(
-            footer,
-            text=_("Regenerate"),
-            image=icons.icon("refresh", 14),
-            compound=ctk.LEFT,
-            width=0,
-            height=28,
-            command=self._on_generate,
-            **theme.SECONDARY_BUTTON,
-        ).grid(row=0, column=2, padx=(8, 0))
-
-        if error:
-            ctk.CTkLabel(
-                footer,
-                text=error,
-                font=theme.font(12),
-                text_color=theme.ERROR_TEXT,
-                anchor=ctk.W,
-            ).grid(row=1, column=0, columnspan=3, pady=(6, 0), sticky=ctk.W)
+                )
+        self.lbl_details.configure(text=text, text_color=color)
+        self.lbl_details.grid()
 
     @staticmethod
     def _describe(summary: TranscriptSummary) -> str:

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 10:43+0200\n"
+"POT-Creation-Date: 2026-10-14 10:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -280,29 +280,31 @@ msgstr "De YouTube-video heeft geen audiospoor."
 msgid "No audio was recorded."
 msgstr "Er is geen audio opgenomen."
 
-#: src/utils/exporters.py:175 src/utils/exporters.py:212
-#: src/views/settings/preferences_dialog.py:504
-#: src/views/transcript/summary_panel.py:189
-#: src/views/transcript/transcript_view.py:508
-msgid "Summary"
-msgstr "Samenvatting"
-
-#: src/utils/exporters.py:177 src/utils/exporters.py:215
-#: src/views/transcript/summary_panel.py:206
-msgid "Key points"
-msgstr "Belangrijkste punten"
-
-#: src/utils/exporters.py:181 src/utils/exporters.py:219
-#: src/views/transcript/summary_panel.py:211
-msgid "Chapters"
-msgstr "Hoofdstukken"
-
-#: src/utils/exporters.py:187 src/utils/exporters.py:224
+#: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:489
+#: src/views/transcript/transcript_view.py:538
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Transcriptie"
+
+#: src/utils/exporters.py:195 src/utils/exporters.py:223
+#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:504
+#: src/views/transcript/summary_panel.py:196
+#: src/views/transcript/transcript_view.py:392
+#: src/views/transcript/transcript_view.py:397
+#: src/views/transcript/transcript_view.py:557
+msgid "Summary"
+msgstr "Samenvatting"
+
+#: src/utils/exporters.py:197 src/utils/exporters.py:226
+#: src/utils/exporters.py:310 src/views/transcript/summary_panel.py:90
+msgid "Key points"
+msgstr "Belangrijkste punten"
+
+#: src/utils/exporters.py:201 src/utils/exporters.py:230
+#: src/utils/exporters.py:315 src/views/transcript/summary_panel.py:94
+msgid "Chapters"
+msgstr "Hoofdstukken"
 
 #: src/utils/time_format.py:80
 #, python-brace-format
@@ -338,14 +340,14 @@ msgid "{count} failed"
 msgstr "{count} mislukt"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1477
+#: src/views/transcript/transcript_view.py:1543
 msgid "Open the folder of the saved files"
 msgstr "Map met opgeslagen bestanden openen"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:472
-#: src/views/transcript/transcript_view.py:1439
+#: src/views/transcript/transcript_view.py:521
+#: src/views/transcript/transcript_view.py:1505
 msgid "Transcribe again"
 msgstr "Opnieuw transcriberen"
 
@@ -387,8 +389,8 @@ msgstr "Bron"
 #: src/views/new_transcription/microphone_view.py:467
 #: src/views/new_transcription/microphone_view.py:473
 #: src/views/new_transcription/new_transcription_view.py:148
-#: src/views/transcript/summary_panel.py:88
-#: src/views/transcript/summary_panel.py:101
+#: src/views/transcript/summary_panel.py:287
+#: src/views/transcript/summary_panel.py:300
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -563,22 +565,22 @@ msgid "Rename"
 msgstr "Hernoemen"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1489
+#: src/views/transcript/transcript_view.py:1555
 msgid "Edit note…"
 msgstr "Notitie bewerken…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1489
+#: src/views/transcript/transcript_view.py:1555
 msgid "Add note…"
 msgstr "Notitie toevoegen…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1494
+#: src/views/transcript/transcript_view.py:1560
 msgid "Delete note…"
 msgstr "Notitie verwijderen…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1500
+#: src/views/transcript/transcript_view.py:1566
 msgid "Edit tag…"
 msgstr "Label bewerken…"
 
@@ -603,7 +605,7 @@ msgid "Move to group"
 msgstr "Naar groep verplaatsen"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1505
+#: src/views/transcript/transcript_view.py:1571
 msgid "Delete…"
 msgstr "Verwijderen…"
 
@@ -885,10 +887,10 @@ msgid "Record yourself or a meeting. The recording is kept in your history."
 msgstr "Neem jezelf of een vergadering op. De opname blijft in je geschiedenis."
 
 #: src/views/new_transcription/microphone_view.py:276
-#: src/views/transcript/summary_panel.py:242
-#: src/views/transcript/transcript_view.py:462
-#: src/views/transcript/transcript_view.py:1010
-#: src/views/transcript/transcript_view.py:1422
+#: src/views/transcript/summary_panel.py:206
+#: src/views/transcript/transcript_view.py:511
+#: src/views/transcript/transcript_view.py:1076
+#: src/views/transcript/transcript_view.py:1488
 #: src/views/transcript/translation_panel.py:145
 msgid "Copy"
 msgstr "Kopiëren"
@@ -1196,7 +1198,7 @@ msgstr "API-sleutels"
 
 #: src/views/settings/preferences_dialog.py:188
 #: src/views/transcript/player_bar.py:109
-#: src/views/transcript/transcript_view.py:506
+#: src/views/transcript/transcript_view.py:555
 msgid "Subtitles"
 msgstr "Ondertitels"
 
@@ -1272,7 +1274,7 @@ msgstr "API-sleutel wijzigen…"
 #: src/views/settings/cards/engine_card.py:140
 #: src/views/settings/preferences_dialog.py:467
 #: src/views/settings/preferences_dialog.py:480
-#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/summary_panel.py:299
 #: src/views/transcript/translation_panel.py:482
 #: src/views/transcript/translation_panel.py:554
 msgid "Set API key…"
@@ -1761,7 +1763,7 @@ msgid "Choose where to save the transcriptions"
 msgstr "Kies waar de transcripties worden opgeslagen"
 
 #: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1107
+#: src/views/transcript/transcript_view.py:1173
 msgid "Edit text"
 msgstr "Tekst bewerken"
 
@@ -1775,7 +1777,7 @@ msgid "Rename speakers"
 msgstr "Sprekers hernoemen"
 
 #: src/views/transcript/edit_dialogs.py:74
-#: src/views/transcript/transcript_view.py:1136
+#: src/views/transcript/transcript_view.py:1202
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "Opslaan"
@@ -1860,26 +1862,42 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spatie: afspelen/pauzeren · ←/→: {seconds} s terug/vooruit"
 
 #: src/views/transcript/player_bar.py:257
-#: src/views/transcript/transcript_view.py:1357
+#: src/views/transcript/transcript_view.py:1423
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "De audio kan niet worden afgespeeld: {error}"
 
-#: src/views/transcript/summary_panel.py:73
+#: src/views/transcript/summary_panel.py:202
+#, python-brace-format
+msgid "Find ({shortcut})"
+msgstr "Zoeken ({shortcut})"
+
+#: src/views/transcript/summary_panel.py:208
+#: src/views/transcript/transcript_view.py:514
+#: src/views/transcript/translation_panel.py:147
+msgid "Export"
+msgstr "Exporteren"
+
+#: src/views/transcript/summary_panel.py:211
+#: src/views/transcript/transcript_view.py:795
+msgid "Regenerate the summary"
+msgstr "Samenvatting opnieuw genereren"
+
+#: src/views/transcript/summary_panel.py:272
 msgid "Summarizing…"
 msgstr "Samenvatten…"
 
-#: src/views/transcript/summary_panel.py:74
+#: src/views/transcript/summary_panel.py:273
 #, python-brace-format
 msgid "{provider} is reading the transcription. It takes a moment."
 msgstr "{provider} leest de transcriptie. Dit duurt even."
 
-#: src/views/transcript/summary_panel.py:80
-#: src/views/transcript/summary_panel.py:93
+#: src/views/transcript/summary_panel.py:279
+#: src/views/transcript/summary_panel.py:292
 msgid "No summary yet"
 msgstr "Nog geen samenvatting"
 
-#: src/views/transcript/summary_panel.py:82
+#: src/views/transcript/summary_panel.py:281
 #, python-brace-format
 msgid ""
 "Generate a summary, the key points and the chapters of the transcription "
@@ -1888,11 +1906,11 @@ msgstr ""
 "Maak met {provider} een samenvatting, de belangrijkste punten en de "
 "hoofdstukken van de transcriptie."
 
-#: src/views/transcript/summary_panel.py:87
+#: src/views/transcript/summary_panel.py:286
 msgid "Generate summary"
 msgstr "Samenvatting maken"
 
-#: src/views/transcript/summary_panel.py:95
+#: src/views/transcript/summary_panel.py:294
 #, python-brace-format
 msgid ""
 "Set the API key of {provider} to summarize, or choose another provider in"
@@ -1901,15 +1919,11 @@ msgstr ""
 "Stel de API-sleutel van {provider} in om samen te vatten, of kies een "
 "andere aanbieder in de instellingen."
 
-#: src/views/transcript/summary_panel.py:195
+#: src/views/transcript/summary_panel.py:374
 msgid "The transcription is very long, so only its beginning was summarized."
 msgstr "De transcriptie is erg lang, dus alleen het begin is samengevat."
 
-#: src/views/transcript/summary_panel.py:252
-msgid "Regenerate"
-msgstr "Opnieuw maken"
-
-#: src/views/transcript/summary_panel.py:279
+#: src/views/transcript/summary_panel.py:389
 #, python-brace-format
 msgid "Generated by {model} · {date}"
 msgstr "Gemaakt door {model} · {date}"
@@ -1940,190 +1954,193 @@ msgstr ""
 msgid "This transcription has no timestamps."
 msgstr "Deze transcriptie heeft geen tijdstempels."
 
-#: src/views/transcript/transcript_view.py:115
+#: src/views/transcript/transcript_view.py:121
 msgid "Plain text (.txt)"
 msgstr "Platte tekst (.txt)"
 
-#: src/views/transcript/transcript_view.py:116
+#: src/views/transcript/transcript_view.py:122
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:117
+#: src/views/transcript/transcript_view.py:123
 msgid "Word document (.docx)"
 msgstr "Word-document (.docx)"
 
-#: src/views/transcript/transcript_view.py:118
+#: src/views/transcript/transcript_view.py:124
 msgid "Subtitles (.srt)"
 msgstr "Ondertitels (.srt)"
 
-#: src/views/transcript/transcript_view.py:119
+#: src/views/transcript/transcript_view.py:125
 msgid "Web subtitles (.vtt)"
 msgstr "Webondertitels (.vtt)"
 
-#: src/views/transcript/transcript_view.py:120
+#: src/views/transcript/transcript_view.py:126
 msgid "Table (.tsv)"
 msgstr "Tabel (.tsv)"
 
-#: src/views/transcript/transcript_view.py:121
+#: src/views/transcript/transcript_view.py:127
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:333
+#: src/views/transcript/transcript_view.py:362
 msgid "Export transcription"
 msgstr "Transcriptie exporteren"
 
-#: src/views/transcript/transcript_view.py:353
+#: src/views/transcript/transcript_view.py:383
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Vertaling naar het {language} exporteren"
 
-#: src/views/transcript/transcript_view.py:384
+#: src/views/transcript/transcript_view.py:396
+msgid "Export summary"
+msgstr "Samenvatting exporteren"
+
+#: src/views/transcript/transcript_view.py:433
 msgid "All files"
 msgstr "Alle bestanden"
 
-#: src/views/transcript/transcript_view.py:393
+#: src/views/transcript/transcript_view.py:442
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Exporteren mislukt: {error}"
 
-#: src/views/transcript/transcript_view.py:396
+#: src/views/transcript/transcript_view.py:445
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Geëxporteerd naar {path}"
 
-#: src/views/transcript/transcript_view.py:457
+#: src/views/transcript/transcript_view.py:506
 #: src/views/transcript/translation_panel.py:141
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Zoeken en vervangen ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:465
-#: src/views/transcript/translation_panel.py:147
-msgid "Export"
-msgstr "Exporteren"
-
-#: src/views/transcript/transcript_view.py:507
+#: src/views/transcript/transcript_view.py:556
 msgid "Plain text"
 msgstr "Platte tekst"
 
-#: src/views/transcript/transcript_view.py:516
+#: src/views/transcript/transcript_view.py:565
 #: src/views/transcript/translation_panel.py:406
 msgid "Translate"
 msgstr "Vertalen"
 
-#: src/views/transcript/transcript_view.py:649
+#: src/views/transcript/transcript_view.py:699
 msgid "Find and replace in the transcription"
 msgstr "Zoeken en vervangen in de transcriptie"
 
-#: src/views/transcript/transcript_view.py:659
+#: src/views/transcript/transcript_view.py:709
 msgid "Find and replace in the translation"
 msgstr "Zoeken en vervangen in de vertaling"
 
-#: src/views/transcript/transcript_view.py:660
+#: src/views/transcript/transcript_view.py:710
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Zoeken en vervangen in de vertaling naar het {language}"
 
-#: src/views/transcript/transcript_view.py:740
-msgid "Summary copied."
-msgstr "Samenvatting gekopieerd."
+#: src/views/transcript/transcript_view.py:723
+msgid "Find in the summary"
+msgstr "Zoeken in de samenvatting"
 
-#: src/views/transcript/transcript_view.py:882
+#: src/views/transcript/transcript_view.py:796
+msgid "Generate the summary again? The current one will be replaced."
+msgstr "Samenvatting opnieuw genereren? De huidige wordt vervangen."
+
+#: src/views/transcript/transcript_view.py:948
 #: src/views/transcript/translation_panel.py:153
 msgid "Hide the translation"
 msgstr "Vertaling verbergen"
 
-#: src/views/transcript/transcript_view.py:887
+#: src/views/transcript/transcript_view.py:953
 msgid "Show the translation"
 msgstr "Vertaling weergeven"
 
-#: src/views/transcript/transcript_view.py:891
+#: src/views/transcript/transcript_view.py:957
 #: src/views/transcript/translation_panel.py:295
 msgid "Translate into another language…"
 msgstr "Vertalen naar een andere taal…"
 
-#: src/views/transcript/transcript_view.py:902
+#: src/views/transcript/transcript_view.py:968
 msgid "Show it as the subtitles of the video"
 msgstr "Als ondertitels van de video tonen"
 
-#: src/views/transcript/transcript_view.py:909
+#: src/views/transcript/transcript_view.py:975
 msgid "Delete the translation"
 msgstr "Vertaling verwijderen"
 
-#: src/views/transcript/transcript_view.py:1007
-#: src/views/transcript/transcript_view.py:1420
+#: src/views/transcript/transcript_view.py:1073
+#: src/views/transcript/transcript_view.py:1486
 msgid "Play from here"
 msgstr "Vanaf hier afspelen"
 
-#: src/views/transcript/transcript_view.py:1015
-#: src/views/transcript/transcript_view.py:1423
+#: src/views/transcript/transcript_view.py:1081
+#: src/views/transcript/transcript_view.py:1489
 msgid "Edit text…"
 msgstr "Tekst bewerken…"
 
-#: src/views/transcript/transcript_view.py:1015
+#: src/views/transcript/transcript_view.py:1081
 msgid "Translate text…"
 msgstr "Tekst vertalen…"
 
-#: src/views/transcript/transcript_view.py:1019
+#: src/views/transcript/transcript_view.py:1085
 msgid "Edit the timing…"
 msgstr "Timing bewerken…"
 
-#: src/views/transcript/transcript_view.py:1023
+#: src/views/transcript/transcript_view.py:1089
 msgid "Add a segment after…"
 msgstr "Segment erna toevoegen…"
 
-#: src/views/transcript/transcript_view.py:1028
-#: src/views/transcript/transcript_view.py:1193
+#: src/views/transcript/transcript_view.py:1094
+#: src/views/transcript/transcript_view.py:1259
 msgid "Delete the segment"
 msgstr "Segment verwijderen"
 
-#: src/views/transcript/transcript_view.py:1107
+#: src/views/transcript/transcript_view.py:1173
 msgid "Translate text"
 msgstr "Tekst vertalen"
 
-#: src/views/transcript/transcript_view.py:1108
+#: src/views/transcript/transcript_view.py:1174
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Vertaling van ‘{text}’, gezegd van {start} tot {end}:"
 
-#: src/views/transcript/transcript_view.py:1112
+#: src/views/transcript/transcript_view.py:1178
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Vertaling van het segment van {start} tot {end}:"
 
-#: src/views/transcript/transcript_view.py:1135
+#: src/views/transcript/transcript_view.py:1201
 msgid "Edit the timing"
 msgstr "Timing bewerken"
 
-#: src/views/transcript/transcript_view.py:1161
+#: src/views/transcript/transcript_view.py:1227
 msgid "Add a segment"
 msgstr "Segment toevoegen"
 
-#: src/views/transcript/transcript_view.py:1162
+#: src/views/transcript/transcript_view.py:1228
 msgid "Add"
 msgstr "Toevoegen"
 
-#: src/views/transcript/transcript_view.py:1163
+#: src/views/transcript/transcript_view.py:1229
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Het nieuwe segment komt na het segment op {time}:"
 
-#: src/views/transcript/transcript_view.py:1194
+#: src/views/transcript/transcript_view.py:1260
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "Segment ‘{text}’ verwijderen?"
 
-#: src/views/transcript/transcript_view.py:1250
+#: src/views/transcript/transcript_view.py:1316
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "Het segment op {time}, nog niet vertaald."
 
-#: src/views/transcript/transcript_view.py:1286
+#: src/views/transcript/transcript_view.py:1352
 #: src/views/transcript/translation_panel.py:150
 msgid "Translate again"
 msgstr "Opnieuw vertalen"
 
-#: src/views/transcript/transcript_view.py:1288
+#: src/views/transcript/transcript_view.py:1354
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2132,29 +2149,29 @@ msgstr ""
 "De transcriptie opnieuw naar het {language} vertalen? De wijzigingen in "
 "de vertaling gaan verloren."
 
-#: src/views/transcript/transcript_view.py:1311
+#: src/views/transcript/transcript_view.py:1377
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "De audio is niet beschikbaar: het bronbestand is verplaatst of verwijderd."
 
-#: src/views/transcript/transcript_view.py:1314
+#: src/views/transcript/transcript_view.py:1380
 msgid "The audio isn't available."
 msgstr "De audio is niet beschikbaar."
 
-#: src/views/transcript/transcript_view.py:1425
-#: src/views/transcript/transcript_view.py:1452
+#: src/views/transcript/transcript_view.py:1491
+#: src/views/transcript/transcript_view.py:1518
 msgid "Rename speakers…"
 msgstr "Sprekers hernoemen…"
 
-#: src/views/transcript/transcript_view.py:1441
+#: src/views/transcript/transcript_view.py:1507
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "“{title}” opnieuw transcriberen? De wijzigingen in de tekst gaan verloren."
 
-#: src/views/transcript/transcript_view.py:1462
+#: src/views/transcript/transcript_view.py:1528
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Nauwkeurige tijdstempels (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1485
+#: src/views/transcript/transcript_view.py:1551
 msgid "Rename…"
 msgstr "Hernoemen…"
 

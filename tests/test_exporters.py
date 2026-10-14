@@ -9,10 +9,12 @@ from models.summary import Chapter, TranscriptSummary
 from models.transcript_segment import TranscriptSegment, TranscriptWord
 from utils.config_manager import ConfigManager
 from utils.exporters import (
+    SUMMARY_EXPORTERS,
     ExportDocument,
     Paragraph,
     available_formats,
     export,
+    export_summary,
     paragraphs,
 )
 
@@ -124,6 +126,34 @@ def test_json_includes_the_summary(tmp_path: Path) -> None:
     path = export(tmp_path / "talk", "json", document(summary=SUMMARY))
 
     assert json.loads(path.read_text())["summary"]["summary"] == "A greeting."
+
+
+def test_the_summary_is_exported_to_documents(tmp_path: Path) -> None:
+    # Without the formats of the subtitles or the data of the transcription
+    assert list(SUMMARY_EXPORTERS) == ["txt", "md", "docx"]
+    with pytest.raises(ValueError):
+        export_summary(tmp_path / "talk", "srt", "Talk", SUMMARY)
+
+    txt = export_summary(tmp_path / "talk", "txt", "Talk", SUMMARY).read_text(
+        encoding="utf-8"
+    )
+    assert txt == (
+        "Summary\n\nA greeting.\n\nKey points\n\n• They say hello\n\n"
+        "Chapters\n\n00:00  Greeting\n01:01:01  Farewell\n"
+    )
+
+    md = export_summary(tmp_path / "talk", "md", "Talk", SUMMARY).read_text(
+        encoding="utf-8"
+    )
+    assert md.startswith("# Talk\n\n## Summary\n\nA greeting.")
+    assert "- **01:01:01** Farewell" in md
+    # Only the summary, not the transcription
+    assert "Transcription" not in md
+
+    docx = Document(str(export_summary(tmp_path / "talk", "docx", "Talk", SUMMARY)))
+    texts = [paragraph.text for paragraph in docx.paragraphs]
+    assert texts[:3] == ["Talk", "Summary", "A greeting."]
+    assert "Transcription" not in texts
 
 
 def test_timed_formats_need_segments(tmp_path: Path) -> None:

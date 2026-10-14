@@ -462,6 +462,26 @@ def test_a_summary_is_generated_and_exported(
         assert target.exists()
     assert "A short talk." in (tmp_path / "export.md").read_text(encoding="utf-8")
 
+    # The panel shows who generated it above it, and exports it by itself
+    panel = view.summary_panel
+    assert panel.btn_regenerate.winfo_ismapped()
+    assert panel.lbl_details.cget("text") == "model"
+    assert panel.lbl_details.winfo_ismapped()
+    assert panel.btn_export.cget("state") == ctk.NORMAL
+    initial_files: list[str] = []
+
+    def save_as(**kwargs: Any) -> str:
+        initial_files.append(kwargs["initialfile"])
+        return str(tmp_path / kwargs["initialfile"])
+
+    monkeypatch.setattr(transcript_view.filedialog, "asksaveasfilename", save_as)
+    view.export_summary("md")
+    # Named so it doesn't replace the transcription
+    assert initial_files[0].endswith(".summary.md")
+    md = (tmp_path / initial_files[0]).read_text(encoding="utf-8")
+    assert "A short talk." in md
+    assert "Hello wisper" not in md
+
 
 def test_the_summary_without_a_key_leads_to_the_settings(ui: Ui) -> None:
 
@@ -483,6 +503,8 @@ def test_the_summary_without_a_key_leads_to_the_settings(ui: Ui) -> None:
     button_texts = buttons(view.summary_panel)
     assert "Set API key…" in button_texts
     assert "Settings" in button_texts
+    # There is no summary to generate again
+    assert not view.summary_panel.btn_regenerate.winfo_ismapped()
 
     view._actions.window.show_preferences(AI_TAB)
     ui.pump()
@@ -1936,8 +1958,10 @@ def test_the_texts_are_generated_again_from_their_headers(
     )
     retried: list[str] = []
     monkeypatch.setattr(view._actions.jobs, "retry_entry", retried.append)
+    summarized: list[str] = []
+    monkeypatch.setattr(view._actions.transcript, "summarize_entry", summarized.append)
     # Each one only after confirming it, since the current one is replaced
-    answers = iter([False, True] * 2)
+    answers = iter([False, True] * 3)
     monkeypatch.setattr(
         transcript_view.messagebox, "askyesno", lambda *_a, **_k: next(answers)
     )
@@ -1950,6 +1974,10 @@ def test_the_texts_are_generated_again_from_their_headers(
     view.btn_regenerate.invoke()
     view.btn_regenerate.invoke()
     assert retried == [entry.id]
+
+    view._regenerate_summary()
+    view._regenerate_summary()
+    assert summarized == [entry.id]
 
     # Not in the menu anymore
     menus: list[tk.Menu] = []
@@ -1966,6 +1994,36 @@ def test_the_texts_are_generated_again_from_their_headers(
     ]
     assert "Transcribe again" not in labels
     menus[0].destroy()
+
+
+def test_the_summary_can_be_searched(ui: Ui) -> None:
+    summary = TranscriptSummary(
+        "A short talk.", ("They talk",), (Chapter(0, "Talk"),), "model", ""
+    )
+    entry = ui.add(segments=SEGMENTS, text=TEXT, summary=summary.to_dict())
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(view._modes.value("Summary"))
+    ui.pump()
+
+    # ⌘F finds in the summary while it's shown, without replacing
+    view.focus_search()
+    ui.pump()
+    dialog = view._find_dialog
+    assert dialog is not None
+    assert dialog.title() == "Find in the summary"
+    assert not dialog.ent_replacement.winfo_ismapped()
+    dialog._find.set("talk")
+    ui.pump()
+    assert view.summary_panel.text.match_status == (0, 3)
+    dialog.go_to_match(1)
+    assert view.summary_panel.text.match_status == (1, 3)
+
+    # The text it searches is hidden with the summary
+    view._on_mode_change(view._modes.value("Plain text"))
+    ui.pump()
+    assert view._find_dialog is None
 
 
 def test_a_manual_translation_cant_be_generated_again(ui: Ui) -> None:

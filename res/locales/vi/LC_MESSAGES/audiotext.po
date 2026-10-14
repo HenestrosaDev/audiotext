@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 10:43+0200\n"
+"POT-Creation-Date: 2026-10-14 10:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -281,29 +281,31 @@ msgstr "Video YouTube không có rãnh âm thanh."
 msgid "No audio was recorded."
 msgstr "Không ghi được âm thanh nào."
 
-#: src/utils/exporters.py:175 src/utils/exporters.py:212
-#: src/views/settings/preferences_dialog.py:504
-#: src/views/transcript/summary_panel.py:189
-#: src/views/transcript/transcript_view.py:508
-msgid "Summary"
-msgstr "Bản tóm tắt"
-
-#: src/utils/exporters.py:177 src/utils/exporters.py:215
-#: src/views/transcript/summary_panel.py:206
-msgid "Key points"
-msgstr "Ý chính"
-
-#: src/utils/exporters.py:181 src/utils/exporters.py:219
-#: src/views/transcript/summary_panel.py:211
-msgid "Chapters"
-msgstr "Chương"
-
-#: src/utils/exporters.py:187 src/utils/exporters.py:224
+#: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:489
+#: src/views/transcript/transcript_view.py:538
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Chép lời"
+
+#: src/utils/exporters.py:195 src/utils/exporters.py:223
+#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:504
+#: src/views/transcript/summary_panel.py:196
+#: src/views/transcript/transcript_view.py:392
+#: src/views/transcript/transcript_view.py:397
+#: src/views/transcript/transcript_view.py:557
+msgid "Summary"
+msgstr "Bản tóm tắt"
+
+#: src/utils/exporters.py:197 src/utils/exporters.py:226
+#: src/utils/exporters.py:310 src/views/transcript/summary_panel.py:90
+msgid "Key points"
+msgstr "Ý chính"
+
+#: src/utils/exporters.py:201 src/utils/exporters.py:230
+#: src/utils/exporters.py:315 src/views/transcript/summary_panel.py:94
+msgid "Chapters"
+msgstr "Chương"
 
 #: src/utils/time_format.py:80
 #, python-brace-format
@@ -339,14 +341,14 @@ msgid "{count} failed"
 msgstr "{count} thất bại"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1477
+#: src/views/transcript/transcript_view.py:1543
 msgid "Open the folder of the saved files"
 msgstr "Mở thư mục chứa các tệp đã lưu"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:472
-#: src/views/transcript/transcript_view.py:1439
+#: src/views/transcript/transcript_view.py:521
+#: src/views/transcript/transcript_view.py:1505
 msgid "Transcribe again"
 msgstr "Chép lời lại"
 
@@ -388,8 +390,8 @@ msgstr "Nguồn"
 #: src/views/new_transcription/microphone_view.py:467
 #: src/views/new_transcription/microphone_view.py:473
 #: src/views/new_transcription/new_transcription_view.py:148
-#: src/views/transcript/summary_panel.py:88
-#: src/views/transcript/summary_panel.py:101
+#: src/views/transcript/summary_panel.py:287
+#: src/views/transcript/summary_panel.py:300
 msgid "Settings"
 msgstr "Cài đặt"
 
@@ -564,22 +566,22 @@ msgid "Rename"
 msgstr "Đổi tên"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1489
+#: src/views/transcript/transcript_view.py:1555
 msgid "Edit note…"
 msgstr "Chỉnh sửa ghi chú…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1489
+#: src/views/transcript/transcript_view.py:1555
 msgid "Add note…"
 msgstr "Thêm ghi chú…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1494
+#: src/views/transcript/transcript_view.py:1560
 msgid "Delete note…"
 msgstr "Xóa ghi chú…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1500
+#: src/views/transcript/transcript_view.py:1566
 msgid "Edit tag…"
 msgstr "Chỉnh sửa nhãn…"
 
@@ -604,7 +606,7 @@ msgid "Move to group"
 msgstr "Chuyển vào nhóm"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1505
+#: src/views/transcript/transcript_view.py:1571
 msgid "Delete…"
 msgstr "Xóa…"
 
@@ -884,10 +886,10 @@ msgstr ""
 "bạn."
 
 #: src/views/new_transcription/microphone_view.py:276
-#: src/views/transcript/summary_panel.py:242
-#: src/views/transcript/transcript_view.py:462
-#: src/views/transcript/transcript_view.py:1010
-#: src/views/transcript/transcript_view.py:1422
+#: src/views/transcript/summary_panel.py:206
+#: src/views/transcript/transcript_view.py:511
+#: src/views/transcript/transcript_view.py:1076
+#: src/views/transcript/transcript_view.py:1488
 #: src/views/transcript/translation_panel.py:145
 msgid "Copy"
 msgstr "Sao chép"
@@ -1190,7 +1192,7 @@ msgstr "Khóa API"
 
 #: src/views/settings/preferences_dialog.py:188
 #: src/views/transcript/player_bar.py:109
-#: src/views/transcript/transcript_view.py:506
+#: src/views/transcript/transcript_view.py:555
 msgid "Subtitles"
 msgstr "Phụ đề"
 
@@ -1266,7 +1268,7 @@ msgstr "Đổi khóa API…"
 #: src/views/settings/cards/engine_card.py:140
 #: src/views/settings/preferences_dialog.py:467
 #: src/views/settings/preferences_dialog.py:480
-#: src/views/transcript/summary_panel.py:100
+#: src/views/transcript/summary_panel.py:299
 #: src/views/transcript/translation_panel.py:482
 #: src/views/transcript/translation_panel.py:554
 msgid "Set API key…"
@@ -1742,7 +1744,7 @@ msgid "Choose where to save the transcriptions"
 msgstr "Chọn nơi lưu các bản chép lời"
 
 #: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1107
+#: src/views/transcript/transcript_view.py:1173
 msgid "Edit text"
 msgstr "Chỉnh sửa văn bản"
 
@@ -1756,7 +1758,7 @@ msgid "Rename speakers"
 msgstr "Đổi tên người nói"
 
 #: src/views/transcript/edit_dialogs.py:74
-#: src/views/transcript/transcript_view.py:1136
+#: src/views/transcript/transcript_view.py:1202
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "Lưu"
@@ -1841,26 +1843,42 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Phím cách: phát/tạm dừng · ←/→: lùi/tới {seconds} giây"
 
 #: src/views/transcript/player_bar.py:257
-#: src/views/transcript/transcript_view.py:1357
+#: src/views/transcript/transcript_view.py:1423
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Không thể phát âm thanh: {error}"
 
-#: src/views/transcript/summary_panel.py:73
+#: src/views/transcript/summary_panel.py:202
+#, python-brace-format
+msgid "Find ({shortcut})"
+msgstr "Tìm ({shortcut})"
+
+#: src/views/transcript/summary_panel.py:208
+#: src/views/transcript/transcript_view.py:514
+#: src/views/transcript/translation_panel.py:147
+msgid "Export"
+msgstr "Xuất"
+
+#: src/views/transcript/summary_panel.py:211
+#: src/views/transcript/transcript_view.py:795
+msgid "Regenerate the summary"
+msgstr "Tạo lại bản tóm tắt"
+
+#: src/views/transcript/summary_panel.py:272
 msgid "Summarizing…"
 msgstr "Đang tóm tắt…"
 
-#: src/views/transcript/summary_panel.py:74
+#: src/views/transcript/summary_panel.py:273
 #, python-brace-format
 msgid "{provider} is reading the transcription. It takes a moment."
 msgstr "{provider} đang đọc bản chép lời. Việc này mất một lát."
 
-#: src/views/transcript/summary_panel.py:80
-#: src/views/transcript/summary_panel.py:93
+#: src/views/transcript/summary_panel.py:279
+#: src/views/transcript/summary_panel.py:292
 msgid "No summary yet"
 msgstr "Chưa có bản tóm tắt"
 
-#: src/views/transcript/summary_panel.py:82
+#: src/views/transcript/summary_panel.py:281
 #, python-brace-format
 msgid ""
 "Generate a summary, the key points and the chapters of the transcription "
@@ -1869,11 +1887,11 @@ msgstr ""
 "Tạo bản tóm tắt, các ý chính và các chương của bản chép lời bằng "
 "{provider}."
 
-#: src/views/transcript/summary_panel.py:87
+#: src/views/transcript/summary_panel.py:286
 msgid "Generate summary"
 msgstr "Tạo bản tóm tắt"
 
-#: src/views/transcript/summary_panel.py:95
+#: src/views/transcript/summary_panel.py:294
 #, python-brace-format
 msgid ""
 "Set the API key of {provider} to summarize, or choose another provider in"
@@ -1882,15 +1900,11 @@ msgstr ""
 "Đặt khóa API của {provider} để tóm tắt, hoặc chọn nhà cung cấp khác trong"
 " phần cài đặt."
 
-#: src/views/transcript/summary_panel.py:195
+#: src/views/transcript/summary_panel.py:374
 msgid "The transcription is very long, so only its beginning was summarized."
 msgstr "Bản chép lời rất dài nên chỉ phần đầu được tóm tắt."
 
-#: src/views/transcript/summary_panel.py:252
-msgid "Regenerate"
-msgstr "Tạo lại"
-
-#: src/views/transcript/summary_panel.py:279
+#: src/views/transcript/summary_panel.py:389
 #, python-brace-format
 msgid "Generated by {model} · {date}"
 msgstr "Được tạo bởi {model} · {date}"
@@ -1919,190 +1933,193 @@ msgstr ""
 msgid "This transcription has no timestamps."
 msgstr "Bản chép lời này không có dấu thời gian."
 
-#: src/views/transcript/transcript_view.py:115
+#: src/views/transcript/transcript_view.py:121
 msgid "Plain text (.txt)"
 msgstr "Văn bản thuần (.txt)"
 
-#: src/views/transcript/transcript_view.py:116
+#: src/views/transcript/transcript_view.py:122
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:117
+#: src/views/transcript/transcript_view.py:123
 msgid "Word document (.docx)"
 msgstr "Tài liệu Word (.docx)"
 
-#: src/views/transcript/transcript_view.py:118
+#: src/views/transcript/transcript_view.py:124
 msgid "Subtitles (.srt)"
 msgstr "Phụ đề (.srt)"
 
-#: src/views/transcript/transcript_view.py:119
+#: src/views/transcript/transcript_view.py:125
 msgid "Web subtitles (.vtt)"
 msgstr "Phụ đề web (.vtt)"
 
-#: src/views/transcript/transcript_view.py:120
+#: src/views/transcript/transcript_view.py:126
 msgid "Table (.tsv)"
 msgstr "Bảng (.tsv)"
 
-#: src/views/transcript/transcript_view.py:121
+#: src/views/transcript/transcript_view.py:127
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:333
+#: src/views/transcript/transcript_view.py:362
 msgid "Export transcription"
 msgstr "Xuất bản chép lời"
 
-#: src/views/transcript/transcript_view.py:353
+#: src/views/transcript/transcript_view.py:383
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Xuất bản dịch sang {language}"
 
-#: src/views/transcript/transcript_view.py:384
+#: src/views/transcript/transcript_view.py:396
+msgid "Export summary"
+msgstr "Xuất bản tóm tắt"
+
+#: src/views/transcript/transcript_view.py:433
 msgid "All files"
 msgstr "Tất cả tệp"
 
-#: src/views/transcript/transcript_view.py:393
+#: src/views/transcript/transcript_view.py:442
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Không thể xuất: {error}"
 
-#: src/views/transcript/transcript_view.py:396
+#: src/views/transcript/transcript_view.py:445
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Đã xuất sang {path}"
 
-#: src/views/transcript/transcript_view.py:457
+#: src/views/transcript/transcript_view.py:506
 #: src/views/transcript/translation_panel.py:141
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Tìm và thay thế ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:465
-#: src/views/transcript/translation_panel.py:147
-msgid "Export"
-msgstr "Xuất"
-
-#: src/views/transcript/transcript_view.py:507
+#: src/views/transcript/transcript_view.py:556
 msgid "Plain text"
 msgstr "Văn bản thuần"
 
-#: src/views/transcript/transcript_view.py:516
+#: src/views/transcript/transcript_view.py:565
 #: src/views/transcript/translation_panel.py:406
 msgid "Translate"
 msgstr "Dịch"
 
-#: src/views/transcript/transcript_view.py:649
+#: src/views/transcript/transcript_view.py:699
 msgid "Find and replace in the transcription"
 msgstr "Tìm và thay thế trong bản chép lời"
 
-#: src/views/transcript/transcript_view.py:659
+#: src/views/transcript/transcript_view.py:709
 msgid "Find and replace in the translation"
 msgstr "Tìm và thay thế trong bản dịch"
 
-#: src/views/transcript/transcript_view.py:660
+#: src/views/transcript/transcript_view.py:710
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Tìm và thay thế trong bản dịch sang {language}"
 
-#: src/views/transcript/transcript_view.py:740
-msgid "Summary copied."
-msgstr "Đã sao chép bản tóm tắt."
+#: src/views/transcript/transcript_view.py:723
+msgid "Find in the summary"
+msgstr "Tìm trong bản tóm tắt"
 
-#: src/views/transcript/transcript_view.py:882
+#: src/views/transcript/transcript_view.py:796
+msgid "Generate the summary again? The current one will be replaced."
+msgstr "Tạo lại bản tóm tắt? Bản hiện tại sẽ bị thay thế."
+
+#: src/views/transcript/transcript_view.py:948
 #: src/views/transcript/translation_panel.py:153
 msgid "Hide the translation"
 msgstr "Ẩn bản dịch"
 
-#: src/views/transcript/transcript_view.py:887
+#: src/views/transcript/transcript_view.py:953
 msgid "Show the translation"
 msgstr "Hiển thị bản dịch"
 
-#: src/views/transcript/transcript_view.py:891
+#: src/views/transcript/transcript_view.py:957
 #: src/views/transcript/translation_panel.py:295
 msgid "Translate into another language…"
 msgstr "Dịch sang ngôn ngữ khác…"
 
-#: src/views/transcript/transcript_view.py:902
+#: src/views/transcript/transcript_view.py:968
 msgid "Show it as the subtitles of the video"
 msgstr "Hiển thị làm phụ đề của video"
 
-#: src/views/transcript/transcript_view.py:909
+#: src/views/transcript/transcript_view.py:975
 msgid "Delete the translation"
 msgstr "Xóa bản dịch"
 
-#: src/views/transcript/transcript_view.py:1007
-#: src/views/transcript/transcript_view.py:1420
+#: src/views/transcript/transcript_view.py:1073
+#: src/views/transcript/transcript_view.py:1486
 msgid "Play from here"
 msgstr "Phát từ đây"
 
-#: src/views/transcript/transcript_view.py:1015
-#: src/views/transcript/transcript_view.py:1423
+#: src/views/transcript/transcript_view.py:1081
+#: src/views/transcript/transcript_view.py:1489
 msgid "Edit text…"
 msgstr "Chỉnh sửa văn bản…"
 
-#: src/views/transcript/transcript_view.py:1015
+#: src/views/transcript/transcript_view.py:1081
 msgid "Translate text…"
 msgstr "Dịch văn bản…"
 
-#: src/views/transcript/transcript_view.py:1019
+#: src/views/transcript/transcript_view.py:1085
 msgid "Edit the timing…"
 msgstr "Chỉnh sửa thời gian…"
 
-#: src/views/transcript/transcript_view.py:1023
+#: src/views/transcript/transcript_view.py:1089
 msgid "Add a segment after…"
 msgstr "Thêm một đoạn phía sau…"
 
-#: src/views/transcript/transcript_view.py:1028
-#: src/views/transcript/transcript_view.py:1193
+#: src/views/transcript/transcript_view.py:1094
+#: src/views/transcript/transcript_view.py:1259
 msgid "Delete the segment"
 msgstr "Xóa đoạn"
 
-#: src/views/transcript/transcript_view.py:1107
+#: src/views/transcript/transcript_view.py:1173
 msgid "Translate text"
 msgstr "Dịch văn bản"
 
-#: src/views/transcript/transcript_view.py:1108
+#: src/views/transcript/transcript_view.py:1174
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Bản dịch của \"{text}\", được nói từ {start} đến {end}:"
 
-#: src/views/transcript/transcript_view.py:1112
+#: src/views/transcript/transcript_view.py:1178
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Bản dịch của đoạn từ {start} đến {end}:"
 
-#: src/views/transcript/transcript_view.py:1135
+#: src/views/transcript/transcript_view.py:1201
 msgid "Edit the timing"
 msgstr "Chỉnh sửa thời gian"
 
-#: src/views/transcript/transcript_view.py:1161
+#: src/views/transcript/transcript_view.py:1227
 msgid "Add a segment"
 msgstr "Thêm một đoạn"
 
-#: src/views/transcript/transcript_view.py:1162
+#: src/views/transcript/transcript_view.py:1228
 msgid "Add"
 msgstr "Thêm"
 
-#: src/views/transcript/transcript_view.py:1163
+#: src/views/transcript/transcript_view.py:1229
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Đoạn mới nằm sau đoạn lúc {time}:"
 
-#: src/views/transcript/transcript_view.py:1194
+#: src/views/transcript/transcript_view.py:1260
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "Xóa đoạn \"{text}\"?"
 
-#: src/views/transcript/transcript_view.py:1250
+#: src/views/transcript/transcript_view.py:1316
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "Đoạn lúc {time}, chưa được dịch."
 
-#: src/views/transcript/transcript_view.py:1286
+#: src/views/transcript/transcript_view.py:1352
 #: src/views/transcript/translation_panel.py:150
 msgid "Translate again"
 msgstr "Dịch lại"
 
-#: src/views/transcript/transcript_view.py:1288
+#: src/views/transcript/transcript_view.py:1354
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2111,29 +2128,29 @@ msgstr ""
 "Dịch lại bản chép lời sang {language}? Các thay đổi trong bản dịch sẽ bị "
 "mất."
 
-#: src/views/transcript/transcript_view.py:1311
+#: src/views/transcript/transcript_view.py:1377
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Âm thanh không khả dụng: tệp nguồn đã bị di chuyển hoặc xóa."
 
-#: src/views/transcript/transcript_view.py:1314
+#: src/views/transcript/transcript_view.py:1380
 msgid "The audio isn't available."
 msgstr "Âm thanh không khả dụng."
 
-#: src/views/transcript/transcript_view.py:1425
-#: src/views/transcript/transcript_view.py:1452
+#: src/views/transcript/transcript_view.py:1491
+#: src/views/transcript/transcript_view.py:1518
 msgid "Rename speakers…"
 msgstr "Đổi tên người nói…"
 
-#: src/views/transcript/transcript_view.py:1441
+#: src/views/transcript/transcript_view.py:1507
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Chép lời lại “{title}”? Các thay đổi trong văn bản sẽ bị mất."
 
-#: src/views/transcript/transcript_view.py:1462
+#: src/views/transcript/transcript_view.py:1528
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Dấu thời gian chính xác (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1485
+#: src/views/transcript/transcript_view.py:1551
 msgid "Rename…"
 msgstr "Đổi tên…"
 
