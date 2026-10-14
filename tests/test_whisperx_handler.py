@@ -50,6 +50,8 @@ def whisperx(monkeypatch: pytest.MonkeyPatch) -> MagicMock:
     monkeypatch.setitem(sys.modules, "whisperx.utils", fake_whisperx.utils)
     monkeypatch.setattr(WhisperXHandler, "_release_memory", staticmethod(lambda: None))
     monkeypatch.setattr(whisperx_handler, "is_model_downloaded", lambda _size: True)
+    monkeypatch.setattr(whisperx_handler, "download_whisper_model", MagicMock())
+    monkeypatch.setattr(whisperx_handler, "download_pyannote_pipeline", MagicMock())
     return fake_whisperx
 
 
@@ -140,6 +142,8 @@ def test_preload_model_does_not_download_the_model(
     whisperx: MagicMock, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(whisperx_handler, "is_model_downloaded", lambda _size: False)
+    download = MagicMock()
+    monkeypatch.setattr(whisperx_handler, "download_whisper_model", download)
     handler = WhisperXHandler()
 
     assert handler.preload_model() is False
@@ -147,6 +151,45 @@ def test_preload_model_does_not_download_the_model(
 
     # The transcription downloads the model when it needs it
     handler.transcribe_file(make_transcription())
+    download.assert_called_once()
+    whisperx.load_model.assert_called_once()
+
+
+def test_the_download_of_the_model_reports_its_progress(
+    whisperx: MagicMock, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(whisperx_handler, "is_model_downloaded", lambda _size: False)
+    monkeypatch.setattr(
+        whisperx_handler,
+        "download_whisper_model",
+        lambda _size, on_progress: [
+            on_progress(done, 1_500_000_000) for done in (300_000_000, 1_500_000_000)
+        ],
+    )
+    reports: list[tuple[str, float | None]] = []
+
+    WhisperXHandler().transcribe_file(
+        make_transcription(), on_progress=lambda *report: reports.append(report)
+    )
+
+    loading = [report for report in reports if "model" in report[0]]
+    # Then it's loaded into memory, which can't be measured
+    assert [fraction for _message, fraction in loading] == [None, 0.2, 1, None]
+    assert loading[1][0].endswith(" 300 MB / 1.5 GB")
+
+
+def test_the_model_is_loaded_if_it_cant_be_downloaded_first(
+    whisperx: MagicMock, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(whisperx_handler, "is_model_downloaded", lambda _size: False)
+    monkeypatch.setattr(
+        whisperx_handler,
+        "download_whisper_model",
+        MagicMock(side_effect=OSError("Offline")),
+    )
+
+    WhisperXHandler().transcribe_file(make_transcription())
+
     whisperx.load_model.assert_called_once()
 
 
@@ -209,8 +252,12 @@ def test_progress_is_reported(whisperx: MagicMock) -> None:
         lambda message, fraction: updates.append((message, fraction)),
     )
 
-    assert ("Transcribing…", 0.5) in updates
-    assert ("Transcribing…", 1.0) in updates
+    # No percentage until WhisperX reports its first batch, since it can't be
+    # measured while it prepares the audio (e.g. detecting the speech)
+    transcribing = [
+        fraction for message, fraction in updates if message == "Transcribing…"
+    ]
+    assert transcribing == [None, 0.5, 1.0]
 
 
 def test_cancellation_aborts_the_transcription(whisperx: MagicMock) -> None:
@@ -397,3 +444,18 @@ class TestDiarization:
 
         with pytest.raises(ValueError, match="accepted the conditions"):
             WhisperXHandler().transcribe_file(make_transcription(should_diarize=True))
+
+    def test_the_download_without_access_shows_how_to_get_it(
+        self, diarize: MagicMock, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        from huggingface_hub.errors import GatedRepoError
+
+        monkeypatch.setattr(
+            whisperx_handler,
+            "download_pyannote_pipeline",
+            MagicMock(side_effect=GatedRepoError("403")),
+        )
+
+        with pytest.raises(ValueError, match="accepted the conditions"):
+            WhisperXHandler().transcribe_file(make_transcription(should_diarize=True))
+        diarize.DiarizationPipeline.assert_not_called()

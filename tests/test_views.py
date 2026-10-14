@@ -13,16 +13,19 @@ from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from functools import cache, partial
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import customtkinter as ctk
 import keyring
 import pytest
 
+import controllers.transcription_queue as transcription_queue
 import utils.constants as c
 import utils.env_keys as env_keys
 import utils.i18n as i18n
 import utils.update_checker as update_checker
+import views.entries.progress_card as progress_card
 from controllers.transcription_queue import Job
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
@@ -1646,6 +1649,36 @@ def test_the_open_views_keep_their_state_in_another_language(
     assert transcript.seg_mode.get() == "Summary"
     assert transcript._modes.get() == "summary"
     ui.window._preferences.destroy()
+
+
+def test_the_progress_card_shows_the_percentage_when_its_known(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(ui.window._jobs, "_run_next", lambda: None)
+    jobs = ui.window._jobs
+    entry = ui.add(title="talk.mp3", status=EntryStatus.PROCESSING)
+    jobs._job = Job(entry_id=entry.id, is_folder=False, is_mic=False)
+    try:
+        jobs.on_transcription_progress("Downloading…", 0.42)
+        ui.window.select_entry(entry.id)
+        ui.pump()
+        card = ui.window._entry_view.card
+        assert card.lbl_percent.cget("text") == "42%"
+        assert card.progress_bar.get() == pytest.approx(0.42)
+
+        # A step that can't be measured shows how long it has been running
+        monkeypatch.setattr(
+            transcription_queue, "time", SimpleNamespace(monotonic=lambda: 100.0)
+        )
+        monkeypatch.setattr(
+            progress_card, "time", SimpleNamespace(monotonic=lambda: 165.0)
+        )
+        jobs.on_transcription_progress("Loading audio…", None)
+        ui.pump()
+        assert card.lbl_percent.cget("text") == "Elapsed 01:05"
+    finally:
+        jobs._job = None
+        ui.pump()
 
 
 def test_the_language_changes_while_a_transcription_runs(

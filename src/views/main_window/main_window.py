@@ -380,6 +380,12 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def on_summary_finished(self, entry: HistoryEntry, error: str | None) -> None:
         self.messages.on_summary_finished(entry, error)
 
+    def on_translation_progress(self, entry_id: str, language: str) -> None:
+        if self._entry_view_id == entry_id and hasattr(
+            self._entry_view, "update_translation_progress"
+        ):
+            self._entry_view.update_translation_progress(language)
+
     def on_translation_finished(self, entry: HistoryEntry, error: str | None) -> None:
         self.messages.on_translation_finished(entry, error)
 

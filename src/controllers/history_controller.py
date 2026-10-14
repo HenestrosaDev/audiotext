@@ -55,6 +55,8 @@ class HistoryController:
         # The same for the translations, by the entry and the language
         self._translating: set[tuple[str, str]] = set()
         self._translation_errors: dict[tuple[str, str], str] = {}
+        # How much of each translation in progress is done, once it's known
+        self._translation_progress: dict[tuple[str, str], float] = {}
 
     # ENTRIES
 
@@ -203,7 +205,15 @@ class HistoryController:
             error = ""
             try:
                 translation = self._translator.translate(
-                    text, segments, is_text_edited, language, provider, model
+                    text,
+                    segments,
+                    is_text_edited,
+                    language,
+                    provider,
+                    model,
+                    lambda fraction: self.view.run_on_ui_thread(
+                        self._on_translation_progress, entry_id, language, fraction
+                    ),
                 )
             except Exception as e:
                 logger.error("Could not translate %s", entry_id, exc_info=e)
@@ -251,6 +261,13 @@ class HistoryController:
     def translating_languages(self, entry_id: str) -> list[str]:
         """The languages that a transcription is being translated into."""
         return sorted(lang for key, lang in self._translating if key == entry_id)
+
+    def get_translation_progress(self, entry_id: str, language: str) -> float | None:
+        """
+        :return: The fraction translated, or None if it's not being translated or
+                 it's not known yet.
+        """
+        return self._translation_progress.get((entry_id, language))
 
     def get_translation_error(self, entry_id: str, language: str) -> str:
         return self._translation_errors.get((entry_id, language), "")
@@ -303,6 +320,14 @@ class HistoryController:
             },
         )
 
+    def _on_translation_progress(
+        self, entry_id: str, language: str, fraction: float
+    ) -> None:
+        # It may arrive after the translation has finished
+        if self.is_translating(entry_id, language):
+            self._translation_progress[(entry_id, language)] = fraction
+            self.view.on_translation_progress(entry_id, language)
+
     def _on_translation_finished(
         self,
         entry_id: str,
@@ -311,6 +336,7 @@ class HistoryController:
         error: str,
     ) -> None:
         self._translating.discard((entry_id, language))
+        self._translation_progress.pop((entry_id, language), None)
         entry = self._store.get(entry_id)
         if entry is None:
             return

@@ -35,7 +35,7 @@ from utils.enums import TimestampGranularities, WhisperApiResponseFormats
 from utils.env_keys import EnvKeys
 from utils.exporters import segments_to_srt, segments_to_vtt
 from utils.i18n import _
-from utils.progress import ProgressCallback, ignore_progress
+from utils.progress import ProgressCallback, ignore_progress, report_audio_time
 
 logger = logging.getLogger(__name__)
 
@@ -364,12 +364,13 @@ class OpenAiApiHandler:
             if len(chunks) == 1:
                 on_progress(_("Transcribing…"), None)
             else:
-                on_progress(
+                # The chunks follow each other, so the audio before this one is done
+                report_audio_time(
                     _("Transcribing chunk {current} of {total}…").format(
                         current=idx + 1, total=len(chunks)
                     ),
-                    idx / len(chunks),
-                )
+                    on_progress,
+                )(start_ms / 1000, len(audio) / 1000)
 
             chunk = audio[start_ms:end_ms]
             response = OpenAiApiHandler._request(

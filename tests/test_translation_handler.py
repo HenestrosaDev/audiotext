@@ -227,6 +227,24 @@ def test_long_transcriptions_are_translated_in_chunks() -> None:
     ]
 
 
+def test_the_progress_is_the_fraction_of_the_characters_translated(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fake_llm(monkeypatch)
+    monkeypatch.setattr(translation_handler, "MAX_LLM_CHUNK_ITEMS", 2)
+    fractions: list[float] = []
+
+    translate_texts(
+        ["aaa", "b", "", "cccc"],
+        "es",
+        AiProvider.OPENAI.value,
+        on_progress=fractions.append,
+    )
+
+    # The empty text isn't sent, so it doesn't count
+    assert fractions == [0, 0.5, 1]
+
+
 @pytest.mark.parametrize(
     ("key", "url"), [("abc:fx", DEEPL_FREE_URL), ("abc", DEEPL_PRO_URL)]
 )

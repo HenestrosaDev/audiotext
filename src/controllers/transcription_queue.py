@@ -1,3 +1,4 @@
+import time
 from collections import deque
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -27,6 +28,8 @@ class Job:
     is_cancel_requested: bool = False
     progress_message: str = ""
     progress_fraction: float | None = None
+    # When the step of the progress message started (see `time.monotonic`)
+    step_started_at: float | None = None
     current_child_id: str | None = None
     # Entries of the files of a folder, by path
     children: dict[str, str] = field(default_factory=dict)
@@ -98,6 +101,13 @@ class TranscriptionQueue:
         if job and job.entry_id == entry_id:
             return job.progress_message, job.progress_fraction
         return "", None
+
+    def get_step_started_at(self, entry_id: str) -> float | None:
+        """When the current step of an entry started (see `time.monotonic`)."""
+        job = self._job
+        if job and job.entry_id == entry_id:
+            return job.step_started_at
+        return None
 
     def get_queue_position(self, entry_id: str) -> int | None:
         if entry_id not in self._queue:
@@ -370,6 +380,8 @@ class TranscriptionQueue:
         job = self._job
         if job is None:
             return
+        if message != job.progress_message or job.step_started_at is None:
+            job.step_started_at = time.monotonic()
         job.progress_message, job.progress_fraction = message, fraction
         self.view.refresh_progress(job.entry_id)
         if job.is_mic:

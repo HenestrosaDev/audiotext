@@ -1,6 +1,7 @@
 import logging
 import mimetypes
 import urllib.request
+from email.message import Message
 from pathlib import Path, PurePosixPath
 from urllib.error import URLError
 from urllib.parse import unquote, urlsplit
@@ -9,6 +10,7 @@ from handlers.youtube_handler import YouTubeHandler
 from utils import constants as c
 from utils.cancellation import CancellationToken
 from utils.i18n import _
+from utils.progress import AmountCallback, by_percent, ignore_amount
 from utils.validators import is_youtube_url
 
 logger = logging.getLogger(__name__)
@@ -42,12 +44,28 @@ def get_media_extension(url: str, content_type: str) -> str | None:
     return None
 
 
+def get_content_length(headers: Message) -> int | None:
+    """
+    :return: The size of the body of a response, or None if the server doesn't
+             tell it, or the body is compressed and its size isn't the one of
+             the file.
+    """
+    if headers.get("Content-Encoding", "identity").strip().lower() != "identity":
+        return None
+    try:
+        size = int(headers.get("Content-Length", ""))
+    except ValueError:
+        return None
+    return size if size > 0 else None
+
+
 class UrlHandler:
     @staticmethod
     def download(
         url: str,
         output_path: Path,
         cancellation_token: CancellationToken | None = None,
+        on_progress: AmountCallback = ignore_amount,
     ) -> Path:
         """
         Downloads the audio of a YouTube video, or the audio or video file that a
@@ -56,18 +74,22 @@ class UrlHandler:
         :param url: The URL.
         :param output_path: Where the file is saved. Its extension is replaced by
                             the one of the downloaded media.
+        :param on_progress: Called with the bytes downloaded and the size of the
+                            file, if the server tells it.
         :raises ValueError: If the URL doesn't point to audio or video, or the
                             download fails.
         :raises TranscriptionCancelledError: If the token is cancelled.
         :return: The path of the downloaded file.
         """
         output_path.parent.mkdir(parents=True, exist_ok=True)
+        on_progress = by_percent(on_progress)
 
         if is_youtube_url(url):
             return YouTubeHandler.download_audio_from_video(
                 url,
                 output_path=str(output_path.parent),
                 output_filename=output_path.with_suffix(".m4a").name,
+                on_progress=on_progress,
             )
 
         token = cancellation_token or CancellationToken()
@@ -89,11 +111,16 @@ class UrlHandler:
                         )
                     )
 
+                total_size = get_content_length(response.headers)
+                downloaded_size = 0
                 file_path = output_path.with_suffix(extension)
                 with open(file_path, "wb") as output_file:
                     while chunk := response.read(CHUNK_SIZE):
                         token.raise_if_cancelled()
                         output_file.write(chunk)
+                        downloaded_size += len(chunk)
+                        if total_size:
+                            on_progress(downloaded_size, total_size)
         except BaseException as e:
             # Partial downloads are removed (e.g. if the user cancels)
             if file_path is not None:

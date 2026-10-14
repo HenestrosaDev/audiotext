@@ -1,8 +1,10 @@
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import MagicMock
 
 import pytest
 
+import controllers.transcription_queue as transcription_queue
 from controllers.transcription_queue import (
     TranscriptionQueue,
     default_title,
@@ -59,6 +61,29 @@ def test_the_titles_of_new_entries() -> None:
     assert default_title(AudioSource.YOUTUBE, url) == url
     assert media_name_for_url(url) == "YouTube abc"
     assert media_name_for_url("https://example.com/a/My%20talk.mp3") == "My talk"
+
+
+def test_a_step_starts_when_its_message_changes(
+    jobs: TranscriptionQueue,
+    view: MagicMock,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    entry_id = start(jobs, view, "/a.mp3")
+    now = [100.0]
+    monkeypatch.setattr(
+        transcription_queue, "time", SimpleNamespace(monotonic=lambda: now[0])
+    )
+
+    jobs.on_transcription_progress("Loading audio…", None)
+    now[0] = 105
+    # The same step reports again
+    jobs.on_transcription_progress("Loading audio…", None)
+    assert jobs.get_step_started_at(entry_id) == 100
+
+    now[0] = 110
+    jobs.on_transcription_progress("Transcribing…", None)
+    assert jobs.get_step_started_at(entry_id) == 110
+    assert jobs.get_step_started_at("other") is None
 
 
 def test_transcriptions_are_run_one_after_the_other(

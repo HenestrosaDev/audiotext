@@ -41,6 +41,9 @@ class HistoryView(Protocol):
     def on_summary_finished(self, entry: HistoryEntry, error: str | None) -> None:
         """:param error: Why the summary failed, or None if it's ready."""
 
+    def on_translation_progress(self, entry_id: str, language: str) -> None:
+        """Shows how much of the translation of an entry into a language is done."""
+
     def on_translation_finished(self, entry: HistoryEntry, error: str | None) -> None:
         """:param error: Why the translation failed, or None if it's ready."""
 

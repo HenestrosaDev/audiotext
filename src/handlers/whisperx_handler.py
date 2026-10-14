@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any
 import numpy as np
 
 import utils.config_manager as cm
+from handlers.hf_downloads import download_pyannote_pipeline, download_whisper_model
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcript_segment import (
     TranscriptSegment,
@@ -21,7 +22,7 @@ from models.transcription import Transcription
 from utils.cancellation import CancellationToken
 from utils.env_keys import EnvKeys
 from utils.i18n import _
-from utils.progress import ProgressCallback, ignore_progress
+from utils.progress import ProgressCallback, ignore_progress, report_download
 from utils.subtitle_cues import line_limits
 
 if TYPE_CHECKING:
@@ -232,7 +233,7 @@ class WhisperXHandler:
             model.options, initial_prompt=transcription.whisper_prompt or None
         )
 
-        on_progress(_("Transcribing…"), 0)
+        on_progress(_("Transcribing…"), None)
         result = model.transcribe(
             audio,
             batch_size=config_whisperx.batch_size,
@@ -350,7 +351,7 @@ class WhisperXHandler:
         align_model, metadata = self._get_align_model(language, device, on_progress)
         token.raise_if_cancelled()
 
-        on_progress(_("Aligning subtitles…"), 0)
+        on_progress(_("Aligning subtitles…"), None)
         aligned_result: AlignedTranscriptionResult = whisperx.align(
             result["segments"],
             align_model,
@@ -383,7 +384,7 @@ class WhisperXHandler:
         diarize_model = self._get_diarize_model(hf_token, device, on_progress)
         token.raise_if_cancelled()
 
-        on_progress(_("Identifying speakers…"), 0)
+        on_progress(_("Identifying speakers…"), None)
         diarize_segments = diarize_model(
             audio,
             num_speakers=num_speakers or None,
@@ -459,13 +460,22 @@ class WhisperXHandler:
                 self._model = self._model_key = None
                 self._release_memory()
 
-            on_progress(
-                _(
-                    "Loading the {model} model (it's downloaded the first time it's "
-                    "used)…"
-                ).format(model=config_whisperx.model_size),
-                None,
-            )
+            message = _(
+                "Loading the {model} model (it's downloaded the first time it's used)…"
+            ).format(model=config_whisperx.model_size)
+            on_progress(message, None)
+
+            if not is_model_downloaded(config_whisperx.model_size):
+                try:
+                    download_whisper_model(
+                        config_whisperx.model_size,
+                        report_download(message, on_progress),
+                    )
+                except Exception as e:
+                    # WhisperX downloads it, without reporting its progress
+                    logger.warning("Could not download the model first", exc_info=e)
+                on_progress(message, None)
+
             logger.info("Loading WhisperX model %s", model_key)
             self._model = whisperx.load_model(
                 config_whisperx.model_size,
@@ -525,16 +535,20 @@ class WhisperXHandler:
                 self._diarize_model = self._diarize_model_key = None
                 self._release_memory()
 
-            on_progress(
-                _(
-                    "Loading the speaker identification model (it's downloaded the "
-                    "first time it's used)…"
-                ),
-                None,
+            message = _(
+                "Loading the speaker identification model (it's downloaded the "
+                "first time it's used)…"
             )
+            on_progress(message, None)
             logger.info("Loading the diarization model on %s", device)
 
             try:
+                download_pyannote_pipeline(
+                    DIARIZATION_MODEL,
+                    hf_token,
+                    report_download(message, on_progress),
+                )
+                on_progress(message, None)
                 self._diarize_model = DiarizationPipeline(
                     model_name=DIARIZATION_MODEL, token=hf_token, device=device
                 )

@@ -27,7 +27,7 @@ from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.enums import AudioSource, TranscriptionMethod
 from utils.errors import format_error
 from utils.i18n import _
-from utils.progress import ProgressCallback
+from utils.progress import ProgressCallback, report_audio_time, report_download
 from utils.time_format import format_elapsed_time
 
 logger = logging.getLogger(__name__)
@@ -199,6 +199,7 @@ class MainController:
             transcription.url,
             transcription.media_path or URL_DOWNLOAD_PATH,
             self._cancellation_token,
+            report_download(_("Downloading…"), self._report_progress),
         )
         self._ui(self.view.on_media_downloaded, file_path)
 
@@ -290,6 +291,7 @@ class MainController:
             transcription.audio_source_path,
             Path(tempfile.gettempdir())
             / f"audiotext-speech-{threading.get_ident()}.wav",
+            report_audio_time(_("Isolating the speech…"), on_progress),
         )
 
         try:

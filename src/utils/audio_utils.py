@@ -1,6 +1,7 @@
 import logging
 import math
 import subprocess
+import tempfile
 from array import array
 from dataclasses import dataclass
 from enum import Enum
@@ -10,6 +11,7 @@ import speech_recognition as sr
 from pydub import AudioSegment
 
 from utils.i18n import _
+from utils.progress import AmountCallback, ignore_amount
 
 logger = logging.getLogger(__name__)
 
@@ -207,29 +209,55 @@ SPEECH_FILTER = (
 )
 
 
-def isolate_speech(source_path: Path, output_path: Path) -> Path:
+def isolate_speech(
+    source_path: Path,
+    output_path: Path,
+    on_progress: AmountCallback = ignore_amount,
+) -> Path:
     """
     Writes a copy of the audio of a file with the speech enhanced and the music
     and background noise reduced, as a 16 kHz mono WAV file.
 
+    :param on_progress: Called with the seconds of audio processed, as FFmpeg
+                        reports them, and the duration of the file, if it's
+                        known.
     :raises OSError: If FFmpeg can't process the file.
     :return: `output_path`.
     """
+    from utils.media import probe_media
+
     try:
-        subprocess.run(
+        duration = probe_media(source_path).duration
+    except OSError:
+        duration = None
+
+    # The errors are written to a file, since reading the progress from the
+    # output while they fill the pipe would block FFmpeg
+    with tempfile.TemporaryFile() as errors:
+        process = subprocess.Popen(
             [
                 AudioSegment.converter,
                 *("-nostdin", "-hide_banner", "-loglevel", "error", "-y"),
+                *("-progress", "pipe:1", "-nostats"),
                 *("-i", str(source_path)),
                 *("-vn", "-af", SPEECH_FILTER, "-ac", "1", "-ar", "16000"),
                 str(output_path),
             ],
-            capture_output=True,
-            check=True,
+            stdout=subprocess.PIPE,
+            stderr=errors,
+            text=True,
         )
-    except subprocess.CalledProcessError as e:
-        message = e.stderr.decode(errors="replace").strip() or str(e)
-        raise OSError(message) from e
+        assert process.stdout
+        for line in process.stdout:
+            key, _sep, value = line.strip().partition("=")
+            # Despite its name, "out_time_ms" is in microseconds, like "out_time_us"
+            if duration and key == "out_time_us" and value.isdigit():
+                on_progress(min(int(value) / 1_000_000, duration), duration)
+
+        if process.wait() != 0:
+            errors.seek(0)
+            message = errors.read().decode(errors="replace").strip()
+            raise OSError(message or f"FFmpeg exited with code {process.returncode}")
 
     return output_path
 

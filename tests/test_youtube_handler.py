@@ -40,3 +40,26 @@ def test_download_errors_are_wrapped(monkeypatch: pytest.MonkeyPatch) -> None:
         YouTubeHandler.download_audio_from_video("not a url")
 
     assert isinstance(exc_info.value.__cause__, RuntimeError)
+
+
+def test_reports_the_bytes_downloaded(monkeypatch: pytest.MonkeyPatch) -> None:
+    stream = MagicMock(filesize=400)
+    youtube_class = MagicMock()
+    youtube_class.return_value.streams.filter.return_value.first.return_value = stream
+    monkeypatch.setattr(youtube_handler, "YouTube", youtube_class)
+
+    def download(**_kwargs: str) -> str:
+        on_chunk = youtube_class.call_args.kwargs["on_progress_callback"]
+        for remaining in (300, 100, 0):
+            on_chunk(stream, b"", remaining)
+        return "/tmp/yt-audio.m4a"
+
+    stream.download.side_effect = download
+    reports: list[tuple[float, float]] = []
+
+    YouTubeHandler.download_audio_from_video(
+        "https://youtu.be/id",
+        on_progress=lambda done, total: reports.append((done, total)),
+    )
+
+    assert reports == [(100, 400), (300, 400), (400, 400)]

@@ -956,8 +956,21 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             error=self._translation_error(),
             segments=[part.segment for part in self._translation_parts()],
             languages=self._translation_labels(translating),
+            progress=self._translation_progress(),
         )
         self.translation_panel.set_mode(self._mode)
+
+    def update_translation_progress(self, language: str) -> None:
+        """Shows how much of a translation is done, if it's the one shown."""
+        if language == self._translation_language and self._is_translation_visible:
+            self.translation_panel.set_progress(self._translation_progress())
+
+    def _translation_progress(self) -> float | None:
+        if self._translation_language is None:
+            return None
+        return self._actions.transcript.get_translation_progress(
+            self.entry_id, self._translation_language
+        )
 
     def _on_translate_button(self) -> None:
         translation = self._translation()
