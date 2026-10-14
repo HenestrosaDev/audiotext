@@ -1,6 +1,7 @@
 import shutil
 import threading
 from collections.abc import Callable, Iterator
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -197,8 +198,8 @@ class FakeSummarizer:
 
 class FakeTranslator:
     """
-    Returns its translation, or raises its error, and records the language and
-    the provider of each request.
+    Returns its translation into the language asked for, or raises its error,
+    and records the language and the provider of each request.
     """
 
     def __init__(self) -> None:
@@ -218,7 +219,7 @@ class FakeTranslator:
         self.requests.append((language, provider))
         if self.error:
             raise self.error
-        return self.translation
+        return replace(self.translation, language=language)
 
 
 def make_tone(duration_ms: int = 600) -> AudioSegment:

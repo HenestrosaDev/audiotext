@@ -59,6 +59,7 @@ from views.transcript.transcript_text import (
 from views.transcript.translation_panel import (
     TranslateDialog,
     TranslationPanel,
+    format_ratio,
     has_timed_texts,
     language_name,
 )
@@ -137,11 +138,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             "",
             (),
         )
-        self._is_translation_visible = bool(entry.translation) or (
-            actions.transcript.is_translating(entry.id)
+        translating = actions.transcript.translating_languages(entry.id)
+        self._is_translation_visible = bool(entry.translations or translating)
+        # The language of the translation shown, the last one made at first. It
+        # may not have one yet, while it's translated into it or if that failed
+        self._translation_language: str | None = next(
+            reversed([*entry.translations, *translating]), None
         )
-        # The language being translated into, to show it while it's translated
-        self._pending_translation_language: str | None = None
         self._translation_ratio = DEFAULT_TRANSLATION_RATIO
 
         self._config_system = ConfigManager.get_config_system()
@@ -170,7 +173,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_copy=self._copy_translation,
             on_export=self.show_translation_export_menu,
             on_translate=self._open_translate_dialog,
+            on_regenerate=self._translate_again,
             on_close=lambda: self._set_translation_visible(False),
+            on_select=self._select_translation,
         )
         self.translation_splitter = Splitter(
             self.frm_texts,
@@ -247,28 +252,15 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def show_export_menu(self) -> None:
         """
-        The formats to export the transcription to and, if it has a translation,
-        the ones to export the translation to.
+        The formats to export the transcription to. Each translation is exported
+        from its panel.
         """
         menu = tk.Menu(self, tearoff=False)
         self._add_export_commands(menu, bool(self._entry.segments), self.export)
-
-        if translation := TranscriptTranslation.from_dict(self._entry.translation):
-            submenu = tk.Menu(menu, tearoff=False)
-            self._add_export_commands(
-                submenu, has_timed_texts(translation), self.export_translation
-            )
-            menu.add_separator()
-            menu.add_cascade(
-                label=_("Translation into {language}").format(
-                    language=language_name(translation.language)
-                ),
-                menu=submenu,
-            )
         self._popup_below(menu, self.btn_export)
 
     def show_translation_export_menu(self, anchor: Any) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation is None:
             return
         menu = tk.Menu(self, tearoff=False)
@@ -302,7 +294,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def export_translation(self, file_type: str) -> None:
         self.translation_panel.save_pending_text()
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation is None:
             return
 
@@ -684,30 +676,90 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._layout_texts()
         self._refresh_translation()
 
+    def _translation(self) -> TranscriptTranslation | None:
+        """The translation shown, if there is one into its language."""
+        return self._entry.get_translation(self._translation_language)
+
+    def _is_translating(self) -> bool:
+        """Whether it's being translated into the language shown."""
+        return self._translation_language is not None and (
+            self._actions.transcript.is_translating(
+                self.entry_id, self._translation_language
+            )
+        )
+
+    def _translation_error(self) -> str:
+        if self._translation_language is None:
+            return ""
+        return self._actions.transcript.get_translation_error(
+            self.entry_id, self._translation_language
+        )
+
+    def _translation_labels(self, translating: list[str]) -> dict[str, str]:
+        """
+        The languages of the translations and how much of each is translated,
+        then the ones being translated into, and the one shown if it failed.
+        """
+        labels: dict[str, str] = {}
+        for language in self._entry.translations:
+            if translation := self._entry.get_translation(language):
+                ratio = translation.translated_ratio(self._entry.segments)
+                labels[language] = f"{language_name(language)} · {format_ratio(ratio)}"
+        shown = [self._translation_language] if self._translation_language else []
+        for pending in [*translating, *shown]:
+            if pending not in labels:
+                labels[pending] = (
+                    f"{language_name(pending)} · …"
+                    if pending in translating
+                    else language_name(pending)
+                )
+        return labels
+
+    def _select_translation(self, language: str) -> None:
+        """Shows the translation into another language."""
+        if language == self._translation_language:
+            return
+        # The edits of the user are saved before another translation is shown
+        self.translation_panel.save_pending_text()
+        self._translation_language = language
+        self._refresh_translation()
+        self._refresh_translation_subtitles()
+
     def _refresh_translation(self) -> None:
-        is_loading = self._actions.transcript.is_translating(self.entry_id)
-        error = self._actions.transcript.get_translation_error(self.entry_id)
+        # The edits of the user are saved into their translation before another
+        # one is shown, or before it's shown again
+        self.translation_panel.save_pending_text()
+        translating = self._actions.transcript.translating_languages(self.entry_id)
+        # The translation shown is kept while it exists, is being made or shows
+        # why it failed. Otherwise, the last one made is shown
+        language = self._translation_language
+        if (
+            language not in self._entry.translations
+            and language not in translating
+            and not self._translation_error()
+        ):
+            self._translation_language = next(
+                reversed([*self._entry.translations, *translating]), None
+            )
+        is_loading = self._is_translating()
         # A translation in progress is shown, e.g. when going back to its entry
         if is_loading:
             self._set_translation_visible(True)
         if not self._is_translation_visible:
             return
 
-        # The edits of the user are saved before the translation is shown again
-        self.translation_panel.save_pending_text()
         self.translation_panel.show(
-            TranscriptTranslation.from_dict(self._entry.translation),
+            self._translation_language,
+            self._translation(),
             is_loading=is_loading,
-            error=error,
-            pending_language=self._pending_translation_language,
+            error=self._translation_error(),
+            languages=self._translation_labels(translating),
         )
         self.translation_panel.set_mode(self._mode)
 
     def _on_translate_button(self) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
-        if translation is None and not self._actions.transcript.is_translating(
-            self.entry_id
-        ):
+        translation = self._translation()
+        if translation is None and not self._is_translating():
             self._open_translate_dialog()
             return
 
@@ -725,11 +777,6 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         menu.add_command(
             label=_("Translate into another language…"),
             command=self._open_translate_dialog,
-            state=(
-                tk.DISABLED
-                if self._actions.transcript.is_translating(self.entry_id)
-                else tk.NORMAL
-            ),
         )
         if self.layout.has_video and self.video.has_translation_subtitles:
             # Kept while the menu is shown, like the one of the precise timestamps
@@ -759,7 +806,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def _refresh_translation_subtitles(self) -> None:
         """Gives the video the subtitles of the translation, if it has one."""
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         subtitled = (
             (translation.language, translation.segments) if translation else ("", ())
         )
@@ -777,8 +824,6 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self.player.show_subtitle_buttons(self.video.is_showing_subtitles)
 
     def _open_translate_dialog(self) -> None:
-        if self._actions.transcript.is_translating(self.entry_id):
-            return
         self.text.save_pending_text()
         request = TranslateDialog(
             self,
@@ -788,12 +833,23 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         ).get_result()
         if request is None or self._is_destroyed:
             return
+        if self._actions.transcript.is_translating(self.entry_id, request.language):
+            # It's already being translated into it, so that one is shown
+            self._select_translation(request.language)
+            return
+        # A translation into the same language is replaced, losing its edits
+        if request.language in self._entry.translations and not (
+            self._confirm_translate_again(request.language)
+        ):
+            return
 
+        self.translation_panel.save_pending_text()
         save_config(ConfigAi.Key.TRANSLATION_LANGUAGE, request.language)
         if request.provider == MANUAL:
             self._actions.transcript.start_manual_translation(
                 self.entry_id, request.language
             )
+            self._translation_language = request.language
             self._set_translation_visible(True)
             self._refresh_translation()
             return
@@ -809,20 +865,23 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             save_config(ConfigAi.Key.TRANSLATION_PROVIDER, request.provider)
             save_config(ConfigAi.Key.TRANSLATION_MODEL, "")
 
-        self._pending_translation_language = request.language
+        self._translation_language = request.language
         self._actions.transcript.translate_entry(
             self.entry_id, request.language, request.provider, model
         )
         self._set_translation_visible(True)
         self._refresh_translation()
+        self._refresh_translation_subtitles()
 
     def _on_translation_text_edit(self, text: str) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation and text != translation.text:
-            self._actions.transcript.save_translation_text(self.entry_id, text)
+            self._actions.transcript.save_translation_text(
+                self.entry_id, translation.language, text
+            )
 
     def _show_translation_segment_menu(self, event: Any, idx: int) -> str:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation is None or idx >= len(translation.segments):
             return "break"
 
@@ -864,18 +923,20 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _translation_segments(self) -> list[TranscriptSegment] | None:
         """The segments of the translation, after saving the edits of its text."""
         self.translation_panel.save_pending_text()
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         return list(translation.segments) if translation else None
 
     def _save_translation_segments(self, segments: list[TranscriptSegment]) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation is None:
             return
         # The edited text keeps the changes of the user, so only the segments change
         text = (
             translation.text if translation.is_text_edited else join_segments(segments)
         )
-        self._actions.transcript.update_translation(self.entry_id, segments, text)
+        self._actions.transcript.update_translation(
+            self.entry_id, translation.language, segments, text
+        )
 
     def _edit_translation_segment(self, idx: int) -> None:
         segments = self._translation_segments()
@@ -985,12 +1046,48 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
 
     def _delete_translation(self) -> None:
-        self._is_translation_visible = False
-        self._layout_texts()
-        self._actions.transcript.remove_translation(self.entry_id)
+        """Deletes the translation shown, showing another one if there is one."""
+        language = self._translation_language
+        if language is None:
+            return
+        self.translation_panel.save_pending_text()
+        if not set(self._entry.translations) - {language}:
+            self._is_translation_visible = False
+            self._layout_texts()
+        self._actions.transcript.remove_translation(self.entry_id, language)
+
+    def _translate_again(self) -> None:
+        """Translates it again, into the same language and with the same model."""
+        translation = self._translation()
+        if (
+            translation is None
+            or translation.provider == MANUAL
+            or self._is_translating()
+            or not self._confirm_translate_again(translation.language)
+        ):
+            return
+        self.text.save_pending_text()
+        self._actions.transcript.translate_entry(
+            self.entry_id, translation.language, translation.provider, translation.model
+        )
+        self._refresh_translation()
+
+    def _confirm_translate_again(self, language: str) -> bool:
+        """Asks before replacing a translation, since its edits are lost."""
+        return bool(
+            messagebox.askyesno(
+                _("Translate again"),
+                _(
+                    "Translate the transcription into {language} again? The "
+                    "changes made to the translation will be lost."
+                ).format(language=language_name(language)),
+                icon=messagebox.WARNING,
+                parent=self.winfo_toplevel(),
+            )
+        )
 
     def _copy_translation(self) -> None:
-        if translation := TranscriptTranslation.from_dict(self._entry.translation):
+        if translation := self._translation():
             self.clipboard_clear()
             self.clipboard_append(translation.text)
             self._actions.window.show_status(
@@ -1105,7 +1202,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._play_from(self._entry.segments[idx].start)
 
     def _on_translation_segment_click(self, idx: int) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation and idx < len(translation.segments):
             self._play_from(translation.segments[idx].start)
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 10:29+0200\n"
+"POT-Creation-Date: 2026-10-14 10:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -269,7 +269,7 @@ msgstr "音声が録音されませんでした。"
 #: src/utils/exporters.py:175 src/utils/exporters.py:212
 #: src/views/settings/preferences_dialog.py:504
 #: src/views/transcript/summary_panel.py:189
-#: src/views/transcript/transcript_view.py:456
+#: src/views/transcript/transcript_view.py:448
 msgid "Summary"
 msgstr "要約"
 
@@ -323,13 +323,13 @@ msgid "{count} failed"
 msgstr "{count} 件失敗"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1164
+#: src/views/transcript/transcript_view.py:1261
 msgid "Open the folder of the saved files"
 msgstr "保存したファイルのフォルダーを開く"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:1192
+#: src/views/transcript/transcript_view.py:1289
 msgid "Transcribe again"
 msgstr "もう一度文字起こし"
 
@@ -545,22 +545,22 @@ msgid "Rename"
 msgstr "名前を変更"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1176
+#: src/views/transcript/transcript_view.py:1273
 msgid "Edit note…"
 msgstr "メモを編集…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1176
+#: src/views/transcript/transcript_view.py:1273
 msgid "Add note…"
 msgstr "メモを追加…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1181
+#: src/views/transcript/transcript_view.py:1278
 msgid "Delete note…"
 msgstr "メモを削除…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1187
+#: src/views/transcript/transcript_view.py:1284
 msgid "Edit tag…"
 msgstr "タグを編集…"
 
@@ -585,7 +585,7 @@ msgid "Move to group"
 msgstr "グループに移動"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1197
+#: src/views/transcript/transcript_view.py:1294
 msgid "Delete…"
 msgstr "削除…"
 
@@ -614,7 +614,7 @@ msgid "No files yet"
 msgstr "まだファイルはありません"
 
 #: src/views/history/history_sidebar.py:589
-#: src/views/transcript/transcript_view.py:597
+#: src/views/transcript/transcript_view.py:589
 msgid "No results"
 msgstr "結果なし"
 
@@ -855,10 +855,10 @@ msgstr "自分の声や会議を録音します。録音は履歴に保存され
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:242
-#: src/views/transcript/transcript_view.py:468
-#: src/views/transcript/transcript_view.py:835
-#: src/views/transcript/transcript_view.py:1120
-#: src/views/transcript/transcript_view.py:1227
+#: src/views/transcript/transcript_view.py:460
+#: src/views/transcript/transcript_view.py:894
+#: src/views/transcript/transcript_view.py:1217
+#: src/views/transcript/transcript_view.py:1324
 msgid "Copy"
 msgstr "コピー"
 
@@ -1230,14 +1230,14 @@ msgstr "API キーを変更…"
 #: src/views/settings/preferences_dialog.py:467
 #: src/views/settings/preferences_dialog.py:480
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:400
-#: src/views/transcript/translation_panel.py:472
+#: src/views/transcript/translation_panel.py:465
+#: src/views/transcript/translation_panel.py:537
 msgid "Set API key…"
 msgstr "API キーを設定…"
 
 #: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:529
-#: src/views/transcript/translation_panel.py:170
+#: src/views/transcript/translation_panel.py:199
 msgid "Translation"
 msgstr "翻訳"
 
@@ -1511,13 +1511,13 @@ msgstr "音声の言語"
 
 #: src/views/settings/cards/language_card.py:65
 #: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:338
+#: src/views/transcript/translation_panel.py:403
 msgid "Search language…"
 msgstr "言語を検索…"
 
 #: src/views/settings/cards/language_card.py:66
 #: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:339
+#: src/views/transcript/translation_panel.py:404
 msgid "No languages found."
 msgstr "言語が見つかりません。"
 
@@ -1692,7 +1692,7 @@ msgid "Replaced."
 msgstr "置換しました。"
 
 #: src/views/transcript/corrections.py:94
-#: src/views/transcript/transcript_view.py:896
+#: src/views/transcript/transcript_view.py:957
 msgid "Edit text"
 msgstr "テキストを編集"
 
@@ -1735,7 +1735,7 @@ msgid "Rename speakers"
 msgstr "話者の名前を変更"
 
 #: src/views/transcript/edit_dialogs.py:162
-#: src/views/transcript/transcript_view.py:923
+#: src/views/transcript/transcript_view.py:984
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "保存"
@@ -1772,7 +1772,7 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: 再生/一時停止 · ←/→: {seconds} 秒戻る/進む"
 
 #: src/views/transcript/player_bar.py:257
-#: src/views/transcript/transcript_view.py:1057
+#: src/views/transcript/transcript_view.py:1154
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "音声を再生できません: {error}"
@@ -1846,292 +1846,303 @@ msgstr ""
 msgid "This transcription has no timestamps."
 msgstr "この文字起こしにはタイムスタンプがありません。"
 
-#: src/views/transcript/transcript_view.py:96
+#: src/views/transcript/transcript_view.py:97
 msgid "Plain text (.txt)"
 msgstr "プレーンテキスト (.txt)"
 
-#: src/views/transcript/transcript_view.py:97
+#: src/views/transcript/transcript_view.py:98
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:98
+#: src/views/transcript/transcript_view.py:99
 msgid "Word document (.docx)"
 msgstr "Word 文書 (.docx)"
 
-#: src/views/transcript/transcript_view.py:99
+#: src/views/transcript/transcript_view.py:100
 msgid "Subtitles (.srt)"
 msgstr "字幕 (.srt)"
 
-#: src/views/transcript/transcript_view.py:100
+#: src/views/transcript/transcript_view.py:101
 msgid "Web subtitles (.vtt)"
 msgstr "Web 字幕 (.vtt)"
 
-#: src/views/transcript/transcript_view.py:101
+#: src/views/transcript/transcript_view.py:102
 msgid "Table (.tsv)"
 msgstr "表 (.tsv)"
 
-#: src/views/transcript/transcript_view.py:102
+#: src/views/transcript/transcript_view.py:103
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:263
-#: src/views/transcript/video_pane.py:281
-#, python-brace-format
-msgid "Translation into {language}"
-msgstr "{language}への翻訳"
-
-#: src/views/transcript/transcript_view.py:301
+#: src/views/transcript/transcript_view.py:293
 msgid "Export transcription"
 msgstr "文字起こしをエクスポート"
 
-#: src/views/transcript/transcript_view.py:321
+#: src/views/transcript/transcript_view.py:313
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "{language}への翻訳をエクスポート"
 
-#: src/views/transcript/transcript_view.py:352
+#: src/views/transcript/transcript_view.py:344
 msgid "All files"
 msgstr "すべてのファイル"
 
-#: src/views/transcript/transcript_view.py:361
+#: src/views/transcript/transcript_view.py:353
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "エクスポートできませんでした: {error}"
 
-#: src/views/transcript/transcript_view.py:364
+#: src/views/transcript/transcript_view.py:356
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "{path} にエクスポートしました"
 
-#: src/views/transcript/transcript_view.py:413
+#: src/views/transcript/transcript_view.py:405
 #, python-brace-format
 msgid "Search ({shortcut})"
 msgstr "検索 ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:454
+#: src/views/transcript/transcript_view.py:446
 msgid "Transcript"
 msgstr "トランスクリプト"
 
-#: src/views/transcript/transcript_view.py:455
+#: src/views/transcript/transcript_view.py:447
 msgid "Plain text"
 msgstr "プレーンテキスト"
 
-#: src/views/transcript/transcript_view.py:464
-#: src/views/transcript/translation_panel.py:324
+#: src/views/transcript/transcript_view.py:456
+#: src/views/transcript/translation_panel.py:389
 msgid "Translate"
 msgstr "翻訳"
 
-#: src/views/transcript/transcript_view.py:472
+#: src/views/transcript/transcript_view.py:464
 msgid "Export"
 msgstr "エクスポート"
 
-#: src/views/transcript/transcript_view.py:599
+#: src/views/transcript/transcript_view.py:591
 #, python-brace-format
 msgid "{current} of {total}"
 msgstr "{current} / {total}"
 
-#: src/views/transcript/transcript_view.py:639
+#: src/views/transcript/transcript_view.py:631
 msgid "Summary copied."
 msgstr "要約をコピーしました。"
 
-#: src/views/transcript/transcript_view.py:717
+#: src/views/transcript/transcript_view.py:769
 msgid "Hide the translation"
 msgstr "翻訳を非表示"
 
-#: src/views/transcript/transcript_view.py:722
+#: src/views/transcript/transcript_view.py:774
 msgid "Show the translation"
 msgstr "翻訳を表示"
 
-#: src/views/transcript/transcript_view.py:726
+#: src/views/transcript/transcript_view.py:778
+#: src/views/transcript/translation_panel.py:262
 msgid "Translate into another language…"
 msgstr "別の言語に翻訳…"
 
-#: src/views/transcript/transcript_view.py:742
+#: src/views/transcript/transcript_view.py:789
 msgid "Show it as the subtitles of the video"
 msgstr "動画の字幕として表示"
 
-#: src/views/transcript/transcript_view.py:749
+#: src/views/transcript/transcript_view.py:796
 msgid "Delete the translation"
 msgstr "翻訳を削除"
 
-#: src/views/transcript/transcript_view.py:832
-#: src/views/transcript/transcript_view.py:1118
+#: src/views/transcript/transcript_view.py:891
+#: src/views/transcript/transcript_view.py:1215
 msgid "Play from here"
 msgstr "ここから再生"
 
-#: src/views/transcript/transcript_view.py:840
-#: src/views/transcript/transcript_view.py:1121
+#: src/views/transcript/transcript_view.py:899
+#: src/views/transcript/transcript_view.py:1218
 msgid "Edit text…"
 msgstr "テキストを編集…"
 
-#: src/views/transcript/transcript_view.py:840
+#: src/views/transcript/transcript_view.py:899
 msgid "Translate text…"
 msgstr "テキストを翻訳…"
 
-#: src/views/transcript/transcript_view.py:844
+#: src/views/transcript/transcript_view.py:903
 msgid "Edit the timing…"
 msgstr "タイミングを編集…"
 
-#: src/views/transcript/transcript_view.py:848
+#: src/views/transcript/transcript_view.py:907
 msgid "Add a segment after…"
 msgstr "後ろにセグメントを追加…"
 
-#: src/views/transcript/transcript_view.py:853
-#: src/views/transcript/transcript_view.py:971
+#: src/views/transcript/transcript_view.py:912
+#: src/views/transcript/transcript_view.py:1032
 msgid "Delete the segment"
 msgstr "セグメントを削除"
 
-#: src/views/transcript/transcript_view.py:896
+#: src/views/transcript/transcript_view.py:957
 msgid "Translate text"
 msgstr "テキストを翻訳"
 
-#: src/views/transcript/transcript_view.py:897
+#: src/views/transcript/transcript_view.py:958
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "「{text}」の翻訳（{start} から {end} まで）:"
 
-#: src/views/transcript/transcript_view.py:901
+#: src/views/transcript/transcript_view.py:962
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "{start} から {end} までのセグメントの翻訳:"
 
-#: src/views/transcript/transcript_view.py:922
+#: src/views/transcript/transcript_view.py:983
 msgid "Edit the timing"
 msgstr "タイミングを編集"
 
-#: src/views/transcript/transcript_view.py:946
+#: src/views/transcript/transcript_view.py:1007
 msgid "Add a segment"
 msgstr "セグメントを追加"
 
-#: src/views/transcript/transcript_view.py:947
+#: src/views/transcript/transcript_view.py:1008
 msgid "Add"
 msgstr "追加"
 
-#: src/views/transcript/transcript_view.py:948
+#: src/views/transcript/transcript_view.py:1009
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "新しいセグメントは {time} のセグメントの後に入ります:"
 
-#: src/views/transcript/transcript_view.py:972
+#: src/views/transcript/transcript_view.py:1033
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "セグメント「{text}」を削除しますか？"
 
-#: src/views/transcript/transcript_view.py:983
+#: src/views/transcript/transcript_view.py:1044
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "{time} のセグメント（未翻訳）。"
 
-#: src/views/transcript/transcript_view.py:997
+#: src/views/transcript/transcript_view.py:1079
+msgid "Translate again"
+msgstr "もう一度翻訳"
+
+#: src/views/transcript/transcript_view.py:1081
+#, python-brace-format
+msgid ""
+"Translate the transcription into {language} again? The changes made to "
+"the translation will be lost."
+msgstr "文字起こしをもう一度{language}に翻訳しますか？翻訳への変更は失われます。"
+
+#: src/views/transcript/transcript_view.py:1094
 #, python-brace-format
 msgid "Translation into {language} copied."
 msgstr "{language}の翻訳をコピーしました。"
 
-#: src/views/transcript/transcript_view.py:1011
+#: src/views/transcript/transcript_view.py:1108
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "音声を利用できません。元のファイルが移動または削除されました。"
 
-#: src/views/transcript/transcript_view.py:1014
+#: src/views/transcript/transcript_view.py:1111
 msgid "The audio isn't available."
 msgstr "音声を利用できません。"
 
-#: src/views/transcript/transcript_view.py:1123
-#: src/views/transcript/transcript_view.py:1139
+#: src/views/transcript/transcript_view.py:1220
+#: src/views/transcript/transcript_view.py:1236
 msgid "Rename speakers…"
 msgstr "話者の名前を変更…"
 
-#: src/views/transcript/transcript_view.py:1137
+#: src/views/transcript/transcript_view.py:1234
 msgid "Find and replace…"
 msgstr "検索と置換…"
 
-#: src/views/transcript/transcript_view.py:1149
+#: src/views/transcript/transcript_view.py:1246
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "正確なタイムスタンプ (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1172
+#: src/views/transcript/transcript_view.py:1269
 msgid "Rename…"
 msgstr "名前を変更…"
 
-#: src/views/transcript/transcript_view.py:1219
+#: src/views/transcript/transcript_view.py:1316
 msgid "Copied"
 msgstr "コピーしました"
 
-#: src/views/transcript/translation_panel.py:133
+#: src/views/transcript/translation_panel.py:158
 msgid "Not translated yet"
 msgstr "未翻訳"
 
-#: src/views/transcript/translation_panel.py:158
+#: src/views/transcript/translation_panel.py:187
 #, python-brace-format
 msgid "Translating into {language}…"
 msgstr "{language}に翻訳しています…"
 
-#: src/views/transcript/translation_panel.py:162
+#: src/views/transcript/translation_panel.py:191
 msgid "Translating…"
 msgstr "翻訳しています…"
 
-#: src/views/transcript/translation_panel.py:165
+#: src/views/transcript/translation_panel.py:194
 msgid "It takes a moment."
 msgstr "少し時間がかかります。"
 
-#: src/views/transcript/translation_panel.py:167
+#: src/views/transcript/translation_panel.py:196
 msgid "The transcription is being translated. It takes a moment."
 msgstr "文字起こしを翻訳しています。少し時間がかかります。"
 
-#: src/views/transcript/translation_panel.py:174
+#: src/views/transcript/translation_panel.py:203
 msgid "There is no translation yet."
 msgstr "まだ翻訳はありません。"
 
-#: src/views/transcript/translation_panel.py:176
+#: src/views/transcript/translation_panel.py:205
 msgid "Translate…"
 msgstr "翻訳…"
 
-#: src/views/transcript/translation_panel.py:279
+#: src/views/transcript/translation_panel.py:344
 #, python-brace-format
 msgid "Segments left to translate: {count}. Right-click one to translate it."
 msgstr "未翻訳のセグメント: {count}。右クリックして翻訳してください。"
 
-#: src/views/transcript/translation_panel.py:286
-#: src/views/transcript/translation_panel.py:365
+#: src/views/transcript/translation_panel.py:351
+#: src/views/transcript/translation_panel.py:430
 msgid "Manual"
 msgstr "手動"
 
-#: src/views/transcript/translation_panel.py:333
+#: src/views/transcript/translation_panel.py:398
 msgid "Translate into:"
 msgstr "翻訳先:"
 
-#: src/views/transcript/translation_panel.py:354
+#: src/views/transcript/translation_panel.py:419
 msgid "Translate with:"
 msgstr "翻訳方法:"
 
-#: src/views/transcript/translation_panel.py:411
+#: src/views/transcript/translation_panel.py:476
 msgid "More options in the settings"
 msgstr "その他のオプションは設定で"
 
-#: src/views/transcript/translation_panel.py:442
+#: src/views/transcript/translation_panel.py:507
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "{provider} の API キーがありません。"
 
-#: src/views/transcript/translation_panel.py:449
+#: src/views/transcript/translation_panel.py:514
 msgid "Creates empty segments with the original timestamps for you to fill in."
 msgstr "元のタイムスタンプ付きの空のセグメントを作成し、自分で入力します。"
 
-#: src/views/transcript/translation_panel.py:459
+#: src/views/transcript/translation_panel.py:524
 #, python-brace-format
 msgid "Uses the model {model}."
 msgstr "モデル {model} を使用します。"
 
-#: src/views/transcript/translation_panel.py:462
+#: src/views/transcript/translation_panel.py:527
 msgid "Translates each segment, keeping its timestamps."
 msgstr "タイムスタンプを保ったまま、各セグメントを翻訳します。"
 
-#: src/views/transcript/translation_panel.py:474
+#: src/views/transcript/translation_panel.py:539
 msgid "Set…"
 msgstr "設定…"
 
 #: src/views/transcript/video_pane.py:260
 msgid "Show subtitles on the video"
 msgstr "動画に字幕を表示"
+
+#: src/views/transcript/video_pane.py:281
+#, python-brace-format
+msgid "Translation into {language}"
+msgstr "{language}への翻訳"
 
 #: src/views/transcript/video_pane.py:292
 msgid "Size"
