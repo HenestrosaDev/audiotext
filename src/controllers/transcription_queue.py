@@ -432,10 +432,10 @@ class TranscriptionQueue:
             "segments": segments,
             "language": language,
             "is_text_edited": False,
-            # A summary or a translation of a previous transcription doesn't
+            # A summary or the translations of a previous transcription don't
             # apply to the new one
             "summary": {},
-            "translation": {},
+            "translations": {},
         }
 
         if job.is_folder:
