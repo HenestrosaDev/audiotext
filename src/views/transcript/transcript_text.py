@@ -33,9 +33,6 @@ SPEAKER_COLORS = [
 TRANSCRIPT_MODE = "transcript"
 PLAIN_TEXT_MODE = "plain"
 
-# Words whose alignment score is below this are highlighted as low confidence
-LOW_CONFIDENCE_SCORE = 0.4
-
 
 def find_index(starts: list[float], position: float) -> int | None:
     """:return: The index of the last item that starts before the position."""
@@ -43,9 +40,13 @@ def find_index(starts: list[float], position: float) -> int | None:
     return idx if idx >= 0 else None
 
 
-def is_low_confidence(word: TranscriptWord) -> bool:
-    """:return: Whether the word may be wrong. Words without a score are not."""
-    return word.score is not None and word.score < LOW_CONFIDENCE_SCORE
+def is_low_confidence(word: TranscriptWord, min_score: float | None) -> bool:
+    """
+    :param min_score: The score below which a word may be wrong, or `None` if the
+        low confidence words are not highlighted.
+    :return: Whether the word may be wrong. Words without a score are not.
+    """
+    return min_score is not None and word.score is not None and word.score < min_score
 
 
 class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
@@ -97,6 +98,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._is_text_edited = False
         self._mode = PLAIN_TEXT_MODE
         self._is_precise = False
+        self._low_confidence_score: float | None = None
         self._query = ""
         self._matches: list[tuple[str, str]] = []
         self._current_match: int | None = None
@@ -185,6 +187,18 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         if is_precise == self._is_precise:
             return
         self._is_precise = is_precise
+        self._current_segment = self._current_word = None
+        self._render_transcript()
+        self.search(self._query)
+
+    def set_low_confidence_score(self, min_score: float | None) -> None:
+        """
+        Highlights the words whose score is below `min_score`, or none if it's
+        `None`.
+        """
+        if min_score == self._low_confidence_score:
+            return
+        self._low_confidence_score = min_score
         self._current_segment = self._current_word = None
         self._render_transcript()
         self.search(self._query)
@@ -482,7 +496,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                 ctk.END,
                 word.text,
                 (segment_tag, "low_confidence")
-                if is_low_confidence(word)
+                if is_low_confidence(word, self._low_confidence_score)
                 else segment_tag,
             )
             entries.append((word.start, start_index, textbox.index("end-1c")))
