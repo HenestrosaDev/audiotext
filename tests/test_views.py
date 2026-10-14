@@ -3201,26 +3201,32 @@ def test_the_popover_closes_when_its_word_moves_or_goes(
     view = open_review(ui, monkeypatch)
     popover = view.word_popover
 
-    def reopen(case: int = -1) -> None:
+    def reopen(case: str = "") -> None:
         click_flagged(ui, view, "wisper")
         assert popover.is_open, case
 
-    closes = (
-        lambda: view._on_mode_change(PLAIN_TEXT_MODE),
+    window = ui.window.winfo_toplevel()
+
+    def resize_window() -> None:
+        # A maximized window (as the app opens by default) ignores a new size on
+        # Windows, so it's restored first, like the user would
+        size = (window.winfo_width(), window.winfo_height())
+        window.state("normal")
+        ui.pump()
+        window.geometry(f"{window.winfo_width() - 40}x{window.winfo_height()}")
+        ui.pump()
+        assert (window.winfo_width(), window.winfo_height()) != size
+
+    closes = {
+        "switching to another tab": lambda: view._on_mode_change(PLAIN_TEXT_MODE),
         # Its word is no longer below the threshold
-        lambda: view._set_low_confidence_threshold(25),
-        view._toggle_low_confidence,
-        view._toggle_precise_timestamps,
-        # The window is resized, so the text wraps again
-        lambda: (
-            ui.window.winfo_toplevel().geometry(
-                f"{ui.window.winfo_toplevel().winfo_width() - 40}x"
-                f"{ui.window.winfo_toplevel().winfo_height()}"
-            ),
-            ui.pump(),
-        ),
-    )
-    for case, close in enumerate(closes):
+        "raising the threshold": lambda: view._set_low_confidence_threshold(25),
+        "turning the highlighting off": view._toggle_low_confidence,
+        "rendering the transcript again": view._toggle_precise_timestamps,
+        # The text wraps again
+        "resizing the window": resize_window,
+    }
+    for case, close in closes.items():
         view._on_mode_change("transcript")
         view._config_system.highlight_low_confidence = True
         view._set_low_confidence_threshold(40)
@@ -3229,8 +3235,8 @@ def test_the_popover_closes_when_its_word_moves_or_goes(
         reopen(case)
         close()
         ui.pump()
-        assert not popover.is_open, close
-        assert not popover.winfo_ismapped(), close
+        assert not popover.is_open, case
+        assert not popover.winfo_ismapped(), case
 
     # And with the transcription, when another one is shown
     view._on_mode_change("transcript")
