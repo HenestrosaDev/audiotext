@@ -1,6 +1,9 @@
 import logging
 import threading
-from collections.abc import Callable
+import tkinter as tk
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass
+from enum import Enum
 from typing import Any
 
 import customtkinter as ctk
@@ -22,6 +25,35 @@ SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
 
 # Called on each refresh with the position of the playback and whether it's playing
 TickCallback = Callable[[float, bool], None]
+
+# The strip below the position with the marks of the timeline, and how far from a
+# mark a click goes to it
+MARKS_HEIGHT = 16
+MARK_CLICK_DISTANCE = 6
+
+
+class MarkKind(Enum):
+    """The marks differ in height, and not only in color."""
+
+    PENDING = "pending"
+    DONE = "done"
+    CURRENT = "current"
+
+
+@dataclass(frozen=True)
+class TimelineMark:
+    """A moment of the audio marked on the timeline, e.g. a word to review."""
+
+    seconds: float
+    kind: MarkKind
+
+
+# (height, width) of each kind of mark, in pixels
+MARK_SIZES = {
+    MarkKind.DONE: (6, 2),
+    MarkKind.PENDING: (10, 3),
+    MarkKind.CURRENT: (16, 4),
+}
 
 
 def format_speed(speed: float) -> str:
@@ -59,6 +91,10 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self._speed_change_error: Exception | None = None
         # Where the clip being played stops (see `play_clip`), if one is
         self._clip_end: float | None = None
+        # The marks of the timeline, their colors, and what clicking one does
+        self._marks: tuple[TimelineMark, ...] = ()
+        self._mark_colors: dict[MarkKind, tuple[str, str]] = {}
+        self._on_mark_click: Callable[[int], None] | None = None
 
         self.grid_columnconfigure(0, weight=1)
         controls = ctk.CTkFrame(self, fg_color="transparent")
@@ -88,6 +124,13 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self.sld_position.grid(row=0, column=2, sticky=ctk.EW)
         self.sld_position.bind("<Button-1>", self._on_slider_press, add="+")
         self.sld_position.bind("<ButtonRelease-1>", self._on_slider_release, add="+")
+        # Below the position, aligned with it
+        self.cnv_marks = tk.Canvas(
+            controls, height=MARKS_HEIGHT, highlightthickness=0, borderwidth=0
+        )
+        self.cnv_marks.grid(row=1, column=2, sticky=ctk.EW)
+        self.cnv_marks.bind("<Configure>", lambda _event: self._draw_marks())
+        self.cnv_marks.bind("<ButtonRelease-1>", self._on_marks_click)
         self.omn_speed = CTkOptionMenu(
             controls,
             values=[format_speed(speed) for speed in SPEEDS],
@@ -150,6 +193,8 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self._player = AudioPlayer(samples, sample_rate)
         self._is_video = is_video
         self.sld_position.configure(to=max(self._player.duration, 0.01))
+        # Placed by the duration, which is known now
+        self._draw_marks()
         self._set_enabled(True)
         self.lbl_hint.configure(text_color=theme.HINT_TEXT)
         localize(
@@ -228,6 +273,74 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
             return
         self._clip_end = end
         self.refresh()
+
+    def set_marks(
+        self,
+        marks: Sequence[TimelineMark],
+        colors: dict[MarkKind, tuple[str, str]],
+        on_click: Callable[[int], None],
+    ) -> None:
+        """
+        Marks moments of the audio below its position.
+
+        :param colors: The (light, dark) color of each kind of mark.
+        :param on_click: Called with the index of the mark clicked.
+        """
+        self._marks = tuple(marks)
+        self._mark_colors = colors
+        self._on_mark_click = on_click
+        self._draw_marks()
+
+    def _mark_x(self, seconds: float) -> float | None:
+        """Where a moment is on the strip of marks, aligned with the slider."""
+        duration = self._player.duration if self._player else 0
+        width = self.cnv_marks.winfo_width()
+        if duration <= 0 or width <= 1:
+            return None
+        # The slider moves the center of its button between its ends
+        slider = self.sld_position
+        inset = slider._apply_widget_scaling(
+            slider.cget("button_corner_radius") + slider.cget("button_length") / 2
+        )
+        fraction = min(max(seconds / duration, 0), 1)
+        return float(inset + fraction * (width - 2 * inset))
+
+    def _draw_marks(self) -> None:
+        canvas = self.cnv_marks
+        canvas.delete("mark")
+        canvas.configure(bg=self._apply_appearance_mode(self._detect_color_of_master()))
+        # The current mark above the others
+        order = {MarkKind.DONE: 0, MarkKind.PENDING: 1, MarkKind.CURRENT: 2}
+        for mark in sorted(self._marks, key=lambda mark: order[mark.kind]):
+            x = self._mark_x(mark.seconds)
+            if x is None:
+                return
+            height, width = MARK_SIZES[mark.kind]
+            canvas.create_rectangle(
+                x - width / 2,
+                MARKS_HEIGHT - height,
+                x + width / 2,
+                MARKS_HEIGHT,
+                fill=self._apply_appearance_mode(self._mark_colors[mark.kind]),
+                width=0,
+                tags="mark",
+            )
+
+    def _on_marks_click(self, event: Any) -> None:
+        """Goes to the mark nearest to the click, if it's close enough."""
+        if self._on_mark_click is None:
+            return
+        positions = [
+            (abs(x - event.x), idx)
+            for idx, mark in enumerate(self._marks)
+            if (x := self._mark_x(mark.seconds)) is not None
+        ]
+        if positions and (nearest := min(positions))[0] <= MARK_CLICK_DISTANCE:
+            self._on_mark_click(nearest[1])
+
+    def _set_appearance_mode(self, mode_string: str) -> None:
+        super()._set_appearance_mode(mode_string)
+        self._draw_marks()
 
     def handle_key(self, key: str) -> bool:
         """Handles the playback shortcuts. :return: Whether the key was handled."""

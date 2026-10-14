@@ -33,6 +33,7 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         on_review_again: Callable[[], None],
         on_undo: Callable[[], Any],
         on_auto_play_change: Callable[[bool], None],
+        on_only_flagged_change: Callable[[bool], None],
         is_auto_play: bool,
         previous_tooltip: Text,
         next_tooltip: Text,
@@ -43,6 +44,8 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         :param on_review_again: Forgets which words were accepted.
         :param on_undo: Undoes the last review.
         :param on_auto_play_change: Called with whether going to a word plays it.
+        :param on_only_flagged_change: Called with whether only the segments with
+            words to review are shown.
         """
         super().__init__(
             master,
@@ -55,7 +58,7 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         self._review = Review(ReviewState.NO_DATA)
         self._on_adjust_threshold = on_adjust_threshold
         # Between the options on the left and the one on the right
-        self.grid_columnconfigure(5, weight=1)
+        self.grid_columnconfigure(6, weight=1)
 
         self.lbl_icon = ctk.CTkLabel(self, text="", width=18)
         self.lbl_status = localize(
@@ -72,6 +75,22 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         )
         self.btn_next.grid(row=0, column=1, padx=(2, 0))
 
+        self._on_only_flagged_change = on_only_flagged_change
+        self._only_flagged_variable = ctk.BooleanVar(self, value=False)
+        self.chk_only_flagged = localize(
+            ctk.CTkCheckBox(
+                self,
+                variable=self._only_flagged_variable,
+                command=lambda: on_only_flagged_change(
+                    self._only_flagged_variable.get()
+                ),
+                checkbox_width=18,
+                checkbox_height=18,
+                border_width=2,
+                font=theme.font(13),
+            ),
+            text=L_("Only flagged"),
+        )
         self._auto_play_variable = ctk.BooleanVar(self, value=is_auto_play)
         self.chk_auto_play = localize(
             ctk.CTkCheckBox(
@@ -145,6 +164,7 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             self.lbl_icon,
             self.lbl_status,
             self.frm_arrows,
+            self.chk_only_flagged,
             self.chk_auto_play,
             self.btn_undo,
             self.lbl_accept_hint,
@@ -181,18 +201,26 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             set_button_state(self.btn_previous, arrow_state)
             set_button_state(self.btn_next, arrow_state)
             self.frm_arrows.grid(row=0, column=2, padx=(12, 0))
+        # Also once all are reviewed, to show all the segments again
+        if state in (ReviewState.ACTIVE, ReviewState.ALL_REVIEWED):
+            self.chk_only_flagged.grid(row=0, column=3, padx=(12, 0))
         if state == ReviewState.ACTIVE:
-            self.chk_auto_play.grid(row=0, column=3, padx=(12, 0))
-            self.lbl_accept_hint.grid(row=0, column=6, padx=(0, 12))
+            self.chk_auto_play.grid(row=0, column=4, padx=(12, 0))
+            self.lbl_accept_hint.grid(row=0, column=7, padx=(0, 12))
         # After accepting the last word too
         if can_undo and state in (ReviewState.ACTIVE, ReviewState.ALL_REVIEWED):
-            self.btn_undo.grid(row=0, column=4, padx=(8, 0))
+            self.btn_undo.grid(row=0, column=5, padx=(8, 0))
         if state == ReviewState.NOTHING_FLAGGED:
-            self.btn_adjust.grid(row=0, column=6, padx=(0, 6))
+            self.btn_adjust.grid(row=0, column=7, padx=(0, 6))
         # The edited words stay reviewed, so only the accepted ones can be
         # reviewed again
         elif state == ReviewState.ALL_REVIEWED and review.accepted:
-            self.btn_review_again.grid(row=0, column=6, padx=(0, 6))
+            self.btn_review_again.grid(row=0, column=7, padx=(0, 6))
+
+    def set_only_flagged(self, is_on: bool) -> None:
+        """Checks or unchecks "Only flagged", as if the user did."""
+        self._only_flagged_variable.set(is_on)
+        self._on_only_flagged_change(is_on)
 
     def _adjust_threshold(self) -> None:
         self._on_adjust_threshold(self.btn_adjust)

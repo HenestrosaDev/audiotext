@@ -2800,3 +2800,228 @@ def test_closing_the_app_writes_the_pending_reviews() -> None:
 
     app._history_store.flush.assert_called_once()
     app.destroy.assert_called_once()
+
+
+def shown_texts(view: Any) -> list[str]:
+    """The texts of the segments that the filter doesn't hide."""
+    text = view.text
+    textbox = text.tbx_transcript._textbox
+    return [
+        segment.text
+        for segment, (start, _end) in zip(
+            text._segments, text._text_ranges, strict=True
+        )
+        if "hidden" not in textbox.tag_names(start)
+    ]
+
+
+def test_only_the_segments_with_words_to_review_can_be_shown(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_text import TranscriptText
+
+    view = open_review(ui, monkeypatch)
+    bar = view.review_bar
+    renders: list[None] = []
+    render = TranscriptText._render_transcript
+    monkeypatch.setattr(
+        TranscriptText,
+        "_render_transcript",
+        lambda self: (renders.append(None), render(self))[1],
+    )
+    all_texts = ["Hello wisper", "Nice to meet you.", "Bye wisper."]
+    assert shown_texts(view) == all_texts
+
+    bar.chk_only_flagged.toggle()
+    view.go_to_low_confidence(1)
+    view.accept_current()
+    # The segment just reviewed stays, until the user moves on
+    assert shown_texts(view) == all_texts
+    assert current_text(view) == "Nice to meet you."
+    view.accept_current()
+    assert shown_texts(view) == ["Nice to meet you.", "Bye wisper."]
+    view.go_to_low_confidence(1)
+    assert shown_texts(view) == ["Bye wisper."]
+
+    # None left
+    view.accept_current()
+    assert shown_texts(view) == ["Bye wisper."]
+    assert not view.frm_review_empty.winfo_ismapped()
+    view._set_only_flagged(True)
+    ui.pump()
+    assert shown_texts(view) == []
+    assert view.frm_review_empty.winfo_ismapped()
+    # Which can show all of them again
+    [label, button] = view.frm_review_empty.winfo_children()
+    assert label.cget("text") == "No low-confidence words left to review"
+    button.invoke()
+    ui.pump()
+    assert shown_texts(view) == all_texts
+    assert not view.frm_review_empty.winfo_ismapped()
+    assert not bar._only_flagged_variable.get()
+
+    # Without words to review, it doesn't hide anything
+    view._set_only_flagged(True)
+    view._set_low_confidence_threshold(5)
+    assert shown_texts(view) == all_texts
+    # Filtering doesn't render the transcript again
+    assert renders == []
+
+
+def test_the_words_to_review_are_marked_on_the_timeline(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.player_bar import MarkKind
+
+    view = open_review(ui, monkeypatch)
+
+    def marks() -> list[tuple[float, MarkKind]]:
+        return [(mark.seconds, mark.kind) for mark in view.player._marks]
+
+    assert marks() == [
+        (0.5, MarkKind.PENDING),
+        (1.5, MarkKind.PENDING),
+        (3.5, MarkKind.PENDING),
+    ]
+    view.go_to_low_confidence(1)
+    view.accept_current()
+    assert marks() == [
+        (0.5, MarkKind.DONE),
+        (1.5, MarkKind.CURRENT),
+        (3.5, MarkKind.PENDING),
+    ]
+    # Clicking a mark goes to its word
+    view._on_mark_click(2)
+    assert current_text(view) == "Bye wisper."
+    assert marks()[2] == (3.5, MarkKind.CURRENT)
+    # They follow the threshold
+    view._set_low_confidence_threshold(15)
+    assert marks() == [(3.5, MarkKind.CURRENT)]
+    view._toggle_low_confidence()
+    assert marks() == []
+
+
+def test_the_marks_are_drawn_by_kind_and_can_be_clicked(ui: Ui) -> None:
+    from views.transcript.player_bar import MarkKind, PlayerBar, TimelineMark
+
+    bar = PlayerBar(
+        ui.window,
+        on_tick=lambda _position, _is_playing: None,
+        on_toggle_subtitles=lambda: None,
+        on_subtitle_menu=lambda _anchor: None,
+    )
+    bar.grid(row=9, column=0, sticky="ew")
+    bar._player = FakePlayer()
+    clicked: list[int] = []
+    try:
+        ui.pump()
+        bar.set_marks(
+            [
+                TimelineMark(15.0, MarkKind.DONE),
+                TimelineMark(30.0, MarkKind.PENDING),
+                TimelineMark(45.0, MarkKind.CURRENT),
+            ],
+            {kind: ("#000000", "#FFFFFF") for kind in MarkKind},
+            clicked.append,
+        )
+        canvas = bar.cnv_marks
+        heights = sorted(
+            round(canvas.coords(item)[3] - canvas.coords(item)[1])
+            for item in canvas.find_withtag("mark")
+        )
+        # They differ in height, not only in color
+        assert heights == [6, 10, 16]
+
+        x = bar._mark_x(30.0)
+        assert x is not None
+        bar._on_marks_click(type("Event", (), {"x": x + 3})())
+        bar._on_marks_click(type("Event", (), {"x": x + 40})())
+        assert clicked == [1]
+    finally:
+        bar._player = None
+        bar.destroy()
+
+
+def click_flagged(ui: Ui, view: Any, text: str) -> None:
+    """Clicks a low confidence text, which opens its popover."""
+    textbox = view.text.tbx_transcript._textbox
+    [flagged] = [t for t in view._review.unreviewed if t.text == text]
+    start = view.text._flagged_ranges(flagged)[0][0]
+    textbox.mark_set(tk.CURRENT, f"{start}+1c")
+    view.text._on_click(0)
+    ui.pump()
+
+
+def test_a_word_can_be_corrected_where_it_is(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from models.transcript_segment import ReviewMark
+
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+    segment_clicks: list[float] = []
+    monkeypatch.setattr(view, "_play_from", segment_clicks.append)
+
+    click_flagged(ui, view, "wisper")
+    assert popover.is_open
+    assert popover.winfo_ismapped()
+    assert popover.ent_text.get() == "wisper"
+    # The word is the one gone to, but it's the field that has the focus
+    assert current_text(view) == "wisper"
+    assert view.focus_get() is popover.ent_text._entry
+
+    # Escape closes it without changes, back to the transcript
+    popover.ent_text._entry.event_generate("<Escape>")
+    ui.pump()
+    assert not popover.is_open
+    assert view.focus_get() is view.text.tbx_transcript._textbox
+    assert view.review_bar.review.remaining == 3
+
+    # Return saves the correction, which reviews it, and goes to the next word
+    click_flagged(ui, view, "wisper")
+    popover.ent_text.delete(0, "end")
+    popover.ent_text.insert(0, "Whisper")
+    popover.ent_text._entry.event_generate("<Return>")
+    ui.pump()
+    assert not popover.is_open
+    word = view._entry.segments[0].words[1]
+    assert (word.text, word.score, word.reviewed) == ("Whisper", 0.3, ReviewMark.EDITED)
+    assert current_text(view) == "Nice to meet you."
+    assert view.focus_get() is view.text.tbx_transcript._textbox
+    # Which can be undone
+    assert view.undo_review()
+    assert view._entry.segments[0].text == "Hello wisper"
+
+    # Unchanged, Return accepts it
+    click_flagged(ui, view, "wisper")
+    popover.ent_text._entry.event_generate("<Return>")
+    ui.pump()
+    assert view._entry.segments[0].words[1].reviewed == ReviewMark.ACCEPTED
+
+    # A segment scored whole can't be left without text
+    click_flagged(ui, view, "Nice to meet you.")
+    popover.ent_text.delete(0, "end")
+    popover._on_return(None)
+    assert popover.is_open
+    popover.btn_accept.invoke()
+    ui.pump()
+    assert not popover.is_open
+    assert view._entry.segments[1].reviewed == ReviewMark.ACCEPTED
+
+    # Clicking away only closes it, without playing
+    click_flagged(ui, view, "Bye wisper.")
+    view._on_segment_click(0)
+    assert not popover.is_open
+    assert segment_clicks == []
+    assert view.review_bar.review.remaining == 1
+
+
+def test_the_popover_replays_the_word(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> None:
+    view = open_review(ui, monkeypatch)
+    clips: list[tuple[float, float]] = []
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+
+    click_flagged(ui, view, "wisper")
+    view.word_popover.btn_replay.invoke()
+    # Played when it's opened (with auto-play on) and again
+    assert clips == [(-1.0, 2.5), (-1.0, 2.5)]
