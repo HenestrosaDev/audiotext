@@ -2129,7 +2129,7 @@ def test_a_translation_is_exported_like_the_transcription(
     view.show_export_menu()
     view.show_translation_export_menu(view.translation_panel.btn_export)
     for menu in menus:
-        assert menu.entrycget("end", "label") == "JSON (.json)"
+        assert menu.entrycget("end", "label") == "Word document (.docx)"
         assert menu.type("end") == "command"
     assert menus[0].index("end") == menus[1].index("end")
     ui.pump()
