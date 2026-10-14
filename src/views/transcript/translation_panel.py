@@ -29,6 +29,7 @@ from views.style import icons, theme
 from views.transcript.edit_dialogs import _Dialog
 from views.transcript.transcript_text import TranscriptText
 from views.widgets.bindings import bind_wraplength
+from views.widgets.button import icon_button, set_button_state
 from views.widgets.localized_options import LocalizedOptions
 from views.widgets.option_menu import CTkOptionMenu
 from views.widgets.searchable_option_menu import CTkSearchableOptionMenu
@@ -63,6 +64,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         on_segment_click: Callable[[int], None],
         on_segment_menu: Callable[[Any, int], str | None],
         on_text_edit: Callable[[str], None],
+        on_search: Callable[[], None],
         on_copy: Callable[[], None],
         on_export: Callable[[Any], None],
         on_translate: Callable[[], None],
@@ -76,6 +78,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         :param on_segment_menu: Called with the event and the index of a segment
                                 of the translation that is right-clicked.
         :param on_text_edit: Called with the plain text after the user edits it.
+        :param on_search: Called to find and replace in the translation.
         :param on_export: Called with the button below which the formats to
                           export it are shown.
         :param on_translate: Called to choose another language to translate it
@@ -131,12 +134,35 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         )
         self.lbl_source.grid(row=0, column=2, padx=(8, 0), sticky=ctk.EW)
 
-        self.btn_copy = self._icon_button(header, 3, "copy", on_copy)
-        self.btn_export = self._icon_button(
-            header, 4, "export", lambda: on_export(self.btn_export)
+        self.btn_search = icon_button(
+            header,
+            "search",
+            on_search,
+            lambda: _("Find and replace ({shortcut})").format(
+                shortcut=f"{theme.SHORTCUT_MODIFIER_LABEL}F"
+            ),
         )
-        self.btn_regenerate = self._icon_button(header, 5, "refresh", on_regenerate)
-        self._icon_button(header, 6, "x_circle", on_close)
+        self.btn_copy = icon_button(header, "copy", on_copy, L_("Copy"))
+        self.btn_export = icon_button(
+            header, "export", lambda: on_export(self.btn_export), L_("Export")
+        )
+        self.btn_regenerate = icon_button(
+            header, "refresh", on_regenerate, L_("Translate again")
+        )
+        btn_close = icon_button(
+            header, "x_circle", on_close, L_("Hide the translation")
+        )
+        for column, button in enumerate(
+            (
+                self.btn_search,
+                self.btn_copy,
+                self.btn_export,
+                self.btn_regenerate,
+                btn_close,
+            ),
+            start=3,
+        ):
+            button.grid(row=0, column=column, padx=(2, 0))
 
         self.lbl_details = ctk.CTkLabel(
             self,
@@ -155,7 +181,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             on_segment_menu=on_segment_menu,
             on_text_edit=on_text_edit,
             # The transcript on its left already explains it
-            show_click_hint=False,
+            show_usage_hints=False,
             empty_segment_text=L_("Not translated yet"),
         )
         # It's inside the card of the panel
@@ -213,9 +239,11 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
                 segments = list(translation.segments)
             self.lbl_title.configure(text=language_name(translation.language))
             self.lbl_source.configure(text=self._describe(translation))
-            self._set_details(
-                error or self._segments_left_hint(translation),
-                bool(error),
+            # Shown above the text, in the row of its hints, so it starts at the
+            # same height as the transcript
+            self._set_details("")
+            self.text.set_note(
+                error or self._segments_left_hint(translation), bool(error)
             )
             self.frm_message.grid_forget()
             self.text.grid(row=2, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
@@ -224,8 +252,8 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             )
 
         has_translation = translation is not None and not is_loading
-        for button in (self.btn_copy, self.btn_export):
-            button.configure(state=ctk.NORMAL if has_translation else ctk.DISABLED)
+        for button in (self.btn_search, self.btn_copy, self.btn_export):
+            set_button_state(button, ctk.NORMAL if has_translation else ctk.DISABLED)
         # A manual translation can't be translated again
         can_regenerate = (
             has_translation
@@ -279,22 +307,6 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         self._on_translate()
 
     # STATES
-
-    @staticmethod
-    def _icon_button(
-        master: Any, column: int, icon_name: str, command: Callable[[], None]
-    ) -> ctk.CTkButton:
-        button = ctk.CTkButton(
-            master,
-            text="",
-            width=28,
-            height=28,
-            image=icons.icon(icon_name, 14),
-            command=command,
-            **theme.GHOST_BUTTON,
-        )
-        button.grid(row=0, column=column, padx=(2, 0))
-        return button
 
     def _set_details(self, text: str, is_error: bool = False) -> None:
         """Shows a hint or an error below the header, if there is one."""
