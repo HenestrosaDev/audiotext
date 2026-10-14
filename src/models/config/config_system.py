@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 
@@ -74,6 +74,10 @@ class ConfigSystem:
     # maximized the first time the app is opened
     window_geometry: str = ""
     is_window_maximized: bool = True
+    # Where the user last moved each dialog, as its class name and its position
+    # (e.g. "FindDialog+120+-40"). The ones never moved are centered over the
+    # main window
+    dialog_positions: list[str] = field(default_factory=list)
     # Whether to show a notification of the system when a transcription is ready
     notify_when_done: bool = True
     # Whether to check if a new version is available when the app opens
@@ -107,5 +111,6 @@ class ConfigSystem:
         TIME_FORMAT = "time_format"
         WINDOW_GEOMETRY = "window_geometry"
         IS_WINDOW_MAXIMIZED = "is_window_maximized"
+        DIALOG_POSITIONS = "dialog_positions"
         NOTIFY_WHEN_DONE = "notify_when_done"
         CHECK_FOR_UPDATES = "check_for_updates"

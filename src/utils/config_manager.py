@@ -139,7 +139,10 @@ class ConfigManager:
                 config, section_name, field.name, type_hints[field.name]
             )
             for field in dataclasses.fields(config_class)
-            if field.default is dataclasses.MISSING
+            if (
+                field.default is dataclasses.MISSING
+                and field.default_factory is dataclasses.MISSING
+            )
             or config.has_option(section_name, field.name)
         }
 

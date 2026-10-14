@@ -15,6 +15,7 @@ from views.localization import Text, localize
 from views.style import icons, theme
 from views.widgets.button import icon_button, set_button_state, show_toggled
 from views.widgets.tooltip import Tooltip
+from views.widgets.window import place_dialog
 
 
 class SearchableText(Protocol):
@@ -58,6 +59,8 @@ class FindDialog(ctk.CTkToplevel):  # type: ignore[misc]
         :param on_close: Called when it's closed.
         """
         super().__init__(master)
+        # Shown by `place_dialog` once it's built, already in its place
+        self.withdraw()
         self._target = target
         self._is_pinned = is_pinned
         self._on_pin_change = on_pin_change
@@ -137,6 +140,7 @@ class FindDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         self._apply_pin()
         self.set_target(target)
+        place_dialog(self, master)
         self.after(50, self.focus_find)
 
     # PUBLIC METHODS
