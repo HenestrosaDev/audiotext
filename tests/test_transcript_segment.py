@@ -1,4 +1,5 @@
 from models.transcript_segment import (
+    ReviewMark,
     TranscriptSegment,
     TranscriptWord,
     has_scores,
@@ -80,3 +81,43 @@ def test_has_scores_if_a_segment_or_a_word_has_one() -> None:
     assert has_scores([TranscriptSegment(0, 1, "Hello", score=0.9)])
     assert not has_scores([TranscriptSegment(0, 1, "Hello")])
     assert not has_scores([])
+
+
+def test_the_reviews_are_kept() -> None:
+    segment = TranscriptSegment(
+        0,
+        1,
+        "Hello world",
+        words=(
+            TranscriptWord(0, 0.5, "Hello", 0.2, ReviewMark.ACCEPTED),
+            TranscriptWord(0.5, 1, "world", 0.3, ReviewMark.EDITED),
+            TranscriptWord(1, 1, "now"),
+        ),
+        score=0.1,
+        reviewed=ReviewMark.EDITED,
+    )
+
+    data = segment.to_dict()
+
+    assert data["words"] == [
+        [0, 0.5, "Hello", 0.2, "accepted"],
+        [0.5, 1, "world", 0.3, "edited"],
+        [1, 1, "now"],
+    ]
+    assert data["reviewed"] == "edited"
+    assert TranscriptSegment.from_dict(data) == segment
+
+
+def test_unknown_reviews_are_ignored() -> None:
+    data = {
+        "start": 0,
+        "end": 1,
+        "text": "Hello",
+        "words": [[0, 1, "Hello", 0.2, "someday"]],
+        "reviewed": "someday",
+    }
+
+    segment = TranscriptSegment.from_dict(data)
+
+    assert segment.reviewed is None
+    assert segment.words[0] == TranscriptWord(0, 1, "Hello", 0.2)

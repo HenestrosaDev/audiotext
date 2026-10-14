@@ -463,7 +463,7 @@ class TranslationHandler:
                 [segment.text for segment in segments], language, provider, model
             )
             translated_segments = tuple(
-                replace(segment, text=segment_text, words=(), score=None)
+                replace(segment, text=segment_text, words=(), score=None, reviewed=None)
                 for segment, segment_text in zip(segments, translated, strict=True)
             )
             translated_text = join_segments(list(translated_segments))

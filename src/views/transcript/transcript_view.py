@@ -17,7 +17,14 @@ from handlers.translation_handler import MANUAL
 from models.config.config_ai import ConfigAi
 from models.config.config_system import LOW_CONFIDENCE_THRESHOLDS, ConfigSystem
 from models.history import HistoryEntry
-from models.review import FlaggedText, Review, ReviewState, build_review, step_to
+from models.review import (
+    FlaggedText,
+    Review,
+    ReviewState,
+    build_review,
+    set_review,
+    step_to,
+)
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment, has_scores, join_segments
 from models.translation import TranscriptTranslation
@@ -235,9 +242,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._precise_variable: tk.BooleanVar | None = None
         self._low_confidence_variable: tk.BooleanVar | None = None
         self._threshold_variable: tk.IntVar | None = None
-        # The keys of the low confidence texts that the user reviewed (see
-        # `models.review`), the review they make, and the text gone to, if any
-        self._reviewed: set[str] = set()
+        # The review of the low confidence texts (see `models.review`), and the
+        # text gone to, if any
         self._review = Review(ReviewState.NO_DATA)
         self._current_flagged: FlaggedText | None = None
         self._find_dialog: FindDialog | None = None
@@ -819,7 +825,6 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self._entry.segments,
             config.highlight_low_confidence,
             config.low_confidence_threshold / 100,
-            self._reviewed,
         )
         # Kept to step from where it was, even if it's no longer flagged
         if self._current_flagged and self._current_flagged.key not in {
@@ -830,10 +835,15 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.review_bar.show(self._review)
 
     def _review_again(self) -> None:
-        """Forgets which low confidence words at the threshold were reviewed."""
-        self._reviewed.difference_update(text.key for text in self._review.flagged)
+        """
+        Forgets which low confidence words at the threshold were accepted. The
+        edited ones stay reviewed, as they were corrected.
+        """
         self._current_flagged = None
-        self._refresh_review()
+        self._update_transcript(
+            set_review(self._entry.segments, self._review.accepted, None),
+            lambda text: text,
+        )
 
     def _format_time(self, seconds: float) -> str:
         """Formats the start of a segment as the user chose to show them."""
