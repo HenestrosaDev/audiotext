@@ -206,6 +206,8 @@ class FakeTranslator:
         self.translation = TranscriptTranslation("es", "Hola", (), "deepl")
         self.error: Exception | None = None
         self.requests: list[tuple[str, str]] = []
+        # The fractions reported before returning the translation
+        self.progress: list[float] = []
 
     def translate(
         self,
@@ -215,8 +217,11 @@ class FakeTranslator:
         language: str,
         provider: str,
         model: str,
+        on_progress: Callable[[float], None],
     ) -> TranscriptTranslation:
         self.requests.append((language, provider))
+        for fraction in self.progress:
+            on_progress(fraction)
         if self.error:
             raise self.error
         return replace(self.translation, language=language)

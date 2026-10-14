@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 10:47+0200\n"
+"POT-Creation-Date: 2026-10-14 17:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -64,33 +64,35 @@ msgid "Transcription cancelled."
 msgstr "文字起こしをキャンセルしました。"
 
 #: src/controllers/main_controller.py:197
+#: src/controllers/main_controller.py:202
 msgid "Downloading…"
 msgstr "ダウンロードしています…"
 
-#: src/controllers/main_controller.py:208
+#: src/controllers/main_controller.py:209
 msgid "Recording…"
 msgstr "録音しています…"
 
-#: src/controllers/main_controller.py:225
+#: src/controllers/main_controller.py:226
 #, python-brace-format
 msgid "Done in {duration}."
 msgstr "{duration}で完了しました。"
 
-#: src/controllers/main_controller.py:288
+#: src/controllers/main_controller.py:289
+#: src/controllers/main_controller.py:294
 msgid "Isolating the speech…"
 msgstr "音声を分離しています…"
 
-#: src/controllers/main_controller.py:321
+#: src/controllers/main_controller.py:323
 msgid "WhisperX model ready."
 msgstr "WhisperX モデルの準備ができました。"
 
-#: src/controllers/main_controller.py:328
+#: src/controllers/main_controller.py:330
 #, python-brace-format
 msgid "Could not load the WhisperX model: {error}"
 msgstr "WhisperX モデルを読み込めませんでした: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:201
+#: src/handlers/whisperx_handler.py:202
 msgid "No output file types selected. Please select at least one."
 msgstr "出力ファイル形式が選択されていません。少なくとも 1 つ選択してください。"
 
@@ -135,7 +137,7 @@ msgid "The reply of the model was too long."
 msgstr "モデルの応答が長すぎました。"
 
 #: src/handlers/audio_handler.py:54 src/handlers/openai_api_handler.py:340
-#: src/handlers/whisperx_handler.py:225
+#: src/handlers/whisperx_handler.py:226
 msgid "Loading audio…"
 msgstr "音声を読み込んでいます…"
 
@@ -145,13 +147,13 @@ msgid "Unsupported file type: {extension}"
 msgstr "サポートされていないファイル形式です: {extension}"
 
 #: src/handlers/audio_handler.py:132 src/handlers/openai_api_handler.py:365
-#: src/handlers/whisperx_handler.py:235 src/handlers/whisperx_handler.py:242
+#: src/handlers/whisperx_handler.py:236 src/handlers/whisperx_handler.py:243
 #: src/views/history/formatting.py:43
 #: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
 msgstr "文字起こししています…"
 
-#: src/handlers/audio_handler.py:135 src/handlers/openai_api_handler.py:368
+#: src/handlers/audio_handler.py:135 src/handlers/openai_api_handler.py:369
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
 msgstr "チャンク {current}/{total} を文字起こししています…"
@@ -165,7 +167,7 @@ msgstr "録音中はテキストを表示できません。"
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr "{model} モデルを読み込んでいます（初回使用時にダウンロードされます）…"
 
-#: src/handlers/openai_api_handler.py:479
+#: src/handlers/openai_api_handler.py:480
 #, python-brace-format
 msgid "The audio is too large for the OpenAI API ({size} MB)."
 msgstr "音声が OpenAI API には大きすぎます（{size} MB）。"
@@ -178,51 +180,51 @@ msgstr "モデルから有効な要約が返されませんでした。"
 msgid "There is no text to summarize."
 msgstr "要約するテキストがありません。"
 
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:311
+#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:312
 msgid "There is no transcription to save. Please generate it first."
 msgstr "保存する文字起こしがありません。先に生成してください。"
 
-#: src/handlers/translation_handler.py:245
+#: src/handlers/translation_handler.py:328
 msgid "The model didn't return a valid translation."
 msgstr "モデルから有効な翻訳が返されませんでした。"
 
-#: src/handlers/translation_handler.py:297
+#: src/handlers/translation_handler.py:399
 #, python-brace-format
 msgid "DeepL can't translate into {language}."
 msgstr "DeepL はこの言語に翻訳できません: {language}。"
 
-#: src/handlers/translation_handler.py:312
+#: src/handlers/translation_handler.py:418
 msgid "DeepL didn't return a valid translation."
 msgstr "DeepL から有効な翻訳が返されませんでした。"
 
-#: src/handlers/translation_handler.py:333
+#: src/handlers/translation_handler.py:439
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google 翻訳から有効な翻訳が返されませんでした。"
 
-#: src/handlers/translation_handler.py:362
+#: src/handlers/translation_handler.py:471
 msgid "There is no text to translate."
 msgstr "翻訳するテキストがありません。"
 
-#: src/handlers/url_handler.py:87
+#: src/handlers/url_handler.py:109
 msgid ""
 "The URL doesn't point to an audio or video file. Use the link of a "
 "YouTube video or of a media file."
 msgstr "URL が音声・動画ファイルを指していません。YouTube 動画またはメディアファイルへのリンクを使用してください。"
 
-#: src/handlers/url_handler.py:105
+#: src/handlers/url_handler.py:132
 #, python-brace-format
 msgid "The file could not be downloaded: {error}"
 msgstr "ファイルをダウンロードできませんでした: {error}"
 
-#: src/handlers/whisperx_handler.py:353 src/handlers/whisperx_handler.py:362
+#: src/handlers/whisperx_handler.py:354 src/handlers/whisperx_handler.py:363
 msgid "Aligning subtitles…"
 msgstr "字幕のタイミングを調整しています…"
 
-#: src/handlers/whisperx_handler.py:386 src/handlers/whisperx_handler.py:391
+#: src/handlers/whisperx_handler.py:387 src/handlers/whisperx_handler.py:392
 msgid "Identifying speakers…"
 msgstr "話者を識別しています…"
 
-#: src/handlers/whisperx_handler.py:412
+#: src/handlers/whisperx_handler.py:413
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -232,17 +234,17 @@ msgstr ""
 "話者の識別には Hugging Face のトークンが必要です。{tokens_url} でトークンを作成し、{model_url} "
 "の利用条件に同意してから、WhisperX のオプションでトークンを設定してください。"
 
-#: src/handlers/whisperx_handler.py:497
+#: src/handlers/whisperx_handler.py:507
 msgid "Loading the subtitle alignment model…"
 msgstr "字幕のタイミング調整モデルを読み込んでいます…"
 
-#: src/handlers/whisperx_handler.py:530
+#: src/handlers/whisperx_handler.py:539
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
 msgstr "話者識別モデルを読み込んでいます(初回使用時にダウンロードされます)…"
 
-#: src/handlers/whisperx_handler.py:544
+#: src/handlers/whisperx_handler.py:558
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -252,17 +254,17 @@ msgstr ""
 "話者識別モデルをダウンロードできませんでした。Hugging Face のトークンが有効であること、および {model_url} "
 "の利用条件に同意していることを確認してください。"
 
-#: src/handlers/youtube_handler.py:34
+#: src/handlers/youtube_handler.py:48
 msgid ""
 "The audio of the YouTube video could not be downloaded. Please make sure "
 "the URL is correct."
 msgstr "YouTube 動画の音声をダウンロードできませんでした。URL が正しいか確認してください。"
 
-#: src/handlers/youtube_handler.py:40
+#: src/handlers/youtube_handler.py:54
 msgid "The YouTube video doesn't have an audio track."
 msgstr "この YouTube 動画には音声トラックがありません。"
 
-#: src/utils/audio_utils.py:30
+#: src/utils/audio_utils.py:32
 msgid "No audio was recorded."
 msgstr "音声が録音されませんでした。"
 
@@ -291,6 +293,11 @@ msgstr "要点"
 #: src/utils/exporters.py:315 src/views/transcript/summary_panel.py:94
 msgid "Chapters"
 msgstr "チャプター"
+
+#: src/utils/progress.py:119
+#, python-brace-format
+msgid "About {time} left"
+msgstr "残り約 {time}"
 
 #: src/utils/time_format.py:80
 #, python-brace-format
@@ -326,14 +333,14 @@ msgid "{count} failed"
 msgstr "{count} 件失敗"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1591
+#: src/views/transcript/transcript_view.py:1604
 msgid "Open the folder of the saved files"
 msgstr "保存したファイルのフォルダーを開く"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
 #: src/views/transcript/transcript_view.py:537
-#: src/views/transcript/transcript_view.py:1553
+#: src/views/transcript/transcript_view.py:1566
 msgid "Transcribe again"
 msgstr "もう一度文字起こし"
 
@@ -345,32 +352,32 @@ msgstr "新しいファイルを待っています…"
 msgid "No files"
 msgstr "ファイルなし"
 
-#: src/views/entries/progress_card.py:20
+#: src/views/entries/progress_card.py:22
 #: src/views/new_transcription/new_transcription_view.py:107
 msgid "Choose a file"
 msgstr "ファイルを選択してください"
 
-#: src/views/entries/progress_card.py:21
+#: src/views/entries/progress_card.py:23
 #: src/views/new_transcription/new_transcription_view.py:113
 msgid "Enter the URL"
 msgstr "URL を入力"
 
-#: src/views/entries/progress_card.py:22
+#: src/views/entries/progress_card.py:24
 #: src/views/new_transcription/microphone_view.py:145
 #: src/views/new_transcription/microphone_view.py:474
 msgid "Record"
 msgstr "録音"
 
-#: src/views/entries/progress_card.py:23 src/views/entries/progress_card.py:24
+#: src/views/entries/progress_card.py:25 src/views/entries/progress_card.py:26
 #: src/views/new_transcription/new_transcription_view.py:121
 msgid "Choose a folder"
 msgstr "フォルダーを選択してください"
 
-#: src/views/entries/progress_card.py:25
+#: src/views/entries/progress_card.py:27
 msgid "Source"
 msgstr "ソース"
 
-#: src/views/entries/progress_card.py:51
+#: src/views/entries/progress_card.py:53
 #: src/views/new_transcription/microphone_view.py:145
 #: src/views/new_transcription/microphone_view.py:467
 #: src/views/new_transcription/microphone_view.py:473
@@ -380,75 +387,80 @@ msgstr "ソース"
 msgid "Settings"
 msgstr "設定"
 
-#: src/views/entries/progress_card.py:52
+#: src/views/entries/progress_card.py:54
 #: src/views/new_transcription/microphone_view.py:145
 #: src/views/new_transcription/microphone_view.py:475
 #: src/views/new_transcription/new_transcription_view.py:148
 msgid "Transcribe"
 msgstr "文字起こし"
 
-#: src/views/entries/progress_card.py:121
+#: src/views/entries/progress_card.py:131
 #: src/views/history/history_sidebar.py:372
 msgid "Stop watching"
 msgstr "監視を停止"
 
-#: src/views/entries/progress_card.py:121
+#: src/views/entries/progress_card.py:131
 #: src/views/history/history_sidebar.py:374
 #: src/views/transcript/edit_dialogs.py:38 src/views/widgets/text_dialog.py:60
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: src/views/entries/progress_card.py:132
+#: src/views/entries/progress_card.py:142
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "
 "history and opens here when it's ready."
 msgstr "その間も Audiotext を使い続けられます。結果は履歴に保存され、準備ができるとここに表示されます。"
 
-#: src/views/entries/progress_card.py:144
+#: src/views/entries/progress_card.py:156
 msgid "The transcription failed"
 msgstr "文字起こしに失敗しました"
 
-#: src/views/entries/progress_card.py:145
+#: src/views/entries/progress_card.py:157
 msgid "An unknown error occurred."
 msgstr "不明なエラーが発生しました。"
 
-#: src/views/entries/progress_card.py:147
+#: src/views/entries/progress_card.py:159
 msgid "The transcription was interrupted"
 msgstr "文字起こしは中断されました"
 
-#: src/views/entries/progress_card.py:148
+#: src/views/entries/progress_card.py:160
 msgid "Audiotext was closed before it finished."
 msgstr "完了する前に Audiotext が終了しました。"
 
-#: src/views/entries/progress_card.py:150
+#: src/views/entries/progress_card.py:162
 msgid "The transcription was cancelled"
 msgstr "文字起こしはキャンセルされました"
 
-#: src/views/entries/progress_card.py:165
+#: src/views/entries/progress_card.py:177
 #: src/views/new_transcription/new_transcription_view.py:303
 msgid "Back"
 msgstr "戻る"
 
-#: src/views/entries/progress_card.py:174
+#: src/views/entries/progress_card.py:186
 msgid "Try again"
 msgstr "再試行"
 
-#: src/views/entries/progress_card.py:182
+#: src/views/entries/progress_card.py:194
 msgid "Delete"
 msgstr "削除"
 
-#: src/views/entries/progress_card.py:195
+#: src/views/entries/progress_card.py:207
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "{count} 件の文字起こしが終わるのを待っています。"
 
-#: src/views/entries/progress_card.py:199
+#: src/views/entries/progress_card.py:211
 msgid "Waiting for the current transcription to finish."
 msgstr "現在の文字起こしが終わるのを待っています。"
 
-#: src/views/entries/progress_card.py:206
+#: src/views/entries/progress_card.py:218
 msgid "Starting…"
 msgstr "開始しています…"
+
+#: src/views/entries/progress_card.py:252
+#, python-brace-format
+msgid "Elapsed {time}"
+msgstr "経過時間 {time}"
 
 #: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:27
 #: src/views/main_window/welcome_view.py:40
@@ -549,22 +561,22 @@ msgid "Rename"
 msgstr "名前を変更"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1603
+#: src/views/transcript/transcript_view.py:1616
 msgid "Edit note…"
 msgstr "メモを編集…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1603
+#: src/views/transcript/transcript_view.py:1616
 msgid "Add note…"
 msgstr "メモを追加…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1608
+#: src/views/transcript/transcript_view.py:1621
 msgid "Delete note…"
 msgstr "メモを削除…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1614
+#: src/views/transcript/transcript_view.py:1627
 msgid "Edit tag…"
 msgstr "タグを編集…"
 
@@ -589,7 +601,7 @@ msgid "Move to group"
 msgstr "グループに移動"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1619
+#: src/views/transcript/transcript_view.py:1632
 msgid "Delete…"
 msgstr "削除…"
 
@@ -698,46 +710,46 @@ msgstr "グループを削除"
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "グループ「{name}」を削除しますか？ 文字起こしはグループなしで残ります。"
 
-#: src/views/main_window/main_window.py:464
+#: src/views/main_window/main_window.py:470
 #, python-brace-format
 msgid "Recording · {date}"
 msgstr "録音 · {date}"
 
-#: src/views/main_window/main_window.py:484
+#: src/views/main_window/main_window.py:490
 msgid "Processing the recording…"
 msgstr "録音を処理しています…"
 
-#: src/views/main_window/main_window.py:510
+#: src/views/main_window/main_window.py:516
 msgid "The transcription was cancelled."
 msgstr "文字起こしはキャンセルされました。"
 
-#: src/views/main_window/main_window.py:594
+#: src/views/main_window/main_window.py:600
 #: src/views/new_transcription/new_transcription_view.py:485
 #, python-brace-format
 msgid "“{name}” is not a supported audio or video file."
 msgstr "「{name}」は対応している音声・動画ファイルではありません。"
 
-#: src/views/main_window/main_window.py:607
+#: src/views/main_window/main_window.py:613
 msgid ""
 "Only one file can be added at a time. To transcribe several files, drop "
 "the folder that contains them."
 msgstr "一度に追加できるファイルは 1 つだけです。複数のファイルを文字起こしするには、それらを含むフォルダーをドロップしてください。"
 
-#: src/views/main_window/main_window.py:695
+#: src/views/main_window/main_window.py:701
 msgid ""
 "Type in the API key. It's kept in the credential store of your system. "
 "Leave it empty to remove it."
 msgstr "API キーを入力してください。システムの資格情報ストアに保存されます。削除するには空欄にします。"
 
-#: src/views/main_window/main_window.py:699
+#: src/views/main_window/main_window.py:705
 msgid "OK"
 msgstr "OK"
 
-#: src/views/main_window/main_window.py:706
+#: src/views/main_window/main_window.py:712
 msgid "API key saved."
 msgstr "API キーを保存しました。"
 
-#: src/views/main_window/main_window.py:706
+#: src/views/main_window/main_window.py:712
 msgid "API key removed."
 msgstr "API キーを削除しました。"
 
@@ -861,8 +873,8 @@ msgstr "自分の声や会議を録音します。録音は履歴に保存され
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
 #: src/views/transcript/transcript_view.py:527
-#: src/views/transcript/transcript_view.py:1124
-#: src/views/transcript/transcript_view.py:1536
+#: src/views/transcript/transcript_view.py:1137
+#: src/views/transcript/transcript_view.py:1549
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "コピー"
@@ -1236,14 +1248,14 @@ msgstr "API キーを変更…"
 #: src/views/settings/preferences_dialog.py:467
 #: src/views/settings/preferences_dialog.py:480
 #: src/views/transcript/summary_panel.py:299
-#: src/views/transcript/translation_panel.py:485
-#: src/views/transcript/translation_panel.py:557
+#: src/views/transcript/translation_panel.py:521
+#: src/views/transcript/translation_panel.py:593
 msgid "Set API key…"
 msgstr "API キーを設定…"
 
 #: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:529
-#: src/views/transcript/translation_panel.py:232
+#: src/views/transcript/translation_panel.py:241
 msgid "Translation"
 msgstr "翻訳"
 
@@ -1517,13 +1529,13 @@ msgstr "音声の言語"
 
 #: src/views/settings/cards/language_card.py:65
 #: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:423
+#: src/views/transcript/translation_panel.py:459
 msgid "Search language…"
 msgstr "言語を検索…"
 
 #: src/views/settings/cards/language_card.py:66
 #: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:424
+#: src/views/transcript/translation_panel.py:460
 msgid "No languages found."
 msgstr "言語が見つかりません。"
 
@@ -1694,7 +1706,7 @@ msgid "Choose where to save the transcriptions"
 msgstr "文字起こしの保存先を選択"
 
 #: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1221
+#: src/views/transcript/transcript_view.py:1234
 msgid "Edit text"
 msgstr "テキストを編集"
 
@@ -1708,7 +1720,7 @@ msgid "Rename speakers"
 msgstr "話者の名前を変更"
 
 #: src/views/transcript/edit_dialogs.py:74
-#: src/views/transcript/transcript_view.py:1250
+#: src/views/transcript/transcript_view.py:1263
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "保存"
@@ -1791,7 +1803,7 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: 再生/一時停止 · ←/→: {seconds} 秒戻る/進む"
 
 #: src/views/transcript/player_bar.py:257
-#: src/views/transcript/transcript_view.py:1471
+#: src/views/transcript/transcript_view.py:1484
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "音声を再生できません: {error}"
@@ -1951,7 +1963,7 @@ msgid "Plain text"
 msgstr "プレーンテキスト"
 
 #: src/views/transcript/transcript_view.py:582
-#: src/views/transcript/translation_panel.py:409
+#: src/views/transcript/translation_panel.py:445
 msgid "Translate"
 msgstr "翻訳"
 
@@ -1976,131 +1988,131 @@ msgstr "要約内を検索"
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "要約を再生成しますか？現在の要約は置き換えられます。"
 
-#: src/views/transcript/transcript_view.py:971
+#: src/views/transcript/transcript_view.py:984
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "翻訳を非表示"
 
-#: src/views/transcript/transcript_view.py:976
+#: src/views/transcript/transcript_view.py:989
 msgid "Show the translation"
 msgstr "翻訳を表示"
 
-#: src/views/transcript/transcript_view.py:980
-#: src/views/transcript/translation_panel.py:298
+#: src/views/transcript/transcript_view.py:993
+#: src/views/transcript/translation_panel.py:325
 msgid "Translate into another language…"
 msgstr "別の言語に翻訳…"
 
-#: src/views/transcript/transcript_view.py:991
+#: src/views/transcript/transcript_view.py:1004
 msgid "Show it as the subtitles of the video"
 msgstr "動画の字幕として表示"
 
-#: src/views/transcript/transcript_view.py:998
+#: src/views/transcript/transcript_view.py:1011
 msgid "Delete the translation"
 msgstr "翻訳を削除"
 
-#: src/views/transcript/transcript_view.py:1121
-#: src/views/transcript/transcript_view.py:1534
+#: src/views/transcript/transcript_view.py:1134
+#: src/views/transcript/transcript_view.py:1547
 msgid "Play from here"
 msgstr "ここから再生"
 
-#: src/views/transcript/transcript_view.py:1129
-#: src/views/transcript/transcript_view.py:1537
+#: src/views/transcript/transcript_view.py:1142
+#: src/views/transcript/transcript_view.py:1550
 msgid "Edit text…"
 msgstr "テキストを編集…"
 
-#: src/views/transcript/transcript_view.py:1129
+#: src/views/transcript/transcript_view.py:1142
 msgid "Translate text…"
 msgstr "テキストを翻訳…"
 
-#: src/views/transcript/transcript_view.py:1133
+#: src/views/transcript/transcript_view.py:1146
 msgid "Edit the timing…"
 msgstr "タイミングを編集…"
 
-#: src/views/transcript/transcript_view.py:1137
+#: src/views/transcript/transcript_view.py:1150
 msgid "Add a segment after…"
 msgstr "後ろにセグメントを追加…"
 
-#: src/views/transcript/transcript_view.py:1142
-#: src/views/transcript/transcript_view.py:1307
+#: src/views/transcript/transcript_view.py:1155
+#: src/views/transcript/transcript_view.py:1320
 msgid "Delete the segment"
 msgstr "セグメントを削除"
 
-#: src/views/transcript/transcript_view.py:1221
+#: src/views/transcript/transcript_view.py:1234
 msgid "Translate text"
 msgstr "テキストを翻訳"
 
-#: src/views/transcript/transcript_view.py:1222
+#: src/views/transcript/transcript_view.py:1235
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "「{text}」の翻訳（{start} から {end} まで）:"
 
-#: src/views/transcript/transcript_view.py:1226
+#: src/views/transcript/transcript_view.py:1239
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "{start} から {end} までのセグメントの翻訳:"
 
-#: src/views/transcript/transcript_view.py:1249
+#: src/views/transcript/transcript_view.py:1262
 msgid "Edit the timing"
 msgstr "タイミングを編集"
 
-#: src/views/transcript/transcript_view.py:1275
+#: src/views/transcript/transcript_view.py:1288
 msgid "Add a segment"
 msgstr "セグメントを追加"
 
-#: src/views/transcript/transcript_view.py:1276
+#: src/views/transcript/transcript_view.py:1289
 msgid "Add"
 msgstr "追加"
 
-#: src/views/transcript/transcript_view.py:1277
+#: src/views/transcript/transcript_view.py:1290
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "新しいセグメントは {time} のセグメントの後に入ります:"
 
-#: src/views/transcript/transcript_view.py:1308
+#: src/views/transcript/transcript_view.py:1321
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "セグメント「{text}」を削除しますか？"
 
-#: src/views/transcript/transcript_view.py:1364
+#: src/views/transcript/transcript_view.py:1377
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "{time} のセグメント（未翻訳）。"
 
-#: src/views/transcript/transcript_view.py:1400
+#: src/views/transcript/transcript_view.py:1413
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "もう一度翻訳"
 
-#: src/views/transcript/transcript_view.py:1402
+#: src/views/transcript/transcript_view.py:1415
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
 "the translation will be lost."
 msgstr "文字起こしをもう一度{language}に翻訳しますか？翻訳への変更は失われます。"
 
-#: src/views/transcript/transcript_view.py:1425
+#: src/views/transcript/transcript_view.py:1438
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "音声を利用できません。元のファイルが移動または削除されました。"
 
-#: src/views/transcript/transcript_view.py:1428
+#: src/views/transcript/transcript_view.py:1441
 msgid "The audio isn't available."
 msgstr "音声を利用できません。"
 
-#: src/views/transcript/transcript_view.py:1539
-#: src/views/transcript/transcript_view.py:1566
+#: src/views/transcript/transcript_view.py:1552
+#: src/views/transcript/transcript_view.py:1579
 msgid "Rename speakers…"
 msgstr "話者の名前を変更…"
 
-#: src/views/transcript/transcript_view.py:1555
+#: src/views/transcript/transcript_view.py:1568
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "「{title}」をもう一度文字起こししますか？テキストへの変更は失われます。"
 
-#: src/views/transcript/transcript_view.py:1576
+#: src/views/transcript/transcript_view.py:1589
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "正確なタイムスタンプ (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1599
+#: src/views/transcript/transcript_view.py:1612
 msgid "Rename…"
 msgstr "名前を変更…"
 
@@ -2108,72 +2120,72 @@ msgstr "名前を変更…"
 msgid "Not translated yet"
 msgstr "未翻訳"
 
-#: src/views/transcript/translation_panel.py:220
+#: src/views/transcript/translation_panel.py:227
 #, python-brace-format
 msgid "Translating into {language}…"
 msgstr "{language}に翻訳しています…"
 
-#: src/views/transcript/translation_panel.py:224
+#: src/views/transcript/translation_panel.py:231
 msgid "Translating…"
 msgstr "翻訳しています…"
 
-#: src/views/transcript/translation_panel.py:227
+#: src/views/transcript/translation_panel.py:234
 msgid "It takes a moment."
 msgstr "少し時間がかかります。"
 
-#: src/views/transcript/translation_panel.py:229
+#: src/views/transcript/translation_panel.py:236
 msgid "The transcription is being translated. It takes a moment."
 msgstr "文字起こしを翻訳しています。少し時間がかかります。"
 
-#: src/views/transcript/translation_panel.py:236
+#: src/views/transcript/translation_panel.py:245
 msgid "There is no translation yet."
 msgstr "まだ翻訳はありません。"
 
-#: src/views/transcript/translation_panel.py:238
+#: src/views/transcript/translation_panel.py:247
 msgid "Translate…"
 msgstr "翻訳…"
 
-#: src/views/transcript/translation_panel.py:364
+#: src/views/transcript/translation_panel.py:400
 #, python-brace-format
 msgid "Segments left to translate: {count}. Right-click one to translate it."
 msgstr "未翻訳のセグメント: {count}。右クリックして翻訳してください。"
 
-#: src/views/transcript/translation_panel.py:371
-#: src/views/transcript/translation_panel.py:450
+#: src/views/transcript/translation_panel.py:407
+#: src/views/transcript/translation_panel.py:486
 msgid "Manual"
 msgstr "手動"
 
-#: src/views/transcript/translation_panel.py:418
+#: src/views/transcript/translation_panel.py:454
 msgid "Translate into:"
 msgstr "翻訳先:"
 
-#: src/views/transcript/translation_panel.py:439
+#: src/views/transcript/translation_panel.py:475
 msgid "Translate with:"
 msgstr "翻訳方法:"
 
-#: src/views/transcript/translation_panel.py:496
+#: src/views/transcript/translation_panel.py:532
 msgid "More options in the settings"
 msgstr "その他のオプションは設定で"
 
-#: src/views/transcript/translation_panel.py:527
+#: src/views/transcript/translation_panel.py:563
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "{provider} の API キーがありません。"
 
-#: src/views/transcript/translation_panel.py:534
+#: src/views/transcript/translation_panel.py:570
 msgid "Creates empty segments with the original timestamps for you to fill in."
 msgstr "元のタイムスタンプ付きの空のセグメントを作成し、自分で入力します。"
 
-#: src/views/transcript/translation_panel.py:544
+#: src/views/transcript/translation_panel.py:580
 #, python-brace-format
 msgid "Uses the model {model}."
 msgstr "モデル {model} を使用します。"
 
-#: src/views/transcript/translation_panel.py:547
+#: src/views/transcript/translation_panel.py:583
 msgid "Translates each segment, keeping its timestamps."
 msgstr "タイムスタンプを保ったまま、各セグメントを翻訳します。"
 
-#: src/views/transcript/translation_panel.py:559
+#: src/views/transcript/translation_panel.py:595
 msgid "Set…"
 msgstr "設定…"
 

@@ -2,6 +2,7 @@ from typing import Protocol
 
 from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
+from utils.progress import FractionCallback
 
 
 class Translator(Protocol):
@@ -15,6 +16,7 @@ class Translator(Protocol):
         language: str,
         provider: str,
         model: str,
+        on_progress: FractionCallback,
     ) -> TranscriptTranslation:
         """
         Translates a transcription. It takes a while, so it's called from a
@@ -26,5 +28,7 @@ class Translator(Protocol):
         :param provider: The value of the provider of the translation.
         :param model: The language model, for the providers of language models.
                       If empty, the default one of the provider.
+        :param on_progress: Called with the fraction translated, from the
+                            background thread.
         """
         ...

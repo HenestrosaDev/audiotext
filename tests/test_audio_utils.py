@@ -143,6 +143,23 @@ def test_isolate_speech_writes_a_mono_wav(tmp_path: Path) -> None:
     assert len(audio) == pytest.approx(500, abs=20)
 
 
+def test_isolate_speech_reports_the_seconds_processed(tmp_path: Path) -> None:
+    source = tmp_path / "tone.wav"
+    Sine(440).to_audio_segment(duration=3000).export(source, format="wav")
+    reports: list[tuple[float, float]] = []
+
+    audio_utils.isolate_speech(
+        source,
+        tmp_path / "speech.wav",
+        lambda done, total: reports.append((done, total)),
+    )
+
+    processed = [done for done, _total in reports]
+    assert processed == sorted(processed)
+    assert processed[-1] == pytest.approx(3, abs=0.1)
+    assert [total for _done, total in reports] == pytest.approx([3] * len(reports))
+
+
 def test_isolate_speech_raises_os_error_on_invalid_files(tmp_path: Path) -> None:
     source = tmp_path / "invalid.mp3"
     source.write_text("not audio")

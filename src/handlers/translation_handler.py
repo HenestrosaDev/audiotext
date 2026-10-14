@@ -29,6 +29,7 @@ from models.transcript_segment import TranscriptSegment, join_segments
 from models.translation import TranscriptTranslation
 from utils.env_keys import EnvKeys
 from utils.i18n import _, sort_key
+from utils.progress import FractionCallback, ignore_fraction
 from utils.sentences import group_by_sentence
 
 DEEPL = "deepl"
@@ -167,7 +168,11 @@ def chunk(texts: list[str], max_chars: int, max_items: int) -> Iterator[list[str
 
 
 def translate_texts(
-    texts: list[str], language: str, provider: str, model: str = ""
+    texts: list[str],
+    language: str,
+    provider: str,
+    model: str = "",
+    on_progress: FractionCallback = ignore_fraction,
 ) -> list[str]:
     """
     Translates each text. The empty ones are kept as they are.
@@ -175,6 +180,8 @@ def translate_texts(
     :param language: The code of the target language (see `AUDIO_LANGUAGES`).
     :param provider: The value of the provider of the translation.
     :param model: The language model, for the providers of language models.
+    :param on_progress: Called with the fraction of the characters translated,
+                        after each chunk.
     :raises OSError: If the API key is not set or the API can't be reached.
     :raises ValueError: If the reply is not valid or the language isn't supported.
     """
@@ -186,6 +193,7 @@ def translate_texts(
             pending,
             MAX_DEEPL_CHUNK_CHARS,
             MAX_DEEPL_CHUNK_ITEMS,
+            on_progress,
             lambda part, before, after: _translate_deepl(part, language, before, after),
         )
     elif provider == GOOGLE_TRANSLATE:
@@ -193,6 +201,7 @@ def translate_texts(
             pending,
             MAX_GOOGLE_CHUNK_CHARS,
             MAX_GOOGLE_CHUNK_ITEMS,
+            on_progress,
             lambda part, _before, _after: _translate_google(part, language),
         )
     else:
@@ -202,6 +211,7 @@ def translate_texts(
             pending,
             MAX_LLM_CHUNK_CHARS,
             MAX_LLM_CHUNK_ITEMS,
+            on_progress,
             lambda part, before, after: _translate_llm(
                 part, language, ai_provider, model, before, after
             ),
@@ -217,19 +227,27 @@ def _translate_chunks(
     texts: list[str],
     max_chars: int,
     max_items: int,
+    on_progress: FractionCallback,
     translate: Callable[[list[str], str, str], list[str]],
 ) -> list[str]:
     """
+    :param on_progress: Called with the fraction of the characters translated,
+                        before the first chunk and after each one.
     :param translate: Translates a chunk, given the text said before and after it.
     """
     result: list[str] = []
     start = 0
+    total_chars = sum(len(text) for text in texts)
+    translated_chars = 0
+    on_progress(0)
     for part in chunk(texts, max_chars, max_items):
         end = start + len(part)
         result.extend(
             translate(part, context_before(texts[:start]), context_after(texts[end:]))
         )
         start = end
+        translated_chars += sum(len(text) for text in part)
+        on_progress(translated_chars / total_chars if total_chars else 1)
     return result
 
 
@@ -432,6 +450,7 @@ class TranslationHandler:
         language: str,
         provider: str | None = None,
         model: str | None = None,
+        on_progress: FractionCallback = ignore_fraction,
     ) -> TranscriptTranslation:
         """
         Translates a transcription: its segments regrouped by sentence, so each
@@ -442,6 +461,7 @@ class TranslationHandler:
         :param provider: The value of the provider. Defaults to the configured one.
         :param model: The language model, for the providers of language models.
                       Defaults to the configured one.
+        :param on_progress: Called with the fraction of the text translated.
         :raises ValueError: If there is nothing to translate or the reply is not
                             valid.
         :raises OSError: If the API key of the provider is not set or its API
@@ -460,7 +480,11 @@ class TranslationHandler:
         if segments and not is_text_edited:
             segments = group_by_sentence(segments)
             translated = translate_texts(
-                [segment.text for segment in segments], language, provider, model
+                [segment.text for segment in segments],
+                language,
+                provider,
+                model,
+                on_progress,
             )
             translated_segments = tuple(
                 replace(segment, text=segment_text, words=())
@@ -471,7 +495,9 @@ class TranslationHandler:
             # Line by line, which keeps the paragraphs
             translated_segments = ()
             translated_text = "\n".join(
-                translate_texts(text.split("\n"), language, provider, model)
+                translate_texts(
+                    text.split("\n"), language, provider, model, on_progress
+                )
             )
 
         return TranscriptTranslation(

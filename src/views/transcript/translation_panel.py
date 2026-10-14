@@ -192,6 +192,10 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
 
         self.frm_message = ctk.CTkFrame(self, fg_color="transparent")
         self.frm_message.grid_columnconfigure(0, weight=1)
+        # Below the message while it's being translated. It's kept when the
+        # message changes
+        self.progress_bar = ctk.CTkProgressBar(self.frm_message, height=8)
+        self._is_progress_indeterminate = False
 
     # PUBLIC METHODS
 
@@ -203,6 +207,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         error: str,
         segments: list[TranscriptSegment] | None = None,
         languages: dict[str, str] | None = None,
+        progress: float | None = None,
     ) -> None:
         """
         :param language: The language of the translation shown, or being made.
@@ -213,6 +218,8 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
                          (e.g. split into subtitles).
         :param languages: The label of each language that the user can choose,
                           in order. Without them, the panel is titled instead.
+        :param progress: The fraction translated, if it's being translated and
+                         it's known.
         """
         self._show_languages(language, languages or {})
         if is_loading:
@@ -228,6 +235,8 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             self._show_message(
                 _("The transcription is being translated. It takes a moment.")
             )
+            self.progress_bar.grid(row=2, column=0, pady=(14, 0), sticky=ctk.EW)
+            self.set_progress(progress)
         elif translation is None:
             self.lbl_title.configure(text=_("Translation"))
             self.lbl_source.configure(text="")
@@ -248,6 +257,8 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             self.text.set_note(
                 error or self._segments_left_hint(translation), bool(error)
             )
+            self._stop_progress()
+            self.progress_bar.grid_remove()
             self.frm_message.grid_forget()
             self.text.grid(row=2, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
             self.text.set_content(
@@ -268,6 +279,22 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             self.btn_regenerate.grid()
         else:
             self.btn_regenerate.grid_remove()
+
+    def set_progress(self, fraction: float | None) -> None:
+        """Shows how much is translated, while it's being translated."""
+        # Only shown while it's being translated
+        if not self.progress_bar.grid_info():
+            return
+
+        if fraction is None:
+            if not self._is_progress_indeterminate:
+                self.progress_bar.configure(mode="indeterminate")
+                self.progress_bar.start()
+                self._is_progress_indeterminate = True
+        else:
+            self._stop_progress()
+            self.progress_bar.set(fraction)
+            self._set_details(f"{fraction:.0%}")
 
     def set_mode(self, mode: str) -> None:
         self.text.set_mode(mode)
@@ -328,8 +355,11 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         action: tuple[str, Callable[[], None]] | None = None,
     ) -> None:
         self.text.grid_forget()
+        self._stop_progress()
+        self.progress_bar.grid_remove()
         for widget in self.frm_message.winfo_children():
-            widget.destroy()
+            if widget is not self.progress_bar:
+                widget.destroy()
         self.frm_message.grid(row=2, column=0, padx=24, pady=32, sticky="new")
 
         label = ctk.CTkLabel(
@@ -351,6 +381,12 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
                 command=command,
                 **theme.SECONDARY_BUTTON,
             ).grid(row=1, column=0, pady=(14, 0))
+
+    def _stop_progress(self) -> None:
+        if self._is_progress_indeterminate:
+            self.progress_bar.stop()
+            self.progress_bar.configure(mode="determinate")
+            self._is_progress_indeterminate = False
 
     @staticmethod
     def _segments_left_hint(translation: TranscriptTranslation) -> str:

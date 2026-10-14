@@ -1,3 +1,4 @@
+import time
 from functools import partial
 from typing import Any
 
@@ -6,6 +7,7 @@ import customtkinter as ctk
 from models.history import EntryStatus, HistoryEntry
 from utils.enums import AudioSource
 from utils.i18n import L_, _
+from utils.time_format import format_clock
 from views.entries.delegates import EntryActions
 from views.history.formatting import status_icon, status_label
 from views.localization import on_language_change
@@ -63,6 +65,13 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
             status_row, text="", font=theme.font(16, "bold"), anchor=ctk.W
         )
         self.lbl_status.grid(row=0, column=1, sticky=ctk.EW)
+        # The percentage of the step, at the end of its bar, if it can be measured.
+        # Otherwise, how long the step has been running, so it shows it's alive
+        self.lbl_percent = ctk.CTkLabel(
+            status_row, text="", font=theme.font(16, "bold"), anchor=ctk.E
+        )
+        self.lbl_percent.grid(row=0, column=2, padx=(10, 0))
+        self._elapsed_job: str | None = None
 
         self.lbl_message = ctk.CTkLabel(
             self,
@@ -96,6 +105,7 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
 
     def destroy(self) -> None:
         self.progress_bar.stop()
+        self._stop_elapsed()
         super().destroy()
 
     def update_entry(self, entry: HistoryEntry) -> None:
@@ -137,7 +147,9 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
             return
 
         self._stop_progress()
+        self._stop_elapsed()
         self.progress_bar.grid_remove()
+        self.lbl_percent.configure(text="")
         self.lbl_tip.grid_remove()
 
         if status == EntryStatus.FAILED:
@@ -208,13 +220,45 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
         self.progress_bar.grid()
 
         if fraction is None:
+            if self._entry.status == EntryStatus.QUEUED:
+                self._stop_elapsed()
+                self.lbl_percent.configure(text="")
+            else:
+                self._show_elapsed()
             if not self._is_progress_indeterminate:
                 self.progress_bar.configure(mode="indeterminate")
                 self.progress_bar.start()
                 self._is_progress_indeterminate = True
         else:
+            self._stop_elapsed()
+            self.lbl_percent.configure(
+                text=f"{fraction:.0%}",
+                font=theme.font(16, "bold"),
+                text_color=theme.TEXT,
+            )
             self._stop_progress()
             self.progress_bar.set(fraction)
+
+    def _show_elapsed(self) -> None:
+        """Shows how long the step has been running, every second."""
+        self._stop_elapsed()
+        started_at = self._actions.jobs.get_step_started_at(self._entry.id)
+        if started_at is None:
+            self.lbl_percent.configure(text="")
+            return
+
+        elapsed = format_clock(int(time.monotonic() - started_at))
+        self.lbl_percent.configure(
+            text=_("Elapsed {time}").format(time=elapsed),
+            font=theme.font(13),
+            text_color=theme.HINT_TEXT,
+        )
+        self._elapsed_job = self.after(1000, self._show_elapsed)
+
+    def _stop_elapsed(self) -> None:
+        if self._elapsed_job is not None:
+            self.after_cancel(self._elapsed_job)
+            self._elapsed_job = None
 
     def _stop_progress(self) -> None:
         if self._is_progress_indeterminate:

@@ -159,6 +159,29 @@ def test_a_translation_is_saved_and_announced(
     view.on_translation_finished.assert_called_once_with(get(store, entry.id), None)
 
 
+def test_the_progress_of_a_translation_is_shown_until_it_finishes(
+    history: HistoryController,
+    store: HistoryStore,
+    view: MagicMock,
+    translator: FakeTranslator,
+    tasks: list[Callable[[], None]],
+) -> None:
+    entry = add(store)
+    seen: list[float | None] = []
+    translator.progress = [0.0, 0.5, 1.0]
+    view.on_translation_progress.side_effect = lambda entry_id, language: seen.append(
+        history.get_translation_progress(entry_id, language)
+    )
+
+    history.translate_entry(entry.id, "es", "deepl")
+    assert history.get_translation_progress(entry.id, "es") is None
+    run_tasks(tasks)
+
+    assert seen == [0.0, 0.5, 1.0]
+    view.on_translation_progress.assert_called_with(entry.id, "es")
+    assert history.get_translation_progress(entry.id, "es") is None
+
+
 def test_a_failed_translation_keeps_its_error(
     history: HistoryController,
     store: HistoryStore,

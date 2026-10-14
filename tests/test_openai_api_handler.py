@@ -334,11 +334,16 @@ def test_long_audios_are_transcribed_in_chunks(
         "Audiotext. Names Part 1. Part 2."
     )
     assert "keywords" not in request_params(openai_client, 0)
-    assert progress[1:] == [
-        ("Transcribing chunk 1 of 3…", 0),
-        ("Transcribing chunk 2 of 3…", pytest.approx(1 / 3)),
-        ("Transcribing chunk 3 of 3…", pytest.approx(2 / 3)),
+    # Each chunk shows how much of the audio is done: the audio before it
+    duration = len(AudioSegment.from_file(audio_file)) / 1000
+    assert [message for message, _fraction in progress[1:]] == [
+        "Transcribing chunk 1 of 3… 00:00 / 00:03",
+        "Transcribing chunk 2 of 3… 00:01 / 00:03",
+        "Transcribing chunk 3 of 3… 00:02 / 00:03",
     ]
+    assert [fraction for _message, fraction in progress[1:]] == pytest.approx(
+        [0, 1.1 / duration, 2.4 / duration], abs=0.02
+    )
 
 
 def test_the_speakers_keep_their_labels_in_the_next_chunks(
