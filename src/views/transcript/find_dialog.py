@@ -1,7 +1,7 @@
 """
-The window to find a text in a transcription or in its translation, go through
-its matches and replace them. It isn't modal, so the text can be read and played
-while it's open.
+The window to find a text in a transcription, in its translation or in its
+summary, go through its matches and replace them (except in the summary). It
+isn't modal, so the text can be read and played while it's open.
 """
 
 from collections.abc import Callable
@@ -31,7 +31,7 @@ class SearchableText(Protocol):
 
 @dataclass(frozen=True)
 class FindTarget:
-    """What is searched: the transcription or its translation."""
+    """What is searched: the transcription, its translation or its summary."""
 
     # The title of the window, which says what it searches
     title: Text
@@ -155,7 +155,7 @@ class FindDialog(ctk.CTkToplevel):  # type: ignore[misc]
             self._target.text.search("")
         self._target = target
         localize(self, title=target.title)
-        # Only found where it can't be replaced
+        # Only found where it can't be replaced (e.g. in the summary)
         for widget in (self.lbl_replacement, self.ent_replacement, self.frm_replace):
             if self._can_replace:
                 widget.grid()

@@ -20,7 +20,13 @@ from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment, join_segments
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
-from utils.exporters import ExportDocument, available_formats, export
+from utils.exporters import (
+    SUMMARY_EXPORTERS,
+    ExportDocument,
+    available_formats,
+    export,
+    export_summary,
+)
 from utils.history_store import sanitize_file_name
 from utils.i18n import L_, _
 from utils.media import (
@@ -208,8 +214,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.summary_panel = SummaryPanel(
             self.frm_text_pane,
             on_generate=self._generate_summary,
+            on_regenerate=self._regenerate_summary,
             on_chapter=self._play_from,
+            on_search=self._find_in_summary,
             on_copy=self._copy_summary,
+            on_export=self.show_summary_export_menu,
             on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
             on_set_api_key=self._set_summary_api_key,
         )
@@ -266,19 +275,26 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def focus_search(self) -> None:
         """
-        Finds in the text that the user is working on: the transcription or its
-        translation. The summary isn't searched.
+        Finds in the text that the user is working on (the transcription or its
+        translation), or in the summary, if it's shown.
         """
         if self._mode == SUMMARY_MODE:
-            return
-        if self._is_translation_active():
+            if self._entry.summary:
+                self._find_in_summary()
+        elif self._is_translation_active():
             self._open_find_dialog(self._translation_find_target())
         else:
             self._open_find_dialog(self._transcript_find_target())
 
     def show_active_export_menu(self) -> None:
-        """The formats to export the text that the user is working on to."""
-        if self._is_translation_active():
+        """
+        The formats to export the text that the user is working on to, or the
+        summary, if it's shown.
+        """
+        if self._mode == SUMMARY_MODE:
+            if self._entry.summary:
+                self.show_summary_export_menu(self.summary_panel.btn_export)
+        elif self._is_translation_active():
             self.show_translation_export_menu(self.translation_panel.btn_export)
         else:
             self.show_export_menu()
@@ -297,6 +313,16 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._add_export_commands(menu, bool(self._entry.segments), self.export)
         # The button is hidden with the transcript, e.g. while the summary is shown
         anchor = self.btn_export if self.btn_export.winfo_viewable() else self.btn_more
+        self._popup_below(menu, anchor)
+
+    def show_summary_export_menu(self, anchor: Any) -> None:
+        labels = export_labels()
+        menu = tk.Menu(self, tearoff=False)
+        for file_type in SUMMARY_EXPORTERS:
+            menu.add_command(
+                label=labels[file_type],
+                command=partial(self.export_summary, file_type),
+            )
         self._popup_below(menu, anchor)
 
     def show_translation_export_menu(self, anchor: Any) -> None:
@@ -330,7 +356,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             is_text_edited=entry.is_text_edited,
             is_vertical=self._is_vertical,
         )
-        self._export(file_type, document, _("Export transcription"))
+        self._export(
+            file_type,
+            partial(export, file_type=file_type, document=document),
+            _("Export transcription"),
+        )
 
     def export_translation(self, file_type: str) -> None:
         self.translation_panel.save_pending_text()
@@ -349,23 +379,40 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
         self._export(
             file_type,
-            document,
+            partial(export, file_type=file_type, document=document),
             _("Export translation into {language}").format(language=language),
             # Like `video.es.srt`, which the video players load with the video
             language_code=translation.language,
         )
 
+    def export_summary(self, file_type: str) -> None:
+        summary = TranscriptSummary.from_dict(self._entry.summary)
+        if summary is None:
+            return
+        title = f"{self._entry.title} ({_('Summary')})"
+        self._export(
+            file_type,
+            partial(export_summary, file_type=file_type, title=title, summary=summary),
+            _("Export summary"),
+            suffix=sanitize_file_name(_("Summary").lower()),
+        )
+
     def _export(
         self,
         file_type: str,
-        document: ExportDocument,
+        write: Callable[[Path], Path],
         title: str,
         language_code: str = "",
+        suffix: str = "",
     ) -> None:
         """
         Asks where to export a document, next to the source file by default.
 
+        :param write: Writes the document to the chosen path, and returns the path
+                      of the written file.
         :param language_code: Added to the name of the file, if given.
+        :param suffix: Added to the name of the file, if given (e.g. to not
+                       replace the transcription with its summary).
         """
         entry = self._entry
         source_path = entry.source_path
@@ -375,6 +422,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
         if language_code:
             stem += f".{language_code}"
+        if suffix:
+            stem += f".{suffix}"
 
         selected = filedialog.asksaveasfilename(
             title=title,
@@ -387,7 +436,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             return
 
         try:
-            path = export(Path(selected), file_type, document)
+            path = write(Path(selected))
         except (OSError, ValueError) as e:
             self._actions.window.show_status(
                 _("Could not export: {error}").format(error=e), is_error=True
@@ -591,8 +640,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
         state = ctk.DISABLED if is_summary else ctk.NORMAL
         set_button_state(self.btn_translate, state)
-        # The texts it searches are hidden
-        if is_summary:
+        # The text it searches is hidden
+        dialog = self._find_dialog
+        if dialog and (dialog.target.text is self.summary_panel.text) != is_summary:
             self._close_find_dialog()
         self._refresh_find_dialog()
 
@@ -668,6 +718,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             replace_all=self._replace_all_in_translation,
         )
 
+    def _summary_find_target(self) -> FindTarget:
+        # The summary is generated, so it isn't corrected like the texts
+        return FindTarget(title=L_("Find in the summary"), text=self.summary_panel.text)
+
+    def _find_in_summary(self) -> None:
+        self._open_find_dialog(self._summary_find_target())
+
     def _open_find_dialog(self, target: FindTarget) -> None:
         """Finds in a text, starting with the one selected in it, if any."""
         find = target.text.selected_text().strip()
@@ -733,11 +790,20 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._actions.transcript.summarize_entry(self.entry_id)
         self._refresh_summary()
 
+    def _regenerate_summary(self) -> None:
+        if messagebox.askyesno(
+            _("Regenerate the summary"),
+            _("Generate the summary again? The current one will be replaced."),
+            icon=messagebox.WARNING,
+            parent=self.winfo_toplevel(),
+        ):
+            self._generate_summary()
+
     def _copy_summary(self) -> None:
         if summary := TranscriptSummary.from_dict(self._entry.summary):
             self.clipboard_clear()
             self.clipboard_append(format_summary(summary))
-            self._actions.window.show_status(_("Summary copied."))
+            self._show_copied(self.summary_panel.btn_copy)
 
     # TRANSLATION
 
