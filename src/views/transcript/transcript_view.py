@@ -2,6 +2,7 @@ import logging
 import threading
 import tkinter as tk
 from collections.abc import Callable
+from dataclasses import dataclass
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, messagebox
@@ -22,11 +23,18 @@ from models.review import (
     Review,
     ReviewState,
     build_review,
+    differ_only_in_reviews,
+    edited_count,
     set_review,
     step_to,
 )
 from models.summary import TranscriptSummary
-from models.transcript_segment import TranscriptSegment, has_scores, join_segments
+from models.transcript_segment import (
+    ReviewMark,
+    TranscriptSegment,
+    has_scores,
+    join_segments,
+)
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 from utils.enums import TranscriptionMethod
@@ -126,6 +134,28 @@ def transcript_parts(
     """The parts of the segments shown in the transcript: their subtitles."""
     config = ConfigManager.get_config_subtitles()
     return split_segments(segments, *line_limits(config, segments, is_vertical))
+
+
+# The moment played before and after a low confidence word when it's gone to, so
+# it's heard in its context
+AUTO_PLAY_BEFORE_SECONDS = 1.5
+AUTO_PLAY_AFTER_SECONDS = 1.5
+# How long the reviews of the words wait to be written, so reviewing many in a
+# row writes the history once, and a crash loses only the last ones
+REVIEW_SAVE_DELAY_MS = 2000
+
+
+@dataclass(frozen=True)
+class UndoStep:
+    """How to undo the last review: the transcription before and after it."""
+
+    segments: list[TranscriptSegment]
+    text: str
+    # To check that nothing changed since, and the text reviewed, to go back to it
+    reviewed_segments: list[TranscriptSegment]
+    flagged: FlaggedText
+    # Whether the review only changed the marks (accepting the text), or the text
+    is_accept: bool
 
 
 # The shortcuts to go to the next and the previous low confidence word, as they're
@@ -242,10 +272,12 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._precise_variable: tk.BooleanVar | None = None
         self._low_confidence_variable: tk.BooleanVar | None = None
         self._threshold_variable: tk.IntVar | None = None
-        # The review of the low confidence texts (see `models.review`), and the
-        # text gone to, if any
+        # The review of the low confidence texts (see `models.review`), the text
+        # gone to, if any, and how to undo the last review
         self._review = Review(ReviewState.NO_DATA)
         self._current_flagged: FlaggedText | None = None
+        self._undo: UndoStep | None = None
+        self._review_save_after_id: str | None = None
         self._find_dialog: FindDialog | None = None
         self._subtitles_variable: tk.BooleanVar | None = None
 
@@ -316,6 +348,12 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.player.grid(row=2, column=0, sticky=ctk.EW)
         show_toggled(self.btn_sync_scroll, "link", self._config_system.sync_scroll)
         self.text.bind_interaction(lambda: self._set_active_text(self.text))
+        # Reviewing the low confidence words, while the transcript has the focus
+        for sequence in ("<Return>", "<KP_Enter>"):
+            self.text.bind_transcript_key(sequence, self.accept_current)
+        self.text.bind_transcript_key(
+            f"<{theme.SHORTCUT_MODIFIER}-z>", self.undo_review
+        )
         self.translation_panel.text.bind_interaction(
             lambda: self._set_active_text(self.translation_panel.text)
         )
@@ -345,6 +383,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._is_destroyed = True
         for after_id in self._copy_feedback_after_ids.values():
             self.after_cancel(after_id)
+        # The reviews are written when another transcription is shown, or the
+        # window is closed
+        if self._review_save_after_id:
+            self.after_cancel(self._review_save_after_id)
+        self._actions.transcript.save_reviews()
         super().destroy()
 
     # PUBLIC METHODS
@@ -354,7 +397,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._entry = entry
         self.header.update_entry(entry)
         self._show_content()
-        self._refresh_review()
+        self._refresh_review(advance=True)
         self._refresh_translation()
         self._refresh_translation_subtitles()
         if self._mode == SUMMARY_MODE:
@@ -647,6 +690,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 self._threshold_menu(self), anchor
             ),
             on_review_again=self._review_again,
+            on_undo=self.undo_review,
+            on_auto_play_change=self._set_review_auto_play,
+            is_auto_play=self._config_system.review_auto_play,
             previous_tooltip=lambda: _(
                 "Previous low-confidence word ({shortcut})"
             ).format(shortcut=PREVIOUS_FLAGGED_SHORTCUT),
@@ -711,6 +757,14 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             content[0] is self._shown_content[0]
             and content[1:] == self._shown_content[1:]
         ):
+            return
+        # Reviewing a word only moves its highlight (see `_refresh_review`)
+        if (
+            self._shown_content is not None
+            and content[1:] == self._shown_content[1:]
+            and differ_only_in_reviews(self._shown_content[0], entry.segments)
+        ):
+            self._shown_content = content
             return
 
         has_new_segments = (
@@ -784,11 +838,107 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         text = step_to(
             self._review.unreviewed, self._current_flagged, self.player.position, step
         )
-        if text is None:
-            return
+        if text is not None:
+            self._go_to_flagged(text)
+
+    def _go_to_flagged(self, text: FlaggedText) -> None:
+        """
+        Shows a low confidence text, which Return accepts, and plays it if the
+        user chose to.
+        """
         self._current_flagged = text
         self.text.show_flagged(text)
-        self.player.seek(text.start)
+        self.text.focus_text()
+        if self._config_system.review_auto_play:
+            self.player.play_clip(
+                text.start - AUTO_PLAY_BEFORE_SECONDS,
+                text.end + AUTO_PLAY_AFTER_SECONDS,
+            )
+        else:
+            self.player.seek(text.start)
+
+    def accept_current(self) -> bool:
+        """
+        Accepts the low confidence text gone to as it is, and goes to the next one.
+        Without one, it does nothing: it never accepts a text the user hasn't seen.
+
+        :return: Whether a text was accepted.
+        """
+        text = self._current_flagged
+        if self._mode != TRANSCRIPT_MODE or text is None or text.review is not None:
+            return False
+
+        segments = set_review(self._entry.segments, [text], ReviewMark.ACCEPTED)
+        self._undo = UndoStep(
+            self._entry.segments, self._entry.text, segments, text, is_accept=True
+        )
+        # Going to the next text follows (see `_refresh_review`)
+        self._actions.transcript.review_transcript(self.entry_id, segments)
+        self._schedule_review_save()
+        return True
+
+    def undo_review(self) -> bool:
+        """
+        Undoes the last review (accepting or correcting a low confidence text),
+        if nothing changed since, and goes back to the text.
+
+        :return: Whether it was undone.
+        """
+        step, self._undo = self._undo, None
+        if step is None or self._entry.segments is not step.reviewed_segments:
+            self._refresh_review_bar()
+            return False
+
+        self._current_flagged = None
+        if step.is_accept:
+            self._actions.transcript.review_transcript(self.entry_id, step.segments)
+            self._schedule_review_save()
+        else:
+            self._actions.transcript.update_transcript(
+                self.entry_id, step.segments, step.text
+            )
+        # The text is back where it was, so it's found again by when it's said
+        text = next(
+            (
+                text
+                for text in self._review.unreviewed
+                if text.segment_idx == step.flagged.segment_idx
+                and text.word_idx == step.flagged.word_idx
+            ),
+            None,
+        )
+        if text is not None:
+            self._go_to_flagged(text)
+        return True
+
+    def _update_transcript(
+        self, segments: list[TranscriptSegment], change_text: Callable[[str], str]
+    ) -> None:
+        """
+        Saves a correction (see `TranscriptCorrectionsMixin`). One that corrects
+        the low confidence text gone to can be undone like accepting it.
+        """
+        entry = self._entry
+        before, text = entry.segments, entry.text
+        current = self._current_flagged
+        super()._update_transcript(segments, change_text)
+        if current is not None and edited_count(segments) > edited_count(before):
+            self._undo = UndoStep(before, text, segments, current, is_accept=False)
+            self._refresh_review_bar()
+
+    def _schedule_review_save(self) -> None:
+        if self._review_save_after_id is None:
+            self._review_save_after_id = self.after(
+                REVIEW_SAVE_DELAY_MS, self._save_reviews
+            )
+
+    def _save_reviews(self) -> None:
+        self._review_save_after_id = None
+        self._actions.transcript.save_reviews()
+
+    def _set_review_auto_play(self, is_on: bool) -> None:
+        self._config_system.review_auto_play = is_on
+        save_config(ConfigSystem.Key.REVIEW_AUTO_PLAY, str(is_on))
 
     def _toggle_precise_timestamps(self) -> None:
         is_precise = not self._config_system.precise_timestamps
@@ -815,24 +965,48 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._refresh_review()
         self._refresh_find_dialog()
 
-    def _refresh_review(self) -> None:
+    def _refresh_review(self, advance: bool = False) -> None:
         """
         Builds the review of the low confidence words again (e.g. after the
         threshold or the transcription changes), and shows it everywhere.
+
+        :param advance: Whether to go to the next text if the one gone to was
+            reviewed (accepted or corrected) since.
         """
         config = self._config_system
+        previous = self._current_flagged
         self._review = build_review(
             self._entry.segments,
             config.highlight_low_confidence,
             config.low_confidence_threshold / 100,
         )
-        # Kept to step from where it was, even if it's no longer flagged
-        if self._current_flagged and self._current_flagged.key not in {
-            text.key for text in self._review.flagged
-        }:
-            self._current_flagged = None
+        # The text gone to, where it is now
+        current = (
+            next(
+                (text for text in self._review.flagged if text.key == previous.key),
+                None,
+            )
+            if previous
+            else None
+        )
+        is_reviewed = previous is not None and (current is None or current.review)
+        self._current_flagged = None if is_reviewed else current
         self.text.set_flagged(self._review.unreviewed)
-        self.review_bar.show(self._review)
+        self._refresh_review_bar()
+
+        # Once none are left, the review is done: there's nothing to go to
+        if (
+            advance
+            and is_reviewed
+            and previous is not None
+            and (text := step_to(self._review.unreviewed, previous, 0, 1))
+        ):
+            self._go_to_flagged(text)
+
+    def _refresh_review_bar(self) -> None:
+        undo = self._undo
+        can_undo = undo is not None and self._entry.segments is undo.reviewed_segments
+        self.review_bar.show(self._review, can_undo)
 
     def _review_again(self) -> None:
         """
@@ -840,10 +1014,12 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         edited ones stay reviewed, as they were corrected.
         """
         self._current_flagged = None
-        self._update_transcript(
+        self._undo = None
+        self._actions.transcript.review_transcript(
+            self.entry_id,
             set_review(self._entry.segments, self._review.accepted, None),
-            lambda text: text,
         )
+        self._schedule_review_save()
 
     def _format_time(self, seconds: float) -> str:
         """Formats the start of a segment as the user chose to show them."""

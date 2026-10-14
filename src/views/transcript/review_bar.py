@@ -11,14 +11,16 @@ from views.transcript.transcript_text import LOW_CONFIDENCE_COLOR
 from views.widgets.button import icon_button, set_button_state
 
 BAR_HEIGHT = 40
+# The key that accepts a low confidence word, as the keyboard names it
+ACCEPT_KEY_LABEL = "Return" if theme.IS_MACOS else "Enter"
 
 
 class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
     """
     The review of the low confidence words of the transcript, above it: how many
-    are left to review, and the buttons to go through them. It shows each state of
-    the review (see `ReviewState`), keeping its height so it doesn't jump while
-    the threshold changes.
+    are left to review, the buttons to go through them, and its options. It shows
+    each state of the review (see `ReviewState`), keeping its height so it doesn't
+    jump while the threshold changes.
     """
 
     def __init__(
@@ -29,13 +31,18 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         on_enable: Callable[[], None],
         on_adjust_threshold: Callable[[Any], None],
         on_review_again: Callable[[], None],
+        on_undo: Callable[[], Any],
+        on_auto_play_change: Callable[[bool], None],
+        is_auto_play: bool,
         previous_tooltip: Text,
         next_tooltip: Text,
     ) -> None:
         """
         :param on_enable: Turns the highlighting of the low confidence words on.
         :param on_adjust_threshold: Shows the thresholds below the widget given.
-        :param on_review_again: Forgets which words were reviewed.
+        :param on_review_again: Forgets which words were accepted.
+        :param on_undo: Undoes the last review.
+        :param on_auto_play_change: Called with whether going to a word plays it.
         """
         super().__init__(
             master,
@@ -47,7 +54,8 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         )
         self._review = Review(ReviewState.NO_DATA)
         self._on_adjust_threshold = on_adjust_threshold
-        self.grid_columnconfigure(3, weight=1)
+        # Between the options on the left and the one on the right
+        self.grid_columnconfigure(5, weight=1)
 
         self.lbl_icon = ctk.CTkLabel(self, text="", width=18)
         self.lbl_status = localize(
@@ -63,6 +71,30 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             self.frm_arrows, "chevron_down", on_next, next_tooltip
         )
         self.btn_next.grid(row=0, column=1, padx=(2, 0))
+
+        self._auto_play_variable = ctk.BooleanVar(self, value=is_auto_play)
+        self.chk_auto_play = localize(
+            ctk.CTkCheckBox(
+                self,
+                variable=self._auto_play_variable,
+                command=lambda: on_auto_play_change(self._auto_play_variable.get()),
+                checkbox_width=18,
+                checkbox_height=18,
+                border_width=2,
+                font=theme.font(13),
+            ),
+            text=L_("Auto-play"),
+        )
+        self.btn_undo = localize(
+            ctk.CTkButton(
+                self, width=0, height=28, command=on_undo, **theme.GHOST_BUTTON
+            ),
+            text=L_("Undo"),
+        )
+        self.lbl_accept_hint = localize(
+            ctk.CTkLabel(self, font=theme.font(12), text_color=theme.HINT_TEXT),
+            text=lambda: _("{key} — accept as is").format(key=ACCEPT_KEY_LABEL),
+        )
 
         self.btn_adjust = localize(
             ctk.CTkButton(
@@ -82,7 +114,8 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
                 command=on_review_again,
                 **theme.SECONDARY_BUTTON,
             ),
-            text=L_("Review again"),
+            # Not all of them: the corrected words stay reviewed
+            text=L_("Review accepted words again"),
         )
         # The only content while the words aren't highlighted
         self.btn_enable = localize(
@@ -102,13 +135,19 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
     def review(self) -> Review:
         return self._review
 
-    def show(self, review: Review) -> None:
+    def show(self, review: Review, can_undo: bool = False) -> None:
+        """
+        :param can_undo: Whether the last review can be undone.
+        """
         self._review = review
         state = review.state
         for widget in (
             self.lbl_icon,
             self.lbl_status,
             self.frm_arrows,
+            self.chk_auto_play,
+            self.btn_undo,
+            self.lbl_accept_hint,
             self.btn_adjust,
             self.btn_review_again,
             self.btn_enable,
@@ -142,12 +181,18 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             set_button_state(self.btn_previous, arrow_state)
             set_button_state(self.btn_next, arrow_state)
             self.frm_arrows.grid(row=0, column=2, padx=(12, 0))
+        if state == ReviewState.ACTIVE:
+            self.chk_auto_play.grid(row=0, column=3, padx=(12, 0))
+            self.lbl_accept_hint.grid(row=0, column=6, padx=(0, 12))
+        # After accepting the last word too
+        if can_undo and state in (ReviewState.ACTIVE, ReviewState.ALL_REVIEWED):
+            self.btn_undo.grid(row=0, column=4, padx=(8, 0))
         if state == ReviewState.NOTHING_FLAGGED:
-            self.btn_adjust.grid(row=0, column=4, padx=(0, 6))
+            self.btn_adjust.grid(row=0, column=6, padx=(0, 6))
         # The edited words stay reviewed, so only the accepted ones can be
         # reviewed again
         elif state == ReviewState.ALL_REVIEWED and review.accepted:
-            self.btn_review_again.grid(row=0, column=4, padx=(0, 6))
+            self.btn_review_again.grid(row=0, column=6, padx=(0, 6))
 
     def _adjust_threshold(self) -> None:
         self._on_adjust_threshold(self.btn_adjust)

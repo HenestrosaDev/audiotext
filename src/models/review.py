@@ -185,6 +185,39 @@ def set_review(
     return result
 
 
+def edited_count(segments: Sequence[TranscriptSegment]) -> int:
+    """The texts that the user corrected, to tell if a correction reviewed one."""
+    return sum(
+        (segment.reviewed == ReviewMark.EDITED)
+        + sum(word.reviewed == ReviewMark.EDITED for word in segment.words)
+        for segment in segments
+    )
+
+
+def _without_reviews(segment: TranscriptSegment) -> TranscriptSegment:
+    return replace(
+        segment,
+        words=tuple(replace(word, reviewed=None) for word in segment.words),
+        reviewed=None,
+    )
+
+
+def differ_only_in_reviews(
+    old: Sequence[TranscriptSegment], new: Sequence[TranscriptSegment]
+) -> bool:
+    """
+    Whether two versions of a transcription only differ in their reviews, so its
+    text doesn't need to be shown again. The segments that didn't change are
+    usually the same objects, which is quick to compare.
+    """
+    return len(old) == len(new) and all(
+        old_segment is new_segment
+        or old_segment == new_segment
+        or _without_reviews(old_segment) == _without_reviews(new_segment)
+        for old_segment, new_segment in zip(old, new, strict=True)
+    )
+
+
 def step_to(
     texts: Sequence[FlaggedText],
     current: FlaggedText | None,
