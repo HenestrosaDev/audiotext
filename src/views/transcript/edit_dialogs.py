@@ -1,6 +1,5 @@
 """Dialogs to correct a transcription."""
 
-from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -15,13 +14,6 @@ from views.style import theme
 class Timing:
     start: float
     end: float
-
-
-@dataclass(frozen=True)
-class Replacement:
-    find: str
-    replacement: str
-    match_case: bool
 
 
 class _Dialog(ctk.CTkToplevel):  # type: ignore[misc]
@@ -73,86 +65,6 @@ class _Dialog(ctk.CTkToplevel):  # type: ignore[misc]
 
     def wait(self) -> None:
         self.master.wait_window(self)
-
-
-class ReplaceDialog(_Dialog):
-    """Replaces a text in the whole transcription, showing how many times it's in."""
-
-    def __init__(
-        self,
-        master: Any,
-        count_matches: Callable[[str, bool], int],
-        initial_text: str = "",
-    ) -> None:
-        """
-        :param count_matches: Returns how many times a text is in the
-                              transcription, and whether it matches the case.
-        :param initial_text: The text to find, e.g. the one being searched.
-        """
-        super().__init__(master, _("Find and replace"), _("Replace all"))
-        self._count_matches = count_matches
-        self._result: Replacement | None = None
-
-        self._find = ctk.StringVar(self, initial_text)
-        self._replacement = ctk.StringVar(self)
-        self._match_case = ctk.BooleanVar(self, False)
-
-        for row, (label, variable) in enumerate(
-            [(_("Find:"), self._find), (_("Replace with:"), self._replacement)]
-        ):
-            ctk.CTkLabel(self.frm_body, text=label, font=theme.font(13)).grid(
-                row=row, column=0, padx=(0, 10), pady=4, sticky=ctk.W
-            )
-            entry = ctk.CTkEntry(self.frm_body, width=320, textvariable=variable)
-            entry.grid(row=row, column=1, pady=4, sticky=ctk.EW)
-            if row == 0:
-                self.ent_find = entry
-
-        ctk.CTkCheckBox(
-            self.frm_body,
-            text=_("Match case"),
-            variable=self._match_case,
-            font=theme.font(13),
-            command=self._refresh,
-        ).grid(row=2, column=1, pady=(8, 0), sticky=ctk.W)
-        self.lbl_count = ctk.CTkLabel(
-            self.frm_body, text="", font=theme.font(12), text_color=theme.HINT_TEXT
-        )
-        self.lbl_count.grid(row=3, column=1, pady=(8, 0), sticky=ctk.W)
-
-        self._find.trace_add("write", lambda *_args: self._refresh())
-        self._refresh()
-
-    def get_result(self) -> Replacement | None:
-        """Waits until the dialog is closed. :return: None if it was cancelled."""
-        self.wait()
-        return self._result
-
-    def _focus_first(self) -> None:
-        self.ent_find.focus_set()
-        self.ent_find.select_range(0, ctk.END)
-
-    def _refresh(self) -> None:
-        find = self._find.get()
-        count = self._count_matches(find, self._match_case.get()) if find else 0
-
-        if not find:
-            text = ""
-        elif count == 1:
-            text = _("1 match")
-        else:
-            text = _("{count} matches").format(count=count)
-        self.lbl_count.configure(text=text)
-        self.btn_ok.configure(state=ctk.NORMAL if count else ctk.DISABLED)
-
-    def _ok(self) -> None:
-        find = self._find.get()
-        if not find or not self._count_matches(find, self._match_case.get()):
-            return
-        self._result = Replacement(
-            find, self._replacement.get(), self._match_case.get()
-        )
-        self._close()
 
 
 class SpeakersDialog(_Dialog):

@@ -2,9 +2,9 @@ import pytest
 
 from models.transcript_segment import TranscriptSegment, TranscriptWord
 from utils.transcript_editing import (
-    count_matches,
     delete_segment,
     edit_segment,
+    edit_segment_part,
     insert_segment,
     overlapping_segments,
     realign_words,
@@ -14,6 +14,7 @@ from utils.transcript_editing import (
     replace_text,
     set_segment_timing,
     speakers,
+    split_segment,
 )
 
 WORDS = (
@@ -21,12 +22,6 @@ WORDS = (
     TranscriptWord(0.5, 1.0, "wisper"),
     TranscriptWord(1.0, 1.5, "users."),
 )
-
-
-def test_count_matches_ignores_the_case_by_default() -> None:
-    assert count_matches("Wisper and wisper", "wisper") == 2
-    assert count_matches("Wisper and wisper", "wisper", match_case=True) == 1
-    assert count_matches("text", "") == 0
 
 
 def test_replace_text_inserts_the_replacement_literally() -> None:
@@ -102,6 +97,31 @@ def test_edit_segment() -> None:
     assert result[1] is segments[1]
     with pytest.raises(ValueError):
         edit_segment(segments, 0, "  ")
+
+
+def test_edit_segment_part() -> None:
+    segments = [TranscriptSegment(0.0, 1.5, "Hello wisper users.", words=WORDS)]
+
+    # Only the part changes, e.g. the text of a subtitle
+    result = edit_segment_part(segments, 0, 6, 12, " Whisper ")
+
+    assert result[0].text == "Hello Whisper users."
+    assert result[0].words[1] == TranscriptWord(0.5, 1.0, "Whisper")
+    with pytest.raises(ValueError):
+        edit_segment_part(segments, 0, 6, 12, "  ")
+
+
+def test_split_segment() -> None:
+    segments = [
+        TranscriptSegment(0.0, 2.0, "Hello there. Bye."),
+        TranscriptSegment(3.0, 4.0, "Hi."),
+    ]
+    pieces = [
+        TranscriptSegment(0.0, 1.2, "Hello there."),
+        TranscriptSegment(1.2, 2.0, "Bye."),
+    ]
+
+    assert split_segment(segments, 0, pieces) == [*pieces, segments[1]]
 
 
 def test_rename_speakers() -> None:

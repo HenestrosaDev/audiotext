@@ -135,6 +135,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             Callable[[Callable[[Release | None, bool], None]], None] | None
         ) = None,
         on_date_format_change: Callable[[], None] | None = None,
+        on_subtitles_change: Callable[[], None] | None = None,
     ) -> None:
         """
         :param initial_tab: The tab shown first, e.g. `AI_TAB`. Defaults to the
@@ -143,6 +144,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
                              translations changes.
         :param on_date_format_change: Called when the format of the dates or
                                       the times changes, to show them again.
+        :param on_subtitles_change: Called when the size of the subtitles
+                                    changes, to split them again.
         :param on_check_for_updates: Checks whether a new version is available,
                                      calling back with it, if any, and whether
                                      the check failed.
@@ -153,6 +156,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._on_ai_change = on_ai_change
         self._on_check_for_updates = on_check_for_updates
         self._on_date_format_change = on_date_format_change
+        self._on_subtitles_change = on_subtitles_change
         self._available_update: Release | None = None
         self._debounce_after_ids: dict[Any, str] = {}
 
@@ -173,6 +177,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self.tabs.grid(row=0, column=0, padx=16, pady=(8, 16), sticky=ctk.NSEW)
 
         self._key_buttons: dict[EnvKeys, list[ctk.CTkButton]] = {}
+        self._key_width: float | None = None
         # The names of the tabs are their keys in the tab view, so they're
         # renamed when the language changes
         self._tab_texts: dict[str, Text] = {
@@ -195,6 +200,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._init_about(tabs[ABOUT_TAB])
         self._refresh_key_buttons()
         on_language_change(self, self._rename_tabs)
+        on_language_change(self, self._fit_key_buttons)
         if initial_tab:
             self.show_tab(initial_tab)
 
@@ -262,7 +268,9 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         key: ConfigManager.KeyType,
         validator: Callable[[str], bool],
         width: int = 70,
+        on_save: Callable[[], None] | None = None,
     ) -> ctk.CTkEntry:
+        """:param on_save: Called after the value is saved."""
         variable = ctk.StringVar(self, str(initial))
         entry = ctk.CTkEntry(frame, width=width, textvariable=variable)
         entry.configure(
@@ -270,7 +278,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         )
         entry.grid(row=0, column=1, rowspan=2, padx=(12, 0))
         variable.trace_add(
-            "write", lambda *_args: self._debounce_save(key, variable.get())
+            "write",
+            lambda *_args: self._debounce_save(key, variable.get(), on_save=on_save),
         )
         return entry
 
@@ -285,14 +294,22 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         return switch
 
     def _debounce_save(
-        self, key: ConfigManager.KeyType, value: str, allow_empty: bool = False
+        self,
+        key: ConfigManager.KeyType,
+        value: str,
+        allow_empty: bool = False,
+        on_save: Callable[[], None] | None = None,
     ) -> None:
         if after_id := self._debounce_after_ids.pop(key, None):
             self.after_cancel(after_id)
         if value or allow_empty:
-            self._debounce_after_ids[key] = self.after(
-                DEBOUNCE_DELAY_MS, lambda: save_config(key, value)
-            )
+
+            def save() -> None:
+                save_config(key, value)
+                if on_save:
+                    on_save()
+
+            self._debounce_after_ids[key] = self.after(DEBOUNCE_DELAY_MS, save)
 
     # TABS
 
@@ -422,7 +439,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         """A button that sets the API key, showing whether it's set."""
         button = ctk.CTkButton(
             frame,
-            width=110,
+            width=self._key_button_width(),
             command=lambda: self._set_key(env_key),
             **theme.SECONDARY_BUTTON,
         )
@@ -447,9 +464,36 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             # The buttons of the providers are replaced when they change
             buttons[:] = [button for button in buttons if button.winfo_exists()]
             is_set = bool(env_key.get_value(default=""))
-            text: Text = (lambda: "✓ " + _("Change…")) if is_set else (L_("Set…"))
+            text = L_("Change API key…") if is_set else L_("Set API key…")
             for button in buttons:
                 localize(button, text=text)
+
+    def _key_button_width(self) -> float:
+        """
+        The width of the buttons of the keys, the one of their longest text, so
+        they're as wide as each other whether the key is set or not.
+        """
+        if self._key_width is None:
+            # Measured with a button that isn't shown, so the others don't change
+            probe = ctk.CTkButton(self, width=0, **theme.SECONDARY_BUTTON)
+            widths = []
+            for text in (_("Set API key…"), _("Change API key…")):
+                probe.configure(text=text)
+                probe.update_idletasks()
+                widths.append(probe.winfo_reqwidth())
+            # In unscaled pixels, as the width of the buttons is given
+            self._key_width = max(widths) / probe._get_widget_scaling()
+            probe.destroy()
+        return self._key_width
+
+    def _fit_key_buttons(self) -> None:
+        """Gives the buttons of the keys the width of their texts in the language."""
+        self._key_width = None
+        width = self._key_button_width()
+        for buttons in self._key_buttons.values():
+            for button in buttons:
+                if button.winfo_exists():
+                    button.configure(width=width)
 
     def _init_ai(self, tab: Any) -> None:
         frame = self._scrollable(tab)
@@ -554,8 +598,13 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         def show_provider(value: str) -> None:
             for widget in key_buttons.winfo_children():
                 widget.destroy()
+            # Without a key (e.g. Ollama), its space is removed too, as an empty
+            # frame keeps the size of the button it had
             if env_key := get_env_key(value):
                 self._key_button(key_buttons, env_key, column=0)
+                key_buttons.grid()
+            else:
+                key_buttons.grid_remove()
             self._refresh_key_buttons()
             # DeepL and Google Translate have no models to choose
             has_models = bool(get_default_model(value))
@@ -625,9 +674,10 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             switch.configure(state=ctk.DISABLED)
 
     def _init_subtitles(self, tab: Any) -> None:
+        self._init_subtitle_lines(tab, 0)
         frame = self._row(
             tab,
-            0,
+            1,
             L_("Highlight words"),
             L_("Underlines each word as it's said (.srt and .vtt)."),
         )
@@ -636,20 +686,77 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             self._config_subtitles.highlight_words,
             lambda is_on: save_config(ConfigSubtitles.Key.HIGHLIGHT_WORDS, str(is_on)),
         )
-        frame = self._row(tab, 1, L_("Max. line count"))
-        self._entry(
-            frame,
-            self._config_subtitles.max_line_count,
-            ConfigSubtitles.Key.MAX_LINE_COUNT,
-            validators.is_valid_positive_int,
+
+    def _init_subtitle_lines(self, tab: Any, row: int) -> None:
+        """
+        The size of the subtitles, as a table of the landscape and the portrait
+        videos.
+        """
+        config = self._config_subtitles
+        key = ConfigSubtitles.Key
+        frame = ctk.CTkFrame(tab, fg_color="transparent")
+        frame.grid(row=row, column=0, padx=8, pady=8, sticky=ctk.EW)
+        frame.grid_columnconfigure(0, weight=1)
+
+        for column, text in ((1, L_("Landscape")), (2, L_("Portrait"))):
+            localize(
+                ctk.CTkLabel(frame, font=theme.font(12), text_color=theme.HINT_TEXT),
+                text=text,
+            ).grid(row=0, column=column, padx=(12, 0))
+
+        rows = (
+            (
+                L_("Max. lines per subtitle"),
+                (config.max_line_count, key.MAX_LINE_COUNT),
+                (config.max_line_count_vertical, key.MAX_LINE_COUNT_VERTICAL),
+            ),
+            (
+                L_("Max. characters per line"),
+                (config.max_line_width, key.MAX_LINE_WIDTH),
+                (config.max_line_width_vertical, key.MAX_LINE_WIDTH_VERTICAL),
+            ),
+            (
+                L_("Chinese, Japanese and Korean"),
+                (config.max_line_width_cjk, key.MAX_LINE_WIDTH_CJK),
+                (config.max_line_width_vertical_cjk, key.MAX_LINE_WIDTH_VERTICAL_CJK),
+            ),
         )
-        frame = self._row(tab, 2, L_("Max. line width"))
-        self._entry(
-            frame,
-            self._config_subtitles.max_line_width,
-            ConfigSubtitles.Key.MAX_LINE_WIDTH,
-            validators.is_valid_positive_int,
-        )
+        for table_row, (label, *entries) in enumerate(rows, start=1):
+            # The characters of these languages are a case of the ones per line
+            is_nested = table_row == len(rows)
+            localize(
+                ctk.CTkLabel(frame, font=theme.font(13), anchor=ctk.W), text=label
+            ).grid(
+                row=table_row,
+                column=0,
+                padx=(16 if is_nested else 0, 0),
+                pady=4,
+                sticky=ctk.W,
+            )
+            for column, (value, config_key) in enumerate(entries, start=1):
+                entry = self._entry(
+                    frame,
+                    value,
+                    config_key,
+                    validators.is_valid_positive_int,
+                    on_save=self._on_subtitles_change,
+                )
+                entry.grid(row=table_row, column=column, rowspan=1, pady=4)
+
+        localize(
+            ctk.CTkLabel(
+                frame,
+                font=theme.font(12),
+                text_color=theme.HINT_TEXT,
+                anchor=ctk.W,
+                justify=ctk.LEFT,
+                wraplength=440,
+            ),
+            text=L_(
+                "Chinese, Japanese and Korean characters are about twice as wide as "
+                "Latin ones."
+            ),
+        ).grid(row=len(rows) + 1, column=0, columnspan=3, pady=(4, 0), sticky=ctk.W)
 
     def _init_whisper_api(self, tab: Any) -> None:
         frame = self._row(

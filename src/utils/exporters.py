@@ -6,13 +6,16 @@ exported at any time.
 
 import json
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from io import BytesIO
 from pathlib import Path
+from typing import Any
 
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
+from utils.config_manager import ConfigManager
 from utils.i18n import _
+from utils.subtitle_cues import Cue, build_cues, line_limits
 from utils.time_format import format_subtitle_time, format_timestamp
 
 # A paragraph of a document is closed after a pause this long, or once it's this
@@ -32,6 +35,8 @@ class ExportDocument:
     # The text edited by the user is the one exported in the formats without
     # timestamps, since the segments keep the original transcription
     is_text_edited: bool = False
+    # Whether the video is taller than it's wide, which narrows its subtitles
+    is_vertical: bool = False
 
 
 @dataclass(frozen=True)
@@ -46,20 +51,42 @@ def _cue_text(segment: TranscriptSegment) -> str:
     return f"[{segment.speaker}]: {segment.text}" if segment.speaker else segment.text
 
 
-def segments_to_srt(segments: list[TranscriptSegment]) -> str:
+def subtitle_cues(
+    segments: list[TranscriptSegment], is_vertical: bool = False
+) -> list[Cue]:
+    """The segments split into subtitles, as the user configured them."""
+    config = ConfigManager.get_config_subtitles()
+    width, count = line_limits(config, segments, is_vertical)
+    cues = []
+    for segment in segments:
+        segment_cues = build_cues([segment], width, count)
+        # The speaker is added after splitting, so the subtitles are the ones
+        # shown with the transcript and over the video, which show it apart
+        if segment.speaker and segment_cues:
+            first = segment_cues[0]
+            segment_cues[0] = replace(first, text=f"[{segment.speaker}]: {first.text}")
+        cues.extend(segment_cues)
+    return cues
+
+
+def segments_to_srt(
+    segments: list[TranscriptSegment], is_vertical: bool = False
+) -> str:
     cues = [
-        f"{idx}\n{format_subtitle_time(s.start, ',')} --> "
-        f"{format_subtitle_time(s.end, ',')}\n{_cue_text(s)}\n"
-        for idx, s in enumerate(segments, start=1)
+        f"{idx}\n{format_subtitle_time(cue.start, ',')} --> "
+        f"{format_subtitle_time(cue.end, ',')}\n{cue.text}\n"
+        for idx, cue in enumerate(subtitle_cues(segments, is_vertical), start=1)
     ]
     return "\n".join(cues)
 
 
-def segments_to_vtt(segments: list[TranscriptSegment]) -> str:
+def segments_to_vtt(
+    segments: list[TranscriptSegment], is_vertical: bool = False
+) -> str:
     cues = [
-        f"{format_subtitle_time(s.start, '.')} --> "
-        f"{format_subtitle_time(s.end, '.')}\n{_cue_text(s)}\n"
-        for s in segments
+        f"{format_subtitle_time(cue.start, '.')} --> "
+        f"{format_subtitle_time(cue.end, '.')}\n{cue.text}\n"
+        for cue in subtitle_cues(segments, is_vertical)
     ]
     return "WEBVTT\n\n" + "\n".join(cues)
 
@@ -110,11 +137,11 @@ def paragraphs(document: ExportDocument) -> list[Paragraph]:
 
 
 def to_srt(document: ExportDocument) -> str:
-    return segments_to_srt(document.segments)
+    return segments_to_srt(document.segments, document.is_vertical)
 
 
 def to_vtt(document: ExportDocument) -> str:
-    return segments_to_vtt(document.segments)
+    return segments_to_vtt(document.segments, document.is_vertical)
 
 
 def to_tsv(document: ExportDocument) -> str:
@@ -146,18 +173,7 @@ def to_markdown(document: ExportDocument) -> str:
     lines = [f"# {document.title}", ""]
 
     if summary := document.summary:
-        lines += ["## " + _("Summary"), "", summary.summary, ""]
-        if summary.key_points:
-            lines += ["### " + _("Key points"), ""]
-            lines += [f"- {point}" for point in summary.key_points]
-            lines.append("")
-        if summary.chapters:
-            lines += ["### " + _("Chapters"), ""]
-            lines += [
-                f"- **{format_timestamp(chapter.start)}** {chapter.title}"
-                for chapter in summary.chapters
-            ]
-            lines.append("")
+        lines += _markdown_summary(summary)
         lines += ["## " + _("Transcription"), ""]
 
     for paragraph in paragraphs(document):
@@ -174,27 +190,61 @@ def to_markdown(document: ExportDocument) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def to_docx(document: ExportDocument) -> bytes:
+def _markdown_summary(summary: TranscriptSummary) -> list[str]:
+    """The lines of the summary, its key points and its chapters, in Markdown."""
+    lines = ["## " + _("Summary"), "", summary.summary, ""]
+    if summary.key_points:
+        lines += ["### " + _("Key points"), ""]
+        lines += [f"- {point}" for point in summary.key_points]
+        lines.append("")
+    if summary.chapters:
+        lines += ["### " + _("Chapters"), ""]
+        lines += [
+            f"- **{format_timestamp(chapter.start)}** {chapter.title}"
+            for chapter in summary.chapters
+        ]
+        lines.append("")
+    return lines
+
+
+def _new_docx(title: str) -> Any:
+    """A Word document with the title."""
     # Imported here because it's only needed to export Word documents
     from docx import Document
 
     docx = Document()
-    docx.core_properties.title = document.title
-    docx.add_heading(document.title, level=0)
+    docx.core_properties.title = title
+    docx.add_heading(title, level=0)
+    return docx
+
+
+def _add_docx_summary(docx: Any, summary: TranscriptSummary) -> None:
+    """Adds the summary, its key points and its chapters to a Word document."""
+    docx.add_heading(_("Summary"), level=1)
+    docx.add_paragraph(summary.summary)
+    if summary.key_points:
+        docx.add_heading(_("Key points"), level=2)
+        for point in summary.key_points:
+            docx.add_paragraph(point, style="List Bullet")
+    if summary.chapters:
+        docx.add_heading(_("Chapters"), level=2)
+        for chapter in summary.chapters:
+            chapter_paragraph = docx.add_paragraph(style="List Bullet")
+            chapter_paragraph.add_run(format_timestamp(chapter.start)).bold = True
+            chapter_paragraph.add_run(f"  {chapter.title}")
+
+
+def _docx_bytes(docx: Any) -> bytes:
+    file = BytesIO()
+    docx.save(file)
+    return file.getvalue()
+
+
+def to_docx(document: ExportDocument) -> bytes:
+    docx = _new_docx(document.title)
 
     if summary := document.summary:
-        docx.add_heading(_("Summary"), level=1)
-        docx.add_paragraph(summary.summary)
-        if summary.key_points:
-            docx.add_heading(_("Key points"), level=2)
-            for point in summary.key_points:
-                docx.add_paragraph(point, style="List Bullet")
-        if summary.chapters:
-            docx.add_heading(_("Chapters"), level=2)
-            for chapter in summary.chapters:
-                chapter_paragraph = docx.add_paragraph(style="List Bullet")
-                chapter_paragraph.add_run(format_timestamp(chapter.start)).bold = True
-                chapter_paragraph.add_run(f"  {chapter.title}")
+        _add_docx_summary(docx, summary)
         docx.add_heading(_("Transcription"), level=1)
 
     for paragraph in paragraphs(document):
@@ -207,9 +257,7 @@ def to_docx(document: ExportDocument) -> bytes:
             docx_paragraph.add_run(f"{paragraph.speaker}: ").bold = True
         docx_paragraph.add_run(paragraph.text)
 
-    file = BytesIO()
-    docx.save(file)
-    return file.getvalue()
+    return _docx_bytes(docx)
 
 
 Exporter = Callable[[ExportDocument], str | bytes]
@@ -252,12 +300,66 @@ def export(file_path: Path, file_type: str, document: ExportDocument) -> Path:
     if file_type in TIMED_FORMATS and not document.segments:
         raise ValueError(f"The .{file_type} format needs the timestamps")
 
-    output_path = file_path.with_suffix(f".{file_type}")
-    content = EXPORTERS[file_type](document)
+    return _write(file_path, file_type, EXPORTERS[file_type](document))
 
+
+def summary_to_txt(_title: str, summary: TranscriptSummary) -> str:
+    parts = [_("Summary"), summary.summary]
+    if summary.key_points:
+        parts += [
+            _("Key points"),
+            "\n".join(f"• {point}" for point in summary.key_points),
+        ]
+    if summary.chapters:
+        parts += [
+            _("Chapters"),
+            "\n".join(
+                f"{format_timestamp(chapter.start)}  {chapter.title}"
+                for chapter in summary.chapters
+            ),
+        ]
+    return "\n\n".join(parts) + "\n"
+
+
+def summary_to_markdown(title: str, summary: TranscriptSummary) -> str:
+    return "\n".join([f"# {title}", "", *_markdown_summary(summary)]).rstrip() + "\n"
+
+
+def summary_to_docx(title: str, summary: TranscriptSummary) -> bytes:
+    docx = _new_docx(title)
+    _add_docx_summary(docx, summary)
+    return _docx_bytes(docx)
+
+
+# The summary is only exported to documents: it has no timestamps of its own to
+# make subtitles, and its data is already in the JSON of the transcription
+SUMMARY_EXPORTERS: dict[str, Callable[[str, TranscriptSummary], str | bytes]] = {
+    "txt": summary_to_txt,
+    "md": summary_to_markdown,
+    "docx": summary_to_docx,
+}
+
+
+def export_summary(
+    file_path: Path, file_type: str, title: str, summary: TranscriptSummary
+) -> Path:
+    """
+    Writes the summary of a transcription to a file.
+
+    :param file_type: One of `SUMMARY_EXPORTERS`.
+    :raises ValueError: If the summary can't be exported to the file type.
+    :return: The path of the written file.
+    """
+    if file_type not in SUMMARY_EXPORTERS:
+        raise ValueError(f"Unsupported file type: {file_type}")
+    return _write(file_path, file_type, SUMMARY_EXPORTERS[file_type](title, summary))
+
+
+def _write(file_path: Path, file_type: str, content: str | bytes) -> Path:
+    """Writes the content with the extension of the file type."""
+    output_path = file_path.with_suffix(f".{file_type}")
     if isinstance(content, bytes):
         output_path.write_bytes(content)
     else:
         output_path.write_text(content, encoding="utf-8")
-
     return output_path

@@ -2,7 +2,6 @@ import logging
 import threading
 import tkinter as tk
 from collections.abc import Callable
-from dataclasses import replace
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, messagebox
@@ -21,7 +20,13 @@ from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment, join_segments
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
-from utils.exporters import ExportDocument, available_formats, export
+from utils.exporters import (
+    SUMMARY_EXPORTERS,
+    ExportDocument,
+    available_formats,
+    export,
+    export_summary,
+)
 from utils.history_store import sanitize_file_name
 from utils.i18n import L_, _
 from utils.media import (
@@ -30,14 +35,25 @@ from utils.media import (
     load_audio_samples,
     probe_media,
 )
-from utils.subtitle_cues import CueTrack, build_cues
+from utils.subtitle_cues import (
+    CueTrack,
+    SegmentPart,
+    build_cues,
+    line_limits,
+    split_segments,
+)
 from utils.time_format import format_segment_time
 from utils.transcript_editing import (
     delete_segment,
+    edit_segment_part,
     insert_segment,
     overlapping_segments,
+    replace_in_segments,
+    replace_range,
+    replace_text,
     set_segment_timing,
     speakers,
+    split_segment,
 )
 from views.entries.delegates import EntryActions
 from views.entries.entry_header import EntryHeader
@@ -48,6 +64,7 @@ from views.settings.preferences_dialog import AI_TAB
 from views.style import icons, theme
 from views.transcript.corrections import TranscriptCorrectionsMixin
 from views.transcript.edit_dialogs import Timing, TimingDialog
+from views.transcript.find_dialog import FindDialog, FindTarget, SearchableText
 from views.transcript.media_layout import MediaLayout
 from views.transcript.player_bar import PlayerBar
 from views.transcript.summary_panel import SummaryPanel
@@ -59,13 +76,13 @@ from views.transcript.transcript_text import (
 from views.transcript.translation_panel import (
     TranslateDialog,
     TranslationPanel,
+    format_ratio,
     has_timed_texts,
     language_name,
 )
 from views.transcript.video_pane import VideoPane
-from views.widgets.button import set_button_state
+from views.widgets.button import icon_button, set_button_state, show_toggled
 from views.widgets.localized_options import LocalizedOptions
-from views.widgets.search_entry import SearchEntry
 from views.widgets.splitter import Splitter
 from views.widgets.text_dialog import TextDialog
 
@@ -75,16 +92,29 @@ SUMMARY_MODE = "summary"
 # Part of the width taken by the text when its translation is shown next to it
 DEFAULT_TRANSLATION_RATIO = 0.5
 MIN_TRANSLATION_RATIO = 0.2
-TRANSLATION_SPLITTER_THICKNESS = 16
+# Wide enough for the button to scroll the texts together, which is on it
+TRANSLATION_SPLITTER_THICKNESS = 32
 # How long a segment added to the translation lasts by default, if there is no gap
 # to fill until the next one
 NEW_SEGMENT_SECONDS = 2.0
 
 
-def build_cue_track(segments: list[TranscriptSegment]) -> CueTrack:
-    """The subtitles of the segments, as the user configured them."""
+def build_cue_track(segments: list[TranscriptSegment], is_vertical: bool) -> CueTrack:
+    """
+    The subtitles of the segments, as the user configured them.
+
+    :param is_vertical: Whether the video is taller than it's wide.
+    """
     config = ConfigManager.get_config_subtitles()
-    return CueTrack(build_cues(segments, config.max_line_width * config.max_line_count))
+    return CueTrack(build_cues(segments, *line_limits(config, segments, is_vertical)))
+
+
+def transcript_parts(
+    segments: list[TranscriptSegment], is_vertical: bool
+) -> list[SegmentPart]:
+    """The parts of the segments shown in the transcript: their subtitles."""
+    config = ConfigManager.get_config_subtitles()
+    return split_segments(segments, *line_limits(config, segments, is_vertical))
 
 
 def export_labels() -> dict[str, str]:
@@ -120,27 +150,36 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._actions = actions
         self._run_on_ui_thread = run_on_ui_thread
         self._is_destroyed = False
-        self._copy_feedback_after_id: str | None = None
+        # The buttons that show they copied, and when they show it no longer
+        self._copy_feedback_after_ids: dict[ctk.CTkButton, str] = {}
         self._mode = TRANSCRIPT_MODE if entry.segments else PLAIN_TEXT_MODE
         # What the text shows, to render it again only when it changes
         self._shown_content: tuple[list[TranscriptSegment], str, bool] | None = None
+        # The parts of the segments shown in the transcript (see `transcript_parts`)
+        self._parts: list[SegmentPart] = []
+        # Whether the video is taller than it's wide, which narrows the subtitles.
+        # It's known once the media is loaded
+        self._is_vertical = False
         # The language and the segments of the translation that the subtitles of
         # the video can show, to build them again only when they change
         self._subtitled_translation: tuple[str, tuple[TranscriptSegment, ...]] = (
             "",
             (),
         )
-        self._is_translation_visible = bool(entry.translation) or (
-            actions.transcript.is_translating(entry.id)
+        translating = actions.transcript.translating_languages(entry.id)
+        self._is_translation_visible = bool(entry.translations or translating)
+        # The language of the translation shown, the last one made at first. It
+        # may not have one yet, while it's translated into it or if that failed
+        self._translation_language: str | None = next(
+            reversed([*entry.translations, *translating]), None
         )
-        # The language being translated into, to show it while it's translated
-        self._pending_translation_language: str | None = None
         self._translation_ratio = DEFAULT_TRANSLATION_RATIO
 
         self._config_system = ConfigManager.get_config_system()
         self._precise_variable: tk.BooleanVar | None = None
         self._low_confidence_variable: tk.BooleanVar | None = None
         self._threshold_variable: tk.IntVar | None = None
+        self._find_dialog: FindDialog | None = None
         self._subtitles_variable: tk.BooleanVar | None = None
 
         self.grid_columnconfigure(0, weight=1)
@@ -151,21 +190,23 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._init_body()
         self._init_toolbar()
 
-        self.text = TranscriptText(
-            self.frm_texts,
-            on_segment_click=self._on_segment_click,
-            on_segment_menu=self._show_segment_menu,
-            on_text_edit=self._on_text_edit,
-        )
+        self._init_transcript_card()
+        # The text that the user is working on, which the shortcuts act on (e.g.
+        # to find in it)
+        self._active_text = self.text
         self.translation_panel = TranslationPanel(
             self.frm_texts,
             on_segment_click=self._on_translation_segment_click,
             on_segment_menu=self._show_translation_segment_menu,
             on_text_edit=self._on_translation_text_edit,
+            on_scroll=self._on_translation_scroll,
+            on_search=self._find_in_translation,
             on_copy=self._copy_translation,
-            on_export=self.show_translation_export_menu,
+            on_export=self._show_translation_export_menu,
             on_translate=self._open_translate_dialog,
+            on_regenerate=self._translate_again,
             on_close=lambda: self._set_translation_visible(False),
+            on_select=self._select_translation,
         )
         self.translation_splitter = Splitter(
             self.frm_texts,
@@ -174,11 +215,27 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_reset=self._reset_translation_ratio,
             thickness=TRANSLATION_SPLITTER_THICKNESS,
         )
+        # Between the transcript and its translation, at the height of their
+        # headers, since it links them
+        self.btn_sync_scroll = icon_button(
+            self.frm_texts,
+            "link",
+            self._toggle_sync_scroll,
+            lambda: (
+                _("Stop scrolling the translation with the transcription")
+                if self._config_system.sync_scroll
+                else _("Scroll the translation with the transcription")
+            ),
+            is_round=True,
+        )
         self.summary_panel = SummaryPanel(
             self.frm_text_pane,
             on_generate=self._generate_summary,
+            on_regenerate=self._regenerate_summary,
             on_chapter=self._play_from,
+            on_search=self._find_in_summary,
             on_copy=self._copy_summary,
+            on_export=self.show_summary_export_menu,
             on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
             on_set_api_key=self._set_summary_api_key,
         )
@@ -189,6 +246,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_subtitle_menu=self.video.show_subtitle_menu,
         )
         self.player.grid(row=2, column=0, sticky=ctk.EW)
+        show_toggled(self.btn_sync_scroll, "link", self._config_system.sync_scroll)
+        self.text.bind_interaction(lambda: self._set_active_text(self.text))
+        self.translation_panel.text.bind_interaction(
+            lambda: self._set_active_text(self.translation_panel.text)
+        )
         self._apply_precise_timestamps()
         self._apply_low_confidence()
 
@@ -203,7 +265,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def _on_language_change(self) -> None:
         """Shows again the texts built from the transcription and its state."""
-        self._refresh_match_widgets()
+        self._refresh_find_dialog()
         if self._mode == SUMMARY_MODE:
             self._refresh_summary()
         self._refresh_translation()
@@ -213,8 +275,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def destroy(self) -> None:
         self._is_destroyed = True
-        if self._copy_feedback_after_id:
-            self.after_cancel(self._copy_feedback_after_id)
+        for after_id in self._copy_feedback_after_ids.values():
+            self.after_cancel(after_id)
         super().destroy()
 
     # PUBLIC METHODS
@@ -228,10 +290,33 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._refresh_translation_subtitles()
         if self._mode == SUMMARY_MODE:
             self._refresh_summary()
+        self._refresh_find_dialog()
 
     def focus_search(self) -> None:
-        self.ent_search.focus_set()
-        self.ent_search.select_range(0, ctk.END)
+        """
+        Finds in the text that the user is working on (the transcription or its
+        translation), or in the summary, if it's shown.
+        """
+        if self._mode == SUMMARY_MODE:
+            if self._entry.summary:
+                self._find_in_summary()
+        elif self._is_translation_active():
+            self._open_find_dialog(self._translation_find_target())
+        else:
+            self._open_find_dialog(self._transcript_find_target())
+
+    def show_active_export_menu(self) -> None:
+        """
+        The formats to export the text that the user is working on to, or the
+        summary, if it's shown.
+        """
+        if self._mode == SUMMARY_MODE:
+            if self._entry.summary:
+                self.show_summary_export_menu(self.summary_panel.btn_export)
+        elif self._is_translation_active():
+            self.show_translation_export_menu(self.translation_panel.btn_export)
+        else:
+            self.show_export_menu()
 
     def handle_key(self, key: str) -> bool:
         """Handles the playback shortcuts. :return: Whether the key was handled."""
@@ -242,29 +327,25 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         return self.text.contains_widget(widget)
 
     def show_export_menu(self) -> None:
-        """
-        The formats to export the transcription to and, if it has a translation,
-        the ones to export the translation to.
-        """
+        """The formats to export the transcription to."""
         menu = tk.Menu(self, tearoff=False)
         self._add_export_commands(menu, bool(self._entry.segments), self.export)
+        # The button is hidden with the transcript, e.g. while the summary is shown
+        anchor = self.btn_export if self.btn_export.winfo_viewable() else self.btn_more
+        self._popup_below(menu, anchor)
 
-        if translation := TranscriptTranslation.from_dict(self._entry.translation):
-            submenu = tk.Menu(menu, tearoff=False)
-            self._add_export_commands(
-                submenu, has_timed_texts(translation), self.export_translation
+    def show_summary_export_menu(self, anchor: Any) -> None:
+        labels = export_labels()
+        menu = tk.Menu(self, tearoff=False)
+        for file_type in SUMMARY_EXPORTERS:
+            menu.add_command(
+                label=labels[file_type],
+                command=partial(self.export_summary, file_type),
             )
-            menu.add_separator()
-            menu.add_cascade(
-                label=_("Translation into {language}").format(
-                    language=language_name(translation.language)
-                ),
-                menu=submenu,
-            )
-        self._popup_below(menu, self.btn_export)
+        self._popup_below(menu, anchor)
 
     def show_translation_export_menu(self, anchor: Any) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation is None:
             return
         menu = tk.Menu(self, tearoff=False)
@@ -292,12 +373,17 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             segments=entry.segments,
             summary=TranscriptSummary.from_dict(entry.summary),
             is_text_edited=entry.is_text_edited,
+            is_vertical=self._is_vertical,
         )
-        self._export(file_type, document, _("Export transcription"))
+        self._export(
+            file_type,
+            partial(export, file_type=file_type, document=document),
+            _("Export transcription"),
+        )
 
     def export_translation(self, file_type: str) -> None:
         self.translation_panel.save_pending_text()
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation is None:
             return
 
@@ -308,26 +394,44 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             # The segments not translated yet are left out of the subtitles
             segments=[segment for segment in translation.segments if segment.text],
             is_text_edited=translation.is_text_edited,
+            is_vertical=self._is_vertical,
         )
         self._export(
             file_type,
-            document,
+            partial(export, file_type=file_type, document=document),
             _("Export translation into {language}").format(language=language),
             # Like `video.es.srt`, which the video players load with the video
             language_code=translation.language,
         )
 
+    def export_summary(self, file_type: str) -> None:
+        summary = TranscriptSummary.from_dict(self._entry.summary)
+        if summary is None:
+            return
+        title = f"{self._entry.title} ({_('Summary')})"
+        self._export(
+            file_type,
+            partial(export_summary, file_type=file_type, title=title, summary=summary),
+            _("Export summary"),
+            suffix=sanitize_file_name(_("Summary").lower()),
+        )
+
     def _export(
         self,
         file_type: str,
-        document: ExportDocument,
+        write: Callable[[Path], Path],
         title: str,
         language_code: str = "",
+        suffix: str = "",
     ) -> None:
         """
         Asks where to export a document, next to the source file by default.
 
+        :param write: Writes the document to the chosen path, and returns the path
+                      of the written file.
         :param language_code: Added to the name of the file, if given.
+        :param suffix: Added to the name of the file, if given (e.g. to not
+                       replace the transcription with its summary).
         """
         entry = self._entry
         source_path = entry.source_path
@@ -337,6 +441,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
         if language_code:
             stem += f".{language_code}"
+        if suffix:
+            stem += f".{suffix}"
 
         selected = filedialog.asksaveasfilename(
             title=title,
@@ -349,7 +455,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             return
 
         try:
-            path = export(Path(selected), file_type, document)
+            path = write(Path(selected))
         except (OSError, ValueError) as e:
             self._actions.window.show_status(
                 _("Could not export: {error}").format(error=e), is_error=True
@@ -370,7 +476,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.video = VideoPane(
             self.frm_body,
             self._config_system,
-            build_cue_track(self._entry.segments),
+            build_cue_track(self._entry.segments, self._is_vertical),
             on_click=lambda: self.player.toggle_playback(),
             on_subtitles_change=lambda: self.player.set_subtitles_on(
                 self.video.is_showing_subtitles
@@ -386,58 +492,79 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self.frm_body, self.video, self.frm_text_pane, self._config_system
         )
 
-    def _init_toolbar(self) -> None:
-        """The search on the left and the actions of the text on the right."""
-        toolbar = ctk.CTkFrame(self.frm_text_pane, fg_color="transparent")
-        toolbar.grid(row=0, column=0, pady=(0, 10), sticky=ctk.EW)
-        # The empty column between the search and the actions takes the free space
-        toolbar.grid_columnconfigure(4, weight=1)
+    def _init_transcript_card(self) -> None:
+        """
+        The text of the transcription, with its language and the buttons to copy
+        and export it above it, like its translation on its right.
+        """
+        self.frm_transcript = ctk.CTkFrame(
+            self.frm_texts,
+            fg_color=theme.CARD_BG,
+            border_color=theme.CARD_BORDER,
+            border_width=1,
+            corner_radius=12,
+        )
+        self.frm_transcript.grid_columnconfigure(0, weight=1)
+        self.frm_transcript.grid_rowconfigure(1, weight=1)
 
-        self._init_search(toolbar)
-        self._init_actions(toolbar)
-
-    def _init_search(self, toolbar: ctk.CTkFrame) -> None:
-        """The search entry, the number of matches and the buttons to go to them."""
-        self._search_variable = ctk.StringVar(self)
-        self._search_variable.trace_add("write", lambda *_args: self._search())
-        search = SearchEntry(
-            toolbar,
-            width=230,
-            textvariable=self._search_variable,
-            placeholder_text=lambda: _("Search ({shortcut})").format(
+        header = ctk.CTkFrame(self.frm_transcript, fg_color="transparent")
+        header.grid(row=0, column=0, padx=(16, 8), pady=(8, 0), sticky=ctk.EW)
+        header.grid_columnconfigure(1, weight=1)
+        ctk.CTkLabel(
+            header, text="", image=icons.icon("subtitles", 15, theme.ICON_MUTED)
+        ).grid(row=0, column=0, padx=(0, 6))
+        self.lbl_transcript_title = localize(
+            ctk.CTkLabel(header, font=theme.font(14, "bold"), anchor=ctk.W),
+            text=self._transcript_title,
+        )
+        self.lbl_transcript_title.grid(row=0, column=1, sticky=ctk.W)
+        self.btn_search = icon_button(
+            header,
+            "search",
+            self._find_in_transcript,
+            lambda: _("Find and replace ({shortcut})").format(
                 shortcut=f"{theme.SHORTCUT_MODIFIER_LABEL}F"
             ),
         )
-        search.grid(row=0, column=0)
-        self.ent_search = search.entry
-        self.ent_search.bind("<Return>", lambda _event: self._go_to_match(1))
-        self.ent_search.bind("<Shift-Return>", lambda _event: self._go_to_match(-1))
-        self.ent_search.bind("<Escape>", lambda _event: self._clear_search())
+        self.btn_search.grid(row=0, column=2, padx=(2, 0))
+        self.btn_copy = icon_button(header, "copy", self._on_copy, L_("Copy"))
+        self.btn_copy.grid(row=0, column=3, padx=(2, 0))
+        self.btn_export = icon_button(
+            header, "export", self._show_transcript_export_menu, L_("Export")
+        )
+        self.btn_export.grid(row=0, column=4, padx=(2, 0))
+        # A transcription of a folder or of several files is transcribed again
+        # with them
+        if self._entry.parent_id is None:
+            self.btn_regenerate = icon_button(
+                header, "refresh", self._transcribe_again, L_("Transcribe again")
+            )
+            self.btn_regenerate.grid(row=0, column=5, padx=(2, 0))
 
-        self.lbl_matches = ctk.CTkLabel(
-            toolbar, text="", width=70, font=theme.font(12), text_color=theme.HINT_TEXT
+        self.text = TranscriptText(
+            self.frm_transcript,
+            on_segment_click=self._on_segment_click,
+            on_segment_menu=self._show_segment_menu,
+            on_text_edit=self._on_text_edit,
+            on_scroll=self._on_transcript_scroll,
         )
-        self.lbl_matches.grid(row=0, column=1, padx=(8, 0))
-        self.btn_previous_match = ctk.CTkButton(
-            toolbar,
-            text="",
-            width=28,
-            height=28,
-            image=icons.icon("chevron_left", 12),
-            command=lambda: self._go_to_match(-1),
-            **theme.GHOST_BUTTON,
-        )
-        self.btn_previous_match.grid(row=0, column=2)
-        self.btn_next_match = ctk.CTkButton(
-            toolbar,
-            text="",
-            width=28,
-            height=28,
-            image=icons.icon("chevron_right", 12),
-            command=lambda: self._go_to_match(1),
-            **theme.GHOST_BUTTON,
-        )
-        self.btn_next_match.grid(row=0, column=3)
+        # It's inside the card
+        self.text.configure(fg_color="transparent", border_width=0)
+        self.text.grid(row=1, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
+
+    def _transcript_title(self) -> str:
+        """The language of the transcription, like the title of its translation."""
+        language = self._entry.language
+        return language_name(language) if language else _("Transcription")
+
+    def _init_toolbar(self) -> None:
+        """The modes of the text on the left and its actions on the right."""
+        toolbar = ctk.CTkFrame(self.frm_text_pane, fg_color="transparent")
+        toolbar.grid(row=0, column=0, pady=(0, 10), sticky=ctk.EW)
+        # The empty column between the modes and the actions takes the free space
+        toolbar.grid_columnconfigure(1, weight=1)
+
+        self._init_actions(toolbar)
 
     def _init_actions(self, toolbar: ctk.CTkFrame) -> None:
         self.seg_mode = ctk.CTkSegmentedButton(toolbar, values=[""], height=30)
@@ -445,27 +572,19 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._modes = LocalizedOptions(
             self.seg_mode,
             lambda: {
-                TRANSCRIPT_MODE: _("Transcript"),
+                TRANSCRIPT_MODE: _("Subtitles"),
                 PLAIN_TEXT_MODE: _("Plain text"),
                 SUMMARY_MODE: _("Summary"),
             },
             values=[self._mode],
             command=self._on_mode_change,
         )
-        self.seg_mode.grid(row=0, column=5, padx=(10, 0))
+        self.seg_mode.grid(row=0, column=0)
 
         self.btn_translate = self._create_action_button(
             toolbar, L_("Translate"), "globe", self._on_translate_button
         )
-        self.btn_translate.grid(row=0, column=6, padx=(10, 0))
-        self.btn_copy = self._create_action_button(
-            toolbar, L_("Copy"), "copy", self._on_copy
-        )
-        self.btn_copy.grid(row=0, column=7, padx=(8, 0))
-        self.btn_export = self._create_action_button(
-            toolbar, L_("Export"), "export", self.show_export_menu
-        )
-        self.btn_export.grid(row=0, column=8, padx=(8, 0))
+        self.btn_translate.grid(row=0, column=2, padx=(10, 0))
         self.btn_more = ctk.CTkButton(
             toolbar,
             text="",
@@ -475,7 +594,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             command=self._show_more_menu,
             **theme.SECONDARY_BUTTON,
         )
-        self.btn_more.grid(row=0, column=9, padx=(8, 0))
+        self.btn_more.grid(row=0, column=3, padx=(8, 0))
 
     @staticmethod
     def _create_action_button(
@@ -508,10 +627,14 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         has_new_segments = (
             self._shown_content is None or entry.segments is not self._shown_content[0]
         )
-        self._shown_content = content
-        self.text.set_content(*content)
         if has_new_segments:
-            self.video.set_cue_track(build_cue_track(entry.segments))
+            self._parts = transcript_parts(entry.segments, self._is_vertical)
+        self._shown_content = content
+        self.text.set_content(
+            [part.segment for part in self._parts], entry.text, entry.is_text_edited
+        )
+        if has_new_segments:
+            self.video.set_cue_track(build_cue_track(entry.segments, self._is_vertical))
 
         modes = [PLAIN_TEXT_MODE, SUMMARY_MODE]
         if entry.segments:
@@ -536,10 +659,12 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self.translation_panel.set_mode(self._mode)
 
         state = ctk.DISABLED if is_summary else ctk.NORMAL
-        if self.ent_search.cget("state") != state:
-            self.ent_search.configure(state=state)
         set_button_state(self.btn_translate, state)
-        self._refresh_match_widgets()
+        # The text it searches is hidden
+        dialog = self._find_dialog
+        if dialog and (dialog.target.text is self.summary_panel.text) != is_summary:
+            self._close_find_dialog()
+        self._refresh_find_dialog()
 
     def _on_mode_change(self, mode: str) -> None:
         self._mode = mode
@@ -550,7 +675,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._config_system.precise_timestamps = is_precise
         save_config(ConfigSystem.Key.PRECISE_TIMESTAMPS, str(is_precise))
         self._apply_precise_timestamps()
-        self._refresh_match_widgets()
+        self._refresh_find_dialog()
 
     def _apply_precise_timestamps(self) -> None:
         is_precise = self._config_system.precise_timestamps
@@ -562,13 +687,13 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._config_system.highlight_low_confidence = is_highlighted
         save_config(ConfigSystem.Key.HIGHLIGHT_LOW_CONFIDENCE, str(is_highlighted))
         self._apply_low_confidence()
-        self._refresh_match_widgets()
+        self._refresh_find_dialog()
 
     def _set_low_confidence_threshold(self, threshold: int) -> None:
         self._config_system.low_confidence_threshold = threshold
         save_config(ConfigSystem.Key.LOW_CONFIDENCE_THRESHOLD, str(threshold))
         self._apply_low_confidence()
-        self._refresh_match_widgets()
+        self._refresh_find_dialog()
 
     def _apply_low_confidence(self) -> None:
         config = self._config_system
@@ -582,42 +707,101 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         """Formats the start of a segment as the user chose to show them."""
         return format_segment_time(seconds, self._config_system.precise_timestamps)
 
-    # SEARCH
+    # FIND AND REPLACE
 
-    def _search(self) -> None:
-        if self._mode != SUMMARY_MODE:
-            self.text.search(self._search_variable.get())
-        self._refresh_match_widgets()
+    def _set_active_text(self, text: TranscriptText) -> None:
+        self._active_text = text
 
-    def _go_to_match(self, step: int) -> None:
-        self.text.go_to_match(step)
-        self._refresh_match_widgets()
+    def _is_translation_active(self) -> bool:
+        return (
+            self._active_text is self.translation_panel.text
+            and self._is_translation_visible
+            and self.translation_panel.text.winfo_ismapped()
+        )
 
-    def _clear_search(self) -> None:
-        self._search_variable.set("")
-        self.text.focus_text()
+    def _find_in_transcript(self) -> None:
+        self._set_active_text(self.text)
+        self._open_find_dialog(self._transcript_find_target())
 
-    def _refresh_match_widgets(self) -> None:
-        match_widgets = (self.lbl_matches, self.btn_previous_match, self.btn_next_match)
-        if not self._search_variable.get().strip() or self._mode == SUMMARY_MODE:
-            for widget in match_widgets:
-                widget.grid_remove()
-            return
+    def _find_in_translation(self) -> None:
+        self._set_active_text(self.translation_panel.text)
+        self._open_find_dialog(self._translation_find_target())
 
-        for widget in match_widgets:
-            widget.grid()
+    def _show_transcript_export_menu(self) -> None:
+        self._set_active_text(self.text)
+        self.show_export_menu()
 
-        current, total = self.text.match_status
-        if not total:
-            text = _("No results")
-        else:
-            text = _("{current} of {total}").format(
-                current=(current or 0) + 1, total=total
+    def _show_translation_export_menu(self, anchor: Any) -> None:
+        self._set_active_text(self.translation_panel.text)
+        self.show_translation_export_menu(anchor)
+
+    def _transcript_find_target(self) -> FindTarget:
+        return FindTarget(
+            title=L_("Find and replace in the transcription"),
+            text=self.text,
+            replace_current=self._replace_current,
+            replace_all=self._replace_all,
+        )
+
+    def _translation_find_target(self) -> FindTarget:
+        def title() -> str:
+            translation = self._translation()
+            if translation is None:
+                return _("Find and replace in the translation")
+            return _("Find and replace in the translation into {language}").format(
+                language=language_name(translation.language)
             )
-        self.lbl_matches.configure(text=text)
-        state = ctk.NORMAL if total > 1 else ctk.DISABLED
-        self.btn_previous_match.configure(state=state)
-        self.btn_next_match.configure(state=state)
+
+        return FindTarget(
+            title=title,
+            text=self.translation_panel.text,
+            replace_current=self._replace_current_in_translation,
+            replace_all=self._replace_all_in_translation,
+        )
+
+    def _summary_find_target(self) -> FindTarget:
+        # The summary is generated, so it isn't corrected like the texts
+        return FindTarget(title=L_("Find in the summary"), text=self.summary_panel.text)
+
+    def _find_in_summary(self) -> None:
+        self._open_find_dialog(self._summary_find_target())
+
+    def _open_find_dialog(self, target: FindTarget) -> None:
+        """Finds in a text, starting with the one selected in it, if any."""
+        find = target.text.selected_text().strip()
+        if self._find_dialog is None or not self._find_dialog.winfo_exists():
+            self._find_dialog = FindDialog(
+                self,
+                target,
+                is_pinned=self._config_system.is_find_pinned,
+                on_pin_change=self._on_find_pin_change,
+                on_close=self._on_find_dialog_close,
+            )
+            if find:
+                self._find_dialog.set_target(target, find)
+            return
+        self._find_dialog.set_target(target, find)
+        self._find_dialog.focus_find()
+
+    def _on_find_pin_change(self, is_pinned: bool) -> None:
+        self._config_system.is_find_pinned = is_pinned
+        save_config(ConfigSystem.Key.IS_FIND_PINNED, str(is_pinned))
+
+    def _on_find_dialog_close(self) -> None:
+        self._find_dialog = None
+
+    def _close_find_dialog(self, text: SearchableText | None = None) -> None:
+        """
+        :param text: Closes it only if it searches this text (e.g. the
+                     translation, when it's hidden).
+        """
+        dialog = self._find_dialog
+        if dialog and (text is None or dialog.target.text is text):
+            dialog.close()
+
+    def _refresh_find_dialog(self) -> None:
+        if self._find_dialog and self._find_dialog.winfo_exists():
+            self._find_dialog.refresh()
 
     # CORRECTIONS
 
@@ -647,28 +831,43 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._actions.transcript.summarize_entry(self.entry_id)
         self._refresh_summary()
 
+    def _regenerate_summary(self) -> None:
+        if messagebox.askyesno(
+            _("Regenerate the summary"),
+            _("Generate the summary again? The current one will be replaced."),
+            icon=messagebox.WARNING,
+            parent=self.winfo_toplevel(),
+        ):
+            self._generate_summary()
+
     def _copy_summary(self) -> None:
         if summary := TranscriptSummary.from_dict(self._entry.summary):
             self.clipboard_clear()
             self.clipboard_append(format_summary(summary))
-            self._actions.window.show_status(_("Summary copied."))
+            self._show_copied(self.summary_panel.btn_copy)
 
     # TRANSLATION
 
     def _layout_texts(self) -> None:
         """Places the text and, if it's visible, its translation on its right."""
         frame = self.frm_texts
-        self.text.grid(row=0, column=0, sticky=ctk.NSEW)
+        self.frm_transcript.grid(row=0, column=0, sticky=ctk.NSEW)
 
         if not self._is_translation_visible:
             self.translation_splitter.grid_forget()
             self.translation_panel.grid_forget()
+            self.btn_sync_scroll.place_forget()
             frame.grid_columnconfigure(0, weight=1, uniform="")
             frame.grid_columnconfigure(2, weight=0, uniform="")
             return
 
         self.translation_splitter.grid(row=0, column=1, sticky=ctk.NS)
         self.translation_panel.grid(row=0, column=2, sticky=ctk.NSEW)
+        # Centered on the handle, aligned with the buttons of the headers
+        self.btn_sync_scroll.place(
+            in_=self.translation_splitter, relx=0.5, y=8, anchor=ctk.N
+        )
+        self.btn_sync_scroll.lift()
         self._apply_translation_ratio()
 
     def _apply_translation_ratio(self) -> None:
@@ -698,31 +897,95 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._is_translation_visible = is_visible
         self._layout_texts()
         self._refresh_translation()
+        if not is_visible:
+            self._close_find_dialog(self.translation_panel.text)
+
+    def _translation(self) -> TranscriptTranslation | None:
+        """The translation shown, if there is one into its language."""
+        return self._entry.get_translation(self._translation_language)
+
+    def _is_translating(self) -> bool:
+        """Whether it's being translated into the language shown."""
+        return self._translation_language is not None and (
+            self._actions.transcript.is_translating(
+                self.entry_id, self._translation_language
+            )
+        )
+
+    def _translation_error(self) -> str:
+        if self._translation_language is None:
+            return ""
+        return self._actions.transcript.get_translation_error(
+            self.entry_id, self._translation_language
+        )
+
+    def _translation_labels(self, translating: list[str]) -> dict[str, str]:
+        """
+        The languages of the translations and how much of each is translated,
+        then the ones being translated into, and the one shown if it failed.
+        """
+        labels: dict[str, str] = {}
+        for language in self._entry.translations:
+            if translation := self._entry.get_translation(language):
+                ratio = translation.translated_ratio(self._entry.segments)
+                labels[language] = f"{language_name(language)} · {format_ratio(ratio)}"
+        shown = [self._translation_language] if self._translation_language else []
+        for pending in [*translating, *shown]:
+            if pending not in labels:
+                labels[pending] = (
+                    f"{language_name(pending)} · …"
+                    if pending in translating
+                    else language_name(pending)
+                )
+        return labels
+
+    def _select_translation(self, language: str) -> None:
+        """Shows the translation into another language."""
+        if language == self._translation_language:
+            return
+        # The edits of the user are saved before another translation is shown
+        self.translation_panel.save_pending_text()
+        self._translation_language = language
+        self._refresh_translation()
+        self._refresh_translation_subtitles()
+        self._refresh_find_dialog()
 
     def _refresh_translation(self) -> None:
-        is_loading = self._actions.transcript.is_translating(self.entry_id)
-        error = self._actions.transcript.get_translation_error(self.entry_id)
+        # The edits of the user are saved into their translation before another
+        # one is shown, or before it's shown again
+        self.translation_panel.save_pending_text()
+        translating = self._actions.transcript.translating_languages(self.entry_id)
+        # The translation shown is kept while it exists, is being made or shows
+        # why it failed. Otherwise, the last one made is shown
+        language = self._translation_language
+        if (
+            language not in self._entry.translations
+            and language not in translating
+            and not self._translation_error()
+        ):
+            self._translation_language = next(
+                reversed([*self._entry.translations, *translating]), None
+            )
+        is_loading = self._is_translating()
         # A translation in progress is shown, e.g. when going back to its entry
         if is_loading:
             self._set_translation_visible(True)
         if not self._is_translation_visible:
             return
 
-        # The edits of the user are saved before the translation is shown again
-        self.translation_panel.save_pending_text()
         self.translation_panel.show(
-            TranscriptTranslation.from_dict(self._entry.translation),
+            self._translation_language,
+            self._translation(),
             is_loading=is_loading,
-            error=error,
-            pending_language=self._pending_translation_language,
+            error=self._translation_error(),
+            segments=[part.segment for part in self._translation_parts()],
+            languages=self._translation_labels(translating),
         )
         self.translation_panel.set_mode(self._mode)
 
     def _on_translate_button(self) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
-        if translation is None and not self._actions.transcript.is_translating(
-            self.entry_id
-        ):
+        translation = self._translation()
+        if translation is None and not self._is_translating():
             self._open_translate_dialog()
             return
 
@@ -740,11 +1003,6 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         menu.add_command(
             label=_("Translate into another language…"),
             command=self._open_translate_dialog,
-            state=(
-                tk.DISABLED
-                if self._actions.transcript.is_translating(self.entry_id)
-                else tk.NORMAL
-            ),
         )
         if self.layout.has_video and self.video.has_translation_subtitles:
             # Kept while the menu is shown, like the one of the precise timestamps
@@ -766,6 +1024,31 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             )
         self._popup_below(menu, self.btn_translate)
 
+    def _toggle_sync_scroll(self) -> None:
+        is_synced = not self._config_system.sync_scroll
+        self._config_system.sync_scroll = is_synced
+        save_config(ConfigSystem.Key.SYNC_SCROLL, str(is_synced))
+        show_toggled(self.btn_sync_scroll, "link", is_synced)
+        if is_synced:
+            self._on_transcript_scroll()
+
+    def _on_transcript_scroll(self) -> None:
+        # The translation panel is created after the transcript
+        if hasattr(self, "translation_panel"):
+            self._sync_scroll(self.text, self.translation_panel.text)
+
+    def _on_translation_scroll(self) -> None:
+        self._sync_scroll(self.translation_panel.text, self.text)
+
+    def _sync_scroll(self, source: TranscriptText, target: TranscriptText) -> None:
+        """Scrolls the transcription and its translation together, if chosen."""
+        if (
+            self._config_system.sync_scroll
+            and self._is_translation_visible
+            and target.winfo_ismapped()
+        ):
+            target.scroll_to_anchor(source.scroll_anchor())
+
     def _toggle_translation_subtitles(self) -> None:
         if self.video.is_showing_subtitles and self.video.is_showing_translation:
             self.video.toggle_subtitles()
@@ -774,7 +1057,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def _refresh_translation_subtitles(self) -> None:
         """Gives the video the subtitles of the translation, if it has one."""
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         subtitled = (
             (translation.language, translation.segments) if translation else ("", ())
         )
@@ -784,7 +1067,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._subtitled_translation = subtitled
         language, segments = subtitled
         self.video.set_translation_track(
-            build_cue_track(list(segments)) if segments else None,
+            build_cue_track(list(segments), self._is_vertical) if segments else None,
             language_name(language) if language else "",
         )
         # The buttons of the subtitles are shown once the video has some
@@ -792,8 +1075,6 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self.player.show_subtitle_buttons(self.video.is_showing_subtitles)
 
     def _open_translate_dialog(self) -> None:
-        if self._actions.transcript.is_translating(self.entry_id):
-            return
         self.text.save_pending_text()
         request = TranslateDialog(
             self,
@@ -803,12 +1084,26 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         ).get_result()
         if request is None or self._is_destroyed:
             return
+        if self._actions.transcript.is_translating(self.entry_id, request.language):
+            # It's already being translated into it, so that one is shown
+            self._select_translation(request.language)
+            return
+        # A translation into the same language is replaced, losing its edits
+        if request.language in self._entry.translations and not (
+            self._confirm_translate_again(request.language)
+        ):
+            return
 
+        self.translation_panel.save_pending_text()
         save_config(ConfigAi.Key.TRANSLATION_LANGUAGE, request.language)
         if request.provider == MANUAL:
+            # Like the transcript, a segment per subtitle, with its timestamps
             self._actions.transcript.start_manual_translation(
-                self.entry_id, request.language
+                self.entry_id,
+                request.language,
+                [part.segment for part in self._parts],
             )
+            self._translation_language = request.language
             self._set_translation_visible(True)
             self._refresh_translation()
             return
@@ -824,24 +1119,27 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             save_config(ConfigAi.Key.TRANSLATION_PROVIDER, request.provider)
             save_config(ConfigAi.Key.TRANSLATION_MODEL, "")
 
-        self._pending_translation_language = request.language
+        self._translation_language = request.language
         self._actions.transcript.translate_entry(
             self.entry_id, request.language, request.provider, model
         )
         self._set_translation_visible(True)
         self._refresh_translation()
+        self._refresh_translation_subtitles()
 
     def _on_translation_text_edit(self, text: str) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation and text != translation.text:
-            self._actions.transcript.save_translation_text(self.entry_id, text)
+            self._actions.transcript.save_translation_text(
+                self.entry_id, translation.language, text
+            )
 
     def _show_translation_segment_menu(self, event: Any, idx: int) -> str:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
-        if translation is None or idx >= len(translation.segments):
+        parts = self._translation_parts()
+        if idx >= len(parts):
             return "break"
 
-        segment = translation.segments[idx]
+        segment = parts[idx].segment
         menu = tk.Menu(self, tearoff=False)
         menu.add_command(
             label=_("Play from here"), command=lambda: self._play_from(segment.start)
@@ -868,7 +1166,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             label=_("Delete the segment"),
             command=lambda: self._delete_translation_segment(idx),
             # Without segments, the translation would have no timestamps
-            state=tk.NORMAL if len(translation.segments) > 1 else tk.DISABLED,
+            state=tk.NORMAL if len(parts) > 1 else tk.DISABLED,
         )
         try:
             menu.tk_popup(event.x_root, event.y_root)
@@ -879,25 +1177,61 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _translation_segments(self) -> list[TranscriptSegment] | None:
         """The segments of the translation, after saving the edits of its text."""
         self.translation_panel.save_pending_text()
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         return list(translation.segments) if translation else None
 
+    def _translation_parts(self) -> list[SegmentPart]:
+        """The parts of the segments of the translation shown in its panel."""
+        translation = self._translation()
+        if translation is None:
+            return []
+        return transcript_parts(list(translation.segments), self._is_vertical)
+
+    def _split_translation_part(
+        self, idx: int
+    ) -> tuple[list[TranscriptSegment], int] | None:
+        """
+        Makes a part shown in the translation a segment of its own, to change its
+        timing, add a segment after it or delete it, which are changes of what the
+        user sees, not of the whole segment.
+
+        :return: The segments of the translation, with the segment of the part
+                 split into its parts, and the index of the part among them.
+        """
+        segments = self._translation_segments()
+        parts = self._translation_parts()
+        if segments is None or idx >= len(parts):
+            return None
+
+        part = parts[idx]
+        pieces = [p for p in parts if p.segment_idx == part.segment_idx]
+        if len(pieces) == 1:
+            return segments, part.segment_idx
+        segments = split_segment(
+            segments, part.segment_idx, [piece.segment for piece in pieces]
+        )
+        return segments, part.segment_idx + pieces.index(part)
+
     def _save_translation_segments(self, segments: list[TranscriptSegment]) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
+        translation = self._translation()
         if translation is None:
             return
         # The edited text keeps the changes of the user, so only the segments change
         text = (
             translation.text if translation.is_text_edited else join_segments(segments)
         )
-        self._actions.transcript.update_translation(self.entry_id, segments, text)
+        self._actions.transcript.update_translation(
+            self.entry_id, translation.language, segments, text
+        )
 
     def _edit_translation_segment(self, idx: int) -> None:
         segments = self._translation_segments()
-        if segments is None or idx >= len(segments):
+        parts = self._translation_parts()
+        if segments is None or idx >= len(parts):
             return
 
-        segment = segments[idx]
+        part = parts[idx]
+        segment = part.segment
         # The original text said meanwhile is shown, to translate it
         original = " ".join(
             s.text
@@ -923,14 +1257,16 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if not text or not text.strip() or text == segment.text:
             return
 
-        segments[idx] = replace(segment, text=text.strip())
-        self._save_translation_segments(segments)
+        self._save_translation_segments(
+            edit_segment_part(segments, part.segment_idx, part.first, part.last, text)
+        )
 
     def _edit_translation_timing(self, idx: int) -> None:
-        segments = self._translation_segments()
-        if segments is None or idx >= len(segments):
+        split = self._split_translation_part(idx)
+        if split is None:
             return
 
+        segments, idx = split
         segment = segments[idx]
         timing = TimingDialog(
             self,
@@ -947,9 +1283,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
 
     def _add_translation_segment(self, idx: int) -> None:
-        segments = self._translation_segments()
-        if segments is None or idx >= len(segments):
+        split = self._split_translation_part(idx)
+        if split is None:
             return
+
+        segments, idx = split
 
         # By default, it fills the gap until the next segment
         previous = segments[idx]
@@ -972,14 +1310,21 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         segments = insert_segment(segments, added)
         self._save_translation_segments(segments)
         # It's translated right away, or it's left to translate later
+        added_idx = next(i for i, segment in enumerate(segments) if segment is added)
         self._edit_translation_segment(
-            next(i for i, segment in enumerate(segments) if segment is added)
+            next(
+                i
+                for i, part in enumerate(self._translation_parts())
+                if part.segment_idx == added_idx
+            )
         )
 
     def _delete_translation_segment(self, idx: int) -> None:
-        segments = self._translation_segments()
-        if segments is None or idx >= len(segments) or len(segments) <= 1:
+        split = self._split_translation_part(idx)
+        if split is None or len(split[0]) <= 1:
             return
+
+        segments, idx = split
 
         segment = segments[idx]
         if segment.text and not messagebox.askyesno(
@@ -991,6 +1336,51 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             return
         self._save_translation_segments(delete_segment(segments, idx))
 
+    def _replace_current_in_translation(self, replacement: str) -> None:
+        """Replaces the current match of the search in the translation."""
+        text = self.translation_panel.text
+        if text.mode == PLAIN_TEXT_MODE:
+            text.replace_current_match(replacement)
+            return
+        segments = self._translation_segments()
+        if segments is None or (match := text.current_match()) is None:
+            return
+
+        idx, first, last = match
+        part = self._translation_parts()[idx]
+        self._save_translation_segments(
+            replace_range(
+                segments,
+                part.segment_idx,
+                part.first + first,
+                part.first + last,
+                replacement,
+                # It's left to translate again
+                allow_empty=True,
+            )
+        )
+
+    def _replace_all_in_translation(
+        self, find: str, replacement: str, match_case: bool
+    ) -> None:
+        """Replaces a text in the whole translation."""
+        self.translation_panel.save_pending_text()
+        translation = self._translation()
+        if translation is None:
+            return
+
+        segments = replace_in_segments(
+            list(translation.segments), find, replacement, match_case
+        )
+        text = (
+            replace_text(translation.text, find, replacement, match_case)
+            if translation.is_text_edited
+            else join_segments(segments)
+        )
+        self._actions.transcript.update_translation(
+            self.entry_id, translation.language, segments, text
+        )
+
     def _describe_translation_segment(self, segment: TranscriptSegment) -> str:
         """Its text, or the time it starts if it isn't translated yet."""
         if segment.text:
@@ -1000,19 +1390,52 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
 
     def _delete_translation(self) -> None:
-        self._is_translation_visible = False
-        self._layout_texts()
-        self._actions.transcript.remove_translation(self.entry_id)
+        """Deletes the translation shown, showing another one if there is one."""
+        language = self._translation_language
+        if language is None:
+            return
+        self.translation_panel.save_pending_text()
+        if not set(self._entry.translations) - {language}:
+            self._is_translation_visible = False
+            self._layout_texts()
+        self._close_find_dialog(self.translation_panel.text)
+        self._actions.transcript.remove_translation(self.entry_id, language)
+
+    def _translate_again(self) -> None:
+        """Translates it again, into the same language and with the same model."""
+        translation = self._translation()
+        if (
+            translation is None
+            or translation.provider == MANUAL
+            or self._is_translating()
+            or not self._confirm_translate_again(translation.language)
+        ):
+            return
+        self.text.save_pending_text()
+        self._actions.transcript.translate_entry(
+            self.entry_id, translation.language, translation.provider, translation.model
+        )
+        self._refresh_translation()
+
+    def _confirm_translate_again(self, language: str) -> bool:
+        """Asks before replacing a translation, since its edits are lost."""
+        return bool(
+            messagebox.askyesno(
+                _("Translate again"),
+                _(
+                    "Translate the transcription into {language} again? The "
+                    "changes made to the translation will be lost."
+                ).format(language=language_name(language)),
+                icon=messagebox.WARNING,
+                parent=self.winfo_toplevel(),
+            )
+        )
 
     def _copy_translation(self) -> None:
-        if translation := TranscriptTranslation.from_dict(self._entry.translation):
+        if translation := self._translation():
             self.clipboard_clear()
             self.clipboard_append(translation.text)
-            self._actions.window.show_status(
-                _("Translation into {language} copied.").format(
-                    language=language_name(translation.language)
-                )
-            )
+            self._show_copied(self.translation_panel.btn_copy)
 
     # MEDIA
 
@@ -1073,6 +1496,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             )
             return
 
+        if info.is_portrait:
+            self._set_vertical()
+
         if info.has_video:
             try:
                 self.video.open(media_path)
@@ -1085,6 +1511,23 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 )
 
         self.player.load(samples, PLAYBACK_SAMPLE_RATE, is_video=self.layout.has_video)
+
+    def _set_vertical(self) -> None:
+        """Splits the transcript and the subtitles again for a vertical video."""
+        self._is_vertical = True
+        self.refresh_subtitles()
+
+    def refresh_subtitles(self) -> None:
+        """
+        Splits the transcript, its translation and the subtitles of the video
+        again, e.g. after the user changes the size of the subtitles.
+        """
+        self._shown_content = None
+        self._show_content()
+        self._refresh_translation()
+        self._subtitled_translation = ("", ())
+        self._refresh_translation_subtitles()
+        self._refresh_find_dialog()
 
     # PLAYBACK
 
@@ -1099,17 +1542,17 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.player.play_from(seconds)
 
     def _on_segment_click(self, idx: int) -> None:
-        self._play_from(self._entry.segments[idx].start)
+        self._play_from(self._parts[idx].segment.start)
 
     def _on_translation_segment_click(self, idx: int) -> None:
-        translation = TranscriptTranslation.from_dict(self._entry.translation)
-        if translation and idx < len(translation.segments):
-            self._play_from(translation.segments[idx].start)
+        parts = self._translation_parts()
+        if idx < len(parts):
+            self._play_from(parts[idx].segment.start)
 
     # MENUS
 
     def _show_segment_menu(self, event: Any, idx: int) -> str:
-        segment = self._entry.segments[idx]
+        segment = self._parts[idx].segment
         menu = tk.Menu(self, tearoff=False)
         menu.add_command(
             label=_("Play from here"), command=lambda: self._play_from(segment.start)
@@ -1172,10 +1615,21 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.clipboard_clear()
         self.clipboard_append(text.strip())
 
+    def _transcribe_again(self) -> None:
+        # It takes a while, and replaces the corrections of the text
+        if messagebox.askyesno(
+            _("Transcribe again"),
+            _(
+                "Transcribe “{title}” again? The changes made to its text will be lost."
+            ).format(title=self._entry.title),
+            icon=messagebox.WARNING,
+            parent=self.winfo_toplevel(),
+        ):
+            self._actions.jobs.retry_entry(self.entry_id)
+
     def _show_more_menu(self) -> None:
         entry = self._entry
         menu = tk.Menu(self, tearoff=False)
-        menu.add_command(label=_("Find and replace…"), command=self._find_and_replace)
         menu.add_command(
             label=_("Rename speakers…"),
             command=self._rename_speakers,
@@ -1187,7 +1641,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             menu, value=self._config_system.precise_timestamps
         )
         menu.add_checkbutton(
-            label=_("Precise timestamps (00:00:01,000)"),
+            label=_("Precise timestamps (HH:MM:SS,mmm)"),
             command=self._toggle_precise_timestamps,
             variable=self._precise_variable,
             state=tk.NORMAL if entry.segments else tk.DISABLED,
@@ -1229,11 +1683,6 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             label=_("Edit tag…"),
             command=lambda: self._actions.prompts.ask_for_tag(self.entry_id),
         )
-        if entry.parent_id is None:
-            menu.add_command(
-                label=_("Transcribe again"),
-                command=lambda: self._actions.jobs.retry_entry(self.entry_id),
-            )
         menu.add_separator()
         menu.add_command(
             label=_("Delete…"),
@@ -1251,19 +1700,19 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             menu.grab_release()
 
     def _on_copy(self) -> None:
-        if self._mode == SUMMARY_MODE:
-            self._copy_summary()
-            return
-
         self.clipboard_clear()
         self.clipboard_append(self.text.get_text())
-        self.btn_copy.configure(image=icons.icon("check", 15, theme.STATUS_DONE))
-        localize(self.btn_copy, text=L_("Copied"))
-        if self._copy_feedback_after_id:
-            self.after_cancel(self._copy_feedback_after_id)
-        self._copy_feedback_after_id = self.after(1500, self._reset_copy_button)
+        self._show_copied(self.btn_copy)
 
-    def _reset_copy_button(self) -> None:
-        self._copy_feedback_after_id = None
-        self.btn_copy.configure(image=icons.icon("copy", 15))
-        localize(self.btn_copy, text=L_("Copy"))
+    def _show_copied(self, button: ctk.CTkButton) -> None:
+        """Shows a tick on the copy button for a moment."""
+        button.configure(image=icons.icon("check", 14, theme.STATUS_DONE))
+        if after_id := self._copy_feedback_after_ids.get(button):
+            self.after_cancel(after_id)
+        self._copy_feedback_after_ids[button] = self.after(
+            1500, lambda: self._reset_copy_button(button)
+        )
+
+    def _reset_copy_button(self, button: ctk.CTkButton) -> None:
+        del self._copy_feedback_after_ids[button]
+        button.configure(image=icons.icon("copy", 14))

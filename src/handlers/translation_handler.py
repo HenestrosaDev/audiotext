@@ -2,8 +2,9 @@
 Translates transcriptions into another language with DeepL, Google Translate or a
 language model of the providers of `AiProvider`.
 
-The segments of the transcription are translated one by one, so the translation
-starts with their timestamps and can be followed while playing the audio.
+The segments of the transcription are regrouped by sentence and translated one by
+one, so each sentence is translated whole and the translation starts with their
+timestamps, which can be followed while playing the audio.
 """
 
 import json
@@ -28,6 +29,7 @@ from models.transcript_segment import TranscriptSegment, join_segments
 from models.translation import TranscriptTranslation
 from utils.env_keys import EnvKeys
 from utils.i18n import _, sort_key
+from utils.sentences import group_by_sentence
 
 DEEPL = "deepl"
 GOOGLE_TRANSLATE = "google"
@@ -38,10 +40,15 @@ MANUAL = "manual"
 # short and within the limits of the APIs
 MAX_LLM_CHUNK_CHARS = 6_000
 MAX_LLM_CHUNK_ITEMS = 80
-MAX_DEEPL_CHUNK_CHARS = 30_000
+# DeepL also gets the chunk and its surroundings as context, and the request must
+# fit in 128 KiB even if each character takes 3 bytes (e.g. Chinese)
+MAX_DEEPL_CHUNK_CHARS = 15_000
 MAX_DEEPL_CHUNK_ITEMS = 50
 MAX_GOOGLE_CHUNK_CHARS = 5_000
 MAX_GOOGLE_CHUNK_ITEMS = 100
+# The text said before and after a chunk that's sent with it as context, if the
+# provider supports it (not Google Translate)
+MAX_CONTEXT_CHARS = 1_000
 
 DEEPL_FREE_URL = "https://api-free.deepl.com/v2/translate"
 DEEPL_PRO_URL = "https://api.deepl.com/v2/translate"
@@ -95,7 +102,11 @@ key "translations": a list with the translation of each text, in the same order 
 and with exactly the same number of items ({count}). Translate each text on its \
 own, without merging, splitting or skipping any, but use the others as context. \
 Keep the speaker labels (e.g. [SPEAKER_00]), the names and the tone. If a text is \
-already in {language}, return it unchanged."""
+already in {language}, return it unchanged.
+
+The object may also have "context_before" and "context_after": the text said \
+right before and after the texts. Use it only to understand them, and don't \
+translate it."""
 
 LLM_SCHEMA: dict[str, Any] = {
     "type": "object",
@@ -175,14 +186,14 @@ def translate_texts(
             pending,
             MAX_DEEPL_CHUNK_CHARS,
             MAX_DEEPL_CHUNK_ITEMS,
-            lambda part: _translate_deepl(part, language),
+            lambda part, before, after: _translate_deepl(part, language, before, after),
         )
     elif provider == GOOGLE_TRANSLATE:
         translated = _translate_chunks(
             pending,
             MAX_GOOGLE_CHUNK_CHARS,
             MAX_GOOGLE_CHUNK_ITEMS,
-            lambda part: _translate_google(part, language),
+            lambda part, _before, _after: _translate_google(part, language),
         )
     else:
         ai_provider = get_ai_provider(provider) or AiProvider.OPENAI
@@ -191,7 +202,9 @@ def translate_texts(
             pending,
             MAX_LLM_CHUNK_CHARS,
             MAX_LLM_CHUNK_ITEMS,
-            lambda part: _translate_llm(part, language, ai_provider, model),
+            lambda part, before, after: _translate_llm(
+                part, language, ai_provider, model, before, after
+            ),
         )
 
     result = list(texts)
@@ -204,24 +217,76 @@ def _translate_chunks(
     texts: list[str],
     max_chars: int,
     max_items: int,
-    translate: Callable[[list[str]], list[str]],
+    translate: Callable[[list[str], str, str], list[str]],
 ) -> list[str]:
+    """
+    :param translate: Translates a chunk, given the text said before and after it.
+    """
     result: list[str] = []
+    start = 0
     for part in chunk(texts, max_chars, max_items):
-        result.extend(translate(part))
+        end = start + len(part)
+        result.extend(
+            translate(part, context_before(texts[:start]), context_after(texts[end:]))
+        )
+        start = end
     return result
+
+
+def context_before(texts: list[str]) -> str:
+    """
+    :return: The last whole texts that fit in `MAX_CONTEXT_CHARS`, or the end of
+             the last one if it doesn't fit.
+    """
+    kept: list[str] = []
+    size = 0
+    for text in reversed(texts):
+        if kept and size + len(text) > MAX_CONTEXT_CHARS:
+            break
+        kept.insert(0, text)
+        size += len(text) + 1
+    return " ".join(kept)[-MAX_CONTEXT_CHARS:]
+
+
+def context_after(texts: list[str]) -> str:
+    """
+    :return: The first whole texts that fit in `MAX_CONTEXT_CHARS`, or the start
+             of the first one if it doesn't fit.
+    """
+    kept: list[str] = []
+    size = 0
+    for text in texts:
+        if kept and size + len(text) > MAX_CONTEXT_CHARS:
+            break
+        kept.append(text)
+        size += len(text) + 1
+    return " ".join(kept)[:MAX_CONTEXT_CHARS]
 
 
 # LANGUAGE MODELS
 
 
 def _translate_llm(
-    texts: list[str], language: str, provider: AiProvider, model: str
+    texts: list[str],
+    language: str,
+    provider: AiProvider,
+    model: str,
+    before: str = "",
+    after: str = "",
 ) -> list[str]:
     """
     Translates the texts with a language model. If the model doesn't return a
-    translation for each text, each half is translated on its own.
+    translation for each text, each half is translated on its own, with the other
+    one as context.
+
+    :param before: The text said before the texts, which isn't translated.
+    :param after: The text said after the texts, which isn't translated.
     """
+    content: dict[str, Any] = {"texts": texts}
+    if before:
+        content["context_before"] = before
+    if after:
+        content["context_after"] = after
     instructions = LLM_INSTRUCTIONS.format(
         language=c.AUDIO_LANGUAGES.get(language, language), count=len(texts)
     )
@@ -229,7 +294,7 @@ def _translate_llm(
         provider,
         model,
         instructions,
-        json.dumps({"texts": texts}, ensure_ascii=False),
+        json.dumps(content, ensure_ascii=False),
         LLM_SCHEMA,
     )
     translations = data.get("translations")
@@ -245,8 +310,21 @@ def _translate_llm(
         raise ValueError(_("The model didn't return a valid translation."))
 
     middle = len(texts) // 2
-    return _translate_llm(texts[:middle], language, provider, model) + _translate_llm(
-        texts[middle:], language, provider, model
+    first, second = texts[:middle], texts[middle:]
+    return _translate_llm(
+        first,
+        language,
+        provider,
+        model,
+        before,
+        context_after([*second, after] if after else second),
+    ) + _translate_llm(
+        second,
+        language,
+        provider,
+        model,
+        context_before([before, *first] if before else first),
+        after,
     )
 
 
@@ -290,7 +368,13 @@ def _describe_http_error(error: urllib.error.HTTPError) -> str:
     return f"HTTP {error.code}: {message or error.reason}"
 
 
-def _translate_deepl(texts: list[str], language: str) -> list[str]:
+def _translate_deepl(
+    texts: list[str], language: str, before: str = "", after: str = ""
+) -> list[str]:
+    """
+    DeepL translates each text on its own, so it gets them all as context, with
+    the text said before and after them. The context isn't billed.
+    """
     target = DEEPL_LANGUAGES.get(language)
     if target is None:
         raise ValueError(
@@ -304,7 +388,11 @@ def _translate_deepl(texts: list[str], language: str) -> list[str]:
     url = DEEPL_FREE_URL if key.endswith(":fx") else DEEPL_PRO_URL
     data = _post_json(
         url,
-        {"text": texts, "target_lang": target},
+        {
+            "text": texts,
+            "target_lang": target,
+            "context": " ".join(text for text in (before, *texts, after) if text),
+        },
         {"Authorization": f"DeepL-Auth-Key {key}"},
     )
     translations = data.get("translations") if isinstance(data, dict) else None
@@ -346,8 +434,9 @@ class TranslationHandler:
         model: str | None = None,
     ) -> TranscriptTranslation:
         """
-        Translates a transcription: its segments, so the translation keeps their
-        timestamps, or its text if it has no segments or the user edited it.
+        Translates a transcription: its segments regrouped by sentence, so each
+        sentence is translated whole and keeps its timestamps, or its text if it
+        has no segments or the user edited it.
 
         :param language: The code of the target language (e.g. "es").
         :param provider: The value of the provider. Defaults to the configured one.
@@ -369,6 +458,7 @@ class TranslationHandler:
         model = resolve_model(ai_provider, model) if ai_provider else ""
 
         if segments and not is_text_edited:
+            segments = group_by_sentence(segments)
             translated = translate_texts(
                 [segment.text for segment in segments], language, provider, model
             )
