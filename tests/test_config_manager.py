@@ -154,3 +154,24 @@ def test_missing_key_raises_value_error(config_file: Path) -> None:
 
     with pytest.raises(ValueError, match="appearance_mode"):
         ConfigManager.get_config_system()
+
+
+def test_the_settings_are_parsed_again_only_when_a_file_changes(
+    config_file: Path, user_config_file: Path
+) -> None:
+    first = ConfigManager.read_config()
+    assert ConfigManager.read_config() is first
+
+    # Changed by the app
+    ConfigManager.modify_value(
+        ConfigSystem.Key.SECTION, ConfigSystem.Key.UI_LANGUAGE, "es"
+    )
+    assert ConfigManager.get_config_system().ui_language == "es"
+
+    # Changed outside of the app (e.g. by hand)
+    user_config_file.write_text("[system]\nui_language = fr\n", encoding="utf-8")
+    assert ConfigManager.get_config_system().ui_language == "fr"
+
+    # Removed, so the defaults are back
+    user_config_file.unlink()
+    assert ConfigManager.get_config_system().ui_language == "en"
