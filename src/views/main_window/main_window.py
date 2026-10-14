@@ -521,7 +521,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
 
     def trigger_save(self) -> None:
         if isinstance(self._entry_view, TranscriptView) and self._page == Page.ENTRY:
-            self._entry_view.show_export_menu()
+            self._entry_view.show_active_export_menu()
 
     def trigger_browse(self) -> None:
         # Browse in the source being shown (e.g. a folder), or a file otherwise

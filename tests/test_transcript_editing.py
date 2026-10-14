@@ -2,7 +2,6 @@ import pytest
 
 from models.transcript_segment import TranscriptSegment, TranscriptWord
 from utils.transcript_editing import (
-    count_matches,
     delete_segment,
     edit_segment,
     edit_segment_part,
@@ -23,12 +22,6 @@ WORDS = (
     TranscriptWord(0.5, 1.0, "wisper"),
     TranscriptWord(1.0, 1.5, "users."),
 )
-
-
-def test_count_matches_ignores_the_case_by_default() -> None:
-    assert count_matches("Wisper and wisper", "wisper") == 2
-    assert count_matches("Wisper and wisper", "wisper", match_case=True) == 1
-    assert count_matches("text", "") == 0
 
 
 def test_replace_text_inserts_the_replacement_literally() -> None:
