@@ -39,6 +39,9 @@ class TranscriptSegment:
     speaker: str | None = None
     # Only available if the transcription was aligned (word-level timings)
     words: tuple[TranscriptWord, ...] = field(default=())
+    # How likely the text is to be right, from 0 to 1, for the engines that only
+    # score whole segments (the OpenAI API). Lost when the text is edited
+    score: float | None = None
 
     def to_dict(self) -> dict[str, Any]:
         data: dict[str, Any] = {"start": self.start, "end": self.end, "text": self.text}
@@ -47,6 +50,8 @@ class TranscriptSegment:
             data["speaker"] = self.speaker
         if self.words:
             data["words"] = [word.to_list() for word in self.words]
+        if self.score is not None:
+            data["score"] = self.score
 
         return data
 
@@ -60,7 +65,19 @@ class TranscriptSegment:
             words=tuple(
                 TranscriptWord.from_list(word) for word in data.get("words", [])
             ),
+            score=float(data["score"]) if data.get("score") is not None else None,
         )
+
+
+def has_scores(segments: list[TranscriptSegment]) -> bool:
+    """:return: Whether any segment, or any of their words, has a score."""
+    for segment in segments:
+        if segment.score is not None:
+            return True
+        if any(word.score is not None for word in segment.words):
+            return True
+
+    return False
 
 
 def join_segments(segments: list[TranscriptSegment]) -> str:

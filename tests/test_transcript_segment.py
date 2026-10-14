@@ -1,4 +1,9 @@
-from models.transcript_segment import TranscriptSegment, TranscriptWord, join_segments
+from models.transcript_segment import (
+    TranscriptSegment,
+    TranscriptWord,
+    has_scores,
+    join_segments,
+)
 
 
 def test_joins_the_text_of_the_segments() -> None:
@@ -56,3 +61,22 @@ def test_reads_the_words_saved_without_score() -> None:
     segment = TranscriptSegment.from_dict(data)
 
     assert segment.words == (TranscriptWord(0, 1, "Hello"),)
+
+
+def test_the_segments_keep_their_score() -> None:
+    segment = TranscriptSegment(0, 1, "Hello", score=0.25)
+
+    data = segment.to_dict()
+
+    assert data["score"] == 0.25
+    assert TranscriptSegment.from_dict(data) == segment
+    assert "score" not in TranscriptSegment(0, 1, "Hello").to_dict()
+
+
+def test_has_scores_if_a_segment_or_a_word_has_one() -> None:
+    word = TranscriptWord(0, 1, "Hello", 0.9)
+
+    assert has_scores([TranscriptSegment(0, 1, "Hello", words=(word,))])
+    assert has_scores([TranscriptSegment(0, 1, "Hello", score=0.9)])
+    assert not has_scores([TranscriptSegment(0, 1, "Hello")])
+    assert not has_scores([])

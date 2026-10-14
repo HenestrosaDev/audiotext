@@ -79,12 +79,9 @@ def _with_text(segment: TranscriptSegment, text: str) -> TranscriptSegment:
     if text == segment.text:
         return segment
 
-    return TranscriptSegment(
-        segment.start,
-        segment.end,
-        text,
-        segment.speaker,
-        realign_words(segment.words, text),
+    # The score of the segment no longer applies, as the user corrected it
+    return replace(
+        segment, text=text, words=realign_words(segment.words, text), score=None
     )
 
 
@@ -248,9 +245,7 @@ def rename_speakers(
         raise ValueError("The name of a speaker can't be empty")
 
     return [
-        TranscriptSegment(s.start, s.end, s.text, names[s.speaker], s.words)
-        if s.speaker in names
-        else s
+        replace(s, speaker=names[s.speaker]) if s.speaker in names else s
         for s in segments
     ]
 

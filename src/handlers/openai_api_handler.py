@@ -16,7 +16,8 @@ import base64
 import bisect
 import json
 import logging
-from dataclasses import dataclass
+import math
+from dataclasses import dataclass, replace
 from io import BytesIO
 from typing import Any
 
@@ -272,6 +273,10 @@ def _parse_segments(data: dict[str, Any], offset: float) -> list[TranscriptSegme
     Reads the segments of a response, shifting their timestamps by the start of
     the chunk. The words are returned apart from the segments, so they are
     assigned to the segment they belong to.
+
+    The API only scores whole segments, with the average log probability of
+    their tokens, which is turned into a probability from 0 to 1 like the scores
+    of the words of WhisperX.
     """
     segments = [
         TranscriptSegment(
@@ -279,6 +284,11 @@ def _parse_segments(data: dict[str, Any], offset: float) -> list[TranscriptSegme
             end=offset + float(segment["end"]),
             text=str(segment["text"]).strip(),
             speaker=segment.get("speaker"),
+            score=(
+                math.exp(float(segment["avg_logprob"]))
+                if segment.get("avg_logprob") is not None
+                else None
+            ),
         )
         for segment in data.get("segments") or []
         if str(segment["text"]).strip()
@@ -302,13 +312,7 @@ def _parse_segments(data: dict[str, Any], offset: float) -> list[TranscriptSegme
         words_by_segment[idx].append(word)
 
     return [
-        TranscriptSegment(
-            segment.start,
-            segment.end,
-            segment.text,
-            segment.speaker,
-            tuple(segment_words),
-        )
+        replace(segment, words=tuple(segment_words))
         for segment, segment_words in zip(segments, words_by_segment, strict=True)
     ]
 
@@ -493,14 +497,11 @@ class OpenAiApiHandler:
         B…), or with the names of the samples sent with the request.
         """
         return [
-            TranscriptSegment(
-                segment.start,
-                segment.end,
-                segment.text,
-                segment.speaker
+            replace(
+                segment,
+                speaker=segment.speaker
                 if not segment.speaker or segment.speaker.startswith("SPEAKER_")
                 else f"SPEAKER_{segment.speaker}",
-                segment.words,
             )
             for segment in segments
         ]
