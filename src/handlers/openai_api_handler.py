@@ -223,19 +223,24 @@ def detected_language(data: dict[str, Any]) -> str | None:
     return language_code(data.get("language"))
 
 
-def render_response(transcript: ApiTranscript, response_format: str) -> str:
+def render_response(
+    transcript: ApiTranscript, response_format: str, is_vertical: bool = False
+) -> str:
     """
     Writes the transcription in one of the response formats of the API, to save
     it in a file.
+
+    :param is_vertical: Whether the video is taller than it's wide, which narrows
+                        its subtitles.
     """
     segments = transcript.segments or [
         TranscriptSegment(0, transcript.duration, transcript.text)
     ]
 
     if response_format == WhisperApiResponseFormats.SRT.value:
-        return segments_to_srt(segments)
+        return segments_to_srt(segments, is_vertical)
     if response_format == WhisperApiResponseFormats.VTT.value:
-        return segments_to_vtt(segments)
+        return segments_to_vtt(segments, is_vertical)
     if response_format == WhisperApiResponseFormats.JSON.value:
         return json.dumps({"text": transcript.text}, ensure_ascii=False)
     if response_format == WhisperApiResponseFormats.VERBOSE_JSON.value:
