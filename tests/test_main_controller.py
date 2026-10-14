@@ -605,11 +605,12 @@ class TestSaveTranscription:
         transcriber: Any,
         tmp_path: Path,
         text: str = "new",
+        raw: Any = None,
         **transcription_kwargs: Any,
     ) -> Path:
         saver = TranscriptionSaver(make_transcription(**transcription_kwargs))
         return saver.save(
-            transcriber, TranscriptionResult(text), tmp_path / "audio.mp3"
+            transcriber, TranscriptionResult(text, raw=raw), tmp_path / "audio.mp3"
         )
 
     def test_saves_next_to_the_file(self, tmp_path: Path) -> None:
@@ -664,11 +665,14 @@ class TestSaveTranscription:
         self.save(
             WhisperXTranscriber(whisperx_handler),
             tmp_path,
+            raw={"segments": []},
             output_file_types=["srt", "txt"],
             should_overwrite=True,
         )
 
+        # The result is saved as WhisperX returned it
         whisperx_handler.save_transcription.assert_called_once_with(
+            result={"segments": []},
             file_path=tmp_path / "audio",
             output_file_types=["srt", "txt"],
             should_overwrite=True,

@@ -236,7 +236,9 @@ def test_save_transcription_writes_each_file_type(
     handler = WhisperXHandler()
     handler.transcribe_file(make_transcription(should_translate=True))
 
-    handler.save_transcription(tmp_path / "audio.txt", ["txt", "srt"], False)
+    handler.save_transcription(
+        handler.raw_result, tmp_path / "audio.txt", ["txt", "srt"], False
+    )
 
     writer_formats = [call.args[0] for call in whisperx.utils.get_writer.call_args_list]
     assert writer_formats == ["txt", "srt"]
@@ -251,7 +253,9 @@ def test_save_transcription_writes_each_file_type(
     }
 
     # The subtitles of vertical videos are narrower
-    handler.save_transcription(tmp_path / "audio.txt", ["srt"], True, is_vertical=True)
+    handler.save_transcription(
+        handler.raw_result, tmp_path / "audio.txt", ["srt"], True, is_vertical=True
+    )
     assert writer.call_args.args[2]["max_line_width"] == 24
 
 
@@ -262,7 +266,9 @@ def test_save_transcription_does_not_overwrite_existing_files(
     handler = WhisperXHandler()
     handler.transcribe_file(make_transcription())
 
-    handler.save_transcription(tmp_path / "audio.mp3", ["txt", "json"], False)
+    handler.save_transcription(
+        handler.raw_result, tmp_path / "audio.mp3", ["txt", "json"], False
+    )
 
     writer_formats = [call.args[0] for call in whisperx.utils.get_writer.call_args_list]
     assert writer_formats == ["json"]
@@ -270,7 +276,9 @@ def test_save_transcription_does_not_overwrite_existing_files(
 
 def test_save_without_transcription_raises(whisperx: MagicMock, tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="no transcription to save"):
-        WhisperXHandler().save_transcription(tmp_path / "audio.txt", ["txt"], True)
+        WhisperXHandler().save_transcription(
+            None, tmp_path / "audio.txt", ["txt"], True
+        )
 
 
 def test_keeps_the_segments_and_the_audio_of_the_last_transcription(
