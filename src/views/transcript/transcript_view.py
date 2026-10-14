@@ -30,7 +30,7 @@ from utils.media import (
     load_audio_samples,
     probe_media,
 )
-from utils.subtitle_cues import CueTrack, build_cues
+from utils.subtitle_cues import CueTrack, build_cues, line_limits
 from utils.time_format import format_segment_time
 from utils.transcript_editing import (
     delete_segment,
@@ -81,10 +81,14 @@ TRANSLATION_SPLITTER_THICKNESS = 16
 NEW_SEGMENT_SECONDS = 2.0
 
 
-def build_cue_track(segments: list[TranscriptSegment]) -> CueTrack:
-    """The subtitles of the segments, as the user configured them."""
+def build_cue_track(segments: list[TranscriptSegment], is_vertical: bool) -> CueTrack:
+    """
+    The subtitles of the segments, as the user configured them.
+
+    :param is_vertical: Whether the video is taller than it's wide.
+    """
     config = ConfigManager.get_config_subtitles()
-    return CueTrack(build_cues(segments, config.max_line_width * config.max_line_count))
+    return CueTrack(build_cues(segments, *line_limits(config, segments, is_vertical)))
 
 
 def export_labels() -> dict[str, str]:
@@ -124,6 +128,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._mode = TRANSCRIPT_MODE if entry.segments else PLAIN_TEXT_MODE
         # What the text shows, to render it again only when it changes
         self._shown_content: tuple[list[TranscriptSegment], str, bool] | None = None
+        # Whether the video is taller than it's wide, which narrows the subtitles.
+        # It's known once the media is loaded
+        self._is_vertical = False
         # The language and the segments of the translation that the subtitles of
         # the video can show, to build them again only when they change
         self._subtitled_translation: tuple[str, tuple[TranscriptSegment, ...]] = (
@@ -289,6 +296,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             segments=entry.segments,
             summary=TranscriptSummary.from_dict(entry.summary),
             is_text_edited=entry.is_text_edited,
+            is_vertical=self._is_vertical,
         )
         self._export(file_type, document, _("Export transcription"))
 
@@ -305,6 +313,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             # The segments not translated yet are left out of the subtitles
             segments=[segment for segment in translation.segments if segment.text],
             is_text_edited=translation.is_text_edited,
+            is_vertical=self._is_vertical,
         )
         self._export(
             file_type,
@@ -367,7 +376,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.video = VideoPane(
             self.frm_body,
             self._config_system,
-            build_cue_track(self._entry.segments),
+            build_cue_track(self._entry.segments, self._is_vertical),
             on_click=lambda: self.player.toggle_playback(),
             on_subtitles_change=lambda: self.player.set_subtitles_on(
                 self.video.is_showing_subtitles
@@ -508,7 +517,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._shown_content = content
         self.text.set_content(*content)
         if has_new_segments:
-            self.video.set_cue_track(build_cue_track(entry.segments))
+            self.video.set_cue_track(build_cue_track(entry.segments, self._is_vertical))
 
         modes = [PLAIN_TEXT_MODE, SUMMARY_MODE]
         if entry.segments:
@@ -760,7 +769,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._subtitled_translation = subtitled
         language, segments = subtitled
         self.video.set_translation_track(
-            build_cue_track(list(segments)) if segments else None,
+            build_cue_track(list(segments), self._is_vertical) if segments else None,
             language_name(language) if language else "",
         )
         # The buttons of the subtitles are shown once the video has some
@@ -1049,6 +1058,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             )
             return
 
+        if info.is_portrait:
+            self._set_vertical()
+
         if info.has_video:
             try:
                 self.video.open(media_path)
@@ -1061,6 +1073,21 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 )
 
         self.player.load(samples, PLAYBACK_SAMPLE_RATE, is_video=self.layout.has_video)
+
+    def _set_vertical(self) -> None:
+        """Splits the subtitles again for a vertical video."""
+        self._is_vertical = True
+        self.refresh_subtitles()
+
+    def refresh_subtitles(self) -> None:
+        """
+        Splits the subtitles of the video and of its translation again, e.g. after
+        the user changes their size.
+        """
+        self._shown_content = None
+        self._show_content()
+        self._subtitled_translation = ("", ())
+        self._refresh_translation_subtitles()
 
     # PLAYBACK
 

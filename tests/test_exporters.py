@@ -4,8 +4,10 @@ from pathlib import Path
 import pytest
 from docx import Document
 
+from models.config.config_subtitles import ConfigSubtitles
 from models.summary import Chapter, TranscriptSummary
-from models.transcript_segment import TranscriptSegment
+from models.transcript_segment import TranscriptSegment, TranscriptWord
+from utils.config_manager import ConfigManager
 from utils.exporters import (
     ExportDocument,
     Paragraph,
@@ -39,6 +41,55 @@ def test_srt(tmp_path: Path) -> None:
         "1\n00:00:00,000 --> 00:00:01,500\nHello.\n\n"
         "2\n01:01:01,250 --> 01:01:02,000\n[SPEAKER_01]: Bye.\n"
     )
+
+
+def test_srt_splits_long_segments_as_configured(tmp_path: Path) -> None:
+    section = ConfigSubtitles.Key.SECTION
+    ConfigManager.modify_value(section, ConfigSubtitles.Key.MAX_LINE_WIDTH, "10")
+    ConfigManager.modify_value(section, ConfigSubtitles.Key.MAX_LINE_COUNT, "2")
+    words = tuple(
+        TranscriptWord(float(idx), idx + 0.5, word)
+        for idx, word in enumerate(
+            ["I", "just", "heard", "it", "drop", "over", "there"]
+        )
+    )
+    segment = TranscriptSegment(
+        0.0, 7.0, "I just heard it drop over there", "SPEAKER_00", words
+    )
+
+    content = export(tmp_path / "talk", "srt", document(segments=[segment]))
+
+    # The speaker doesn't count in the width, and starts the first subtitle
+    assert content.read_text(encoding="utf-8") == (
+        "1\n00:00:00,000 --> 00:00:04,000\n[SPEAKER_00]: I just\nheard it\n\n"
+        "2\n00:00:04,000 --> 00:00:07,000\ndrop over\nthere\n"
+    )
+
+
+def test_vertical_videos_and_wide_scripts_have_narrower_subtitles(
+    tmp_path: Path,
+) -> None:
+    section = ConfigSubtitles.Key.SECTION
+    ConfigManager.modify_value(section, ConfigSubtitles.Key.MAX_LINE_COUNT, "1")
+    ConfigManager.modify_value(
+        section, ConfigSubtitles.Key.MAX_LINE_COUNT_VERTICAL, "1"
+    )
+    ConfigManager.modify_value(section, ConfigSubtitles.Key.MAX_LINE_WIDTH_CJK, "4")
+    latin = [TranscriptSegment(0.0, 2.0, "Nice to meet you all.")]
+    chinese = [TranscriptSegment(0.0, 2.0, "很高兴认识大家。")]
+
+    def cues(segments: list[TranscriptSegment], is_vertical: bool) -> list[str]:
+        document_ = document(segments=segments, is_vertical=is_vertical)
+        content = export(tmp_path / "talk", "srt", document_).read_text("utf-8")
+        return [block.split("\n")[2] for block in content.split("\n\n")]
+
+    assert cues(latin, is_vertical=False) == ["Nice to meet you all."]
+    # 24 characters by default
+    ConfigManager.modify_value(
+        section, ConfigSubtitles.Key.MAX_LINE_WIDTH_VERTICAL, "12"
+    )
+    assert cues(latin, is_vertical=True) == ["Nice to meet", "you all."]
+    assert cues(chinese, is_vertical=False) == ["很高兴认", "识大家。"]
 
 
 def test_vtt(tmp_path: Path) -> None:

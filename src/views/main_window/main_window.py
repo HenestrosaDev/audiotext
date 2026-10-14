@@ -667,6 +667,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             on_ai_change=self._refresh_shown_entry,
             on_check_for_updates=self.check_for_updates,
             on_date_format_change=self._on_date_format_change,
+            on_subtitles_change=self._on_subtitles_change,
         )
 
     def _refresh_shown_entry(self) -> None:
@@ -676,6 +677,10 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def _on_date_format_change(self) -> None:
         self.sidebar.refresh()
         self._refresh_shown_entry()
+
+    def _on_subtitles_change(self) -> None:
+        if isinstance(self._entry_view, TranscriptView):
+            self._entry_view.refresh_subtitles()
 
     def set_api_key(self, env_key: EnvKeys) -> None:
         """Asks for an API key, e.g. the one of the provider of the summaries."""

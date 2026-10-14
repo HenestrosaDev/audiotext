@@ -65,6 +65,16 @@ def probe_media(path: Path) -> MediaInfo:
         raise OSError(str(e)) from e
 
 
+def is_vertical_video(path: Path | None) -> bool:
+    """Whether the file is a video taller than it's wide. False if it can't be read."""
+    if path is None or not path.is_file():
+        return False
+    try:
+        return probe_media(path).is_portrait
+    except OSError:
+        return False
+
+
 def load_audio_samples(
     path: Path, sample_rate: int = PLAYBACK_SAMPLE_RATE
 ) -> np.ndarray:
