@@ -627,6 +627,16 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         if ranges := self._flagged_ranges(text):
             self.tbx_transcript.see(ranges[0][0])
 
+    def is_flagged_visible(self, text: FlaggedText) -> bool:
+        """Whether a low confidence text is shown, in the visible part of the text."""
+        textbox = self.tbx_transcript
+        if self._mode != TRANSCRIPT_MODE or not textbox.winfo_ismapped():
+            return False
+        return any(
+            textbox._textbox.bbox(start) is not None
+            for start, _end in self._flagged_ranges(text)
+        )
+
     def _apply_flagged(self) -> None:
         textbox = self.tbx_transcript
         for tag in ("low_confidence", "current_low_confidence"):

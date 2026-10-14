@@ -2688,3 +2688,115 @@ def test_a_clip_pauses_at_its_end_unless_the_user_takes_over(ui: Ui) -> None:
     finally:
         bar._player = None
         bar.destroy()
+
+
+def test_return_only_accepts_a_visible_word(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Long enough to scroll the word away
+    filler = [
+        TranscriptSegment(10.0 + idx, 10.5 + idx, f"Line {idx}.") for idx in range(80)
+    ]
+    entry = ui.add(segments=[*review_segments()[:1], *filler], text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    monkeypatch.setattr(view.player, "play_clip", lambda *_clip: None)
+    view.go_to_low_confidence(1)
+    ui.pump()
+
+    view.text.tbx_transcript._textbox.yview_moveto(1.0)
+    ui.pump()
+    assert not view.text.is_flagged_visible(view._current_flagged)
+    # The first Return shows the word, without accepting it
+    press_return(ui, view)
+    assert view.review_bar.review.remaining == 1
+    assert view.text.is_flagged_visible(view._current_flagged)
+    press_return(ui, view)
+    assert view.review_bar.review.remaining == 0
+
+
+def test_undoing_goes_back_to_the_word_and_plays_it(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    clips: list[tuple[float, float]] = []
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+
+    view.go_to_low_confidence(1)
+    view.accept_current()
+    # It went on to the next one
+    assert current_text(view) == "Nice to meet you."
+    assert view.undo_review()
+    assert current_text(view) == "wisper"
+    assert clips == [(-1.0, 2.5), (0.0, 4.5), (-1.0, 2.5)]
+
+
+def test_replacing_from_the_find_window_reviews_quietly(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    clips: list[tuple[float, float]] = []
+    focuses: list[None] = []
+    view.go_to_low_confidence(1)
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+    monkeypatch.setattr(view.text, "focus_text", lambda: focuses.append(None))
+
+    # Replacing the word gone to is a review: it can be undone
+    view.text.search("wisper")
+    view._replace_current("Whisper")
+    ui.pump()
+    assert view.review_bar.review.remaining == 2
+    assert current_text(view) == "Nice to meet you."
+    assert view.review_bar.btn_undo.grid_info()
+    # But the window to find keeps the focus, and the audio isn't played
+    assert (clips, focuses) == ([], [])
+    assert view.undo_review()
+    assert current_text(view) == "wisper"
+
+    # Replacing a text everywhere isn't, even if it corrects the word gone to
+    clips.clear()
+    view._replace_all("wisper", "Whisper", False)
+    ui.pump()
+    # The word, and the segment scored whole that says it
+    assert view.review_bar.review.remaining == 1
+    assert current_text(view) == "Nice to meet you."
+    assert not view.review_bar.btn_undo.grid_info()
+    assert not view.undo_review()
+    assert clips == []
+
+
+def test_a_word_no_longer_flagged_cant_be_accepted(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    view.go_to_low_confidence(1)
+    assert current_text(view) == "wisper"
+
+    # Its score (0.3) is no longer below the threshold, unlike the others
+    view._set_low_confidence_threshold(25)
+    assert current_text(view) is None
+    press_return(ui, view)
+    review = view.review_bar.review
+    assert (review.remaining, review.total) == (2, 2)
+    assert not view.accept_current()
+
+
+def test_closing_the_app_writes_the_pending_reviews() -> None:
+    from types import SimpleNamespace
+    from unittest.mock import MagicMock
+
+    from app import App
+
+    # Command + Q and the Quit item of the menu close it the same way
+    app = SimpleNamespace(
+        _history_store=MagicMock(),
+        _save_window_state_job=None,
+        _save_window_state=MagicMock(),
+        destroy=MagicMock(),
+    )
+
+    App._on_close(app)  # type: ignore[arg-type]
+
+    app._history_store.flush.assert_called_once()
+    app.destroy.assert_called_once()

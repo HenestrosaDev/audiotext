@@ -136,6 +136,9 @@ def transcript_parts(
     return split_segments(segments, *line_limits(config, segments, is_vertical))
 
 
+# The corrections made in the window to find and replace
+REPLACE_ONE = "one"
+REPLACE_ALL = "all"
 # The moment played before and after a low confidence word when it's gone to, so
 # it's heard in its context
 AUTO_PLAY_BEFORE_SECONDS = 1.5
@@ -278,6 +281,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._current_flagged: FlaggedText | None = None
         self._undo: UndoStep | None = None
         self._review_save_after_id: str | None = None
+        # The correction being made in the window to find and replace, if any
+        self._find_edit: str | None = None
         self._find_dialog: FindDialog | None = None
         self._subtitles_variable: tk.BooleanVar | None = None
 
@@ -841,13 +846,18 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if text is not None:
             self._go_to_flagged(text)
 
-    def _go_to_flagged(self, text: FlaggedText) -> None:
+    def _go_to_flagged(self, text: FlaggedText, is_quiet: bool = False) -> None:
         """
         Shows a low confidence text, which Return accepts, and plays it if the
         user chose to.
+
+        :param is_quiet: Whether to only show it, e.g. after a correction made in
+            the window to find and replace, which keeps the focus and the audio.
         """
         self._current_flagged = text
         self.text.show_flagged(text)
+        if is_quiet:
+            return
         self.text.focus_text()
         if self._config_system.review_auto_play:
             self.player.play_clip(
@@ -860,13 +870,18 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def accept_current(self) -> bool:
         """
         Accepts the low confidence text gone to as it is, and goes to the next one.
-        Without one, it does nothing: it never accepts a text the user hasn't seen.
+        Without one, it does nothing, and if it's not visible (e.g. the user
+        scrolled away), it's only shown: it never accepts a text the user can't
+        see.
 
-        :return: Whether a text was accepted.
+        :return: Whether the key that accepts it was handled.
         """
         text = self._current_flagged
         if self._mode != TRANSCRIPT_MODE or text is None or text.review is not None:
             return False
+        if not self.text.is_flagged_visible(text):
+            self.text.show_flagged(text)
+            return True
 
         segments = set_review(self._entry.segments, [text], ReviewMark.ACCEPTED)
         self._undo = UndoStep(
@@ -922,9 +937,30 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         before, text = entry.segments, entry.text
         current = self._current_flagged
         super()._update_transcript(segments, change_text)
-        if current is not None and edited_count(segments) > edited_count(before):
+        # Only a correction of that text, and not of the whole transcription
+        # (replacing a text everywhere), which isn't a review
+        if (
+            current is not None
+            and self._find_edit != REPLACE_ALL
+            and edited_count(segments) > edited_count(before)
+            and current.key not in {other.key for other in self._review.unreviewed}
+        ):
             self._undo = UndoStep(before, text, segments, current, is_accept=False)
             self._refresh_review_bar()
+
+    def _replace_current(self, replacement: str) -> None:
+        self._find_edit = REPLACE_ONE
+        try:
+            super()._replace_current(replacement)
+        finally:
+            self._find_edit = None
+
+    def _replace_all(self, find: str, replacement: str, match_case: bool) -> None:
+        self._find_edit = REPLACE_ALL
+        try:
+            super()._replace_all(find, replacement, match_case)
+        finally:
+            self._find_edit = None
 
     def _schedule_review_save(self) -> None:
         if self._review_save_after_id is None:
@@ -1001,7 +1037,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             and previous is not None
             and (text := step_to(self._review.unreviewed, previous, 0, 1))
         ):
-            self._go_to_flagged(text)
+            self._go_to_flagged(text, is_quiet=self._find_edit is not None)
 
     def _refresh_review_bar(self) -> None:
         undo = self._undo
