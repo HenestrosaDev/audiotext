@@ -781,6 +781,43 @@ def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(
 
 
 def test_the_dialog_to_translate_asks_for_the_key_of_the_provider(ui: Ui) -> None:
+    from utils.env_keys import EnvKeys
+    from views.transcript.translation_panel import TranslateDialog
+
+    asked: list[EnvKeys] = []
+    dialog = TranslateDialog(
+        ui.window,
+        source_language="en",
+        on_set_api_key=asked.append,
+        on_settings=lambda: None,
+    )
+    ui.pump()
+    dialog.omn_provider.set("DeepL")
+    dialog._refresh()
+    ui.pump()
+    assert dialog.btn_ok.cget("state") == "disabled"
+    assert dialog.lbl_key.cget("text") == "No API key for DeepL."
+    # The button to set it is next to the warning
+    assert dialog.btn_key.winfo_ismapped()
+    assert abs(dialog.btn_key.winfo_y() - dialog.lbl_key.winfo_y()) < 4
+    dialog._set_api_key()
+    assert asked == [EnvKeys.DEEPL_API_KEY]
+
+    dialog.omn_provider.set("Ollama (local)")
+    dialog._refresh()
+    ui.pump()
+    assert dialog.btn_ok.cget("state") == "normal"
+    assert not dialog.frm_key.winfo_ismapped()
+    assert dialog.lbl_hint.cget("text") == "Uses the model llama3.2."
+    dialog._ok()
+    assert dialog._result is not None
+    assert dialog._result.provider == "ollama"
+    # The interface is in English, as is the transcription
+    assert dialog._result.language == "es"
+    ui.pump()
+
+
+def test_the_dialog_to_translate_explains_each_provider(ui: Ui) -> None:
     from views.transcript.translation_panel import TranslateDialog
 
     dialog = TranslateDialog(
@@ -789,20 +826,50 @@ def test_the_dialog_to_translate_asks_for_the_key_of_the_provider(ui: Ui) -> Non
         on_set_api_key=lambda _key: None,
         on_settings=lambda: None,
     )
-    ui.pump()
-    dialog.omn_provider.set("DeepL")
-    dialog._refresh()
-    assert dialog.btn_ok.cget("state") == "disabled"
+    heights = []
+    hints = {}
+    # Without a key, with one (it runs locally), and translated by the user
+    for label in ("DeepL", "Ollama (local)", "Manual", "DeepL"):
+        dialog.omn_provider.set(label)
+        dialog._refresh()
+        ui.pump()
+        heights.append(dialog.winfo_height())
+        hints[label] = dialog.lbl_hint.cget("text")
 
-    dialog.omn_provider.set("Ollama (local)")
-    dialog._refresh()
-    assert dialog.btn_ok.cget("state") == "normal"
-    dialog._ok()
-    assert dialog._result is not None
-    assert dialog._result.provider == "ollama"
-    # The interface is in English, as is the transcription
-    assert dialog._result.language == "es"
+    assert hints["Manual"] == (
+        "Creates empty segments with the original timestamps for you to fill in."
+    )
+    # The dialog keeps its size when the provider changes
+    assert len(set(heights)) == 1
+    dialog._close()
     ui.pump()
+
+
+def test_the_button_of_the_key_is_shorter_if_its_warning_doesnt_fit(ui: Ui) -> None:
+    from views.transcript.translation_panel import TranslateDialog
+
+    def open_dialog() -> TranslateDialog:
+        dialog = TranslateDialog(
+            ui.window,
+            source_language="en",
+            on_set_api_key=lambda _key: None,
+            on_settings=lambda: None,
+        )
+        dialog.omn_provider.set(dialog._providers.label("deepl"))
+        dialog._refresh()
+        ui.pump()
+        return dialog
+
+    dialog = open_dialog()
+    assert dialog.btn_key.cget("text") == "Set API key…"
+    dialog._close()
+    # "API-Schlüssel festlegen…" leaves too little room for the warning
+    with interface_language(ui, "de"):
+        dialog = open_dialog()
+        assert dialog.btn_key.cget("text") == "Festlegen…"
+        # The warning isn't taller than the hints of the other providers
+        assert dialog.lbl_key.winfo_height() <= 30
+        dialog._close()
 
 
 def test_the_languages_are_searched_in_a_dropdown_of_the_window(
