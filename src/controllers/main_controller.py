@@ -1,6 +1,7 @@
 import dataclasses
 import functools
 import logging
+import os
 import tempfile
 import threading
 import time
@@ -32,8 +33,11 @@ from utils.time_format import format_elapsed_time
 
 logger = logging.getLogger(__name__)
 
-MIC_RECORDING_PATH = Path(tempfile.gettempdir()) / "audiotext-mic-output.wav"
-URL_DOWNLOAD_PATH = Path(tempfile.gettempdir()) / "audiotext-url-download"
+# Named after the process, so several instances (e.g. the app and the command
+# line) don't overwrite the files of each other
+TEMP_DIR = Path(tempfile.gettempdir())
+MIC_RECORDING_PATH = TEMP_DIR / f"audiotext-mic-output-{os.getpid()}.wav"
+URL_DOWNLOAD_PATH = TEMP_DIR / f"audiotext-url-download-{os.getpid()}"
 
 
 class MainController:
@@ -288,8 +292,7 @@ class MainController:
         on_progress(_("Isolating the speech…"), None)
         isolated_path = au.isolate_speech(
             transcription.audio_source_path,
-            Path(tempfile.gettempdir())
-            / f"audiotext-speech-{threading.get_ident()}.wav",
+            TEMP_DIR / f"audiotext-speech-{os.getpid()}-{threading.get_ident()}.wav",
         )
 
         try:
