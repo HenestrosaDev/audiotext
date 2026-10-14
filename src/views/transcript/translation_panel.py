@@ -64,6 +64,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         on_segment_click: Callable[[int], None],
         on_segment_menu: Callable[[Any, int], str | None],
         on_text_edit: Callable[[str], None],
+        on_scroll: Callable[[], None],
         on_search: Callable[[], None],
         on_copy: Callable[[], None],
         on_export: Callable[[Any], None],
@@ -78,6 +79,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         :param on_segment_menu: Called with the event and the index of a segment
                                 of the translation that is right-clicked.
         :param on_text_edit: Called with the plain text after the user edits it.
+        :param on_scroll: Called when the user scrolls the translation.
         :param on_search: Called to find and replace in the translation.
         :param on_export: Called with the button below which the formats to
                           export it are shown.
@@ -180,6 +182,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             on_segment_click=on_segment_click,
             on_segment_menu=on_segment_menu,
             on_text_edit=on_text_edit,
+            on_scroll=on_scroll,
             # The transcript on its left already explains it
             show_usage_hints=False,
             empty_segment_text=L_("Not translated yet"),
