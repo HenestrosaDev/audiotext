@@ -8,6 +8,7 @@ import customtkinter as ctk
 from utils.i18n import _
 from utils.time_format import format_subtitle_time, parse_segment_time
 from views.style import theme
+from views.widgets.window import place_dialog
 
 
 @dataclass(frozen=True)
@@ -21,6 +22,8 @@ class _Dialog(ctk.CTkToplevel):  # type: ignore[misc]
 
     def __init__(self, master: Any, title: str, ok_text: str) -> None:
         super().__init__(master)
+        # Shown by `place_dialog` once it's built, already in its place
+        self.withdraw()
         self.title(title)
         self.resizable(False, False)
         self.transient(master.winfo_toplevel())
@@ -64,6 +67,7 @@ class _Dialog(ctk.CTkToplevel):  # type: ignore[misc]
         self.destroy()
 
     def wait(self) -> None:
+        place_dialog(self, self.master)
         self.master.wait_window(self)
 
 
