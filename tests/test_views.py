@@ -24,6 +24,7 @@ import utils.constants as c
 import utils.env_keys as env_keys
 import utils.i18n as i18n
 import utils.update_checker as update_checker
+import views.transcript.corrections as corrections
 from controllers.transcription_queue import Job
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
@@ -374,7 +375,6 @@ def test_the_sections_and_folders_of_the_sidebar_are_folded_in_place(
 def test_the_transcript_can_be_searched_and_corrected(
     ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import views.transcript.corrections as corrections
 
     entry = ui.add(segments=SEGMENTS, text=TEXT, media_path=str(audio_file))
     ui.window.select_entry(entry.id)
@@ -418,12 +418,12 @@ def test_the_transcript_can_be_searched_and_corrected(
     monkeypatch.setattr(
         corrections.SpeakersDialog, "get_result", lambda _self: {"SPEAKER_00": "Ana"}
     )
-    view._rename_speakers()
+    view.transcript_editor.rename_speakers()
     ui.pump()
     assert entry.text.startswith("[Ana]: Hello Whisper")
 
     monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "Hi there")
-    view._edit_segment(0)
+    view.transcript_editor.edit_text(0)
     ui.pump()
     assert entry.segments[0].text == "Hi there"
     assert entry.text.startswith("[Ana]: Hi there")
@@ -604,8 +604,8 @@ def test_a_transcription_has_a_translation_into_each_language(
     ui.pump()
     assert "Encantado." in shown.get("1.0", "end")
     # The segments of the translation shown are the ones edited
-    monkeypatch.setattr(transcript_view.TextDialog, "get_input", lambda _self: "Chao")
-    view._edit_translation_segment(2)
+    monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "Chao")
+    view.translation_editor.edit_text(2)
     ui.pump()
     edited = entry.get_translation("es")
     assert edited is not None
@@ -633,7 +633,6 @@ def test_a_transcription_has_a_translation_into_each_language(
 
 
 def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> None:
-    import views.transcript.transcript_view as transcript_view
     from models.translation import TranscriptTranslation
 
     translation = TranscriptTranslation(
@@ -654,9 +653,9 @@ def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) ->
 
     # A segment, whose change follows to the text
     monkeypatch.setattr(
-        transcript_view.TextDialog, "get_input", lambda _self: "Hola Whisper"
+        corrections.TextDialog, "get_input", lambda _self: "Hola Whisper"
     )
-    view._edit_translation_segment(0)
+    view.translation_editor.edit_text(0)
     ui.pump()
     edited = entry.get_translation("es")
     assert edited is not None
@@ -680,7 +679,7 @@ def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) ->
     assert edited.text == "Hola a todos"
     assert edited.is_text_edited
 
-    view._edit_translation_segment(1)
+    view.translation_editor.edit_text(1)
     ui.pump()
     edited = entry.get_translation("es")
     assert edited is not None
@@ -724,8 +723,8 @@ def test_a_transcription_can_be_translated_from_scratch(
     assert "Click a segment" not in hint
     assert panel.text.lbl_hint.winfo_ismapped()
 
-    monkeypatch.setattr(transcript_view.TextDialog, "get_input", lambda _self: "Adiós")
-    view._edit_translation_segment(2)
+    monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "Adiós")
+    view.translation_editor.edit_text(2)
     ui.pump()
     translation = entry.get_translation("es")
     assert translation is not None
@@ -772,7 +771,6 @@ def test_a_translation_from_scratch_has_the_timestamps_of_the_subtitles(
 def test_the_segments_of_a_translation_have_their_own_timing(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import views.transcript.transcript_view as transcript_view
     from models.translation import TranscriptTranslation
     from views.transcript.edit_dialogs import Timing
 
@@ -800,9 +798,9 @@ def test_the_segments_of_a_translation_have_their_own_timing(
 
     # Its timing changes, keeping the segments sorted by their start
     monkeypatch.setattr(
-        transcript_view.TimingDialog, "get_result", lambda _self: Timing(4.0, 6.0)
+        corrections.TimingDialog, "get_result", lambda _self: Timing(4.0, 6.0)
     )
-    view._edit_translation_timing(0)
+    view.translation_editor.edit_timing(0)
     ui.pump()
     assert [(s.start, s.end, s.text) for s in segments()] == [
         (1.5, 3.0, "Encantado."),
@@ -825,10 +823,10 @@ def test_the_segments_of_a_translation_have_their_own_timing(
         return "¿Qué tal?"
 
     monkeypatch.setattr(
-        transcript_view.TimingDialog, "get_result", lambda _self: Timing(0.5, 1.4)
+        corrections.TimingDialog, "get_result", lambda _self: Timing(0.5, 1.4)
     )
-    monkeypatch.setattr(transcript_view.TextDialog, "get_input", type_text)
-    view._add_translation_segment(0)
+    monkeypatch.setattr(corrections.TextDialog, "get_input", type_text)
+    view.translation_editor.add_after(0)
     ui.pump()
     assert segments()[0] == TranscriptSegment(0.5, 1.4, "¿Qué tal?", "SPEAKER_01")
     assert "Hello wisper" in messages[0]
@@ -837,8 +835,8 @@ def test_the_segments_of_a_translation_have_their_own_timing(
     assert edited.text.startswith("[SPEAKER_01]: ¿Qué tal? Encantado.")
 
     # A segment is deleted, once confirmed
-    monkeypatch.setattr(transcript_view.messagebox, "askyesno", lambda *_a, **_k: True)
-    view._delete_translation_segment(0)
+    monkeypatch.setattr(corrections.messagebox, "askyesno", lambda *_a, **_k: True)
+    view.translation_editor.delete(0)
     ui.pump()
     assert len(segments()) == 3
     assert "¿Qué tal?" not in segments()
@@ -847,7 +845,6 @@ def test_the_segments_of_a_translation_have_their_own_timing(
 def test_the_transcript_is_shown_as_subtitles(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import views.transcript.corrections as corrections
 
     ConfigManager.modify_value(
         ConfigSubtitles.Key.SECTION, ConfigSubtitles.Key.MAX_LINE_WIDTH, "10"
@@ -872,7 +869,7 @@ def test_the_transcript_is_shown_as_subtitles(
         idx for idx, part in enumerate(view._parts) if part.segment.text == "meet you."
     )
     monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "you all.")
-    view._edit_segment(meet_you)
+    view.transcript_editor.edit_text(meet_you)
     ui.pump()
     assert entry.segments[1].text == "Nice to you all."
 
@@ -1028,7 +1025,6 @@ def test_icon_buttons_show_what_they_do_on_hover(ui: Ui) -> None:
 def test_the_parts_of_the_translation_are_changed_on_their_own(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import views.transcript.transcript_view as transcript_view
     from models.translation import TranscriptTranslation
     from views.transcript.edit_dialogs import Timing
 
@@ -1062,17 +1058,17 @@ def test_the_parts_of_the_translation_are_changed_on_their_own(
     assert "00:00:03,500 – 00:00:05,000   SPEAKER_00\n" in panel_text.get("1.0", "end")
 
     # The text of a part is edited, keeping the rest of its segment
-    monkeypatch.setattr(transcript_view.TextDialog, "get_input", lambda _self: "Feliz")
-    view._edit_translation_segment(2)
+    monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "Feliz")
+    view.translation_editor.edit_text(2)
     ui.pump()
     assert segments()[1][2] == "Feliz de conocerte."
     assert segments()[1][:2] == (1.5, 3.0)
 
     # Changing the timing of a part makes it a segment of its own
     monkeypatch.setattr(
-        transcript_view.TimingDialog, "get_result", lambda _self: Timing(0.6, 0.9)
+        corrections.TimingDialog, "get_result", lambda _self: Timing(0.6, 0.9)
     )
-    view._edit_translation_timing(1)
+    view.translation_editor.edit_timing(1)
     ui.pump()
     assert [text for _start, _end, text in segments()] == [
         "Hola",
@@ -1084,8 +1080,8 @@ def test_the_parts_of_the_translation_are_changed_on_their_own(
     assert segments()[0][0] == 0.0
 
     # Deleting a part only deletes it
-    monkeypatch.setattr(transcript_view.messagebox, "askyesno", lambda *_a, **_k: True)
-    view._delete_translation_segment(0)
+    monkeypatch.setattr(corrections.messagebox, "askyesno", lambda *_a, **_k: True)
+    view.translation_editor.delete(0)
     ui.pump()
     assert [text for _start, _end, text in segments()] == [
         "wisper",
@@ -1337,7 +1333,7 @@ def test_return_accepts_the_word_gone_to_and_goes_to_the_next(
     # The last one ends the review, without going around
     assert status.cget("text") == "All reviewed · 3 of 3"
     assert current_text(view) is None
-    assert view._current_flagged is None
+    assert view.reviewer.current is None
     press_return(ui, view)
     assert status.cget("text") == "All reviewed · 3 of 3"
 
@@ -1381,18 +1377,18 @@ def test_reviewing_many_words_writes_once_and_doesnt_render_again(
 
     view.go_to_low_confidence(1)
     for _idx in range(3):
-        assert view.accept_current()
+        assert view.reviewer.accept_current()
     ui.pump()
 
     assert renders == []
     # Written a moment later, once
     assert saves == []
-    view._save_reviews()
+    view.reviewer.save_reviews()
     assert len(saves) == 1
 
     # Showing another transcription writes the pending reviews
     view.go_to_low_confidence(1)
-    view._review_again()
+    view.reviewer.review_again()
     ui.window.select_entry(ui.add(segments=SEGMENTS, text=TEXT).id)
     ui.pump()
     assert len(saves) == 2
@@ -1410,15 +1406,15 @@ def test_the_last_review_can_be_undone(ui: Ui, monkeypatch: pytest.MonkeyPatch) 
 
     view.go_to_low_confidence(1)
     assert not bar.btn_undo.grid_info()
-    view.accept_current()
+    view.reviewer.accept_current()
     assert bar.btn_undo.grid_info()
-    assert view.undo_review()
+    assert view.reviewer.undo()
     assert bar.lbl_status.cget("text") == "3 of 3 to review"
     assert current_text(view) == "wisper"
-    assert not view.undo_review()
+    assert not view.reviewer.undo()
 
     # Correcting the word gone to reviews it, and goes to the next one
-    view._update_transcript(
+    view.transcript_editor.update(
         edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
     )
     ui.pump()
@@ -1427,7 +1423,7 @@ def test_the_last_review_can_be_undone(ui: Ui, monkeypatch: pytest.MonkeyPatch) 
     assert bar.lbl_status.cget("text") == "2 of 3 to review"
     assert current_text(view) == "Nice to meet you."
     # Undoing it brings back the word with its score, not reviewed
-    assert view.undo_review()
+    assert view.reviewer.undo()
     assert view._entry.segments[0].words[1] == words_of_review()[1]
     assert current_text(view) == "wisper"
 
@@ -1442,12 +1438,12 @@ def test_reviewing_again_keeps_the_corrected_words(
     from utils.transcript_editing import edit_segment
 
     view = open_review(ui, monkeypatch)
-    view._update_transcript(
+    view.transcript_editor.update(
         edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
     )
     view.go_to_low_confidence(1)
-    view.accept_current()
-    view.accept_current()
+    view.reviewer.accept_current()
+    view.reviewer.accept_current()
     ui.pump()
     bar = view.review_bar
     assert bar.lbl_status.cget("text") == "All reviewed · 3 of 3"
@@ -1545,7 +1541,7 @@ def test_the_remaining_words_can_be_accepted_at_once(
     view = open_review(ui, monkeypatch)
     bar = view.review_bar
     # One corrected, which stays as it is
-    view._update_transcript(
+    view.transcript_editor.update(
         edit_segment(view._entry.segments, 0, "Hello Whisper"), lambda text: text
     )
     assert bar.btn_accept_remaining.grid_info()
@@ -1561,7 +1557,7 @@ def test_the_remaining_words_can_be_accepted_at_once(
     assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
 
     # Undone at once too, back to the first of them
-    assert view.undo_review()
+    assert view.reviewer.undo()
     assert bar.lbl_status.cget("text") == "2 of 3 to review"
     assert current_text(view) == "Nice to meet you."
 
@@ -1625,7 +1621,9 @@ def test_the_review_bar_shows_the_state_of_the_review(ui: Ui) -> None:
     # The reviewed words are no longer highlighted
     view._actions.transcript.update_transcript(
         entry.id,
-        set_review(view._entry.segments, view._review.flagged, ReviewMark.ACCEPTED),
+        set_review(
+            view._entry.segments, view.reviewer.review.flagged, ReviewMark.ACCEPTED
+        ),
         TEXT,
     )
     ui.pump()
@@ -2411,7 +2409,6 @@ def test_the_shortcuts_act_on_the_text_being_worked_on(
 def test_the_texts_are_generated_again_from_their_headers(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    import views.transcript.transcript_view as transcript_view
     from models.translation import TranscriptTranslation
     from views.transcript.transcript_view import TranscriptView
 
@@ -2441,7 +2438,7 @@ def test_the_texts_are_generated_again_from_their_headers(
     # Each one only after confirming it, since the current one is replaced
     answers = iter([False, True] * 3)
     monkeypatch.setattr(
-        transcript_view.messagebox, "askyesno", lambda *_a, **_k: next(answers)
+        corrections.messagebox, "askyesno", lambda *_a, **_k: next(answers)
     )
 
     assert panel.btn_regenerate.cget("state") == ctk.NORMAL
@@ -2758,11 +2755,11 @@ def test_return_only_accepts_a_visible_word(
 
     view.text.tbx_transcript._textbox.yview_moveto(1.0)
     ui.pump()
-    assert not view.text.is_flagged_visible(view._current_flagged)
+    assert not view.text.is_flagged_visible(view.reviewer.current)
     # The first Return shows the word, without accepting it
     press_return(ui, view)
     assert view.review_bar.review.remaining == 1
-    assert view.text.is_flagged_visible(view._current_flagged)
+    assert view.text.is_flagged_visible(view.reviewer.current)
     press_return(ui, view)
     assert view.review_bar.review.remaining == 0
 
@@ -2775,10 +2772,10 @@ def test_undoing_goes_back_to_the_word_and_plays_it(
     monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
 
     view.go_to_low_confidence(1)
-    view.accept_current()
+    view.reviewer.accept_current()
     # It went on to the next one
     assert current_text(view) == "Nice to meet you."
-    assert view.undo_review()
+    assert view.reviewer.undo()
     assert current_text(view) == "wisper"
     assert clips == [(-1.0, 2.5), (0.0, 4.5), (-1.0, 2.5)]
 
@@ -2802,7 +2799,7 @@ def test_replacing_from_the_find_window_reviews_quietly(
     assert view.review_bar.btn_undo.grid_info()
     # But the window to find keeps the focus, and the audio isn't played
     assert (clips, focuses) == ([], [])
-    assert view.undo_review()
+    assert view.reviewer.undo()
     assert current_text(view) == "wisper"
 
     # Replacing a text everywhere isn't, even if it corrects the word gone to
@@ -2813,7 +2810,7 @@ def test_replacing_from_the_find_window_reviews_quietly(
     assert view.review_bar.review.remaining == 1
     assert current_text(view) == "Nice to meet you."
     assert not view.review_bar.btn_undo.grid_info()
-    assert not view.undo_review()
+    assert not view.reviewer.undo()
     assert clips == []
 
 
@@ -2830,7 +2827,7 @@ def test_a_word_no_longer_flagged_cant_be_accepted(
     press_return(ui, view)
     review = view.review_bar.review
     assert (review.remaining, review.total) == (2, 2)
-    assert not view.accept_current()
+    assert not view.reviewer.accept_current()
 
 
 def test_closing_the_app_writes_the_pending_reviews() -> None:
@@ -2885,20 +2882,20 @@ def test_only_the_segments_with_words_to_review_can_be_shown(
 
     bar.chk_only_flagged.toggle()
     view.go_to_low_confidence(1)
-    view.accept_current()
+    view.reviewer.accept_current()
     # The segment just reviewed stays, until the user moves on
     assert shown_texts(view) == all_texts
     assert current_text(view) == "Nice to meet you."
-    view.accept_current()
+    view.reviewer.accept_current()
     assert shown_texts(view) == ["Nice to meet you.", "Bye wisper."]
     view.go_to_low_confidence(1)
     assert shown_texts(view) == ["Bye wisper."]
 
     # None left
-    view.accept_current()
+    view.reviewer.accept_current()
     assert shown_texts(view) == ["Bye wisper."]
     assert not view.frm_review_empty.winfo_ismapped()
-    view._set_only_flagged(True)
+    view.reviewer.set_only_flagged(True)
     ui.pump()
     assert shown_texts(view) == []
     assert view.frm_review_empty.winfo_ismapped()
@@ -2912,7 +2909,7 @@ def test_only_the_segments_with_words_to_review_can_be_shown(
     assert not bar._only_flagged_variable.get()
 
     # Without words to review, it doesn't hide anything
-    view._set_only_flagged(True)
+    view.reviewer.set_only_flagged(True)
     view._set_low_confidence_threshold(5)
     assert shown_texts(view) == all_texts
     # Filtering doesn't render the transcript again
@@ -2935,14 +2932,14 @@ def test_the_words_to_review_are_marked_on_the_timeline(
         (3.5, MarkKind.PENDING),
     ]
     view.go_to_low_confidence(1)
-    view.accept_current()
+    view.reviewer.accept_current()
     assert marks() == [
         (0.5, MarkKind.DONE),
         (1.5, MarkKind.CURRENT),
         (3.5, MarkKind.PENDING),
     ]
     # Clicking a mark goes to its word
-    view._on_mark_click(2)
+    view.reviewer.on_mark_click(2)
     assert current_text(view) == "Bye wisper."
     assert marks()[2] == (3.5, MarkKind.CURRENT)
     # They follow the threshold
@@ -2996,7 +2993,7 @@ def test_the_marks_are_drawn_by_kind_and_can_be_clicked(ui: Ui) -> None:
 def click_flagged(ui: Ui, view: Any, text: str) -> None:
     """Clicks a low confidence text, which opens its popover."""
     textbox = view.text.tbx_transcript._textbox
-    [flagged] = [t for t in view._review.unreviewed if t.text == text]
+    [flagged] = [t for t in view.reviewer.review.unreviewed if t.text == text]
     start = view.text._flagged_ranges(flagged)[0][0]
     textbox.mark_set(tk.CURRENT, f"{start}+1c")
     view.text._on_click(0)
@@ -3040,7 +3037,7 @@ def test_a_word_can_be_corrected_where_it_is(
     assert current_text(view) == "Nice to meet you."
     assert view.focus_get() is view.text.tbx_transcript._textbox
     # Which can be undone
-    assert view.undo_review()
+    assert view.reviewer.undo()
     assert view._entry.segments[0].text == "Hello wisper"
 
     # Unchanged, Return accepts it
