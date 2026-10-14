@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 10:36+0200\n"
+"POT-Creation-Date: 2026-10-14 10:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -279,7 +279,7 @@ msgstr "Nebyl nahrán žádný zvuk."
 #: src/utils/exporters.py:175 src/utils/exporters.py:212
 #: src/views/settings/preferences_dialog.py:504
 #: src/views/transcript/summary_panel.py:189
-#: src/views/transcript/transcript_view.py:465
+#: src/views/transcript/transcript_view.py:508
 msgid "Summary"
 msgstr "Shrnutí"
 
@@ -295,6 +295,7 @@ msgstr "Kapitoly"
 
 #: src/utils/exporters.py:187 src/utils/exporters.py:224
 #: src/views/new_transcription/microphone_view.py:244
+#: src/views/transcript/transcript_view.py:489
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Přepis"
@@ -333,13 +334,14 @@ msgid "{count} failed"
 msgstr "Selhalo: {count}"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1332
+#: src/views/transcript/transcript_view.py:1477
 msgid "Open the folder of the saved files"
 msgstr "Otevřít složku uložených souborů"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:1360
+#: src/views/transcript/transcript_view.py:472
+#: src/views/transcript/transcript_view.py:1439
 msgid "Transcribe again"
 msgstr "Přepsat znovu"
 
@@ -400,7 +402,7 @@ msgstr "Zastavit sledování"
 
 #: src/views/entries/progress_card.py:121
 #: src/views/history/history_sidebar.py:374
-#: src/views/transcript/edit_dialogs.py:46 src/views/widgets/text_dialog.py:60
+#: src/views/transcript/edit_dialogs.py:38 src/views/widgets/text_dialog.py:60
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -557,22 +559,22 @@ msgid "Rename"
 msgstr "Přejmenovat"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1344
+#: src/views/transcript/transcript_view.py:1489
 msgid "Edit note…"
 msgstr "Upravit poznámku…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1344
+#: src/views/transcript/transcript_view.py:1489
 msgid "Add note…"
 msgstr "Přidat poznámku…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1349
+#: src/views/transcript/transcript_view.py:1494
 msgid "Delete note…"
 msgstr "Smazat poznámku…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1355
+#: src/views/transcript/transcript_view.py:1500
 msgid "Edit tag…"
 msgstr "Upravit štítek…"
 
@@ -597,7 +599,7 @@ msgid "Move to group"
 msgstr "Přesunout do skupiny"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1365
+#: src/views/transcript/transcript_view.py:1505
 msgid "Delete…"
 msgstr "Smazat…"
 
@@ -628,7 +630,8 @@ msgid "No files yet"
 msgstr "Zatím žádné soubory"
 
 #: src/views/history/history_sidebar.py:589
-#: src/views/transcript/transcript_view.py:610
+#: src/views/transcript/find_dialog.py:183
+#: src/views/transcript/find_dialog.py:230
 msgid "No results"
 msgstr "Žádné výsledky"
 
@@ -875,10 +878,10 @@ msgstr "Nahrajte sebe nebo schůzku. Nahrávka zůstane ve vaší historii."
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:242
-#: src/views/transcript/transcript_view.py:477
-#: src/views/transcript/transcript_view.py:919
-#: src/views/transcript/transcript_view.py:1288
-#: src/views/transcript/transcript_view.py:1395
+#: src/views/transcript/transcript_view.py:462
+#: src/views/transcript/transcript_view.py:1010
+#: src/views/transcript/transcript_view.py:1422
+#: src/views/transcript/translation_panel.py:145
 msgid "Copy"
 msgstr "Kopírovat"
 
@@ -1180,7 +1183,7 @@ msgstr "Klíče API"
 
 #: src/views/settings/preferences_dialog.py:188
 #: src/views/transcript/player_bar.py:109
-#: src/views/transcript/transcript_view.py:463
+#: src/views/transcript/transcript_view.py:506
 msgid "Subtitles"
 msgstr "Titulky"
 
@@ -1257,14 +1260,14 @@ msgstr "Změnit klíč API…"
 #: src/views/settings/preferences_dialog.py:467
 #: src/views/settings/preferences_dialog.py:480
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:470
-#: src/views/transcript/translation_panel.py:542
+#: src/views/transcript/translation_panel.py:482
+#: src/views/transcript/translation_panel.py:554
 msgid "Set API key…"
 msgstr "Nastavit klíč API…"
 
 #: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:529
-#: src/views/transcript/translation_panel.py:203
+#: src/views/transcript/translation_panel.py:229
 msgid "Translation"
 msgstr "Překlad"
 
@@ -1554,13 +1557,13 @@ msgstr "Jazyk zvuku"
 
 #: src/views/settings/cards/language_card.py:65
 #: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:408
+#: src/views/transcript/translation_panel.py:420
 msgid "Search language…"
 msgstr "Hledat jazyk…"
 
 #: src/views/settings/cards/language_card.py:66
 #: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:409
+#: src/views/transcript/translation_panel.py:421
 msgid "No languages found."
 msgstr "Nebyly nalezeny žádné jazyky."
 
@@ -1735,60 +1738,27 @@ msgstr "Model {model} nevrací časové značky, proto nemůže uložit titulky.
 msgid "Choose where to save the transcriptions"
 msgstr "Vyberte, kam ukládat přepisy"
 
-#: src/views/transcript/corrections.py:81
-msgid "Replaced."
-msgstr "Nahrazeno."
-
-#: src/views/transcript/corrections.py:98
-#: src/views/transcript/transcript_view.py:1016
+#: src/views/transcript/corrections.py:104
+#: src/views/transcript/transcript_view.py:1107
 msgid "Edit text"
 msgstr "Upravit text"
 
-#: src/views/transcript/corrections.py:99
+#: src/views/transcript/corrections.py:105
 #, python-brace-format
 msgid "Text said at {time}:"
 msgstr "Text vyslovený v {time}:"
 
-#: src/views/transcript/edit_dialogs.py:92
-msgid "Find and replace"
-msgstr "Najít a nahradit"
-
-#: src/views/transcript/edit_dialogs.py:92
-msgid "Replace all"
-msgstr "Nahradit vše"
-
-#: src/views/transcript/edit_dialogs.py:101
-msgid "Find:"
-msgstr "Najít:"
-
-#: src/views/transcript/edit_dialogs.py:101
-msgid "Replace with:"
-msgstr "Nahradit za:"
-
-#: src/views/transcript/edit_dialogs.py:113
-msgid "Match case"
-msgstr "Rozlišovat velikost písmen"
-
-#: src/views/transcript/edit_dialogs.py:142
-msgid "1 match"
-msgstr "1 shoda"
-
-#: src/views/transcript/edit_dialogs.py:144
-#, python-brace-format
-msgid "{count} matches"
-msgstr "Shody: {count}"
-
-#: src/views/transcript/edit_dialogs.py:162
+#: src/views/transcript/edit_dialogs.py:74
 msgid "Rename speakers"
 msgstr "Přejmenovat mluvčí"
 
-#: src/views/transcript/edit_dialogs.py:162
-#: src/views/transcript/transcript_view.py:1045
+#: src/views/transcript/edit_dialogs.py:74
+#: src/views/transcript/transcript_view.py:1136
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "Uložit"
 
-#: src/views/transcript/edit_dialogs.py:169
+#: src/views/transcript/edit_dialogs.py:81
 msgid ""
 "Give a name to each speaker. Giving two speakers the same name merges "
 "them."
@@ -1796,21 +1766,67 @@ msgstr ""
 "Pojmenujte každého mluvčího. Pokud dvěma mluvčím dáte stejné jméno, "
 "sloučí se."
 
-#: src/views/transcript/edit_dialogs.py:239
+#: src/views/transcript/edit_dialogs.py:151
 msgid "Start:"
 msgstr "Začátek:"
 
-#: src/views/transcript/edit_dialogs.py:239
+#: src/views/transcript/edit_dialogs.py:151
 msgid "End:"
 msgstr "Konec:"
 
-#: src/views/transcript/edit_dialogs.py:278
+#: src/views/transcript/edit_dialogs.py:190
 msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
 msgstr "Zadejte časy jako 00:01:05,900, 01:05,9 nebo 65.9."
 
-#: src/views/transcript/edit_dialogs.py:280
+#: src/views/transcript/edit_dialogs.py:192
 msgid "The segment must end after it starts."
 msgstr "Segment musí skončit až po svém začátku."
+
+#: src/views/transcript/find_dialog.py:77
+msgid "Find:"
+msgstr "Najít:"
+
+#: src/views/transcript/find_dialog.py:80
+msgid "Replace with:"
+msgstr "Nahradit za:"
+
+#: src/views/transcript/find_dialog.py:90
+msgid "Match case"
+msgstr "Rozlišovat velikost písmen"
+
+#: src/views/transcript/find_dialog.py:105
+msgid "Stay on top"
+msgstr "Vždy navrchu"
+
+#: src/views/transcript/find_dialog.py:110
+msgid "Unpin from the main window"
+msgstr "Nedržet nad hlavním oknem"
+
+#: src/views/transcript/find_dialog.py:112
+msgid "Keep above the main window"
+msgstr "Držet nad hlavním oknem"
+
+#: src/views/transcript/find_dialog.py:123
+msgid "Replace"
+msgstr "Nahradit"
+
+#: src/views/transcript/find_dialog.py:128
+msgid "Replace all"
+msgstr "Nahradit vše"
+
+#: src/views/transcript/find_dialog.py:185
+#: src/views/transcript/find_dialog.py:231
+#, python-brace-format
+msgid "{current} of {total}"
+msgstr "{current} z {total}"
+
+#: src/views/transcript/find_dialog.py:246
+msgid "Previous match"
+msgstr "Předchozí shoda"
+
+#: src/views/transcript/find_dialog.py:253
+msgid "Next match"
+msgstr "Další shoda"
 
 #: src/views/transcript/player_bar.py:127
 msgid "Loading the audio…"
@@ -1822,7 +1838,7 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Mezerník: přehrát/pozastavit · ←/→: {seconds} s zpět/vpřed"
 
 #: src/views/transcript/player_bar.py:257
-#: src/views/transcript/transcript_view.py:1224
+#: src/views/transcript/transcript_view.py:1357
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Zvuk nelze přehrát: {error}"
@@ -1874,21 +1890,21 @@ msgstr "Vygenerovat znovu"
 msgid "Generated by {model} · {date}"
 msgstr "Vygeneroval {model} · {date}"
 
-#: src/views/transcript/transcript_text.py:193
+#: src/views/transcript/transcript_text.py:268
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr ""
 "Kliknutím na segment ho přehrajete. Kliknutím pravým tlačítkem ho "
 "upravíte."
 
-#: src/views/transcript/transcript_text.py:198
+#: src/views/transcript/transcript_text.py:273
 msgid "The plain text has been edited; the transcript keeps the original."
 msgstr "Prostý text byl upraven; přepis s časy zachovává originál."
 
-#: src/views/transcript/transcript_text.py:206
+#: src/views/transcript/transcript_text.py:279
 msgid "You can edit the text. The changes are saved automatically."
 msgstr "Text můžete upravit. Změny se ukládají automaticky."
 
-#: src/views/transcript/transcript_text.py:209
+#: src/views/transcript/transcript_text.py:284
 msgid ""
 "Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
 "transcribe-diarize models of the Whisper API."
@@ -1896,182 +1912,194 @@ msgstr ""
 "Časové značky jsou k dispozici pouze s WhisperX a s modely whisper-1 a "
 "gpt-4o-transcribe-diarize rozhraní Whisper API."
 
-#: src/views/transcript/transcript_text.py:386
+#: src/views/transcript/transcript_text.py:514
 msgid "This transcription has no timestamps."
 msgstr "Tento přepis nemá časové značky."
 
-#: src/views/transcript/transcript_view.py:112
+#: src/views/transcript/transcript_view.py:115
 msgid "Plain text (.txt)"
 msgstr "Prostý text (.txt)"
 
-#: src/views/transcript/transcript_view.py:113
+#: src/views/transcript/transcript_view.py:116
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:114
+#: src/views/transcript/transcript_view.py:117
 msgid "Word document (.docx)"
 msgstr "Dokument Word (.docx)"
 
-#: src/views/transcript/transcript_view.py:115
+#: src/views/transcript/transcript_view.py:118
 msgid "Subtitles (.srt)"
 msgstr "Titulky (.srt)"
 
-#: src/views/transcript/transcript_view.py:116
+#: src/views/transcript/transcript_view.py:119
 msgid "Web subtitles (.vtt)"
 msgstr "Webové titulky (.vtt)"
 
-#: src/views/transcript/transcript_view.py:117
+#: src/views/transcript/transcript_view.py:120
 msgid "Table (.tsv)"
 msgstr "Tabulka (.tsv)"
 
-#: src/views/transcript/transcript_view.py:118
+#: src/views/transcript/transcript_view.py:121
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:310
+#: src/views/transcript/transcript_view.py:333
 msgid "Export transcription"
 msgstr "Exportovat přepis"
 
-#: src/views/transcript/transcript_view.py:330
+#: src/views/transcript/transcript_view.py:353
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Exportovat překlad (jazyk: {language})"
 
-#: src/views/transcript/transcript_view.py:361
+#: src/views/transcript/transcript_view.py:384
 msgid "All files"
 msgstr "Všechny soubory"
 
-#: src/views/transcript/transcript_view.py:370
+#: src/views/transcript/transcript_view.py:393
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Export se nezdařil: {error}"
 
-#: src/views/transcript/transcript_view.py:373
+#: src/views/transcript/transcript_view.py:396
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Exportováno do {path}"
 
-#: src/views/transcript/transcript_view.py:422
+#: src/views/transcript/transcript_view.py:457
+#: src/views/transcript/translation_panel.py:141
 #, python-brace-format
-msgid "Search ({shortcut})"
-msgstr "Hledat ({shortcut})"
+msgid "Find and replace ({shortcut})"
+msgstr "Najít a nahradit ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:464
-msgid "Plain text"
-msgstr "Prostý text"
-
-#: src/views/transcript/transcript_view.py:473
-#: src/views/transcript/translation_panel.py:394
-msgid "Translate"
-msgstr "Přeložit"
-
-#: src/views/transcript/transcript_view.py:481
+#: src/views/transcript/transcript_view.py:465
+#: src/views/transcript/translation_panel.py:147
 msgid "Export"
 msgstr "Exportovat"
 
-#: src/views/transcript/transcript_view.py:612
-#, python-brace-format
-msgid "{current} of {total}"
-msgstr "{current} z {total}"
+#: src/views/transcript/transcript_view.py:507
+msgid "Plain text"
+msgstr "Prostý text"
 
-#: src/views/transcript/transcript_view.py:652
+#: src/views/transcript/transcript_view.py:516
+#: src/views/transcript/translation_panel.py:406
+msgid "Translate"
+msgstr "Přeložit"
+
+#: src/views/transcript/transcript_view.py:649
+msgid "Find and replace in the transcription"
+msgstr "Najít a nahradit v přepisu"
+
+#: src/views/transcript/transcript_view.py:659
+msgid "Find and replace in the translation"
+msgstr "Najít a nahradit v překladu"
+
+#: src/views/transcript/transcript_view.py:660
+#, python-brace-format
+msgid "Find and replace in the translation into {language}"
+msgstr "Najít a nahradit v překladu do jazyka {language}"
+
+#: src/views/transcript/transcript_view.py:740
 msgid "Summary copied."
 msgstr "Shrnutí zkopírováno."
 
-#: src/views/transcript/transcript_view.py:791
+#: src/views/transcript/transcript_view.py:882
+#: src/views/transcript/translation_panel.py:153
 msgid "Hide the translation"
 msgstr "Skrýt překlad"
 
-#: src/views/transcript/transcript_view.py:796
+#: src/views/transcript/transcript_view.py:887
 msgid "Show the translation"
 msgstr "Zobrazit překlad"
 
-#: src/views/transcript/transcript_view.py:800
-#: src/views/transcript/translation_panel.py:267
+#: src/views/transcript/transcript_view.py:891
+#: src/views/transcript/translation_panel.py:295
 msgid "Translate into another language…"
 msgstr "Přeložit do jiného jazyka…"
 
-#: src/views/transcript/transcript_view.py:811
+#: src/views/transcript/transcript_view.py:902
 msgid "Show it as the subtitles of the video"
 msgstr "Zobrazit ho jako titulky videa"
 
-#: src/views/transcript/transcript_view.py:818
+#: src/views/transcript/transcript_view.py:909
 msgid "Delete the translation"
 msgstr "Smazat překlad"
 
-#: src/views/transcript/transcript_view.py:916
-#: src/views/transcript/transcript_view.py:1286
+#: src/views/transcript/transcript_view.py:1007
+#: src/views/transcript/transcript_view.py:1420
 msgid "Play from here"
 msgstr "Přehrát odsud"
 
-#: src/views/transcript/transcript_view.py:924
-#: src/views/transcript/transcript_view.py:1289
+#: src/views/transcript/transcript_view.py:1015
+#: src/views/transcript/transcript_view.py:1423
 msgid "Edit text…"
 msgstr "Upravit text…"
 
-#: src/views/transcript/transcript_view.py:924
+#: src/views/transcript/transcript_view.py:1015
 msgid "Translate text…"
 msgstr "Přeložit text…"
 
-#: src/views/transcript/transcript_view.py:928
+#: src/views/transcript/transcript_view.py:1019
 msgid "Edit the timing…"
 msgstr "Upravit časování…"
 
-#: src/views/transcript/transcript_view.py:932
+#: src/views/transcript/transcript_view.py:1023
 msgid "Add a segment after…"
 msgstr "Přidat segment za…"
 
-#: src/views/transcript/transcript_view.py:937
-#: src/views/transcript/transcript_view.py:1102
+#: src/views/transcript/transcript_view.py:1028
+#: src/views/transcript/transcript_view.py:1193
 msgid "Delete the segment"
 msgstr "Smazat segment"
 
-#: src/views/transcript/transcript_view.py:1016
+#: src/views/transcript/transcript_view.py:1107
 msgid "Translate text"
 msgstr "Přeložit text"
 
-#: src/views/transcript/transcript_view.py:1017
+#: src/views/transcript/transcript_view.py:1108
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Překlad „{text}“, řečeno od {start} do {end}:"
 
-#: src/views/transcript/transcript_view.py:1021
+#: src/views/transcript/transcript_view.py:1112
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Překlad segmentu od {start} do {end}:"
 
-#: src/views/transcript/transcript_view.py:1044
+#: src/views/transcript/transcript_view.py:1135
 msgid "Edit the timing"
 msgstr "Upravit časování"
 
-#: src/views/transcript/transcript_view.py:1070
+#: src/views/transcript/transcript_view.py:1161
 msgid "Add a segment"
 msgstr "Přidat segment"
 
-#: src/views/transcript/transcript_view.py:1071
+#: src/views/transcript/transcript_view.py:1162
 msgid "Add"
 msgstr "Přidat"
 
-#: src/views/transcript/transcript_view.py:1072
+#: src/views/transcript/transcript_view.py:1163
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Nový segment bude za segmentem v {time}:"
 
-#: src/views/transcript/transcript_view.py:1103
+#: src/views/transcript/transcript_view.py:1194
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "Smazat segment „{text}“?"
 
-#: src/views/transcript/transcript_view.py:1114
+#: src/views/transcript/transcript_view.py:1250
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "Segment v {time}, zatím nepřeložený."
 
-#: src/views/transcript/transcript_view.py:1149
+#: src/views/transcript/transcript_view.py:1286
+#: src/views/transcript/translation_panel.py:150
 msgid "Translate again"
 msgstr "Přeložit znovu"
 
-#: src/views/transcript/transcript_view.py:1151
+#: src/views/transcript/transcript_view.py:1288
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2080,112 +2108,104 @@ msgstr ""
 "Znovu přeložit přepis do jazyka {language}? Změny provedené v překladu "
 "budou ztraceny."
 
-#: src/views/transcript/transcript_view.py:1164
-#, python-brace-format
-msgid "Translation into {language} copied."
-msgstr "Překlad (jazyk: {language}) zkopírován."
-
-#: src/views/transcript/transcript_view.py:1178
+#: src/views/transcript/transcript_view.py:1311
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Zvuk není k dispozici: zdrojový soubor byl přesunut nebo smazán."
 
-#: src/views/transcript/transcript_view.py:1181
+#: src/views/transcript/transcript_view.py:1314
 msgid "The audio isn't available."
 msgstr "Zvuk není k dispozici."
 
-#: src/views/transcript/transcript_view.py:1291
-#: src/views/transcript/transcript_view.py:1307
+#: src/views/transcript/transcript_view.py:1425
+#: src/views/transcript/transcript_view.py:1452
 msgid "Rename speakers…"
 msgstr "Přejmenovat mluvčí…"
 
-#: src/views/transcript/transcript_view.py:1305
-msgid "Find and replace…"
-msgstr "Najít a nahradit…"
+#: src/views/transcript/transcript_view.py:1441
+#, python-brace-format
+msgid "Transcribe “{title}” again? The changes made to its text will be lost."
+msgstr "Znovu přepsat „{title}“? Změny provedené v textu budou ztraceny."
 
-#: src/views/transcript/transcript_view.py:1317
+#: src/views/transcript/transcript_view.py:1462
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Přesné časové značky (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1340
+#: src/views/transcript/transcript_view.py:1485
 msgid "Rename…"
 msgstr "Přejmenovat…"
 
-#: src/views/transcript/transcript_view.py:1387
-msgid "Copied"
-msgstr "Zkopírováno"
-
-#: src/views/transcript/translation_panel.py:159
+#: src/views/transcript/translation_panel.py:185
 msgid "Not translated yet"
 msgstr "Zatím nepřeloženo"
 
-#: src/views/transcript/translation_panel.py:191
+#: src/views/transcript/translation_panel.py:217
 #, python-brace-format
 msgid "Translating into {language}…"
 msgstr "Překládání (jazyk: {language})…"
 
-#: src/views/transcript/translation_panel.py:195
+#: src/views/transcript/translation_panel.py:221
 msgid "Translating…"
 msgstr "Překládání…"
 
-#: src/views/transcript/translation_panel.py:198
+#: src/views/transcript/translation_panel.py:224
 msgid "It takes a moment."
 msgstr "Chvíli to potrvá."
 
-#: src/views/transcript/translation_panel.py:200
+#: src/views/transcript/translation_panel.py:226
 msgid "The transcription is being translated. It takes a moment."
 msgstr "Přepis se překládá. Chvíli to potrvá."
 
-#: src/views/transcript/translation_panel.py:207
+#: src/views/transcript/translation_panel.py:233
 msgid "There is no translation yet."
 msgstr "Zatím žádný překlad."
 
-#: src/views/transcript/translation_panel.py:209
+#: src/views/transcript/translation_panel.py:235
 msgid "Translate…"
 msgstr "Přeložit…"
 
-#: src/views/transcript/translation_panel.py:349
+#: src/views/transcript/translation_panel.py:361
 #, python-brace-format
 msgid "Segments left to translate: {count}. Right-click one to translate it."
 msgstr ""
 "Segmenty k přeložení: {count}. Klikněte na jeden pravým tlačítkem a "
 "přeložte ho."
 
-#: src/views/transcript/translation_panel.py:356
-#: src/views/transcript/translation_panel.py:435
+#: src/views/transcript/translation_panel.py:368
+#: src/views/transcript/translation_panel.py:447
 msgid "Manual"
 msgstr "Ručně"
 
-#: src/views/transcript/translation_panel.py:403
+#: src/views/transcript/translation_panel.py:415
 msgid "Translate into:"
 msgstr "Přeložit do:"
 
-#: src/views/transcript/translation_panel.py:424
+#: src/views/transcript/translation_panel.py:436
 msgid "Translate with:"
 msgstr "Přeložit pomocí:"
 
-#: src/views/transcript/translation_panel.py:481
+#: src/views/transcript/translation_panel.py:493
 msgid "More options in the settings"
 msgstr "Další možnosti v nastavení"
 
-#: src/views/transcript/translation_panel.py:512
+#: src/views/transcript/translation_panel.py:524
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "Chybí klíč API pro {provider}."
 
-#: src/views/transcript/translation_panel.py:519
+#: src/views/transcript/translation_panel.py:531
 msgid "Creates empty segments with the original timestamps for you to fill in."
 msgstr "Vytvoří prázdné segmenty s původními časovými značkami, které vyplníte."
 
-#: src/views/transcript/translation_panel.py:529
+#: src/views/transcript/translation_panel.py:541
 #, python-brace-format
 msgid "Uses the model {model}."
 msgstr "Používá model {model}."
 
-#: src/views/transcript/translation_panel.py:532
+#: src/views/transcript/translation_panel.py:544
 msgid "Translates each segment, keeping its timestamps."
 msgstr "Přeloží každý segment a zachová jeho časové značky."
 
-#: src/views/transcript/translation_panel.py:544
+#: src/views/transcript/translation_panel.py:556
 msgid "Set…"
 msgstr "Nastavit…"
 

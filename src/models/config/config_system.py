@@ -52,6 +52,8 @@ class ConfigSystem:
     # Whether the timestamps of the transcripts are precise to the millisecond
     # (`HH:MM:SS,mmm`, like the subtitles) instead of simplified (`MM:SS`)
     precise_timestamps: bool = True
+    # Whether the window to find and replace stays above the main window
+    is_find_pinned: bool = True
     # How the dates and the times are shown (see `DateFormat` and `TimeFormat`)
     date_format: str = DateFormat.MEDIUM.value
     time_format: str = TimeFormat.AUTO.value
@@ -84,6 +86,7 @@ class ConfigSystem:
         SUBTITLE_STYLE = "subtitle_style"
         SUBTITLE_TRACK = "subtitle_track"
         PRECISE_TIMESTAMPS = "precise_timestamps"
+        IS_FIND_PINNED = "is_find_pinned"
         DATE_FORMAT = "date_format"
         TIME_FORMAT = "time_format"
         WINDOW_GEOMETRY = "window_geometry"

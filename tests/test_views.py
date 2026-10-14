@@ -40,7 +40,6 @@ from views.settings.cards.engine_card import EngineCard
 from views.settings.cards.language_card import LanguageCard
 from views.settings.cards.output_card import OutputCard
 from views.settings.preferences_dialog import AI_TAB, API_KEYS_TAB, GENERAL_TAB
-from views.transcript.edit_dialogs import Replacement
 
 
 def has_display() -> bool:
@@ -381,7 +380,11 @@ def test_the_transcript_can_be_searched_and_corrected(
     ui.pump(0.8)
     view = ui.window._entry_view
 
-    view._search_variable.set("wisper")
+    view.focus_search()
+    ui.pump()
+    dialog = view._find_dialog
+    assert dialog is not None
+    dialog._find.set("wisper")
     ui.pump()
     assert view.text.match_status == (0, 2)
 
@@ -393,12 +396,15 @@ def test_the_transcript_can_be_searched_and_corrected(
     ui.pump(0.4)
     view.player.toggle_playback()
 
-    monkeypatch.setattr(
-        corrections.ReplaceDialog,
-        "get_result",
-        lambda _self: Replacement("wisper", "Whisper", match_case=False),
-    )
-    view._find_and_replace()
+    # The summary hides the texts that are searched
+    assert view._find_dialog is None
+    view.focus_search()
+    ui.pump()
+    dialog = view._find_dialog
+    assert dialog is not None
+    dialog._find.set("wisper")
+    dialog._replacement.set("Whisper")
+    dialog._replace_all()
     ui.pump()
     assert [s.text for s in entry.segments] == [
         "Hello Whisper",
@@ -687,9 +693,13 @@ def test_a_transcription_can_be_translated_from_scratch(
     panel = view.translation_panel
     assert view.translation_panel.winfo_ismapped()
     assert "Not translated yet" in panel.text.tbx_transcript.get("1.0", "end")
-    assert "3" in panel.lbl_details.cget("text")
+    # Above the text, in the row of its hints, so it's aligned with the transcript
+    assert not panel.lbl_details.winfo_ismapped()
+    hint = panel.text.lbl_hint.cget("text")
+    assert "3" in hint
     # The transcript on its left already explains how to use the segments
-    assert not panel.text.lbl_hint.cget("text")
+    assert "Click a segment" not in hint
+    assert panel.text.lbl_hint.winfo_ismapped()
 
     monkeypatch.setattr(transcript_view.TextDialog, "get_input", lambda _self: "Adiós")
     view._edit_translation_segment(2)
@@ -698,7 +708,7 @@ def test_a_transcription_can_be_translated_from_scratch(
     assert translation is not None
     assert translation.segments == translated("", "", "Adiós")
     assert translation.text == "[SPEAKER_00]: Adiós"
-    assert "2" in panel.lbl_details.cget("text")
+    assert "2" in panel.text.lbl_hint.cget("text")
 
 
 def test_a_translation_from_scratch_has_the_timestamps_of_the_subtitles(
@@ -844,6 +854,154 @@ def test_the_transcript_is_shown_as_subtitles(
     assert entry.segments[1].text == "Nice to you all."
 
 
+def test_the_find_dialog_goes_through_the_matches_and_replaces_them(
+    ui: Ui,
+) -> None:
+    from models.translation import TranscriptTranslation
+
+    translation = TranscriptTranslation(
+        "es", "", translated("Hola wisper", "Encantado.", "Adiós wisper."), "deepl"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view.btn_search.invoke()
+    ui.pump()
+    dialog = view._find_dialog
+    assert dialog is not None
+    assert dialog.title() == "Find and replace in the transcription"
+
+    # The timestamps and the speakers aren't searched
+    dialog._find.set("00")
+    ui.pump()
+    assert view.text.match_status == (None, 0)
+    assert dialog.lbl_matches.cget("text") == "No results"
+
+    dialog._find.set("Wisper")
+    ui.pump()
+    assert dialog.lbl_matches.cget("text") == "1 of 2"
+    dialog.go_to_match(1)
+    assert dialog.lbl_matches.cget("text") == "2 of 2"
+    dialog.go_to_match(1)
+    assert dialog.lbl_matches.cget("text") == "1 of 2"
+    dialog._match_case.set(True)
+    dialog._search()
+    assert dialog.lbl_matches.cget("text") == "No results"
+    dialog._match_case.set(False)
+    dialog._search()
+
+    # Only the current match is replaced, and the next one becomes current
+    dialog.go_to_match(1)
+    dialog._replacement.set("Whisper")
+    dialog._replace()
+    ui.pump()
+    assert [s.text for s in entry.segments] == [
+        "Hello wisper",
+        "Nice to meet you.",
+        "Bye Whisper.",
+    ]
+    assert dialog.lbl_matches.cget("text") == "1 of 1"
+
+    # The search icon of the translation searches it instead
+    view.translation_panel.btn_search.invoke()
+    ui.pump()
+    assert view._find_dialog is dialog
+    assert dialog.title() == "Find and replace in the translation into Spanish"
+    assert view.text.match_status == (None, 0)
+    assert view.translation_panel.text.match_status == (0, 2)
+    dialog._replace_all()
+    ui.pump()
+    edited = entry.get_translation("es")
+    assert edited is not None
+    assert [s.text for s in edited.segments] == [
+        "Hola Whisper",
+        "Encantado.",
+        "Adiós Whisper.",
+    ]
+
+    # Pinned, it stays above the main window
+    assert dialog.wm_transient()
+    dialog._toggle_pin()
+    assert not dialog.wm_transient()
+    assert not ConfigManager.get_config_system().is_find_pinned
+
+    dialog.close()
+    ui.pump()
+    assert view._find_dialog is None
+    assert view.translation_panel.text.match_status == (None, 0)
+
+
+def test_the_subtitles_are_split_again_when_their_size_changes(ui: Ui) -> None:
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    transcript = view.text.tbx_transcript
+    assert "Nice to meet you." in transcript.get("1.0", "end")
+
+    # As if the user changed them in the preferences
+    for key, value in (
+        (ConfigSubtitles.Key.MAX_LINE_WIDTH, "10"),
+        (ConfigSubtitles.Key.MAX_LINE_COUNT, "1"),
+    ):
+        ConfigManager.modify_value(ConfigSubtitles.Key.SECTION, key, value)
+    ui.window._on_subtitles_change()
+    ui.pump()
+    assert "Nice to meet you." not in transcript.get("1.0", "end")
+    assert view.video._cue_track.at(2.5).text == "meet you."
+
+
+def test_the_transcript_is_copied_and_exported_from_its_card(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_view import TranscriptView
+
+    entry = ui.add(segments=SEGMENTS, text=TEXT, language="en")
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    # Like its translation, its card is titled with its language
+    assert view.lbl_transcript_title.cget("text") == "English"
+
+    view.btn_copy.invoke()
+    assert view.clipboard_get() == TEXT
+
+    anchors: list[Any] = []
+    monkeypatch.setattr(
+        TranscriptView,
+        "_popup_below",
+        staticmethod(lambda menu, widget: anchors.append(widget) or menu.destroy()),
+    )
+    view.btn_export.invoke()
+    assert anchors == [view.btn_export]
+    # While the summary is shown, the transcript and its buttons are hidden
+    view._on_mode_change("summary")
+    ui.pump()
+    view.show_export_menu()
+    assert anchors[-1] is view.btn_more
+
+
+def test_icon_buttons_show_what_they_do_on_hover(ui: Ui) -> None:
+    from views.widgets.button import icon_button
+
+    button = icon_button(ui.window, "copy", lambda: None, lambda: "Copy")
+    button.place(x=0, y=0)
+    ui.pump()
+    tooltip = button._tooltip
+    tooltip._show()
+    assert tooltip._window is not None
+    assert tooltip._window.winfo_children()[0].cget("text") == "Copy"
+
+    tooltip.hide()
+    assert tooltip._window is None
+    button.destroy()
+
+
 def test_the_parts_of_the_translation_are_changed_on_their_own(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -911,26 +1069,6 @@ def test_the_parts_of_the_translation_are_changed_on_their_own(
         "Feliz de conocerte.",
         "",
     ]
-
-
-def test_the_subtitles_are_split_again_when_their_size_changes(ui: Ui) -> None:
-    entry = ui.add(segments=SEGMENTS, text=TEXT)
-    ui.window.select_entry(entry.id)
-    ui.pump()
-    view = ui.window._entry_view
-    transcript = view.text.tbx_transcript
-    assert "Nice to meet you." in transcript.get("1.0", "end")
-
-    # As if the user changed them in the preferences
-    for key, value in (
-        (ConfigSubtitles.Key.MAX_LINE_WIDTH, "10"),
-        (ConfigSubtitles.Key.MAX_LINE_COUNT, "1"),
-    ):
-        ConfigManager.modify_value(ConfigSubtitles.Key.SECTION, key, value)
-    ui.window._on_subtitles_change()
-    ui.pump()
-    assert "Nice to meet you." not in transcript.get("1.0", "end")
-    assert view.video._cue_track.at(2.5).text == "meet you."
 
 
 def test_the_subtitles_of_a_vertical_video_are_narrower(ui: Ui) -> None:
@@ -1686,11 +1824,96 @@ def test_the_timing_dialog_only_accepts_valid_times(ui: Ui) -> None:
     ui.pump()
 
 
-def test_a_translation_is_generated_again_from_its_header(
+def test_the_copy_buttons_show_a_tick_when_they_copy(ui: Ui) -> None:
+    from models.translation import TranscriptTranslation
+
+    translation = TranscriptTranslation(
+        "es", "Hola", translated("Hola", "", ""), "manual"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+
+    view._on_copy()
+    view._copy_translation()
+    assert ui.window.clipboard_get() == "Hola"
+    # Each button shows it by itself
+    assert set(view._copy_feedback_after_ids) == {
+        view.btn_copy,
+        view.translation_panel.btn_copy,
+    }
+    # As if its timer ran, which is cancelled so it doesn't run once the view is
+    # destroyed, when its command no longer exists
+    view.after_cancel(view._copy_feedback_after_ids[view.btn_copy])
+    view._reset_copy_button(view.btn_copy)
+    assert set(view._copy_feedback_after_ids) == {view.translation_panel.btn_copy}
+
+
+def test_the_shortcuts_act_on_the_text_being_worked_on(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from models.translation import TranscriptTranslation
+    from views.transcript.transcript_view import TranscriptView
+
+    translation = TranscriptTranslation(
+        "es", "Hola", translated("Hola", "", ""), "manual"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    anchors: list[Any] = []
+    monkeypatch.setattr(
+        TranscriptView,
+        "_popup_below",
+        staticmethod(lambda _menu, widget: anchors.append(widget)),
+    )
+
+    # The transcription, until the user works on the translation
+    view.focus_search()
+    ui.pump()
+    assert view._find_dialog is not None
+    assert view._find_dialog.target.text is view.text
+    ui.window.trigger_save()
+    assert anchors[-1] is view.btn_export
+
+    view.translation_panel.text.tbx_transcript._textbox.event_generate("<FocusIn>")
+    view.focus_search()
+    ui.pump()
+    assert view._find_dialog.target.text is view.translation_panel.text
+    ui.window.trigger_save()
+    assert anchors[-1] is view.translation_panel.btn_export
+
+    # Not once the translation is hidden
+    view._set_translation_visible(False)
+    ui.pump()
+    ui.window.trigger_save()
+    assert anchors[-1] is view.btn_export
+
+    view._set_translation_visible(True)
+    ui.pump()
+    view.text.tbx_transcript._textbox.event_generate("<ButtonPress-1>")
+    view.focus_search()
+    ui.pump()
+    assert view._find_dialog is not None
+    assert view._find_dialog.target.text is view.text
+
+
+def test_the_texts_are_generated_again_from_their_headers(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     import views.transcript.transcript_view as transcript_view
     from models.translation import TranscriptTranslation
+    from views.transcript.transcript_view import TranscriptView
 
     translation = TranscriptTranslation(
         "es", "Hola", translated("Hola", "", ""), "deepl", model="m"
@@ -1711,8 +1934,10 @@ def test_a_translation_is_generated_again_from_its_header(
         "translate_entry",
         lambda *args: translations.append(args),
     )
-    # Only after confirming it, since the current one is replaced
-    answers = iter([False, True])
+    retried: list[str] = []
+    monkeypatch.setattr(view._actions.jobs, "retry_entry", retried.append)
+    # Each one only after confirming it, since the current one is replaced
+    answers = iter([False, True] * 2)
     monkeypatch.setattr(
         transcript_view.messagebox, "askyesno", lambda *_a, **_k: next(answers)
     )
@@ -1721,6 +1946,26 @@ def test_a_translation_is_generated_again_from_its_header(
     panel.btn_regenerate.invoke()
     panel.btn_regenerate.invoke()
     assert translations == [(entry.id, "es", "deepl", "m")]
+
+    view.btn_regenerate.invoke()
+    view.btn_regenerate.invoke()
+    assert retried == [entry.id]
+
+    # Not in the menu anymore
+    menus: list[tk.Menu] = []
+    monkeypatch.setattr(
+        TranscriptView,
+        "_popup_below",
+        staticmethod(lambda menu, _widget: menus.append(menu)),
+    )
+    view._show_more_menu()
+    labels = [
+        menus[0].entrycget(i, "label")
+        for i in range(menus[0].index("end") + 1)
+        if menus[0].type(i) != "separator"
+    ]
+    assert "Transcribe again" not in labels
+    menus[0].destroy()
 
 
 def test_a_manual_translation_cant_be_generated_again(ui: Ui) -> None:
