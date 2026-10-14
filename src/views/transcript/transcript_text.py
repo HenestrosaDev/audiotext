@@ -1,6 +1,7 @@
 import bisect
 import tkinter as tk
 from collections.abc import Callable
+from functools import partial
 from typing import Any
 
 import customtkinter as ctk
@@ -34,6 +35,61 @@ TRANSCRIPT_MODE = "transcript"
 PLAIN_TEXT_MODE = "plain"
 
 
+def _count_chars(textbox: tk.Text, start: str, end: str) -> int:
+    """The number of characters between two indexes of a text."""
+    # A tuple of the counts, or None if there are none (it depends on the version)
+    count: Any = textbox.count(start, end, "chars")
+    if isinstance(count, tuple):
+        return int(count[0])
+    return int(count or 0)
+
+
+def _index_key(index: str) -> tuple[int, int]:
+    """Sorts the indexes of a text (`line.char`) by their position."""
+    line, char = index.split(".")
+    return int(line), int(char)
+
+
+def _count_pixels(textbox: tk.Text, start: str, end: str) -> int:
+    """The height between two indexes of a text, in pixels."""
+    count: Any = textbox.count(start, end, "ypixels")
+    if isinstance(count, tuple):
+        return int(count[0])
+    return int(count or 0)
+
+
+def find_matches(
+    textbox: tk.Text | ctk.CTkTextbox,
+    query: str,
+    match_case: bool,
+    is_match: Callable[[str, str], bool] = lambda _start, _end: True,
+) -> list[tuple[str, str]]:
+    """
+    Highlights the matches of a query in a text with the "match" tag.
+
+    :param is_match: Whether a range found can be a match (e.g. it's not in a
+                     timestamp).
+    :return: Where each match starts and ends.
+    """
+    matches: list[tuple[str, str]] = []
+    if not query.strip():
+        return matches
+    count = tk.IntVar(textbox)
+    start = "1.0"
+    while True:
+        start = textbox.search(
+            query, start, stopindex=ctk.END, nocase=not match_case, count=count
+        )
+        if not start or not count.get():
+            break
+        end = textbox.index(f"{start}+{count.get()}c")
+        if is_match(start, end):
+            textbox.tag_add("match", start, end)
+            matches.append((start, end))
+        start = end
+    return matches
+
+
 def find_index(starts: list[float], position: float) -> int | None:
     """:return: The index of the last item that starts before the position."""
     idx = bisect.bisect_right(starts, position) - 1
@@ -63,7 +119,8 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         on_segment_click: Callable[[int], None],
         on_segment_menu: Callable[[Any, int], str | None] | None = None,
         on_text_edit: Callable[[str], None] | None = None,
-        show_click_hint: bool = True,
+        on_scroll: Callable[[], None] | None = None,
+        show_usage_hints: bool = True,
         empty_segment_text: Text | None = None,
     ) -> None:
         """
@@ -71,8 +128,9 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         :param on_segment_menu: Called with the event and the index of a segment
                                 that is right-clicked.
         :param on_text_edit: Called with the plain text after the user edits it.
-        :param show_click_hint: Whether to explain above the transcript that its
-                                segments can be clicked.
+        :param on_scroll: Called when the visible text scrolls.
+        :param show_usage_hints: Whether to explain above the text how to use it
+                                 (e.g. that its segments can be clicked).
         :param empty_segment_text: Shown, dimmed, in place of the text of a
                                    segment that has none (e.g. not translated yet).
         """
@@ -86,13 +144,18 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._on_segment_click = on_segment_click
         self._on_segment_menu = on_segment_menu
         self._on_text_edit = on_text_edit
-        self._show_click_hint = show_click_hint
+        self._on_scroll = on_scroll
+        self._show_usage_hints = show_usage_hints
         self._empty_segment_text = empty_segment_text
 
         self._segments: list[TranscriptSegment] = []
         self._segment_starts: list[float] = []
         self._word_starts: list[float] = []
         self._word_ranges: list[tuple[str, str]] = []
+        # Where each segment starts in the transcript (the line of its
+        # timestamps), and where its text starts, after that line
+        self._segment_indexes: list[str] = []
+        self._text_starts: list[str] = []
         self._current_segment: int | None = None
         self._current_word: int | None = None
         self._is_text_edited = False
@@ -100,9 +163,14 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._is_precise = False
         self._low_confidence_score: float | None = None
         self._query = ""
+        self._match_case = False
         self._matches: list[tuple[str, str]] = []
         self._current_match: int | None = None
         self._save_text_after_id: str | None = None
+        self._note = ""
+        self._is_note_error = False
+        # Where the text was scrolled to follow another one, to not follow it back
+        self._synced_view: float | None = None
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -114,7 +182,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             text_color=theme.HINT_TEXT,
             anchor=ctk.W,
         )
-        self.lbl_hint.grid(row=0, column=0, padx=16, pady=(8, 0), sticky=ctk.EW)
+        self.lbl_hint.grid(row=0, column=0, padx=16, pady=(2, 0), sticky=ctk.EW)
 
         text_options = {
             "wrap": ctk.WORD,
@@ -126,7 +194,12 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self.tbx_transcript = CTkTextbox(self, cursor="hand2", **text_options)
         self.tbx_plain = CTkTextbox(self, undo=True, **text_options)
         for textbox in (self.tbx_transcript, self.tbx_plain):
-            textbox._textbox.configure(spacing1=2, spacing3=2, insertwidth=2)
+            textbox._textbox.configure(
+                spacing1=2,
+                spacing3=2,
+                insertwidth=2,
+                yscrollcommand=partial(self._on_yscroll, textbox),
+            )
 
         self.tbx_plain.bind(
             "<KeyRelease>", lambda _event: self._schedule_text_save(), add="+"
@@ -189,7 +262,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._is_precise = is_precise
         self._current_segment = self._current_word = None
         self._render_transcript()
-        self.search(self._query)
+        self.search(self._query, self._match_case, self._current_match)
 
     def set_low_confidence_score(self, min_score: float | None) -> None:
         """
@@ -201,7 +274,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._low_confidence_score = min_score
         self._current_segment = self._current_word = None
         self._render_transcript()
-        self.search(self._query)
+        self.search(self._query, self._match_case, self._current_match)
 
     def set_mode(self, mode: str) -> None:
         self._mode = mode if self._segments else PLAIN_TEXT_MODE
@@ -211,8 +284,36 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             self.tbx_transcript.grid(
                 row=1, column=0, sticky=ctk.NSEW, padx=2, pady=(0, 2)
             )
-            hints = []
-            if self._show_click_hint:
+        else:
+            self.tbx_transcript.grid_forget()
+            self.tbx_plain.grid(row=1, column=0, sticky=ctk.NSEW, padx=2, pady=(0, 2))
+        self._show_hint()
+        self.search(self._query, self._match_case, self._current_match)
+
+    def bind_interaction(self, callback: Callable[[], None]) -> None:
+        """Calls the callback when the user clicks, scrolls or focuses the text."""
+        for textbox in (self.tbx_transcript, self.tbx_plain):
+            for sequence in ("<FocusIn>", "<ButtonPress>", "<MouseWheel>"):
+                textbox._textbox.bind(sequence, lambda _event: callback(), add="+")
+
+    def set_note(self, note: str, is_error: bool = False) -> None:
+        """Shows a note in place of the hint, before the hints of the text."""
+        self._note = note
+        self._is_note_error = is_error
+        self._show_hint()
+
+    def _show_hint(self) -> None:
+        """
+        Shows the hints of the text above it. Its row is kept even without them,
+        so the text starts at the same height as the one next to it.
+        """
+        if self._note and self._is_note_error:
+            self.lbl_hint.configure(text=self._note, text_color=theme.ERROR_TEXT)
+            return
+
+        hints = [self._note] if self._note else []
+        if self._mode == TRANSCRIPT_MODE:
+            if self._show_usage_hints:
                 hints.append(
                     _("Click a segment to play it. Right-click it to edit it.")
                 )
@@ -223,23 +324,19 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                         "original."
                     )
                 )
-            hint = " ".join(hints)
-        else:
-            self.tbx_transcript.grid_forget()
-            self.tbx_plain.grid(row=1, column=0, sticky=ctk.NSEW, padx=2, pady=(0, 2))
-            hint = _("You can edit the text. The changes are saved automatically.")
+        elif self._show_usage_hints:
+            hints.append(
+                _("You can edit the text. The changes are saved automatically.")
+            )
             if not self._segments:
-                hint += " " + _(
-                    "Timestamps are only available with WhisperX and the whisper-1 "
-                    "and gpt-4o-transcribe-diarize models of the Whisper API."
+                hints.append(
+                    _(
+                        "Timestamps are only available with WhisperX and the "
+                        "whisper-1 and gpt-4o-transcribe-diarize models of the "
+                        "Whisper API."
+                    )
                 )
-        self.lbl_hint.configure(text=hint)
-        # Without a hint, the text takes its space
-        if hint:
-            self.lbl_hint.grid()
-        else:
-            self.lbl_hint.grid_remove()
-        self.search(self._query)
+        self.lbl_hint.configure(text=" ".join(hints), text_color=theme.HINT_TEXT)
 
     def _on_language_change(self) -> None:
         # The texts shown in place of the missing ones (e.g. a segment not
@@ -288,7 +385,24 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             textbox.tag_add("current", ranges[0], ranges[-1])
             # Follow the playback, unless the user is reading a search result
             if is_playing and self._current_match is None:
-                textbox.see(ranges[0])
+                self._center_segment(idx)
+
+    def _center_segment(self, idx: int) -> None:
+        """Scrolls the transcript to show a segment in the middle of it."""
+        textbox = self.tbx_transcript._textbox
+        view_height = textbox.winfo_height()
+        total = _count_pixels(textbox, "1.0", ctk.END)
+        # Not laid out yet (e.g. the plain text is shown)
+        if view_height <= 1 or not total:
+            textbox.see(self._segment_indexes[idx])
+            return
+        top = _count_pixels(textbox, "1.0", self._segment_indexes[idx])
+        # A segment taller than the text is shown from its start
+        middle = top + min(self._segment_height(idx), view_height) / 2
+        fraction = (middle - view_height / 2) / total
+        textbox.yview_moveto(min(max(fraction, 0), 1))
+        # The other text follows the playback by itself, not this scroll
+        self._synced_view = float(textbox.yview()[0])
 
     def _highlight_word(self, idx: int | None, position: float) -> None:
         if idx == self._current_word:
@@ -304,6 +418,83 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             return self._word_starts[idx + 1]
         return float("inf")
 
+    # SCROLL
+
+    def scroll_anchor(self) -> tuple[str, float]:
+        """
+        :return: Where the text is scrolled to, to scroll another one there: the
+                 time at the top of the transcript, or the fraction of the
+                 plain text above it.
+        """
+        if self._mode != TRANSCRIPT_MODE or not self._segment_indexes:
+            return "fraction", float(self._visible_textbox.yview()[0])
+
+        textbox = self.tbx_transcript._textbox
+        top = textbox.index("@0,0")
+        idx = max(
+            bisect.bisect_right(self._segment_indexes, _index_key(top), key=_index_key)
+            - 1,
+            0,
+        )
+        start, end = self._segment_span(idx)
+        offset = _count_pixels(textbox, self._segment_indexes[idx], top)
+        height = self._segment_height(idx)
+        progress = min(max(offset / height, 0), 1) if height else 0
+        return "time", start + progress * (end - start)
+
+    def scroll_to_anchor(self, anchor: tuple[str, float]) -> None:
+        """Scrolls to where another text is scrolled (see `scroll_anchor`)."""
+        kind, value = anchor
+        textbox = self._visible_textbox
+        if kind == "fraction":
+            fraction = value
+        elif self._mode == TRANSCRIPT_MODE and self._segment_indexes:
+            idx = find_index(self._segment_starts, value) or 0
+            start, end = self._segment_span(idx)
+            progress = (
+                min(max((value - start) / (end - start), 0), 1) if end > start else 0
+            )
+            tk_textbox = textbox._textbox
+            total = _count_pixels(tk_textbox, "1.0", ctk.END)
+            if not total:
+                return
+            top = _count_pixels(tk_textbox, "1.0", self._segment_indexes[idx])
+            fraction = (top + progress * self._segment_height(idx)) / total
+        else:
+            return
+        textbox.yview_moveto(fraction)
+        self._synced_view = float(textbox.yview()[0])
+
+    def _segment_span(self, idx: int) -> tuple[float, float]:
+        """When a segment starts, and when the next one does (or it ends)."""
+        start = self._segments[idx].start
+        if idx + 1 < len(self._segments):
+            return start, self._segments[idx + 1].start
+        return start, max(self._segments[idx].end, start)
+
+    def _segment_height(self, idx: int) -> int:
+        """The height of a segment, up to the next one, in pixels."""
+        end = (
+            self._segment_indexes[idx + 1]
+            if idx + 1 < len(self._segment_indexes)
+            else ctk.END
+        )
+        return _count_pixels(
+            self.tbx_transcript._textbox, self._segment_indexes[idx], end
+        )
+
+    def _on_yscroll(self, textbox: ctk.CTkTextbox, first: str, last: str) -> None:
+        textbox._y_scrollbar.set(first, last)
+        if textbox is not self._visible_textbox or not self._on_scroll:
+            return
+        # It scrolled to follow the other text, which doesn't have to follow it
+        if self._synced_view is not None:
+            is_synced = abs(float(first) - self._synced_view) < 1e-6
+            self._synced_view = None
+            if is_synced:
+                return
+        self._on_scroll()
+
     # SEARCH
 
     @property
@@ -311,9 +502,18 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         """:return: The index of the current match, and the number of matches."""
         return self._current_match, len(self._matches)
 
-    def search(self, query: str) -> None:
-        """Highlights the matches of the query, and goes to the first one."""
+    def search(
+        self, query: str, match_case: bool = False, current: int | None = None
+    ) -> None:
+        """
+        Highlights the matches of the query in the text (not in the timestamps or
+        the speakers), and goes to the first one.
+
+        :param current: The index of the match to go to instead, e.g. the one
+                        that was current before the text changed.
+        """
         self._query = query
+        self._match_case = match_case
         for textbox in (self.tbx_transcript, self.tbx_plain):
             textbox.tag_remove("match", "1.0", ctk.END)
             textbox.tag_remove("current_match", "1.0", ctk.END)
@@ -321,22 +521,70 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._current_match = None
 
         textbox = self._visible_textbox
-        if query.strip():
-            count = tk.IntVar(self)
-            start = "1.0"
-            while True:
-                start = textbox.search(
-                    query, start, stopindex=ctk.END, nocase=True, count=count
-                )
-                if not start or not count.get():
-                    break
-                end = f"{start}+{count.get()}c"
-                textbox.tag_add("match", start, end)
-                self._matches.append((start, end))
-                start = end
+        self._matches = find_matches(
+            textbox,
+            query,
+            match_case,
+            lambda start, end: self._is_text(textbox, start, end),
+        )
 
         if self._matches:
-            self.go_to_match(1)
+            if current is None:
+                self.go_to_match(1)
+            else:
+                self._current_match = min(current, len(self._matches) - 1)
+                self.go_to_match(0)
+
+    def _is_text(self, textbox: ctk.CTkTextbox, start: str, end: str) -> bool:
+        """Whether a range is in the text of a segment, not in its timestamps."""
+        if textbox is not self.tbx_transcript:
+            return True
+        return "text" in textbox.tag_names(start) and "text" in textbox.tag_names(
+            f"{end}-1c"
+        )
+
+    def current_match(self) -> tuple[int, int, int] | None:
+        """
+        :return: The index of the segment shown with the current match of the
+                 transcript, and where the match starts and ends in its text.
+                 None if there is no match, or if the plain text is shown.
+        """
+        if self._mode != TRANSCRIPT_MODE or self._current_match is None:
+            return None
+        start, end = self._matches[self._current_match]
+        textbox = self.tbx_transcript._textbox
+        idx = next(
+            (
+                int(tag.removeprefix("segment_"))
+                for tag in textbox.tag_names(start)
+                if tag.startswith("segment_")
+            ),
+            None,
+        )
+        if idx is None:
+            return None
+        text_start = self._text_starts[idx]
+        first = _count_chars(textbox, text_start, start)
+        return idx, first, first + _count_chars(textbox, start, end)
+
+    def replace_current_match(self, replacement: str) -> None:
+        """Replaces the current match of the plain text, which is then saved."""
+        if self._mode != PLAIN_TEXT_MODE or self._current_match is None:
+            return
+        start, end = self._matches[self._current_match]
+        self.tbx_plain.delete(start, end)
+        self.tbx_plain.insert(start, replacement)
+        if self._save_text_after_id:
+            self.after_cancel(self._save_text_after_id)
+        self._save_text_now()
+        self.search(self._query, self._match_case, self._current_match)
+
+    def selected_text(self) -> str:
+        """The text selected by the user, if any (e.g. to search it)."""
+        try:
+            return str(self._visible_textbox.get(ctk.SEL_FIRST, ctk.SEL_LAST))
+        except tk.TclError:
+            return ""
 
     def go_to_match(self, step: int) -> None:
         if not self._matches:
@@ -415,11 +663,14 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             textbox.insert(ctk.END, _("This transcription has no timestamps."))
             textbox.configure(state=ctk.DISABLED)
             self._word_starts, self._word_ranges = [], []
+            self._segment_indexes, self._text_starts = [], []
             return
 
         word_entries: list[tuple[float, str, str]] = []
+        self._segment_indexes, self._text_starts = [], []
         for idx, segment in enumerate(self._segments):
             segment_tag = f"segment_{idx}"
+            self._segment_indexes.append(textbox.index("end-1c"))
             # The timestamps and the speaker on their own line, above the text
             textbox.insert(
                 ctk.END,
@@ -434,6 +685,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                 )
             textbox.insert(ctk.END, "\n", segment_tag)
 
+            self._text_starts.append(textbox.index("end-1c"))
             if segment.words:
                 word_entries.extend(self._insert_words(segment, segment_tag))
             elif not segment.text:
@@ -444,7 +696,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                     ("empty_segment", segment_tag),
                 )
             else:
-                textbox.insert(ctk.END, segment.text, segment_tag)
+                textbox.insert(ctk.END, segment.text, (segment_tag, "text"))
             textbox.insert(ctk.END, "\n\n")
 
             textbox.tag_bind(
@@ -482,6 +734,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         """
         textbox = self.tbx_transcript
         text = segment.text
+        tags = (segment_tag, "text")
         cursor = 0
         entries = []
 
@@ -490,20 +743,20 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             if position < 0:
                 continue
             if position > cursor:
-                textbox.insert(ctk.END, text[cursor:position], segment_tag)
+                textbox.insert(ctk.END, text[cursor:position], tags)
             start_index = textbox.index("end-1c")
             textbox.insert(
                 ctk.END,
                 word.text,
-                (segment_tag, "low_confidence")
+                (*tags, "low_confidence")
                 if is_low_confidence(word, self._low_confidence_score)
-                else segment_tag,
+                else tags,
             )
             entries.append((word.start, start_index, textbox.index("end-1c")))
             cursor = position + len(word.text)
 
         if cursor < len(text):
-            textbox.insert(ctk.END, text[cursor:], segment_tag)
+            textbox.insert(ctk.END, text[cursor:], tags)
 
         return entries
 

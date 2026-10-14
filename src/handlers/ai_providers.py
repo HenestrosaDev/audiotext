@@ -45,7 +45,7 @@ class ProviderInfo:
 PROVIDERS = {
     AiProvider.OPENAI: ProviderInfo("OpenAI", "gpt-5.4-mini", EnvKeys.OPENAI_API_KEY),
     AiProvider.ANTHROPIC: ProviderInfo(
-        "Claude (Anthropic)", "claude-haiku-4-5", EnvKeys.ANTHROPIC_API_KEY
+        "Claude", "claude-haiku-4-5", EnvKeys.ANTHROPIC_API_KEY
     ),
     AiProvider.DEEPSEEK: ProviderInfo(
         "DeepSeek",
@@ -54,7 +54,7 @@ PROVIDERS = {
         "https://api.deepseek.com",
     ),
     AiProvider.GEMINI: ProviderInfo(
-        "Gemini (Google)",
+        "Gemini",
         "gemini-3.8-flash",
         EnvKeys.GEMINI_API_KEY,
         "https://generativelanguage.googleapis.com/v1beta/openai/",
@@ -66,7 +66,7 @@ PROVIDERS = {
         "https://api.mistral.ai/v1",
     ),
     AiProvider.GROK: ProviderInfo(
-        "Grok (xAI)", "grok-4.3", EnvKeys.XAI_API_KEY, "https://api.x.ai/v1"
+        "Grok", "grok-4.3", EnvKeys.XAI_API_KEY, "https://api.x.ai/v1"
     ),
     AiProvider.OLLAMA: ProviderInfo("Ollama (local)", "llama3.2", None),
 }

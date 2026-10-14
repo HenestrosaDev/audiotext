@@ -22,6 +22,7 @@ from utils.cancellation import CancellationToken
 from utils.env_keys import EnvKeys
 from utils.i18n import _
 from utils.progress import ProgressCallback, ignore_progress
+from utils.subtitle_cues import line_limits
 
 if TYPE_CHECKING:
     from whisperx.schema import AlignedTranscriptionResult, TranscriptionResult
@@ -289,6 +290,7 @@ class WhisperXHandler:
         file_path: Path,
         output_file_types: list[str],
         should_overwrite: bool,
+        is_vertical: bool = False,
     ) -> None:
         """
         Save the last transcription as the specified file types.
@@ -299,6 +301,8 @@ class WhisperXHandler:
         :param should_overwrite: Indicates whether existing files should be
                                  overwritten. If False, a file is only generated if
                                  no file with the same name and type exists.
+        :param is_vertical: Whether the video is taller than it's wide, which
+                            narrows its subtitles.
         :raises ValueError: If there is no transcription to save.
         """
         from whisperx.utils import get_writer
@@ -308,7 +312,13 @@ class WhisperXHandler:
                 _("There is no transcription to save. Please generate it first.")
             )
 
-        options = vars(cm.ConfigManager.get_config_subtitles())
+        config = cm.ConfigManager.get_config_subtitles()
+        max_line_width, max_line_count = line_limits(config, self.segments, is_vertical)
+        options = {
+            "highlight_words": config.highlight_words,
+            "max_line_count": max_line_count,
+            "max_line_width": max_line_width,
+        }
         output_dir = file_path.parent
 
         # The writers expect the language of the result, which the aligned result

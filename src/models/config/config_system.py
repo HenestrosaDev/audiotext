@@ -54,7 +54,11 @@ class ConfigSystem:
     subtitle_track: str = "original"
     # Whether the timestamps of the transcripts are precise to the millisecond
     # (`HH:MM:SS,mmm`, like the subtitles) instead of simplified (`MM:SS`)
-    precise_timestamps: bool = False
+    precise_timestamps: bool = True
+    # Whether the transcription and its translation scroll together
+    sync_scroll: bool = True
+    # Whether the window to find and replace stays above the main window
+    is_find_pinned: bool = True
     # Whether to highlight the words of the transcripts that may be wrong, whose
     # alignment score is below the threshold (a percentage, see
     # `LOW_CONFIDENCE_THRESHOLDS`)
@@ -92,6 +96,8 @@ class ConfigSystem:
         SUBTITLE_STYLE = "subtitle_style"
         SUBTITLE_TRACK = "subtitle_track"
         PRECISE_TIMESTAMPS = "precise_timestamps"
+        SYNC_SCROLL = "sync_scroll"
+        IS_FIND_PINNED = "is_find_pinned"
         HIGHLIGHT_LOW_CONFIDENCE = "highlight_low_confidence"
         LOW_CONFIDENCE_THRESHOLD = "low_confidence_threshold"
         DATE_FORMAT = "date_format"

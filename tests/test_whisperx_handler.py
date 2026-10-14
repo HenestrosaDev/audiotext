@@ -250,6 +250,10 @@ def test_save_transcription_writes_each_file_type(
         "max_line_width": 42,
     }
 
+    # The subtitles of vertical videos are narrower
+    handler.save_transcription(tmp_path / "audio.txt", ["srt"], True, is_vertical=True)
+    assert writer.call_args.args[2]["max_line_width"] == 24
+
 
 def test_save_transcription_does_not_overwrite_existing_files(
     whisperx: MagicMock, tmp_path: Path

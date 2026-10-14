@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from models.transcript_segment import TranscriptSegment
+from models.translation import TranscriptTranslation
 from utils.enums import AudioSource, TranscriptionMethod
 
 
@@ -86,8 +87,9 @@ class HistoryEntry:
     settings: dict[str, Any] = field(default_factory=dict)
     # Summary generated from the text (see `TranscriptSummary`), if any
     summary: dict[str, Any] = field(default_factory=dict)
-    # Translation of the text (see `TranscriptTranslation`), if any
-    translation: dict[str, Any] = field(default_factory=dict)
+    # Translations of the text (see `TranscriptTranslation`), by the code of
+    # their language, in the order they were made
+    translations: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     @property
     def is_folder(self) -> bool:
@@ -112,6 +114,12 @@ class HistoryEntry:
             return self.settings.get("openai_model") or "whisper-1"
 
         return None
+
+    def get_translation(self, language: str | None) -> TranscriptTranslation | None:
+        """:return: The translation into a language, or None if there is none."""
+        if not language:
+            return None
+        return TranscriptTranslation.from_dict(self.translations.get(language, {}))
 
     @property
     def source_path(self) -> Path | None:
@@ -154,6 +162,12 @@ class HistoryEntry:
             values["status"] = EntryStatus(values.get("status", "done"))
         except ValueError:
             values["status"] = EntryStatus.DONE
+
+        # The first versions kept a single translation
+        if not values.get("translations") and (
+            language := data.get("translation", {}).get("language")
+        ):
+            values["translations"] = {language: data["translation"]}
 
         values["segments"] = [
             TranscriptSegment.from_dict(segment)

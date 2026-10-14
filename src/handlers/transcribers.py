@@ -15,6 +15,7 @@ from models.transcription import Transcription, TranscriptionResult
 from utils.cancellation import CancellationToken
 from utils.enums import TranscriptionMethod
 from utils.i18n import _
+from utils.media import is_vertical_video
 from utils.progress import ProgressCallback
 
 
@@ -26,6 +27,13 @@ def ensure_text(text: str) -> None:
         raise ValueError(
             _("There is no transcription to save. Please generate it first.")
         )
+
+
+def has_vertical_video(transcription: Transcription) -> bool:
+    """Whether the transcribed file is a video taller than it's wide."""
+    return is_vertical_video(
+        transcription.media_path or transcription.audio_source_path
+    )
 
 
 def write_text(file_path: Path, text: str, should_overwrite: bool) -> None:
@@ -65,6 +73,7 @@ class WhisperXTranscriber:
             file_path=file_path,
             output_file_types=transcription.output_file_types,
             should_overwrite=transcription.should_overwrite,
+            is_vertical=has_vertical_video(transcription),
         )
 
 
@@ -122,7 +131,9 @@ class OpenAiApiTranscriber:
         )
         write_text(
             file_path,
-            render_response(transcript, response_format),
+            render_response(
+                transcript, response_format, has_vertical_video(transcription)
+            ),
             transcription.should_overwrite,
         )
 
