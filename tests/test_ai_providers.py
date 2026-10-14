@@ -128,7 +128,7 @@ def test_the_summary_uses_the_configured_provider(
         ConfigAi.Key.SECTION, ConfigAi.Key.SUMMARY_PROVIDER, "anthropic"
     )
 
-    summary = SummaryHandler.summarize("Some text.", [])
+    summary = SummaryHandler().summarize("Some text.", [])
 
     assert summary.summary == "From Claude."
     assert summary.model == "claude-haiku-4-5"
