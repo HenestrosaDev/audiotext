@@ -5,6 +5,7 @@ from utils.transcript_editing import (
     delete_segment,
     edit_segment,
     edit_segment_part,
+    edit_word,
     insert_segment,
     overlapping_segments,
     realign_words,
@@ -15,6 +16,7 @@ from utils.transcript_editing import (
     set_segment_timing,
     speakers,
     split_segment,
+    word_range,
 )
 
 WORDS = (
@@ -256,3 +258,37 @@ def test_overlapping_segments() -> None:
     assert [s.text for s in overlapping_segments(TIMED, 0.5, 2.0)] == ["One", "Two"]
     # Touching a segment isn't overlapping it
     assert overlapping_segments(TIMED, 1.0, 1.5) == []
+
+
+def test_word_range_tells_apart_the_same_word() -> None:
+    words = (
+        TranscriptWord(0.0, 0.5, "no", 0.9),
+        TranscriptWord(0.5, 1.0, "no,", 0.2),
+        TranscriptWord(1.0, 1.0, "42"),
+    )
+    segment = TranscriptSegment(0.0, 1.0, "no no, 42", words=words)
+
+    assert word_range(segment, 0) == (0, 2)
+    assert word_range(segment, 1) == (3, 6)
+    assert word_range(segment, 2) == (7, 9)
+    assert word_range(segment, 3) is None
+
+
+def test_edit_word_corrects_only_that_word() -> None:
+    segments = [TranscriptSegment(0.0, 1.5, "Hello wisper users.", words=SCORED)]
+
+    [segment] = edit_word(segments, 0, 1, " Whisper ")
+
+    assert segment.text == "Hello Whisper users."
+    assert segment.words[1] == TranscriptWord(
+        0.5, 1.0, "Whisper", 0.2, ReviewMark.EDITED
+    )
+
+
+def test_edit_word_removes_a_word_without_leaving_two_spaces() -> None:
+    segments = [TranscriptSegment(0.0, 1.5, "Hello wisper users.", words=SCORED)]
+
+    assert edit_word(segments, 0, 1, "")[0].text == "Hello users."
+    assert edit_word(segments, 0, 2, "")[0].text == "Hello wisper"
+    with pytest.raises(ValueError):
+        edit_word([TranscriptSegment(0, 1, "Hi", words=SCORED[:1])], 0, 0, "")

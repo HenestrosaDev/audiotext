@@ -152,6 +152,49 @@ def edit_segment(
     ]
 
 
+def word_range(segment: TranscriptSegment, word_idx: int) -> tuple[int, int] | None:
+    """
+    Where a word is in the text of its segment. Words are looked up in order, like
+    when they're shown, so the same word said twice is told apart.
+
+    :return: Its start and its end in the text, or `None` if it isn't there.
+    """
+    text = segment.text
+    cursor = 0
+    for idx, word in enumerate(segment.words):
+        position = text.find(word.text, cursor) if word.text else -1
+        if position < 0:
+            continue
+        if idx == word_idx:
+            return position, position + len(word.text)
+        cursor = position + len(word.text)
+    return None
+
+
+def edit_word(
+    segments: list[TranscriptSegment], idx: int, word_idx: int, text: str
+) -> list[TranscriptSegment]:
+    """
+    Changes a word of a segment, or removes it if `text` is empty.
+
+    :raises ValueError: If the word isn't in the text, or the segment would be
+        left without text.
+    """
+    found = word_range(segments[idx], word_idx)
+    if found is None:
+        raise ValueError("The word isn't in the text of its segment")
+
+    first, last = found
+    segment_text = segments[idx].text
+    before, after = segment_text[:first], segment_text[last:]
+    if not text.strip():
+        # Without leaving two spaces where it was
+        before, after = before.rstrip(), after.lstrip()
+        if before and after and after[0].isalnum():
+            before += " "
+    return edit_segment(segments, idx, before + text.strip() + after)
+
+
 def edit_segment_part(
     segments: list[TranscriptSegment], idx: int, first: int, last: int, text: str
 ) -> list[TranscriptSegment]:

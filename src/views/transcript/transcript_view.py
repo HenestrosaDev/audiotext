@@ -63,7 +63,9 @@ from utils.subtitle_cues import (
 from utils.time_format import format_segment_time
 from utils.transcript_editing import (
     delete_segment,
+    edit_segment,
     edit_segment_part,
+    edit_word,
     insert_segment,
     overlapping_segments,
     replace_in_segments,
@@ -84,10 +86,11 @@ from views.transcript.corrections import TranscriptCorrectionsMixin
 from views.transcript.edit_dialogs import Timing, TimingDialog
 from views.transcript.find_dialog import FindDialog, FindTarget, SearchableText
 from views.transcript.media_layout import MediaLayout
-from views.transcript.player_bar import PlayerBar
+from views.transcript.player_bar import MarkKind, PlayerBar, TimelineMark
 from views.transcript.review_bar import ReviewBar
 from views.transcript.summary_panel import SummaryPanel
 from views.transcript.transcript_text import (
+    LOW_CONFIDENCE_COLOR,
     PLAIN_TEXT_MODE,
     TRANSCRIPT_MODE,
     TranscriptText,
@@ -100,6 +103,7 @@ from views.transcript.translation_panel import (
     language_name,
 )
 from views.transcript.video_pane import VideoPane
+from views.transcript.word_popover import WordPopover
 from views.widgets.button import icon_button, set_button_state, show_toggled
 from views.widgets.localized_options import LocalizedOptions
 from views.widgets.splitter import Splitter
@@ -136,6 +140,13 @@ def transcript_parts(
     return split_segments(segments, *line_limits(config, segments, is_vertical))
 
 
+# The (light, dark) colors of the marks of the low confidence words on the
+# timeline, which also differ in height
+REVIEW_MARK_COLORS = {
+    MarkKind.PENDING: LOW_CONFIDENCE_COLOR,
+    MarkKind.DONE: theme.ICON_MUTED,
+    MarkKind.CURRENT: ("#9A3412", "#FFEDD5"),
+}
 # The corrections made in the window to find and replace
 REPLACE_ONE = "one"
 REPLACE_ALL = "all"
@@ -283,6 +294,10 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._review_save_after_id: str | None = None
         # The correction being made in the window to find and replace, if any
         self._find_edit: str | None = None
+        # Whether only the segments with words to review are shown, and the one
+        # whose last word was just reviewed, kept until the user moves on
+        self._only_flagged = False
+        self._kept_segment: int | None = None
         self._find_dialog: FindDialog | None = None
         self._subtitles_variable: tk.BooleanVar | None = None
 
@@ -665,7 +680,36 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_segment_menu=self._show_segment_menu,
             on_text_edit=self._on_text_edit,
             on_scroll=self._on_transcript_scroll,
+            on_flagged_click=self._open_word_popover,
         )
+        self.word_popover = WordPopover(
+            self.text,
+            on_commit=self._commit_word,
+            on_accept=self._accept_from_popover,
+            on_replay=self._replay_current,
+            on_close=self.text.focus_text,
+        )
+        # Shown over the text when only the segments to review are, and there
+        # are none
+        self.frm_review_empty = ctk.CTkFrame(self.text, fg_color="transparent")
+        localize(
+            ctk.CTkLabel(
+                self.frm_review_empty,
+                font=theme.font(14),
+                text_color=theme.HINT_TEXT,
+            ),
+            text=L_("No low-confidence words left to review"),
+        ).grid(row=0, column=0)
+        localize(
+            ctk.CTkButton(
+                self.frm_review_empty,
+                width=0,
+                height=28,
+                command=lambda: self.review_bar.set_only_flagged(False),
+                **(theme.GHOST_BUTTON | {"text_color": theme.ACCENT_TEXT}),
+            ),
+            text=L_("Show all segments"),
+        ).grid(row=1, column=0, pady=(4, 0))
         # It's inside the card
         self.text.configure(fg_color="transparent", border_width=0)
         self.text.grid(row=1, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
@@ -697,6 +741,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             on_review_again=self._review_again,
             on_undo=self.undo_review,
             on_auto_play_change=self._set_review_auto_play,
+            on_only_flagged_change=self._set_only_flagged,
             is_auto_play=self._config_system.review_auto_play,
             previous_tooltip=lambda: _(
                 "Previous low-confidence word ({shortcut})"
@@ -798,6 +843,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _apply_mode(self) -> None:
         self._modes.set(self._mode)
         is_summary = self._mode == SUMMARY_MODE
+        if self._mode != TRANSCRIPT_MODE:
+            self.word_popover.hide()
         # The review is of the words of the subtitles
         if self._mode == TRANSCRIPT_MODE:
             self.review_bar.grid(row=1, column=0, pady=(0, 10), sticky=ctk.EW)
@@ -839,6 +886,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if self._mode != TRANSCRIPT_MODE:
             self._modes.set(TRANSCRIPT_MODE)
             self._on_mode_change(TRANSCRIPT_MODE)
+        self.word_popover.hide()
+        self._move_on()
 
         text = step_to(
             self._review.unreviewed, self._current_flagged, self.player.position, step
@@ -846,19 +895,24 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if text is not None:
             self._go_to_flagged(text)
 
-    def _go_to_flagged(self, text: FlaggedText, is_quiet: bool = False) -> None:
+    def _go_to_flagged(
+        self, text: FlaggedText, is_quiet: bool = False, focus: bool = True
+    ) -> None:
         """
         Shows a low confidence text, which Return accepts, and plays it if the
         user chose to.
 
         :param is_quiet: Whether to only show it, e.g. after a correction made in
             the window to find and replace, which keeps the focus and the audio.
+        :param focus: Whether to focus the transcript, so Return accepts it.
         """
         self._current_flagged = text
         self.text.show_flagged(text)
+        self._refresh_marks()
         if is_quiet:
             return
-        self.text.focus_text()
+        if focus:
+            self.text.focus_text()
         if self._config_system.review_auto_play:
             self.player.play_clip(
                 text.start - AUTO_PLAY_BEFORE_SECONDS,
@@ -1027,8 +1081,15 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
         is_reviewed = previous is not None and (current is None or current.review)
         self._current_flagged = None if is_reviewed else current
+        if self._current_flagged is None:
+            self.word_popover.hide()
+        if advance and is_reviewed and previous is not None:
+            # Its segment stays while it's filtered, until the user moves on
+            self._kept_segment = previous.segment_idx
         self.text.set_flagged(self._review.unreviewed)
+        self._refresh_filter()
         self._refresh_review_bar()
+        self._refresh_marks()
 
         # Once none are left, the review is done: there's nothing to go to
         if (
@@ -1038,6 +1099,121 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             and (text := step_to(self._review.unreviewed, previous, 0, 1))
         ):
             self._go_to_flagged(text, is_quiet=self._find_edit is not None)
+
+    def _move_on(self) -> None:
+        """The user goes to another word, so the segment kept is no longer."""
+        if self._kept_segment is not None:
+            self._kept_segment = None
+            self._refresh_filter()
+
+    def _set_only_flagged(self, is_on: bool) -> None:
+        self._only_flagged = is_on
+        self._kept_segment = None
+        self._refresh_filter()
+        if self._current_flagged:
+            self.text.show_flagged(self._current_flagged)
+
+    def _refresh_filter(self) -> None:
+        """
+        Shows only the segments with words to review, if the user chose to (and
+        the one kept), or all of them.
+        """
+        review = self._review
+        is_filtered = self._only_flagged and review.state in (
+            ReviewState.ACTIVE,
+            ReviewState.ALL_REVIEWED,
+        )
+        sources = {text.segment_idx for text in review.unreviewed}
+        if self._kept_segment is not None:
+            sources.add(self._kept_segment)
+        shown = self.text.show_only(sources if is_filtered else None)
+
+        if is_filtered and not shown:
+            self.frm_review_empty.place(relx=0.5, rely=0.45, anchor=ctk.CENTER)
+            self.frm_review_empty.lift()
+        else:
+            self.frm_review_empty.place_forget()
+
+    def _refresh_marks(self) -> None:
+        """Marks the low confidence words on the timeline of the audio."""
+        current = self._current_flagged
+        marks = [
+            TimelineMark(
+                text.start,
+                MarkKind.CURRENT
+                if current is not None and text.key == current.key
+                else MarkKind.DONE
+                if text.review
+                else MarkKind.PENDING,
+            )
+            for text in self._review.flagged
+        ]
+        self.player.set_marks(marks, REVIEW_MARK_COLORS, self._on_mark_click)
+
+    def _on_mark_click(self, idx: int) -> None:
+        """Goes to the word of a mark, or plays it, if it was reviewed."""
+        flagged = self._review.flagged
+        if idx >= len(flagged):
+            return
+        text = flagged[idx]
+        if text.review is not None:
+            self.player.seek(text.start)
+            return
+        if self._mode != TRANSCRIPT_MODE:
+            self._modes.set(TRANSCRIPT_MODE)
+            self._on_mode_change(TRANSCRIPT_MODE)
+        self.word_popover.hide()
+        self._move_on()
+        self._go_to_flagged(text)
+
+    # WORD POPOVER
+
+    def _open_word_popover(self, text: FlaggedText) -> None:
+        """Corrects (or accepts) a low confidence word where it is."""
+        self._move_on()
+        self._go_to_flagged(text, focus=False)
+        if box := self.text.flagged_box(text):
+            self.word_popover.open(text.text, self.text.text_widget, box)
+
+    def _commit_word(self, value: str) -> None:
+        """Saves the word corrected in the popover, or accepts it if unchanged."""
+        text = self._current_flagged
+        if text is None:
+            self.word_popover.close()
+            return
+        if value.strip() == text.text:
+            self._accept_from_popover()
+            return
+
+        try:
+            if text.word_idx is None:
+                segments = edit_segment(self._entry.segments, text.segment_idx, value)
+            else:
+                segments = edit_word(
+                    self._entry.segments, text.segment_idx, text.word_idx, value
+                )
+        except ValueError:
+            # E.g. a segment can't be left without text
+            self.bell()
+            return
+        self.word_popover.hide()
+        # Going to the next word follows, which focuses the transcript
+        self._update_transcript(segments, lambda edited_text: edited_text)
+        if self._current_flagged is None:
+            self.text.focus_text()
+
+    def _accept_from_popover(self) -> None:
+        self.word_popover.hide()
+        self.accept_current()
+        if self._current_flagged is None:
+            self.text.focus_text()
+
+    def _replay_current(self) -> None:
+        if text := self._current_flagged:
+            self.player.play_clip(
+                text.start - AUTO_PLAY_BEFORE_SECONDS,
+                text.end + AUTO_PLAY_AFTER_SECONDS,
+            )
 
     def _refresh_review_bar(self) -> None:
         undo = self._undo
@@ -1387,6 +1563,10 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self._on_transcript_scroll()
 
     def _on_transcript_scroll(self) -> None:
+        if self.word_popover.is_open and self._current_flagged:
+            self.word_popover.place_at(
+                self.text.text_widget, self.text.flagged_box(self._current_flagged)
+            )
         # The translation panel is created after the transcript
         if hasattr(self, "translation_panel"):
             self._sync_scroll(self.text, self.translation_panel.text)
@@ -1896,6 +2076,10 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.player.play_from(seconds)
 
     def _on_segment_click(self, idx: int) -> None:
+        # A click away from the word only closes its popover
+        if self.word_popover.is_open:
+            self.word_popover.close()
+            return
         self._play_from(self._parts[idx].segment.start)
 
     def _on_translation_segment_click(self, idx: int) -> None:
