@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 10:25+0200\n"
+"POT-Creation-Date: 2026-10-14 10:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -1262,13 +1262,14 @@ msgstr "Изменить ключ API…"
 #: src/views/settings/preferences_dialog.py:452
 #: src/views/settings/preferences_dialog.py:465
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:381
+#: src/views/transcript/translation_panel.py:400
+#: src/views/transcript/translation_panel.py:472
 msgid "Set API key…"
 msgstr "Задать ключ API…"
 
 #: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:514
-#: src/views/transcript/translation_panel.py:168
+#: src/views/transcript/translation_panel.py:170
 msgid "Translation"
 msgstr "Перевод"
 
@@ -1544,13 +1545,13 @@ msgstr "Язык аудио"
 
 #: src/views/settings/cards/language_card.py:65
 #: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:335
+#: src/views/transcript/translation_panel.py:338
 msgid "Search language…"
 msgstr "Поиск языка…"
 
 #: src/views/settings/cards/language_card.py:66
 #: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:336
+#: src/views/transcript/translation_panel.py:339
 msgid "No languages found."
 msgstr "Языки не найдены."
 
@@ -1966,7 +1967,7 @@ msgid "Plain text"
 msgstr "Простой текст"
 
 #: src/views/transcript/transcript_view.py:455
-#: src/views/transcript/translation_panel.py:322
+#: src/views/transcript/translation_panel.py:324
 msgid "Translate"
 msgstr "Перевести"
 
@@ -2105,66 +2106,82 @@ msgstr "Переименовать…"
 msgid "Copied"
 msgstr "Скопировано"
 
-#: src/views/transcript/translation_panel.py:131
+#: src/views/transcript/translation_panel.py:133
 msgid "Not translated yet"
 msgstr "Ещё не переведено"
 
-#: src/views/transcript/translation_panel.py:156
+#: src/views/transcript/translation_panel.py:158
 #, python-brace-format
 msgid "Translating into {language}…"
 msgstr "Перевод (язык: {language})…"
 
-#: src/views/transcript/translation_panel.py:160
+#: src/views/transcript/translation_panel.py:162
 msgid "Translating…"
 msgstr "Перевод…"
 
-#: src/views/transcript/translation_panel.py:163
+#: src/views/transcript/translation_panel.py:165
 msgid "It takes a moment."
 msgstr "Это займёт немного времени."
 
-#: src/views/transcript/translation_panel.py:165
+#: src/views/transcript/translation_panel.py:167
 msgid "The transcription is being translated. It takes a moment."
 msgstr "Транскрипция переводится. Это займёт немного времени."
 
-#: src/views/transcript/translation_panel.py:172
+#: src/views/transcript/translation_panel.py:174
 msgid "There is no translation yet."
 msgstr "Перевода пока нет."
 
-#: src/views/transcript/translation_panel.py:174
+#: src/views/transcript/translation_panel.py:176
 msgid "Translate…"
 msgstr "Перевести…"
 
-#: src/views/transcript/translation_panel.py:277
+#: src/views/transcript/translation_panel.py:279
 #, python-brace-format
 msgid "Segments left to translate: {count}. Right-click one to translate it."
 msgstr ""
 "Осталось перевести сегментов: {count}. Нажмите на один правой кнопкой, "
 "чтобы перевести его."
 
-#: src/views/transcript/translation_panel.py:284
-msgid "Translated manually"
-msgstr "Переведено вручную"
+#: src/views/transcript/translation_panel.py:286
+#: src/views/transcript/translation_panel.py:365
+msgid "Manual"
+msgstr "Вручную"
 
-#: src/views/transcript/translation_panel.py:330
+#: src/views/transcript/translation_panel.py:333
 msgid "Translate into:"
 msgstr "Перевести на:"
 
-#: src/views/transcript/translation_panel.py:350
-msgid "Provider:"
-msgstr "Поставщик:"
+#: src/views/transcript/translation_panel.py:354
+msgid "Translate with:"
+msgstr "Перевести с помощью:"
 
-#: src/views/transcript/translation_panel.py:360
-msgid "Myself, from scratch"
-msgstr "Сам, с нуля"
-
-#: src/views/transcript/translation_panel.py:391
+#: src/views/transcript/translation_panel.py:411
 msgid "More options in the settings"
 msgstr "Больше параметров в настройках"
 
-#: src/views/transcript/translation_panel.py:428
+#: src/views/transcript/translation_panel.py:442
 #, python-brace-format
-msgid "Set the API key of {provider} to translate with it."
-msgstr "Задайте ключ API для {provider}, чтобы переводить с его помощью."
+msgid "No API key for {provider}."
+msgstr "Нет ключа API для {provider}."
+
+#: src/views/transcript/translation_panel.py:449
+msgid "Creates empty segments with the original timestamps for you to fill in."
+msgstr ""
+"Создаёт пустые сегменты с исходными временными метками, которые вы "
+"заполните."
+
+#: src/views/transcript/translation_panel.py:459
+#, python-brace-format
+msgid "Uses the model {model}."
+msgstr "Использует модель {model}."
+
+#: src/views/transcript/translation_panel.py:462
+msgid "Translates each segment, keeping its timestamps."
+msgstr "Переводит каждый сегмент, сохраняя его временные метки."
+
+#: src/views/transcript/translation_panel.py:474
+msgid "Set…"
+msgstr "Задать…"
 
 #: src/views/transcript/video_pane.py:260
 msgid "Show subtitles on the video"

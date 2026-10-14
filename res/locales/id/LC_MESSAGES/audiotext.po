@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 10:25+0200\n"
+"POT-Creation-Date: 2026-10-14 10:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -1259,13 +1259,14 @@ msgstr "Ubah kunci API…"
 #: src/views/settings/preferences_dialog.py:452
 #: src/views/settings/preferences_dialog.py:465
 #: src/views/transcript/summary_panel.py:100
-#: src/views/transcript/translation_panel.py:381
+#: src/views/transcript/translation_panel.py:400
+#: src/views/transcript/translation_panel.py:472
 msgid "Set API key…"
 msgstr "Atur kunci API…"
 
 #: src/views/settings/cards/language_card.py:117
 #: src/views/settings/preferences_dialog.py:514
-#: src/views/transcript/translation_panel.py:168
+#: src/views/transcript/translation_panel.py:170
 msgid "Translation"
 msgstr "Terjemahan"
 
@@ -1539,13 +1540,13 @@ msgstr "Bahasa audio"
 
 #: src/views/settings/cards/language_card.py:65
 #: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:335
+#: src/views/transcript/translation_panel.py:338
 msgid "Search language…"
 msgstr "Cari bahasa…"
 
 #: src/views/settings/cards/language_card.py:66
 #: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:336
+#: src/views/transcript/translation_panel.py:339
 msgid "No languages found."
 msgstr "Bahasa tidak ditemukan."
 
@@ -1962,7 +1963,7 @@ msgid "Plain text"
 msgstr "Teks biasa"
 
 #: src/views/transcript/transcript_view.py:455
-#: src/views/transcript/translation_panel.py:322
+#: src/views/transcript/translation_panel.py:324
 msgid "Translate"
 msgstr "Terjemahkan"
 
@@ -2101,66 +2102,80 @@ msgstr "Ganti nama…"
 msgid "Copied"
 msgstr "Disalin"
 
-#: src/views/transcript/translation_panel.py:131
+#: src/views/transcript/translation_panel.py:133
 msgid "Not translated yet"
 msgstr "Belum diterjemahkan"
 
-#: src/views/transcript/translation_panel.py:156
+#: src/views/transcript/translation_panel.py:158
 #, python-brace-format
 msgid "Translating into {language}…"
 msgstr "Menerjemahkan ke bahasa {language}…"
 
-#: src/views/transcript/translation_panel.py:160
+#: src/views/transcript/translation_panel.py:162
 msgid "Translating…"
 msgstr "Menerjemahkan…"
 
-#: src/views/transcript/translation_panel.py:163
+#: src/views/transcript/translation_panel.py:165
 msgid "It takes a moment."
 msgstr "Ini butuh waktu sebentar."
 
-#: src/views/transcript/translation_panel.py:165
+#: src/views/transcript/translation_panel.py:167
 msgid "The transcription is being translated. It takes a moment."
 msgstr "Transkripsi sedang diterjemahkan. Ini butuh waktu sebentar."
 
-#: src/views/transcript/translation_panel.py:172
+#: src/views/transcript/translation_panel.py:174
 msgid "There is no translation yet."
 msgstr "Belum ada terjemahan."
 
-#: src/views/transcript/translation_panel.py:174
+#: src/views/transcript/translation_panel.py:176
 msgid "Translate…"
 msgstr "Terjemahkan…"
 
-#: src/views/transcript/translation_panel.py:277
+#: src/views/transcript/translation_panel.py:279
 #, python-brace-format
 msgid "Segments left to translate: {count}. Right-click one to translate it."
 msgstr ""
 "Segmen yang belum diterjemahkan: {count}. Klik kanan salah satunya untuk "
 "menerjemahkannya."
 
-#: src/views/transcript/translation_panel.py:284
-msgid "Translated manually"
-msgstr "Diterjemahkan secara manual"
+#: src/views/transcript/translation_panel.py:286
+#: src/views/transcript/translation_panel.py:365
+msgid "Manual"
+msgstr "Manual"
 
-#: src/views/transcript/translation_panel.py:330
+#: src/views/transcript/translation_panel.py:333
 msgid "Translate into:"
 msgstr "Terjemahkan ke:"
 
-#: src/views/transcript/translation_panel.py:350
-msgid "Provider:"
-msgstr "Penyedia:"
+#: src/views/transcript/translation_panel.py:354
+msgid "Translate with:"
+msgstr "Terjemahkan dengan:"
 
-#: src/views/transcript/translation_panel.py:360
-msgid "Myself, from scratch"
-msgstr "Sendiri, dari awal"
-
-#: src/views/transcript/translation_panel.py:391
+#: src/views/transcript/translation_panel.py:411
 msgid "More options in the settings"
 msgstr "Opsi lainnya di pengaturan"
 
-#: src/views/transcript/translation_panel.py:428
+#: src/views/transcript/translation_panel.py:442
 #, python-brace-format
-msgid "Set the API key of {provider} to translate with it."
-msgstr "Atur kunci API {provider} untuk menerjemahkan dengannya."
+msgid "No API key for {provider}."
+msgstr "Tidak ada kunci API untuk {provider}."
+
+#: src/views/transcript/translation_panel.py:449
+msgid "Creates empty segments with the original timestamps for you to fill in."
+msgstr "Membuat segmen kosong dengan stempel waktu asli untuk Anda isi."
+
+#: src/views/transcript/translation_panel.py:459
+#, python-brace-format
+msgid "Uses the model {model}."
+msgstr "Menggunakan model {model}."
+
+#: src/views/transcript/translation_panel.py:462
+msgid "Translates each segment, keeping its timestamps."
+msgstr "Menerjemahkan setiap segmen dengan mempertahankan stempel waktunya."
+
+#: src/views/transcript/translation_panel.py:474
+msgid "Set…"
+msgstr "Atur…"
 
 #: src/views/transcript/video_pane.py:260
 msgid "Show subtitles on the video"
