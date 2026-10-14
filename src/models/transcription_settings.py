@@ -36,7 +36,7 @@ class TranscriptionSettings:
     # A code of `AUDIO_LANGUAGES`, or `SAME_LANGUAGE`
     output_language: str = SAME_LANGUAGE
     translation_mode: str = TranslationMode.WHISPER.value
-    align_words: bool = False
+    align_words: bool = True
     isolate_speech: bool = False
     diarize: bool = False
     num_speakers: int = 0

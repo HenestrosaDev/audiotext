@@ -12,7 +12,9 @@ class ConfigTranscription:
     # Added in a later version, so they have defaults for older `config.ini` files
     output_language: str = "same"
     translation_mode: str = "whisper"
-    align_words: bool = False
+    # On by default, as the transcript needs the timings and the scores of the
+    # words to highlight them
+    align_words: bool = True
     isolate_speech: bool = False
     # Folder of the files saved automatically for the URLs and the microphone
     output_dir: str = ""
