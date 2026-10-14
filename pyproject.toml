@@ -105,11 +105,16 @@ select = [
 pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = "-ra"
+filterwarnings = [
+    # Deprecations in dependencies, which only their updates can fix
+    "ignore:aifc was removed in Python 3.13:DeprecationWarning:speech_recognition",
+    "ignore:Setting the shape on a NumPy array:DeprecationWarning:sounddevice",
+]
 
 [tool.coverage.report]
 # A bit below the current coverage, since it varies with the system and the version
 # of Python. Raise it when the coverage grows
-fail_under = 78
+fail_under = 85
 
 [tool.mypy]
 mypy_path = "src"
