@@ -2,7 +2,6 @@ import logging
 import threading
 import tkinter as tk
 from collections.abc import Callable
-from dataclasses import replace
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, messagebox
@@ -30,14 +29,22 @@ from utils.media import (
     load_audio_samples,
     probe_media,
 )
-from utils.subtitle_cues import CueTrack, build_cues, line_limits
+from utils.subtitle_cues import (
+    CueTrack,
+    SegmentPart,
+    build_cues,
+    line_limits,
+    split_segments,
+)
 from utils.time_format import format_segment_time
 from utils.transcript_editing import (
     delete_segment,
+    edit_segment_part,
     insert_segment,
     overlapping_segments,
     set_segment_timing,
     speakers,
+    split_segment,
 )
 from views.entries.delegates import EntryActions
 from views.entries.entry_header import EntryHeader
@@ -92,6 +99,14 @@ def build_cue_track(segments: list[TranscriptSegment], is_vertical: bool) -> Cue
     return CueTrack(build_cues(segments, *line_limits(config, segments, is_vertical)))
 
 
+def transcript_parts(
+    segments: list[TranscriptSegment], is_vertical: bool
+) -> list[SegmentPart]:
+    """The parts of the segments shown in the transcript: their subtitles."""
+    config = ConfigManager.get_config_subtitles()
+    return split_segments(segments, *line_limits(config, segments, is_vertical))
+
+
 def export_labels() -> dict[str, str]:
     return {
         "txt": _("Plain text (.txt)"),
@@ -129,6 +144,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._mode = TRANSCRIPT_MODE if entry.segments else PLAIN_TEXT_MODE
         # What the text shows, to render it again only when it changes
         self._shown_content: tuple[list[TranscriptSegment], str, bool] | None = None
+        # The parts of the segments shown in the transcript (see `transcript_parts`)
+        self._parts: list[SegmentPart] = []
         # Whether the video is taller than it's wide, which narrows the subtitles.
         # It's known once the media is loaded
         self._is_vertical = False
@@ -443,7 +460,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._modes = LocalizedOptions(
             self.seg_mode,
             lambda: {
-                TRANSCRIPT_MODE: _("Transcript"),
+                TRANSCRIPT_MODE: _("Subtitles"),
                 PLAIN_TEXT_MODE: _("Plain text"),
                 SUMMARY_MODE: _("Summary"),
             },
@@ -506,8 +523,12 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         has_new_segments = (
             self._shown_content is None or entry.segments is not self._shown_content[0]
         )
+        if has_new_segments:
+            self._parts = transcript_parts(entry.segments, self._is_vertical)
         self._shown_content = content
-        self.text.set_content(*content)
+        self.text.set_content(
+            [part.segment for part in self._parts], entry.text, entry.is_text_edited
+        )
         if has_new_segments:
             self.video.set_cue_track(build_cue_track(entry.segments, self._is_vertical))
 
@@ -753,6 +774,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self._translation(),
             is_loading=is_loading,
             error=self._translation_error(),
+            segments=[part.segment for part in self._translation_parts()],
             languages=self._translation_labels(translating),
         )
         self.translation_panel.set_mode(self._mode)
@@ -846,8 +868,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.translation_panel.save_pending_text()
         save_config(ConfigAi.Key.TRANSLATION_LANGUAGE, request.language)
         if request.provider == MANUAL:
+            # Like the transcript, a segment per subtitle, with its timestamps
             self._actions.transcript.start_manual_translation(
-                self.entry_id, request.language
+                self.entry_id,
+                request.language,
+                [part.segment for part in self._parts],
             )
             self._translation_language = request.language
             self._set_translation_visible(True)
@@ -881,11 +906,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             )
 
     def _show_translation_segment_menu(self, event: Any, idx: int) -> str:
-        translation = self._translation()
-        if translation is None or idx >= len(translation.segments):
+        parts = self._translation_parts()
+        if idx >= len(parts):
             return "break"
 
-        segment = translation.segments[idx]
+        segment = parts[idx].segment
         menu = tk.Menu(self, tearoff=False)
         menu.add_command(
             label=_("Play from here"), command=lambda: self._play_from(segment.start)
@@ -912,7 +937,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             label=_("Delete the segment"),
             command=lambda: self._delete_translation_segment(idx),
             # Without segments, the translation would have no timestamps
-            state=tk.NORMAL if len(translation.segments) > 1 else tk.DISABLED,
+            state=tk.NORMAL if len(parts) > 1 else tk.DISABLED,
         )
         try:
             menu.tk_popup(event.x_root, event.y_root)
@@ -925,6 +950,38 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.translation_panel.save_pending_text()
         translation = self._translation()
         return list(translation.segments) if translation else None
+
+    def _translation_parts(self) -> list[SegmentPart]:
+        """The parts of the segments of the translation shown in its panel."""
+        translation = self._translation()
+        if translation is None:
+            return []
+        return transcript_parts(list(translation.segments), self._is_vertical)
+
+    def _split_translation_part(
+        self, idx: int
+    ) -> tuple[list[TranscriptSegment], int] | None:
+        """
+        Makes a part shown in the translation a segment of its own, to change its
+        timing, add a segment after it or delete it, which are changes of what the
+        user sees, not of the whole segment.
+
+        :return: The segments of the translation, with the segment of the part
+                 split into its parts, and the index of the part among them.
+        """
+        segments = self._translation_segments()
+        parts = self._translation_parts()
+        if segments is None or idx >= len(parts):
+            return None
+
+        part = parts[idx]
+        pieces = [p for p in parts if p.segment_idx == part.segment_idx]
+        if len(pieces) == 1:
+            return segments, part.segment_idx
+        segments = split_segment(
+            segments, part.segment_idx, [piece.segment for piece in pieces]
+        )
+        return segments, part.segment_idx + pieces.index(part)
 
     def _save_translation_segments(self, segments: list[TranscriptSegment]) -> None:
         translation = self._translation()
@@ -940,10 +997,12 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
     def _edit_translation_segment(self, idx: int) -> None:
         segments = self._translation_segments()
-        if segments is None or idx >= len(segments):
+        parts = self._translation_parts()
+        if segments is None or idx >= len(parts):
             return
 
-        segment = segments[idx]
+        part = parts[idx]
+        segment = part.segment
         # The original text said meanwhile is shown, to translate it
         original = " ".join(
             s.text
@@ -969,14 +1028,16 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         if not text or not text.strip() or text == segment.text:
             return
 
-        segments[idx] = replace(segment, text=text.strip())
-        self._save_translation_segments(segments)
+        self._save_translation_segments(
+            edit_segment_part(segments, part.segment_idx, part.first, part.last, text)
+        )
 
     def _edit_translation_timing(self, idx: int) -> None:
-        segments = self._translation_segments()
-        if segments is None or idx >= len(segments):
+        split = self._split_translation_part(idx)
+        if split is None:
             return
 
+        segments, idx = split
         segment = segments[idx]
         timing = TimingDialog(
             self,
@@ -993,9 +1054,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
 
     def _add_translation_segment(self, idx: int) -> None:
-        segments = self._translation_segments()
-        if segments is None or idx >= len(segments):
+        split = self._split_translation_part(idx)
+        if split is None:
             return
+
+        segments, idx = split
 
         # By default, it fills the gap until the next segment
         previous = segments[idx]
@@ -1018,14 +1081,21 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         segments = insert_segment(segments, added)
         self._save_translation_segments(segments)
         # It's translated right away, or it's left to translate later
+        added_idx = next(i for i, segment in enumerate(segments) if segment is added)
         self._edit_translation_segment(
-            next(i for i, segment in enumerate(segments) if segment is added)
+            next(
+                i
+                for i, part in enumerate(self._translation_parts())
+                if part.segment_idx == added_idx
+            )
         )
 
     def _delete_translation_segment(self, idx: int) -> None:
-        segments = self._translation_segments()
-        if segments is None or idx >= len(segments) or len(segments) <= 1:
+        split = self._split_translation_part(idx)
+        if split is None or len(split[0]) <= 1:
             return
+
+        segments, idx = split
 
         segment = segments[idx]
         if segment.text and not messagebox.askyesno(
@@ -1172,17 +1242,18 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.player.load(samples, PLAYBACK_SAMPLE_RATE, is_video=self.layout.has_video)
 
     def _set_vertical(self) -> None:
-        """Splits the subtitles again for a vertical video."""
+        """Splits the transcript and the subtitles again for a vertical video."""
         self._is_vertical = True
         self.refresh_subtitles()
 
     def refresh_subtitles(self) -> None:
         """
-        Splits the subtitles of the video and of its translation again, e.g. after
-        the user changes their size.
+        Splits the transcript, its translation and the subtitles of the video
+        again, e.g. after the user changes the size of the subtitles.
         """
         self._shown_content = None
         self._show_content()
+        self._refresh_translation()
         self._subtitled_translation = ("", ())
         self._refresh_translation_subtitles()
 
@@ -1199,17 +1270,17 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.player.play_from(seconds)
 
     def _on_segment_click(self, idx: int) -> None:
-        self._play_from(self._entry.segments[idx].start)
+        self._play_from(self._parts[idx].segment.start)
 
     def _on_translation_segment_click(self, idx: int) -> None:
-        translation = self._translation()
-        if translation and idx < len(translation.segments):
-            self._play_from(translation.segments[idx].start)
+        parts = self._translation_parts()
+        if idx < len(parts):
+            self._play_from(parts[idx].segment.start)
 
     # MENUS
 
     def _show_segment_menu(self, event: Any, idx: int) -> str:
-        segment = self._entry.segments[idx]
+        segment = self._parts[idx].segment
         menu = tk.Menu(self, tearoff=False)
         menu.add_command(
             label=_("Play from here"), command=lambda: self._play_from(segment.start)

@@ -3,8 +3,10 @@ from models.transcript_segment import TranscriptSegment, TranscriptWord
 from utils.subtitle_cues import (
     Cue,
     CueTrack,
+    SegmentPart,
     build_cues,
     line_limits,
+    split_segments,
     uses_wide_characters,
 )
 
@@ -109,6 +111,33 @@ def test_no_line_is_longer_than_the_width() -> None:
     assert [cue.text for cue in cues] == ["aaaaaa\nbbbbbb", "cccccc"]
 
 
+def test_segments_are_split_into_the_parts_of_their_subtitles() -> None:
+    words = tuple(
+        TranscriptWord(float(idx), idx + 0.5, word)
+        for idx, word in enumerate(["one", "two", "three", "four", "five", "six"])
+    )
+    long_segment = TranscriptSegment(
+        0.0, 6.0, " one two three four five six", "SPEAKER_00", words
+    )
+    short_segment = TranscriptSegment(7.0, 8.0, "Bye.")
+
+    parts = split_segments([long_segment, short_segment], 10, 2)
+
+    assert [(p.segment_idx, p.first, p.last) for p in parts] == [
+        (0, 1, 19),
+        (0, 20, 28),
+        (1, 0, 4),
+    ]
+    first, second, third = (part.segment for part in parts)
+    assert (first.start, first.end, first.text) == (0.0, 4.0, "one two three four")
+    assert first.words == words[:4]
+    assert first.speaker == "SPEAKER_00"
+    assert (second.start, second.end, second.text) == (4.0, 6.0, "five six")
+    assert second.words == words[4:]
+    # A segment that fits in a subtitle is kept as it is
+    assert third is short_segment
+
+
 def test_wide_characters_are_detected_by_most_of_the_text() -> None:
     assert uses_wide_characters([TranscriptSegment(0, 1, "你好，世界。OK")])
     assert uses_wide_characters([TranscriptSegment(0, 1, "こんにちは")])
@@ -136,6 +165,13 @@ def test_line_limits_follow_the_script_and_the_video() -> None:
     config.max_line_count_vertical = 1
     assert line_limits(config, latin, is_vertical=True) == (24, 1)
     assert line_limits(config, latin, is_vertical=False) == (42, 2)
+
+
+def test_segments_without_text_are_kept() -> None:
+    # e.g. the segments of a translation that are not translated yet
+    empty = TranscriptSegment(0.0, 1.0, "")
+
+    assert split_segments([empty], 10, 1) == [SegmentPart(0, 0, 0, empty)]
 
 
 def test_the_lines_of_a_subtitle_are_evened_out() -> None:

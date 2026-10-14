@@ -6,9 +6,10 @@ import customtkinter as ctk
 from models.history import HistoryEntry
 from models.transcript_segment import TranscriptSegment, join_segments
 from utils.i18n import _
+from utils.subtitle_cues import SegmentPart
 from utils.transcript_editing import (
     count_matches,
-    edit_segment,
+    edit_segment_part,
     rename_speakers,
     rename_speakers_in_text,
     replace_in_segments,
@@ -32,6 +33,8 @@ class TranscriptCorrectionsMixin:
     # Provided by the view
     entry_id: str
     _entry: HistoryEntry
+    # The parts of the segments shown in the transcript
+    _parts: list[SegmentPart]
     _actions: EntryActions
     _search_variable: ctk.StringVar
     text: "TranscriptText"
@@ -88,7 +91,8 @@ class TranscriptCorrectionsMixin:
         )
 
     def _edit_segment(self, idx: int) -> None:
-        segment = self._entry.segments[idx]
+        part = self._parts[idx]
+        segment = part.segment
         text = TextDialog(
             self,
             _("Edit text"),
@@ -102,5 +106,8 @@ class TranscriptCorrectionsMixin:
 
         # The edited text keeps the changes of the user, so only the segment changes
         self._update_transcript(
-            edit_segment(self._entry.segments, idx, text), lambda text: text
+            edit_segment_part(
+                self._entry.segments, part.segment_idx, part.first, part.last, text
+            ),
+            lambda text: text,
         )

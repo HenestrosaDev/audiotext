@@ -123,6 +123,36 @@ def edit_segment(
     ]
 
 
+def edit_segment_part(
+    segments: list[TranscriptSegment], idx: int, first: int, last: int, text: str
+) -> list[TranscriptSegment]:
+    """
+    Changes a part of the text of a segment (e.g. the one shown as a subtitle),
+    keeping the rest of it.
+
+    :param first: The start of the part in the text of the segment.
+    :param last: The end of the part in the text of the segment.
+    :raises ValueError: If the text is empty.
+    """
+    if not text.strip():
+        raise ValueError("The text of a segment can't be empty")
+
+    segment_text = segments[idx].text
+    return edit_segment(
+        segments, idx, segment_text[:first] + text.strip() + segment_text[last:]
+    )
+
+
+def split_segment(
+    segments: list[TranscriptSegment], idx: int, pieces: list[TranscriptSegment]
+) -> list[TranscriptSegment]:
+    """
+    Replaces a segment with its pieces (e.g. the parts shown as subtitles), so
+    each of them can be changed on its own.
+    """
+    return [*segments[:idx], *pieces, *segments[idx + 1 :]]
+
+
 def set_segment_timing(
     segments: list[TranscriptSegment], idx: int, start: float, end: float
 ) -> list[TranscriptSegment]:

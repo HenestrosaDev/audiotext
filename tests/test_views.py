@@ -385,7 +385,7 @@ def test_the_transcript_can_be_searched_and_corrected(
     ui.pump()
     assert view.text.match_status == (0, 2)
 
-    for label in ("Plain text", "Summary", "Transcript"):
+    for label in ("Plain text", "Summary", "Subtitles"):
         view._on_mode_change(view._modes.value(label))
         ui.pump()
 
@@ -522,7 +522,7 @@ def test_a_translation_is_shown_next_to_the_transcript(
     assert ConfigManager.get_config_ai().translation_provider == "deepl"
 
     # It follows the mode and the playback of the transcript
-    for label in ("Plain text", "Summary", "Transcript"):
+    for label in ("Plain text", "Summary", "Subtitles"):
         view._on_mode_change(view._modes.value(label))
         ui.pump()
     view.player.toggle_playback()
@@ -701,6 +701,41 @@ def test_a_transcription_can_be_translated_from_scratch(
     assert "2" in panel.lbl_details.cget("text")
 
 
+def test_a_translation_from_scratch_has_the_timestamps_of_the_subtitles(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import views.transcript.transcript_view as transcript_view
+    from views.transcript.translation_panel import TranslationRequest
+
+    ConfigManager.modify_value(
+        ConfigSubtitles.Key.SECTION, ConfigSubtitles.Key.MAX_LINE_WIDTH, "10"
+    )
+    ConfigManager.modify_value(
+        ConfigSubtitles.Key.SECTION, ConfigSubtitles.Key.MAX_LINE_COUNT, "1"
+    )
+    monkeypatch.setattr(
+        transcript_view.TranslateDialog,
+        "get_result",
+        lambda _self: TranslationRequest("es", "manual"),
+    )
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+
+    view._on_translate_button()
+    ui.pump()
+
+    # A segment per subtitle of the transcript, e.g. "Nice to" and "meet you."
+    translation = entry.get_translation("es")
+    assert translation is not None
+    assert [(s.start, s.end) for s in translation.segments] == [
+        (part.segment.start, part.segment.end) for part in view._parts
+    ]
+    assert len(translation.segments) > len(SEGMENTS)
+    assert all(not segment.text for segment in translation.segments)
+
+
 def test_the_segments_of_a_translation_have_their_own_timing(
     ui: Ui, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -776,12 +811,115 @@ def test_the_segments_of_a_translation_have_their_own_timing(
     assert "¿Qué tal?" not in segments()
 
 
+def test_the_transcript_is_shown_as_subtitles(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import views.transcript.corrections as corrections
+
+    ConfigManager.modify_value(
+        ConfigSubtitles.Key.SECTION, ConfigSubtitles.Key.MAX_LINE_WIDTH, "10"
+    )
+    ConfigManager.modify_value(
+        ConfigSubtitles.Key.SECTION, ConfigSubtitles.Key.MAX_LINE_COUNT, "1"
+    )
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    transcript = view.text.tbx_transcript
+
+    # By default, each segment is split into the lines of its subtitles
+    content = transcript.get("1.0", "end")
+    assert "Nice to\n" in content
+    assert "meet you.\n" in content
+    assert "Nice to meet you." not in content
+
+    # Each part is edited on its own, and the rest of the segment is kept
+    meet_you = next(
+        idx for idx, part in enumerate(view._parts) if part.segment.text == "meet you."
+    )
+    monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "you all.")
+    view._edit_segment(meet_you)
+    ui.pump()
+    assert entry.segments[1].text == "Nice to you all."
+
+
+def test_the_parts_of_the_translation_are_changed_on_their_own(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import views.transcript.transcript_view as transcript_view
+    from models.translation import TranscriptTranslation
+    from views.transcript.edit_dialogs import Timing
+
+    for key, value in (
+        (ConfigSubtitles.Key.MAX_LINE_WIDTH, "10"),
+        (ConfigSubtitles.Key.MAX_LINE_COUNT, "1"),
+    ):
+        ConfigManager.modify_value(ConfigSubtitles.Key.SECTION, key, value)
+    translation = TranscriptTranslation(
+        "es", "", translated("Hola wisper", "Encantado de conocerte.", ""), "deepl"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    panel_text = view.translation_panel.text.tbx_transcript
+
+    def segments() -> list[tuple[float, float, str]]:
+        edited = entry.get_translation("es")
+        assert edited is not None
+        return [(s.start, s.end, s.text) for s in edited.segments]
+
+    # The long segment is shown as its subtitles, and the one not translated
+    # yet is still shown
+    texts = [part.segment.text for part in view._translation_parts()]
+    assert texts == ["Hola", "wisper", "Encantado", "de", "conocerte.", ""]
+    assert "00:00:03,500 – 00:00:05,000   SPEAKER_00\n" in panel_text.get("1.0", "end")
+
+    # The text of a part is edited, keeping the rest of its segment
+    monkeypatch.setattr(transcript_view.TextDialog, "get_input", lambda _self: "Feliz")
+    view._edit_translation_segment(2)
+    ui.pump()
+    assert segments()[1][2] == "Feliz de conocerte."
+    assert segments()[1][:2] == (1.5, 3.0)
+
+    # Changing the timing of a part makes it a segment of its own
+    monkeypatch.setattr(
+        transcript_view.TimingDialog, "get_result", lambda _self: Timing(0.6, 0.9)
+    )
+    view._edit_translation_timing(1)
+    ui.pump()
+    assert [text for _start, _end, text in segments()] == [
+        "Hola",
+        "wisper",
+        "Feliz de conocerte.",
+        "",
+    ]
+    assert segments()[1][:2] == (0.6, 0.9)
+    assert segments()[0][0] == 0.0
+
+    # Deleting a part only deletes it
+    monkeypatch.setattr(transcript_view.messagebox, "askyesno", lambda *_a, **_k: True)
+    view._delete_translation_segment(0)
+    ui.pump()
+    assert [text for _start, _end, text in segments()] == [
+        "wisper",
+        "Feliz de conocerte.",
+        "",
+    ]
+
+
 def test_the_subtitles_are_split_again_when_their_size_changes(ui: Ui) -> None:
     entry = ui.add(segments=SEGMENTS, text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
-    assert view.video._cue_track.at(2.5).text == "Nice to meet you."
+    transcript = view.text.tbx_transcript
+    assert "Nice to meet you." in transcript.get("1.0", "end")
 
     # As if the user changed them in the preferences
     for key, value in (
@@ -791,6 +929,7 @@ def test_the_subtitles_are_split_again_when_their_size_changes(ui: Ui) -> None:
         ConfigManager.modify_value(ConfigSubtitles.Key.SECTION, key, value)
     ui.window._on_subtitles_change()
     ui.pump()
+    assert "Nice to meet you." not in transcript.get("1.0", "end")
     assert view.video._cue_track.at(2.5).text == "meet you."
 
 
@@ -805,11 +944,15 @@ def test_the_subtitles_of_a_vertical_video_are_narrower(ui: Ui) -> None:
     ui.window.select_entry(entry.id)
     ui.pump()
     view = ui.window._entry_view
-    assert view.video._cue_track.at(2.5).text == "Nice to meet you."
+    transcript = view.text.tbx_transcript
+    assert "Nice to meet you." in transcript.get("1.0", "end")
 
     # Once the media is loaded and its video is vertical
     view._set_vertical()
     ui.pump()
+    content = transcript.get("1.0", "end")
+    assert "Nice to\n" in content
+    assert "meet you.\n" in content
     assert view.video._cue_track.at(2.5).text == "meet you."
 
 
@@ -1330,7 +1473,7 @@ def test_the_open_views_keep_their_state_in_another_language(
         ui.pump()
         transcript = ui.window._entry_view
         assert transcript.seg_mode.cget("values") == [
-            "Transcripción",
+            "Subtítulos",
             "Texto plano",
             "Resumen",
         ]
