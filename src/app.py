@@ -25,6 +25,7 @@ from utils.history_store import HistoryStore
 from utils.system import hide_console_windows
 from views.main_window.main_window import MainWindow
 from views.style import theme
+from views.widgets.window import is_on_screen
 
 try:
     from tkinterdnd2 import DND_FILES, TkinterDnD
@@ -35,8 +36,6 @@ except ImportError:  # Drag and drop is optional
 
 WINDOW_SIZE = (1280, 820)
 WINDOW_MIN_SIZE = (960, 600)
-# Pixels of the window that must be on the screen to restore its position
-VISIBLE_WINDOW_MARGIN = 100
 # Time the window must stay still before its size and position are stored
 WINDOW_GEOMETRY_SAVE_DELAY_MS = 500
 # How often the garbage is collected on the Tkinter thread
@@ -65,29 +64,6 @@ def parse_geometry(geometry: str) -> tuple[int, int, int, int] | None:
     # Tk writes "+-10" for a negative position
     x, y = (int(value.replace("+-", "-")) for value in (match[3], match[4]))
     return width, height, x, y
-
-
-def is_on_screen(
-    window: tuple[int, int, int, int], screen_size: tuple[int, int]
-) -> bool:
-    """
-    Whether a part of the window big enough to drag it would be visible. Tk only
-    knows the size of the main screen, so the windows on the other screens are
-    accepted if they are close enough: up to two screens to the left or to the
-    right, and one screen above or below. The screens to the left of or above the
-    main screen have negative coordinates.
-
-    :param window: The width, height, x and y of the window.
-    :param screen_size: The width and height of the main screen.
-    """
-    width, height, x, y = window
-    screen_width, screen_height = screen_size
-    return bool(
-        -screen_width * 2 + VISIBLE_WINDOW_MARGIN < x + width
-        and x < screen_width * 3 - VISIBLE_WINDOW_MARGIN
-        and -screen_height + VISIBLE_WINDOW_MARGIN < y + height
-        and y < screen_height * 2 - VISIBLE_WINDOW_MARGIN
-    )
 
 
 def configure_whisperx_device() -> None:

@@ -52,6 +52,7 @@ from views.style import icons, theme
 from views.widgets.localized_options import LocalizedOptions
 from views.widgets.option_menu import CTkOptionMenu, skip_scrollbar_forced_layout
 from views.widgets.scrollable_frame import CTkScrollableFrame
+from views.widgets.window import place_dialog
 
 DEBOUNCE_DELAY_MS = 600
 ABOUT_ICON_SIZE = 96
@@ -151,6 +152,8 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
                                      the check failed.
         """
         super().__init__(master)
+        # Shown by `place_dialog` once it's built, already in its place
+        self.withdraw()
         self._on_set_api_key = on_set_api_key
         self._on_model_change = on_model_change
         self._on_ai_change = on_ai_change
@@ -167,7 +170,6 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self._config_ai = ConfigManager.get_config_ai()
 
         localize(self, title=L_("Preferences"))
-        self.geometry("640x560")
         self.minsize(560, 440)
         self.transient(master.winfo_toplevel())
         self.grid_columnconfigure(0, weight=1)
@@ -205,6 +207,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             self.show_tab(initial_tab)
 
         self.bind("<Escape>", lambda _event: self.destroy())
+        place_dialog(self, master, 640, 560)
         self.after(100, self._focus)
 
     def _focus(self) -> None:
