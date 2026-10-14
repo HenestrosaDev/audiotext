@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-14 21:46+0200\n"
+"POT-Creation-Date: 2026-10-14 22:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -275,7 +275,7 @@ msgstr "Tidak ada audio yang direkam."
 
 #: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:622
+#: src/views/transcript/transcript_view.py:628
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Transkripsi"
@@ -283,9 +283,9 @@ msgstr "Transkripsi"
 #: src/utils/exporters.py:195 src/utils/exporters.py:223
 #: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:504
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:474
-#: src/views/transcript/transcript_view.py:479
-#: src/views/transcript/transcript_view.py:660
+#: src/views/transcript/transcript_view.py:480
+#: src/views/transcript/transcript_view.py:485
+#: src/views/transcript/transcript_view.py:666
 msgid "Summary"
 msgstr "Ringkasan"
 
@@ -333,14 +333,14 @@ msgid "{count} failed"
 msgstr "{count} gagal"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1811
+#: src/views/transcript/transcript_view.py:1821
 msgid "Open the folder of the saved files"
 msgstr "Buka folder file yang disimpan"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:604
-#: src/views/transcript/transcript_view.py:1772
+#: src/views/transcript/transcript_view.py:610
+#: src/views/transcript/transcript_view.py:1782
 msgid "Transcribe again"
 msgstr "Transkripsi lagi"
 
@@ -558,22 +558,22 @@ msgid "Rename"
 msgstr "Ganti nama"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1823
+#: src/views/transcript/transcript_view.py:1833
 msgid "Edit note…"
 msgstr "Edit catatan…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1823
+#: src/views/transcript/transcript_view.py:1833
 msgid "Add note…"
 msgstr "Tambahkan catatan…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1828
+#: src/views/transcript/transcript_view.py:1838
 msgid "Delete note…"
 msgstr "Hapus catatan…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1834
+#: src/views/transcript/transcript_view.py:1844
 msgid "Edit tag…"
 msgstr "Edit label…"
 
@@ -598,7 +598,7 @@ msgid "Move to group"
 msgstr "Pindahkan ke grup"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1839
+#: src/views/transcript/transcript_view.py:1849
 msgid "Delete…"
 msgstr "Hapus…"
 
@@ -880,9 +880,9 @@ msgstr "Rekam diri Anda atau rapat. Rekaman disimpan di riwayat Anda."
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:594
-#: src/views/transcript/transcript_view.py:1280
-#: src/views/transcript/transcript_view.py:1692
+#: src/views/transcript/transcript_view.py:600
+#: src/views/transcript/transcript_view.py:1290
+#: src/views/transcript/transcript_view.py:1702
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Salin"
@@ -1188,7 +1188,7 @@ msgstr "Kunci API"
 
 #: src/views/settings/preferences_dialog.py:188
 #: src/views/transcript/player_bar.py:109
-#: src/views/transcript/transcript_view.py:658
+#: src/views/transcript/transcript_view.py:664
 msgid "Subtitles"
 msgstr "Subtitle"
 
@@ -1754,7 +1754,7 @@ msgid "Choose where to save the transcriptions"
 msgstr "Pilih tempat menyimpan transkripsi"
 
 #: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1377
+#: src/views/transcript/transcript_view.py:1387
 msgid "Edit text"
 msgstr "Edit teks"
 
@@ -1768,7 +1768,7 @@ msgid "Rename speakers"
 msgstr "Ganti nama pembicara"
 
 #: src/views/transcript/edit_dialogs.py:74
-#: src/views/transcript/transcript_view.py:1406
+#: src/views/transcript/transcript_view.py:1416
 #: src/views/widgets/text_dialog.py:66
 msgid "Save"
 msgstr "Simpan"
@@ -1853,39 +1853,46 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spasi: putar/jeda · ←/→: mundur/maju {seconds} dtk"
 
 #: src/views/transcript/player_bar.py:264
-#: src/views/transcript/transcript_view.py:1627
+#: src/views/transcript/transcript_view.py:1637
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Audio tidak dapat diputar: {error}"
 
+# Needs review by a native speaker
 #: src/views/transcript/review_bar.py:75
 msgid "Adjust threshold"
 msgstr "Sesuaikan ambang"
 
+# Needs review by a native speaker
 #: src/views/transcript/review_bar.py:85
 msgid "Review again"
 msgstr "Tinjau lagi"
 
+# Needs review by a native speaker
 #: src/views/transcript/review_bar.py:98
 msgid "Review low-confidence words"
 msgstr "Tinjau kata dengan keyakinan rendah"
 
-#: src/views/transcript/review_bar.py:156
+# Needs review by a native speaker
+#: src/views/transcript/review_bar.py:158
 #, python-brace-format
 msgid "{remaining} of {total} to review"
 msgstr "{remaining} dari {total} perlu ditinjau"
 
-#: src/views/transcript/review_bar.py:160
+# Needs review by a native speaker
+#: src/views/transcript/review_bar.py:162
 #, python-brace-format
 msgid "All reviewed · {total} of {total}"
 msgstr "Semua sudah ditinjau · {total} dari {total}"
 
-#: src/views/transcript/review_bar.py:162
-#: src/views/transcript/transcript_view.py:145
+# Needs review by a native speaker
+#: src/views/transcript/review_bar.py:164
+#: src/views/transcript/transcript_view.py:152
 msgid "No low-confidence words at this threshold"
 msgstr "Tidak ada kata dengan keyakinan rendah pada ambang ini"
 
-#: src/views/transcript/review_bar.py:164
+# Needs review by a native speaker
+#: src/views/transcript/review_bar.py:166
 msgid "Confidence data isn’t available for this transcript"
 msgstr "Data keyakinan tidak tersedia untuk transkrip ini"
 
@@ -1895,13 +1902,13 @@ msgid "Find ({shortcut})"
 msgstr "Cari ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:597
+#: src/views/transcript/transcript_view.py:603
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "Ekspor"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:968
+#: src/views/transcript/transcript_view.py:978
 msgid "Regenerate the summary"
 msgstr "Buat ulang ringkasan"
 
@@ -1974,231 +1981,234 @@ msgstr ""
 msgid "This transcription has no timestamps."
 msgstr "Transkripsi ini tidak memiliki stempel waktu."
 
-#: src/views/transcript/transcript_view.py:147
+# Needs review by a native speaker
+#: src/views/transcript/transcript_view.py:154
 msgid "All the low-confidence words are reviewed"
 msgstr "Semua kata dengan keyakinan rendah sudah ditinjau"
 
-#: src/views/transcript/transcript_view.py:164
+#: src/views/transcript/transcript_view.py:171
 msgid "There is no alignment model for its language"
 msgstr "Tidak ada model penyelarasan untuk bahasanya"
 
-#: src/views/transcript/transcript_view.py:165
+#: src/views/transcript/transcript_view.py:172
 msgid "Turn on “Word-level timings” and transcribe it again"
 msgstr "Aktifkan “Waktu per kata” dan transkripsikan ulang"
 
-#: src/views/transcript/transcript_view.py:172
+#: src/views/transcript/transcript_view.py:179
 msgid "Transcribe it again to score its words"
 msgstr "Transkripsikan ulang untuk menilai kata-katanya"
 
-#: src/views/transcript/transcript_view.py:173
+#: src/views/transcript/transcript_view.py:180
 msgid "Only WhisperX and whisper-1 score the words"
 msgstr "Hanya WhisperX dan whisper-1 yang menilai kata"
 
-#: src/views/transcript/transcript_view.py:178
+#: src/views/transcript/transcript_view.py:185
 msgid "Plain text (.txt)"
 msgstr "Teks biasa (.txt)"
 
-#: src/views/transcript/transcript_view.py:179
+#: src/views/transcript/transcript_view.py:186
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:180
+#: src/views/transcript/transcript_view.py:187
 msgid "Word document (.docx)"
 msgstr "Dokumen Word (.docx)"
 
-#: src/views/transcript/transcript_view.py:181
+#: src/views/transcript/transcript_view.py:188
 msgid "Subtitles (.srt)"
 msgstr "Subtitle (.srt)"
 
-#: src/views/transcript/transcript_view.py:182
+#: src/views/transcript/transcript_view.py:189
 msgid "Web subtitles (.vtt)"
 msgstr "Subtitle web (.vtt)"
 
-#: src/views/transcript/transcript_view.py:183
+#: src/views/transcript/transcript_view.py:190
 msgid "Table (.tsv)"
 msgstr "Tabel (.tsv)"
 
-#: src/views/transcript/transcript_view.py:184
+#: src/views/transcript/transcript_view.py:191
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:287
+#: src/views/transcript/transcript_view.py:293
 msgid "Stop scrolling the translation with the transcription"
 msgstr "Berhenti menggulir terjemahan bersama transkripsi"
 
-#: src/views/transcript/transcript_view.py:289
+#: src/views/transcript/transcript_view.py:295
 msgid "Scroll the translation with the transcription"
 msgstr "Gulir terjemahan bersama transkripsi"
 
-#: src/views/transcript/transcript_view.py:444
+#: src/views/transcript/transcript_view.py:450
 msgid "Export transcription"
 msgstr "Ekspor transkripsi"
 
-#: src/views/transcript/transcript_view.py:465
+#: src/views/transcript/transcript_view.py:471
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Ekspor terjemahan bahasa {language}"
 
-#: src/views/transcript/transcript_view.py:478
+#: src/views/transcript/transcript_view.py:484
 msgid "Export summary"
 msgstr "Ekspor ringkasan"
 
-#: src/views/transcript/transcript_view.py:515
+#: src/views/transcript/transcript_view.py:521
 msgid "All files"
 msgstr "Semua file"
 
-#: src/views/transcript/transcript_view.py:524
+#: src/views/transcript/transcript_view.py:530
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Tidak dapat mengekspor: {error}"
 
-#: src/views/transcript/transcript_view.py:527
+#: src/views/transcript/transcript_view.py:533
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Diekspor ke {path}"
 
-#: src/views/transcript/transcript_view.py:589
+#: src/views/transcript/transcript_view.py:595
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Cari dan ganti ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:645
+# Needs review by a native speaker
+#: src/views/transcript/transcript_view.py:651
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Kata sebelumnya dengan keyakinan rendah ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:647
+# Needs review by a native speaker
+#: src/views/transcript/transcript_view.py:653
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Kata berikutnya dengan keyakinan rendah ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:659
+#: src/views/transcript/transcript_view.py:665
 msgid "Plain text"
 msgstr "Teks biasa"
 
-#: src/views/transcript/transcript_view.py:668
+#: src/views/transcript/transcript_view.py:674
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Terjemahkan"
 
-#: src/views/transcript/transcript_view.py:872
+#: src/views/transcript/transcript_view.py:882
 msgid "Find and replace in the transcription"
 msgstr "Cari dan ganti di transkripsi"
 
-#: src/views/transcript/transcript_view.py:882
+#: src/views/transcript/transcript_view.py:892
 msgid "Find and replace in the translation"
 msgstr "Cari dan ganti di terjemahan"
 
-#: src/views/transcript/transcript_view.py:883
+#: src/views/transcript/transcript_view.py:893
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Cari dan ganti di terjemahan bahasa {language}"
 
-#: src/views/transcript/transcript_view.py:896
+#: src/views/transcript/transcript_view.py:906
 msgid "Find in the summary"
 msgstr "Cari di ringkasan"
 
-#: src/views/transcript/transcript_view.py:969
+#: src/views/transcript/transcript_view.py:979
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Buat ulang ringkasan? Ringkasan saat ini akan diganti."
 
-#: src/views/transcript/transcript_view.py:1127
+#: src/views/transcript/transcript_view.py:1137
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Sembunyikan terjemahan"
 
-#: src/views/transcript/transcript_view.py:1132
+#: src/views/transcript/transcript_view.py:1142
 msgid "Show the translation"
 msgstr "Tampilkan terjemahan"
 
-#: src/views/transcript/transcript_view.py:1136
+#: src/views/transcript/transcript_view.py:1146
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Terjemahkan ke bahasa lain…"
 
-#: src/views/transcript/transcript_view.py:1147
+#: src/views/transcript/transcript_view.py:1157
 msgid "Show it as the subtitles of the video"
 msgstr "Tampilkan sebagai subtitle video"
 
-#: src/views/transcript/transcript_view.py:1154
+#: src/views/transcript/transcript_view.py:1164
 msgid "Delete the translation"
 msgstr "Hapus terjemahan"
 
-#: src/views/transcript/transcript_view.py:1277
-#: src/views/transcript/transcript_view.py:1690
+#: src/views/transcript/transcript_view.py:1287
+#: src/views/transcript/transcript_view.py:1700
 msgid "Play from here"
 msgstr "Putar dari sini"
 
-#: src/views/transcript/transcript_view.py:1285
-#: src/views/transcript/transcript_view.py:1693
+#: src/views/transcript/transcript_view.py:1295
+#: src/views/transcript/transcript_view.py:1703
 msgid "Edit text…"
 msgstr "Edit teks…"
 
-#: src/views/transcript/transcript_view.py:1285
+#: src/views/transcript/transcript_view.py:1295
 msgid "Translate text…"
 msgstr "Terjemahkan teks…"
 
-#: src/views/transcript/transcript_view.py:1289
+#: src/views/transcript/transcript_view.py:1299
 msgid "Edit the timing…"
 msgstr "Edit waktu…"
 
-#: src/views/transcript/transcript_view.py:1293
+#: src/views/transcript/transcript_view.py:1303
 msgid "Add a segment after…"
 msgstr "Tambahkan segmen sesudahnya…"
 
-#: src/views/transcript/transcript_view.py:1298
-#: src/views/transcript/transcript_view.py:1463
+#: src/views/transcript/transcript_view.py:1308
+#: src/views/transcript/transcript_view.py:1473
 msgid "Delete the segment"
 msgstr "Hapus segmen"
 
-#: src/views/transcript/transcript_view.py:1377
+#: src/views/transcript/transcript_view.py:1387
 msgid "Translate text"
 msgstr "Terjemahkan teks"
 
-#: src/views/transcript/transcript_view.py:1378
+#: src/views/transcript/transcript_view.py:1388
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Terjemahan \"{text}\", diucapkan dari {start} sampai {end}:"
 
-#: src/views/transcript/transcript_view.py:1382
+#: src/views/transcript/transcript_view.py:1392
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Terjemahan segmen dari {start} sampai {end}:"
 
-#: src/views/transcript/transcript_view.py:1405
+#: src/views/transcript/transcript_view.py:1415
 msgid "Edit the timing"
 msgstr "Edit waktu"
 
-#: src/views/transcript/transcript_view.py:1431
+#: src/views/transcript/transcript_view.py:1441
 msgid "Add a segment"
 msgstr "Tambahkan segmen"
 
-#: src/views/transcript/transcript_view.py:1432
+#: src/views/transcript/transcript_view.py:1442
 msgid "Add"
 msgstr "Tambahkan"
 
-#: src/views/transcript/transcript_view.py:1433
+#: src/views/transcript/transcript_view.py:1443
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Segmen baru ditempatkan setelah segmen pada {time}:"
 
-#: src/views/transcript/transcript_view.py:1464
+#: src/views/transcript/transcript_view.py:1474
 #, python-brace-format
 msgid "Delete the segment “{text}”?"
 msgstr "Hapus segmen \"{text}\"?"
 
-#: src/views/transcript/transcript_view.py:1520
+#: src/views/transcript/transcript_view.py:1530
 #, python-brace-format
 msgid "The segment at {time}, not translated yet."
 msgstr "Segmen pada {time}, belum diterjemahkan."
 
-#: src/views/transcript/transcript_view.py:1556
+#: src/views/transcript/transcript_view.py:1566
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Terjemahkan ulang"
 
-#: src/views/transcript/transcript_view.py:1558
+#: src/views/transcript/transcript_view.py:1568
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2207,50 +2217,50 @@ msgstr ""
 "Terjemahkan ulang transkripsi ke bahasa {language}? Perubahan pada "
 "terjemahan akan hilang."
 
-#: src/views/transcript/transcript_view.py:1581
+#: src/views/transcript/transcript_view.py:1591
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Audio tidak tersedia: file sumber telah dipindahkan atau dihapus."
 
-#: src/views/transcript/transcript_view.py:1584
+#: src/views/transcript/transcript_view.py:1594
 msgid "The audio isn't available."
 msgstr "Audio tidak tersedia."
 
-#: src/views/transcript/transcript_view.py:1695
-#: src/views/transcript/transcript_view.py:1785
+#: src/views/transcript/transcript_view.py:1705
+#: src/views/transcript/transcript_view.py:1795
 msgid "Rename speakers…"
 msgstr "Ganti nama pembicara…"
 
-#: src/views/transcript/transcript_view.py:1714
+#: src/views/transcript/transcript_view.py:1724
 msgid "Highlight low-confidence words"
 msgstr "Sorot kata dengan keyakinan rendah"
 
-#: src/views/transcript/transcript_view.py:1722
+#: src/views/transcript/transcript_view.py:1732
 msgid "Low-confidence threshold"
 msgstr "Ambang keyakinan rendah"
 
-#: src/views/transcript/transcript_view.py:1731
+#: src/views/transcript/transcript_view.py:1741
 msgid "Next low-confidence word"
 msgstr "Kata berikutnya dengan keyakinan rendah"
 
-#: src/views/transcript/transcript_view.py:1732
+#: src/views/transcript/transcript_view.py:1742
 msgid "Previous low-confidence word"
 msgstr "Kata sebelumnya dengan keyakinan rendah"
 
-#: src/views/transcript/transcript_view.py:1758
+#: src/views/transcript/transcript_view.py:1768
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "Di bawah {percent}%"
 
-#: src/views/transcript/transcript_view.py:1774
+#: src/views/transcript/transcript_view.py:1784
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Transkripsikan ulang “{title}”? Perubahan pada teksnya akan hilang."
 
-#: src/views/transcript/transcript_view.py:1795
+#: src/views/transcript/transcript_view.py:1805
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Stempel waktu presisi (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1819
+#: src/views/transcript/transcript_view.py:1829
 msgid "Rename…"
 msgstr "Ganti nama…"
 
