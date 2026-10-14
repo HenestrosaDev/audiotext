@@ -1119,7 +1119,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             menu, value=self._config_system.precise_timestamps
         )
         menu.add_checkbutton(
-            label=_("Precise timestamps (00:00:01,000)"),
+            label=_("Precise timestamps (HH:MM:SS,mmm)"),
             command=self._toggle_precise_timestamps,
             variable=self._precise_variable,
             state=tk.NORMAL if entry.segments else tk.DISABLED,
