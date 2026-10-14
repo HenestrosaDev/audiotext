@@ -214,10 +214,18 @@ class HistoryController:
 
         self._start_task(translate)
 
-    def start_manual_translation(self, entry_id: str, language: str) -> None:
+    def start_manual_translation(
+        self,
+        entry_id: str,
+        language: str,
+        segments: list[TranscriptSegment] | None = None,
+    ) -> None:
         """
         Starts a translation for the user to write from scratch: each segment
         keeps its timestamps, with an empty text.
+
+        :param segments: The segments to keep the timestamps of, e.g. the parts
+                         shown as subtitles. Defaults to those of the entry.
         """
         entry = self._store.get(entry_id)
         if entry is None or self.is_translating(entry_id, language):
@@ -228,7 +236,8 @@ class HistoryController:
             language=language,
             text="",
             segments=tuple(
-                replace(segment, text="", words=()) for segment in entry.segments
+                replace(segment, text="", words=())
+                for segment in (entry.segments if segments is None else segments)
             ),
             provider=MANUAL,
             created_at=datetime.now().astimezone().isoformat(timespec="seconds"),

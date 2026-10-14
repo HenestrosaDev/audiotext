@@ -6,7 +6,7 @@ over a video, like the cues of an `.srt` file.
 import bisect
 import re
 import unicodedata
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from itertools import pairwise
 
 from models.config.config_subtitles import ConfigSubtitles
@@ -274,6 +274,51 @@ def line_limits(
     """
     is_cjk = uses_wide_characters(segments)
     return config.line_width(is_cjk, is_vertical), config.line_count(is_vertical)
+
+
+@dataclass(frozen=True)
+class SegmentPart:
+    """A part of a segment of a transcription, e.g. the text of a subtitle."""
+
+    # The index of the segment, and the range of its text that the part takes
+    segment_idx: int
+    first: int
+    last: int
+    # The part as a segment of its own, with its timings and its words
+    segment: TranscriptSegment
+
+
+def split_segments(
+    segments: list[TranscriptSegment], max_line_width: int, max_line_count: int
+) -> list[SegmentPart]:
+    """
+    Splits the segments into the parts shown as subtitles (see `build_cues`), each
+    with the words of its text.
+    """
+    max_line_width = max(max_line_width, 1)
+    max_line_count = max(max_line_count, 1)
+    parts = []
+    for idx, segment in enumerate(segments):
+        layouts = _segment_layout(segment, max_line_width, max_line_count)
+        # A segment short enough is kept as it is, and so is one without text
+        # (e.g. not translated yet), which has no subtitles but is still shown
+        if len(layouts) <= 1:
+            parts.append(SegmentPart(idx, 0, len(segment.text), segment))
+            continue
+        words = _word_positions(segment)
+        for start, end, lines in layouts:
+            first, last = lines[0][0], lines[-1][1]
+            part = replace(
+                segment,
+                start=start,
+                end=end,
+                text=segment.text[first:last],
+                words=tuple(
+                    word for word, position, _end in words if first <= position < last
+                ),
+            )
+            parts.append(SegmentPart(idx, first, last, part))
+    return parts
 
 
 class CueTrack:
