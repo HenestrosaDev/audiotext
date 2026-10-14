@@ -3,21 +3,30 @@ from typing import Any
 
 import customtkinter as ctk
 
-from utils.i18n import L_
+from utils.i18n import L_, _
 from views.localization import localize
 from views.style import icons, theme
+from views.widgets.tooltip import Tooltip
 
 # Between the word and the popover below it, and between the popover and the
 # sides of the text
 POPOVER_GAP = 4
 POPOVER_MARGIN = 8
+# The width of the field for a word, and the widest for a whole segment, which
+# the space of the text may narrow
+WORD_FIELD_WIDTH = 200
+SEGMENT_FIELD_WIDTH = 480
+# The space taken by the buttons and the margins next to the field
+BUTTONS_WIDTH = 240
+REPLAY_SHORTCUT = f"<{theme.SHORTCUT_MODIFIER}-r>"
 
 
 class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
     """
-    Corrects a low confidence word where it is, below it: its text can be
-    changed (Return saves it), played again, or accepted as it is. Escape closes
-    it without changes.
+    Corrects a low confidence word where it is, below it (or above it, near the
+    bottom of the text): its text can be changed (Return saves it), played again
+    (Command/Control + R), or accepted as it is. Escape, or clicking elsewhere,
+    closes it without changes: what was typed is discarded.
     """
 
     def __init__(
@@ -43,7 +52,7 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
         self._on_close = on_close
         self._is_open = False
 
-        self.ent_text = ctk.CTkEntry(self, width=200, height=32)
+        self.ent_text = ctk.CTkEntry(self, width=WORD_FIELD_WIDTH, height=32)
         self.ent_text.grid(row=0, column=0, padx=(10, 6), pady=10)
         self.btn_replay = localize(
             ctk.CTkButton(
@@ -58,6 +67,12 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
             text=L_("Replay"),
         )
         self.btn_replay.grid(row=0, column=1, padx=(0, 6), pady=10)
+        self.btn_replay._tooltip = Tooltip(
+            self.btn_replay,
+            lambda: _("Replay ({shortcut})").format(
+                shortcut=f"{theme.SHORTCUT_MODIFIER_LABEL}R"
+            ),
+        )
         self.btn_accept = localize(
             ctk.CTkButton(
                 self,
@@ -74,18 +89,34 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
         for sequence in ("<Return>", "<KP_Enter>"):
             self.ent_text.bind(sequence, self._on_return)
         self.ent_text.bind("<Escape>", self._on_escape)
+        self._on_replay = on_replay
+        self.ent_text.bind(REPLAY_SHORTCUT, self._on_replay_key)
 
     @property
     def is_open(self) -> bool:
         return self._is_open
 
-    def open(self, text: str, anchor: Any, box: tuple[int, int, int]) -> None:
+    def open(
+        self,
+        text: str,
+        anchor: Any,
+        box: tuple[int, int, int],
+        is_segment: bool = False,
+    ) -> None:
         """
-        Shows the popover below a word, with its text selected to replace it.
+        Shows the popover below a word, with its text selected to replace it. Any
+        text typed in it before is discarded.
 
         :param anchor: The widget the word is in.
-        :param box: The left, the top and the height of the word in `anchor`.
+        :param box: The left, the top and the bottom of the word in `anchor`.
+        :param is_segment: Whether the text is a whole segment, which takes a
+            wider field.
         """
+        width = WORD_FIELD_WIDTH
+        if is_segment:
+            room = anchor.winfo_width() - BUTTONS_WIDTH - 2 * POPOVER_MARGIN
+            width = max(WORD_FIELD_WIDTH, min(SEGMENT_FIELD_WIDTH, room))
+        self.ent_text.configure(width=width)
         self.ent_text.delete(0, ctk.END)
         self.ent_text.insert(0, text)
         self._is_open = True
@@ -103,18 +134,22 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
         if box is None:
             self.place_forget()
             return
-        x, y, height = box
+        x, top, bottom = box
         self.update_idletasks()
-        # Kept inside the text, even for a word at its right end
+        # Kept inside the text (and so the window), even for a word at its right
+        # end, or at its bottom, where it's shown above the word
         max_x = anchor.winfo_width() - self.winfo_reqwidth() - POPOVER_MARGIN
-        self.place(
-            in_=anchor,
-            x=max(POPOVER_MARGIN, min(x, max_x)),
-            y=y + height + POPOVER_GAP,
-        )
+        y = bottom + POPOVER_GAP
+        if y + self.winfo_reqheight() > anchor.winfo_height() - POPOVER_MARGIN:
+            y = max(POPOVER_MARGIN, top - POPOVER_GAP - self.winfo_reqheight())
+        self.place(in_=anchor, x=max(POPOVER_MARGIN, min(x, max_x)), y=y)
 
     def _on_return(self, _event: Any) -> str:
         self._on_commit(self.ent_text.get())
+        return "break"
+
+    def _on_replay_key(self, _event: Any) -> str:
+        self._on_replay()
         return "break"
 
     def _on_escape(self, _event: Any) -> str:

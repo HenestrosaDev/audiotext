@@ -3025,3 +3025,186 @@ def test_the_popover_replays_the_word(ui: Ui, monkeypatch: pytest.MonkeyPatch) -
     view.word_popover.btn_replay.invoke()
     # Played when it's opened (with auto-play on) and again
     assert clips == [(-1.0, 2.5), (-1.0, 2.5)]
+
+
+def test_the_marks_stay_aligned_with_the_slider_when_it_resizes(ui: Ui) -> None:
+    from views.transcript.player_bar import MarkKind, PlayerBar, TimelineMark
+
+    window = ctk.CTkToplevel(ui.window)
+    bar = PlayerBar(
+        window,
+        on_tick=lambda _position, _is_playing: None,
+        on_toggle_subtitles=lambda: None,
+        on_subtitle_menu=lambda _anchor: None,
+    )
+    bar.pack(fill="x")
+    player = FakePlayer()
+    bar._player = player
+    bar.sld_position.configure(to=player.duration)
+    slider = bar.sld_position
+    try:
+        bar.set_marks(
+            [TimelineMark(seconds, MarkKind.PENDING) for seconds in (0, 30, 60)],
+            {kind: ("#000000", "#FFFFFF") for kind in MarkKind},
+            lambda _idx: None,
+        )
+        for width in (900, 1400, 640):
+            window.geometry(f"{width}x160")
+            ui.pump()
+            assert bar.cnv_marks.winfo_x() == slider.winfo_x()
+            assert bar.cnv_marks.winfo_width() == slider.winfo_width()
+            drawn = sorted(
+                (lambda coords: (coords[0] + coords[2]) / 2)(bar.cnv_marks.coords(item))
+                for item in bar.cnv_marks.find_withtag("mark")
+            )
+            for seconds, mark_x in zip((0, 30, 60), drawn, strict=True):
+                # Where the button of the slider is drawn at that moment
+                slider.set(seconds)
+                ui.pump()
+                canvas = slider._canvas
+                points = canvas.coords(canvas.find_withtag("slider_parts")[0])[0::2]
+                assert mark_x == pytest.approx((min(points) + max(points)) / 2, abs=1)
+    finally:
+        bar._player = None
+        window.destroy()
+
+
+def test_a_search_shows_the_segment_it_goes_to(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    plain = TranscriptSegment(6.0, 7.0, "Plain words here.")
+    entry = ui.add(segments=[*review_segments(), plain], text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    monkeypatch.setattr(view.player, "play_clip", lambda *_clip: None)
+    view.review_bar.chk_only_flagged.toggle()
+    assert "Plain words here." not in shown_texts(view)
+
+    view.text.search("Plain")
+    assert "Plain words here." in shown_texts(view)
+    # Until the user goes to another word
+    view.go_to_low_confidence(1)
+    assert "Plain words here." not in shown_texts(view)
+
+
+def test_the_popover_doesnt_remove_words(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+    bells: list[None] = []
+    monkeypatch.setattr(view, "bell", lambda: bells.append(None))
+
+    click_flagged(ui, view, "wisper")
+    popover.ent_text.delete(0, "end")
+    popover._on_return(None)
+    assert popover.is_open
+    assert bells == [None]
+    assert view._entry.segments[0].text == "Hello wisper"
+
+
+def test_another_word_switches_the_popover_discarding_what_was_typed(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+
+    click_flagged(ui, view, "wisper")
+    popover.ent_text.insert("end", "typed")
+    click_flagged(ui, view, "Bye wisper.")
+
+    assert popover.is_open
+    assert popover.ent_text.get() == "Bye wisper."
+    assert current_text(view) == "Bye wisper."
+    assert view._entry.segments == review_segments()
+    assert view.review_bar.review.remaining == 3
+    # A whole segment takes a wider field
+    assert popover.ent_text.cget("width") > 200
+
+
+def test_the_popover_stays_inside_the_text(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+    anchor = view.text.text_widget
+    click_flagged(ui, view, "wisper")
+    width, height = anchor.winfo_width(), anchor.winfo_height()
+
+    # At the bottom right of the text, it's shown above the word, inside it
+    popover.place_at(anchor, (width - 5, height - 30, height - 10))
+    ui.pump()
+    info = popover.place_info()
+    x, y = int(info["x"]), int(info["y"])
+    assert x + popover.winfo_reqwidth() <= width
+    assert y + popover.winfo_reqheight() <= height - 30
+    assert x >= 0 and y >= 0
+
+
+def test_the_popover_closes_when_its_word_moves_or_goes(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE
+
+    view = open_review(ui, monkeypatch)
+    popover = view.word_popover
+
+    def reopen(case: int = -1) -> None:
+        click_flagged(ui, view, "wisper")
+        assert popover.is_open, case
+
+    closes = (
+        lambda: view._on_mode_change(PLAIN_TEXT_MODE),
+        # Its word is no longer below the threshold
+        lambda: view._set_low_confidence_threshold(25),
+        view._toggle_low_confidence,
+        view._toggle_precise_timestamps,
+        # The window is resized, so the text wraps again
+        lambda: (
+            ui.window.winfo_toplevel().geometry(
+                f"{ui.window.winfo_toplevel().winfo_width() - 40}x"
+                f"{ui.window.winfo_toplevel().winfo_height()}"
+            ),
+            ui.pump(),
+        ),
+    )
+    for case, close in enumerate(closes):
+        view._on_mode_change("transcript")
+        view._config_system.highlight_low_confidence = True
+        view._set_low_confidence_threshold(40)
+        # Shown before it's clicked
+        ui.pump()
+        reopen(case)
+        close()
+        ui.pump()
+        assert not popover.is_open, close
+        assert not popover.winfo_ismapped(), close
+
+    # And with the transcription, when another one is shown
+    view._on_mode_change("transcript")
+    ui.pump()
+    reopen()
+    ui.window.select_entry(ui.add(segments=SEGMENTS, text=TEXT).id)
+    ui.pump()
+    assert not popover.winfo_exists()
+
+
+def test_the_popover_replays_with_a_key(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.style import theme
+
+    view = open_review(ui, monkeypatch)
+    clips: list[tuple[float, float]] = []
+    click_flagged(ui, view, "wisper")
+    monkeypatch.setattr(view.player, "play_clip", lambda *clip: clips.append(clip))
+
+    field = view.word_popover.ent_text._entry
+    field.focus_force()
+    ui.pump()
+    field.event_generate(f"<{theme.SHORTCUT_MODIFIER}-r>")
+    ui.pump()
+    assert clips == [(-1.0, 2.5)]
+    # Without typing in the field
+    assert view.word_popover.ent_text.get() == "wisper"
