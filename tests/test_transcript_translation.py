@@ -1,6 +1,9 @@
+from dataclasses import replace
+
 from models.history import HistoryEntry
 from models.transcript_segment import TranscriptSegment, TranscriptWord
 from models.translation import TranscriptTranslation
+from utils.sentences import group_by_sentence
 
 ORIGINAL = [
     TranscriptSegment(0.0, 2.0, "One two three"),
@@ -71,3 +74,27 @@ def test_the_single_translation_of_older_entries_is_kept() -> None:
     assert entry.get_translation("es") == TranscriptTranslation.from_dict(old)
     assert entry.get_translation("fr") is None
     assert "translation" not in entry.to_dict()
+
+
+def test_the_ratio_is_complete_with_fewer_segments_by_sentence() -> None:
+    original = [
+        TranscriptSegment(
+            0.0,
+            2.0,
+            "It is a big advance in the",
+            words=(TranscriptWord(0.0, 1.0, "It"), TranscriptWord(1.9, 2.0, "the")),
+        ),
+        TranscriptSegment(2.0, 4.0, "field."),
+        TranscriptSegment(4.0, 5.0, "Indeed."),
+    ]
+    translation = TranscriptTranslation(
+        "es",
+        "",
+        segments=tuple(
+            replace(segment, text=f"<{segment.text}>", words=())
+            for segment in group_by_sentence(original)
+        ),
+    )
+
+    assert len(translation.segments) < len(original)
+    assert translation.translated_ratio(original) == 1.0
