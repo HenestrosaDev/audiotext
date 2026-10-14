@@ -1302,11 +1302,105 @@ def test_the_low_confidence_options_need_the_scores_of_the_words(
     hint = "Transcribe it again to score its words"
     assert menus[-1].entrycget(hint, "state") == tk.DISABLED
 
+    # Nothing to go to below the threshold
     words = (TranscriptWord(0.0, 1.0, "Hello", 0.9),)
     entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
     ui.window.select_entry(entry.id)
     ui.pump()
+    assert states() == [tk.NORMAL, tk.NORMAL, tk.DISABLED, tk.DISABLED]
+    hint = "No low-confidence words at this threshold"
+    assert menus[-1].entrycget(hint, "state") == tk.DISABLED
+
+    words = (TranscriptWord(0.0, 1.0, "Hello", 0.1),)
+    entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
     assert states() == [tk.NORMAL] * 4
+    # The whole shortcuts, which macOS draws from the names of the keys
+    accelerators = [
+        menus[-1].entrycget(label, "accelerator")
+        for label in ("Next low-confidence word", "Previous low-confidence word")
+    ]
+    if sys.platform == "darwin":
+        assert accelerators == ["Command-J", "Shift-Command-J"]
+    else:
+        assert accelerators == ["Ctrl+J", "Ctrl+Shift+J"]
+
+
+def test_the_review_bar_shows_the_state_of_the_review(ui: Ui) -> None:
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE, TRANSCRIPT_MODE
+
+    words = (
+        TranscriptWord(0.0, 0.5, "Hello", 0.9),
+        TranscriptWord(0.5, 1.0, "wisper", 0.3),
+    )
+    segments = [
+        replace(SEGMENTS[0], words=words),
+        replace(SEGMENTS[1], score=0.2),
+        SEGMENTS[2],
+    ]
+    entry = ui.add(segments=segments, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    bar = view.review_bar
+
+    def status() -> str:
+        return str(bar.lbl_status.cget("text")) if bar.lbl_status.grid_info() else ""
+
+    def is_shown(widget: Any) -> bool:
+        return bool(widget.grid_info())
+
+    assert status() == "2 of 2 to review"
+    assert is_shown(bar.frm_arrows)
+    assert bar.btn_next.cget("state") == tk.NORMAL
+
+    # It's only above the subtitles
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    assert not is_shown(bar)
+    view._on_mode_change(TRANSCRIPT_MODE)
+    assert is_shown(bar)
+
+    # The threshold changes it right away
+    view._set_low_confidence_threshold(20)
+    assert status() == "No low-confidence words at this threshold"
+    assert bar.btn_next.cget("state") == tk.DISABLED
+    assert is_shown(bar.btn_adjust)
+    view._set_low_confidence_threshold(40)
+    assert status() == "2 of 2 to review"
+
+    # Without the highlighting, it's a link that turns it on
+    view._toggle_low_confidence()
+    assert status() == ""
+    assert is_shown(bar.btn_enable)
+    assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
+    bar.btn_enable.invoke()
+    assert status() == "2 of 2 to review"
+    assert tagged_texts(view.text.tbx_transcript, "low_confidence") == [
+        "wisper",
+        "Nice to meet you.",
+    ]
+
+    # The reviewed words are no longer highlighted
+    view._reviewed.update(text.key for text in view._review.flagged)
+    view._refresh_review()
+    assert status() == "All reviewed · 2 of 2"
+    assert is_shown(bar.btn_review_again)
+    assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
+    bar.btn_review_again.invoke()
+    assert status() == "2 of 2 to review"
+
+
+def test_the_review_bar_never_counts_without_scores(ui: Ui) -> None:
+    entry = ui.add(segments=SEGMENTS, text=TEXT, method="WhisperX")
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    bar = ui.window._entry_view.review_bar
+
+    assert bar.lbl_status.cget("text") == (
+        "Confidence data isn’t available for this transcript"
+    )
+    assert not bar.frm_arrows.grid_info()
 
 
 def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(

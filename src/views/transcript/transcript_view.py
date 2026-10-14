@@ -17,6 +17,7 @@ from handlers.translation_handler import MANUAL
 from models.config.config_ai import ConfigAi
 from models.config.config_system import LOW_CONFIDENCE_THRESHOLDS, ConfigSystem
 from models.history import HistoryEntry
+from models.review import FlaggedText, Review, ReviewState, build_review, step_to
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment, has_scores, join_segments
 from models.translation import TranscriptTranslation
@@ -69,6 +70,7 @@ from views.transcript.edit_dialogs import Timing, TimingDialog
 from views.transcript.find_dialog import FindDialog, FindTarget, SearchableText
 from views.transcript.media_layout import MediaLayout
 from views.transcript.player_bar import PlayerBar
+from views.transcript.review_bar import ReviewBar
 from views.transcript.summary_panel import SummaryPanel
 from views.transcript.transcript_text import (
     PLAIN_TEXT_MODE,
@@ -117,6 +119,33 @@ def transcript_parts(
     """The parts of the segments shown in the transcript: their subtitles."""
     config = ConfigManager.get_config_subtitles()
     return split_segments(segments, *line_limits(config, segments, is_vertical))
+
+
+# The shortcuts to go to the next and the previous low confidence word, as they're
+# shown (e.g. in a tooltip), and as the menus take them: macOS draws the keys of
+# the menus from their names
+NEXT_FLAGGED_SHORTCUT = f"{theme.SHORTCUT_MODIFIER_LABEL}J"
+PREVIOUS_FLAGGED_SHORTCUT = (
+    f"{theme.SHIFT_LABEL}{theme.SHORTCUT_MODIFIER_LABEL}J"
+    if theme.IS_MACOS
+    else f"{theme.SHORTCUT_MODIFIER_LABEL}{theme.SHIFT_LABEL}J"
+)
+NEXT_FLAGGED_ACCELERATOR = "Command-J" if theme.IS_MACOS else NEXT_FLAGGED_SHORTCUT
+PREVIOUS_FLAGGED_ACCELERATOR = (
+    "Shift-Command-J" if theme.IS_MACOS else PREVIOUS_FLAGGED_SHORTCUT
+)
+
+
+def review_hint(review: Review) -> str | None:
+    """
+    :return: Why there are no low confidence words to go to, if the transcription
+        has scores and they're highlighted, or `None` if there are.
+    """
+    if review.state == ReviewState.NOTHING_FLAGGED:
+        return _("No low-confidence words at this threshold")
+    if review.state == ReviewState.ALL_REVIEWED:
+        return _("All the low-confidence words are reviewed")
+    return None
 
 
 def low_confidence_hint(entry: HistoryEntry) -> str | None:
@@ -206,6 +235,11 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._precise_variable: tk.BooleanVar | None = None
         self._low_confidence_variable: tk.BooleanVar | None = None
         self._threshold_variable: tk.IntVar | None = None
+        # The keys of the low confidence texts that the user reviewed (see
+        # `models.review`), the review they make, and the text gone to, if any
+        self._reviewed: set[str] = set()
+        self._review = Review(ReviewState.NO_DATA)
+        self._current_flagged: FlaggedText | None = None
         self._find_dialog: FindDialog | None = None
         self._subtitles_variable: tk.BooleanVar | None = None
 
@@ -216,6 +250,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self.header.grid(row=0, column=0, padx=28, pady=(22, 0), sticky=ctk.EW)
         self._init_body()
         self._init_toolbar()
+        self._init_review_bar()
 
         self._init_transcript_card()
         # The text that the user is working on, which the shortcuts act on (e.g.
@@ -279,10 +314,10 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             lambda: self._set_active_text(self.translation_panel.text)
         )
         self._apply_precise_timestamps()
-        self._apply_low_confidence()
 
         self.layout.layout()
         self._show_content()
+        self._refresh_review()
         self._layout_texts()
         self._refresh_translation()
         self._refresh_translation_subtitles()
@@ -313,6 +348,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         self._entry = entry
         self.header.update_entry(entry)
         self._show_content()
+        self._refresh_review()
         self._refresh_translation()
         self._refresh_translation_subtitles()
         if self._mode == SUMMARY_MODE:
@@ -511,7 +547,8 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         )
         self.frm_text_pane = ctk.CTkFrame(self.frm_body, fg_color="transparent")
         self.frm_text_pane.grid_columnconfigure(0, weight=1)
-        self.frm_text_pane.grid_rowconfigure(1, weight=1)
+        # The toolbar, the review of the transcript and the texts
+        self.frm_text_pane.grid_rowconfigure(2, weight=1)
         # The text, and its translation on its right
         self.frm_texts = ctk.CTkFrame(self.frm_text_pane, fg_color="transparent")
         self.frm_texts.grid_rowconfigure(0, weight=1)
@@ -593,6 +630,25 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
 
         self._init_actions(toolbar)
 
+    def _init_review_bar(self) -> None:
+        """The review of the low confidence words, between the toolbar and the text."""
+        self.review_bar = ReviewBar(
+            self.frm_text_pane,
+            on_previous=lambda: self.go_to_low_confidence(-1),
+            on_next=lambda: self.go_to_low_confidence(1),
+            on_enable=self._toggle_low_confidence,
+            on_adjust_threshold=lambda anchor: self._popup_below(
+                self._threshold_menu(self), anchor
+            ),
+            on_review_again=self._review_again,
+            previous_tooltip=lambda: _(
+                "Previous low-confidence word ({shortcut})"
+            ).format(shortcut=PREVIOUS_FLAGGED_SHORTCUT),
+            next_tooltip=lambda: _("Next low-confidence word ({shortcut})").format(
+                shortcut=NEXT_FLAGGED_SHORTCUT
+            ),
+        )
+
     def _init_actions(self, toolbar: ctk.CTkFrame) -> None:
         self.seg_mode = ctk.CTkSegmentedButton(toolbar, values=[""], height=30)
         # The modes shown depend on the transcription (see `_show_content`)
@@ -658,7 +714,10 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self._parts = transcript_parts(entry.segments, self._is_vertical)
         self._shown_content = content
         self.text.set_content(
-            [part.segment for part in self._parts], entry.text, entry.is_text_edited
+            [part.segment for part in self._parts],
+            entry.text,
+            entry.is_text_edited,
+            [part.segment_idx for part in self._parts],
         )
         if has_new_segments:
             self.video.set_cue_track(build_cue_track(entry.segments, self._is_vertical))
@@ -674,14 +733,19 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
     def _apply_mode(self) -> None:
         self._modes.set(self._mode)
         is_summary = self._mode == SUMMARY_MODE
+        # The review is of the words of the subtitles
+        if self._mode == TRANSCRIPT_MODE:
+            self.review_bar.grid(row=1, column=0, pady=(0, 10), sticky=ctk.EW)
+        else:
+            self.review_bar.grid_forget()
 
         if is_summary:
             self.frm_texts.grid_forget()
-            self.summary_panel.grid(row=1, column=0, sticky=ctk.NSEW)
+            self.summary_panel.grid(row=2, column=0, sticky=ctk.NSEW)
             self._refresh_summary()
         else:
             self.summary_panel.grid_forget()
-            self.frm_texts.grid(row=1, column=0, sticky=ctk.NSEW)
+            self.frm_texts.grid(row=2, column=0, sticky=ctk.NSEW)
             self.text.set_mode(self._mode)
             self.translation_panel.set_mode(self._mode)
 
@@ -711,9 +775,14 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             self._modes.set(TRANSCRIPT_MODE)
             self._on_mode_change(TRANSCRIPT_MODE)
 
-        seconds = self.text.go_to_low_confidence(step)
-        if seconds is not None:
-            self.player.seek(seconds)
+        text = step_to(
+            self._review.unreviewed, self._current_flagged, self.player.position, step
+        )
+        if text is None:
+            return
+        self._current_flagged = text
+        self.text.show_flagged(text)
+        self.player.seek(text.start)
 
     def _toggle_precise_timestamps(self) -> None:
         is_precise = not self._config_system.precise_timestamps
@@ -731,22 +800,40 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
         is_highlighted = not self._config_system.highlight_low_confidence
         self._config_system.highlight_low_confidence = is_highlighted
         save_config(ConfigSystem.Key.HIGHLIGHT_LOW_CONFIDENCE, str(is_highlighted))
-        self._apply_low_confidence()
+        self._refresh_review()
         self._refresh_find_dialog()
 
     def _set_low_confidence_threshold(self, threshold: int) -> None:
         self._config_system.low_confidence_threshold = threshold
         save_config(ConfigSystem.Key.LOW_CONFIDENCE_THRESHOLD, str(threshold))
-        self._apply_low_confidence()
+        self._refresh_review()
         self._refresh_find_dialog()
 
-    def _apply_low_confidence(self) -> None:
+    def _refresh_review(self) -> None:
+        """
+        Builds the review of the low confidence words again (e.g. after the
+        threshold or the transcription changes), and shows it everywhere.
+        """
         config = self._config_system
-        self.text.set_low_confidence_score(
-            config.low_confidence_threshold / 100
-            if config.highlight_low_confidence
-            else None
+        self._review = build_review(
+            self._entry.segments,
+            config.highlight_low_confidence,
+            config.low_confidence_threshold / 100,
+            self._reviewed,
         )
+        # Kept to step from where it was, even if it's no longer flagged
+        if self._current_flagged and self._current_flagged.key not in {
+            text.key for text in self._review.flagged
+        }:
+            self._current_flagged = None
+        self.text.set_flagged(self._review.unreviewed)
+        self.review_bar.show(self._review)
+
+    def _review_again(self) -> None:
+        """Forgets which low confidence words at the threshold were reviewed."""
+        self._reviewed.difference_update(text.key for text in self._review.flagged)
+        self._current_flagged = None
+        self._refresh_review()
 
     def _format_time(self, seconds: float) -> str:
         """Formats the start of a segment as the user chose to show them."""
@@ -1630,18 +1717,7 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
             state=tk.NORMAL if is_scored else tk.DISABLED,
         )
 
-        threshold_menu = tk.Menu(menu, tearoff=False)
-        self._threshold_variable = tk.IntVar(
-            menu, value=config.low_confidence_threshold
-        )
-        for threshold in LOW_CONFIDENCE_THRESHOLDS:
-            threshold_menu.add_radiobutton(
-                # The score below which the words are highlighted
-                label=_("Below {percent}%").format(percent=threshold),
-                command=partial(self._set_low_confidence_threshold, threshold),
-                variable=self._threshold_variable,
-                value=threshold,
-            )
+        threshold_menu = self._threshold_menu(menu)
         menu.add_cascade(
             label=_("Low-confidence threshold"),
             menu=threshold_menu,
@@ -1651,12 +1727,9 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 else tk.DISABLED
             ),
         )
-        modifier, shift = theme.SHORTCUT_MODIFIER_LABEL, theme.SHIFT_LABEL
-        # macOS shows the Shift key first (⇧⌘J), the others after Ctrl (Ctrl+Shift+J)
-        modifiers = f"{shift}{modifier}" if theme.IS_MACOS else f"{modifier}{shift}"
         for label, accelerator, step in (
-            (_("Next low-confidence word"), f"{modifier}J", 1),
-            (_("Previous low-confidence word"), f"{modifiers}J", -1),
+            (_("Next low-confidence word"), NEXT_FLAGGED_ACCELERATOR, 1),
+            (_("Previous low-confidence word"), PREVIOUS_FLAGGED_ACCELERATOR, -1),
         ):
             menu.add_command(
                 label=label,
@@ -1664,13 +1737,30 @@ class TranscriptView(TranscriptCorrectionsMixin, ctk.CTkFrame):  # type: ignore[
                 command=partial(self.go_to_low_confidence, step),
                 state=(
                     tk.NORMAL
-                    if is_scored and config.highlight_low_confidence
+                    if self._review.state == ReviewState.ACTIVE
                     else tk.DISABLED
                 ),
             )
-        # Says why they're disabled, as a note
-        if hint := low_confidence_hint(self._entry):
+        # Says why they're disabled, as a note: menus have no tooltips
+        if hint := low_confidence_hint(self._entry) or review_hint(self._review):
             menu.add_command(label=hint, state=tk.DISABLED)
+
+    def _threshold_menu(self, master: Any) -> tk.Menu:
+        """The scores below which the words are highlighted, to choose one."""
+        threshold_menu = tk.Menu(master, tearoff=False)
+        # Kept while the menu is shown, like the one of the precise timestamps
+        self._threshold_variable = tk.IntVar(
+            threshold_menu, value=self._config_system.low_confidence_threshold
+        )
+        for threshold in LOW_CONFIDENCE_THRESHOLDS:
+            threshold_menu.add_radiobutton(
+                # The score below which the words are highlighted
+                label=_("Below {percent}%").format(percent=threshold),
+                command=partial(self._set_low_confidence_threshold, threshold),
+                variable=self._threshold_variable,
+                value=threshold,
+            )
+        return threshold_menu
 
     def _copy_text(self, text: str) -> None:
         self.clipboard_clear()
