@@ -93,7 +93,7 @@ msgid "Could not load the WhisperX model: {error}"
 msgstr "WhisperX मॉडल लोड नहीं हो सका: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:217
+#: src/handlers/whisperx_handler.py:229
 msgid "No output file types selected. Please select at least one."
 msgstr "कोई आउटपुट फ़ाइल प्रकार नहीं चुना गया है। कृपया कम से कम एक चुनें।"
 
@@ -140,7 +140,7 @@ msgid "The reply of the model was too long."
 msgstr "मॉडल का जवाब बहुत लंबा था।"
 
 #: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:241
+#: src/handlers/whisperx_handler.py:315 src/handlers/whisperx_handler.py:351
 msgid "Loading audio…"
 msgstr "ऑडियो लोड किया जा रहा है…"
 
@@ -150,8 +150,8 @@ msgid "Unsupported file type: {extension}"
 msgstr "असमर्थित फ़ाइल प्रकार: {extension}"
 
 #: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:251 src/handlers/whisperx_handler.py:258
-#: src/views/history/formatting.py:43
+#: src/handlers/whisperx_handler.py:325 src/handlers/whisperx_handler.py:332
+#: src/handlers/whisperx_handler.py:364 src/views/history/formatting.py:43
 #: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
 msgstr "ट्रांसक्राइब किया जा रहा है…"
@@ -161,11 +161,11 @@ msgstr "ट्रांसक्राइब किया जा रहा ह�
 msgid "Transcribing chunk {current} of {total}…"
 msgstr "भाग {current}/{total} ट्रांसक्राइब किया जा रहा है…"
 
-#: src/handlers/live_transcriber.py:246
+#: src/handlers/live_transcriber.py:247
 msgid "The text can't be shown while recording."
 msgstr "रिकॉर्डिंग के दौरान टेक्स्ट नहीं दिखाया जा सकता।"
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:482
+#: src/handlers/live_transcriber.py:281 src/handlers/whisperx_handler.py:384
 #, python-brace-format
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr ""
@@ -185,7 +185,7 @@ msgstr "मॉडल ने मान्य सारांश नहीं ल�
 msgid "There is no text to summarize."
 msgstr "सारांश बनाने के लिए कोई टेक्स्ट नहीं है।"
 
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:331
+#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:415
 msgid "There is no transcription to save. Please generate it first."
 msgstr "सहेजने के लिए कोई ट्रांसक्रिप्शन नहीं है। कृपया पहले इसे बनाएँ।"
 
@@ -223,15 +223,15 @@ msgstr ""
 msgid "The file could not be downloaded: {error}"
 msgstr "फ़ाइल डाउनलोड नहीं हो सकी: {error}"
 
-#: src/handlers/whisperx_handler.py:371 src/handlers/whisperx_handler.py:380
+#: src/handlers/whisperx_handler.py:455 src/handlers/whisperx_handler.py:464
 msgid "Aligning subtitles…"
 msgstr "सबटाइटल संरेखित किए जा रहे हैं…"
 
-#: src/handlers/whisperx_handler.py:404 src/handlers/whisperx_handler.py:409
+#: src/handlers/whisperx_handler.py:488 src/handlers/whisperx_handler.py:493
 msgid "Identifying speakers…"
 msgstr "वक्ताओं की पहचान की जा रही है…"
 
-#: src/handlers/whisperx_handler.py:430
+#: src/handlers/whisperx_handler.py:514
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -242,11 +242,11 @@ msgstr ""
 "टोकन बनाएँ, {model_url} की शर्तें स्वीकार करें और WhisperX विकल्पों में "
 "टोकन सेट करें।"
 
-#: src/handlers/whisperx_handler.py:515
+#: src/handlers/whisperx_handler.py:594
 msgid "Loading the subtitle alignment model…"
 msgstr "सबटाइटल संरेखण मॉडल लोड किया जा रहा है…"
 
-#: src/handlers/whisperx_handler.py:548
+#: src/handlers/whisperx_handler.py:627
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
@@ -254,7 +254,7 @@ msgstr ""
 "वक्ता पहचान मॉडल लोड हो रहा है (पहली बार उपयोग करने पर यह डाउनलोड होता "
 "है)…"
 
-#: src/handlers/whisperx_handler.py:562
+#: src/handlers/whisperx_handler.py:641
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -286,7 +286,7 @@ msgid "Transcription"
 msgstr "ट्रांसक्रिप्शन"
 
 #: src/utils/exporters.py:195 src/utils/exporters.py:223
-#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:507
+#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:508
 #: src/views/transcript/summary_panel.py:196
 #: src/views/transcript/transcript_view.py:517
 #: src/views/transcript/transcript_view.py:522
@@ -814,7 +814,7 @@ msgid "New transcription:"
 msgstr "नया ट्रांसक्रिप्शन:"
 
 #: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:909
+#: src/views/settings/preferences_dialog.py:914
 #, python-brace-format
 msgid "Version {version} is available"
 msgstr "संस्करण {version} उपलब्ध है"
@@ -1087,70 +1087,70 @@ msgid "Enter a URL that starts with http:// or https://"
 msgstr "http:// या https:// से शुरू होने वाला URL दर्ज करें"
 
 #: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:74
+#: src/views/settings/preferences_dialog.py:75
 msgid "OpenAI API key"
 msgstr "OpenAI API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:76
+#: src/views/settings/preferences_dialog.py:77
 msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
 msgstr "Whisper API के लिए, और OpenAI से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:80
+#: src/views/settings/preferences_dialog.py:81
 msgid "Anthropic API key"
 msgstr "Anthropic API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:81
+#: src/views/settings/preferences_dialog.py:82
 msgid "Required to summarize and translate with Claude."
 msgstr "Claude से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:84
+#: src/views/settings/preferences_dialog.py:85
 msgid "DeepSeek API key"
 msgstr "DeepSeek API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:85
+#: src/views/settings/preferences_dialog.py:86
 msgid "Required to summarize and translate with DeepSeek."
 msgstr "DeepSeek से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:88
+#: src/views/settings/preferences_dialog.py:89
 msgid "Gemini API key"
 msgstr "Gemini API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:90
+#: src/views/settings/preferences_dialog.py:91
 msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr ""
 "Gemini से सारांश और अनुवाद के लिए आवश्यक (Google AI Studio से प्राप्त "
 "करें)।"
 
-#: src/views/settings/preferences_dialog.py:94
+#: src/views/settings/preferences_dialog.py:95
 msgid "Mistral API key"
 msgstr "Mistral API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:95
+#: src/views/settings/preferences_dialog.py:96
 msgid "Required to summarize and translate with Mistral."
 msgstr "Mistral से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:98
+#: src/views/settings/preferences_dialog.py:99
 msgid "xAI API key"
 msgstr "xAI API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:99
+#: src/views/settings/preferences_dialog.py:100
 msgid "Required to summarize and translate with Grok."
 msgstr "Grok से सारांश और अनुवाद के लिए आवश्यक।"
 
-#: src/views/settings/preferences_dialog.py:102
+#: src/views/settings/preferences_dialog.py:103
 msgid "DeepL API key"
 msgstr "DeepL API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:103
+#: src/views/settings/preferences_dialog.py:104
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "DeepL से अनुवाद के लिए आवश्यक। मुफ़्त प्लान की कुंजियाँ भी काम करती हैं।"
 
 #: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:106
+#: src/views/settings/preferences_dialog.py:107
 msgid "Google API key"
 msgstr "Google API कुंजी"
 
-#: src/views/settings/preferences_dialog.py:108
+#: src/views/settings/preferences_dialog.py:109
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1160,11 +1160,11 @@ msgstr ""
 "आवश्यक।"
 
 #: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:112
+#: src/views/settings/preferences_dialog.py:113
 msgid "Hugging Face token"
 msgstr "Hugging Face टोकन"
 
-#: src/views/settings/preferences_dialog.py:114
+#: src/views/settings/preferences_dialog.py:115
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1172,100 +1172,100 @@ msgstr ""
 "WhisperX से वक्ताओं की पहचान के लिए आवश्यक (pyannote/speaker-diarization-"
 "community-1)।"
 
-#: src/views/settings/preferences_dialog.py:172
+#: src/views/settings/preferences_dialog.py:173
 msgid "Preferences"
 msgstr "प्राथमिकताएँ"
 
-#: src/views/settings/preferences_dialog.py:186
+#: src/views/settings/preferences_dialog.py:187
 msgid "General"
 msgstr "सामान्य"
 
-#: src/views/settings/preferences_dialog.py:187
+#: src/views/settings/preferences_dialog.py:188
 msgid "AI"
 msgstr "AI"
 
-#: src/views/settings/preferences_dialog.py:188
+#: src/views/settings/preferences_dialog.py:189
 msgid "API keys"
 msgstr "API कुंजियाँ"
 
-#: src/views/settings/preferences_dialog.py:190
+#: src/views/settings/preferences_dialog.py:191
 #: src/views/transcript/player_bar.py:154
 #: src/views/transcript/transcript_view.py:740
 msgid "Subtitles"
 msgstr "सबटाइटल"
 
-#: src/views/settings/preferences_dialog.py:192
+#: src/views/settings/preferences_dialog.py:193
 msgid "About"
 msgstr "परिचय"
 
-#: src/views/settings/preferences_dialog.py:320
+#: src/views/settings/preferences_dialog.py:321
 msgid "Appearance"
 msgstr "रूप-रंग"
 
-#: src/views/settings/preferences_dialog.py:324
+#: src/views/settings/preferences_dialog.py:325
 msgid "System"
 msgstr "सिस्टम"
 
-#: src/views/settings/preferences_dialog.py:324
+#: src/views/settings/preferences_dialog.py:325
 msgid "Light"
 msgstr "लाइट"
 
-#: src/views/settings/preferences_dialog.py:324
+#: src/views/settings/preferences_dialog.py:325
 msgid "Dark"
 msgstr "डार्क"
 
-#: src/views/settings/preferences_dialog.py:330
+#: src/views/settings/preferences_dialog.py:331
 msgid "Interface size"
 msgstr "इंटरफ़ेस का आकार"
 
-#: src/views/settings/preferences_dialog.py:339
+#: src/views/settings/preferences_dialog.py:340
 msgid "Interface language"
 msgstr "इंटरफ़ेस की भाषा"
 
-#: src/views/settings/preferences_dialog.py:345
+#: src/views/settings/preferences_dialog.py:346
 msgid "System language"
 msgstr "सिस्टम की भाषा"
 
-#: src/views/settings/preferences_dialog.py:358
+#: src/views/settings/preferences_dialog.py:359
 msgid "Notifications"
 msgstr "सूचनाएँ"
 
-#: src/views/settings/preferences_dialog.py:359
+#: src/views/settings/preferences_dialog.py:360
 msgid "Shows a notification of the system when a transcription is ready."
 msgstr "ट्रांसक्रिप्शन तैयार होने पर सिस्टम की सूचना दिखाता है।"
 
-#: src/views/settings/preferences_dialog.py:370
+#: src/views/settings/preferences_dialog.py:371
 msgid "Updates"
 msgstr "अपडेट"
 
-#: src/views/settings/preferences_dialog.py:371
+#: src/views/settings/preferences_dialog.py:372
 msgid "Checks for a new version when the app opens."
 msgstr "ऐप खुलने पर नए संस्करण की जाँच करता है।"
 
-#: src/views/settings/preferences_dialog.py:387
+#: src/views/settings/preferences_dialog.py:388
 msgid "Date format"
 msgstr "तारीख़ का प्रारूप"
 
-#: src/views/settings/preferences_dialog.py:404
+#: src/views/settings/preferences_dialog.py:405
 msgid "Time format"
 msgstr "समय का प्रारूप"
 
-#: src/views/settings/preferences_dialog.py:405
+#: src/views/settings/preferences_dialog.py:406
 msgid "Automatic uses the clock of the interface language."
 msgstr "स्वचालित इंटरफ़ेस की भाषा की घड़ी का उपयोग करता है।"
 
-#: src/views/settings/preferences_dialog.py:411
+#: src/views/settings/preferences_dialog.py:412
 msgid "Automatic"
 msgstr "स्वचालित"
 
-#: src/views/settings/preferences_dialog.py:470
-#: src/views/settings/preferences_dialog.py:483
+#: src/views/settings/preferences_dialog.py:471
+#: src/views/settings/preferences_dialog.py:484
 msgid "Change API key…"
 msgstr "API कुंजी बदलें…"
 
 #: src/views/settings/cards/engine_card.py:140
-#: src/views/settings/preferences_dialog.py:470
-#: src/views/settings/preferences_dialog.py:483
+#: src/views/settings/preferences_dialog.py:471
+#: src/views/settings/preferences_dialog.py:484
 #: src/views/transcript/summary_panel.py:299
 #: src/views/transcript/translation_panel.py:485
 #: src/views/transcript/translation_panel.py:557
@@ -1273,145 +1273,149 @@ msgid "Set API key…"
 msgstr "API कुंजी सेट करें…"
 
 #: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:532
+#: src/views/settings/preferences_dialog.py:533
 #: src/views/transcript/translation_panel.py:232
 msgid "Translation"
 msgstr "अनुवाद"
 
-#: src/views/settings/preferences_dialog.py:544
+#: src/views/settings/preferences_dialog.py:545
 msgid "Ollama"
 msgstr "Ollama"
 
-#: src/views/settings/preferences_dialog.py:549
+#: src/views/settings/preferences_dialog.py:550
 msgid "Server URL"
 msgstr "सर्वर URL"
 
-#: src/views/settings/preferences_dialog.py:550
+#: src/views/settings/preferences_dialog.py:551
 msgid "Ollama runs the models on your computer, without an API key."
 msgstr "Ollama बिना API कुंजी के आपके कंप्यूटर पर मॉडल चलाता है।"
 
-#: src/views/settings/preferences_dialog.py:581
+#: src/views/settings/preferences_dialog.py:582
 msgid "Provider"
 msgstr "प्रदाता"
 
 #: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:588
+#: src/views/settings/preferences_dialog.py:589
 msgid "Model"
 msgstr "मॉडल"
 
-#: src/views/settings/preferences_dialog.py:589
+#: src/views/settings/preferences_dialog.py:590
 msgid "The default model of the provider if empty."
 msgstr "खाली होने पर प्रदाता का डिफ़ॉल्ट मॉडल।"
 
-#: src/views/settings/preferences_dialog.py:636
+#: src/views/settings/preferences_dialog.py:637
 msgid "Compute type"
 msgstr "गणना प्रकार"
 
-#: src/views/settings/preferences_dialog.py:637
+#: src/views/settings/preferences_dialog.py:638
 msgid "float16 is faster on GPUs. int8 uses less memory."
 msgstr "float16 GPU पर तेज़ है। int8 कम मेमोरी उपयोग करता है।"
 
-#: src/views/settings/preferences_dialog.py:653
+#: src/views/settings/preferences_dialog.py:654
 msgid "Batch size"
 msgstr "बैच आकार"
 
-#: src/views/settings/preferences_dialog.py:654
+#: src/views/settings/preferences_dialog.py:655
 msgid "Lower it if you run out of memory."
 msgstr "मेमोरी कम पड़ने पर इसे घटाएँ।"
 
-#: src/views/settings/preferences_dialog.py:666
+#: src/views/settings/preferences_dialog.py:667
 msgid "Use CPU"
 msgstr "CPU का उपयोग करें"
 
 #: src/views/settings/preferences_dialog.py:669
+msgid "Otherwise, the GPU of the Mac transcribes (with MLX), much faster."
+msgstr "अन्यथा, Mac का GPU (MLX के साथ) ट्रांसक्राइब करता है, जो बहुत तेज़ है।"
+
+#: src/views/settings/preferences_dialog.py:674
 msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
 msgstr "कोई CUDA GPU नहीं मिला, इसलिए WhisperX CPU पर चलता है।"
 
-#: src/views/settings/preferences_dialog.py:684
+#: src/views/settings/preferences_dialog.py:689
 msgid "Highlight words"
 msgstr "शब्द हाइलाइट करें"
 
-#: src/views/settings/preferences_dialog.py:685
+#: src/views/settings/preferences_dialog.py:690
 msgid "Underlines each word as it's said (.srt and .vtt)."
 msgstr "हर शब्द बोले जाते ही उसे रेखांकित करता है (.srt और .vtt)।"
 
-#: src/views/settings/preferences_dialog.py:704
+#: src/views/settings/preferences_dialog.py:709
 msgid "Landscape"
 msgstr "क्षैतिज"
 
-#: src/views/settings/preferences_dialog.py:704
+#: src/views/settings/preferences_dialog.py:709
 msgid "Portrait"
 msgstr "वर्टिकल"
 
-#: src/views/settings/preferences_dialog.py:712
+#: src/views/settings/preferences_dialog.py:717
 msgid "Max. lines per subtitle"
 msgstr "प्रति सबटाइटल अधिकतम पंक्तियाँ"
 
-#: src/views/settings/preferences_dialog.py:717
+#: src/views/settings/preferences_dialog.py:722
 msgid "Max. characters per line"
 msgstr "प्रति पंक्ति अधिकतम अक्षर"
 
-#: src/views/settings/preferences_dialog.py:722
+#: src/views/settings/preferences_dialog.py:727
 msgid "Chinese, Japanese and Korean"
 msgstr "चीनी, जापानी और कोरियाई"
 
-#: src/views/settings/preferences_dialog.py:759
+#: src/views/settings/preferences_dialog.py:764
 msgid ""
 "Chinese, Japanese and Korean characters are about twice as wide as Latin "
 "ones."
 msgstr "चीनी, जापानी और कोरियाई अक्षर लैटिन अक्षरों से लगभग दोगुने चौड़े होते हैं।"
 
-#: src/views/settings/preferences_dialog.py:768
+#: src/views/settings/preferences_dialog.py:773
 msgid "Temperature"
 msgstr "तापमान"
 
-#: src/views/settings/preferences_dialog.py:769
+#: src/views/settings/preferences_dialog.py:774
 msgid "Between 0 and 1. Higher values are more random."
 msgstr "0 और 1 के बीच। ज़्यादा मान ज़्यादा यादृच्छिक होते हैं।"
 
-#: src/views/settings/preferences_dialog.py:781
+#: src/views/settings/preferences_dialog.py:786
 msgid "Timestamps of the words"
 msgstr "शब्दों के टाइमस्टैम्प"
 
-#: src/views/settings/preferences_dialog.py:782
+#: src/views/settings/preferences_dialog.py:787
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "चलाते समय हर शब्द हाइलाइट करता है (whisper-1 मॉडल)। ज़्यादा समय लगता है।"
 
-#: src/views/settings/preferences_dialog.py:812
+#: src/views/settings/preferences_dialog.py:817
 #, python-brace-format
 msgid "Version {version}"
 msgstr "संस्करण {version}"
 
-#: src/views/settings/preferences_dialog.py:816
+#: src/views/settings/preferences_dialog.py:821
 #, python-brace-format
 msgid "Made by {author}"
 msgstr "{author} द्वारा निर्मित"
 
-#: src/views/settings/preferences_dialog.py:832
+#: src/views/settings/preferences_dialog.py:837
 msgid "Documentation"
 msgstr "दस्तावेज़"
 
-#: src/views/settings/preferences_dialog.py:852
+#: src/views/settings/preferences_dialog.py:857
 msgid "Donate"
 msgstr "दान करें"
 
-#: src/views/settings/preferences_dialog.py:866
+#: src/views/settings/preferences_dialog.py:871
 msgid "Check for updates"
 msgstr "अपडेट की जाँच करें"
 
-#: src/views/settings/preferences_dialog.py:885
+#: src/views/settings/preferences_dialog.py:890
 msgid "Checking for updates…"
 msgstr "अपडेट की जाँच हो रही है…"
 
-#: src/views/settings/preferences_dialog.py:896
+#: src/views/settings/preferences_dialog.py:901
 msgid "Could not check for updates."
 msgstr "अपडेट की जाँच नहीं हो सकी।"
 
-#: src/views/settings/preferences_dialog.py:905
+#: src/views/settings/preferences_dialog.py:910
 msgid "Download"
 msgstr "डाउनलोड करें"
 
-#: src/views/settings/preferences_dialog.py:915
+#: src/views/settings/preferences_dialog.py:920
 msgid "You have the latest version."
 msgstr "आपके पास नवीनतम संस्करण है।"
 
