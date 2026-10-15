@@ -15,6 +15,7 @@ import utils.path_helper as ph
 from controllers.history_controller import HistoryController
 from controllers.main_controller import MainController
 from controllers.transcription_queue import TranscriptionQueue
+from interfaces.answerer import Answerer
 from interfaces.summarizer import Summarizer
 from interfaces.translator import Translator
 from models.config.config_system import ConfigSystem
@@ -70,12 +71,15 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
         self,
         summarizer: Summarizer | None = None,
         translator: Translator | None = None,
+        answerer: Answerer | None = None,
     ) -> None:
         """
         :param summarizer: Summarizes the entries of the history. By default, with
                            the configured language model.
         :param translator: Translates the entries of the history. By default, with
                            the provider chosen by the user.
+        :param answerer: Answers questions about the entries of the history. By
+                         default, with the language model of the summaries.
         """
         config_system = cm.ConfigManager.get_config_system()
         # Before the window is created, so it isn't scaled again once it's shown
@@ -110,7 +114,11 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             self,
             store,
             create_history=lambda view: HistoryController(
-                store, view, summarizer=summarizer, translator=translator
+                store,
+                view,
+                summarizer=summarizer,
+                translator=translator,
+                answerer=answerer,
             ),
             create_jobs=lambda view: TranscriptionQueue(
                 store, view, create_runner=lambda queue: MainController(queue, view)

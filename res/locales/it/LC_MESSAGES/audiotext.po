@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:21+0200\n"
+"POT-Creation-Date: 2026-10-15 20:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -132,6 +132,20 @@ msgstr "Chiave API di Anthropic"
 msgid "Appearance"
 msgstr "Aspetto"
 
+msgid "Ask"
+msgstr "Chiedi"
+
+msgid "Ask a question about the transcription…"
+msgstr "Fai una domanda sulla trascrizione…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"Chiedi a {provider} della trascrizione, ad esempio cosa è stato deciso o "
+"chi ha detto qualcosa. Le risposte rimandano al punto in cui viene detto."
+
 msgid "Audio"
 msgstr "Audio"
 
@@ -235,6 +249,9 @@ msgstr ""
 
 msgid "Choose where to save the transcriptions"
 msgstr "Scegli dove salvare le trascrizioni"
+
+msgid "Clear the conversation"
+msgstr "Cancella la conversazione"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "Fai clic su un segmento per riprodurlo. Fai clic destro per modificarlo."
@@ -344,6 +361,9 @@ msgstr ""
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "Eliminare la nota di «{title}»?"
+
+msgid "Delete the questions and their answers?"
+msgstr "Eliminare le domande e le relative risposte?"
 
 msgid "Delete the segment"
 msgstr "Elimina il segmento"
@@ -1164,6 +1184,14 @@ msgstr "Imposta chiave API…"
 
 msgid "Set Hugging Face token…"
 msgstr "Imposta token di Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Imposta la chiave API di {provider} per fare domande sulla trascrizione, "
+"o scegli un altro fornitore nelle impostazioni."
 
 #, python-brace-format
 msgid ""

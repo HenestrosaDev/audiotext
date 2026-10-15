@@ -133,6 +133,7 @@ https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
 - **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL or Google Translate.
 - **A transcript you can play**: click a segment to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps.
 - **Summaries** with the key points and the chapters of the transcription.
+- **Questions about the transcription**, answered by the same language model as the summaries, with links to where the answer is said.
 - **Export** to plain text, Markdown, Word, SRT, VTT, ASS (with a color per speaker), TSV and JSON.
 - **Subtitles burned into the video**, to share it where subtitle files can't be loaded, as they're shown in the app (size, position and outline or box).
 - **History** of all your transcriptions, with search, groups, pins, tags and notes, and a queue to transcribe while you keep working, with a notification when each transcription is ready (or, in a watched folder, each new file).
