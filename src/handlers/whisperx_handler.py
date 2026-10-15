@@ -54,6 +54,11 @@ def is_model_downloaded(model_size: str) -> bool:
 # decoded (with FFmpeg), so torchcodec is never used
 warnings.filterwarnings("ignore", message=r"\s*torchcodec is not installed correctly")
 
+# WhisperX logs to stdout unless its logger already has a handler, which would mix
+# its logs with the text the CLI prints. With this one, they go through the root
+# logger like the app's own logs
+logging.getLogger("whisperx").addHandler(logging.NullHandler())
+
 SUBTITLE_FILE_TYPES = {"srt", "vtt"}
 # Translations made by Whisper are always into English
 TRANSLATION_LANGUAGE = "en"
