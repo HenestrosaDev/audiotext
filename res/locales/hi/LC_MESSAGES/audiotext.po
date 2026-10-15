@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 19:55+0200\n"
+"POT-Creation-Date: 2026-10-15 20:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -290,7 +290,7 @@ msgstr "ट्रांसक्रिप्शन"
 #: src/views/transcript/summary_panel.py:196
 #: src/views/transcript/transcript_view.py:567
 #: src/views/transcript/transcript_view.py:572
-#: src/views/transcript/transcript_view.py:829
+#: src/views/transcript/transcript_view.py:828
 msgid "Summary"
 msgstr "सारांश"
 
@@ -338,14 +338,14 @@ msgid "{count} failed"
 msgstr "{count} विफल"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1828
+#: src/views/transcript/transcript_view.py:1841
 msgid "Open the folder of the saved files"
 msgstr "सहेजी गई फ़ाइलों का फ़ोल्डर खोलें"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
 #: src/views/transcript/transcript_view.py:734
-#: src/views/transcript/transcript_view.py:1789
+#: src/views/transcript/transcript_view.py:1802
 msgid "Transcribe again"
 msgstr "फिर से ट्रांसक्राइब करें"
 
@@ -564,22 +564,22 @@ msgid "Rename"
 msgstr "नाम बदलें"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1840
+#: src/views/transcript/transcript_view.py:1853
 msgid "Edit note…"
 msgstr "नोट संपादित करें…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1840
+#: src/views/transcript/transcript_view.py:1853
 msgid "Add note…"
 msgstr "नोट जोड़ें…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1845
+#: src/views/transcript/transcript_view.py:1858
 msgid "Delete note…"
 msgstr "नोट हटाएँ…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1851
+#: src/views/transcript/transcript_view.py:1864
 msgid "Edit tag…"
 msgstr "टैग संपादित करें…"
 
@@ -604,7 +604,7 @@ msgid "Move to group"
 msgstr "समूह में ले जाएँ"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1856
+#: src/views/transcript/transcript_view.py:1869
 msgid "Delete…"
 msgstr "हटाएँ…"
 
@@ -888,8 +888,8 @@ msgstr ""
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
 #: src/views/transcript/transcript_view.py:724
-#: src/views/transcript/transcript_view.py:1480
-#: src/views/transcript/transcript_view.py:1718
+#: src/views/transcript/transcript_view.py:1489
+#: src/views/transcript/transcript_view.py:1727
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "कॉपी करें"
@@ -1191,7 +1191,7 @@ msgstr "API कुंजियाँ"
 
 #: src/views/settings/preferences_dialog.py:190
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:827
+#: src/views/transcript/transcript_view.py:826
 msgid "Subtitles"
 msgstr "सबटाइटल"
 
@@ -1749,12 +1749,12 @@ msgid "Choose where to save the transcriptions"
 msgstr "चुनें कि ट्रांसक्रिप्शन कहाँ सहेजे जाएँ"
 
 #: src/views/transcript/ask_panel.py:178 src/views/transcript/ask_panel.py:207
-#: src/views/transcript/transcript_view.py:830
+#: src/views/transcript/transcript_view.py:829
 msgid "Ask"
 msgstr "पूछें"
 
 #: src/views/transcript/ask_panel.py:181
-#: src/views/transcript/transcript_view.py:1137
+#: src/views/transcript/transcript_view.py:1146
 msgid "Clear the conversation"
 msgstr "बातचीत साफ़ करें"
 
@@ -1809,7 +1809,7 @@ msgid "The new segment goes after the one at {time}:"
 msgstr "नया सेगमेंट {time} वाले सेगमेंट के बाद आएगा:"
 
 #: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1498
+#: src/views/transcript/transcript_view.py:1507
 msgid "Delete the segment"
 msgstr "सेगमेंट हटाएँ"
 
@@ -1905,65 +1905,60 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: चलाएँ/रोकें · ←/→: {seconds} सेकंड पीछे/आगे"
 
 #: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1649
+#: src/views/transcript/transcript_view.py:1658
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "ऑडियो नहीं चलाया जा सकता: {error}"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:92
+#: src/views/transcript/review_bar.py:90
 msgid "Only flagged"
 msgstr "केवल चिह्नित"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:105
+#: src/views/transcript/review_bar.py:103
 msgid "Auto-play"
 msgstr "अपने-आप चलाएँ"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:111
+#: src/views/transcript/review_bar.py:109
 msgid "Undo"
 msgstr "पूर्ववत करें"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:121
+#: src/views/transcript/review_bar.py:119
 msgid "Accept remaining"
 msgstr "बाकी सभी स्वीकार करें"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:132
+#: src/views/transcript/review_bar.py:130
 msgid "Adjust threshold"
 msgstr "सीमा बदलें"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:143
+#: src/views/transcript/review_bar.py:141
 msgid "Review accepted words again"
 msgstr "स्वीकार किए गए शब्दों की फिर से समीक्षा करें"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:156
-msgid "Review low-confidence words"
-msgstr "कम विश्वसनीयता वाले शब्दों की समीक्षा करें"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:237
+#: src/views/transcript/review_bar.py:218
 #, python-brace-format
 msgid "{remaining} of {total} to review"
 msgstr "{total} में से {remaining} की समीक्षा बाकी"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:241
+#: src/views/transcript/review_bar.py:222
 #, python-brace-format
 msgid "All reviewed · {total} of {total}"
 msgstr "सबकी समीक्षा हो गई · {total} में से {total}"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:243
+#: src/views/transcript/review_bar.py:224
 msgid "No low-confidence words at this threshold"
 msgstr "इस सीमा पर कम विश्वसनीयता वाला कोई शब्द नहीं"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:245
+#: src/views/transcript/review_bar.py:226
 msgid "Confidence data isn’t available for this transcript"
 msgstr "इस ट्रांसक्रिप्ट के लिए विश्वसनीयता का डेटा उपलब्ध नहीं है"
 
@@ -1979,7 +1974,7 @@ msgid "Export"
 msgstr "निर्यात करें"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1166
+#: src/views/transcript/transcript_view.py:1175
 msgid "Regenerate the summary"
 msgstr "सारांश फिर से बनाएँ"
 
@@ -2165,125 +2160,125 @@ msgid "Show all segments"
 msgstr "सभी खंड दिखाएँ"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:814
+#: src/views/transcript/transcript_view.py:813
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "पिछला कम विश्वसनीयता वाला शब्द ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:816
+#: src/views/transcript/transcript_view.py:815
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "अगला कम विश्वसनीयता वाला शब्द ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:828
+#: src/views/transcript/transcript_view.py:827
 msgid "Plain text"
 msgstr "सादा टेक्स्ट"
 
-#: src/views/transcript/transcript_view.py:838
+#: src/views/transcript/transcript_view.py:837
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "अनुवाद करें"
 
-#: src/views/transcript/transcript_view.py:962
-#: src/views/transcript/transcript_view.py:1537
+#: src/views/transcript/transcript_view.py:957
+#: src/views/transcript/transcript_view.py:1546
 msgid "Edit text"
 msgstr "टेक्स्ट संपादित करें"
 
-#: src/views/transcript/transcript_view.py:962
+#: src/views/transcript/transcript_view.py:957
 #, python-brace-format
 msgid "Text said at {time}:"
 msgstr "{time} पर बोला गया टेक्स्ट:"
 
-#: src/views/transcript/transcript_view.py:1039
+#: src/views/transcript/transcript_view.py:1048
 msgid "Find and replace in the transcription"
 msgstr "ट्रांसक्रिप्शन में खोजें और बदलें"
 
-#: src/views/transcript/transcript_view.py:1049
+#: src/views/transcript/transcript_view.py:1058
 msgid "Find and replace in the translation"
 msgstr "अनुवाद में खोजें और बदलें"
 
-#: src/views/transcript/transcript_view.py:1050
+#: src/views/transcript/transcript_view.py:1059
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "{language} अनुवाद में खोजें और बदलें"
 
-#: src/views/transcript/transcript_view.py:1063
+#: src/views/transcript/transcript_view.py:1072
 msgid "Find in the summary"
 msgstr "सारांश में खोजें"
 
-#: src/views/transcript/transcript_view.py:1138
+#: src/views/transcript/transcript_view.py:1147
 msgid "Delete the questions and their answers?"
 msgstr "प्रश्न और उनके उत्तर हटाएँ?"
 
-#: src/views/transcript/transcript_view.py:1167
+#: src/views/transcript/transcript_view.py:1176
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "सारांश फिर से बनाएँ? मौजूदा सारांश बदल दिया जाएगा।"
 
-#: src/views/transcript/transcript_view.py:1325
+#: src/views/transcript/transcript_view.py:1334
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "अनुवाद छिपाएँ"
 
-#: src/views/transcript/transcript_view.py:1330
+#: src/views/transcript/transcript_view.py:1339
 msgid "Show the translation"
 msgstr "अनुवाद दिखाएँ"
 
-#: src/views/transcript/transcript_view.py:1334
+#: src/views/transcript/transcript_view.py:1343
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "किसी दूसरी भाषा में अनुवाद करें…"
 
-#: src/views/transcript/transcript_view.py:1345
+#: src/views/transcript/transcript_view.py:1354
 msgid "Show it as the subtitles of the video"
 msgstr "इसे वीडियो के सबटाइटल के रूप में दिखाएँ"
 
-#: src/views/transcript/transcript_view.py:1352
+#: src/views/transcript/transcript_view.py:1361
 msgid "Delete the translation"
 msgstr "अनुवाद हटाएँ"
 
-#: src/views/transcript/transcript_view.py:1477
-#: src/views/transcript/transcript_view.py:1716
+#: src/views/transcript/transcript_view.py:1486
+#: src/views/transcript/transcript_view.py:1725
 msgid "Play from here"
 msgstr "यहाँ से चलाएँ"
 
-#: src/views/transcript/transcript_view.py:1485
-#: src/views/transcript/transcript_view.py:1720
+#: src/views/transcript/transcript_view.py:1494
+#: src/views/transcript/transcript_view.py:1729
 msgid "Edit text…"
 msgstr "टेक्स्ट संपादित करें…"
 
-#: src/views/transcript/transcript_view.py:1485
+#: src/views/transcript/transcript_view.py:1494
 msgid "Translate text…"
 msgstr "टेक्स्ट का अनुवाद करें…"
 
-#: src/views/transcript/transcript_view.py:1489
+#: src/views/transcript/transcript_view.py:1498
 msgid "Edit the timing…"
 msgstr "समय संपादित करें…"
 
-#: src/views/transcript/transcript_view.py:1493
+#: src/views/transcript/transcript_view.py:1502
 msgid "Add a segment after…"
 msgstr "इसके बाद एक सेगमेंट जोड़ें…"
 
-#: src/views/transcript/transcript_view.py:1537
+#: src/views/transcript/transcript_view.py:1546
 msgid "Translate text"
 msgstr "टेक्स्ट का अनुवाद करें"
 
-#: src/views/transcript/transcript_view.py:1540
+#: src/views/transcript/transcript_view.py:1549
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "\"{text}\" का अनुवाद, {start} से {end} तक बोला गया:"
 
-#: src/views/transcript/transcript_view.py:1542
+#: src/views/transcript/transcript_view.py:1551
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "{start} से {end} तक के सेगमेंट का अनुवाद:"
 
-#: src/views/transcript/transcript_view.py:1578
+#: src/views/transcript/transcript_view.py:1587
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "फिर से अनुवाद करें"
 
-#: src/views/transcript/transcript_view.py:1580
+#: src/views/transcript/transcript_view.py:1589
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2292,47 +2287,47 @@ msgstr ""
 "ट्रांसक्रिप्शन का फिर से {language} में अनुवाद करें? अनुवाद में किए गए "
 "बदलाव खो जाएँगे।"
 
-#: src/views/transcript/transcript_view.py:1603
+#: src/views/transcript/transcript_view.py:1612
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "ऑडियो उपलब्ध नहीं है: स्रोत फ़ाइल को ले जाया गया या हटा दिया गया।"
 
-#: src/views/transcript/transcript_view.py:1606
+#: src/views/transcript/transcript_view.py:1615
 msgid "The audio isn't available."
 msgstr "ऑडियो उपलब्ध नहीं है।"
 
-#: src/views/transcript/transcript_view.py:1724
-#: src/views/transcript/transcript_view.py:1802
+#: src/views/transcript/transcript_view.py:1733
+#: src/views/transcript/transcript_view.py:1815
 msgid "Rename speakers…"
 msgstr "वक्ताओं के नाम बदलें…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1745
+#: src/views/transcript/transcript_view.py:1756
 msgid "Highlight low-confidence words"
 msgstr "कम विश्वसनीयता वाले शब्द हाइलाइट करें"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1753
+#: src/views/transcript/transcript_view.py:1763
 msgid "Low-confidence threshold"
 msgstr "कम विश्वसनीयता की सीमा"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1775
+#: src/views/transcript/transcript_view.py:1788
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "{percent}% से कम"
 
-#: src/views/transcript/transcript_view.py:1791
+#: src/views/transcript/transcript_view.py:1804
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr ""
 "“{title}” को फिर से ट्रांसक्राइब करें? इसके टेक्स्ट में किए गए बदलाव खो "
 "जाएँगे।"
 
-#: src/views/transcript/transcript_view.py:1812
+#: src/views/transcript/transcript_view.py:1825
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "सटीक टाइमस्टैम्प (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1836
+#: src/views/transcript/transcript_view.py:1849
 msgid "Rename…"
 msgstr "नाम बदलें…"
 
