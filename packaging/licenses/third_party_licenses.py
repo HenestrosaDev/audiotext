@@ -50,6 +50,7 @@ NON_LICENSE_SUFFIXES = {".py", ".pyc", ".pyi", ".so", ".pyd", ".dll", ".dylib", 
 GPL_LICENSE_IDS = ["GPL-2.0", "GPL-3.0", "LGPL-2.1", "LGPL-3.0"]
 
 SOURCE_CODE_EMAIL = "info@getaudiotext.com"
+REPOSITORY_URL = "https://github.com/HenestrosaDev/audiotext"
 
 SEPARATOR = "=" * 80
 
@@ -226,14 +227,30 @@ def _ffmpeg_section() -> str | None:
     else:
         source = "https://ffmpeg.org/download.html#get-sources"
 
+    # Built by `packaging/macos/build_ffmpeg.sh` (e.g. `9.0.2-audiotext`), whose
+    # version is the one of the release
+    build_script = ""
+    if version.endswith("-audiotext"):
+        build_script = (
+            f"Build script: {REPOSITORY_URL}/blob/v{_app_version()}/"
+            "packaging/macos/build_ffmpeg.sh\n"
+        )
+
     return _section(
         f"FFmpeg {version} (ffmpeg and ffprobe)",
         f"License: {license_id}-or-later (the full text is at the end of this file), "
         'including the libraries it\'s built with (see "Native libraries")\n'
         "Website: https://ffmpeg.org\n"
         f"Source code: {source}\n"
+        f"{build_script}"
         f"Build configuration: {configuration or 'unknown'}",
     )
+
+
+def _app_version() -> str:
+    with (ROOT / "pyproject.toml").open("rb") as file:
+        version: str = tomllib.load(file)["project"]["version"]
+    return version
 
 
 def _flac_section() -> str | None:
