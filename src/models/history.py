@@ -87,6 +87,9 @@ class HistoryEntry:
     settings: dict[str, Any] = field(default_factory=dict)
     # Summary generated from the text (see `TranscriptSummary`), if any
     summary: dict[str, Any] = field(default_factory=dict)
+    # Questions asked about the text and their answers (see `TranscriptAnswer`),
+    # in the order they were asked
+    questions: list[dict[str, Any]] = field(default_factory=list)
     # Translations of the text (see `TranscriptTranslation`), by the code of
     # their language, in the order they were made
     translations: dict[str, dict[str, Any]] = field(default_factory=dict)

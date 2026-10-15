@@ -9,7 +9,7 @@ from controllers.history_controller import HistoryController
 from handlers.translation_handler import MANUAL
 from models.history import EntryStatus, HistoryEntry
 from models.transcript_segment import TranscriptSegment
-from tests.conftest import FakeSummarizer, FakeTranslator
+from tests.conftest import FakeAnswerer, FakeSummarizer, FakeTranslator
 from utils.history_store import HistoryStore
 
 SEGMENTS = [
@@ -41,6 +41,11 @@ def translator() -> FakeTranslator:
 
 
 @pytest.fixture
+def answerer() -> FakeAnswerer:
+    return FakeAnswerer()
+
+
+@pytest.fixture
 def tasks() -> list[Callable[[], None]]:
     """The tasks started in the background, run by `run_tasks`."""
     return []
@@ -52,9 +57,12 @@ def history(
     view: MagicMock,
     summarizer: FakeSummarizer,
     translator: FakeTranslator,
+    answerer: FakeAnswerer,
     tasks: list[Callable[[], None]],
 ) -> HistoryController:
-    return HistoryController(store, view, summarizer, translator, tasks.append)
+    return HistoryController(
+        store, view, summarizer, translator, tasks.append, answerer
+    )
 
 
 def run_tasks(tasks: list[Callable[[], None]]) -> None:
@@ -278,3 +286,66 @@ def test_entries_are_moved_to_a_new_group(
     history.delete_group(group_id)
     assert store.get_group(group_id) is None
     assert store.get(entry.id) is not None
+
+
+def test_the_answers_are_saved_in_order(
+    history: HistoryController,
+    store: HistoryStore,
+    view: MagicMock,
+    answerer: FakeAnswerer,
+    tasks: list[Callable[[], None]],
+) -> None:
+    entry = add(store)
+
+    history.ask_question(entry.id, " Who said hello? ")
+    # One question of each entry is answered at a time, and empty ones are ignored
+    history.ask_question(entry.id, "Another?")
+    history.ask_question(add(store).id, "  ")
+    assert history.get_question(entry.id) == "Who said hello?"
+    assert len(tasks) == 1
+    run_tasks(tasks)
+
+    history.ask_question(entry.id, "And then?")
+    run_tasks(tasks)
+
+    # The second question had the first answer before it
+    assert answerer.questions == [("Who said hello?", 0), ("And then?", 1)]
+    assert [answer["question"] for answer in get(store, entry.id).questions] == [
+        "Who said hello?",
+        "And then?",
+    ]
+    assert history.get_question(entry.id) is None
+    view.refresh_entry_view.assert_called_with(entry.id)
+
+
+def test_a_failed_answer_keeps_its_error_until_asked_again(
+    history: HistoryController,
+    store: HistoryStore,
+    answerer: FakeAnswerer,
+    tasks: list[Callable[[], None]],
+) -> None:
+    answerer.error = RuntimeError("No credit")
+    entry = add(store)
+
+    history.ask_question(entry.id, "Why?")
+    run_tasks(tasks)
+
+    assert "No credit" in history.get_question_error(entry.id)
+    assert get(store, entry.id).questions == []
+
+    history.ask_question(entry.id, "Why?")
+    assert history.get_question_error(entry.id) == ""
+
+
+def test_the_questions_are_cleared(
+    history: HistoryController,
+    store: HistoryStore,
+    tasks: list[Callable[[], None]],
+) -> None:
+    entry = add(store)
+    history.ask_question(entry.id, "Why?")
+    run_tasks(tasks)
+
+    history.clear_questions(entry.id)
+
+    assert get(store, entry.id).questions == []
