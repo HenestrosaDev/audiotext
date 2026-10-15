@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 02:45+0200\n"
+"POT-Creation-Date: 2026-10-15 10:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -2113,7 +2113,7 @@ msgid "Could not export: {error}"
 msgstr "No se pudo exportar: {error}"
 
 #: src/views/transcript/transcript_view.py:588
-#: src/views/transcript/video_export.py:92
+#: src/views/transcript/video_export.py:101
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Exportado a {path}"
@@ -2391,11 +2391,20 @@ msgstr "Configurar…"
 msgid "Adding the subtitles to the video was cancelled."
 msgstr "Se ha cancelado la adición de los subtítulos al vídeo."
 
-#: src/views/transcript/video_export.py:100
+#: src/views/transcript/video_export.py:105
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr ""
+"Exportado a {path}, pero ninguna fuente tiene estos caracteres, así que "
+"se muestran como recuadros: {characters}"
+
+#: src/views/transcript/video_export.py:114
 msgid "Adding the subtitles to the video…"
 msgstr "Añadiendo los subtítulos al vídeo…"
 
-#: src/views/transcript/video_export.py:101
+#: src/views/transcript/video_export.py:115
 #, python-brace-format
 msgid "Adding the subtitles to the video… {percent}%"
 msgstr "Añadiendo los subtítulos al vídeo… {percent} %"

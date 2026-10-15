@@ -7,7 +7,7 @@ from typing import Any
 from models.config.config_system import ConfigSystem
 from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.i18n import _
-from utils.subtitle_burner import SubtitleLook, burn_subtitles
+from utils.subtitle_burner import BurnedVideo, SubtitleLook, burn_subtitles
 from utils.subtitle_cues import Cue
 from views.transcript.video_pane import SUBTITLE_OUTLINE, SUBTITLE_SIZES
 
@@ -76,7 +76,7 @@ class VideoExport:
 
         def export() -> None:
             try:
-                path = burn_subtitles(
+                burned = burn_subtitles(
                     video_path, cues, output_path, look, on_progress, token
                 )
             except TranscriptionCancelledError:
@@ -89,10 +89,24 @@ class VideoExport:
                     finish, _("Could not export: {error}").format(error=e), True
                 )
             else:
-                run_on_ui_thread(finish, _("Exported to {path}").format(path=path))
+                run_on_ui_thread(finish, *export_message(burned))
 
         show_status(progress_message(None))
         threading.Thread(target=export, daemon=True).start()
+
+
+def export_message(burned: BurnedVideo) -> tuple[str, bool]:
+    """The message shown when the video is exported, and whether it's an error."""
+    if not burned.missing_characters:
+        return _("Exported to {path}").format(path=burned.path), False
+    # The video is exported, but some of the text is drawn as boxes
+    return (
+        _(
+            "Exported to {path}, but no font has these characters, so they're "
+            "shown as boxes: {characters}"
+        ).format(path=burned.path, characters=burned.missing_characters),
+        True,
+    )
 
 
 def progress_message(percent: int | None) -> str:

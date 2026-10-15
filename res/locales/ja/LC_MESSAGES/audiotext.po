@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 02:45+0200\n"
+"POT-Creation-Date: 2026-10-15 10:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -2039,7 +2039,7 @@ msgid "Could not export: {error}"
 msgstr "エクスポートできませんでした: {error}"
 
 #: src/views/transcript/transcript_view.py:588
-#: src/views/transcript/video_export.py:92
+#: src/views/transcript/video_export.py:101
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "{path} にエクスポートしました"
@@ -2309,11 +2309,18 @@ msgstr "設定…"
 msgid "Adding the subtitles to the video was cancelled."
 msgstr "動画への字幕の追加をキャンセルしました。"
 
-#: src/views/transcript/video_export.py:100
+#: src/views/transcript/video_export.py:105
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr "{path} にエクスポートしましたが、次の文字を含むフォントがないため、四角で表示されます: {characters}"
+
+#: src/views/transcript/video_export.py:114
 msgid "Adding the subtitles to the video…"
 msgstr "動画に字幕を追加しています…"
 
-#: src/views/transcript/video_export.py:101
+#: src/views/transcript/video_export.py:115
 #, python-brace-format
 msgid "Adding the subtitles to the video… {percent}%"
 msgstr "動画に字幕を追加しています… {percent}%"

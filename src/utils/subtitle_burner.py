@@ -9,9 +9,13 @@ each system is built with it (see `packaging/macos/build_ffmpeg.sh` for macOS).
 
 import functools
 import logging
+import os
+import re
+import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
@@ -34,14 +38,63 @@ MIN_FONT_SIZE = 11
 MAX_LINE_RATIO = 0.86
 BACKGROUND_OPACITY = 0.6
 
-# The fonts of the text in Chinese and in Japanese on each system. The ones libass
-# chooses for their characters may lack some of them (e.g. the simplified Chinese
-# ones in the Japanese font of macOS, since its Chinese font can't be opened)
-CJK_FONTS = {
-    "darwin": ("Hiragino Sans GB", "Hiragino Sans"),
-    "win32": ("Microsoft YaHei", "Yu Gothic"),
-    "linux": ("Noto Sans CJK SC", "Noto Sans CJK JP"),
+
+@dataclass(frozen=True)
+class FontCandidate:
+    """
+    A font, by the name libass looks for, and its file, which tells whether it's
+    installed. On Linux, fontconfig is asked for the name instead.
+    """
+
+    name: str
+    file: str | None = None
+
+
+# The fonts of the text in Chinese and in Japanese on each system, from the first one
+# installed. The ones libass chooses for their characters may lack some of them
+# (e.g. the simplified Chinese ones in the Japanese font of macOS, since its Chinese
+# font can't be opened), and a font that isn't installed is even worse. The fonts
+# in Chinese have the kana of Japanese too, so they're its last resort
+CHINESE_FONTS = {
+    "darwin": (
+        FontCandidate("Hiragino Sans GB", "Hiragino Sans GB.ttc"),
+        FontCandidate("Heiti SC", "STHeiti Medium.ttc"),
+        FontCandidate("Songti SC", "Supplemental/Songti.ttc"),
+        FontCandidate("Arial Unicode MS", "Supplemental/Arial Unicode.ttf"),
+    ),
+    "win32": (
+        FontCandidate("Microsoft YaHei", "msyh.ttc"),
+        FontCandidate("SimHei", "simhei.ttf"),
+        FontCandidate("SimSun", "simsun.ttc"),
+    ),
+    "linux": (
+        FontCandidate("Noto Sans CJK SC"),
+        FontCandidate("Source Han Sans SC"),
+        FontCandidate("WenQuanYi Zen Hei"),
+        FontCandidate("Droid Sans Fallback"),
+    ),
 }
+JAPANESE_FONTS = {
+    "darwin": (
+        FontCandidate("Hiragino Sans", "ヒラギノ角ゴシック W6.ttc"),
+        FontCandidate("Hiragino Maru Gothic ProN", "ヒラギノ丸ゴ ProN W4.ttc"),
+    ),
+    "win32": (
+        FontCandidate("Yu Gothic", "YuGothB.ttc"),
+        FontCandidate("Meiryo", "meiryo.ttc"),
+        FontCandidate("MS Gothic", "msgothic.ttc"),
+    ),
+    "linux": (
+        FontCandidate("Noto Sans CJK JP"),
+        FontCandidate("Source Han Sans JP"),
+        FontCandidate("IPAGothic"),
+        FontCandidate("TakaoGothic"),
+    ),
+}
+# What libass logs for each character that no font has, which is drawn as a box
+MISSING_GLYPH_PATTERN = re.compile(
+    r"failed to find any fallback with glyph 0x([0-9A-Fa-f]+)"
+)
 # H.264, with the encoder of FFmpeg that's preferred, from the first one found: x264
 # (in the GPL builds of Linux and Windows) or VideoToolbox (in the one of macOS)
 VIDEO_ENCODERS = ("libx264", "h264_videotoolbox")
@@ -49,6 +102,8 @@ VIDEO_ENCODERS = ("libx264", "h264_videotoolbox")
 # x264 with its CRF. Its constant quality (`-q:v`) is only supported by the hardware
 # encoder of Apple Silicon, not by the software one it falls back to
 VIDEOTOOLBOX_BITS_PER_PIXEL = 3
+# Small videos would get too few bits to be watchable
+MIN_VIDEOTOOLBOX_BITRATE = 1_000_000
 
 
 @dataclass(frozen=True)
@@ -60,6 +115,13 @@ class SubtitleLook:
     is_top: bool = False
     # An outline around the text, or a dark box behind it
     is_outline: bool = False
+
+
+@dataclass(frozen=True)
+class BurnedVideo:
+    path: Path
+    # The characters that no font has, so they're drawn as boxes, in their order
+    missing_characters: str = ""
 
 
 @dataclass(frozen=True)
@@ -96,7 +158,7 @@ def burn_subtitles(
     look: SubtitleLook,
     on_progress: ProgressCallback = ignore_progress,
     cancellation_token: CancellationToken | None = None,
-) -> Path:
+) -> BurnedVideo:
     """
     Writes a copy of a video with the subtitles drawn on it, as an MP4 file.
 
@@ -106,7 +168,7 @@ def burn_subtitles(
                      built without libass) or it fails.
     :raises TranscriptionCancelledError: If the token is cancelled. The
                                          unfinished file is removed.
-    :return: `output_path`.
+    :return: `output_path`, and the characters that couldn't be drawn.
     """
     if not cues:
         raise ValueError("There are no subtitles to burn")
@@ -127,7 +189,9 @@ def burn_subtitles(
         write_ass(cues, work_dir / "subtitles.ass", look, size, LibassFonts.of_system())
         command = [
             ffmpeg,
-            *("-nostdin", "-hide_banner", "-loglevel", "error", "-y"),
+            # The warnings tell the characters that no font has, and the level of
+            # each message tells them from the errors
+            *("-nostdin", "-hide_banner", "-loglevel", "level+warning", "-y"),
             *("-i", str(video_path.resolve())),
             *("-vf", "subtitles=filename=subtitles.ass,format=yuv420p"),
             *("-map", "0:v:0", "-map", "0:a?"),
@@ -136,9 +200,11 @@ def burn_subtitles(
             *("-progress", "pipe:1", "-nostats"),
             str(output_path.resolve()),
         ]
-        _run(command, work_dir, duration, on_progress, token, output_path)
+        missing = _run(command, work_dir, duration, on_progress, token, output_path)
 
-    return output_path
+    if missing:
+        logger.warning("No font has these characters: %s", missing)
+    return BurnedVideo(output_path, missing)
 
 
 def video_encoder_options(encoder: str | None, size: tuple[int, int]) -> list[str]:
@@ -146,7 +212,9 @@ def video_encoder_options(encoder: str | None, size: tuple[int, int]) -> list[st
     if encoder == "libx264":
         return ["-c:v", "libx264", "-crf", "20", "-preset", "medium"]
     if encoder == "h264_videotoolbox":
-        bitrate = size[0] * size[1] * VIDEOTOOLBOX_BITS_PER_PIXEL
+        bitrate = max(
+            size[0] * size[1] * VIDEOTOOLBOX_BITS_PER_PIXEL, MIN_VIDEOTOOLBOX_BITRATE
+        )
         # Without a hardware encoder (e.g. in virtual machines), the software one
         return ["-c:v", "h264_videotoolbox", "-b:v", str(bitrate), "-allow_sw", "1"]
     return []
@@ -159,10 +227,12 @@ def _run(
     on_progress: ProgressCallback,
     token: CancellationToken,
     output_path: Path,
-) -> None:
+) -> str:
     """
     Runs FFmpeg from the folder of the subtitles, so their paths don't have to be
     escaped in the filters.
+
+    :return: The characters that no font has.
     """
     logger.info("Burning the subtitles into %s", output_path)
     process = subprocess.Popen(
@@ -175,6 +245,10 @@ def _run(
         errors="replace",
     )
     assert process.stdout is not None and process.stderr is not None
+    # Read along, since FFmpeg would stop if the pipe filled up with warnings
+    log = _FFmpegLog()
+    log_reader = threading.Thread(target=log.read, args=(process.stderr,), daemon=True)
+    log_reader.start()
     try:
         for seconds in _progress_seconds(process.stdout):
             if token.is_cancelled:
@@ -182,8 +256,8 @@ def _run(
                 break
             if duration:
                 on_progress("", min(seconds / duration, 1.0))
-        errors = process.stderr.read()
         process.wait()
+        log_reader.join()
     except BaseException:
         process.kill()
         process.wait()
@@ -195,7 +269,27 @@ def _run(
         raise TranscriptionCancelledError()
     if process.returncode != 0:
         output_path.unlink(missing_ok=True)
-        raise OSError(errors.strip() or f"FFmpeg exited with {process.returncode}")
+        raise OSError(
+            "\n".join(log.errors) or f"FFmpeg exited with {process.returncode}"
+        )
+    return "".join(log.missing_characters)
+
+
+class _FFmpegLog:
+    """The errors and the characters without font in the messages of FFmpeg."""
+
+    def __init__(self) -> None:
+        self.errors: list[str] = []
+        # A dict, which keeps the order, to have each character once
+        self.missing_characters: dict[str, None] = {}
+
+    def read(self, lines: Iterator[str]) -> None:
+        for line in lines:
+            if match := MISSING_GLYPH_PATTERN.search(line):
+                self.missing_characters[chr(int(match.group(1), 16))] = None
+            elif "[error]" in line or "[fatal]" in line:
+                # e.g. `[in#0 @ 0x...] [error] Error opening input: ...`
+                self.errors.append(re.sub(r"^.*?\[(error|fatal)\] ", "", line.strip()))
 
 
 def _progress_seconds(lines: Iterator[str]) -> Iterator[float]:
@@ -220,11 +314,46 @@ class LibassFonts:
 
     @classmethod
     def of_system(cls) -> "LibassFonts":
+        """
+        The first fonts installed of `CHINESE_FONTS` and `JAPANESE_FONTS`. Without
+        any, libass chooses the ones that have the characters.
+        """
         platform = "linux" if sys.platform.startswith("linux") else sys.platform
-        if platform not in CJK_FONTS:
-            return cls()
-        chinese, japanese = CJK_FONTS[platform]
-        return cls(chinese=chinese, japanese=japanese)
+        chinese = _first_installed(CHINESE_FONTS.get(platform, ()))
+        japanese = _first_installed(JAPANESE_FONTS.get(platform, ())) or chinese
+        return cls(chinese=chinese or cls.chinese, japanese=japanese or cls.japanese)
+
+
+def _font_dirs() -> list[Path]:
+    if sys.platform == "win32":
+        dirs = [Path(os.environ.get("WINDIR", "C:\\Windows")) / "Fonts"]
+        if local_app_data := os.environ.get("LOCALAPPDATA"):
+            dirs.append(Path(local_app_data) / "Microsoft" / "Windows" / "Fonts")
+        return dirs
+    return [
+        Path("/System/Library/Fonts"),
+        Path("/Library/Fonts"),
+        Path.home() / "Library" / "Fonts",
+    ]
+
+
+def _is_installed(font: FontCandidate) -> bool:
+    if font.file is not None:
+        return any((fonts_dir / font.file).is_file() for fonts_dir in _font_dirs())
+    fc_list = shutil.which("fc-list")
+    if fc_list is None:
+        # It can't be known, so libass looks for it
+        return True
+    try:
+        # It exits with 1 if no font matches
+        return subprocess.run([fc_list, "-q", font.name], timeout=10).returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return True
+
+
+@functools.cache
+def _first_installed(fonts: tuple[FontCandidate, ...]) -> str | None:
+    return next((font.name for font in fonts if _is_installed(font)), None)
 
 
 def _ass_time(seconds: float) -> str:
@@ -255,7 +384,7 @@ def write_ass(
     """
     Writes the subtitles for libass, in the resolution of the video, so its sizes
     are in pixels. The ones in Chinese or Japanese have the style of their font
-    (see `CJK_FONTS`).
+    (see `LibassFonts.of_system`).
     """
     width, height = size
     text_size = font_size(look, size)

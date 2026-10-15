@@ -1,4 +1,6 @@
 import subprocess
+import sys
+from collections.abc import Iterator
 from pathlib import Path
 
 import av
@@ -12,6 +14,7 @@ from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.media import decoded_video_size
 from utils.subtitle_burner import (
     FFmpegFeatures,
+    FontCandidate,
     LibassFonts,
     SubtitleLook,
     burn_subtitles,
@@ -85,6 +88,8 @@ def test_videotoolbox_is_given_a_bitrate_for_the_size_of_the_video() -> None:
     options = video_encoder_options("h264_videotoolbox", (1920, 1080))
 
     assert options[options.index("-b:v") + 1] == str(1920 * 1080 * 3)
+    small = video_encoder_options("h264_videotoolbox", (160, 90))
+    assert small[small.index("-b:v") + 1] == "1000000"
     # Its constant quality isn't supported by its software encoder
     assert "-q:v" not in options
     assert video_encoder_options("libx264", (1920, 1080))[:2] == ["-c:v", "libx264"]
@@ -100,6 +105,72 @@ def test_ffmpeg_without_libass_cant_burn_subtitles(
 
     with pytest.raises(OSError, match="libass"):
         burn_subtitles(video, CUES, tmp_path / "output.mp4", SubtitleLook())
+
+
+@pytest.fixture
+def installed_fonts(monkeypatch: pytest.MonkeyPatch) -> Iterator[set[str]]:
+    """The files of the fonts installed on Windows, which the test sets."""
+    installed: set[str] = set()
+    monkeypatch.setattr(sys, "platform", "win32")
+    monkeypatch.setattr(
+        subtitle_burner, "_is_installed", lambda font: font.file in installed
+    )
+    subtitle_burner._first_installed.cache_clear()
+    yield installed
+    subtitle_burner._first_installed.cache_clear()
+
+
+def test_the_first_cjk_fonts_installed_are_used(installed_fonts: set[str]) -> None:
+    installed_fonts.update({"simhei.ttf", "meiryo.ttc"})
+
+    assert LibassFonts.of_system() == LibassFonts("Arial", "SimHei", "Meiryo")
+
+
+def test_without_japanese_font_the_chinese_one_has_the_kana(
+    installed_fonts: set[str],
+) -> None:
+    installed_fonts.add("simhei.ttf")
+
+    assert LibassFonts.of_system().japanese == "SimHei"
+
+
+@pytest.mark.usefixtures("installed_fonts")
+def test_without_cjk_fonts_libass_chooses_them() -> None:
+    assert LibassFonts.of_system() == LibassFonts()
+
+
+def test_a_font_is_installed_if_its_file_is_in_a_font_folder(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    (tmp_path / "Supplemental").mkdir()
+    (tmp_path / "Supplemental" / "Songti.ttc").touch()
+    monkeypatch.setattr(subtitle_burner, "_font_dirs", lambda: [tmp_path])
+
+    assert subtitle_burner._is_installed(
+        FontCandidate("Songti SC", "Supplemental/Songti.ttc")
+    )
+    assert not subtitle_burner._is_installed(FontCandidate("Heiti SC", "Heiti.ttc"))
+
+
+def test_the_log_tells_the_errors_and_the_characters_without_font() -> None:
+    log = subtitle_burner._FFmpegLog()
+    log.read(
+        iter(
+            [
+                "[Parsed_subtitles_0 @ 0x1] [warning] Error opening font: 'a.ttc', 0\n",
+                "[Parsed_subtitles_0 @ 0x1] [warning] fontselect: failed to find any "
+                "fallback with glyph 0x4F60 for font: (Arial, 700, 0)\n",
+                "[Parsed_subtitles_0 @ 0x1] [warning] fontselect: failed to find any "
+                "fallback with glyph 0x10FFFD for font: (Arial, 700, 0)\n",
+                "[Parsed_subtitles_0 @ 0x1] [warning] fontselect: failed to find any "
+                "fallback with glyph 0x4F60 for font: (Arial, 700, 0)\n",
+                "[out#0/mp4 @ 0x2] [error] Error opening output a.mp4: No such file\n",
+            ]
+        )
+    )
+
+    assert "".join(log.missing_characters) == "你\U0010fffd"
+    assert log.errors == ["Error opening output a.mp4: No such file"]
 
 
 def test_progress_reports_are_read() -> None:
@@ -139,14 +210,17 @@ def test_subtitles_are_burned_into_a_copy_of_the_video(tmp_path: Path) -> None:
     output = tmp_path / "video.subtitled.mp4"
     progress: list[float | None] = []
 
-    burn_subtitles(
+    burned = burn_subtitles(
         video,
-        [Cue(0.0, 2.0, "Hello")],
+        # A private character, which no font has
+        [Cue(0.0, 2.0, "Hello \U0010fffd")],
         output,
         SubtitleLook(),
         lambda _message, fraction: progress.append(fraction),
     )
 
+    assert burned.path == output
+    assert burned.missing_characters == "\U0010fffd"
     with av.open(str(output)) as container:
         assert container.streams.video[0].width == 320
         assert len(container.streams.audio) == 1
@@ -158,6 +232,14 @@ def test_subtitles_are_burned_into_a_copy_of_the_video(tmp_path: Path) -> None:
     assert changed[-40:].sum() > 200
     assert changed[:40].sum() < 20
     assert progress and progress[-1] == pytest.approx(1.0, abs=0.1)
+
+
+@pytest.mark.usefixtures("ffmpeg_with_libass")
+def test_the_errors_of_ffmpeg_are_raised(tmp_path: Path) -> None:
+    video = make_video(tmp_path / "video.mp4", 64, 32)
+
+    with pytest.raises(OSError, match="missing"):
+        burn_subtitles(video, CUES, tmp_path / "missing" / "out.mp4", SubtitleLook())
 
 
 @pytest.mark.usefixtures("ffmpeg_with_libass")
