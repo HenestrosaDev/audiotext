@@ -5,9 +5,9 @@ doesn't depend on how each method transcribes and saves its results.
 
 from pathlib import Path
 
+import handlers.google_api_handler as google_api
 import utils.config_manager as cm
-from handlers.audio_handler import AudioHandler
-from handlers.google_api_handler import GoogleApiHandler
+from handlers.audio_handler import get_transcription
 from handlers.openai_api_handler import ApiTranscript, OpenAiApiHandler, render_response
 from handlers.whisperx_handler import WhisperXHandler
 from interfaces.transcriber import Transcriber
@@ -60,16 +60,19 @@ class WhisperXTranscriber:
             transcription, on_progress, cancellation_token
         )
         return TranscriptionResult(
-            text, self._handler.segments, self._handler.result_language
+            text,
+            self._handler.segments,
+            self._handler.result_language,
+            raw=self._handler.raw_result,
         )
 
     def save(
         self, result: TranscriptionResult, transcription: Transcription, file_path: Path
     ) -> None:
-        # The WhisperX writers need the result of the handler, which has the timings
-        # of the words and the speakers. The controller saves each file right after
-        # transcribing it, so the handler still keeps it
+        # The WhisperX writers need the result as WhisperX returns it, which has
+        # the timings of the words and the speakers
         self._handler.save_transcription(
+            result=result.raw,
             file_path=file_path,
             output_file_types=transcription.output_file_types,
             should_overwrite=transcription.should_overwrite,
@@ -84,9 +87,9 @@ class GoogleApiTranscriber:
         on_progress: ProgressCallback,
         cancellation_token: CancellationToken,
     ) -> TranscriptionResult:
-        text = AudioHandler.get_transcription(
+        text = get_transcription(
             transcription=transcription,
-            transcription_func=GoogleApiHandler.transcribe,
+            transcription_func=google_api.transcribe,
             # Splitting avoids exceeding the duration limit of each request
             should_split_on_silence=True,
             on_progress=on_progress,
@@ -101,13 +104,16 @@ class GoogleApiTranscriber:
 
 
 class OpenAiApiTranscriber:
+    def __init__(self, handler: OpenAiApiHandler | None = None) -> None:
+        self._handler = handler or OpenAiApiHandler()
+
     def transcribe(
         self,
         transcription: Transcription,
         on_progress: ProgressCallback,
         cancellation_token: CancellationToken,
     ) -> TranscriptionResult:
-        transcript = OpenAiApiHandler.transcribe_file(
+        transcript = self._handler.transcribe_file(
             transcription, on_progress, cancellation_token
         )
         return TranscriptionResult(

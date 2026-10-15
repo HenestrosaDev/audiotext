@@ -179,9 +179,27 @@ def test_the_google_api_ignores_the_prompt_and_the_keywords() -> None:
 
 
 def test_whisper_gets_the_keywords_in_the_prompt() -> None:
-    transcription = Transcription(prompt=" A talk ", keywords=["Audiotext", "WhisperX"])
+    transcription = Transcription(
+        AudioSource.FILE,
+        TranscriptionMethod.WHISPERX,
+        prompt=" A talk ",
+        keywords=["Audiotext", "WhisperX"],
+    )
 
     assert transcription.whisper_prompt == "Audiotext, WhisperX. A talk"
-    assert Transcription(keywords=["Audiotext"]).whisper_prompt == "Audiotext."
-    assert Transcription(prompt="A talk").whisper_prompt == "A talk"
-    assert Transcription().whisper_prompt == ""
+    assert (
+        Transcription(
+            AudioSource.FILE, TranscriptionMethod.WHISPERX, keywords=["Audiotext"]
+        ).whisper_prompt
+        == "Audiotext."
+    )
+    assert (
+        Transcription(
+            AudioSource.FILE, TranscriptionMethod.WHISPERX, prompt="A talk"
+        ).whisper_prompt
+        == "A talk"
+    )
+    assert (
+        Transcription(AudioSource.FILE, TranscriptionMethod.WHISPERX).whisper_prompt
+        == ""
+    )

@@ -25,6 +25,15 @@ def _parse_list(value: str) -> list[str]:
     return [item.strip() for item in value.split(",")] if value else []
 
 
+def _file_version(file_path: Path) -> tuple[int, int] | None:
+    """When the file was modified and its size, or None if it doesn't exist."""
+    try:
+        stat = file_path.stat()
+    except OSError:
+        return None
+    return stat.st_mtime_ns, stat.st_size
+
+
 class ConfigManager:
     """
     Reads and writes the settings of the app.
@@ -39,6 +48,10 @@ class ConfigManager:
     defaults_file_path: Path = ROOT_PATH / "config.ini"
     user_file_path: Path = get_user_config_dir() / "config.ini"
 
+    # The settings read last, and the versions of the files they were read from,
+    # so they're parsed again only when a file changes
+    _cache: tuple[tuple[Any, ...], ConfigParser] | None = None
+
     KeyType = (
         ConfigAi.Key
         | ConfigSubtitles.Key
@@ -51,12 +64,22 @@ class ConfigManager:
     @classmethod
     def read_config(cls) -> ConfigParser:
         """
-        :return: The default settings, overridden by the ones of the user.
+        The settings are read from the files only if they changed since the last
+        time, since the views read them often.
+
+        :return: The default settings, overridden by the ones of the user. It's
+                 shared, so it must not be modified (see `modify_value`).
         """
+        paths = (cls.defaults_file_path, cls.user_file_path)
+        key = (*paths, *(_file_version(path) for path in paths))
+        if cls._cache is not None and cls._cache[0] == key:
+            return cls._cache[1]
+
         # Without interpolation, values can contain "%" (e.g. a prompt or a path)
         config = ConfigParser(interpolation=None, converters={"list": _parse_list})
         # Files that don't exist (e.g. the user's one before any change) are skipped
-        config.read([cls.defaults_file_path, cls.user_file_path], encoding="utf-8")
+        config.read(paths, encoding="utf-8")
+        cls._cache = (key, config)
         return config
 
     @classmethod
@@ -109,6 +132,8 @@ class ConfigManager:
         file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(file_path, "w", encoding="utf-8") as config_file:
             config.write(config_file)
+        # Written within the precision of the time of the file, it may look unchanged
+        cls._cache = None
 
         logger.info(
             "Value for [%s][%s] modified to %s", section_name, key_name, new_value

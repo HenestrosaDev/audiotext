@@ -25,6 +25,7 @@ from models.transcription import Transcription
 from tests.conftest import make_tone
 from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.config_manager import ConfigManager
+from utils.enums import AudioSource, TranscriptionMethod
 
 
 @pytest.fixture
@@ -97,7 +98,12 @@ def diarized_response(segments: list[tuple[float, float, str, str]]) -> Any:
 
 
 def make_transcription(audio_file: Path, **kwargs: Any) -> Transcription:
-    return Transcription(audio_source_path=audio_file, **kwargs)
+    return Transcription(
+        AudioSource.FILE,
+        TranscriptionMethod.WHISPER_API,
+        audio_source_path=audio_file,
+        **kwargs,
+    )
 
 
 def set_config(key: ConfigWhisperApi.Key, value: str) -> None:
@@ -122,7 +128,7 @@ def test_whisper_returns_segments_with_their_words(
         ],
     )
 
-    result = OpenAiApiHandler.transcribe_file(make_transcription(audio_file))
+    result = OpenAiApiHandler().transcribe_file(make_transcription(audio_file))
 
     assert result.text == "Hello world."
     assert result.language == "en"
@@ -155,7 +161,9 @@ def test_only_segment_timestamps_are_requested_if_configured(
         [verbose_segment(0.0, 0.5, "Hello")]
     )
 
-    OpenAiApiHandler.transcribe_file(make_transcription(audio_file, language_code="es"))
+    OpenAiApiHandler().transcribe_file(
+        make_transcription(audio_file, language_code="es")
+    )
 
     params = request_params(openai_client)
     assert params["timestamp_granularities"] == ["segment"]
@@ -169,7 +177,7 @@ def test_gpt_transcribe_returns_text_without_timestamps(
         text="Hello world."
     )
 
-    result = OpenAiApiHandler.transcribe_file(
+    result = OpenAiApiHandler().transcribe_file(
         make_transcription(
             audio_file,
             api_model="gpt-transcribe",
@@ -195,7 +203,7 @@ def test_gpt_transcribe_takes_a_list_of_languages(
         text="Hola"
     )
 
-    OpenAiApiHandler.transcribe_file(
+    OpenAiApiHandler().transcribe_file(
         make_transcription(audio_file, api_model="gpt-transcribe", language_code="es")
     )
 
@@ -213,7 +221,7 @@ def test_gpt_transcribe_returns_the_detected_language(
         )
     )
 
-    result = OpenAiApiHandler.transcribe_file(
+    result = OpenAiApiHandler().transcribe_file(
         make_transcription(audio_file, api_model="gpt-transcribe")
     )
 
@@ -230,7 +238,7 @@ def test_gpt_transcribe_doesnt_get_the_previous_chunk_as_prompt(
         OpenAiTranscription(text=f"Part {idx}.") for idx in range(1, 3)
     ]
 
-    result = OpenAiApiHandler.transcribe_file(
+    result = OpenAiApiHandler().transcribe_file(
         make_transcription(audio_file, api_model="gpt-transcribe", prompt="A talk")
     )
 
@@ -248,7 +256,7 @@ def test_the_configured_model_is_used_by_default(
         text="Hi"
     )
 
-    OpenAiApiHandler.transcribe_file(make_transcription(audio_file))
+    OpenAiApiHandler().transcribe_file(make_transcription(audio_file))
 
     assert request_params(openai_client)["model"] == "gpt-transcribe"
 
@@ -260,7 +268,7 @@ def test_translations_always_use_whisper(
         [verbose_segment(0.0, 0.5, "Hello")], language="spanish"
     )
 
-    result = OpenAiApiHandler.transcribe_file(
+    result = OpenAiApiHandler().transcribe_file(
         make_transcription(
             audio_file,
             api_model="gpt-transcribe",
@@ -285,7 +293,7 @@ def test_diarization_labels_the_speakers(
         [(0.0, 0.2, "A", "Hi."), (0.2, 0.4, "B", "Hello."), (0.4, 0.5, "B", "Bye.")]
     )
 
-    result = OpenAiApiHandler.transcribe_file(
+    result = OpenAiApiHandler().transcribe_file(
         make_transcription(
             audio_file, api_model="gpt-4o-transcribe-diarize", prompt="ignored"
         )
@@ -325,7 +333,7 @@ def test_long_audios_are_transcribed_in_chunks(
     ]
     progress: list[tuple[str, float | None]] = []
 
-    result = OpenAiApiHandler.transcribe_file(
+    result = OpenAiApiHandler().transcribe_file(
         make_transcription(audio_file, prompt="Names", keywords=["Audiotext"]),
         on_progress=lambda message, fraction: progress.append((message, fraction)),
     )
@@ -358,7 +366,7 @@ def test_the_speakers_keep_their_labels_in_the_next_chunks(
         diarized_response([(0.0, 2.0, "SPEAKER_A", "Bye.")]),
     ]
 
-    result = OpenAiApiHandler.transcribe_file(
+    result = OpenAiApiHandler().transcribe_file(
         make_transcription(audio_file, api_model="gpt-4o-transcribe-diarize")
     )
 
@@ -376,7 +384,7 @@ def test_cancellation_stops_before_the_next_request(
     token.cancel()
 
     with pytest.raises(TranscriptionCancelledError):
-        OpenAiApiHandler.transcribe_file(
+        OpenAiApiHandler().transcribe_file(
             make_transcription(audio_file), cancellation_token=token
         )
 
@@ -389,7 +397,7 @@ def test_audio_too_large_for_the_api_raises(
     monkeypatch.setattr(openai_api_handler, "MAX_REQUEST_BYTES", 10)
 
     with pytest.raises(ValueError, match="too large"):
-        OpenAiApiHandler.transcribe_file(make_transcription(audio_file))
+        OpenAiApiHandler().transcribe_file(make_transcription(audio_file))
 
 
 def test_plan_chunks_keeps_short_audios_whole() -> None:
@@ -468,6 +476,6 @@ def test_the_segments_are_scored_by_the_probability_of_their_tokens(
         [verbose_segment(0.0, 0.5, " Hello", avg_logprob=math.log(0.25))]
     )
 
-    result = OpenAiApiHandler.transcribe_file(make_transcription(audio_file))
+    result = OpenAiApiHandler().transcribe_file(make_transcription(audio_file))
 
     assert result.segments[0].score == pytest.approx(0.25)

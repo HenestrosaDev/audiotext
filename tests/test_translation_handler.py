@@ -68,7 +68,7 @@ def test_the_segments_are_translated_keeping_their_timestamps(
 ) -> None:
     calls = fake_llm(monkeypatch)
 
-    translation = TranslationHandler.translate(
+    translation = TranslationHandler().translate(
         "[SPEAKER_00]: Hello\n\n[SPEAKER_01]: Goodbye",
         SEGMENTS,
         is_text_edited=False,
@@ -93,7 +93,7 @@ def test_the_segments_are_translated_by_sentence(
 ) -> None:
     calls = fake_llm(monkeypatch)
 
-    translation = TranslationHandler.translate(
+    translation = TranslationHandler().translate(
         "It is a significant advance in the field. Yes.",
         [
             TranscriptSegment(0.0, 2.0, "It is a significant advance in the"),
@@ -117,7 +117,7 @@ def test_the_edited_text_is_translated_line_by_line(
 ) -> None:
     calls = fake_llm(monkeypatch)
 
-    translation = TranslationHandler.translate(
+    translation = TranslationHandler().translate(
         "First line.\n\nSecond line.",
         SEGMENTS,
         is_text_edited=True,
@@ -144,7 +144,7 @@ def test_the_configured_provider_and_model_are_used(
     ]:
         ConfigManager.modify_value(ConfigAi.Key.SECTION, key, value)
 
-    TranslationHandler.translate("Hi.", [], False, "de")
+    TranslationHandler().translate("Hi.", [], False, "de")
 
     assert calls[0]["provider"] == AiProvider.DEEPSEEK
     assert calls[0]["model"] == "deepseek-reasoner"
@@ -178,7 +178,7 @@ def test_a_model_that_merges_sentences_is_retried_until_each_one_is_translated(
 
     calls = fake_llm(monkeypatch, reply)
 
-    translation = TranslationHandler.translate(
+    translation = TranslationHandler().translate(
         "",
         [
             TranscriptSegment(0.0, 2.0, "It is a big advance in the"),
@@ -208,7 +208,7 @@ def test_a_reply_without_translations_raises(monkeypatch: pytest.MonkeyPatch) ->
 
 def test_nothing_to_translate_raises() -> None:
     with pytest.raises(ValueError, match="no text"):
-        TranslationHandler.translate("  ", [], False, "es", "deepl")
+        TranslationHandler().translate("  ", [], False, "es", "deepl")
 
 
 def test_long_transcriptions_are_translated_in_chunks() -> None:

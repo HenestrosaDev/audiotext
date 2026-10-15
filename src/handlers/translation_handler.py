@@ -23,6 +23,7 @@ from handlers.ai_providers import (
     REQUEST_TIMEOUT_SECONDS,
     AiProvider,
     complete_json,
+    is_key_available,
     resolve_model,
 )
 from models.transcript_segment import TranscriptSegment, join_segments
@@ -146,8 +147,8 @@ def get_env_key(provider: str) -> EnvKeys | None:
 
 
 def has_api_key(provider: str) -> bool:
-    env_key = get_env_key(provider)
-    return env_key is None or bool(env_key.get_value(default=""))
+    """Whether the provider (an AI one, DeepL or Google) can translate."""
+    return is_key_available(get_env_key(provider))
 
 
 def chunk(texts: list[str], max_chars: int, max_items: int) -> Iterator[list[str]]:
@@ -424,8 +425,8 @@ def _translate_google(texts: list[str], language: str) -> list[str]:
 
 
 class TranslationHandler:
-    @staticmethod
     def translate(
+        self,
         text: str,
         segments: list[TranscriptSegment],
         is_text_edited: bool,
