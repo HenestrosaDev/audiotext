@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 19:53+0200\n"
+"POT-Creation-Date: 2026-10-15 20:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -19,237 +19,244 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: src/controllers/folder_transcriber.py:58
+msgid "1 audio or video file (subfolders included)"
+msgstr "1 zvukový nebo video soubor (včetně podsložek)"
+
+msgid "1 transcription"
+msgstr "1 přepis"
+
+msgid "A YouTube video or a direct link to an audio or video file."
+msgstr "Video z YouTube nebo přímý odkaz na zvukový nebo video soubor."
+
 msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
+"A fast model writes a draft while you speak. When you stop, the whole "
+"recording is transcribed again with the model of the engine, which is "
+"more accurate."
 msgstr ""
-"Složka neobsahuje žádné soubory k přepisu. Soubory, které již mají "
-"přepis, se přeskakují, pokud nezaškrtnete „Přepsat existující soubory“."
+"Rychlý model píše koncept, zatímco mluvíte. Když přestanete, celá "
+"nahrávka se znovu přepíše modelem nástroje, který je přesnější."
 
-#: src/controllers/folder_transcriber.py:81
 #, python-brace-format
-msgid "Transcribed {done} of {total} files."
-msgstr "Přepsáno {done} z {total} souborů."
+msgid "A note about “{title}”:"
+msgstr "Poznámka k „{title}“:"
 
-#: src/controllers/folder_transcriber.py:97
+msgid "AI"
+msgstr "AI"
+
+msgid "API key removed."
+msgstr "Klíč API byl odebrán."
+
+msgid "API key saved."
+msgstr "Klíč API byl uložen."
+
+msgid "API key set"
+msgstr "Klíč API nastaven"
+
+msgid "API keys"
+msgstr "Klíče API"
+
+msgid "About"
+msgstr "O aplikaci"
+
+# Needs review by a native speaker
+msgid "Accept"
+msgstr "Přijmout"
+
+# Needs review by a native speaker
+msgid "Accept remaining"
+msgstr "Přijmout zbývající"
+
+msgid "Add"
+msgstr "Přidat"
+
+msgid "Add a segment"
+msgstr "Přidat segment"
+
+msgid "Add a segment after…"
+msgstr "Přidat segment za…"
+
+msgid "Add note"
+msgstr "Přidat poznámku"
+
+msgid "Add note…"
+msgstr "Přidat poznámku…"
+
+msgid "Add to queue"
+msgstr "Přidat do fronty"
+
+msgid "Adding the subtitles to the video was cancelled."
+msgstr "Přidávání titulků do videa bylo zrušeno."
+
+msgid "Adding the subtitles to the video…"
+msgstr "Přidávání titulků do videa…"
+
 #, python-brace-format
-msgid "Waiting for new files in {folder}…"
-msgstr "Čekání na nové soubory ve složce {folder}…"
+msgid "Adding the subtitles to the video… {percent}%"
+msgstr "Přidávání titulků do videa… {percent} %"
 
-#: src/controllers/folder_transcriber.py:114
-#, python-brace-format
-msgid "Stopped watching the folder. Files transcribed: {done}."
-msgstr "Sledování složky bylo zastaveno. Přepsané soubory: {done}."
+# Needs review by a native speaker
+msgid "Adjust threshold"
+msgstr "Upravit práh"
 
-#: src/controllers/folder_transcriber.py:137
-msgid "cancelled"
-msgstr "zrušeno"
-
-#: src/controllers/folder_transcriber.py:176
-#, python-brace-format
-msgid "File {current} of {total} ({name}): {message}"
-msgstr "Soubor {current} z {total} ({name}): {message}"
-
-#: src/controllers/folder_transcriber.py:191
-#, python-brace-format
-msgid "{name}: {message}"
-msgstr "{name}: {message}"
-
-#: src/controllers/main_controller.py:125
-msgid "Cancelling…"
-msgstr "Rušení…"
-
-#: src/controllers/main_controller.py:194
-msgid "Transcription cancelled."
-msgstr "Přepis byl zrušen."
-
-#: src/controllers/main_controller.py:209
-msgid "Downloading…"
-msgstr "Stahování…"
-
-#: src/controllers/main_controller.py:220
-msgid "Recording…"
-msgstr "Nahrávání…"
-
-#: src/controllers/main_controller.py:237
-#, python-brace-format
-msgid "Done in {duration}."
-msgstr "Hotovo za {duration}."
-
-#: src/controllers/main_controller.py:303
-msgid "Isolating the speech…"
-msgstr "Izolace řeči…"
-
-#: src/controllers/main_controller.py:335
-msgid "WhisperX model ready."
-msgstr "Model WhisperX je připraven."
-
-#: src/controllers/main_controller.py:342
-#, python-brace-format
-msgid "Could not load the WhisperX model: {error}"
-msgstr "Model WhisperX se nepodařilo načíst: {error}"
-
-#: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:234
-msgid "No output file types selected. Please select at least one."
-msgstr "Není vybrán žádný typ výstupního souboru. Vyberte alespoň jeden."
-
-#: src/controllers/transcription_validator.py:26
-#: src/views/settings/settings_form.py:176
-msgid ""
-"The Google API can't detect the language. Please select the language of "
-"the audio."
-msgstr "Google API nedokáže rozpoznat jazyk. Vyberte jazyk zvuku."
-
-#: src/controllers/transcription_validator.py:57
-#, python-brace-format
-msgid ""
-"The {model} model doesn't return timestamps, so it can't save {format} "
-"files. Choose another format or the whisper-1 model."
-msgstr ""
-"Model {model} nevrací časové značky, proto nemůže uložit soubory "
-"{format}. Zvolte jiný formát nebo model whisper-1."
-
-#: src/controllers/transcription_validator.py:77
-msgid "Please select a valid audio or video file."
-msgstr "Vyberte platný zvukový nebo video soubor."
-
-#: src/controllers/transcription_validator.py:81
-#: src/views/new_transcription/new_transcription_view.py:491
-msgid "Please select a valid folder."
-msgstr "Vyberte platnou složku."
-
-#: src/controllers/transcription_validator.py:88
-msgid ""
-"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
-" or video file)."
-msgstr ""
-"Zadejte platnou URL (např. odkaz na video z YouTube nebo na zvukový či "
-"video soubor)."
-
-#: src/handlers/ai_providers.py:108 src/handlers/ai_providers.py:113
-#: src/handlers/ai_providers.py:116
-msgid "The model didn't return a valid reply."
-msgstr "Model nevrátil platnou odpověď."
-
-#: src/handlers/ai_providers.py:161 src/handlers/ai_providers.py:194
-msgid "The reply of the model was too long."
-msgstr "Odpověď modelu byla příliš dlouhá."
-
-#: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:320 src/handlers/whisperx_handler.py:356
-msgid "Loading audio…"
-msgstr "Načítání zvuku…"
-
-#: src/handlers/audio_handler.py:79
-#, python-brace-format
-msgid "Unsupported file type: {extension}"
-msgstr "Nepodporovaný typ souboru: {extension}"
-
-#: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:330 src/handlers/whisperx_handler.py:337
-#: src/handlers/whisperx_handler.py:369 src/views/history/formatting.py:43
-#: src/views/new_transcription/microphone_view.py:407
-msgid "Transcribing…"
-msgstr "Přepisování…"
-
-#: src/handlers/audio_handler.py:131 src/handlers/openai_api_handler.py:372
-#, python-brace-format
-msgid "Transcribing chunk {current} of {total}…"
-msgstr "Přepisování úseku {current} z {total}…"
-
-#: src/handlers/live_transcriber.py:247
-msgid "The text can't be shown while recording."
-msgstr "Text nelze během nahrávání zobrazit."
-
-#: src/handlers/live_transcriber.py:281 src/handlers/whisperx_handler.py:389
-#, python-brace-format
-msgid "Loading the {model} model (it's downloaded the first time it's used)…"
-msgstr "Načítání modelu {model} (při prvním použití se stáhne)…"
-
-#: src/handlers/openai_api_handler.py:483
-#, python-brace-format
-msgid "The audio is too large for the OpenAI API ({size} MB)."
-msgstr "Zvuk je pro OpenAI API příliš velký ({size} MB)."
-
-#: src/handlers/summary_handler.py:103 src/handlers/summary_handler.py:118
-msgid "The model didn't return a valid summary."
-msgstr "Model nevrátil platné shrnutí."
-
-#: src/handlers/summary_handler.py:174
-msgid "There is no text to summarize."
-msgstr "Není žádný text ke shrnutí."
-
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:420
-msgid "There is no transcription to save. Please generate it first."
-msgstr "Není co uložit. Nejprve vytvořte přepis."
-
-#: src/handlers/translation_handler.py:311
-msgid "The model didn't return a valid translation."
-msgstr "Model nevrátil platný překlad."
-
-#: src/handlers/translation_handler.py:382
-#, python-brace-format
-msgid "DeepL can't translate into {language}."
-msgstr "DeepL nedokáže překládat do jazyka: {language}."
-
-#: src/handlers/translation_handler.py:401
-msgid "DeepL didn't return a valid translation."
-msgstr "DeepL nevrátil platný překlad."
-
-#: src/handlers/translation_handler.py:422
-msgid "Google Translate didn't return a valid translation."
-msgstr "Překladač Google nevrátil platný překlad."
-
-#: src/handlers/translation_handler.py:452
-msgid "There is no text to translate."
-msgstr "Není žádný text k překladu."
-
-#: src/handlers/url_handler.py:87
-msgid ""
-"The URL doesn't point to an audio or video file. Use the link of a "
-"YouTube video or of a media file."
-msgstr ""
-"URL neodkazuje na zvukový ani video soubor. Použijte odkaz na video z "
-"YouTube nebo na multimediální soubor."
-
-#: src/handlers/url_handler.py:105
-#, python-brace-format
-msgid "The file could not be downloaded: {error}"
-msgstr "Soubor se nepodařilo stáhnout: {error}"
-
-#: src/handlers/whisperx_handler.py:460 src/handlers/whisperx_handler.py:469
 msgid "Aligning subtitles…"
 msgstr "Zarovnávání titulků…"
 
-#: src/handlers/whisperx_handler.py:493 src/handlers/whisperx_handler.py:498
-msgid "Identifying speakers…"
-msgstr "Rozpoznávání mluvčích…"
+msgid "All files"
+msgstr "Všechny soubory"
 
-#: src/handlers/whisperx_handler.py:519
+# Needs review by a native speaker
 #, python-brace-format
+msgid "All reviewed · {total} of {total}"
+msgstr "Vše zkontrolováno · {total} z {total}"
+
+msgid "All supported files"
+msgstr "Všechny podporované soubory"
+
 msgid ""
-"Identifying speakers requires a Hugging Face token. Create one at "
-"{tokens_url}, accept the conditions of {model_url} and set the token in "
-"the WhisperX options."
+"All the audio and video files of a folder, or the new ones as they're "
+"added."
 msgstr ""
-"Rozpoznávání mluvčích vyžaduje token Hugging Face. Vytvořte si ho na "
-"{tokens_url}, přijměte podmínky modelu {model_url} a zadejte token v "
-"možnostech WhisperX."
+"Všechny zvukové a video soubory ve složce nebo nové soubory, jakmile jsou"
+" přidány."
 
-#: src/handlers/whisperx_handler.py:599
-msgid "Loading the subtitle alignment model…"
-msgstr "Načítání modelu pro zarovnání titulků…"
+msgid "An audio or video file"
+msgstr "Zvukový nebo video soubor"
 
-#: src/handlers/whisperx_handler.py:632
+msgid "An unknown error occurred."
+msgstr "Došlo k neznámé chybě."
+
+msgid "Anthropic API key"
+msgstr "Klíč API Anthropic"
+
+msgid "Appearance"
+msgstr "Vzhled"
+
+msgid "Audio"
+msgstr "Zvuk"
+
+msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
+msgstr "Zvukové a video soubory: MP3, WAV, M4A, MP4, MOV, MKV a další."
+
+msgid "Audio files"
+msgstr "Zvukové soubory"
+
+msgid "Audiotext was closed before it finished."
+msgstr "Audiotext byl zavřen před dokončením."
+
+msgid "Auto-detect"
+msgstr "Automaticky rozpoznat"
+
+# Needs review by a native speaker
+msgid "Auto-play"
+msgstr "Automaticky přehrát"
+
+msgid "Automatic"
+msgstr "Automaticky"
+
+msgid "Automatic uses the clock of the interface language."
+msgstr "Automaticky se použije formát času jazyka rozhraní."
+
+msgid "Back"
+msgstr "Zpět"
+
+msgid "Batch size"
+msgstr "Velikost dávky"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Below {percent}%"
+msgstr "Pod {percent} %"
+
+msgid "Between 0 and 1. Higher values are more random."
+msgstr "Mezi 0 a 1. Vyšší hodnoty jsou náhodnější."
+
+msgid "Bottom"
+msgstr "Dole"
+
+msgid "Cancel"
+msgstr "Zrušit"
+
+msgid "Cancelled"
+msgstr "Zrušeno"
+
+msgid "Cancelling…"
+msgstr "Rušení…"
+
+msgid "Change API key…"
+msgstr "Změnit klíč API…"
+
+msgid "Change…"
+msgstr "Změnit…"
+
+msgid "Chapters"
+msgstr "Kapitoly"
+
+msgid "Check for updates"
+msgstr "Zkontrolovat aktualizace"
+
+msgid "Checking for updates…"
+msgstr "Hledání aktualizací…"
+
+msgid "Checks for a new version when the app opens."
+msgstr "Při otevření aplikace zkontroluje, zda je k dispozici nová verze."
+
+msgid "Chinese, Japanese and Korean"
+msgstr "Čínština, japonština a korejština"
+
 msgid ""
-"Loading the speaker identification model (it's downloaded the first time "
-"it's used)…"
-msgstr "Načítání modelu pro rozpoznávání mluvčích (při prvním použití se stáhne)…"
+"Chinese, Japanese and Korean characters are about twice as wide as Latin "
+"ones."
+msgstr "Čínské, japonské a korejské znaky jsou asi dvakrát širší než latinské."
 
-#: src/handlers/whisperx_handler.py:646
+msgid "Choose a file"
+msgstr "Vyberte soubor"
+
+msgid "Choose a file…"
+msgstr "Vybrat soubor…"
+
+msgid "Choose a folder"
+msgstr "Vyberte složku"
+
+msgid "Choose a folder…"
+msgstr "Vybrat složku…"
+
+msgid "Choose a source above to transcribe your first file."
+msgstr "Vyberte zdroj výše a přepište svůj první soubor."
+
+msgid ""
+"Choose a source, or select a transcription of your history to read and "
+"play it."
+msgstr ""
+"Vyberte zdroj nebo přepis z historie, abyste si jej mohli přečíst a "
+"přehrát."
+
+msgid "Choose where to save the transcriptions"
+msgstr "Vyberte, kam ukládat přepisy"
+
+msgid "Click a segment to play it. Right-click it to edit it."
+msgstr ""
+"Kliknutím na segment ho přehrajete. Kliknutím pravým tlačítkem ho "
+"upravíte."
+
+msgid "Compute type"
+msgstr "Typ výpočtu"
+
+# Needs review by a native speaker
+msgid "Confidence data isn’t available for this transcript"
+msgstr "Pro tento přepis nejsou k dispozici údaje o jistotě"
+
+msgid "Context"
+msgstr "Kontext"
+
+msgid "Continue"
+msgstr "Pokračovat"
+
+msgid "Copy"
+msgstr "Kopírovat"
+
+msgid "Could not check for updates."
+msgstr "Nepodařilo se zkontrolovat aktualizace."
+
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -260,748 +267,170 @@ msgstr ""
 " je token Hugging Face platný a zda jste přijali podmínky modelu "
 "{model_url}."
 
-#: src/handlers/youtube_handler.py:34
-msgid ""
-"The audio of the YouTube video could not be downloaded. Please make sure "
-"the URL is correct."
-msgstr ""
-"Zvuk videa z YouTube se nepodařilo stáhnout. Zkontrolujte, zda je URL "
-"správná."
-
-#: src/handlers/youtube_handler.py:40
-msgid "The YouTube video doesn't have an audio track."
-msgstr "Video na YouTube nemá zvukovou stopu."
-
-#: src/utils/audio_utils.py:30
-msgid "No audio was recorded."
-msgstr "Nebyl nahrán žádný zvuk."
-
-#: src/utils/exporters.py:289 src/utils/exporters.py:360
-#: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:772
-#: src/views/transcript/video_pane.py:275
-msgid "Transcription"
-msgstr "Přepis"
-
-#: src/utils/exporters.py:307 src/utils/exporters.py:335
-#: src/utils/exporters.py:420 src/views/settings/preferences_dialog.py:508
-#: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:553
-#: src/views/transcript/transcript_view.py:558
-#: src/views/transcript/transcript_view.py:815
-msgid "Summary"
-msgstr "Shrnutí"
-
-#: src/utils/exporters.py:309 src/utils/exporters.py:338
-#: src/utils/exporters.py:423 src/views/transcript/summary_panel.py:90
-msgid "Key points"
-msgstr "Klíčové body"
-
-#: src/utils/exporters.py:313 src/utils/exporters.py:342
-#: src/utils/exporters.py:428 src/views/transcript/summary_panel.py:94
-msgid "Chapters"
-msgstr "Kapitoly"
-
-#: src/utils/time_format.py:80
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
-msgstr "{minutes} min {seconds} s"
+msgid "Could not export: {error}"
+msgstr "Export se nezdařil: {error}"
 
-#: src/utils/time_format.py:82
 #, python-brace-format
-msgid "{seconds} s"
-msgstr "{seconds} s"
+msgid "Could not load the WhisperX model: {error}"
+msgstr "Model WhisperX se nepodařilo načíst: {error}"
 
-#: src/views/entries/entry_header.py:98
-msgid "Add note"
-msgstr "Přidat poznámku"
-
-#: src/views/entries/folder_view.py:56
-msgid "Files"
-msgstr "Soubory"
-
-#: src/views/entries/folder_view.py:95
 #, python-brace-format
-msgid "{count} files"
-msgstr "Soubory: {count}"
+msgid "Could not open the file manager: {error}"
+msgstr "Nepodařilo se otevřít správce souborů: {error}"
 
-#: src/views/entries/folder_view.py:96
 #, python-brace-format
-msgid "{count} done"
-msgstr "Hotovo: {count}"
+msgid "Could not open the folder: {error}"
+msgstr "Složku se nepodařilo otevřít: {error}"
 
-#: src/views/entries/folder_view.py:99
 #, python-brace-format
-msgid "{count} failed"
-msgstr "Selhalo: {count}"
+msgid "Could not summarize “{title}”: {error}"
+msgstr "Nepodařilo se shrnout „{title}“: {error}"
 
-#: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1771
-msgid "Open the folder of the saved files"
-msgstr "Otevřít složku uložených souborů"
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "Nepodařilo se přeložit „{title}“: {error}"
 
-#: src/views/entries/folder_view.py:116
-#: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:720
-#: src/views/transcript/transcript_view.py:1732
-msgid "Transcribe again"
-msgstr "Přepsat znovu"
+msgid "Create"
+msgstr "Vytvořit"
 
-#: src/views/entries/folder_view.py:136
-msgid "Waiting for new files…"
-msgstr "Čekání na nové soubory…"
+msgid "Creates empty segments with the original timestamps for you to fill in."
+msgstr "Vytvoří prázdné segmenty s původními časovými značkami, které vyplníte."
 
-#: src/views/entries/folder_view.py:138
-msgid "No files"
-msgstr "Žádné soubory"
+msgid "Dark"
+msgstr "Tmavý"
 
-#: src/views/entries/progress_card.py:20
-#: src/views/new_transcription/new_transcription_view.py:107
-msgid "Choose a file"
-msgstr "Vyberte soubor"
+msgid "Dark background"
+msgstr "Tmavé pozadí"
 
-#: src/views/entries/progress_card.py:21
-#: src/views/new_transcription/new_transcription_view.py:113
-msgid "Enter the URL"
-msgstr "Zadejte URL"
+msgid "Date format"
+msgstr "Formát data"
 
-#: src/views/entries/progress_card.py:22
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:474
-msgid "Record"
-msgstr "Nahrát"
+msgid "DeepL API key"
+msgstr "Klíč API DeepL"
 
-#: src/views/entries/progress_card.py:23 src/views/entries/progress_card.py:24
-#: src/views/new_transcription/new_transcription_view.py:121
-msgid "Choose a folder"
-msgstr "Vyberte složku"
+#, python-brace-format
+msgid "DeepL can't translate into {language}."
+msgstr "DeepL nedokáže překládat do jazyka: {language}."
 
-#: src/views/entries/progress_card.py:25
-msgid "Source"
-msgstr "Zdroj"
+msgid "DeepL didn't return a valid translation."
+msgstr "DeepL nevrátil platný překlad."
 
-#: src/views/entries/progress_card.py:51
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:467
-#: src/views/new_transcription/microphone_view.py:473
-#: src/views/new_transcription/new_transcription_view.py:148
-#: src/views/transcript/summary_panel.py:287
-#: src/views/transcript/summary_panel.py:300
-msgid "Settings"
-msgstr "Nastavení"
+msgid "DeepSeek API key"
+msgstr "Klíč API DeepSeek"
 
-#: src/views/entries/progress_card.py:52
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:475
-#: src/views/new_transcription/new_transcription_view.py:148
-msgid "Transcribe"
-msgstr "Přepsat"
-
-#: src/views/entries/progress_card.py:121
-#: src/views/history/history_sidebar.py:372
-msgid "Stop watching"
-msgstr "Zastavit sledování"
-
-#: src/views/entries/progress_card.py:121
-#: src/views/history/history_sidebar.py:374
-#: src/views/transcript/edit_dialogs.py:41 src/views/widgets/text_dialog.py:63
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: src/views/entries/progress_card.py:132
-msgid ""
-"You can keep using Audiotext meanwhile. The result is saved in your "
-"history and opens here when it's ready."
-msgstr ""
-"Mezitím můžete Audiotext dál používat. Výsledek se uloží do historie a "
-"otevře se zde, až bude hotový."
-
-#: src/views/entries/progress_card.py:144
-msgid "The transcription failed"
-msgstr "Přepis se nezdařil"
-
-#: src/views/entries/progress_card.py:145
-msgid "An unknown error occurred."
-msgstr "Došlo k neznámé chybě."
-
-#: src/views/entries/progress_card.py:147
-msgid "The transcription was interrupted"
-msgstr "Přepis byl přerušen"
-
-#: src/views/entries/progress_card.py:148
-msgid "Audiotext was closed before it finished."
-msgstr "Audiotext byl zavřen před dokončením."
-
-#: src/views/entries/progress_card.py:150
-msgid "The transcription was cancelled"
-msgstr "Přepis byl zrušen"
-
-#: src/views/entries/progress_card.py:165
-#: src/views/new_transcription/new_transcription_view.py:303
-msgid "Back"
-msgstr "Zpět"
-
-#: src/views/entries/progress_card.py:174
-msgid "Try again"
-msgstr "Zkusit znovu"
-
-#: src/views/entries/progress_card.py:182
 msgid "Delete"
 msgstr "Smazat"
 
-#: src/views/entries/progress_card.py:195
-#, python-brace-format
-msgid "Waiting for {count} transcription(s) to finish."
-msgstr "Čekání na dokončení přepisů (počet: {count})."
+msgid "Delete group"
+msgstr "Smazat skupinu"
 
-#: src/views/entries/progress_card.py:199
-msgid "Waiting for the current transcription to finish."
-msgstr "Čekání na dokončení aktuálního přepisu."
-
-#: src/views/entries/progress_card.py:206
-msgid "Starting…"
-msgstr "Spouštění…"
-
-#: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:27
-#: src/views/main_window/welcome_view.py:40
-msgid "File"
-msgstr "Soubor"
-
-#: src/views/history/formatting.py:23 src/views/main_window/top_bar.py:28
-#: src/views/main_window/welcome_view.py:46
-#: src/views/new_transcription/new_transcription_view.py:244
-msgid "URL"
-msgstr "URL"
-
-#: src/views/history/formatting.py:24 src/views/main_window/top_bar.py:29
-#: src/views/main_window/welcome_view.py:52
-msgid "Microphone"
-msgstr "Mikrofon"
-
-#: src/views/history/formatting.py:25 src/views/main_window/top_bar.py:30
-#: src/views/main_window/welcome_view.py:58
-#: src/views/settings/cards/folder_card.py:19
-msgid "Folder"
-msgstr "Složka"
-
-#: src/views/history/formatting.py:26
-msgid "Watched folder"
-msgstr "Sledovaná složka"
-
-#: src/views/history/formatting.py:42
-msgid "Queued"
-msgstr "Ve frontě"
-
-#: src/views/history/formatting.py:44
-msgid "Watching"
-msgstr "Sledování"
-
-#: src/views/history/formatting.py:45
-msgid "Done"
-msgstr "Hotovo"
-
-#: src/views/history/formatting.py:46
-msgid "Failed"
-msgstr "Selhalo"
-
-#: src/views/history/formatting.py:47
-msgid "Cancelled"
-msgstr "Zrušeno"
-
-#: src/views/history/formatting.py:48
-msgid "Interrupted"
-msgstr "Přerušeno"
-
-#: src/views/history/formatting.py:163
-msgid "Show in Finder"
-msgstr "Zobrazit ve Finderu"
-
-#: src/views/history/formatting.py:165
-msgid "Show in Explorer"
-msgstr "Zobrazit v Průzkumníkovi"
-
-#: src/views/history/formatting.py:166
-msgid "Show in file manager"
-msgstr "Zobrazit ve správci souborů"
-
-#: src/views/history/history_row.py:241
-#, python-brace-format
-msgid "{done}/{total} files"
-msgstr "Soubory: {done}/{total}"
-
-#: src/views/history/history_sidebar.py:142
-msgid "Search"
-msgstr "Hledat"
-
-#: src/views/history/history_sidebar.py:167
-#: src/views/main_window/entry_dialogs.py:114
-msgid "New group"
-msgstr "Nová skupina"
-
-#: src/views/history/history_sidebar.py:225
-#, python-brace-format
-msgid "{count} transcriptions"
-msgstr "Přepisy: {count}"
-
-#: src/views/history/history_sidebar.py:227
-msgid "1 transcription"
-msgstr "1 přepis"
-
-#: src/views/history/history_sidebar.py:234
-msgid "No transcriptions yet"
-msgstr "Zatím žádné přepisy"
-
-#: src/views/history/history_sidebar.py:235
-msgid "Choose a source above to transcribe your first file."
-msgstr "Vyberte zdroj výše a přepište svůj první soubor."
-
-#: src/views/history/history_sidebar.py:317
-#: src/views/main_window/entry_dialogs.py:40
-msgid "Rename"
-msgstr "Přejmenovat"
-
-#: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1783
-msgid "Edit note…"
-msgstr "Upravit poznámku…"
-
-#: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1783
-msgid "Add note…"
-msgstr "Přidat poznámku…"
-
-#: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1788
-msgid "Delete note…"
-msgstr "Smazat poznámku…"
-
-#: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1794
-msgid "Edit tag…"
-msgstr "Upravit štítek…"
-
-#: src/views/history/history_sidebar.py:334
-msgid "Unpin"
-msgstr "Odepnout"
-
-#: src/views/history/history_sidebar.py:334
-msgid "Pin to the top"
-msgstr "Připnout nahoru"
-
-#: src/views/history/history_sidebar.py:340
-msgid "No group"
-msgstr "Bez skupiny"
-
-#: src/views/history/history_sidebar.py:356
-msgid "New group…"
-msgstr "Nová skupina…"
-
-#: src/views/history/history_sidebar.py:359
-msgid "Move to group"
-msgstr "Přesunout do skupiny"
-
-#: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1799
-msgid "Delete…"
-msgstr "Smazat…"
-
-#: src/views/history/history_sidebar.py:398
-msgid "Rename group…"
-msgstr "Přejmenovat skupinu…"
-
-#: src/views/history/history_sidebar.py:402
 msgid "Delete group…"
 msgstr "Smazat skupinu…"
 
-#: src/views/history/history_sidebar.py:425
-msgid "Pinned"
-msgstr "Připnuté"
+msgid "Delete note"
+msgstr "Smazat poznámku"
 
-#: src/views/history/history_sidebar.py:433
-msgid "Transcriptions"
-msgstr "Přepisy"
+msgid "Delete note…"
+msgstr "Smazat poznámku…"
 
-#: src/views/history/history_sidebar.py:476
+#, python-brace-format
+msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
+msgstr "Smazat skupinu „{name}“? Její přepisy zůstanou zachovány, bez skupiny."
+
+#, python-brace-format
+msgid "Delete the note of “{title}”?"
+msgstr "Smazat poznámku k „{title}“?"
+
+msgid "Delete the segment"
+msgstr "Smazat segment"
+
+#, python-brace-format
+msgid "Delete the segment “{text}”?"
+msgstr "Smazat segment „{text}“?"
+
+msgid "Delete the translation"
+msgstr "Smazat překlad"
+
+msgid "Delete transcription"
+msgstr "Smazat přepis"
+
+#, python-brace-format
+msgid "Delete “{title}” from the history?"
+msgstr "Smazat „{title}“ z historie?"
+
+msgid "Delete…"
+msgstr "Smazat…"
+
+msgid "Description"
+msgstr "Popis"
+
+msgid "Documentation"
+msgstr "Dokumentace"
+
+msgid "Donate"
+msgstr "Přispět"
+
+msgid "Done"
+msgstr "Hotovo"
+
+#, python-brace-format
+msgid "Done in {duration}."
+msgstr "Hotovo za {duration}."
+
+msgid "Done. Press the button to record again."
+msgstr "Hotovo. Stisknutím tlačítka nahrajete znovu."
+
+msgid "Download"
+msgstr "Stáhnout"
+
+msgid "Downloading…"
+msgstr "Stahování…"
+
+msgid "Draft. It's replaced when the final transcription finishes."
+msgstr "Koncept. Bude nahrazen, jakmile skončí konečný přepis."
+
+msgid "Drop a folder here"
+msgstr "Sem přetáhněte složku"
+
+msgid "Drop an audio or video file here"
+msgstr "Sem přetáhněte zvukový nebo video soubor"
+
+msgid "Edit note…"
+msgstr "Upravit poznámku…"
+
+msgid "Edit tag…"
+msgstr "Upravit štítek…"
+
+msgid "Edit text"
+msgstr "Upravit text"
+
+msgid "Edit text…"
+msgstr "Upravit text…"
+
+msgid "Edit the timing"
+msgstr "Upravit časování"
+
+msgid "Edit the timing…"
+msgstr "Upravit časování…"
+
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Prázdné. Chcete-li přidat přepis, klikněte na něj pravým tlačítkem a "
 "zvolte „Přesunout do skupiny“."
 
-#: src/views/history/history_sidebar.py:511
-msgid "No files yet"
-msgstr "Zatím žádné soubory"
+msgid "End:"
+msgstr "Konec:"
 
-#: src/views/history/history_sidebar.py:589
-#: src/views/transcript/find_dialog.py:187
-#: src/views/transcript/find_dialog.py:234
-msgid "No results"
-msgstr "Žádné výsledky"
+msgid "Engine"
+msgstr "Nástroj"
 
-#: src/views/history/history_sidebar.py:590
-#, python-brace-format
-msgid "No transcription contains “{query}”."
-msgstr "Žádný přepis neobsahuje „{query}“."
+msgid "Enter a URL that starts with http:// or https://"
+msgstr "Zadejte URL, která začíná http:// nebo https://"
 
-#: src/views/main_window/entry_dialogs.py:41
-msgid "Name of the transcription:"
-msgstr "Název přepisu:"
+msgid "Enter the URL"
+msgstr "Zadejte URL"
 
-#: src/views/main_window/entry_dialogs.py:54
-msgid "Note"
-msgstr "Poznámka"
-
-#: src/views/main_window/entry_dialogs.py:55
-#, python-brace-format
-msgid "A note about “{title}”:"
-msgstr "Poznámka k „{title}“:"
-
-#: src/views/main_window/entry_dialogs.py:67
-msgid "Delete note"
-msgstr "Smazat poznámku"
-
-#: src/views/main_window/entry_dialogs.py:68
-#, python-brace-format
-msgid "Delete the note of “{title}”?"
-msgstr "Smazat poznámku k „{title}“?"
-
-#: src/views/main_window/entry_dialogs.py:80
-msgid "Tag"
-msgstr "Štítek"
-
-#: src/views/main_window/entry_dialogs.py:81
-#, python-brace-format
-msgid "Tag of “{title}”. Leave it empty to show the kind of source."
-msgstr "Štítek pro „{title}“. Ponechte prázdný, chcete-li zobrazit druh zdroje."
-
-#: src/views/main_window/entry_dialogs.py:95
-#, python-brace-format
-msgid "Delete “{title}” from the history?"
-msgstr "Smazat „{title}“ z historie?"
-
-#: src/views/main_window/entry_dialogs.py:97
-msgid "The transcriptions of its files are deleted too."
-msgstr "Přepisy jejích souborů se také smažou."
-
-#: src/views/main_window/entry_dialogs.py:98
-msgid "Your audio, video and saved files are not deleted."
-msgstr "Vaše zvukové, video a uložené soubory se nesmažou."
-
-#: src/views/main_window/entry_dialogs.py:100
-msgid "Delete transcription"
-msgstr "Smazat přepis"
-
-#: src/views/main_window/entry_dialogs.py:115
-#: src/views/main_window/entry_dialogs.py:132
-msgid "Name of the group:"
-msgstr "Název skupiny:"
-
-#: src/views/main_window/entry_dialogs.py:116
-msgid "Create"
-msgstr "Vytvořit"
-
-#: src/views/main_window/entry_dialogs.py:131
-msgid "Rename group"
-msgstr "Přejmenovat skupinu"
-
-#: src/views/main_window/entry_dialogs.py:144
-msgid "Delete group"
-msgstr "Smazat skupinu"
-
-#: src/views/main_window/entry_dialogs.py:146
-#, python-brace-format
-msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
-msgstr "Smazat skupinu „{name}“? Její přepisy zůstanou zachovány, bez skupiny."
-
-#: src/views/main_window/main_window.py:464
-#, python-brace-format
-msgid "Recording · {date}"
-msgstr "Nahrávka · {date}"
-
-#: src/views/main_window/main_window.py:484
-msgid "Processing the recording…"
-msgstr "Zpracování nahrávky…"
-
-#: src/views/main_window/main_window.py:510
-msgid "The transcription was cancelled."
-msgstr "Přepis byl zrušen."
-
-#: src/views/main_window/main_window.py:598
-#: src/views/new_transcription/new_transcription_view.py:485
-#, python-brace-format
-msgid "“{name}” is not a supported audio or video file."
-msgstr "„{name}“ není podporovaný zvukový ani video soubor."
-
-#: src/views/main_window/main_window.py:611
-msgid ""
-"Only one file can be added at a time. To transcribe several files, drop "
-"the folder that contains them."
-msgstr ""
-"Najednou lze přidat jen jeden soubor. Chcete-li přepsat více souborů, "
-"přetáhněte složku, která je obsahuje."
-
-#: src/views/main_window/main_window.py:699
-msgid ""
-"Type in the API key. It's kept in the credential store of your system. "
-"Leave it empty to remove it."
-msgstr ""
-"Zadejte klíč API. Uloží se do úložiště přihlašovacích údajů vašeho "
-"systému. Ponechte prázdné, chcete-li jej odebrat."
-
-#: src/views/main_window/main_window.py:703
-msgid "OK"
-msgstr "OK"
-
-#: src/views/main_window/main_window.py:710
-msgid "API key saved."
-msgstr "Klíč API byl uložen."
-
-#: src/views/main_window/main_window.py:710
-msgid "API key removed."
-msgstr "Klíč API byl odebrán."
-
-#: src/views/main_window/status_messages.py:40
-msgid "Transcription ready"
-msgstr "Přepis je hotový"
-
-#: src/views/main_window/status_messages.py:43
-#, python-brace-format
-msgid "Saved in {folder}."
-msgstr "Uloženo do {folder}."
-
-#: src/views/main_window/status_messages.py:47
-msgid "The recording is no longer available."
-msgstr "Nahrávka již není k dispozici."
-
-#: src/views/main_window/status_messages.py:54
-#, python-brace-format
-msgid "The file was moved or deleted: {path}"
-msgstr "Soubor byl přesunut nebo smazán: {path}"
-
-#: src/views/main_window/status_messages.py:56
-#, python-brace-format
-msgid "Could not open the file manager: {error}"
-msgstr "Nepodařilo se otevřít správce souborů: {error}"
-
-#: src/views/main_window/status_messages.py:61
-#, python-brace-format
-msgid "Could not open the folder: {error}"
-msgstr "Složku se nepodařilo otevřít: {error}"
-
-#: src/views/main_window/status_messages.py:69
-#, python-brace-format
-msgid "The summary of “{title}” is ready."
-msgstr "Shrnutí „{title}“ je připraveno."
-
-#: src/views/main_window/status_messages.py:73
-#, python-brace-format
-msgid "Could not summarize “{title}”: {error}"
-msgstr "Nepodařilo se shrnout „{title}“: {error}"
-
-#: src/views/main_window/status_messages.py:83
-#, python-brace-format
-msgid "The translation of “{title}” is ready."
-msgstr "Překlad „{title}“ je připraven."
-
-#: src/views/main_window/status_messages.py:87
-#, python-brace-format
-msgid "Could not translate “{title}”: {error}"
-msgstr "Nepodařilo se přeložit „{title}“: {error}"
-
-#: src/views/main_window/top_bar.py:72
-msgid "New transcription:"
-msgstr "Nový přepis:"
-
-#: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:914
-#, python-brace-format
-msgid "Version {version} is available"
-msgstr "Je k dispozici verze {version}"
-
-#: src/views/main_window/welcome_view.py:25
-msgid "What do you want to transcribe?"
-msgstr "Co chcete přepsat?"
-
-#: src/views/main_window/welcome_view.py:30
-msgid ""
-"Choose a source, or select a transcription of your history to read and "
-"play it."
-msgstr ""
-"Vyberte zdroj nebo přepis z historie, abyste si jej mohli přečíst a "
-"přehrát."
-
-#: src/views/main_window/welcome_view.py:41
-msgid "An audio or video file"
-msgstr "Zvukový nebo video soubor"
-
-#: src/views/main_window/welcome_view.py:47
-msgid "YouTube or a link to a file"
-msgstr "YouTube nebo odkaz na soubor"
-
-#: src/views/main_window/welcome_view.py:53
-#: src/views/new_transcription/microphone_view.py:468
-msgid "Record and transcribe"
-msgstr "Nahrajte a přepište"
-
-#: src/views/main_window/welcome_view.py:59
-msgid "Many files at once, or watch it"
-msgstr "Mnoho souborů najednou nebo sledování"
-
-#: src/views/main_window/welcome_view.py:75
-msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
-msgstr "Tip: přetáhněte soubor nebo složku kamkoli do okna a přepište je."
-
-#: src/views/new_transcription/microphone_view.py:80
-msgid "No sound. Check that the microphone is on and allowed."
-msgstr "Žádný zvuk. Zkontrolujte, zda je mikrofon zapnutý a povolený."
-
-#: src/views/new_transcription/microphone_view.py:82
-msgid "Waiting for speech…"
-msgstr "Čekání na řeč…"
-
-#: src/views/new_transcription/microphone_view.py:85
-msgid "Too quiet. Speak louder or closer to the microphone."
-msgstr "Příliš tiché. Mluvte hlasitěji nebo blíže k mikrofonu."
-
-#: src/views/new_transcription/microphone_view.py:87
-msgid "Good level"
-msgstr "Dobrá úroveň"
-
-#: src/views/new_transcription/microphone_view.py:90
-msgid "Too loud. Move away from the microphone."
-msgstr "Příliš hlasité. Vzdalte se od mikrofonu."
-
-#: src/views/new_transcription/microphone_view.py:134
-msgid "Transcribe from the microphone"
-msgstr "Přepsat z mikrofonu"
-
-#: src/views/new_transcription/microphone_view.py:139
-msgid "Record yourself or a meeting. The recording is kept in your history."
-msgstr "Nahrajte sebe nebo schůzku. Nahrávka zůstane ve vaší historii."
-
-#: src/views/new_transcription/microphone_view.py:276
-#: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:710
-#: src/views/transcript/transcript_view.py:1423
-#: src/views/transcript/transcript_view.py:1661
-#: src/views/transcript/translation_panel.py:147
-msgid "Copy"
-msgstr "Kopírovat"
-
-#: src/views/new_transcription/microphone_view.py:283
-msgid "Open in history"
-msgstr "Otevřít v historii"
-
-#: src/views/new_transcription/microphone_view.py:302
-msgid "Wait until the current transcription finishes, or cancel it."
-msgstr "Počkejte, až aktuální přepis skončí, nebo jej zrušte."
-
-#: src/views/new_transcription/microphone_view.py:391
-#, python-brace-format
-msgid "Press the button to start recording ({shortcut})"
-msgstr "Stisknutím tlačítka spustíte nahrávání ({shortcut})"
-
-#: src/views/new_transcription/microphone_view.py:395
-msgid "The level is shown while recording"
-msgstr "Úroveň se zobrazuje během nahrávání"
-
-#: src/views/new_transcription/microphone_view.py:400
-msgid "Recording… Press the button to stop and transcribe."
-msgstr "Nahrávání… Stisknutím tlačítka zastavíte a přepíšete."
-
-#: src/views/new_transcription/microphone_view.py:415
-msgid "Done. Press the button to record again."
-msgstr "Hotovo. Stisknutím tlačítka nahrajete znovu."
-
-#: src/views/new_transcription/microphone_view.py:419
-msgid "Press the button to try again."
-msgstr "Stisknutím tlačítka to zkusíte znovu."
-
-#: src/views/new_transcription/microphone_view.py:435
-msgid "Draft. It's replaced when the final transcription finishes."
-msgstr "Koncept. Bude nahrazen, jakmile skončí konečný přepis."
-
-#: src/views/new_transcription/microphone_view.py:445
-msgid "The text will appear here as you speak."
-msgstr "Text se zde bude zobrazovat, zatímco mluvíte."
-
-#: src/views/new_transcription/microphone_view.py:447
-msgid "The transcription will appear here when you stop recording."
-msgstr "Přepis se zde zobrazí, až přestanete nahrávat."
-
-#: src/views/new_transcription/microphone_view.py:469
-msgid "Refine"
-msgstr "Zpřesnění"
-
-#: src/views/new_transcription/microphone_view.py:521
-msgid "default"
-msgstr "výchozí"
-
-#: src/views/new_transcription/microphone_view.py:523
-msgid "Loading…"
-msgstr "Načítání…"
-
-#: src/views/new_transcription/microphone_view.py:524
-msgid "No microphone found"
-msgstr "Nebyl nalezen žádný mikrofon"
-
-#: src/views/new_transcription/new_transcription_view.py:105
-msgid "Transcribe a file"
-msgstr "Přepsat soubor"
-
-#: src/views/new_transcription/new_transcription_view.py:106
-msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
-msgstr "Zvukové a video soubory: MP3, WAV, M4A, MP4, MOV, MKV a další."
-
-#: src/views/new_transcription/new_transcription_view.py:111
-msgid "Transcribe from a URL"
-msgstr "Přepsat z URL"
-
-#: src/views/new_transcription/new_transcription_view.py:112
-msgid "A YouTube video or a direct link to an audio or video file."
-msgstr "Video z YouTube nebo přímý odkaz na zvukový nebo video soubor."
-
-#: src/views/new_transcription/new_transcription_view.py:117
-msgid "Transcribe a folder"
-msgstr "Přepsat složku"
-
-#: src/views/new_transcription/new_transcription_view.py:119
-msgid ""
-"All the audio and video files of a folder, or the new ones as they're "
-"added."
-msgstr ""
-"Všechny zvukové a video soubory ve složce nebo nové soubory, jakmile jsou"
-" přidány."
-
-#: src/views/new_transcription/new_transcription_view.py:175
-msgid "Drop an audio or video file here"
-msgstr "Sem přetáhněte zvukový nebo video soubor"
-
-#: src/views/new_transcription/new_transcription_view.py:177
-msgid "Drop a folder here"
-msgstr "Sem přetáhněte složku"
-
-#: src/views/new_transcription/new_transcription_view.py:184
-msgid "or"
-msgstr "nebo"
-
-#: src/views/new_transcription/new_transcription_view.py:194
-msgid "Choose a file…"
-msgstr "Vybrat soubor…"
-
-#: src/views/new_transcription/new_transcription_view.py:194
-msgid "Choose a folder…"
-msgstr "Vybrat složku…"
-
-#: src/views/new_transcription/new_transcription_view.py:234
-#: src/views/settings/cards/output_card.py:98
-msgid "Change…"
-msgstr "Změnit…"
-
-#: src/views/new_transcription/new_transcription_view.py:266
-msgid "Paste"
-msgstr "Vložit"
-
-#: src/views/new_transcription/new_transcription_view.py:280
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
@@ -1009,144 +438,464 @@ msgstr ""
 "Příklady: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
 
-#: src/views/new_transcription/new_transcription_view.py:358
-msgid "Select a file"
-msgstr "Vyberte soubor"
+msgid "Export"
+msgstr "Exportovat"
 
-#: src/views/new_transcription/new_transcription_view.py:360
-msgid "All supported files"
-msgstr "Všechny podporované soubory"
+msgid "Export summary"
+msgstr "Exportovat shrnutí"
 
-#: src/views/new_transcription/new_transcription_view.py:361
-msgid "Audio files"
-msgstr "Zvukové soubory"
+msgid "Export transcription"
+msgstr "Exportovat přepis"
 
-#: src/views/new_transcription/new_transcription_view.py:362
-msgid "Video files"
-msgstr "Video soubory"
-
-#: src/views/new_transcription/new_transcription_view.py:366
-msgid "Select a folder"
-msgstr "Vyberte složku"
-
-#: src/views/new_transcription/new_transcription_view.py:395
-msgid "Continue"
-msgstr "Pokračovat"
-
-#: src/views/new_transcription/new_transcription_view.py:426
-msgid "Add to queue"
-msgstr "Přidat do fronty"
-
-#: src/views/new_transcription/new_transcription_view.py:426
-msgid "Start transcription"
-msgstr "Spustit přepis"
-
-#: src/views/new_transcription/new_transcription_view.py:438
-msgid "It will start when the current transcription finishes."
-msgstr "Začne, jakmile skončí aktuální přepis."
-
-#: src/views/new_transcription/new_transcription_view.py:503
-msgid "Reading…"
-msgstr "Čtení…"
-
-#: src/views/new_transcription/new_transcription_view.py:525
-msgid "Video"
-msgstr "Video"
-
-#: src/views/new_transcription/new_transcription_view.py:525
-msgid "Audio"
-msgstr "Zvuk"
-
-#: src/views/new_transcription/new_transcription_view.py:544
-msgid "No audio or video files found (subfolders included)."
-msgstr "Nebyly nalezeny žádné zvukové ani video soubory (včetně podsložek)."
-
-#: src/views/new_transcription/new_transcription_view.py:546
-msgid "1 audio or video file (subfolders included)"
-msgstr "1 zvukový nebo video soubor (včetně podsložek)"
-
-#: src/views/new_transcription/new_transcription_view.py:547
 #, python-brace-format
-msgid "{count} audio and video files (subfolders included)"
-msgstr "Zvukové a video soubory: {count} (včetně podsložek)"
+msgid "Export translation into {language}"
+msgstr "Exportovat překlad (jazyk: {language})"
 
-#: src/views/new_transcription/new_transcription_view.py:583
-msgid "YouTube video"
-msgstr "Video z YouTube"
+msgid "Export video with subtitles"
+msgstr "Exportovat video s titulky"
 
-#: src/views/new_transcription/new_transcription_view.py:583
-msgid "Link to a file"
-msgstr "Odkaz na soubor"
+#, python-brace-format
+msgid "Exported to {path}"
+msgstr "Exportováno do {path}"
 
-#: src/views/new_transcription/new_transcription_view.py:590
-msgid "Enter a URL that starts with http:// or https://"
-msgstr "Zadejte URL, která začíná http:// nebo https://"
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr ""
+"Exportováno do {path}, ale žádné písmo nemá tyto znaky, takže se "
+"zobrazují jako čtverečky: {characters}"
 
-#: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:75
-msgid "OpenAI API key"
-msgstr "Klíč OpenAI API"
+msgid "Extract speech"
+msgstr "Extrahovat řeč"
 
-#: src/views/settings/preferences_dialog.py:77
-msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
-msgstr "Vyžadován pro Whisper API a pro shrnutí a překlad pomocí OpenAI."
+msgid "Failed"
+msgstr "Selhalo"
 
-#: src/views/settings/preferences_dialog.py:81
-msgid "Anthropic API key"
-msgstr "Klíč API Anthropic"
+msgid "File"
+msgstr "Soubor"
 
-#: src/views/settings/preferences_dialog.py:82
-msgid "Required to summarize and translate with Claude."
-msgstr "Vyžadován pro shrnutí a překlad pomocí Claude."
+msgid "File types"
+msgstr "Typy souborů"
 
-#: src/views/settings/preferences_dialog.py:85
-msgid "DeepSeek API key"
-msgstr "Klíč API DeepSeek"
+#, python-brace-format
+msgid "File {current} of {total} ({name}): {message}"
+msgstr "Soubor {current} z {total} ({name}): {message}"
 
-#: src/views/settings/preferences_dialog.py:86
-msgid "Required to summarize and translate with DeepSeek."
-msgstr "Vyžadován pro shrnutí a překlad pomocí DeepSeek."
+msgid "Files"
+msgstr "Soubory"
 
-#: src/views/settings/preferences_dialog.py:89
+#, python-brace-format
+msgid "Find ({shortcut})"
+msgstr "Hledat ({shortcut})"
+
+#, python-brace-format
+msgid "Find and replace ({shortcut})"
+msgstr "Najít a nahradit ({shortcut})"
+
+msgid "Find and replace in the transcription"
+msgstr "Najít a nahradit v přepisu"
+
+msgid "Find and replace in the translation"
+msgstr "Najít a nahradit v překladu"
+
+#, python-brace-format
+msgid "Find and replace in the translation into {language}"
+msgstr "Najít a nahradit v překladu do jazyka {language}"
+
+msgid "Find in the summary"
+msgstr "Hledat ve shrnutí"
+
+msgid "Find:"
+msgstr "Najít:"
+
+msgid "Folder"
+msgstr "Složka"
+
+msgid "Format of the files."
+msgstr "Formát souborů."
+
 msgid "Gemini API key"
 msgstr "Klíč API Gemini"
 
-#: src/views/settings/preferences_dialog.py:91
-msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgid "General"
+msgstr "Obecné"
+
+#, python-brace-format
+msgid ""
+"Generate a summary, the key points and the chapters of the transcription "
+"with {provider}."
+msgstr "Vygenerujte shrnutí, klíčové body a kapitoly přepisu pomocí {provider}."
+
+msgid "Generate summary"
+msgstr "Vygenerovat shrnutí"
+
+msgid "Generate the summary again? The current one will be replaced."
+msgstr "Znovu vytvořit shrnutí? Současné bude nahrazeno."
+
+#, python-brace-format
+msgid "Generated by {model} · {date}"
+msgstr "Vygeneroval {model} · {date}"
+
+msgid ""
+"Give a name to each speaker. Giving two speakers the same name merges "
+"them."
 msgstr ""
-"Vyžadován pro shrnutí a překlad pomocí Gemini (získáte jej v Google AI "
-"Studio)."
+"Pojmenujte každého mluvčího. Pokud dvěma mluvčím dáte stejné jméno, "
+"sloučí se."
 
-#: src/views/settings/preferences_dialog.py:95
-msgid "Mistral API key"
-msgstr "Klíč API Mistral"
+msgid "Good level"
+msgstr "Dobrá úroveň"
 
-#: src/views/settings/preferences_dialog.py:96
-msgid "Required to summarize and translate with Mistral."
-msgstr "Vyžadován pro shrnutí a překlad pomocí Mistral."
-
-#: src/views/settings/preferences_dialog.py:99
-msgid "xAI API key"
-msgstr "Klíč API xAI"
-
-#: src/views/settings/preferences_dialog.py:100
-msgid "Required to summarize and translate with Grok."
-msgstr "Vyžadován pro shrnutí a překlad pomocí Grok."
-
-#: src/views/settings/preferences_dialog.py:103
-msgid "DeepL API key"
-msgstr "Klíč API DeepL"
-
-#: src/views/settings/preferences_dialog.py:104
-msgid "Required to translate with DeepL. Keys of the free plan work too."
-msgstr "Vyžadován pro překlad pomocí DeepL. Fungují i klíče bezplatného tarifu."
-
-#: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:107
 msgid "Google API key"
 msgstr "Klíč Google API"
 
-#: src/views/settings/preferences_dialog.py:109
+msgid "Google Translate didn't return a valid translation."
+msgstr "Překladač Google nevrátil platný překlad."
+
+msgid "Hide the translation"
+msgstr "Skrýt překlad"
+
+# Needs review by a native speaker
+msgid "Highlight low-confidence words"
+msgstr "Zvýraznit slova s nízkou jistotou"
+
+msgid "Highlight words"
+msgstr "Zvýrazňovat slova"
+
+msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgstr "Při přehrávání zvýrazňuje každé slovo (model whisper-1). Trvá déle."
+
+msgid "Highlights each word while playing. Takes a bit longer."
+msgstr "Při přehrávání zvýrazňuje každé slovo. Trvá o něco déle."
+
+msgid "Highlights each word while playing. The subtitles already use them."
+msgstr "Při přehrávání zvýrazňuje každé slovo. Titulky je již používají."
+
+msgid "Hugging Face token"
+msgstr "Token Hugging Face"
+
+msgid "Identifies the speakers. With timestamps."
+msgstr "Rozpozná mluvčí. S časovými značkami."
+
+msgid "Identify speakers"
+msgstr "Rozpoznat mluvčí"
+
+#, python-brace-format
+msgid ""
+"Identifying speakers requires a Hugging Face token. Create one at "
+"{tokens_url}, accept the conditions of {model_url} and set the token in "
+"the WhisperX options."
+msgstr ""
+"Rozpoznávání mluvčích vyžaduje token Hugging Face. Vytvořte si ho na "
+"{tokens_url}, přijměte podmínky modelu {model_url} a zadejte token v "
+"možnostech WhisperX."
+
+msgid "Identifying speakers…"
+msgstr "Rozpoznávání mluvčích…"
+
+msgid "Interface language"
+msgstr "Jazyk rozhraní"
+
+msgid "Interface size"
+msgstr "Velikost rozhraní"
+
+msgid "Interrupted"
+msgstr "Přerušeno"
+
+msgid "Isolating the speech…"
+msgstr "Izolace řeči…"
+
+msgid "It takes a moment."
+msgstr "Chvíli to potrvá."
+
+msgid "It will start when the current transcription finishes."
+msgstr "Začne, jakmile skončí aktuální přepis."
+
+msgid "JSON (.json)"
+msgstr "JSON (.json)"
+
+msgid "Keep above the main window"
+msgstr "Držet nad hlavním oknem"
+
+msgid ""
+"Keeps running and transcribes the files added to the folder, until you "
+"stop it. The files it already contains are skipped."
+msgstr ""
+"Běží dál a přepisuje soubory přidané do složky, dokud jej nezastavíte. "
+"Soubory, které již obsahuje, se přeskočí."
+
+msgid "Key points"
+msgstr "Klíčové body"
+
+msgid "Keywords"
+msgstr "Klíčová slova"
+
+msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgstr "Označí, kdo mluví v jednotlivých částech. Vyžaduje token Hugging Face."
+
+msgid "Landscape"
+msgstr "Vodorovné"
+
+msgid "Language"
+msgstr "Jazyk"
+
+msgid "Language of the audio"
+msgstr "Jazyk zvuku"
+
+msgid "Language of the transcription"
+msgstr "Jazyk přepisu"
+
+msgid "Large"
+msgstr "Velké"
+
+msgid "Larger models are more accurate, but slower."
+msgstr "Větší modely jsou přesnější, ale pomalejší."
+
+msgid "Light"
+msgstr "Světlý"
+
+msgid "Link to a file"
+msgstr "Odkaz na soubor"
+
+msgid "Live model"
+msgstr "Živý model"
+
+msgid "Live text"
+msgstr "Živý text"
+
+msgid "Loading audio…"
+msgstr "Načítání zvuku…"
+
+msgid "Loading the audio…"
+msgstr "Načítání zvuku…"
+
+msgid ""
+"Loading the speaker identification model (it's downloaded the first time "
+"it's used)…"
+msgstr "Načítání modelu pro rozpoznávání mluvčích (při prvním použití se stáhne)…"
+
+msgid "Loading the subtitle alignment model…"
+msgstr "Načítání modelu pro zarovnání titulků…"
+
+#, python-brace-format
+msgid "Loading the {model} model (it's downloaded the first time it's used)…"
+msgstr "Načítání modelu {model} (při prvním použití se stáhne)…"
+
+msgid "Loading…"
+msgstr "Načítání…"
+
+# Needs review by a native speaker
+msgid "Low-confidence threshold"
+msgstr "Práh nízké jistoty"
+
+msgid "Lower it if you run out of memory."
+msgstr "Snižte, pokud dojde paměť."
+
+#, python-brace-format
+msgid "Made by {author}"
+msgstr "Vytvořil {author}"
+
+msgid "Manual"
+msgstr "Ručně"
+
+msgid "Many files at once, or watch it"
+msgstr "Mnoho souborů najednou nebo sledování"
+
+msgid "Markdown (.md)"
+msgstr "Markdown (.md)"
+
+msgid "Match case"
+msgstr "Rozlišovat velikost písmen"
+
+msgid "Max. characters per line"
+msgstr "Max. znaků na řádek"
+
+msgid "Max. lines per subtitle"
+msgstr "Max. řádků na titulek"
+
+msgid "Medium"
+msgstr "Střední"
+
+msgid "Microphone"
+msgstr "Mikrofon"
+
+msgid "Mistral API key"
+msgstr "Klíč API Mistral"
+
+msgid "Model"
+msgstr "Model"
+
+msgid ""
+"More accurate, but without timestamps: the transcription can't be played "
+"segment by segment nor subtitled."
+msgstr ""
+"Přesnější, ale bez časových značek: přepis nelze přehrávat po segmentech "
+"ani otitulkovat."
+
+msgid "More options in the settings"
+msgstr "Další možnosti v nastavení"
+
+msgid "Move to group"
+msgstr "Přesunout do skupiny"
+
+msgid "Name of the group:"
+msgstr "Název skupiny:"
+
+msgid "Name of the transcription:"
+msgstr "Název přepisu:"
+
+msgid ""
+"Names, terms or acronyms said in the audio, separated by commas, so "
+"they're spelled right."
+msgstr ""
+"Jména, pojmy nebo zkratky vyslovené ve zvuku, oddělené čárkami, aby byly "
+"správně napsány."
+
+msgid "New group"
+msgstr "Nová skupina"
+
+msgid "New group…"
+msgstr "Nová skupina…"
+
+msgid "New transcription:"
+msgstr "Nový přepis:"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Next low-confidence word ({shortcut})"
+msgstr "Další slovo s nízkou jistotou ({shortcut})"
+
+msgid "Next match"
+msgstr "Další shoda"
+
+msgid "Next to the source"
+msgstr "Vedle zdroje"
+
+#, python-brace-format
+msgid "No API key for {provider}."
+msgstr "Chybí klíč API pro {provider}."
+
+msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgstr "Nebyla nalezena žádná GPU s CUDA, proto WhisperX běží na CPU."
+
+msgid "No audio or video files found (subfolders included)."
+msgstr "Nebyly nalezeny žádné zvukové ani video soubory (včetně podsložek)."
+
+msgid "No audio was recorded."
+msgstr "Nebyl nahrán žádný zvuk."
+
+msgid "No files"
+msgstr "Žádné soubory"
+
+msgid "No files yet"
+msgstr "Zatím žádné soubory"
+
+msgid "No group"
+msgstr "Bez skupiny"
+
+msgid "No languages found."
+msgstr "Nebyly nalezeny žádné jazyky."
+
+# Needs review by a native speaker
+msgid "No low-confidence words at this threshold"
+msgstr "Při tomto prahu nejsou žádná slova s nízkou jistotou"
+
+# Needs review by a native speaker
+msgid "No low-confidence words left to review"
+msgstr "Nezbývají žádná slova s nízkou jistotou ke kontrole"
+
+msgid "No microphone found"
+msgstr "Nebyl nalezen žádný mikrofon"
+
+msgid "No output file types selected. Please select at least one."
+msgstr "Není vybrán žádný typ výstupního souboru. Vyberte alespoň jeden."
+
+msgid "No results"
+msgstr "Žádné výsledky"
+
+msgid "No sound. Check that the microphone is on and allowed."
+msgstr "Žádný zvuk. Zkontrolujte, zda je mikrofon zapnutý a povolený."
+
+msgid "No summary yet"
+msgstr "Zatím žádné shrnutí"
+
+#, python-brace-format
+msgid "No transcription contains “{query}”."
+msgstr "Žádný přepis neobsahuje „{query}“."
+
+msgid "No transcriptions yet"
+msgstr "Zatím žádné přepisy"
+
+msgid "Not translated yet"
+msgstr "Zatím nepřeloženo"
+
+msgid "Not used by the Google API."
+msgstr "Google API ho nepoužívá."
+
+#, python-brace-format
+msgid "Not used by the {model} model."
+msgstr "Model {model} ho nepoužívá."
+
+msgid "Note"
+msgstr "Poznámka"
+
+msgid "Notifications"
+msgstr "Oznámení"
+
+msgid "Number of speakers (0 = auto)"
+msgstr "Počet mluvčích (0 = auto)"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Ollama"
+msgstr "Ollama"
+
+msgid "Ollama runs the models on your computer, without an API key."
+msgstr "Ollama spouští modely ve vašem počítači, bez klíče API."
+
+# Needs review by a native speaker
+msgid "Only WhisperX and whisper-1 score the words"
+msgstr "Slova hodnotí jen WhisperX a whisper-1"
+
+msgid ""
+"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
+" of the Whisper API."
+msgstr ""
+"K dispozici pouze s WhisperX nebo s modelem gpt-4o-transcribe-diarize "
+"rozhraní Whisper API."
+
+msgid "Only available with WhisperX."
+msgstr "K dispozici pouze s WhisperX."
+
+# Needs review by a native speaker
+msgid "Only flagged"
+msgstr "Jen označené"
+
+msgid ""
+"Only one file can be added at a time. To transcribe several files, drop "
+"the folder that contains them."
+msgstr ""
+"Najednou lze přidat jen jeden soubor. Chcete-li přepsat více souborů, "
+"přetáhněte složku, která je obsahuje."
+
+msgid ""
+"Only transcribes English, faster than the multilingual model of the same "
+"size."
+msgstr ""
+"Přepisuje pouze angličtinu, rychlejší než vícejazyčný model stejné "
+"velikosti."
+
+msgid "Open in history"
+msgstr "Otevřít v historii"
+
+msgid "Open the folder of the saved files"
+msgstr "Otevřít složku uložených souborů"
+
+msgid "OpenAI API key"
+msgstr "Klíč OpenAI API"
+
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1154,12 +903,158 @@ msgstr ""
 "Volitelný pro Google Speech-to-Text: bez něj se použije bezplatná úroveň."
 " Vyžadován pro překlad pomocí Překladače Google (Cloud Translation API)."
 
-#: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:113
-msgid "Hugging Face token"
-msgstr "Token Hugging Face"
+msgid "Options"
+msgstr "Možnosti"
 
-#: src/views/settings/preferences_dialog.py:115
+msgid "Otherwise, the GPU of the Mac transcribes (with MLX), much faster."
+msgstr "Jinak přepisuje GPU Macu (pomocí MLX), mnohem rychleji."
+
+msgid "Outline"
+msgstr "Obrys"
+
+msgid "Output"
+msgstr "Výstup"
+
+msgid "Overwrite existing files"
+msgstr "Přepsat existující soubory"
+
+msgid "Paste"
+msgstr "Vložit"
+
+msgid "Pin to the top"
+msgstr "Připnout nahoru"
+
+msgid "Pinned"
+msgstr "Připnuté"
+
+msgid "Plain text"
+msgstr "Prostý text"
+
+msgid "Plain text (.txt)"
+msgstr "Prostý text (.txt)"
+
+msgid "Play from here"
+msgstr "Přehrát odsud"
+
+msgid ""
+"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
+" or video file)."
+msgstr ""
+"Zadejte platnou URL (např. odkaz na video z YouTube nebo na zvukový či "
+"video soubor)."
+
+msgid "Please select a valid audio or video file."
+msgstr "Vyberte platný zvukový nebo video soubor."
+
+msgid "Please select a valid folder."
+msgstr "Vyberte platnou složku."
+
+msgid "Portrait"
+msgstr "Svislé"
+
+msgid "Position"
+msgstr "Umístění"
+
+msgid "Precise timestamps (HH:MM:SS,mmm)"
+msgstr "Přesné časové značky (HH:MM:SS,mmm)"
+
+msgid "Preferences"
+msgstr "Předvolby"
+
+#, python-brace-format
+msgid "Press the button to start recording ({shortcut})"
+msgstr "Stisknutím tlačítka spustíte nahrávání ({shortcut})"
+
+msgid "Press the button to try again."
+msgstr "Stisknutím tlačítka to zkusíte znovu."
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Previous low-confidence word ({shortcut})"
+msgstr "Předchozí slovo s nízkou jistotou ({shortcut})"
+
+msgid "Previous match"
+msgstr "Předchozí shoda"
+
+msgid "Processing the recording…"
+msgstr "Zpracování nahrávky…"
+
+msgid "Provider"
+msgstr "Poskytovatel"
+
+msgid "Queued"
+msgstr "Ve frontě"
+
+msgid "Reading…"
+msgstr "Čtení…"
+
+msgid "Record"
+msgstr "Nahrát"
+
+msgid "Record and transcribe"
+msgstr "Nahrajte a přepište"
+
+msgid "Record yourself or a meeting. The recording is kept in your history."
+msgstr "Nahrajte sebe nebo schůzku. Nahrávka zůstane ve vaší historii."
+
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "Nahrávka · {date}"
+
+msgid "Recording…"
+msgstr "Nahrávání…"
+
+msgid "Recording… Press the button to stop and transcribe."
+msgstr "Nahrávání… Stisknutím tlačítka zastavíte a přepíšete."
+
+msgid "Reduces music and background noise before transcribing."
+msgstr "Před přepisem potlačí hudbu a hluk v pozadí."
+
+msgid "Refine"
+msgstr "Zpřesnění"
+
+msgid "Regenerate the summary"
+msgstr "Znovu vytvořit shrnutí"
+
+msgid "Rename"
+msgstr "Přejmenovat"
+
+msgid "Rename group"
+msgstr "Přejmenovat skupinu"
+
+msgid "Rename group…"
+msgstr "Přejmenovat skupinu…"
+
+msgid "Rename speakers"
+msgstr "Přejmenovat mluvčí"
+
+msgid "Rename speakers…"
+msgstr "Přejmenovat mluvčí…"
+
+msgid "Rename…"
+msgstr "Přejmenovat…"
+
+msgid "Replace"
+msgstr "Nahradit"
+
+msgid "Replace all"
+msgstr "Nahradit vše"
+
+msgid "Replace with:"
+msgstr "Nahradit za:"
+
+# Needs review by a native speaker
+msgid "Replay"
+msgstr "Přehrát znovu"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Replay ({shortcut})"
+msgstr "Přehrát znovu ({shortcut})"
+
+msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
+msgstr "Vyžadován pro Whisper API a pro shrnutí a překlad pomocí OpenAI."
+
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1167,258 +1062,371 @@ msgstr ""
 "Vyžadován pro rozpoznávání mluvčích pomocí WhisperX (pyannote/speaker-"
 "diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:173
-msgid "Preferences"
-msgstr "Předvolby"
+msgid "Required to summarize and translate with Claude."
+msgstr "Vyžadován pro shrnutí a překlad pomocí Claude."
 
-#: src/views/settings/preferences_dialog.py:187
-msgid "General"
-msgstr "Obecné"
+msgid "Required to summarize and translate with DeepSeek."
+msgstr "Vyžadován pro shrnutí a překlad pomocí DeepSeek."
 
-#: src/views/settings/preferences_dialog.py:188
-msgid "AI"
-msgstr "AI"
+msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgstr ""
+"Vyžadován pro shrnutí a překlad pomocí Gemini (získáte jej v Google AI "
+"Studio)."
 
-#: src/views/settings/preferences_dialog.py:189
-msgid "API keys"
-msgstr "Klíče API"
+msgid "Required to summarize and translate with Grok."
+msgstr "Vyžadován pro shrnutí a překlad pomocí Grok."
 
-#: src/views/settings/preferences_dialog.py:191
-#: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:813
-msgid "Subtitles"
-msgstr "Titulky"
+msgid "Required to summarize and translate with Mistral."
+msgstr "Vyžadován pro shrnutí a překlad pomocí Mistral."
 
-#: src/views/settings/preferences_dialog.py:193
-msgid "About"
-msgstr "O aplikaci"
+msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgstr "Vyžadován pro překlad pomocí DeepL. Fungují i klíče bezplatného tarifu."
 
-#: src/views/settings/preferences_dialog.py:321
-msgid "Appearance"
-msgstr "Vzhled"
+# Needs review by a native speaker
+msgid "Review accepted words again"
+msgstr "Znovu zkontrolovat přijatá slova"
 
-#: src/views/settings/preferences_dialog.py:325
-msgid "System"
-msgstr "Systém"
-
-#: src/views/settings/preferences_dialog.py:325
-msgid "Light"
-msgstr "Světlý"
-
-#: src/views/settings/preferences_dialog.py:325
-msgid "Dark"
-msgstr "Tmavý"
-
-#: src/views/settings/preferences_dialog.py:331
-msgid "Interface size"
-msgstr "Velikost rozhraní"
-
-#: src/views/settings/preferences_dialog.py:340
-msgid "Interface language"
-msgstr "Jazyk rozhraní"
-
-#: src/views/settings/preferences_dialog.py:346
-msgid "System language"
-msgstr "Jazyk systému"
-
-#: src/views/settings/preferences_dialog.py:359
-msgid "Notifications"
-msgstr "Oznámení"
-
-#: src/views/settings/preferences_dialog.py:360
-msgid "Shows a notification of the system when a transcription is ready."
-msgstr "Zobrazí systémové oznámení, když je přepis hotový."
-
-#: src/views/settings/preferences_dialog.py:371
-msgid "Updates"
-msgstr "Aktualizace"
-
-#: src/views/settings/preferences_dialog.py:372
-msgid "Checks for a new version when the app opens."
-msgstr "Při otevření aplikace zkontroluje, zda je k dispozici nová verze."
-
-#: src/views/settings/preferences_dialog.py:388
-msgid "Date format"
-msgstr "Formát data"
-
-#: src/views/settings/preferences_dialog.py:405
-msgid "Time format"
-msgstr "Formát času"
-
-#: src/views/settings/preferences_dialog.py:406
-msgid "Automatic uses the clock of the interface language."
-msgstr "Automaticky se použije formát času jazyka rozhraní."
-
-#: src/views/settings/preferences_dialog.py:412
-msgid "Automatic"
-msgstr "Automaticky"
-
-#: src/views/settings/preferences_dialog.py:471
-#: src/views/settings/preferences_dialog.py:484
-msgid "Change API key…"
-msgstr "Změnit klíč API…"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/settings/preferences_dialog.py:471
-#: src/views/settings/preferences_dialog.py:484
-#: src/views/transcript/summary_panel.py:299
-#: src/views/transcript/translation_panel.py:485
-#: src/views/transcript/translation_panel.py:557
-msgid "Set API key…"
-msgstr "Nastavit klíč API…"
-
-#: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:533
-#: src/views/transcript/translation_panel.py:232
-msgid "Translation"
-msgstr "Překlad"
-
-#: src/views/settings/preferences_dialog.py:545
-msgid "Ollama"
-msgstr "Ollama"
-
-#: src/views/settings/preferences_dialog.py:550
-msgid "Server URL"
-msgstr "URL serveru"
-
-#: src/views/settings/preferences_dialog.py:551
-msgid "Ollama runs the models on your computer, without an API key."
-msgstr "Ollama spouští modely ve vašem počítači, bez klíče API."
-
-#: src/views/settings/preferences_dialog.py:582
-msgid "Provider"
-msgstr "Poskytovatel"
-
-#: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:589
-msgid "Model"
-msgstr "Model"
-
-#: src/views/settings/preferences_dialog.py:590
-msgid "The default model of the provider if empty."
-msgstr "Pokud je prázdné, výchozí model poskytovatele."
-
-#: src/views/settings/preferences_dialog.py:637
-msgid "Compute type"
-msgstr "Typ výpočtu"
-
-#: src/views/settings/preferences_dialog.py:638
-msgid "float16 is faster on GPUs. int8 uses less memory."
-msgstr "float16 je rychlejší na GPU. int8 využívá méně paměti."
-
-#: src/views/settings/preferences_dialog.py:654
-msgid "Batch size"
-msgstr "Velikost dávky"
-
-#: src/views/settings/preferences_dialog.py:655
-msgid "Lower it if you run out of memory."
-msgstr "Snižte, pokud dojde paměť."
-
-#: src/views/settings/preferences_dialog.py:667
-msgid "Use CPU"
-msgstr "Použít CPU"
-
-#: src/views/settings/preferences_dialog.py:669
-msgid "Otherwise, the GPU of the Mac transcribes (with MLX), much faster."
-msgstr "Jinak přepisuje GPU Macu (pomocí MLX), mnohem rychleji."
-
-#: src/views/settings/preferences_dialog.py:674
-msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
-msgstr "Nebyla nalezena žádná GPU s CUDA, proto WhisperX běží na CPU."
-
-#: src/views/settings/preferences_dialog.py:689
-msgid "Highlight words"
-msgstr "Zvýrazňovat slova"
-
-#: src/views/settings/preferences_dialog.py:690
-msgid "Underlines each word as it's said (.srt and .vtt)."
-msgstr "Podtrhuje každé slovo ve chvíli, kdy zazní (.srt a .vtt)."
-
-#: src/views/settings/preferences_dialog.py:709
-msgid "Landscape"
-msgstr "Vodorovné"
-
-#: src/views/settings/preferences_dialog.py:709
-msgid "Portrait"
-msgstr "Svislé"
-
-#: src/views/settings/preferences_dialog.py:717
-msgid "Max. lines per subtitle"
-msgstr "Max. řádků na titulek"
-
-#: src/views/settings/preferences_dialog.py:722
-msgid "Max. characters per line"
-msgstr "Max. znaků na řádek"
-
-#: src/views/settings/preferences_dialog.py:727
-msgid "Chinese, Japanese and Korean"
-msgstr "Čínština, japonština a korejština"
-
-#: src/views/settings/preferences_dialog.py:764
 msgid ""
-"Chinese, Japanese and Korean characters are about twice as wide as Latin "
-"ones."
-msgstr "Čínské, japonské a korejské znaky jsou asi dvakrát širší než latinské."
+"Runs on the servers of Google. An API key is optional; without it, the "
+"free tier is used."
+msgstr ""
+"Běží na serverech Google. Klíč API je volitelný; bez něj se použije "
+"bezplatná úroveň."
 
-#: src/views/settings/preferences_dialog.py:773
-msgid "Temperature"
-msgstr "Teplota"
+msgid "Runs on the servers of OpenAI. Requires an API key."
+msgstr "Běží na serverech OpenAI. Vyžaduje klíč API."
 
-#: src/views/settings/preferences_dialog.py:774
-msgid "Between 0 and 1. Higher values are more random."
-msgstr "Mezi 0 a 1. Vyšší hodnoty jsou náhodnější."
+msgid "Runs on your computer. Free, private and unlimited."
+msgstr "Běží ve vašem počítači. Zdarma, soukromě a bez omezení."
 
-#: src/views/settings/preferences_dialog.py:786
-msgid "Timestamps of the words"
-msgstr "Časové značky slov"
+msgid "Same as the audio"
+msgstr "Stejný jako zvuk"
 
-#: src/views/settings/preferences_dialog.py:787
-msgid "Highlights each word while playing (whisper-1 model). Takes longer."
-msgstr "Při přehrávání zvýrazňuje každé slovo (model whisper-1). Trvá déle."
+msgid "Save"
+msgstr "Uložit"
 
-#: src/views/settings/preferences_dialog.py:817
 #, python-brace-format
-msgid "Version {version}"
-msgstr "Verze {version}"
+msgid "Saved in {folder}"
+msgstr "Ukládá se do {folder}"
 
-#: src/views/settings/preferences_dialog.py:821
 #, python-brace-format
-msgid "Made by {author}"
-msgstr "Vytvořil {author}"
+msgid "Saved in {folder}."
+msgstr "Uloženo do {folder}."
 
-#: src/views/settings/preferences_dialog.py:837
-msgid "Documentation"
-msgstr "Dokumentace"
+msgid "Saved next to the source"
+msgstr "Ukládá se vedle zdroje"
 
-#: src/views/settings/preferences_dialog.py:857
-msgid "Donate"
-msgstr "Přispět"
+msgid "Scroll the translation with the transcription"
+msgstr "Posouvat překlad spolu s přepisem"
 
-#: src/views/settings/preferences_dialog.py:871
-msgid "Check for updates"
-msgstr "Zkontrolovat aktualizace"
+msgid "Search"
+msgstr "Hledat"
 
-#: src/views/settings/preferences_dialog.py:890
-msgid "Checking for updates…"
-msgstr "Hledání aktualizací…"
+msgid "Search language…"
+msgstr "Hledat jazyk…"
 
-#: src/views/settings/preferences_dialog.py:901
-msgid "Could not check for updates."
-msgstr "Nepodařilo se zkontrolovat aktualizace."
+#, python-brace-format
+msgid "Segments left to translate: {count}. Right-click one to translate it."
+msgstr ""
+"Segmenty k přeložení: {count}. Klikněte na jeden pravým tlačítkem a "
+"přeložte ho."
 
-#: src/views/settings/preferences_dialog.py:910
-msgid "Download"
-msgstr "Stáhnout"
+msgid "Select a file"
+msgstr "Vyberte soubor"
 
-#: src/views/settings/preferences_dialog.py:920
-msgid "You have the latest version."
-msgstr "Máte nejnovější verzi."
+msgid "Select a folder"
+msgstr "Vyberte složku"
 
-#: src/views/settings/settings_form.py:169
 msgid "Select at least one output file type."
 msgstr "Vyberte alespoň jeden typ výstupního souboru."
 
-#: src/views/settings/settings_form.py:186
+msgid "Server URL"
+msgstr "URL serveru"
+
+msgid "Set API key…"
+msgstr "Nastavit klíč API…"
+
+msgid "Set Hugging Face token…"
+msgstr "Nastavit token Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to summarize, or choose another provider in"
+" the settings."
+msgstr ""
+"Pro shrnutí nastavte klíč API pro {provider}, nebo v nastavení zvolte "
+"jiného poskytovatele."
+
+msgid "Settings"
+msgstr "Nastavení"
+
+msgid "Set…"
+msgstr "Nastavit…"
+
+# Needs review by a native speaker
+msgid "Show all segments"
+msgstr "Zobrazit všechny segmenty"
+
+msgid "Show in Explorer"
+msgstr "Zobrazit v Průzkumníkovi"
+
+msgid "Show in Finder"
+msgstr "Zobrazit ve Finderu"
+
+msgid "Show in file manager"
+msgstr "Zobrazit ve správci souborů"
+
+msgid "Show it as the subtitles of the video"
+msgstr "Zobrazit ho jako titulky videa"
+
+msgid "Show subtitles on the video"
+msgstr "Zobrazit titulky ve videu"
+
+msgid "Show the text while recording"
+msgstr "Zobrazovat text během nahrávání"
+
+msgid "Show the translation"
+msgstr "Zobrazit překlad"
+
+msgid "Shows a notification of the system when a transcription is ready."
+msgstr "Zobrazí systémové oznámení, když je přepis hotový."
+
+msgid "Size"
+msgstr "Velikost"
+
+msgid "Small"
+msgstr "Malé"
+
+msgid "Source"
+msgstr "Zdroj"
+
+#, python-brace-format
+msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr "Mezerník: přehrát/pozastavit · ←/→: {seconds} s zpět/vpřed"
+
+msgid "Start transcription"
+msgstr "Spustit přepis"
+
+msgid "Start:"
+msgstr "Začátek:"
+
+msgid "Starting…"
+msgstr "Spouštění…"
+
+msgid "Stay on top"
+msgstr "Vždy navrchu"
+
+msgid "Stop adding the subtitles to the video"
+msgstr "Přestat přidávat titulky do videa"
+
+msgid "Stop scrolling the translation with the transcription"
+msgstr "Přestat posouvat překlad spolu s přepisem"
+
+msgid "Stop watching"
+msgstr "Zastavit sledování"
+
+#, python-brace-format
+msgid "Stopped watching the folder. Files transcribed: {done}."
+msgstr "Sledování složky bylo zastaveno. Přepsané soubory: {done}."
+
+msgid "Style"
+msgstr "Styl"
+
+msgid "Styled subtitles (.ass)"
+msgstr "Stylizované titulky (.ass)"
+
+msgid "Subtitles"
+msgstr "Titulky"
+
+msgid "Subtitles (.srt)"
+msgstr "Titulky (.srt)"
+
+msgid "Summarizing…"
+msgstr "Shrnování…"
+
+msgid "Summary"
+msgstr "Shrnutí"
+
+msgid "System"
+msgstr "Systém"
+
+msgid "System language"
+msgstr "Jazyk systému"
+
+msgid "Table (.tsv)"
+msgstr "Tabulka (.tsv)"
+
+msgid "Tag"
+msgstr "Štítek"
+
+#, python-brace-format
+msgid "Tag of “{title}”. Leave it empty to show the kind of source."
+msgstr "Štítek pro „{title}“. Ponechte prázdný, chcete-li zobrazit druh zdroje."
+
+msgid "Temperature"
+msgstr "Teplota"
+
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "Text vyslovený v {time}:"
+
+msgid ""
+"The Google API can't detect the language. Please select the language of "
+"the audio."
+msgstr "Google API nedokáže rozpoznat jazyk. Vyberte jazyk zvuku."
+
+msgid ""
+"The Google API can't translate. The transcription will be in the language"
+" of the audio."
+msgstr "Google API neumí překládat. Přepis bude v jazyce zvuku."
+
+msgid "The Google API returns plain text (.txt)."
+msgstr "Google API vrací prostý text (.txt)."
+
+msgid ""
+"The URL doesn't point to an audio or video file. Use the link of a "
+"YouTube video or of a media file."
+msgstr ""
+"URL neodkazuje na zvukový ani video soubor. Použijte odkaz na video z "
+"YouTube nebo na multimediální soubor."
+
+msgid "The Whisper API requires an OpenAI API key."
+msgstr "Whisper API vyžaduje klíč API OpenAI."
+
+msgid "The YouTube video doesn't have an audio track."
+msgstr "Video na YouTube nemá zvukovou stopu."
+
+#, python-brace-format
+msgid "The audio can't be played: {error}"
+msgstr "Zvuk nelze přehrát: {error}"
+
+#, python-brace-format
+msgid "The audio is too large for the OpenAI API ({size} MB)."
+msgstr "Zvuk je pro OpenAI API příliš velký ({size} MB)."
+
+msgid "The audio isn't available."
+msgstr "Zvuk není k dispozici."
+
+msgid "The audio isn't available: the source file was moved or deleted."
+msgstr "Zvuk není k dispozici: zdrojový soubor byl přesunut nebo smazán."
+
+msgid ""
+"The audio of the YouTube video could not be downloaded. Please make sure "
+"the URL is correct."
+msgstr ""
+"Zvuk videa z YouTube se nepodařilo stáhnout. Zkontrolujte, zda je URL "
+"správná."
+
+msgid "The default model of the provider if empty."
+msgstr "Pokud je prázdné, výchozí model poskytovatele."
+
+#, python-brace-format
+msgid "The file could not be downloaded: {error}"
+msgstr "Soubor se nepodařilo stáhnout: {error}"
+
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "Soubor byl přesunut nebo smazán: {path}"
+
+msgid "The files of a folder are always saved."
+msgstr "Soubory ze složky se ukládají vždy."
+
+msgid ""
+"The folder doesn't contain files to transcribe. The files that already "
+"have a transcription are skipped unless you check 'Overwrite existing "
+"files'."
+msgstr ""
+"Složka neobsahuje žádné soubory k přepisu. Soubory, které již mají "
+"přepis, se přeskakují, pokud nezaškrtnete „Přepsat existující soubory“."
+
+msgid "The level is shown while recording"
+msgstr "Úroveň se zobrazuje během nahrávání"
+
+msgid "The model didn't return a valid reply."
+msgstr "Model nevrátil platnou odpověď."
+
+msgid "The model didn't return a valid summary."
+msgstr "Model nevrátil platné shrnutí."
+
+msgid "The model didn't return a valid translation."
+msgstr "Model nevrátil platný překlad."
+
+msgid "The model of the Whisper API identifies the speakers."
+msgstr "Model rozhraní Whisper API rozpozná mluvčí."
+
+#, python-brace-format
+msgid "The new segment goes after the one at {time}:"
+msgstr "Nový segment bude za segmentem v {time}:"
+
+msgid "The plain text has been edited; the transcript keeps the original."
+msgstr "Prostý text byl upraven; přepis s časy zachovává originál."
+
+msgid "The recording is no longer available."
+msgstr "Nahrávka již není k dispozici."
+
+msgid "The reply of the model was too long."
+msgstr "Odpověď modelu byla příliš dlouhá."
+
+#, python-brace-format
+msgid "The segment at {time}, not translated yet."
+msgstr "Segment v {time}, zatím nepřeložený."
+
+msgid "The segment must end after it starts."
+msgstr "Segment musí skončit až po svém začátku."
+
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "Shrnutí „{title}“ je připraveno."
+
+msgid "The text can't be shown while recording."
+msgstr "Text nelze během nahrávání zobrazit."
+
+msgid "The text is shown when you stop recording."
+msgstr "Text se zobrazí, když přestanete nahrávat."
+
+msgid "The text will appear here as you speak."
+msgstr "Text se zde bude zobrazovat, zatímco mluvíte."
+
+msgid "The transcription failed"
+msgstr "Přepis se nezdařil"
+
+msgid "The transcription is being translated. It takes a moment."
+msgstr "Přepis se překládá. Chvíli to potrvá."
+
+msgid "The transcription is very long, so only its beginning was summarized."
+msgstr "Přepis je velmi dlouhý, proto byl shrnut jen jeho začátek."
+
+msgid "The transcription was cancelled"
+msgstr "Přepis byl zrušen"
+
+msgid "The transcription was cancelled."
+msgstr "Přepis byl zrušen."
+
+msgid "The transcription was interrupted"
+msgstr "Přepis byl přerušen"
+
+msgid "The transcription will appear here when you stop recording."
+msgstr "Přepis se zde zobrazí, až přestanete nahrávat."
+
+msgid "The transcriptions of its files are deleted too."
+msgstr "Přepisy jejích souborů se také smažou."
+
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "Překlad „{title}“ je připraven."
+
+#, python-brace-format
+msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
+msgstr "Model {model} nevrací časové značky, proto nemůže uložit titulky."
+
+#, python-brace-format
+msgid ""
+"The {model} model doesn't return timestamps, so it can't save {format} "
+"files. Choose another format or the whisper-1 model."
+msgstr ""
+"Model {model} nevrací časové značky, proto nemůže uložit soubory "
+"{format}. Zvolte jiný formát nebo model whisper-1."
+
 #, python-brace-format
 msgid ""
 "The {model} model only transcribes English. Choose a multilingual model "
@@ -1427,124 +1435,80 @@ msgstr ""
 "Model {model} přepisuje pouze angličtinu. Zvolte vícejazyčný model nebo "
 "nastavte jazyk zvuku na angličtinu."
 
-#: src/views/settings/settings_form.py:194
-msgid "The Whisper API requires an OpenAI API key."
-msgstr "Whisper API vyžaduje klíč API OpenAI."
+# Needs review by a native speaker
+msgid "There is no alignment model for its language"
+msgstr "Pro jeho jazyk není k dispozici model zarovnání"
 
-#: src/views/settings/cards/context_card.py:29
-msgid "Context"
-msgstr "Kontext"
+msgid "There is no text to summarize."
+msgstr "Není žádný text ke shrnutí."
 
-#: src/views/settings/cards/context_card.py:35
-msgid "Keywords"
-msgstr "Klíčová slova"
+msgid "There is no text to translate."
+msgstr "Není žádný text k překladu."
 
-#: src/views/settings/cards/context_card.py:39
-msgid "e.g. Audiotext, WhisperX, Henestrosa"
-msgstr "např. Audiotext, WhisperX, Henestrosa"
+msgid "There is no transcription to save. Please generate it first."
+msgstr "Není co uložit. Nejprve vytvořte přepis."
 
-#: src/views/settings/cards/context_card.py:46
+msgid "There is no translation yet."
+msgstr "Zatím žádný překlad."
+
+msgid "This transcription has no timestamps."
+msgstr "Tento přepis nemá časové značky."
+
+msgid "Time format"
+msgstr "Formát času"
+
 msgid ""
-"Names, terms or acronyms said in the audio, separated by commas, so "
-"they're spelled right."
+"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
+"transcribe-diarize models of the Whisper API."
 msgstr ""
-"Jména, pojmy nebo zkratky vyslovené ve zvuku, oddělené čárkami, aby byly "
-"správně napsány."
+"Časové značky jsou k dispozici pouze s WhisperX a s modely whisper-1 a "
+"gpt-4o-transcribe-diarize rozhraní Whisper API."
 
-#: src/views/settings/cards/context_card.py:51
-msgid "Description"
-msgstr "Popis"
+msgid "Timestamps of the words"
+msgstr "Časové značky slov"
 
-#: src/views/settings/cards/context_card.py:60
-msgid "e.g. An interview about speech recognition"
-msgstr "např. Rozhovor o rozpoznávání řeči"
+msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
+msgstr "Tip: přetáhněte soubor nebo složku kamkoli do okna a přepište je."
 
-#: src/views/settings/cards/context_card.py:65
-msgid "What the audio is about, such as its topic or setting."
-msgstr "O čem zvuk je, například jeho téma nebo prostředí."
+msgid "Too loud. Move away from the microphone."
+msgstr "Příliš hlasité. Vzdalte se od mikrofonu."
 
-#: src/views/settings/cards/context_card.py:103
-msgid "Not used by the Google API."
-msgstr "Google API ho nepoužívá."
+msgid "Too quiet. Speak louder or closer to the microphone."
+msgstr "Příliš tiché. Mluvte hlasitěji nebo blíže k mikrofonu."
 
-#: src/views/settings/cards/context_card.py:115
+msgid "Top"
+msgstr "Nahoře"
+
+msgid "Transcribe"
+msgstr "Přepsat"
+
+msgid "Transcribe a file"
+msgstr "Přepsat soubor"
+
+msgid "Transcribe a folder"
+msgstr "Přepsat složku"
+
+msgid "Transcribe again"
+msgstr "Přepsat znovu"
+
+msgid "Transcribe from a URL"
+msgstr "Přepsat z URL"
+
+msgid "Transcribe from the microphone"
+msgstr "Přepsat z mikrofonu"
+
+# Needs review by a native speaker
+msgid "Transcribe it again to score its words"
+msgstr "Přepište to znovu, aby se slova ohodnotila"
+
 #, python-brace-format
-msgid "Not used by the {model} model."
-msgstr "Model {model} ho nepoužívá."
+msgid "Transcribe “{title}” again? The changes made to its text will be lost."
+msgstr "Znovu přepsat „{title}“? Změny provedené v textu budou ztraceny."
 
-#: src/views/settings/cards/engine_card.py:25
-msgid "Identifies the speakers. With timestamps."
-msgstr "Rozpozná mluvčí. S časovými značkami."
+#, python-brace-format
+msgid "Transcribed {done} of {total} files."
+msgstr "Přepsáno {done} z {total} souborů."
 
-#: src/views/settings/cards/engine_card.py:28
-msgid ""
-"With timestamps, to play the transcription segment by segment and "
-"generate subtitles."
-msgstr ""
-"S časovými značkami, aby bylo možné přepis přehrávat po segmentech a "
-"generovat titulky."
-
-#: src/views/settings/cards/engine_card.py:32
-msgid ""
-"More accurate, but without timestamps: the transcription can't be played "
-"segment by segment nor subtitled."
-msgstr ""
-"Přesnější, ale bez časových značek: přepis nelze přehrávat po segmentech "
-"ani otitulkovat."
-
-#: src/views/settings/cards/engine_card.py:50
-msgid "Engine"
-msgstr "Nástroj"
-
-#: src/views/settings/cards/engine_card.py:54
-msgid "Transcription method"
-msgstr "Metoda přepisu"
-
-#: src/views/settings/cards/engine_card.py:114
-msgid ""
-"Only transcribes English, faster than the multilingual model of the same "
-"size."
-msgstr ""
-"Přepisuje pouze angličtinu, rychlejší než vícejazyčný model stejné "
-"velikosti."
-
-#: src/views/settings/cards/engine_card.py:118
-msgid "Larger models are more accurate, but slower."
-msgstr "Větší modely jsou přesnější, ale pomalejší."
-
-#: src/views/settings/cards/engine_card.py:121
-msgid "Runs on your computer. Free, private and unlimited."
-msgstr "Běží ve vašem počítači. Zdarma, soukromě a bez omezení."
-
-#: src/views/settings/cards/engine_card.py:131
-msgid "Runs on the servers of OpenAI. Requires an API key."
-msgstr "Běží na serverech OpenAI. Vyžaduje klíč API."
-
-#: src/views/settings/cards/engine_card.py:135
-msgid ""
-"Runs on the servers of Google. An API key is optional; without it, the "
-"free tier is used."
-msgstr ""
-"Běží na serverech Google. Klíč API je volitelný; bez něj se použije "
-"bezplatná úroveň."
-
-#: src/views/settings/cards/engine_card.py:140
-msgid "API key set"
-msgstr "Klíč API nastaven"
-
-#: src/views/settings/cards/folder_card.py:22
-msgid "Watch the folder"
-msgstr "Sledovat složku"
-
-#: src/views/settings/cards/folder_card.py:34
-msgid ""
-"Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
-msgstr ""
-"Běží dál a přepisuje soubory přidané do složky, dokud jej nezastavíte. "
-"Soubory, které již obsahuje, se přeskočí."
-
-#: src/views/settings/cards/folder_card.py:39
 msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
 "Files that already have a transcription are skipped unless you overwrite "
@@ -1553,58 +1517,190 @@ msgstr ""
 "Přepíše zvukové a video soubory ve složce a jejích podsložkách. Soubory, "
 "které již mají přepis, se přeskočí, pokud je nepřepíšete."
 
-#: src/views/settings/cards/language_card.py:54
-msgid "Language"
-msgstr "Jazyk"
+#, python-brace-format
+msgid "Transcribing chunk {current} of {total}…"
+msgstr "Přepisování úseku {current} z {total}…"
 
-#: src/views/settings/cards/language_card.py:61
-msgid "Language of the audio"
-msgstr "Jazyk zvuku"
+msgid "Transcribing…"
+msgstr "Přepisování…"
 
-#: src/views/settings/cards/language_card.py:65
-#: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:423
-msgid "Search language…"
-msgstr "Hledat jazyk…"
+msgid "Transcription"
+msgstr "Přepis"
 
-#: src/views/settings/cards/language_card.py:66
-#: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:424
-msgid "No languages found."
-msgstr "Nebyly nalezeny žádné jazyky."
+msgid "Transcription cancelled."
+msgstr "Přepis byl zrušen."
 
-#: src/views/settings/cards/language_card.py:71
-msgid "Auto-detect"
-msgstr "Automaticky rozpoznat"
+msgid "Transcription method"
+msgstr "Metoda přepisu"
 
-#: src/views/settings/cards/language_card.py:80
-msgid "Language of the transcription"
-msgstr "Jazyk přepisu"
+msgid "Transcription ready"
+msgstr "Přepis je hotový"
 
-#: src/views/settings/cards/language_card.py:90
-msgid "Same as the audio"
-msgstr "Stejný jako zvuk"
+msgid "Transcriptions"
+msgstr "Přepisy"
 
-#: src/views/settings/cards/language_card.py:131
+msgid "Translate"
+msgstr "Přeložit"
+
+msgid "Translate again"
+msgstr "Přeložit znovu"
+
+msgid "Translate into another language…"
+msgstr "Přeložit do jiného jazyka…"
+
+msgid "Translate into:"
+msgstr "Přeložit do:"
+
+msgid "Translate text"
+msgstr "Přeložit text"
+
+msgid "Translate text…"
+msgstr "Přeložit text…"
+
+#, python-brace-format
+msgid ""
+"Translate the transcription into {language} again? The changes made to "
+"the translation will be lost."
+msgstr ""
+"Znovu přeložit přepis do jazyka {language}? Změny provedené v překladu "
+"budou ztraceny."
+
 msgid "Translate with Whisper (recommended)"
 msgstr "Přeložit pomocí Whisper (doporučeno)"
 
-#: src/views/settings/cards/language_card.py:183
-msgid ""
-"The Google API can't translate. The transcription will be in the language"
-" of the audio."
-msgstr "Google API neumí překládat. Přepis bude v jazyce zvuku."
+msgid "Translate with:"
+msgstr "Přeložit pomocí:"
 
-#: src/views/settings/cards/language_card.py:193
+msgid "Translates each segment, keeping its timestamps."
+msgstr "Přeloží každý segment a zachová jeho časové značky."
+
+msgid "Translate…"
+msgstr "Přeložit…"
+
 #, python-brace-format
-msgid "Write it directly in {language} (experimental)"
-msgstr "Napsat přímo v jazyce: {language} (experimentální)"
+msgid "Translating into {language}…"
+msgstr "Překládání (jazyk: {language})…"
 
-#: src/views/settings/cards/language_card.py:211
-msgid "Whisper transcribes and translates the audio in one step."
-msgstr "Whisper přepíše a přeloží zvuk v jednom kroku."
+msgid "Translating…"
+msgstr "Překládání…"
 
-#: src/views/settings/cards/language_card.py:215
+msgid "Translation"
+msgstr "Překlad"
+
+#, python-brace-format
+msgid "Translation into {language}"
+msgstr "Překlad (jazyk: {language})"
+
+#, python-brace-format
+msgid "Translation of the segment from {start} to {end}:"
+msgstr "Překlad segmentu od {start} do {end}:"
+
+#, python-brace-format
+msgid "Translation of “{text}”, said from {start} to {end}:"
+msgstr "Překlad „{text}“, řečeno od {start} do {end}:"
+
+msgid "Try again"
+msgstr "Zkusit znovu"
+
+# Needs review by a native speaker
+msgid "Turn on “Word-level timings” and transcribe it again"
+msgstr "Zapněte „Časování slov“ a přepište to znovu"
+
+msgid ""
+"Type in the API key. It's kept in the credential store of your system. "
+"Leave it empty to remove it."
+msgstr ""
+"Zadejte klíč API. Uloží se do úložiště přihlašovacích údajů vašeho "
+"systému. Ponechte prázdné, chcete-li jej odebrat."
+
+msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
+msgstr "Zadejte časy jako 00:01:05,900, 01:05,9 nebo 65.9."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Underlines each word as it's said (.srt and .vtt)."
+msgstr "Podtrhuje každé slovo ve chvíli, kdy zazní (.srt a .vtt)."
+
+# Needs review by a native speaker
+msgid "Undo"
+msgstr "Zpět"
+
+msgid "Unpin"
+msgstr "Odepnout"
+
+msgid "Unpin from the main window"
+msgstr "Nedržet nad hlavním oknem"
+
+#, python-brace-format
+msgid "Unsupported file type: {extension}"
+msgstr "Nepodporovaný typ souboru: {extension}"
+
+msgid "Updates"
+msgstr "Aktualizace"
+
+msgid "Use CPU"
+msgstr "Použít CPU"
+
+#, python-brace-format
+msgid "Uses the model {model}."
+msgstr "Používá model {model}."
+
+#, python-brace-format
+msgid "Version {version}"
+msgstr "Verze {version}"
+
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "Je k dispozici verze {version}"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Video files"
+msgstr "Video soubory"
+
+msgid "Video with subtitles (.mp4)…"
+msgstr "Video s titulky (.mp4)…"
+
+msgid "Wait until the current transcription finishes, or cancel it."
+msgstr "Počkejte, až aktuální přepis skončí, nebo jej zrušte."
+
+#, python-brace-format
+msgid "Waiting for new files in {folder}…"
+msgstr "Čekání na nové soubory ve složce {folder}…"
+
+msgid "Waiting for new files…"
+msgstr "Čekání na nové soubory…"
+
+msgid "Waiting for speech…"
+msgstr "Čekání na řeč…"
+
+msgid "Waiting for the current transcription to finish."
+msgstr "Čekání na dokončení aktuálního přepisu."
+
+#, python-brace-format
+msgid "Waiting for {count} transcription(s) to finish."
+msgstr "Čekání na dokončení přepisů (počet: {count})."
+
+msgid "Watch the folder"
+msgstr "Sledovat složku"
+
+msgid "Watched folder"
+msgstr "Sledovaná složka"
+
+msgid "Watching"
+msgstr "Sledování"
+
+msgid "Web subtitles (.vtt)"
+msgstr "Webové titulky (.vtt)"
+
+msgid "What do you want to transcribe?"
+msgstr "Co chcete přepsat?"
+
+msgid "What the audio is about, such as its topic or setting."
+msgstr "O čem zvuk je, například jeho téma nebo prostředí."
+
 #, python-brace-format
 msgid ""
 "Whisper can only translate into {english}. For other languages, it's "
@@ -1615,844 +1711,121 @@ msgstr ""
 "požádán, aby přepis napsal přímo v jazyce: {language}. U mnoha jazyků to "
 "funguje dobře, ale výsledek zkontrolujte."
 
-#: src/views/settings/cards/live_card.py:27
-msgid "Live text"
-msgstr "Živý text"
+msgid "Whisper transcribes and translates the audio in one step."
+msgstr "Whisper přepíše a přeloží zvuk v jednom kroku."
 
-#: src/views/settings/cards/live_card.py:30
-msgid "Show the text while recording"
-msgstr "Zobrazovat text během nahrávání"
+msgid "WhisperX model ready."
+msgstr "Model WhisperX je připraven."
 
-#: src/views/settings/cards/live_card.py:35
-msgid "Live model"
-msgstr "Živý model"
-
-#: src/views/settings/cards/live_card.py:62
-#: src/views/settings/cards/options_card.py:120
-#: src/views/settings/cards/options_card.py:149
-msgid "Only available with WhisperX."
-msgstr "K dispozici pouze s WhisperX."
-
-#: src/views/settings/cards/live_card.py:65
 msgid ""
-"A fast model writes a draft while you speak. When you stop, the whole "
-"recording is transcribed again with the model of the engine, which is "
-"more accurate."
+"With timestamps, to play the transcription segment by segment and "
+"generate subtitles."
 msgstr ""
-"Rychlý model píše koncept, zatímco mluvíte. Když přestanete, celá "
-"nahrávka se znovu přepíše modelem nástroje, který je přesnější."
+"S časovými značkami, aby bylo možné přepis přehrávat po segmentech a "
+"generovat titulky."
 
-#: src/views/settings/cards/live_card.py:70
-msgid "The text is shown when you stop recording."
-msgstr "Text se zobrazí, když přestanete nahrávat."
+msgid "Word document (.docx)"
+msgstr "Dokument Word (.docx)"
 
-#: src/views/settings/cards/options_card.py:38
-msgid "Options"
-msgstr "Možnosti"
-
-#: src/views/settings/cards/options_card.py:44
 msgid "Word-level timings"
 msgstr "Časování slov"
 
-#: src/views/settings/cards/options_card.py:52
-msgid "Extract speech"
-msgstr "Extrahovat řeč"
+#, python-brace-format
+msgid "Write it directly in {language} (experimental)"
+msgstr "Napsat přímo v jazyce: {language} (experimentální)"
 
-#: src/views/settings/cards/options_card.py:56
-msgid "Reduces music and background noise before transcribing."
-msgstr "Před přepisem potlačí hudbu a hluk v pozadí."
+msgid "You can edit the text. The changes are saved automatically."
+msgstr "Text můžete upravit. Změny se ukládají automaticky."
 
-#: src/views/settings/cards/options_card.py:60
-msgid "Identify speakers"
-msgstr "Rozpoznat mluvčí"
-
-#: src/views/settings/cards/options_card.py:70
-msgid "Number of speakers (0 = auto)"
-msgstr "Počet mluvčích (0 = auto)"
-
-#: src/views/settings/cards/options_card.py:94
-msgid "Set Hugging Face token…"
-msgstr "Nastavit token Hugging Face…"
-
-#: src/views/settings/cards/options_card.py:123
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Při přehrávání zvýrazňuje každé slovo. Titulky je již používají."
-
-#: src/views/settings/cards/options_card.py:126
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Při přehrávání zvýrazňuje každé slovo. Trvá o něco déle."
-
-#: src/views/settings/cards/options_card.py:136
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Označí, kdo mluví v jednotlivých částech. Vyžaduje token Hugging Face."
-
-#: src/views/settings/cards/options_card.py:142
-msgid "The model of the Whisper API identifies the speakers."
-msgstr "Model rozhraní Whisper API rozpozná mluvčí."
-
-#: src/views/settings/cards/options_card.py:145
 msgid ""
-"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
-" of the Whisper API."
+"You can keep using Audiotext meanwhile. The result is saved in your "
+"history and opens here when it's ready."
 msgstr ""
-"K dispozici pouze s WhisperX nebo s modelem gpt-4o-transcribe-diarize "
-"rozhraní Whisper API."
+"Mezitím můžete Audiotext dál používat. Výsledek se uloží do historie a "
+"otevře se zde, až bude hotový."
 
-#: src/views/settings/cards/output_card.py:38
-msgid "Output"
-msgstr "Výstup"
+msgid "You have the latest version."
+msgstr "Máte nejnovější verzi."
 
-#: src/views/settings/cards/output_card.py:42
-msgid "File types"
-msgstr "Typy souborů"
+msgid "YouTube or a link to a file"
+msgstr "YouTube nebo odkaz na soubor"
 
-#: src/views/settings/cards/output_card.py:108
-msgid "Next to the source"
-msgstr "Vedle zdroje"
+msgid "YouTube video"
+msgstr "Video z YouTube"
 
-#: src/views/settings/cards/output_card.py:115
-msgid "Overwrite existing files"
-msgstr "Přepsat existující soubory"
+msgid "Your audio, video and saved files are not deleted."
+msgstr "Vaše zvukové, video a uložené soubory se nesmažou."
 
-#: src/views/settings/cards/output_card.py:119
-msgid "The files of a folder are always saved."
-msgstr "Soubory ze složky se ukládají vždy."
+msgid "cancelled"
+msgstr "zrušeno"
 
-#: src/views/settings/cards/output_card.py:147
-msgid "The Google API returns plain text (.txt)."
-msgstr "Google API vrací prostý text (.txt)."
+msgid "default"
+msgstr "výchozí"
 
-#: src/views/settings/cards/output_card.py:152
+msgid "e.g. An interview about speech recognition"
+msgstr "např. Rozhovor o rozpoznávání řeči"
+
+msgid "e.g. Audiotext, WhisperX, Henestrosa"
+msgstr "např. Audiotext, WhisperX, Henestrosa"
+
+msgid "float16 is faster on GPUs. int8 uses less memory."
+msgstr "float16 je rychlejší na GPU. int8 využívá méně paměti."
+
+msgid "or"
+msgstr "nebo"
+
+msgid "xAI API key"
+msgstr "Klíč API xAI"
+
 #, python-brace-format
-msgid "Saved in {folder}"
-msgstr "Ukládá se do {folder}"
+msgid "{count} audio and video files (subfolders included)"
+msgstr "Zvukové a video soubory: {count} (včetně podsložek)"
 
-#: src/views/settings/cards/output_card.py:155
-msgid "Saved next to the source"
-msgstr "Ukládá se vedle zdroje"
-
-#: src/views/settings/cards/output_card.py:174
-msgid "Format of the files."
-msgstr "Formát souborů."
-
-#: src/views/settings/cards/output_card.py:177
 #, python-brace-format
-msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
-msgstr "Model {model} nevrací časové značky, proto nemůže uložit titulky."
+msgid "{count} done"
+msgstr "Hotovo: {count}"
 
-#: src/views/settings/cards/output_card.py:197
-msgid "Choose where to save the transcriptions"
-msgstr "Vyberte, kam ukládat přepisy"
-
-#: src/views/transcript/corrections.py:180
-msgid "Edit the timing"
-msgstr "Upravit časování"
-
-#: src/views/transcript/corrections.py:181
-#: src/views/transcript/edit_dialogs.py:78 src/views/widgets/text_dialog.py:69
-msgid "Save"
-msgstr "Uložit"
-
-#: src/views/transcript/corrections.py:208
-msgid "Add a segment"
-msgstr "Přidat segment"
-
-#: src/views/transcript/corrections.py:209
-msgid "Add"
-msgstr "Přidat"
-
-#: src/views/transcript/corrections.py:210
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Nový segment bude za segmentem v {time}:"
+msgid "{count} failed"
+msgstr "Selhalo: {count}"
 
-#: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1441
-msgid "Delete the segment"
-msgstr "Smazat segment"
-
-#: src/views/transcript/corrections.py:241
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Smazat segment „{text}“?"
+msgid "{count} files"
+msgstr "Soubory: {count}"
 
-#: src/views/transcript/corrections.py:275
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Segment v {time}, zatím nepřeložený."
+msgid "{count} transcriptions"
+msgstr "Přepisy: {count}"
 
-#: src/views/transcript/edit_dialogs.py:78
-msgid "Rename speakers"
-msgstr "Přejmenovat mluvčí"
-
-#: src/views/transcript/edit_dialogs.py:85
-msgid ""
-"Give a name to each speaker. Giving two speakers the same name merges "
-"them."
-msgstr ""
-"Pojmenujte každého mluvčího. Pokud dvěma mluvčím dáte stejné jméno, "
-"sloučí se."
-
-#: src/views/transcript/edit_dialogs.py:155
-msgid "Start:"
-msgstr "Začátek:"
-
-#: src/views/transcript/edit_dialogs.py:155
-msgid "End:"
-msgstr "Konec:"
-
-#: src/views/transcript/edit_dialogs.py:194
-msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
-msgstr "Zadejte časy jako 00:01:05,900, 01:05,9 nebo 65.9."
-
-#: src/views/transcript/edit_dialogs.py:196
-msgid "The segment must end after it starts."
-msgstr "Segment musí skončit až po svém začátku."
-
-#: src/views/transcript/find_dialog.py:80
-msgid "Find:"
-msgstr "Najít:"
-
-#: src/views/transcript/find_dialog.py:83
-msgid "Replace with:"
-msgstr "Nahradit za:"
-
-#: src/views/transcript/find_dialog.py:93
-msgid "Match case"
-msgstr "Rozlišovat velikost písmen"
-
-#: src/views/transcript/find_dialog.py:108
-msgid "Stay on top"
-msgstr "Vždy navrchu"
-
-#: src/views/transcript/find_dialog.py:113
-msgid "Unpin from the main window"
-msgstr "Nedržet nad hlavním oknem"
-
-#: src/views/transcript/find_dialog.py:115
-msgid "Keep above the main window"
-msgstr "Držet nad hlavním oknem"
-
-#: src/views/transcript/find_dialog.py:126
-msgid "Replace"
-msgstr "Nahradit"
-
-#: src/views/transcript/find_dialog.py:131
-msgid "Replace all"
-msgstr "Nahradit vše"
-
-#: src/views/transcript/find_dialog.py:189
-#: src/views/transcript/find_dialog.py:235
 #, python-brace-format
 msgid "{current} of {total}"
 msgstr "{current} z {total}"
 
-#: src/views/transcript/find_dialog.py:250
-msgid "Previous match"
-msgstr "Předchozí shoda"
-
-#: src/views/transcript/find_dialog.py:257
-msgid "Next match"
-msgstr "Další shoda"
-
-#: src/views/transcript/player_bar.py:172
-msgid "Loading the audio…"
-msgstr "Načítání zvuku…"
-
-#: src/views/transcript/player_bar.py:202
 #, python-brace-format
-msgid "Space: play/pause · ←/→: {seconds} s back/forward"
-msgstr "Mezerník: přehrát/pozastavit · ←/→: {seconds} s zpět/vpřed"
+msgid "{done}/{total} files"
+msgstr "Soubory: {done}/{total}"
 
-#: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1592
 #, python-brace-format
-msgid "The audio can't be played: {error}"
-msgstr "Zvuk nelze přehrát: {error}"
+msgid "{minutes} min {seconds} s"
+msgstr "{minutes} min {seconds} s"
 
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:92
-msgid "Only flagged"
-msgstr "Jen označené"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:105
-msgid "Auto-play"
-msgstr "Automaticky přehrát"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:111
-msgid "Undo"
-msgstr "Zpět"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:121
-msgid "Accept remaining"
-msgstr "Přijmout zbývající"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:132
-msgid "Adjust threshold"
-msgstr "Upravit práh"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:143
-msgid "Review accepted words again"
-msgstr "Znovu zkontrolovat přijatá slova"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:156
-msgid "Review low-confidence words"
-msgstr "Zkontrolovat slova s nízkou jistotou"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:237
 #, python-brace-format
-msgid "{remaining} of {total} to review"
-msgstr "{remaining} z {total} ke kontrole"
+msgid "{name}: {message}"
+msgstr "{name}: {message}"
 
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:241
-#, python-brace-format
-msgid "All reviewed · {total} of {total}"
-msgstr "Vše zkontrolováno · {total} z {total}"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:243
-msgid "No low-confidence words at this threshold"
-msgstr "Při tomto prahu nejsou žádná slova s nízkou jistotou"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:245
-msgid "Confidence data isn’t available for this transcript"
-msgstr "Pro tento přepis nejsou k dispozici údaje o jistotě"
-
-#: src/views/transcript/summary_panel.py:202
-#, python-brace-format
-msgid "Find ({shortcut})"
-msgstr "Hledat ({shortcut})"
-
-#: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:713
-#: src/views/transcript/translation_panel.py:149
-msgid "Export"
-msgstr "Exportovat"
-
-#: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1109
-msgid "Regenerate the summary"
-msgstr "Znovu vytvořit shrnutí"
-
-#: src/views/transcript/summary_panel.py:272
-msgid "Summarizing…"
-msgstr "Shrnování…"
-
-#: src/views/transcript/summary_panel.py:273
 #, python-brace-format
 msgid "{provider} is reading the transcription. It takes a moment."
 msgstr "{provider} čte přepis. Chvíli to potrvá."
 
-#: src/views/transcript/summary_panel.py:279
-#: src/views/transcript/summary_panel.py:292
-msgid "No summary yet"
-msgstr "Zatím žádné shrnutí"
-
-#: src/views/transcript/summary_panel.py:281
-#, python-brace-format
-msgid ""
-"Generate a summary, the key points and the chapters of the transcription "
-"with {provider}."
-msgstr "Vygenerujte shrnutí, klíčové body a kapitoly přepisu pomocí {provider}."
-
-#: src/views/transcript/summary_panel.py:286
-msgid "Generate summary"
-msgstr "Vygenerovat shrnutí"
-
-#: src/views/transcript/summary_panel.py:294
-#, python-brace-format
-msgid ""
-"Set the API key of {provider} to summarize, or choose another provider in"
-" the settings."
-msgstr ""
-"Pro shrnutí nastavte klíč API pro {provider}, nebo v nastavení zvolte "
-"jiného poskytovatele."
-
-#: src/views/transcript/summary_panel.py:374
-msgid "The transcription is very long, so only its beginning was summarized."
-msgstr "Přepis je velmi dlouhý, proto byl shrnut jen jeho začátek."
-
-#: src/views/transcript/summary_panel.py:389
-#, python-brace-format
-msgid "Generated by {model} · {date}"
-msgstr "Vygeneroval {model} · {date}"
-
-#: src/views/transcript/transcript_text.py:336
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr ""
-"Kliknutím na segment ho přehrajete. Kliknutím pravým tlačítkem ho "
-"upravíte."
-
-#: src/views/transcript/transcript_text.py:341
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Prostý text byl upraven; přepis s časy zachovává originál."
-
-#: src/views/transcript/transcript_text.py:347
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Text můžete upravit. Změny se ukládají automaticky."
-
-#: src/views/transcript/transcript_text.py:352
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Časové značky jsou k dispozici pouze s WhisperX a s modely whisper-1 a "
-"gpt-4o-transcribe-diarize rozhraní Whisper API."
-
-#: src/views/transcript/transcript_text.py:825
-msgid "This transcription has no timestamps."
-msgstr "Tento přepis nemá časové značky."
-
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:147
-msgid "There is no alignment model for its language"
-msgstr "Pro jeho jazyk není k dispozici model zarovnání"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:148
-msgid "Turn on “Word-level timings” and transcribe it again"
-msgstr "Zapněte „Časování slov“ a přepište to znovu"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:155
-msgid "Transcribe it again to score its words"
-msgstr "Přepište to znovu, aby se slova ohodnotila"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:156
-msgid "Only WhisperX and whisper-1 score the words"
-msgstr "Slova hodnotí jen WhisperX a whisper-1"
-
-#: src/views/transcript/transcript_view.py:161
-msgid "Plain text (.txt)"
-msgstr "Prostý text (.txt)"
-
-#: src/views/transcript/transcript_view.py:162
-msgid "Markdown (.md)"
-msgstr "Markdown (.md)"
-
-#: src/views/transcript/transcript_view.py:163
-msgid "Word document (.docx)"
-msgstr "Dokument Word (.docx)"
-
-#: src/views/transcript/transcript_view.py:164
-msgid "Subtitles (.srt)"
-msgstr "Titulky (.srt)"
-
-#: src/views/transcript/transcript_view.py:165
-msgid "Web subtitles (.vtt)"
-msgstr "Webové titulky (.vtt)"
-
-#: src/views/transcript/transcript_view.py:166
-msgid "Styled subtitles (.ass)"
-msgstr "Stylizované titulky (.ass)"
-
-#: src/views/transcript/transcript_view.py:167
-msgid "Table (.tsv)"
-msgstr "Tabulka (.tsv)"
-
-#: src/views/transcript/transcript_view.py:168
-msgid "JSON (.json)"
-msgstr "JSON (.json)"
-
-#: src/views/transcript/transcript_view.py:310
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Přestat posouvat překlad spolu s přepisem"
-
-#: src/views/transcript/transcript_view.py:312
-msgid "Scroll the translation with the transcription"
-msgstr "Posouvat překlad spolu s přepisem"
-
-#: src/views/transcript/transcript_view.py:497
-msgid "Stop adding the subtitles to the video"
-msgstr "Přestat přidávat titulky do videa"
-
-#: src/views/transcript/transcript_view.py:502
-msgid "Video with subtitles (.mp4)…"
-msgstr "Video s titulky (.mp4)…"
-
-#: src/views/transcript/transcript_view.py:523
-msgid "Export transcription"
-msgstr "Exportovat přepis"
-
-#: src/views/transcript/transcript_view.py:544
 #, python-brace-format
-msgid "Export translation into {language}"
-msgstr "Exportovat překlad (jazyk: {language})"
+msgid "{remaining} of {total} to review"
+msgstr "{remaining} z {total} ke kontrole"
 
-#: src/views/transcript/transcript_view.py:557
-msgid "Export summary"
-msgstr "Exportovat shrnutí"
-
-#: src/views/transcript/transcript_view.py:586
-#: src/views/transcript/video_export.py:89
 #, python-brace-format
-msgid "Could not export: {error}"
-msgstr "Export se nezdařil: {error}"
+msgid "{seconds} s"
+msgstr "{seconds} s"
 
-#: src/views/transcript/transcript_view.py:589
-#: src/views/transcript/video_export.py:101
 #, python-brace-format
-msgid "Exported to {path}"
-msgstr "Exportováno do {path}"
-
-#: src/views/transcript/transcript_view.py:616
-msgid "All files"
-msgstr "Všechny soubory"
-
-#: src/views/transcript/transcript_view.py:632
-msgid "Export video with subtitles"
-msgstr "Exportovat video s titulky"
-
-#: src/views/transcript/transcript_view.py:705
-#: src/views/transcript/translation_panel.py:143
-#, python-brace-format
-msgid "Find and replace ({shortcut})"
-msgstr "Najít a nahradit ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:753
-msgid "No low-confidence words left to review"
-msgstr "Nezbývají žádná slova s nízkou jistotou ke kontrole"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:763
-msgid "Show all segments"
-msgstr "Zobrazit všechny segmenty"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:800
-#, python-brace-format
-msgid "Previous low-confidence word ({shortcut})"
-msgstr "Předchozí slovo s nízkou jistotou ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:802
-#, python-brace-format
-msgid "Next low-confidence word ({shortcut})"
-msgstr "Další slovo s nízkou jistotou ({shortcut})"
-
-#: src/views/transcript/transcript_view.py:814
-msgid "Plain text"
-msgstr "Prostý text"
-
-#: src/views/transcript/transcript_view.py:823
-#: src/views/transcript/translation_panel.py:409
-msgid "Translate"
-msgstr "Přeložit"
-
-#: src/views/transcript/transcript_view.py:936
-#: src/views/transcript/transcript_view.py:1480
-msgid "Edit text"
-msgstr "Upravit text"
-
-#: src/views/transcript/transcript_view.py:936
-#, python-brace-format
-msgid "Text said at {time}:"
-msgstr "Text vyslovený v {time}:"
-
-#: src/views/transcript/transcript_view.py:1013
-msgid "Find and replace in the transcription"
-msgstr "Najít a nahradit v přepisu"
-
-#: src/views/transcript/transcript_view.py:1023
-msgid "Find and replace in the translation"
-msgstr "Najít a nahradit v překladu"
-
-#: src/views/transcript/transcript_view.py:1024
-#, python-brace-format
-msgid "Find and replace in the translation into {language}"
-msgstr "Najít a nahradit v překladu do jazyka {language}"
-
-#: src/views/transcript/transcript_view.py:1037
-msgid "Find in the summary"
-msgstr "Hledat ve shrnutí"
-
-#: src/views/transcript/transcript_view.py:1110
-msgid "Generate the summary again? The current one will be replaced."
-msgstr "Znovu vytvořit shrnutí? Současné bude nahrazeno."
-
-#: src/views/transcript/transcript_view.py:1268
-#: src/views/transcript/translation_panel.py:155
-msgid "Hide the translation"
-msgstr "Skrýt překlad"
-
-#: src/views/transcript/transcript_view.py:1273
-msgid "Show the translation"
-msgstr "Zobrazit překlad"
-
-#: src/views/transcript/transcript_view.py:1277
-#: src/views/transcript/translation_panel.py:298
-msgid "Translate into another language…"
-msgstr "Přeložit do jiného jazyka…"
-
-#: src/views/transcript/transcript_view.py:1288
-msgid "Show it as the subtitles of the video"
-msgstr "Zobrazit ho jako titulky videa"
-
-#: src/views/transcript/transcript_view.py:1295
-msgid "Delete the translation"
-msgstr "Smazat překlad"
-
-#: src/views/transcript/transcript_view.py:1420
-#: src/views/transcript/transcript_view.py:1659
-msgid "Play from here"
-msgstr "Přehrát odsud"
-
-#: src/views/transcript/transcript_view.py:1428
-#: src/views/transcript/transcript_view.py:1663
-msgid "Edit text…"
-msgstr "Upravit text…"
-
-#: src/views/transcript/transcript_view.py:1428
-msgid "Translate text…"
-msgstr "Přeložit text…"
-
-#: src/views/transcript/transcript_view.py:1432
-msgid "Edit the timing…"
-msgstr "Upravit časování…"
-
-#: src/views/transcript/transcript_view.py:1436
-msgid "Add a segment after…"
-msgstr "Přidat segment za…"
-
-#: src/views/transcript/transcript_view.py:1480
-msgid "Translate text"
-msgstr "Přeložit text"
-
-#: src/views/transcript/transcript_view.py:1483
-#, python-brace-format
-msgid "Translation of “{text}”, said from {start} to {end}:"
-msgstr "Překlad „{text}“, řečeno od {start} do {end}:"
-
-#: src/views/transcript/transcript_view.py:1485
-#, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Překlad segmentu od {start} do {end}:"
-
-#: src/views/transcript/transcript_view.py:1521
-#: src/views/transcript/translation_panel.py:152
-msgid "Translate again"
-msgstr "Přeložit znovu"
-
-#: src/views/transcript/transcript_view.py:1523
-#, python-brace-format
-msgid ""
-"Translate the transcription into {language} again? The changes made to "
-"the translation will be lost."
-msgstr ""
-"Znovu přeložit přepis do jazyka {language}? Změny provedené v překladu "
-"budou ztraceny."
-
-#: src/views/transcript/transcript_view.py:1546
-msgid "The audio isn't available: the source file was moved or deleted."
-msgstr "Zvuk není k dispozici: zdrojový soubor byl přesunut nebo smazán."
-
-#: src/views/transcript/transcript_view.py:1549
-msgid "The audio isn't available."
-msgstr "Zvuk není k dispozici."
-
-#: src/views/transcript/transcript_view.py:1667
-#: src/views/transcript/transcript_view.py:1745
-msgid "Rename speakers…"
-msgstr "Přejmenovat mluvčí…"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1688
-msgid "Highlight low-confidence words"
-msgstr "Zvýraznit slova s nízkou jistotou"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1696
-msgid "Low-confidence threshold"
-msgstr "Práh nízké jistoty"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1718
-#, python-brace-format
-msgid "Below {percent}%"
-msgstr "Pod {percent} %"
-
-#: src/views/transcript/transcript_view.py:1734
-#, python-brace-format
-msgid "Transcribe “{title}” again? The changes made to its text will be lost."
-msgstr "Znovu přepsat „{title}“? Změny provedené v textu budou ztraceny."
-
-#: src/views/transcript/transcript_view.py:1755
-msgid "Precise timestamps (HH:MM:SS,mmm)"
-msgstr "Přesné časové značky (HH:MM:SS,mmm)"
-
-#: src/views/transcript/transcript_view.py:1779
-msgid "Rename…"
-msgstr "Přejmenovat…"
-
-#: src/views/transcript/translation_panel.py:188
-msgid "Not translated yet"
-msgstr "Zatím nepřeloženo"
-
-#: src/views/transcript/translation_panel.py:220
-#, python-brace-format
-msgid "Translating into {language}…"
-msgstr "Překládání (jazyk: {language})…"
-
-#: src/views/transcript/translation_panel.py:224
-msgid "Translating…"
-msgstr "Překládání…"
-
-#: src/views/transcript/translation_panel.py:227
-msgid "It takes a moment."
-msgstr "Chvíli to potrvá."
-
-#: src/views/transcript/translation_panel.py:229
-msgid "The transcription is being translated. It takes a moment."
-msgstr "Přepis se překládá. Chvíli to potrvá."
-
-#: src/views/transcript/translation_panel.py:236
-msgid "There is no translation yet."
-msgstr "Zatím žádný překlad."
-
-#: src/views/transcript/translation_panel.py:238
-msgid "Translate…"
-msgstr "Přeložit…"
-
-#: src/views/transcript/translation_panel.py:364
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-"Segmenty k přeložení: {count}. Klikněte na jeden pravým tlačítkem a "
-"přeložte ho."
-
-#: src/views/transcript/translation_panel.py:371
-#: src/views/transcript/translation_panel.py:450
-msgid "Manual"
-msgstr "Ručně"
-
-#: src/views/transcript/translation_panel.py:418
-msgid "Translate into:"
-msgstr "Přeložit do:"
-
-#: src/views/transcript/translation_panel.py:439
-msgid "Translate with:"
-msgstr "Přeložit pomocí:"
-
-#: src/views/transcript/translation_panel.py:496
-msgid "More options in the settings"
-msgstr "Další možnosti v nastavení"
-
-#: src/views/transcript/translation_panel.py:527
-#, python-brace-format
-msgid "No API key for {provider}."
-msgstr "Chybí klíč API pro {provider}."
-
-#: src/views/transcript/translation_panel.py:534
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "Vytvoří prázdné segmenty s původními časovými značkami, které vyplníte."
-
-#: src/views/transcript/translation_panel.py:544
-#, python-brace-format
-msgid "Uses the model {model}."
-msgstr "Používá model {model}."
-
-#: src/views/transcript/translation_panel.py:547
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Přeloží každý segment a zachová jeho časové značky."
-
-#: src/views/transcript/translation_panel.py:559
-msgid "Set…"
-msgstr "Nastavit…"
-
-#: src/views/transcript/video_export.py:84
-msgid "Adding the subtitles to the video was cancelled."
-msgstr "Přidávání titulků do videa bylo zrušeno."
-
-#: src/views/transcript/video_export.py:105
-#, python-brace-format
-msgid ""
-"Exported to {path}, but no font has these characters, so they're shown as"
-" boxes: {characters}"
-msgstr ""
-"Exportováno do {path}, ale žádné písmo nemá tyto znaky, takže se "
-"zobrazují jako čtverečky: {characters}"
-
-#: src/views/transcript/video_export.py:114
-msgid "Adding the subtitles to the video…"
-msgstr "Přidávání titulků do videa…"
-
-#: src/views/transcript/video_export.py:115
-#, python-brace-format
-msgid "Adding the subtitles to the video… {percent}%"
-msgstr "Přidávání titulků do videa… {percent} %"
-
-#: src/views/transcript/video_pane.py:260
-msgid "Show subtitles on the video"
-msgstr "Zobrazit titulky ve videu"
-
-#: src/views/transcript/video_pane.py:281
-#, python-brace-format
-msgid "Translation into {language}"
-msgstr "Překlad (jazyk: {language})"
-
-#: src/views/transcript/video_pane.py:292
-msgid "Size"
-msgstr "Velikost"
-
-#: src/views/transcript/video_pane.py:296
-msgid "Small"
-msgstr "Malé"
-
-#: src/views/transcript/video_pane.py:297
-msgid "Medium"
-msgstr "Střední"
-
-#: src/views/transcript/video_pane.py:298
-msgid "Large"
-msgstr "Velké"
-
-#: src/views/transcript/video_pane.py:302
-msgid "Position"
-msgstr "Umístění"
-
-#: src/views/transcript/video_pane.py:305
-msgid "Bottom"
-msgstr "Dole"
-
-#: src/views/transcript/video_pane.py:305
-msgid "Top"
-msgstr "Nahoře"
-
-#: src/views/transcript/video_pane.py:308
-msgid "Style"
-msgstr "Styl"
-
-#: src/views/transcript/video_pane.py:312
-msgid "Dark background"
-msgstr "Tmavé pozadí"
-
-#: src/views/transcript/video_pane.py:313
-msgid "Outline"
-msgstr "Obrys"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:67
-msgid "Replay"
-msgstr "Přehrát znovu"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:72
-#, python-brace-format
-msgid "Replay ({shortcut})"
-msgstr "Přehrát znovu ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:85
-msgid "Accept"
-msgstr "Přijmout"
+msgid "“{name}” is not a supported audio or video file."
+msgstr "„{name}“ není podporovaný zvukový ani video soubor."

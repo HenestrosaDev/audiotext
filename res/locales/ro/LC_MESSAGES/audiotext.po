@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 19:53+0200\n"
+"POT-Creation-Date: 2026-10-15 20:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -20,240 +20,247 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: src/controllers/folder_transcriber.py:58
+msgid "1 audio or video file (subfolders included)"
+msgstr "1 fișier audio sau video (inclusiv subdosare)"
+
+msgid "1 transcription"
+msgstr "1 transcriere"
+
+msgid "A YouTube video or a direct link to an audio or video file."
+msgstr "Un videoclip YouTube sau un link direct către un fișier audio sau video."
+
 msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
+"A fast model writes a draft while you speak. When you stop, the whole "
+"recording is transcribed again with the model of the engine, which is "
+"more accurate."
 msgstr ""
-"Dosarul nu conține fișiere de transcris. Fișierele care au deja o "
-"transcriere sunt omise, cu excepția cazului în care bifați „Suprascrie "
-"fișierele existente”."
+"Un model rapid scrie o ciornă în timp ce vorbiți. Când vă opriți, "
+"întreaga înregistrare este transcrisă din nou cu modelul motorului, care "
+"este mai precis."
 
-#: src/controllers/folder_transcriber.py:81
 #, python-brace-format
-msgid "Transcribed {done} of {total} files."
-msgstr "Au fost transcrise {done} din {total} fișiere."
+msgid "A note about “{title}”:"
+msgstr "O notă despre „{title}”:"
 
-#: src/controllers/folder_transcriber.py:97
+msgid "AI"
+msgstr "IA"
+
+msgid "API key removed."
+msgstr "Cheia API a fost eliminată."
+
+msgid "API key saved."
+msgstr "Cheia API a fost salvată."
+
+msgid "API key set"
+msgstr "Cheie API setată"
+
+msgid "API keys"
+msgstr "Chei API"
+
+msgid "About"
+msgstr "Despre"
+
+# Needs review by a native speaker
+msgid "Accept"
+msgstr "Acceptă"
+
+# Needs review by a native speaker
+msgid "Accept remaining"
+msgstr "Acceptă restul"
+
+msgid "Add"
+msgstr "Adaugă"
+
+msgid "Add a segment"
+msgstr "Adaugă un segment"
+
+msgid "Add a segment after…"
+msgstr "Adaugă un segment după…"
+
+msgid "Add note"
+msgstr "Adaugă notă"
+
+msgid "Add note…"
+msgstr "Adaugă notă…"
+
+msgid "Add to queue"
+msgstr "Adaugă în coadă"
+
+msgid "Adding the subtitles to the video was cancelled."
+msgstr "Adăugarea subtitrărilor în videoclip a fost anulată."
+
+msgid "Adding the subtitles to the video…"
+msgstr "Se adaugă subtitrările în videoclip…"
+
 #, python-brace-format
-msgid "Waiting for new files in {folder}…"
-msgstr "Se așteaptă fișiere noi în {folder}…"
+msgid "Adding the subtitles to the video… {percent}%"
+msgstr "Se adaugă subtitrările în videoclip… {percent}%"
 
-#: src/controllers/folder_transcriber.py:114
-#, python-brace-format
-msgid "Stopped watching the folder. Files transcribed: {done}."
-msgstr "Monitorizarea dosarului a fost oprită. Fișiere transcrise: {done}."
+# Needs review by a native speaker
+msgid "Adjust threshold"
+msgstr "Ajustează pragul"
 
-#: src/controllers/folder_transcriber.py:137
-msgid "cancelled"
-msgstr "anulat"
-
-#: src/controllers/folder_transcriber.py:176
-#, python-brace-format
-msgid "File {current} of {total} ({name}): {message}"
-msgstr "Fișierul {current} din {total} ({name}): {message}"
-
-#: src/controllers/folder_transcriber.py:191
-#, python-brace-format
-msgid "{name}: {message}"
-msgstr "{name}: {message}"
-
-#: src/controllers/main_controller.py:125
-msgid "Cancelling…"
-msgstr "Se anulează…"
-
-#: src/controllers/main_controller.py:194
-msgid "Transcription cancelled."
-msgstr "Transcrierea a fost anulată."
-
-#: src/controllers/main_controller.py:209
-msgid "Downloading…"
-msgstr "Se descarcă…"
-
-#: src/controllers/main_controller.py:220
-msgid "Recording…"
-msgstr "Se înregistrează…"
-
-#: src/controllers/main_controller.py:237
-#, python-brace-format
-msgid "Done in {duration}."
-msgstr "Finalizat în {duration}."
-
-#: src/controllers/main_controller.py:303
-msgid "Isolating the speech…"
-msgstr "Se izolează vocea…"
-
-#: src/controllers/main_controller.py:335
-msgid "WhisperX model ready."
-msgstr "Modelul WhisperX este gata."
-
-#: src/controllers/main_controller.py:342
-#, python-brace-format
-msgid "Could not load the WhisperX model: {error}"
-msgstr "Modelul WhisperX nu a putut fi încărcat: {error}"
-
-#: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:234
-msgid "No output file types selected. Please select at least one."
-msgstr "Nu este selectat niciun tip de fișier de ieșire. Selectați cel puțin unul."
-
-#: src/controllers/transcription_validator.py:26
-#: src/views/settings/settings_form.py:176
-msgid ""
-"The Google API can't detect the language. Please select the language of "
-"the audio."
-msgstr "API-ul Google nu poate detecta limba. Selectați limba audio."
-
-#: src/controllers/transcription_validator.py:57
-#, python-brace-format
-msgid ""
-"The {model} model doesn't return timestamps, so it can't save {format} "
-"files. Choose another format or the whisper-1 model."
-msgstr ""
-"Modelul {model} nu returnează marcaje de timp, așa că nu poate salva "
-"fișiere {format}. Alegeți alt format sau modelul whisper-1."
-
-#: src/controllers/transcription_validator.py:77
-msgid "Please select a valid audio or video file."
-msgstr "Selectați un fișier audio sau video valid."
-
-#: src/controllers/transcription_validator.py:81
-#: src/views/new_transcription/new_transcription_view.py:491
-msgid "Please select a valid folder."
-msgstr "Selectați un dosar valid."
-
-#: src/controllers/transcription_validator.py:88
-msgid ""
-"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
-" or video file)."
-msgstr ""
-"Introduceți un URL valid (de ex., linkul unui videoclip YouTube sau al "
-"unui fișier audio sau video)."
-
-#: src/handlers/ai_providers.py:108 src/handlers/ai_providers.py:113
-#: src/handlers/ai_providers.py:116
-msgid "The model didn't return a valid reply."
-msgstr "Modelul nu a returnat un răspuns valid."
-
-#: src/handlers/ai_providers.py:161 src/handlers/ai_providers.py:194
-msgid "The reply of the model was too long."
-msgstr "Răspunsul modelului a fost prea lung."
-
-#: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:320 src/handlers/whisperx_handler.py:356
-msgid "Loading audio…"
-msgstr "Se încarcă sunetul…"
-
-#: src/handlers/audio_handler.py:79
-#, python-brace-format
-msgid "Unsupported file type: {extension}"
-msgstr "Tip de fișier neacceptat: {extension}"
-
-#: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:330 src/handlers/whisperx_handler.py:337
-#: src/handlers/whisperx_handler.py:369 src/views/history/formatting.py:43
-#: src/views/new_transcription/microphone_view.py:407
-msgid "Transcribing…"
-msgstr "Se transcrie…"
-
-#: src/handlers/audio_handler.py:131 src/handlers/openai_api_handler.py:372
-#, python-brace-format
-msgid "Transcribing chunk {current} of {total}…"
-msgstr "Se transcrie fragmentul {current} din {total}…"
-
-#: src/handlers/live_transcriber.py:247
-msgid "The text can't be shown while recording."
-msgstr "Textul nu poate fi afișat în timpul înregistrării."
-
-#: src/handlers/live_transcriber.py:281 src/handlers/whisperx_handler.py:389
-#, python-brace-format
-msgid "Loading the {model} model (it's downloaded the first time it's used)…"
-msgstr "Se încarcă modelul {model} (este descărcat la prima utilizare)…"
-
-#: src/handlers/openai_api_handler.py:483
-#, python-brace-format
-msgid "The audio is too large for the OpenAI API ({size} MB)."
-msgstr "Fișierul audio este prea mare pentru API-ul OpenAI ({size} MB)."
-
-#: src/handlers/summary_handler.py:103 src/handlers/summary_handler.py:118
-msgid "The model didn't return a valid summary."
-msgstr "Modelul nu a returnat un rezumat valid."
-
-#: src/handlers/summary_handler.py:174
-msgid "There is no text to summarize."
-msgstr "Nu există text de rezumat."
-
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:420
-msgid "There is no transcription to save. Please generate it first."
-msgstr "Nu există nicio transcriere de salvat. Generați-o mai întâi."
-
-#: src/handlers/translation_handler.py:311
-msgid "The model didn't return a valid translation."
-msgstr "Modelul nu a returnat o traducere validă."
-
-#: src/handlers/translation_handler.py:382
-#, python-brace-format
-msgid "DeepL can't translate into {language}."
-msgstr "DeepL nu poate traduce în limba: {language}."
-
-#: src/handlers/translation_handler.py:401
-msgid "DeepL didn't return a valid translation."
-msgstr "DeepL nu a returnat o traducere validă."
-
-#: src/handlers/translation_handler.py:422
-msgid "Google Translate didn't return a valid translation."
-msgstr "Google Translate nu a returnat o traducere validă."
-
-#: src/handlers/translation_handler.py:452
-msgid "There is no text to translate."
-msgstr "Nu există text de tradus."
-
-#: src/handlers/url_handler.py:87
-msgid ""
-"The URL doesn't point to an audio or video file. Use the link of a "
-"YouTube video or of a media file."
-msgstr ""
-"URL-ul nu indică un fișier audio sau video. Folosiți linkul unui "
-"videoclip YouTube sau al unui fișier media."
-
-#: src/handlers/url_handler.py:105
-#, python-brace-format
-msgid "The file could not be downloaded: {error}"
-msgstr "Fișierul nu a putut fi descărcat: {error}"
-
-#: src/handlers/whisperx_handler.py:460 src/handlers/whisperx_handler.py:469
 msgid "Aligning subtitles…"
 msgstr "Se aliniază subtitrările…"
 
-#: src/handlers/whisperx_handler.py:493 src/handlers/whisperx_handler.py:498
-msgid "Identifying speakers…"
-msgstr "Se identifică vorbitorii…"
+msgid "All files"
+msgstr "Toate fișierele"
 
-#: src/handlers/whisperx_handler.py:519
+# Needs review by a native speaker
 #, python-brace-format
+msgid "All reviewed · {total} of {total}"
+msgstr "Totul verificat · {total} din {total}"
+
+msgid "All supported files"
+msgstr "Toate fișierele acceptate"
+
 msgid ""
-"Identifying speakers requires a Hugging Face token. Create one at "
-"{tokens_url}, accept the conditions of {model_url} and set the token in "
-"the WhisperX options."
+"All the audio and video files of a folder, or the new ones as they're "
+"added."
 msgstr ""
-"Identificarea vorbitorilor necesită un token Hugging Face. Creează unul "
-"la {tokens_url}, acceptă condițiile pentru {model_url} și setează tokenul"
-" în opțiunile WhisperX."
+"Toate fișierele audio și video dintr-un dosar sau cele noi, pe măsură ce "
+"sunt adăugate."
 
-#: src/handlers/whisperx_handler.py:599
-msgid "Loading the subtitle alignment model…"
-msgstr "Se încarcă modelul de aliniere a subtitrărilor…"
+msgid "An audio or video file"
+msgstr "Un fișier audio sau video"
 
-#: src/handlers/whisperx_handler.py:632
+msgid "An unknown error occurred."
+msgstr "A apărut o eroare necunoscută."
+
+msgid "Anthropic API key"
+msgstr "Cheie API Anthropic"
+
+msgid "Appearance"
+msgstr "Aspect"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
+msgstr "Fișiere audio și video: MP3, WAV, M4A, MP4, MOV, MKV și altele."
+
+msgid "Audio files"
+msgstr "Fișiere audio"
+
+msgid "Audiotext was closed before it finished."
+msgstr "Audiotext a fost închis înainte de finalizare."
+
+msgid "Auto-detect"
+msgstr "Detectare automată"
+
+# Needs review by a native speaker
+msgid "Auto-play"
+msgstr "Redare automată"
+
+msgid "Automatic"
+msgstr "Automat"
+
+msgid "Automatic uses the clock of the interface language."
+msgstr "Automat folosește ceasul limbii interfeței."
+
+msgid "Back"
+msgstr "Înapoi"
+
+msgid "Batch size"
+msgstr "Dimensiunea lotului"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Below {percent}%"
+msgstr "Sub {percent}%"
+
+msgid "Between 0 and 1. Higher values are more random."
+msgstr "Între 0 și 1. Valorile mai mari sunt mai aleatorii."
+
+msgid "Bottom"
+msgstr "Jos"
+
+msgid "Cancel"
+msgstr "Anulează"
+
+msgid "Cancelled"
+msgstr "Anulată"
+
+msgid "Cancelling…"
+msgstr "Se anulează…"
+
+msgid "Change API key…"
+msgstr "Schimbă cheia API…"
+
+msgid "Change…"
+msgstr "Schimbă…"
+
+msgid "Chapters"
+msgstr "Capitole"
+
+msgid "Check for updates"
+msgstr "Caută actualizări"
+
+msgid "Checking for updates…"
+msgstr "Se caută actualizări…"
+
+msgid "Checks for a new version when the app opens."
+msgstr "Verifică dacă există o versiune nouă la deschiderea aplicației."
+
+msgid "Chinese, Japanese and Korean"
+msgstr "Chineză, japoneză și coreeană"
+
 msgid ""
-"Loading the speaker identification model (it's downloaded the first time "
-"it's used)…"
+"Chinese, Japanese and Korean characters are about twice as wide as Latin "
+"ones."
 msgstr ""
-"Se încarcă modelul de identificare a vorbitorilor (se descarcă la prima "
-"utilizare)…"
+"Caracterele chinezești, japoneze și coreene sunt de aproximativ două ori "
+"mai late decât cele latine."
 
-#: src/handlers/whisperx_handler.py:646
+msgid "Choose a file"
+msgstr "Alegeți un fișier"
+
+msgid "Choose a file…"
+msgstr "Alege un fișier…"
+
+msgid "Choose a folder"
+msgstr "Alegeți un dosar"
+
+msgid "Choose a folder…"
+msgstr "Alege un dosar…"
+
+msgid "Choose a source above to transcribe your first file."
+msgstr "Alegeți o sursă de mai sus pentru a transcrie primul fișier."
+
+msgid ""
+"Choose a source, or select a transcription of your history to read and "
+"play it."
+msgstr ""
+"Alegeți o sursă sau selectați o transcriere din istoric pentru a o citi "
+"și reda."
+
+msgid "Choose where to save the transcriptions"
+msgstr "Alegeți unde se salvează transcrierile"
+
+msgid "Click a segment to play it. Right-click it to edit it."
+msgstr ""
+"Faceți clic pe un segment pentru a-l reda. Faceți clic dreapta pentru a-l"
+" edita."
+
+msgid "Compute type"
+msgstr "Tip de calcul"
+
+# Needs review by a native speaker
+msgid "Confidence data isn’t available for this transcript"
+msgstr "Nu există date de încredere pentru această transcriere"
+
+msgid "Context"
+msgstr "Context"
+
+msgid "Continue"
+msgstr "Continuă"
+
+msgid "Copy"
+msgstr "Copiază"
+
+msgid "Could not check for updates."
+msgstr "Nu s-au putut căuta actualizări."
+
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -264,752 +271,172 @@ msgstr ""
 "dacă tokenul Hugging Face este valid și dacă ai acceptat condițiile "
 "pentru {model_url}."
 
-#: src/handlers/youtube_handler.py:34
-msgid ""
-"The audio of the YouTube video could not be downloaded. Please make sure "
-"the URL is correct."
+#, python-brace-format
+msgid "Could not export: {error}"
+msgstr "Nu s-a putut exporta: {error}"
+
+#, python-brace-format
+msgid "Could not load the WhisperX model: {error}"
+msgstr "Modelul WhisperX nu a putut fi încărcat: {error}"
+
+#, python-brace-format
+msgid "Could not open the file manager: {error}"
+msgstr "Nu s-a putut deschide managerul de fișiere: {error}"
+
+#, python-brace-format
+msgid "Could not open the folder: {error}"
+msgstr "Dosarul nu a putut fi deschis: {error}"
+
+#, python-brace-format
+msgid "Could not summarize “{title}”: {error}"
+msgstr "Nu s-a putut rezuma „{title}”: {error}"
+
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "Nu s-a putut traduce „{title}”: {error}"
+
+msgid "Create"
+msgstr "Creează"
+
+msgid "Creates empty segments with the original timestamps for you to fill in."
 msgstr ""
-"Sunetul videoclipului YouTube nu a putut fi descărcat. Verificați dacă "
-"URL-ul este corect."
+"Creează segmente goale cu marcajele de timp originale, pe care le "
+"completezi."
 
-#: src/handlers/youtube_handler.py:40
-msgid "The YouTube video doesn't have an audio track."
-msgstr "Videoclipul YouTube nu are pistă audio."
+msgid "Dark"
+msgstr "Întunecat"
 
-#: src/utils/audio_utils.py:30
-msgid "No audio was recorded."
-msgstr "Nu s-a înregistrat niciun sunet."
+msgid "Dark background"
+msgstr "Fundal întunecat"
 
-#: src/utils/exporters.py:289 src/utils/exporters.py:360
-#: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:772
-#: src/views/transcript/video_pane.py:275
-msgid "Transcription"
-msgstr "Transcriere"
+msgid "Date format"
+msgstr "Formatul datei"
 
-#: src/utils/exporters.py:307 src/utils/exporters.py:335
-#: src/utils/exporters.py:420 src/views/settings/preferences_dialog.py:508
-#: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:553
-#: src/views/transcript/transcript_view.py:558
-#: src/views/transcript/transcript_view.py:815
-msgid "Summary"
-msgstr "Rezumat"
+msgid "DeepL API key"
+msgstr "Cheie API DeepL"
 
-#: src/utils/exporters.py:309 src/utils/exporters.py:338
-#: src/utils/exporters.py:423 src/views/transcript/summary_panel.py:90
-msgid "Key points"
-msgstr "Puncte cheie"
-
-#: src/utils/exporters.py:313 src/utils/exporters.py:342
-#: src/utils/exporters.py:428 src/views/transcript/summary_panel.py:94
-msgid "Chapters"
-msgstr "Capitole"
-
-#: src/utils/time_format.py:80
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
-msgstr "{minutes} min {seconds} s"
+msgid "DeepL can't translate into {language}."
+msgstr "DeepL nu poate traduce în limba: {language}."
 
-#: src/utils/time_format.py:82
-#, python-brace-format
-msgid "{seconds} s"
-msgstr "{seconds} s"
+msgid "DeepL didn't return a valid translation."
+msgstr "DeepL nu a returnat o traducere validă."
 
-#: src/views/entries/entry_header.py:98
-msgid "Add note"
-msgstr "Adaugă notă"
+msgid "DeepSeek API key"
+msgstr "Cheie API DeepSeek"
 
-#: src/views/entries/folder_view.py:56
-msgid "Files"
-msgstr "Fișiere"
-
-#: src/views/entries/folder_view.py:95
-#, python-brace-format
-msgid "{count} files"
-msgstr "Fișiere: {count}"
-
-#: src/views/entries/folder_view.py:96
-#, python-brace-format
-msgid "{count} done"
-msgstr "Finalizate: {count}"
-
-#: src/views/entries/folder_view.py:99
-#, python-brace-format
-msgid "{count} failed"
-msgstr "Eșuate: {count}"
-
-#: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1771
-msgid "Open the folder of the saved files"
-msgstr "Deschide dosarul fișierelor salvate"
-
-#: src/views/entries/folder_view.py:116
-#: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:720
-#: src/views/transcript/transcript_view.py:1732
-msgid "Transcribe again"
-msgstr "Transcrie din nou"
-
-#: src/views/entries/folder_view.py:136
-msgid "Waiting for new files…"
-msgstr "Se așteaptă fișiere noi…"
-
-#: src/views/entries/folder_view.py:138
-msgid "No files"
-msgstr "Niciun fișier"
-
-#: src/views/entries/progress_card.py:20
-#: src/views/new_transcription/new_transcription_view.py:107
-msgid "Choose a file"
-msgstr "Alegeți un fișier"
-
-#: src/views/entries/progress_card.py:21
-#: src/views/new_transcription/new_transcription_view.py:113
-msgid "Enter the URL"
-msgstr "Introduceți URL-ul"
-
-#: src/views/entries/progress_card.py:22
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:474
-msgid "Record"
-msgstr "Înregistrează"
-
-#: src/views/entries/progress_card.py:23 src/views/entries/progress_card.py:24
-#: src/views/new_transcription/new_transcription_view.py:121
-msgid "Choose a folder"
-msgstr "Alegeți un dosar"
-
-#: src/views/entries/progress_card.py:25
-msgid "Source"
-msgstr "Sursă"
-
-#: src/views/entries/progress_card.py:51
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:467
-#: src/views/new_transcription/microphone_view.py:473
-#: src/views/new_transcription/new_transcription_view.py:148
-#: src/views/transcript/summary_panel.py:287
-#: src/views/transcript/summary_panel.py:300
-msgid "Settings"
-msgstr "Setări"
-
-#: src/views/entries/progress_card.py:52
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:475
-#: src/views/new_transcription/new_transcription_view.py:148
-msgid "Transcribe"
-msgstr "Transcrie"
-
-#: src/views/entries/progress_card.py:121
-#: src/views/history/history_sidebar.py:372
-msgid "Stop watching"
-msgstr "Oprește monitorizarea"
-
-#: src/views/entries/progress_card.py:121
-#: src/views/history/history_sidebar.py:374
-#: src/views/transcript/edit_dialogs.py:41 src/views/widgets/text_dialog.py:63
-msgid "Cancel"
-msgstr "Anulează"
-
-#: src/views/entries/progress_card.py:132
-msgid ""
-"You can keep using Audiotext meanwhile. The result is saved in your "
-"history and opens here when it's ready."
-msgstr ""
-"Între timp, puteți folosi în continuare Audiotext. Rezultatul este salvat"
-" în istoric și se deschide aici când este gata."
-
-#: src/views/entries/progress_card.py:144
-msgid "The transcription failed"
-msgstr "Transcrierea a eșuat"
-
-#: src/views/entries/progress_card.py:145
-msgid "An unknown error occurred."
-msgstr "A apărut o eroare necunoscută."
-
-#: src/views/entries/progress_card.py:147
-msgid "The transcription was interrupted"
-msgstr "Transcrierea a fost întreruptă"
-
-#: src/views/entries/progress_card.py:148
-msgid "Audiotext was closed before it finished."
-msgstr "Audiotext a fost închis înainte de finalizare."
-
-#: src/views/entries/progress_card.py:150
-msgid "The transcription was cancelled"
-msgstr "Transcrierea a fost anulată"
-
-#: src/views/entries/progress_card.py:165
-#: src/views/new_transcription/new_transcription_view.py:303
-msgid "Back"
-msgstr "Înapoi"
-
-#: src/views/entries/progress_card.py:174
-msgid "Try again"
-msgstr "Încearcă din nou"
-
-#: src/views/entries/progress_card.py:182
 msgid "Delete"
 msgstr "Șterge"
 
-#: src/views/entries/progress_card.py:195
-#, python-brace-format
-msgid "Waiting for {count} transcription(s) to finish."
-msgstr "Se așteaptă finalizarea transcrierilor: {count}."
+msgid "Delete group"
+msgstr "Șterge grupul"
 
-#: src/views/entries/progress_card.py:199
-msgid "Waiting for the current transcription to finish."
-msgstr "Se așteaptă finalizarea transcrierii curente."
-
-#: src/views/entries/progress_card.py:206
-msgid "Starting…"
-msgstr "Se pornește…"
-
-#: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:27
-#: src/views/main_window/welcome_view.py:40
-msgid "File"
-msgstr "Fișier"
-
-#: src/views/history/formatting.py:23 src/views/main_window/top_bar.py:28
-#: src/views/main_window/welcome_view.py:46
-#: src/views/new_transcription/new_transcription_view.py:244
-msgid "URL"
-msgstr "URL"
-
-#: src/views/history/formatting.py:24 src/views/main_window/top_bar.py:29
-#: src/views/main_window/welcome_view.py:52
-msgid "Microphone"
-msgstr "Microfon"
-
-#: src/views/history/formatting.py:25 src/views/main_window/top_bar.py:30
-#: src/views/main_window/welcome_view.py:58
-#: src/views/settings/cards/folder_card.py:19
-msgid "Folder"
-msgstr "Dosar"
-
-#: src/views/history/formatting.py:26
-msgid "Watched folder"
-msgstr "Dosar monitorizat"
-
-#: src/views/history/formatting.py:42
-msgid "Queued"
-msgstr "În coadă"
-
-#: src/views/history/formatting.py:44
-msgid "Watching"
-msgstr "Monitorizare"
-
-#: src/views/history/formatting.py:45
-msgid "Done"
-msgstr "Finalizată"
-
-#: src/views/history/formatting.py:46
-msgid "Failed"
-msgstr "Eșuată"
-
-#: src/views/history/formatting.py:47
-msgid "Cancelled"
-msgstr "Anulată"
-
-#: src/views/history/formatting.py:48
-msgid "Interrupted"
-msgstr "Întreruptă"
-
-#: src/views/history/formatting.py:163
-msgid "Show in Finder"
-msgstr "Afișează în Finder"
-
-#: src/views/history/formatting.py:165
-msgid "Show in Explorer"
-msgstr "Afișează în Explorer"
-
-#: src/views/history/formatting.py:166
-msgid "Show in file manager"
-msgstr "Afișează în managerul de fișiere"
-
-#: src/views/history/history_row.py:241
-#, python-brace-format
-msgid "{done}/{total} files"
-msgstr "Fișiere: {done}/{total}"
-
-#: src/views/history/history_sidebar.py:142
-msgid "Search"
-msgstr "Caută"
-
-#: src/views/history/history_sidebar.py:167
-#: src/views/main_window/entry_dialogs.py:114
-msgid "New group"
-msgstr "Grup nou"
-
-#: src/views/history/history_sidebar.py:225
-#, python-brace-format
-msgid "{count} transcriptions"
-msgstr "Transcrieri: {count}"
-
-#: src/views/history/history_sidebar.py:227
-msgid "1 transcription"
-msgstr "1 transcriere"
-
-#: src/views/history/history_sidebar.py:234
-msgid "No transcriptions yet"
-msgstr "Încă nicio transcriere"
-
-#: src/views/history/history_sidebar.py:235
-msgid "Choose a source above to transcribe your first file."
-msgstr "Alegeți o sursă de mai sus pentru a transcrie primul fișier."
-
-#: src/views/history/history_sidebar.py:317
-#: src/views/main_window/entry_dialogs.py:40
-msgid "Rename"
-msgstr "Redenumește"
-
-#: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1783
-msgid "Edit note…"
-msgstr "Editează nota…"
-
-#: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1783
-msgid "Add note…"
-msgstr "Adaugă notă…"
-
-#: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1788
-msgid "Delete note…"
-msgstr "Șterge nota…"
-
-#: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1794
-msgid "Edit tag…"
-msgstr "Editează eticheta…"
-
-#: src/views/history/history_sidebar.py:334
-msgid "Unpin"
-msgstr "Anulează fixarea"
-
-#: src/views/history/history_sidebar.py:334
-msgid "Pin to the top"
-msgstr "Fixează sus"
-
-#: src/views/history/history_sidebar.py:340
-msgid "No group"
-msgstr "Fără grup"
-
-#: src/views/history/history_sidebar.py:356
-msgid "New group…"
-msgstr "Grup nou…"
-
-#: src/views/history/history_sidebar.py:359
-msgid "Move to group"
-msgstr "Mută în grup"
-
-#: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1799
-msgid "Delete…"
-msgstr "Șterge…"
-
-#: src/views/history/history_sidebar.py:398
-msgid "Rename group…"
-msgstr "Redenumește grupul…"
-
-#: src/views/history/history_sidebar.py:402
 msgid "Delete group…"
 msgstr "Șterge grupul…"
 
-#: src/views/history/history_sidebar.py:425
-msgid "Pinned"
-msgstr "Fixate"
+msgid "Delete note"
+msgstr "Șterge nota"
 
-#: src/views/history/history_sidebar.py:433
-msgid "Transcriptions"
-msgstr "Transcrieri"
+msgid "Delete note…"
+msgstr "Șterge nota…"
 
-#: src/views/history/history_sidebar.py:476
+#, python-brace-format
+msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
+msgstr "Ștergeți grupul „{name}”? Transcrierile sale sunt păstrate, fără grup."
+
+#, python-brace-format
+msgid "Delete the note of “{title}”?"
+msgstr "Ștergi nota pentru „{title}”?"
+
+msgid "Delete the segment"
+msgstr "Șterge segmentul"
+
+#, python-brace-format
+msgid "Delete the segment “{text}”?"
+msgstr "Ștergeți segmentul „{text}”?"
+
+msgid "Delete the translation"
+msgstr "Șterge traducerea"
+
+msgid "Delete transcription"
+msgstr "Șterge transcrierea"
+
+#, python-brace-format
+msgid "Delete “{title}” from the history?"
+msgstr "Ștergeți „{title}” din istoric?"
+
+msgid "Delete…"
+msgstr "Șterge…"
+
+msgid "Description"
+msgstr "Descriere"
+
+msgid "Documentation"
+msgstr "Documentație"
+
+msgid "Donate"
+msgstr "Donează"
+
+msgid "Done"
+msgstr "Finalizată"
+
+#, python-brace-format
+msgid "Done in {duration}."
+msgstr "Finalizat în {duration}."
+
+msgid "Done. Press the button to record again."
+msgstr "Gata. Apăsați butonul pentru a înregistra din nou."
+
+msgid "Download"
+msgstr "Descarcă"
+
+msgid "Downloading…"
+msgstr "Se descarcă…"
+
+msgid "Draft. It's replaced when the final transcription finishes."
+msgstr "Ciornă. Este înlocuită când se termină transcrierea finală."
+
+msgid "Drop a folder here"
+msgstr "Plasați aici un dosar"
+
+msgid "Drop an audio or video file here"
+msgstr "Plasați aici un fișier audio sau video"
+
+msgid "Edit note…"
+msgstr "Editează nota…"
+
+msgid "Edit tag…"
+msgstr "Editează eticheta…"
+
+msgid "Edit text"
+msgstr "Editează textul"
+
+msgid "Edit text…"
+msgstr "Editează textul…"
+
+msgid "Edit the timing"
+msgstr "Editează temporizarea"
+
+msgid "Edit the timing…"
+msgstr "Editează temporizarea…"
+
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Gol. Pentru a adăuga o transcriere, faceți clic dreapta pe ea și alegeți "
 "„Mută în grup”."
 
-#: src/views/history/history_sidebar.py:511
-msgid "No files yet"
-msgstr "Încă niciun fișier"
+msgid "End:"
+msgstr "Sfârșit:"
 
-#: src/views/history/history_sidebar.py:589
-#: src/views/transcript/find_dialog.py:187
-#: src/views/transcript/find_dialog.py:234
-msgid "No results"
-msgstr "Niciun rezultat"
+msgid "Engine"
+msgstr "Motor"
 
-#: src/views/history/history_sidebar.py:590
-#, python-brace-format
-msgid "No transcription contains “{query}”."
-msgstr "Nicio transcriere nu conține „{query}”."
+msgid "Enter a URL that starts with http:// or https://"
+msgstr "Introduceți un URL care începe cu http:// sau https://"
 
-#: src/views/main_window/entry_dialogs.py:41
-msgid "Name of the transcription:"
-msgstr "Numele transcrierii:"
+msgid "Enter the URL"
+msgstr "Introduceți URL-ul"
 
-#: src/views/main_window/entry_dialogs.py:54
-msgid "Note"
-msgstr "Notă"
-
-#: src/views/main_window/entry_dialogs.py:55
-#, python-brace-format
-msgid "A note about “{title}”:"
-msgstr "O notă despre „{title}”:"
-
-#: src/views/main_window/entry_dialogs.py:67
-msgid "Delete note"
-msgstr "Șterge nota"
-
-#: src/views/main_window/entry_dialogs.py:68
-#, python-brace-format
-msgid "Delete the note of “{title}”?"
-msgstr "Ștergi nota pentru „{title}”?"
-
-#: src/views/main_window/entry_dialogs.py:80
-msgid "Tag"
-msgstr "Etichetă"
-
-#: src/views/main_window/entry_dialogs.py:81
-#, python-brace-format
-msgid "Tag of “{title}”. Leave it empty to show the kind of source."
-msgstr "Eticheta pentru „{title}”. Lăsați-o goală pentru a afișa tipul sursei."
-
-#: src/views/main_window/entry_dialogs.py:95
-#, python-brace-format
-msgid "Delete “{title}” from the history?"
-msgstr "Ștergeți „{title}” din istoric?"
-
-#: src/views/main_window/entry_dialogs.py:97
-msgid "The transcriptions of its files are deleted too."
-msgstr "Transcrierile fișierelor sale sunt și ele șterse."
-
-#: src/views/main_window/entry_dialogs.py:98
-msgid "Your audio, video and saved files are not deleted."
-msgstr "Fișierele audio, video și cele salvate nu sunt șterse."
-
-#: src/views/main_window/entry_dialogs.py:100
-msgid "Delete transcription"
-msgstr "Șterge transcrierea"
-
-#: src/views/main_window/entry_dialogs.py:115
-#: src/views/main_window/entry_dialogs.py:132
-msgid "Name of the group:"
-msgstr "Numele grupului:"
-
-#: src/views/main_window/entry_dialogs.py:116
-msgid "Create"
-msgstr "Creează"
-
-#: src/views/main_window/entry_dialogs.py:131
-msgid "Rename group"
-msgstr "Redenumește grupul"
-
-#: src/views/main_window/entry_dialogs.py:144
-msgid "Delete group"
-msgstr "Șterge grupul"
-
-#: src/views/main_window/entry_dialogs.py:146
-#, python-brace-format
-msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
-msgstr "Ștergeți grupul „{name}”? Transcrierile sale sunt păstrate, fără grup."
-
-#: src/views/main_window/main_window.py:464
-#, python-brace-format
-msgid "Recording · {date}"
-msgstr "Înregistrare · {date}"
-
-#: src/views/main_window/main_window.py:484
-msgid "Processing the recording…"
-msgstr "Se procesează înregistrarea…"
-
-#: src/views/main_window/main_window.py:510
-msgid "The transcription was cancelled."
-msgstr "Transcrierea a fost anulată."
-
-#: src/views/main_window/main_window.py:598
-#: src/views/new_transcription/new_transcription_view.py:485
-#, python-brace-format
-msgid "“{name}” is not a supported audio or video file."
-msgstr "„{name}” nu este un fișier audio sau video acceptat."
-
-#: src/views/main_window/main_window.py:611
-msgid ""
-"Only one file can be added at a time. To transcribe several files, drop "
-"the folder that contains them."
-msgstr ""
-"Se poate adăuga un singur fișier odată. Pentru a transcrie mai multe "
-"fișiere, plasați dosarul care le conține."
-
-#: src/views/main_window/main_window.py:699
-msgid ""
-"Type in the API key. It's kept in the credential store of your system. "
-"Leave it empty to remove it."
-msgstr ""
-"Introduceți cheia API. Este păstrată în depozitul de acreditări al "
-"sistemului. Lăsați câmpul gol pentru a o elimina."
-
-#: src/views/main_window/main_window.py:703
-msgid "OK"
-msgstr "OK"
-
-#: src/views/main_window/main_window.py:710
-msgid "API key saved."
-msgstr "Cheia API a fost salvată."
-
-#: src/views/main_window/main_window.py:710
-msgid "API key removed."
-msgstr "Cheia API a fost eliminată."
-
-#: src/views/main_window/status_messages.py:40
-msgid "Transcription ready"
-msgstr "Transcriere gata"
-
-#: src/views/main_window/status_messages.py:43
-#, python-brace-format
-msgid "Saved in {folder}."
-msgstr "Salvat în {folder}."
-
-#: src/views/main_window/status_messages.py:47
-msgid "The recording is no longer available."
-msgstr "Înregistrarea nu mai este disponibilă."
-
-#: src/views/main_window/status_messages.py:54
-#, python-brace-format
-msgid "The file was moved or deleted: {path}"
-msgstr "Fișierul a fost mutat sau șters: {path}"
-
-#: src/views/main_window/status_messages.py:56
-#, python-brace-format
-msgid "Could not open the file manager: {error}"
-msgstr "Nu s-a putut deschide managerul de fișiere: {error}"
-
-#: src/views/main_window/status_messages.py:61
-#, python-brace-format
-msgid "Could not open the folder: {error}"
-msgstr "Dosarul nu a putut fi deschis: {error}"
-
-#: src/views/main_window/status_messages.py:69
-#, python-brace-format
-msgid "The summary of “{title}” is ready."
-msgstr "Rezumatul pentru „{title}” este gata."
-
-#: src/views/main_window/status_messages.py:73
-#, python-brace-format
-msgid "Could not summarize “{title}”: {error}"
-msgstr "Nu s-a putut rezuma „{title}”: {error}"
-
-#: src/views/main_window/status_messages.py:83
-#, python-brace-format
-msgid "The translation of “{title}” is ready."
-msgstr "Traducerea pentru „{title}” este gata."
-
-#: src/views/main_window/status_messages.py:87
-#, python-brace-format
-msgid "Could not translate “{title}”: {error}"
-msgstr "Nu s-a putut traduce „{title}”: {error}"
-
-#: src/views/main_window/top_bar.py:72
-msgid "New transcription:"
-msgstr "Transcriere nouă:"
-
-#: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:914
-#, python-brace-format
-msgid "Version {version} is available"
-msgstr "Versiunea {version} este disponibilă"
-
-#: src/views/main_window/welcome_view.py:25
-msgid "What do you want to transcribe?"
-msgstr "Ce doriți să transcrieți?"
-
-#: src/views/main_window/welcome_view.py:30
-msgid ""
-"Choose a source, or select a transcription of your history to read and "
-"play it."
-msgstr ""
-"Alegeți o sursă sau selectați o transcriere din istoric pentru a o citi "
-"și reda."
-
-#: src/views/main_window/welcome_view.py:41
-msgid "An audio or video file"
-msgstr "Un fișier audio sau video"
-
-#: src/views/main_window/welcome_view.py:47
-msgid "YouTube or a link to a file"
-msgstr "YouTube sau un link către un fișier"
-
-#: src/views/main_window/welcome_view.py:53
-#: src/views/new_transcription/microphone_view.py:468
-msgid "Record and transcribe"
-msgstr "Înregistrați și transcrieți"
-
-#: src/views/main_window/welcome_view.py:59
-msgid "Many files at once, or watch it"
-msgstr "Multe fișiere deodată sau monitorizare"
-
-#: src/views/main_window/welcome_view.py:75
-msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
-msgstr ""
-"Sfat: plasați un fișier sau un dosar oriunde în fereastră pentru a-l "
-"transcrie."
-
-#: src/views/new_transcription/microphone_view.py:80
-msgid "No sound. Check that the microphone is on and allowed."
-msgstr "Fără sunet. Verificați dacă microfonul este pornit și permis."
-
-#: src/views/new_transcription/microphone_view.py:82
-msgid "Waiting for speech…"
-msgstr "Se așteaptă vorbirea…"
-
-#: src/views/new_transcription/microphone_view.py:85
-msgid "Too quiet. Speak louder or closer to the microphone."
-msgstr "Prea încet. Vorbiți mai tare sau mai aproape de microfon."
-
-#: src/views/new_transcription/microphone_view.py:87
-msgid "Good level"
-msgstr "Nivel bun"
-
-#: src/views/new_transcription/microphone_view.py:90
-msgid "Too loud. Move away from the microphone."
-msgstr "Prea tare. Îndepărtați-vă de microfon."
-
-#: src/views/new_transcription/microphone_view.py:134
-msgid "Transcribe from the microphone"
-msgstr "Transcrie de la microfon"
-
-#: src/views/new_transcription/microphone_view.py:139
-msgid "Record yourself or a meeting. The recording is kept in your history."
-msgstr ""
-"Înregistrați-vă pe dumneavoastră sau o întâlnire. Înregistrarea este "
-"păstrată în istoric."
-
-#: src/views/new_transcription/microphone_view.py:276
-#: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:710
-#: src/views/transcript/transcript_view.py:1423
-#: src/views/transcript/transcript_view.py:1661
-#: src/views/transcript/translation_panel.py:147
-msgid "Copy"
-msgstr "Copiază"
-
-#: src/views/new_transcription/microphone_view.py:283
-msgid "Open in history"
-msgstr "Deschide în istoric"
-
-#: src/views/new_transcription/microphone_view.py:302
-msgid "Wait until the current transcription finishes, or cancel it."
-msgstr "Așteptați până se termină transcrierea curentă sau anulați-o."
-
-#: src/views/new_transcription/microphone_view.py:391
-#, python-brace-format
-msgid "Press the button to start recording ({shortcut})"
-msgstr "Apăsați butonul pentru a începe înregistrarea ({shortcut})"
-
-#: src/views/new_transcription/microphone_view.py:395
-msgid "The level is shown while recording"
-msgstr "Nivelul este afișat în timpul înregistrării"
-
-#: src/views/new_transcription/microphone_view.py:400
-msgid "Recording… Press the button to stop and transcribe."
-msgstr "Se înregistrează… Apăsați butonul pentru a opri și a transcrie."
-
-#: src/views/new_transcription/microphone_view.py:415
-msgid "Done. Press the button to record again."
-msgstr "Gata. Apăsați butonul pentru a înregistra din nou."
-
-#: src/views/new_transcription/microphone_view.py:419
-msgid "Press the button to try again."
-msgstr "Apăsați butonul pentru a încerca din nou."
-
-#: src/views/new_transcription/microphone_view.py:435
-msgid "Draft. It's replaced when the final transcription finishes."
-msgstr "Ciornă. Este înlocuită când se termină transcrierea finală."
-
-#: src/views/new_transcription/microphone_view.py:445
-msgid "The text will appear here as you speak."
-msgstr "Textul va apărea aici în timp ce vorbiți."
-
-#: src/views/new_transcription/microphone_view.py:447
-msgid "The transcription will appear here when you stop recording."
-msgstr "Transcrierea va apărea aici când opriți înregistrarea."
-
-#: src/views/new_transcription/microphone_view.py:469
-msgid "Refine"
-msgstr "Rafinare"
-
-#: src/views/new_transcription/microphone_view.py:521
-msgid "default"
-msgstr "implicit"
-
-#: src/views/new_transcription/microphone_view.py:523
-msgid "Loading…"
-msgstr "Se încarcă…"
-
-#: src/views/new_transcription/microphone_view.py:524
-msgid "No microphone found"
-msgstr "Nu s-a găsit niciun microfon"
-
-#: src/views/new_transcription/new_transcription_view.py:105
-msgid "Transcribe a file"
-msgstr "Transcrie un fișier"
-
-#: src/views/new_transcription/new_transcription_view.py:106
-msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
-msgstr "Fișiere audio și video: MP3, WAV, M4A, MP4, MOV, MKV și altele."
-
-#: src/views/new_transcription/new_transcription_view.py:111
-msgid "Transcribe from a URL"
-msgstr "Transcrie de la un URL"
-
-#: src/views/new_transcription/new_transcription_view.py:112
-msgid "A YouTube video or a direct link to an audio or video file."
-msgstr "Un videoclip YouTube sau un link direct către un fișier audio sau video."
-
-#: src/views/new_transcription/new_transcription_view.py:117
-msgid "Transcribe a folder"
-msgstr "Transcrie un dosar"
-
-#: src/views/new_transcription/new_transcription_view.py:119
-msgid ""
-"All the audio and video files of a folder, or the new ones as they're "
-"added."
-msgstr ""
-"Toate fișierele audio și video dintr-un dosar sau cele noi, pe măsură ce "
-"sunt adăugate."
-
-#: src/views/new_transcription/new_transcription_view.py:175
-msgid "Drop an audio or video file here"
-msgstr "Plasați aici un fișier audio sau video"
-
-#: src/views/new_transcription/new_transcription_view.py:177
-msgid "Drop a folder here"
-msgstr "Plasați aici un dosar"
-
-#: src/views/new_transcription/new_transcription_view.py:184
-msgid "or"
-msgstr "sau"
-
-#: src/views/new_transcription/new_transcription_view.py:194
-msgid "Choose a file…"
-msgstr "Alege un fișier…"
-
-#: src/views/new_transcription/new_transcription_view.py:194
-msgid "Choose a folder…"
-msgstr "Alege un dosar…"
-
-#: src/views/new_transcription/new_transcription_view.py:234
-#: src/views/settings/cards/output_card.py:98
-msgid "Change…"
-msgstr "Schimbă…"
-
-#: src/views/new_transcription/new_transcription_view.py:266
-msgid "Paste"
-msgstr "Lipește"
-
-#: src/views/new_transcription/new_transcription_view.py:280
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
@@ -1017,146 +444,472 @@ msgstr ""
 "Exemple: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
 
-#: src/views/new_transcription/new_transcription_view.py:358
-msgid "Select a file"
-msgstr "Selectați un fișier"
+msgid "Export"
+msgstr "Exportă"
 
-#: src/views/new_transcription/new_transcription_view.py:360
-msgid "All supported files"
-msgstr "Toate fișierele acceptate"
+msgid "Export summary"
+msgstr "Exportă rezumatul"
 
-#: src/views/new_transcription/new_transcription_view.py:361
-msgid "Audio files"
-msgstr "Fișiere audio"
+msgid "Export transcription"
+msgstr "Exportă transcrierea"
 
-#: src/views/new_transcription/new_transcription_view.py:362
-msgid "Video files"
-msgstr "Fișiere video"
-
-#: src/views/new_transcription/new_transcription_view.py:366
-msgid "Select a folder"
-msgstr "Selectați un dosar"
-
-#: src/views/new_transcription/new_transcription_view.py:395
-msgid "Continue"
-msgstr "Continuă"
-
-#: src/views/new_transcription/new_transcription_view.py:426
-msgid "Add to queue"
-msgstr "Adaugă în coadă"
-
-#: src/views/new_transcription/new_transcription_view.py:426
-msgid "Start transcription"
-msgstr "Începe transcrierea"
-
-#: src/views/new_transcription/new_transcription_view.py:438
-msgid "It will start when the current transcription finishes."
-msgstr "Va începe când se termină transcrierea curentă."
-
-#: src/views/new_transcription/new_transcription_view.py:503
-msgid "Reading…"
-msgstr "Se citește…"
-
-#: src/views/new_transcription/new_transcription_view.py:525
-msgid "Video"
-msgstr "Video"
-
-#: src/views/new_transcription/new_transcription_view.py:525
-msgid "Audio"
-msgstr "Audio"
-
-#: src/views/new_transcription/new_transcription_view.py:544
-msgid "No audio or video files found (subfolders included)."
-msgstr "Nu s-au găsit fișiere audio sau video (inclusiv subdosare)."
-
-#: src/views/new_transcription/new_transcription_view.py:546
-msgid "1 audio or video file (subfolders included)"
-msgstr "1 fișier audio sau video (inclusiv subdosare)"
-
-#: src/views/new_transcription/new_transcription_view.py:547
 #, python-brace-format
-msgid "{count} audio and video files (subfolders included)"
-msgstr "Fișiere audio și video: {count} (inclusiv subdosare)"
+msgid "Export translation into {language}"
+msgstr "Exportă traducerea în limba {language}"
 
-#: src/views/new_transcription/new_transcription_view.py:583
-msgid "YouTube video"
-msgstr "Videoclip YouTube"
+msgid "Export video with subtitles"
+msgstr "Exportă videoclipul cu subtitrări"
 
-#: src/views/new_transcription/new_transcription_view.py:583
-msgid "Link to a file"
-msgstr "Link către un fișier"
+#, python-brace-format
+msgid "Exported to {path}"
+msgstr "Exportat în {path}"
 
-#: src/views/new_transcription/new_transcription_view.py:590
-msgid "Enter a URL that starts with http:// or https://"
-msgstr "Introduceți un URL care începe cu http:// sau https://"
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr ""
+"Exportat în {path}, dar niciun font nu conține aceste caractere, așa că "
+"sunt afișate ca pătrățele: {characters}"
 
-#: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:75
-msgid "OpenAI API key"
-msgstr "Cheie API OpenAI"
+msgid "Extract speech"
+msgstr "Extrage vocea"
 
-#: src/views/settings/preferences_dialog.py:77
-msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
-msgstr "Necesară pentru API-ul Whisper și pentru a rezuma și traduce cu OpenAI."
+msgid "Failed"
+msgstr "Eșuată"
 
-#: src/views/settings/preferences_dialog.py:81
-msgid "Anthropic API key"
-msgstr "Cheie API Anthropic"
+msgid "File"
+msgstr "Fișier"
 
-#: src/views/settings/preferences_dialog.py:82
-msgid "Required to summarize and translate with Claude."
-msgstr "Necesară pentru a rezuma și traduce cu Claude."
+msgid "File types"
+msgstr "Tipuri de fișiere"
 
-#: src/views/settings/preferences_dialog.py:85
-msgid "DeepSeek API key"
-msgstr "Cheie API DeepSeek"
+#, python-brace-format
+msgid "File {current} of {total} ({name}): {message}"
+msgstr "Fișierul {current} din {total} ({name}): {message}"
 
-#: src/views/settings/preferences_dialog.py:86
-msgid "Required to summarize and translate with DeepSeek."
-msgstr "Necesară pentru a rezuma și traduce cu DeepSeek."
+msgid "Files"
+msgstr "Fișiere"
 
-#: src/views/settings/preferences_dialog.py:89
+#, python-brace-format
+msgid "Find ({shortcut})"
+msgstr "Caută ({shortcut})"
+
+#, python-brace-format
+msgid "Find and replace ({shortcut})"
+msgstr "Caută și înlocuiește ({shortcut})"
+
+msgid "Find and replace in the transcription"
+msgstr "Caută și înlocuiește în transcriere"
+
+msgid "Find and replace in the translation"
+msgstr "Caută și înlocuiește în traducere"
+
+#, python-brace-format
+msgid "Find and replace in the translation into {language}"
+msgstr "Caută și înlocuiește în traducerea în {language}"
+
+msgid "Find in the summary"
+msgstr "Caută în rezumat"
+
+msgid "Find:"
+msgstr "Caută:"
+
+msgid "Folder"
+msgstr "Dosar"
+
+msgid "Format of the files."
+msgstr "Formatul fișierelor."
+
 msgid "Gemini API key"
 msgstr "Cheie API Gemini"
 
-#: src/views/settings/preferences_dialog.py:91
-msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgid "General"
+msgstr "General"
+
+#, python-brace-format
+msgid ""
+"Generate a summary, the key points and the chapters of the transcription "
+"with {provider}."
 msgstr ""
-"Necesară pentru a rezuma și traduce cu Gemini (se obține din Google AI "
-"Studio)."
+"Generați un rezumat, punctele cheie și capitolele transcrierii cu "
+"{provider}."
 
-#: src/views/settings/preferences_dialog.py:95
-msgid "Mistral API key"
-msgstr "Cheie API Mistral"
+msgid "Generate summary"
+msgstr "Generează rezumat"
 
-#: src/views/settings/preferences_dialog.py:96
-msgid "Required to summarize and translate with Mistral."
-msgstr "Necesară pentru a rezuma și traduce cu Mistral."
+msgid "Generate the summary again? The current one will be replaced."
+msgstr "Regenerezi rezumatul? Cel actual va fi înlocuit."
 
-#: src/views/settings/preferences_dialog.py:99
-msgid "xAI API key"
-msgstr "Cheie API xAI"
+#, python-brace-format
+msgid "Generated by {model} · {date}"
+msgstr "Generat de {model} · {date}"
 
-#: src/views/settings/preferences_dialog.py:100
-msgid "Required to summarize and translate with Grok."
-msgstr "Necesară pentru a rezuma și traduce cu Grok."
-
-#: src/views/settings/preferences_dialog.py:103
-msgid "DeepL API key"
-msgstr "Cheie API DeepL"
-
-#: src/views/settings/preferences_dialog.py:104
-msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgid ""
+"Give a name to each speaker. Giving two speakers the same name merges "
+"them."
 msgstr ""
-"Necesară pentru a traduce cu DeepL. Funcționează și cheile planului "
-"gratuit."
+"Dați un nume fiecărui vorbitor. Dacă dați același nume la doi vorbitori, "
+"aceștia sunt combinați."
 
-#: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:107
+msgid "Good level"
+msgstr "Nivel bun"
+
 msgid "Google API key"
 msgstr "Cheie API Google"
 
-#: src/views/settings/preferences_dialog.py:109
+msgid "Google Translate didn't return a valid translation."
+msgstr "Google Translate nu a returnat o traducere validă."
+
+msgid "Hide the translation"
+msgstr "Ascunde traducerea"
+
+# Needs review by a native speaker
+msgid "Highlight low-confidence words"
+msgstr "Evidențiază cuvintele cu încredere scăzută"
+
+msgid "Highlight words"
+msgstr "Evidențiază cuvintele"
+
+msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgstr ""
+"Evidențiază fiecare cuvânt în timpul redării (modelul whisper-1). Durează"
+" mai mult."
+
+msgid "Highlights each word while playing. Takes a bit longer."
+msgstr "Evidențiază fiecare cuvânt în timpul redării. Durează puțin mai mult."
+
+msgid "Highlights each word while playing. The subtitles already use them."
+msgstr ""
+"Evidențiază fiecare cuvânt în timpul redării. Subtitrările le folosesc "
+"deja."
+
+msgid "Hugging Face token"
+msgstr "Token Hugging Face"
+
+msgid "Identifies the speakers. With timestamps."
+msgstr "Identifică vorbitorii. Cu marcaje de timp."
+
+msgid "Identify speakers"
+msgstr "Identifică vorbitorii"
+
+#, python-brace-format
+msgid ""
+"Identifying speakers requires a Hugging Face token. Create one at "
+"{tokens_url}, accept the conditions of {model_url} and set the token in "
+"the WhisperX options."
+msgstr ""
+"Identificarea vorbitorilor necesită un token Hugging Face. Creează unul "
+"la {tokens_url}, acceptă condițiile pentru {model_url} și setează tokenul"
+" în opțiunile WhisperX."
+
+msgid "Identifying speakers…"
+msgstr "Se identifică vorbitorii…"
+
+msgid "Interface language"
+msgstr "Limba interfeței"
+
+msgid "Interface size"
+msgstr "Dimensiunea interfeței"
+
+msgid "Interrupted"
+msgstr "Întreruptă"
+
+msgid "Isolating the speech…"
+msgstr "Se izolează vocea…"
+
+msgid "It takes a moment."
+msgstr "Durează un moment."
+
+msgid "It will start when the current transcription finishes."
+msgstr "Va începe când se termină transcrierea curentă."
+
+msgid "JSON (.json)"
+msgstr "JSON (.json)"
+
+msgid "Keep above the main window"
+msgstr "Păstrează deasupra ferestrei principale"
+
+msgid ""
+"Keeps running and transcribes the files added to the folder, until you "
+"stop it. The files it already contains are skipped."
+msgstr ""
+"Rămâne activ și transcrie fișierele adăugate în dosar, până când îl "
+"opriți. Fișierele pe care le conține deja sunt omise."
+
+msgid "Key points"
+msgstr "Puncte cheie"
+
+msgid "Keywords"
+msgstr "Cuvinte cheie"
+
+msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgstr "Indică cine vorbește în fiecare parte. Necesită un token Hugging Face."
+
+msgid "Landscape"
+msgstr "Orizontal"
+
+msgid "Language"
+msgstr "Limbă"
+
+msgid "Language of the audio"
+msgstr "Limba audio"
+
+msgid "Language of the transcription"
+msgstr "Limba transcrierii"
+
+msgid "Large"
+msgstr "Mare"
+
+msgid "Larger models are more accurate, but slower."
+msgstr "Modelele mai mari sunt mai precise, dar mai lente."
+
+msgid "Light"
+msgstr "Luminos"
+
+msgid "Link to a file"
+msgstr "Link către un fișier"
+
+msgid "Live model"
+msgstr "Model live"
+
+msgid "Live text"
+msgstr "Text live"
+
+msgid "Loading audio…"
+msgstr "Se încarcă sunetul…"
+
+msgid "Loading the audio…"
+msgstr "Se încarcă audio…"
+
+msgid ""
+"Loading the speaker identification model (it's downloaded the first time "
+"it's used)…"
+msgstr ""
+"Se încarcă modelul de identificare a vorbitorilor (se descarcă la prima "
+"utilizare)…"
+
+msgid "Loading the subtitle alignment model…"
+msgstr "Se încarcă modelul de aliniere a subtitrărilor…"
+
+#, python-brace-format
+msgid "Loading the {model} model (it's downloaded the first time it's used)…"
+msgstr "Se încarcă modelul {model} (este descărcat la prima utilizare)…"
+
+msgid "Loading…"
+msgstr "Se încarcă…"
+
+# Needs review by a native speaker
+msgid "Low-confidence threshold"
+msgstr "Prag de încredere scăzută"
+
+msgid "Lower it if you run out of memory."
+msgstr "Reduceți valoarea dacă rămâneți fără memorie."
+
+#, python-brace-format
+msgid "Made by {author}"
+msgstr "Creat de {author}"
+
+msgid "Manual"
+msgstr "Manual"
+
+msgid "Many files at once, or watch it"
+msgstr "Multe fișiere deodată sau monitorizare"
+
+msgid "Markdown (.md)"
+msgstr "Markdown (.md)"
+
+msgid "Match case"
+msgstr "Potrivire majuscule"
+
+msgid "Max. characters per line"
+msgstr "Nr. max. de caractere pe rând"
+
+msgid "Max. lines per subtitle"
+msgstr "Nr. max. de rânduri pe subtitrare"
+
+msgid "Medium"
+msgstr "Mediu"
+
+msgid "Microphone"
+msgstr "Microfon"
+
+msgid "Mistral API key"
+msgstr "Cheie API Mistral"
+
+msgid "Model"
+msgstr "Model"
+
+msgid ""
+"More accurate, but without timestamps: the transcription can't be played "
+"segment by segment nor subtitled."
+msgstr ""
+"Mai precis, dar fără marcaje de timp: transcrierea nu poate fi redată "
+"segment cu segment și nici subtitrată."
+
+msgid "More options in the settings"
+msgstr "Mai multe opțiuni în setări"
+
+msgid "Move to group"
+msgstr "Mută în grup"
+
+msgid "Name of the group:"
+msgstr "Numele grupului:"
+
+msgid "Name of the transcription:"
+msgstr "Numele transcrierii:"
+
+msgid ""
+"Names, terms or acronyms said in the audio, separated by commas, so "
+"they're spelled right."
+msgstr ""
+"Nume, termeni sau acronime rostite în audio, separate prin virgule, "
+"pentru a fi scrise corect."
+
+msgid "New group"
+msgstr "Grup nou"
+
+msgid "New group…"
+msgstr "Grup nou…"
+
+msgid "New transcription:"
+msgstr "Transcriere nouă:"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Next low-confidence word ({shortcut})"
+msgstr "Următorul cuvânt cu încredere scăzută ({shortcut})"
+
+msgid "Next match"
+msgstr "Rezultatul următor"
+
+msgid "Next to the source"
+msgstr "Lângă sursă"
+
+#, python-brace-format
+msgid "No API key for {provider}."
+msgstr "Nu există cheie API pentru {provider}."
+
+msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgstr "Nu s-a găsit niciun GPU CUDA, așa că WhisperX rulează pe CPU."
+
+msgid "No audio or video files found (subfolders included)."
+msgstr "Nu s-au găsit fișiere audio sau video (inclusiv subdosare)."
+
+msgid "No audio was recorded."
+msgstr "Nu s-a înregistrat niciun sunet."
+
+msgid "No files"
+msgstr "Niciun fișier"
+
+msgid "No files yet"
+msgstr "Încă niciun fișier"
+
+msgid "No group"
+msgstr "Fără grup"
+
+msgid "No languages found."
+msgstr "Nu s-au găsit limbi."
+
+# Needs review by a native speaker
+msgid "No low-confidence words at this threshold"
+msgstr "Niciun cuvânt cu încredere scăzută la acest prag"
+
+# Needs review by a native speaker
+msgid "No low-confidence words left to review"
+msgstr "Nu mai sunt cuvinte cu încredere scăzută de verificat"
+
+msgid "No microphone found"
+msgstr "Nu s-a găsit niciun microfon"
+
+msgid "No output file types selected. Please select at least one."
+msgstr "Nu este selectat niciun tip de fișier de ieșire. Selectați cel puțin unul."
+
+msgid "No results"
+msgstr "Niciun rezultat"
+
+msgid "No sound. Check that the microphone is on and allowed."
+msgstr "Fără sunet. Verificați dacă microfonul este pornit și permis."
+
+msgid "No summary yet"
+msgstr "Încă niciun rezumat"
+
+#, python-brace-format
+msgid "No transcription contains “{query}”."
+msgstr "Nicio transcriere nu conține „{query}”."
+
+msgid "No transcriptions yet"
+msgstr "Încă nicio transcriere"
+
+msgid "Not translated yet"
+msgstr "Netradus încă"
+
+msgid "Not used by the Google API."
+msgstr "Nu este folosit de API-ul Google."
+
+#, python-brace-format
+msgid "Not used by the {model} model."
+msgstr "Nu este folosit de modelul {model}."
+
+msgid "Note"
+msgstr "Notă"
+
+msgid "Notifications"
+msgstr "Notificări"
+
+msgid "Number of speakers (0 = auto)"
+msgstr "Număr de vorbitori (0 = auto)"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Ollama"
+msgstr "Ollama"
+
+msgid "Ollama runs the models on your computer, without an API key."
+msgstr "Ollama rulează modelele pe computerul dumneavoastră, fără cheie API."
+
+# Needs review by a native speaker
+msgid "Only WhisperX and whisper-1 score the words"
+msgstr "Doar WhisperX și whisper-1 evaluează cuvintele"
+
+msgid ""
+"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
+" of the Whisper API."
+msgstr ""
+"Disponibil doar cu WhisperX sau cu modelul gpt-4o-transcribe-diarize al "
+"API-ului Whisper."
+
+msgid "Only available with WhisperX."
+msgstr "Disponibil doar cu WhisperX."
+
+# Needs review by a native speaker
+msgid "Only flagged"
+msgstr "Doar cele marcate"
+
+msgid ""
+"Only one file can be added at a time. To transcribe several files, drop "
+"the folder that contains them."
+msgstr ""
+"Se poate adăuga un singur fișier odată. Pentru a transcrie mai multe "
+"fișiere, plasați dosarul care le conține."
+
+msgid ""
+"Only transcribes English, faster than the multilingual model of the same "
+"size."
+msgstr ""
+"Transcrie doar engleza, mai rapid decât modelul multilingv de aceeași "
+"dimensiune."
+
+msgid "Open in history"
+msgstr "Deschide în istoric"
+
+msgid "Open the folder of the saved files"
+msgstr "Deschide dosarul fișierelor salvate"
+
+msgid "OpenAI API key"
+msgstr "Cheie API OpenAI"
+
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1165,12 +918,160 @@ msgstr ""
 "gratuit. Necesară pentru a traduce cu Google Translate (Cloud Translation"
 " API)."
 
-#: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:113
-msgid "Hugging Face token"
-msgstr "Token Hugging Face"
+msgid "Options"
+msgstr "Opțiuni"
 
-#: src/views/settings/preferences_dialog.py:115
+msgid "Otherwise, the GPU of the Mac transcribes (with MLX), much faster."
+msgstr "Altfel, GPU-ul Mac-ului transcrie (cu MLX), mult mai rapid."
+
+msgid "Outline"
+msgstr "Contur"
+
+msgid "Output"
+msgstr "Ieșire"
+
+msgid "Overwrite existing files"
+msgstr "Suprascrie fișierele existente"
+
+msgid "Paste"
+msgstr "Lipește"
+
+msgid "Pin to the top"
+msgstr "Fixează sus"
+
+msgid "Pinned"
+msgstr "Fixate"
+
+msgid "Plain text"
+msgstr "Text simplu"
+
+msgid "Plain text (.txt)"
+msgstr "Text simplu (.txt)"
+
+msgid "Play from here"
+msgstr "Redă de aici"
+
+msgid ""
+"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
+" or video file)."
+msgstr ""
+"Introduceți un URL valid (de ex., linkul unui videoclip YouTube sau al "
+"unui fișier audio sau video)."
+
+msgid "Please select a valid audio or video file."
+msgstr "Selectați un fișier audio sau video valid."
+
+msgid "Please select a valid folder."
+msgstr "Selectați un dosar valid."
+
+msgid "Portrait"
+msgstr "Vertical"
+
+msgid "Position"
+msgstr "Poziție"
+
+msgid "Precise timestamps (HH:MM:SS,mmm)"
+msgstr "Marcaje de timp precise (HH:MM:SS,mmm)"
+
+msgid "Preferences"
+msgstr "Preferințe"
+
+#, python-brace-format
+msgid "Press the button to start recording ({shortcut})"
+msgstr "Apăsați butonul pentru a începe înregistrarea ({shortcut})"
+
+msgid "Press the button to try again."
+msgstr "Apăsați butonul pentru a încerca din nou."
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Previous low-confidence word ({shortcut})"
+msgstr "Cuvântul anterior cu încredere scăzută ({shortcut})"
+
+msgid "Previous match"
+msgstr "Rezultatul anterior"
+
+msgid "Processing the recording…"
+msgstr "Se procesează înregistrarea…"
+
+msgid "Provider"
+msgstr "Furnizor"
+
+msgid "Queued"
+msgstr "În coadă"
+
+msgid "Reading…"
+msgstr "Se citește…"
+
+msgid "Record"
+msgstr "Înregistrează"
+
+msgid "Record and transcribe"
+msgstr "Înregistrați și transcrieți"
+
+msgid "Record yourself or a meeting. The recording is kept in your history."
+msgstr ""
+"Înregistrați-vă pe dumneavoastră sau o întâlnire. Înregistrarea este "
+"păstrată în istoric."
+
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "Înregistrare · {date}"
+
+msgid "Recording…"
+msgstr "Se înregistrează…"
+
+msgid "Recording… Press the button to stop and transcribe."
+msgstr "Se înregistrează… Apăsați butonul pentru a opri și a transcrie."
+
+msgid "Reduces music and background noise before transcribing."
+msgstr "Reduce muzica și zgomotul de fond înainte de transcriere."
+
+msgid "Refine"
+msgstr "Rafinare"
+
+msgid "Regenerate the summary"
+msgstr "Regenerează rezumatul"
+
+msgid "Rename"
+msgstr "Redenumește"
+
+msgid "Rename group"
+msgstr "Redenumește grupul"
+
+msgid "Rename group…"
+msgstr "Redenumește grupul…"
+
+msgid "Rename speakers"
+msgstr "Redenumește vorbitorii"
+
+msgid "Rename speakers…"
+msgstr "Redenumește vorbitorii…"
+
+msgid "Rename…"
+msgstr "Redenumește…"
+
+msgid "Replace"
+msgstr "Înlocuiește"
+
+msgid "Replace all"
+msgstr "Înlocuiește tot"
+
+msgid "Replace with:"
+msgstr "Înlocuiește cu:"
+
+# Needs review by a native speaker
+msgid "Replay"
+msgstr "Redă din nou"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Replay ({shortcut})"
+msgstr "Redă din nou ({shortcut})"
+
+msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
+msgstr "Necesară pentru API-ul Whisper și pentru a rezuma și traduce cu OpenAI."
+
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1178,262 +1079,376 @@ msgstr ""
 "Necesar pentru a identifica vorbitorii cu WhisperX (pyannote/speaker-"
 "diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:173
-msgid "Preferences"
-msgstr "Preferințe"
+msgid "Required to summarize and translate with Claude."
+msgstr "Necesară pentru a rezuma și traduce cu Claude."
 
-#: src/views/settings/preferences_dialog.py:187
-msgid "General"
-msgstr "General"
+msgid "Required to summarize and translate with DeepSeek."
+msgstr "Necesară pentru a rezuma și traduce cu DeepSeek."
 
-#: src/views/settings/preferences_dialog.py:188
-msgid "AI"
-msgstr "IA"
+msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgstr ""
+"Necesară pentru a rezuma și traduce cu Gemini (se obține din Google AI "
+"Studio)."
 
-#: src/views/settings/preferences_dialog.py:189
-msgid "API keys"
-msgstr "Chei API"
+msgid "Required to summarize and translate with Grok."
+msgstr "Necesară pentru a rezuma și traduce cu Grok."
 
-#: src/views/settings/preferences_dialog.py:191
-#: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:813
-msgid "Subtitles"
-msgstr "Subtitrări"
+msgid "Required to summarize and translate with Mistral."
+msgstr "Necesară pentru a rezuma și traduce cu Mistral."
 
-#: src/views/settings/preferences_dialog.py:193
-msgid "About"
-msgstr "Despre"
+msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgstr ""
+"Necesară pentru a traduce cu DeepL. Funcționează și cheile planului "
+"gratuit."
 
-#: src/views/settings/preferences_dialog.py:321
-msgid "Appearance"
-msgstr "Aspect"
+# Needs review by a native speaker
+msgid "Review accepted words again"
+msgstr "Verifică din nou cuvintele acceptate"
 
-#: src/views/settings/preferences_dialog.py:325
-msgid "System"
-msgstr "Sistem"
-
-#: src/views/settings/preferences_dialog.py:325
-msgid "Light"
-msgstr "Luminos"
-
-#: src/views/settings/preferences_dialog.py:325
-msgid "Dark"
-msgstr "Întunecat"
-
-#: src/views/settings/preferences_dialog.py:331
-msgid "Interface size"
-msgstr "Dimensiunea interfeței"
-
-#: src/views/settings/preferences_dialog.py:340
-msgid "Interface language"
-msgstr "Limba interfeței"
-
-#: src/views/settings/preferences_dialog.py:346
-msgid "System language"
-msgstr "Limba sistemului"
-
-#: src/views/settings/preferences_dialog.py:359
-msgid "Notifications"
-msgstr "Notificări"
-
-#: src/views/settings/preferences_dialog.py:360
-msgid "Shows a notification of the system when a transcription is ready."
-msgstr "Afișează o notificare de sistem când o transcriere este gata."
-
-#: src/views/settings/preferences_dialog.py:371
-msgid "Updates"
-msgstr "Actualizări"
-
-#: src/views/settings/preferences_dialog.py:372
-msgid "Checks for a new version when the app opens."
-msgstr "Verifică dacă există o versiune nouă la deschiderea aplicației."
-
-#: src/views/settings/preferences_dialog.py:388
-msgid "Date format"
-msgstr "Formatul datei"
-
-#: src/views/settings/preferences_dialog.py:405
-msgid "Time format"
-msgstr "Formatul orei"
-
-#: src/views/settings/preferences_dialog.py:406
-msgid "Automatic uses the clock of the interface language."
-msgstr "Automat folosește ceasul limbii interfeței."
-
-#: src/views/settings/preferences_dialog.py:412
-msgid "Automatic"
-msgstr "Automat"
-
-#: src/views/settings/preferences_dialog.py:471
-#: src/views/settings/preferences_dialog.py:484
-msgid "Change API key…"
-msgstr "Schimbă cheia API…"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/settings/preferences_dialog.py:471
-#: src/views/settings/preferences_dialog.py:484
-#: src/views/transcript/summary_panel.py:299
-#: src/views/transcript/translation_panel.py:485
-#: src/views/transcript/translation_panel.py:557
-msgid "Set API key…"
-msgstr "Setează cheia API…"
-
-#: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:533
-#: src/views/transcript/translation_panel.py:232
-msgid "Translation"
-msgstr "Traducere"
-
-#: src/views/settings/preferences_dialog.py:545
-msgid "Ollama"
-msgstr "Ollama"
-
-#: src/views/settings/preferences_dialog.py:550
-msgid "Server URL"
-msgstr "URL-ul serverului"
-
-#: src/views/settings/preferences_dialog.py:551
-msgid "Ollama runs the models on your computer, without an API key."
-msgstr "Ollama rulează modelele pe computerul dumneavoastră, fără cheie API."
-
-#: src/views/settings/preferences_dialog.py:582
-msgid "Provider"
-msgstr "Furnizor"
-
-#: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:589
-msgid "Model"
-msgstr "Model"
-
-#: src/views/settings/preferences_dialog.py:590
-msgid "The default model of the provider if empty."
-msgstr "Dacă este gol, modelul implicit al furnizorului."
-
-#: src/views/settings/preferences_dialog.py:637
-msgid "Compute type"
-msgstr "Tip de calcul"
-
-#: src/views/settings/preferences_dialog.py:638
-msgid "float16 is faster on GPUs. int8 uses less memory."
-msgstr "float16 este mai rapid pe GPU. int8 folosește mai puțină memorie."
-
-#: src/views/settings/preferences_dialog.py:654
-msgid "Batch size"
-msgstr "Dimensiunea lotului"
-
-#: src/views/settings/preferences_dialog.py:655
-msgid "Lower it if you run out of memory."
-msgstr "Reduceți valoarea dacă rămâneți fără memorie."
-
-#: src/views/settings/preferences_dialog.py:667
-msgid "Use CPU"
-msgstr "Folosește CPU"
-
-#: src/views/settings/preferences_dialog.py:669
-msgid "Otherwise, the GPU of the Mac transcribes (with MLX), much faster."
-msgstr "Altfel, GPU-ul Mac-ului transcrie (cu MLX), mult mai rapid."
-
-#: src/views/settings/preferences_dialog.py:674
-msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
-msgstr "Nu s-a găsit niciun GPU CUDA, așa că WhisperX rulează pe CPU."
-
-#: src/views/settings/preferences_dialog.py:689
-msgid "Highlight words"
-msgstr "Evidențiază cuvintele"
-
-#: src/views/settings/preferences_dialog.py:690
-msgid "Underlines each word as it's said (.srt and .vtt)."
-msgstr "Subliniază fiecare cuvânt pe măsură ce este rostit (.srt și .vtt)."
-
-#: src/views/settings/preferences_dialog.py:709
-msgid "Landscape"
-msgstr "Orizontal"
-
-#: src/views/settings/preferences_dialog.py:709
-msgid "Portrait"
-msgstr "Vertical"
-
-#: src/views/settings/preferences_dialog.py:717
-msgid "Max. lines per subtitle"
-msgstr "Nr. max. de rânduri pe subtitrare"
-
-#: src/views/settings/preferences_dialog.py:722
-msgid "Max. characters per line"
-msgstr "Nr. max. de caractere pe rând"
-
-#: src/views/settings/preferences_dialog.py:727
-msgid "Chinese, Japanese and Korean"
-msgstr "Chineză, japoneză și coreeană"
-
-#: src/views/settings/preferences_dialog.py:764
 msgid ""
-"Chinese, Japanese and Korean characters are about twice as wide as Latin "
-"ones."
+"Runs on the servers of Google. An API key is optional; without it, the "
+"free tier is used."
 msgstr ""
-"Caracterele chinezești, japoneze și coreene sunt de aproximativ două ori "
-"mai late decât cele latine."
+"Rulează pe serverele Google. Cheia API este opțională; fără ea, se "
+"folosește nivelul gratuit."
 
-#: src/views/settings/preferences_dialog.py:773
-msgid "Temperature"
-msgstr "Temperatură"
+msgid "Runs on the servers of OpenAI. Requires an API key."
+msgstr "Rulează pe serverele OpenAI. Necesită o cheie API."
 
-#: src/views/settings/preferences_dialog.py:774
-msgid "Between 0 and 1. Higher values are more random."
-msgstr "Între 0 și 1. Valorile mai mari sunt mai aleatorii."
+msgid "Runs on your computer. Free, private and unlimited."
+msgstr "Rulează pe computerul dumneavoastră. Gratuit, privat și nelimitat."
 
-#: src/views/settings/preferences_dialog.py:786
-msgid "Timestamps of the words"
-msgstr "Marcaje de timp ale cuvintelor"
+msgid "Same as the audio"
+msgstr "La fel ca audio"
 
-#: src/views/settings/preferences_dialog.py:787
-msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgid "Save"
+msgstr "Salvează"
+
+#, python-brace-format
+msgid "Saved in {folder}"
+msgstr "Se salvează în {folder}"
+
+#, python-brace-format
+msgid "Saved in {folder}."
+msgstr "Salvat în {folder}."
+
+msgid "Saved next to the source"
+msgstr "Se salvează lângă sursă"
+
+msgid "Scroll the translation with the transcription"
+msgstr "Derulează traducerea împreună cu transcrierea"
+
+msgid "Search"
+msgstr "Caută"
+
+msgid "Search language…"
+msgstr "Caută limba…"
+
+#, python-brace-format
+msgid "Segments left to translate: {count}. Right-click one to translate it."
 msgstr ""
-"Evidențiază fiecare cuvânt în timpul redării (modelul whisper-1). Durează"
-" mai mult."
+"Segmente rămase de tradus: {count}. Faceți clic dreapta pe unul pentru "
+"a-l traduce."
 
-#: src/views/settings/preferences_dialog.py:817
-#, python-brace-format
-msgid "Version {version}"
-msgstr "Versiunea {version}"
+msgid "Select a file"
+msgstr "Selectați un fișier"
 
-#: src/views/settings/preferences_dialog.py:821
-#, python-brace-format
-msgid "Made by {author}"
-msgstr "Creat de {author}"
+msgid "Select a folder"
+msgstr "Selectați un dosar"
 
-#: src/views/settings/preferences_dialog.py:837
-msgid "Documentation"
-msgstr "Documentație"
-
-#: src/views/settings/preferences_dialog.py:857
-msgid "Donate"
-msgstr "Donează"
-
-#: src/views/settings/preferences_dialog.py:871
-msgid "Check for updates"
-msgstr "Caută actualizări"
-
-#: src/views/settings/preferences_dialog.py:890
-msgid "Checking for updates…"
-msgstr "Se caută actualizări…"
-
-#: src/views/settings/preferences_dialog.py:901
-msgid "Could not check for updates."
-msgstr "Nu s-au putut căuta actualizări."
-
-#: src/views/settings/preferences_dialog.py:910
-msgid "Download"
-msgstr "Descarcă"
-
-#: src/views/settings/preferences_dialog.py:920
-msgid "You have the latest version."
-msgstr "Ai cea mai recentă versiune."
-
-#: src/views/settings/settings_form.py:169
 msgid "Select at least one output file type."
 msgstr "Selectați cel puțin un tip de fișier de ieșire."
 
-#: src/views/settings/settings_form.py:186
+msgid "Server URL"
+msgstr "URL-ul serverului"
+
+msgid "Set API key…"
+msgstr "Setează cheia API…"
+
+msgid "Set Hugging Face token…"
+msgstr "Setează tokenul Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to summarize, or choose another provider in"
+" the settings."
+msgstr ""
+"Setați cheia API pentru {provider} pentru a rezuma sau alegeți alt "
+"furnizor în setări."
+
+msgid "Settings"
+msgstr "Setări"
+
+msgid "Set…"
+msgstr "Setează…"
+
+# Needs review by a native speaker
+msgid "Show all segments"
+msgstr "Arată toate segmentele"
+
+msgid "Show in Explorer"
+msgstr "Afișează în Explorer"
+
+msgid "Show in Finder"
+msgstr "Afișează în Finder"
+
+msgid "Show in file manager"
+msgstr "Afișează în managerul de fișiere"
+
+msgid "Show it as the subtitles of the video"
+msgstr "Afișeaz-o ca subtitrări ale videoclipului"
+
+msgid "Show subtitles on the video"
+msgstr "Afișează subtitrările pe videoclip"
+
+msgid "Show the text while recording"
+msgstr "Afișează textul în timpul înregistrării"
+
+msgid "Show the translation"
+msgstr "Afișează traducerea"
+
+msgid "Shows a notification of the system when a transcription is ready."
+msgstr "Afișează o notificare de sistem când o transcriere este gata."
+
+msgid "Size"
+msgstr "Dimensiune"
+
+msgid "Small"
+msgstr "Mic"
+
+msgid "Source"
+msgstr "Sursă"
+
+#, python-brace-format
+msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr "Spațiu: redare/pauză · ←/→: {seconds} s înapoi/înainte"
+
+msgid "Start transcription"
+msgstr "Începe transcrierea"
+
+msgid "Start:"
+msgstr "Început:"
+
+msgid "Starting…"
+msgstr "Se pornește…"
+
+msgid "Stay on top"
+msgstr "Păstrează deasupra"
+
+msgid "Stop adding the subtitles to the video"
+msgstr "Oprește adăugarea subtitrărilor în videoclip"
+
+msgid "Stop scrolling the translation with the transcription"
+msgstr "Nu mai derula traducerea împreună cu transcrierea"
+
+msgid "Stop watching"
+msgstr "Oprește monitorizarea"
+
+#, python-brace-format
+msgid "Stopped watching the folder. Files transcribed: {done}."
+msgstr "Monitorizarea dosarului a fost oprită. Fișiere transcrise: {done}."
+
+msgid "Style"
+msgstr "Stil"
+
+msgid "Styled subtitles (.ass)"
+msgstr "Subtitrări cu stil (.ass)"
+
+msgid "Subtitles"
+msgstr "Subtitrări"
+
+msgid "Subtitles (.srt)"
+msgstr "Subtitrări (.srt)"
+
+msgid "Summarizing…"
+msgstr "Se rezumă…"
+
+msgid "Summary"
+msgstr "Rezumat"
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "System language"
+msgstr "Limba sistemului"
+
+msgid "Table (.tsv)"
+msgstr "Tabel (.tsv)"
+
+msgid "Tag"
+msgstr "Etichetă"
+
+#, python-brace-format
+msgid "Tag of “{title}”. Leave it empty to show the kind of source."
+msgstr "Eticheta pentru „{title}”. Lăsați-o goală pentru a afișa tipul sursei."
+
+msgid "Temperature"
+msgstr "Temperatură"
+
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "Text rostit la {time}:"
+
+msgid ""
+"The Google API can't detect the language. Please select the language of "
+"the audio."
+msgstr "API-ul Google nu poate detecta limba. Selectați limba audio."
+
+msgid ""
+"The Google API can't translate. The transcription will be in the language"
+" of the audio."
+msgstr "API-ul Google nu poate traduce. Transcrierea va fi în limba audio."
+
+msgid "The Google API returns plain text (.txt)."
+msgstr "API-ul Google returnează text simplu (.txt)."
+
+msgid ""
+"The URL doesn't point to an audio or video file. Use the link of a "
+"YouTube video or of a media file."
+msgstr ""
+"URL-ul nu indică un fișier audio sau video. Folosiți linkul unui "
+"videoclip YouTube sau al unui fișier media."
+
+msgid "The Whisper API requires an OpenAI API key."
+msgstr "API-ul Whisper necesită o cheie API OpenAI."
+
+msgid "The YouTube video doesn't have an audio track."
+msgstr "Videoclipul YouTube nu are pistă audio."
+
+#, python-brace-format
+msgid "The audio can't be played: {error}"
+msgstr "Audio nu poate fi redat: {error}"
+
+#, python-brace-format
+msgid "The audio is too large for the OpenAI API ({size} MB)."
+msgstr "Fișierul audio este prea mare pentru API-ul OpenAI ({size} MB)."
+
+msgid "The audio isn't available."
+msgstr "Audio nu este disponibil."
+
+msgid "The audio isn't available: the source file was moved or deleted."
+msgstr "Audio nu este disponibil: fișierul sursă a fost mutat sau șters."
+
+msgid ""
+"The audio of the YouTube video could not be downloaded. Please make sure "
+"the URL is correct."
+msgstr ""
+"Sunetul videoclipului YouTube nu a putut fi descărcat. Verificați dacă "
+"URL-ul este corect."
+
+msgid "The default model of the provider if empty."
+msgstr "Dacă este gol, modelul implicit al furnizorului."
+
+#, python-brace-format
+msgid "The file could not be downloaded: {error}"
+msgstr "Fișierul nu a putut fi descărcat: {error}"
+
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "Fișierul a fost mutat sau șters: {path}"
+
+msgid "The files of a folder are always saved."
+msgstr "Fișierele unui dosar sunt salvate întotdeauna."
+
+msgid ""
+"The folder doesn't contain files to transcribe. The files that already "
+"have a transcription are skipped unless you check 'Overwrite existing "
+"files'."
+msgstr ""
+"Dosarul nu conține fișiere de transcris. Fișierele care au deja o "
+"transcriere sunt omise, cu excepția cazului în care bifați „Suprascrie "
+"fișierele existente”."
+
+msgid "The level is shown while recording"
+msgstr "Nivelul este afișat în timpul înregistrării"
+
+msgid "The model didn't return a valid reply."
+msgstr "Modelul nu a returnat un răspuns valid."
+
+msgid "The model didn't return a valid summary."
+msgstr "Modelul nu a returnat un rezumat valid."
+
+msgid "The model didn't return a valid translation."
+msgstr "Modelul nu a returnat o traducere validă."
+
+msgid "The model of the Whisper API identifies the speakers."
+msgstr "Modelul API-ului Whisper identifică vorbitorii."
+
+#, python-brace-format
+msgid "The new segment goes after the one at {time}:"
+msgstr "Noul segment vine după cel de la {time}:"
+
+msgid "The plain text has been edited; the transcript keeps the original."
+msgstr "Textul simplu a fost editat; transcrierea cu marcaje păstrează originalul."
+
+msgid "The recording is no longer available."
+msgstr "Înregistrarea nu mai este disponibilă."
+
+msgid "The reply of the model was too long."
+msgstr "Răspunsul modelului a fost prea lung."
+
+#, python-brace-format
+msgid "The segment at {time}, not translated yet."
+msgstr "Segmentul de la {time}, netradus încă."
+
+msgid "The segment must end after it starts."
+msgstr "Segmentul trebuie să se termine după ce începe."
+
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "Rezumatul pentru „{title}” este gata."
+
+msgid "The text can't be shown while recording."
+msgstr "Textul nu poate fi afișat în timpul înregistrării."
+
+msgid "The text is shown when you stop recording."
+msgstr "Textul este afișat când opriți înregistrarea."
+
+msgid "The text will appear here as you speak."
+msgstr "Textul va apărea aici în timp ce vorbiți."
+
+msgid "The transcription failed"
+msgstr "Transcrierea a eșuat"
+
+msgid "The transcription is being translated. It takes a moment."
+msgstr "Transcrierea este în curs de traducere. Durează un moment."
+
+msgid "The transcription is very long, so only its beginning was summarized."
+msgstr "Transcrierea este foarte lungă, așa că a fost rezumat doar începutul ei."
+
+msgid "The transcription was cancelled"
+msgstr "Transcrierea a fost anulată"
+
+msgid "The transcription was cancelled."
+msgstr "Transcrierea a fost anulată."
+
+msgid "The transcription was interrupted"
+msgstr "Transcrierea a fost întreruptă"
+
+msgid "The transcription will appear here when you stop recording."
+msgstr "Transcrierea va apărea aici când opriți înregistrarea."
+
+msgid "The transcriptions of its files are deleted too."
+msgstr "Transcrierile fișierelor sale sunt și ele șterse."
+
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "Traducerea pentru „{title}” este gata."
+
+#, python-brace-format
+msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
+msgstr ""
+"Modelul {model} nu returnează marcaje de timp, așa că nu poate salva "
+"subtitrări."
+
+#, python-brace-format
+msgid ""
+"The {model} model doesn't return timestamps, so it can't save {format} "
+"files. Choose another format or the whisper-1 model."
+msgstr ""
+"Modelul {model} nu returnează marcaje de timp, așa că nu poate salva "
+"fișiere {format}. Alegeți alt format sau modelul whisper-1."
+
 #, python-brace-format
 msgid ""
 "The {model} model only transcribes English. Choose a multilingual model "
@@ -1442,124 +1457,82 @@ msgstr ""
 "Modelul {model} transcrie doar engleza. Alegeți un model multilingv sau "
 "setați engleza ca limbă a audio."
 
-#: src/views/settings/settings_form.py:194
-msgid "The Whisper API requires an OpenAI API key."
-msgstr "API-ul Whisper necesită o cheie API OpenAI."
+# Needs review by a native speaker
+msgid "There is no alignment model for its language"
+msgstr "Nu există un model de aliniere pentru limba sa"
 
-#: src/views/settings/cards/context_card.py:29
-msgid "Context"
-msgstr "Context"
+msgid "There is no text to summarize."
+msgstr "Nu există text de rezumat."
 
-#: src/views/settings/cards/context_card.py:35
-msgid "Keywords"
-msgstr "Cuvinte cheie"
+msgid "There is no text to translate."
+msgstr "Nu există text de tradus."
 
-#: src/views/settings/cards/context_card.py:39
-msgid "e.g. Audiotext, WhisperX, Henestrosa"
-msgstr "de ex. Audiotext, WhisperX, Henestrosa"
+msgid "There is no transcription to save. Please generate it first."
+msgstr "Nu există nicio transcriere de salvat. Generați-o mai întâi."
 
-#: src/views/settings/cards/context_card.py:46
+msgid "There is no translation yet."
+msgstr "Încă nu există traducere."
+
+msgid "This transcription has no timestamps."
+msgstr "Această transcriere nu are marcaje de timp."
+
+msgid "Time format"
+msgstr "Formatul orei"
+
 msgid ""
-"Names, terms or acronyms said in the audio, separated by commas, so "
-"they're spelled right."
+"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
+"transcribe-diarize models of the Whisper API."
 msgstr ""
-"Nume, termeni sau acronime rostite în audio, separate prin virgule, "
-"pentru a fi scrise corect."
+"Marcajele de timp sunt disponibile doar cu WhisperX și cu modelele "
+"whisper-1 și gpt-4o-transcribe-diarize ale API-ului Whisper."
 
-#: src/views/settings/cards/context_card.py:51
-msgid "Description"
-msgstr "Descriere"
+msgid "Timestamps of the words"
+msgstr "Marcaje de timp ale cuvintelor"
 
-#: src/views/settings/cards/context_card.py:60
-msgid "e.g. An interview about speech recognition"
-msgstr "de ex. Un interviu despre recunoașterea vorbirii"
+msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
+msgstr ""
+"Sfat: plasați un fișier sau un dosar oriunde în fereastră pentru a-l "
+"transcrie."
 
-#: src/views/settings/cards/context_card.py:65
-msgid "What the audio is about, such as its topic or setting."
-msgstr "Despre ce este audio, cum ar fi subiectul sau contextul."
+msgid "Too loud. Move away from the microphone."
+msgstr "Prea tare. Îndepărtați-vă de microfon."
 
-#: src/views/settings/cards/context_card.py:103
-msgid "Not used by the Google API."
-msgstr "Nu este folosit de API-ul Google."
+msgid "Too quiet. Speak louder or closer to the microphone."
+msgstr "Prea încet. Vorbiți mai tare sau mai aproape de microfon."
 
-#: src/views/settings/cards/context_card.py:115
+msgid "Top"
+msgstr "Sus"
+
+msgid "Transcribe"
+msgstr "Transcrie"
+
+msgid "Transcribe a file"
+msgstr "Transcrie un fișier"
+
+msgid "Transcribe a folder"
+msgstr "Transcrie un dosar"
+
+msgid "Transcribe again"
+msgstr "Transcrie din nou"
+
+msgid "Transcribe from a URL"
+msgstr "Transcrie de la un URL"
+
+msgid "Transcribe from the microphone"
+msgstr "Transcrie de la microfon"
+
+# Needs review by a native speaker
+msgid "Transcribe it again to score its words"
+msgstr "Transcrie din nou pentru a evalua cuvintele"
+
 #, python-brace-format
-msgid "Not used by the {model} model."
-msgstr "Nu este folosit de modelul {model}."
+msgid "Transcribe “{title}” again? The changes made to its text will be lost."
+msgstr "Transcrii din nou „{title}”? Modificările aduse textului se vor pierde."
 
-#: src/views/settings/cards/engine_card.py:25
-msgid "Identifies the speakers. With timestamps."
-msgstr "Identifică vorbitorii. Cu marcaje de timp."
+#, python-brace-format
+msgid "Transcribed {done} of {total} files."
+msgstr "Au fost transcrise {done} din {total} fișiere."
 
-#: src/views/settings/cards/engine_card.py:28
-msgid ""
-"With timestamps, to play the transcription segment by segment and "
-"generate subtitles."
-msgstr ""
-"Cu marcaje de timp, pentru a reda transcrierea segment cu segment și a "
-"genera subtitrări."
-
-#: src/views/settings/cards/engine_card.py:32
-msgid ""
-"More accurate, but without timestamps: the transcription can't be played "
-"segment by segment nor subtitled."
-msgstr ""
-"Mai precis, dar fără marcaje de timp: transcrierea nu poate fi redată "
-"segment cu segment și nici subtitrată."
-
-#: src/views/settings/cards/engine_card.py:50
-msgid "Engine"
-msgstr "Motor"
-
-#: src/views/settings/cards/engine_card.py:54
-msgid "Transcription method"
-msgstr "Metodă de transcriere"
-
-#: src/views/settings/cards/engine_card.py:114
-msgid ""
-"Only transcribes English, faster than the multilingual model of the same "
-"size."
-msgstr ""
-"Transcrie doar engleza, mai rapid decât modelul multilingv de aceeași "
-"dimensiune."
-
-#: src/views/settings/cards/engine_card.py:118
-msgid "Larger models are more accurate, but slower."
-msgstr "Modelele mai mari sunt mai precise, dar mai lente."
-
-#: src/views/settings/cards/engine_card.py:121
-msgid "Runs on your computer. Free, private and unlimited."
-msgstr "Rulează pe computerul dumneavoastră. Gratuit, privat și nelimitat."
-
-#: src/views/settings/cards/engine_card.py:131
-msgid "Runs on the servers of OpenAI. Requires an API key."
-msgstr "Rulează pe serverele OpenAI. Necesită o cheie API."
-
-#: src/views/settings/cards/engine_card.py:135
-msgid ""
-"Runs on the servers of Google. An API key is optional; without it, the "
-"free tier is used."
-msgstr ""
-"Rulează pe serverele Google. Cheia API este opțională; fără ea, se "
-"folosește nivelul gratuit."
-
-#: src/views/settings/cards/engine_card.py:140
-msgid "API key set"
-msgstr "Cheie API setată"
-
-#: src/views/settings/cards/folder_card.py:22
-msgid "Watch the folder"
-msgstr "Monitorizează dosarul"
-
-#: src/views/settings/cards/folder_card.py:34
-msgid ""
-"Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
-msgstr ""
-"Rămâne activ și transcrie fișierele adăugate în dosar, până când îl "
-"opriți. Fișierele pe care le conține deja sunt omise."
-
-#: src/views/settings/cards/folder_card.py:39
 msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
 "Files that already have a transcription are skipped unless you overwrite "
@@ -1569,58 +1542,190 @@ msgstr ""
 "Fișierele care au deja o transcriere sunt omise, cu excepția cazului în "
 "care le suprascrieți."
 
-#: src/views/settings/cards/language_card.py:54
-msgid "Language"
-msgstr "Limbă"
+#, python-brace-format
+msgid "Transcribing chunk {current} of {total}…"
+msgstr "Se transcrie fragmentul {current} din {total}…"
 
-#: src/views/settings/cards/language_card.py:61
-msgid "Language of the audio"
-msgstr "Limba audio"
+msgid "Transcribing…"
+msgstr "Se transcrie…"
 
-#: src/views/settings/cards/language_card.py:65
-#: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:423
-msgid "Search language…"
-msgstr "Caută limba…"
+msgid "Transcription"
+msgstr "Transcriere"
 
-#: src/views/settings/cards/language_card.py:66
-#: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:424
-msgid "No languages found."
-msgstr "Nu s-au găsit limbi."
+msgid "Transcription cancelled."
+msgstr "Transcrierea a fost anulată."
 
-#: src/views/settings/cards/language_card.py:71
-msgid "Auto-detect"
-msgstr "Detectare automată"
+msgid "Transcription method"
+msgstr "Metodă de transcriere"
 
-#: src/views/settings/cards/language_card.py:80
-msgid "Language of the transcription"
-msgstr "Limba transcrierii"
+msgid "Transcription ready"
+msgstr "Transcriere gata"
 
-#: src/views/settings/cards/language_card.py:90
-msgid "Same as the audio"
-msgstr "La fel ca audio"
+msgid "Transcriptions"
+msgstr "Transcrieri"
 
-#: src/views/settings/cards/language_card.py:131
+msgid "Translate"
+msgstr "Tradu"
+
+msgid "Translate again"
+msgstr "Tradu din nou"
+
+msgid "Translate into another language…"
+msgstr "Tradu în altă limbă…"
+
+msgid "Translate into:"
+msgstr "Tradu în:"
+
+msgid "Translate text"
+msgstr "Tradu textul"
+
+msgid "Translate text…"
+msgstr "Tradu textul…"
+
+#, python-brace-format
+msgid ""
+"Translate the transcription into {language} again? The changes made to "
+"the translation will be lost."
+msgstr ""
+"Traduci din nou transcrierea în {language}? Modificările aduse traducerii"
+" se vor pierde."
+
 msgid "Translate with Whisper (recommended)"
 msgstr "Tradu cu Whisper (recomandat)"
 
-#: src/views/settings/cards/language_card.py:183
-msgid ""
-"The Google API can't translate. The transcription will be in the language"
-" of the audio."
-msgstr "API-ul Google nu poate traduce. Transcrierea va fi în limba audio."
+msgid "Translate with:"
+msgstr "Tradu cu:"
 
-#: src/views/settings/cards/language_card.py:193
+msgid "Translates each segment, keeping its timestamps."
+msgstr "Traduce fiecare segment, păstrând marcajele de timp."
+
+msgid "Translate…"
+msgstr "Tradu…"
+
 #, python-brace-format
-msgid "Write it directly in {language} (experimental)"
-msgstr "Scrie-o direct în limba: {language} (experimental)"
+msgid "Translating into {language}…"
+msgstr "Se traduce în limba: {language}…"
 
-#: src/views/settings/cards/language_card.py:211
-msgid "Whisper transcribes and translates the audio in one step."
-msgstr "Whisper transcrie și traduce audio într-un singur pas."
+msgid "Translating…"
+msgstr "Se traduce…"
 
-#: src/views/settings/cards/language_card.py:215
+msgid "Translation"
+msgstr "Traducere"
+
+#, python-brace-format
+msgid "Translation into {language}"
+msgstr "Traducere în limba {language}"
+
+#, python-brace-format
+msgid "Translation of the segment from {start} to {end}:"
+msgstr "Traducerea segmentului de la {start} la {end}:"
+
+#, python-brace-format
+msgid "Translation of “{text}”, said from {start} to {end}:"
+msgstr "Traducerea pentru „{text}”, rostit de la {start} la {end}:"
+
+msgid "Try again"
+msgstr "Încearcă din nou"
+
+# Needs review by a native speaker
+msgid "Turn on “Word-level timings” and transcribe it again"
+msgstr "Activează „Temporizare pe cuvânt” și transcrie din nou"
+
+msgid ""
+"Type in the API key. It's kept in the credential store of your system. "
+"Leave it empty to remove it."
+msgstr ""
+"Introduceți cheia API. Este păstrată în depozitul de acreditări al "
+"sistemului. Lăsați câmpul gol pentru a o elimina."
+
+msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
+msgstr "Scrieți timpii ca 00:01:05,900, 01:05,9 sau 65.9."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Underlines each word as it's said (.srt and .vtt)."
+msgstr "Subliniază fiecare cuvânt pe măsură ce este rostit (.srt și .vtt)."
+
+# Needs review by a native speaker
+msgid "Undo"
+msgstr "Anulează"
+
+msgid "Unpin"
+msgstr "Anulează fixarea"
+
+msgid "Unpin from the main window"
+msgstr "Nu mai păstra deasupra ferestrei principale"
+
+#, python-brace-format
+msgid "Unsupported file type: {extension}"
+msgstr "Tip de fișier neacceptat: {extension}"
+
+msgid "Updates"
+msgstr "Actualizări"
+
+msgid "Use CPU"
+msgstr "Folosește CPU"
+
+#, python-brace-format
+msgid "Uses the model {model}."
+msgstr "Folosește modelul {model}."
+
+#, python-brace-format
+msgid "Version {version}"
+msgstr "Versiunea {version}"
+
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "Versiunea {version} este disponibilă"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Video files"
+msgstr "Fișiere video"
+
+msgid "Video with subtitles (.mp4)…"
+msgstr "Videoclip cu subtitrări (.mp4)…"
+
+msgid "Wait until the current transcription finishes, or cancel it."
+msgstr "Așteptați până se termină transcrierea curentă sau anulați-o."
+
+#, python-brace-format
+msgid "Waiting for new files in {folder}…"
+msgstr "Se așteaptă fișiere noi în {folder}…"
+
+msgid "Waiting for new files…"
+msgstr "Se așteaptă fișiere noi…"
+
+msgid "Waiting for speech…"
+msgstr "Se așteaptă vorbirea…"
+
+msgid "Waiting for the current transcription to finish."
+msgstr "Se așteaptă finalizarea transcrierii curente."
+
+#, python-brace-format
+msgid "Waiting for {count} transcription(s) to finish."
+msgstr "Se așteaptă finalizarea transcrierilor: {count}."
+
+msgid "Watch the folder"
+msgstr "Monitorizează dosarul"
+
+msgid "Watched folder"
+msgstr "Dosar monitorizat"
+
+msgid "Watching"
+msgstr "Monitorizare"
+
+msgid "Web subtitles (.vtt)"
+msgstr "Subtitrări web (.vtt)"
+
+msgid "What do you want to transcribe?"
+msgstr "Ce doriți să transcrieți?"
+
+msgid "What the audio is about, such as its topic or setting."
+msgstr "Despre ce este audio, cum ar fi subiectul sau contextul."
+
 #, python-brace-format
 msgid ""
 "Whisper can only translate into {english}. For other languages, it's "
@@ -1631,853 +1736,121 @@ msgstr ""
 "cere să scrie transcrierea direct în limba: {language}. Funcționează bine"
 " pentru multe limbi, dar verificați rezultatul."
 
-#: src/views/settings/cards/live_card.py:27
-msgid "Live text"
-msgstr "Text live"
+msgid "Whisper transcribes and translates the audio in one step."
+msgstr "Whisper transcrie și traduce audio într-un singur pas."
 
-#: src/views/settings/cards/live_card.py:30
-msgid "Show the text while recording"
-msgstr "Afișează textul în timpul înregistrării"
+msgid "WhisperX model ready."
+msgstr "Modelul WhisperX este gata."
 
-#: src/views/settings/cards/live_card.py:35
-msgid "Live model"
-msgstr "Model live"
-
-#: src/views/settings/cards/live_card.py:62
-#: src/views/settings/cards/options_card.py:120
-#: src/views/settings/cards/options_card.py:149
-msgid "Only available with WhisperX."
-msgstr "Disponibil doar cu WhisperX."
-
-#: src/views/settings/cards/live_card.py:65
 msgid ""
-"A fast model writes a draft while you speak. When you stop, the whole "
-"recording is transcribed again with the model of the engine, which is "
-"more accurate."
+"With timestamps, to play the transcription segment by segment and "
+"generate subtitles."
 msgstr ""
-"Un model rapid scrie o ciornă în timp ce vorbiți. Când vă opriți, "
-"întreaga înregistrare este transcrisă din nou cu modelul motorului, care "
-"este mai precis."
+"Cu marcaje de timp, pentru a reda transcrierea segment cu segment și a "
+"genera subtitrări."
 
-#: src/views/settings/cards/live_card.py:70
-msgid "The text is shown when you stop recording."
-msgstr "Textul este afișat când opriți înregistrarea."
+msgid "Word document (.docx)"
+msgstr "Document Word (.docx)"
 
-#: src/views/settings/cards/options_card.py:38
-msgid "Options"
-msgstr "Opțiuni"
-
-#: src/views/settings/cards/options_card.py:44
 msgid "Word-level timings"
 msgstr "Temporizare pe cuvânt"
 
-#: src/views/settings/cards/options_card.py:52
-msgid "Extract speech"
-msgstr "Extrage vocea"
+#, python-brace-format
+msgid "Write it directly in {language} (experimental)"
+msgstr "Scrie-o direct în limba: {language} (experimental)"
 
-#: src/views/settings/cards/options_card.py:56
-msgid "Reduces music and background noise before transcribing."
-msgstr "Reduce muzica și zgomotul de fond înainte de transcriere."
+msgid "You can edit the text. The changes are saved automatically."
+msgstr "Puteți edita textul. Modificările sunt salvate automat."
 
-#: src/views/settings/cards/options_card.py:60
-msgid "Identify speakers"
-msgstr "Identifică vorbitorii"
-
-#: src/views/settings/cards/options_card.py:70
-msgid "Number of speakers (0 = auto)"
-msgstr "Număr de vorbitori (0 = auto)"
-
-#: src/views/settings/cards/options_card.py:94
-msgid "Set Hugging Face token…"
-msgstr "Setează tokenul Hugging Face…"
-
-#: src/views/settings/cards/options_card.py:123
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr ""
-"Evidențiază fiecare cuvânt în timpul redării. Subtitrările le folosesc "
-"deja."
-
-#: src/views/settings/cards/options_card.py:126
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Evidențiază fiecare cuvânt în timpul redării. Durează puțin mai mult."
-
-#: src/views/settings/cards/options_card.py:136
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Indică cine vorbește în fiecare parte. Necesită un token Hugging Face."
-
-#: src/views/settings/cards/options_card.py:142
-msgid "The model of the Whisper API identifies the speakers."
-msgstr "Modelul API-ului Whisper identifică vorbitorii."
-
-#: src/views/settings/cards/options_card.py:145
 msgid ""
-"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
-" of the Whisper API."
+"You can keep using Audiotext meanwhile. The result is saved in your "
+"history and opens here when it's ready."
 msgstr ""
-"Disponibil doar cu WhisperX sau cu modelul gpt-4o-transcribe-diarize al "
-"API-ului Whisper."
+"Între timp, puteți folosi în continuare Audiotext. Rezultatul este salvat"
+" în istoric și se deschide aici când este gata."
 
-#: src/views/settings/cards/output_card.py:38
-msgid "Output"
-msgstr "Ieșire"
+msgid "You have the latest version."
+msgstr "Ai cea mai recentă versiune."
 
-#: src/views/settings/cards/output_card.py:42
-msgid "File types"
-msgstr "Tipuri de fișiere"
+msgid "YouTube or a link to a file"
+msgstr "YouTube sau un link către un fișier"
 
-#: src/views/settings/cards/output_card.py:108
-msgid "Next to the source"
-msgstr "Lângă sursă"
+msgid "YouTube video"
+msgstr "Videoclip YouTube"
 
-#: src/views/settings/cards/output_card.py:115
-msgid "Overwrite existing files"
-msgstr "Suprascrie fișierele existente"
+msgid "Your audio, video and saved files are not deleted."
+msgstr "Fișierele audio, video și cele salvate nu sunt șterse."
 
-#: src/views/settings/cards/output_card.py:119
-msgid "The files of a folder are always saved."
-msgstr "Fișierele unui dosar sunt salvate întotdeauna."
+msgid "cancelled"
+msgstr "anulat"
 
-#: src/views/settings/cards/output_card.py:147
-msgid "The Google API returns plain text (.txt)."
-msgstr "API-ul Google returnează text simplu (.txt)."
+msgid "default"
+msgstr "implicit"
 
-#: src/views/settings/cards/output_card.py:152
+msgid "e.g. An interview about speech recognition"
+msgstr "de ex. Un interviu despre recunoașterea vorbirii"
+
+msgid "e.g. Audiotext, WhisperX, Henestrosa"
+msgstr "de ex. Audiotext, WhisperX, Henestrosa"
+
+msgid "float16 is faster on GPUs. int8 uses less memory."
+msgstr "float16 este mai rapid pe GPU. int8 folosește mai puțină memorie."
+
+msgid "or"
+msgstr "sau"
+
+msgid "xAI API key"
+msgstr "Cheie API xAI"
+
 #, python-brace-format
-msgid "Saved in {folder}"
-msgstr "Se salvează în {folder}"
+msgid "{count} audio and video files (subfolders included)"
+msgstr "Fișiere audio și video: {count} (inclusiv subdosare)"
 
-#: src/views/settings/cards/output_card.py:155
-msgid "Saved next to the source"
-msgstr "Se salvează lângă sursă"
-
-#: src/views/settings/cards/output_card.py:174
-msgid "Format of the files."
-msgstr "Formatul fișierelor."
-
-#: src/views/settings/cards/output_card.py:177
 #, python-brace-format
-msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
-msgstr ""
-"Modelul {model} nu returnează marcaje de timp, așa că nu poate salva "
-"subtitrări."
+msgid "{count} done"
+msgstr "Finalizate: {count}"
 
-#: src/views/settings/cards/output_card.py:197
-msgid "Choose where to save the transcriptions"
-msgstr "Alegeți unde se salvează transcrierile"
-
-#: src/views/transcript/corrections.py:180
-msgid "Edit the timing"
-msgstr "Editează temporizarea"
-
-#: src/views/transcript/corrections.py:181
-#: src/views/transcript/edit_dialogs.py:78 src/views/widgets/text_dialog.py:69
-msgid "Save"
-msgstr "Salvează"
-
-#: src/views/transcript/corrections.py:208
-msgid "Add a segment"
-msgstr "Adaugă un segment"
-
-#: src/views/transcript/corrections.py:209
-msgid "Add"
-msgstr "Adaugă"
-
-#: src/views/transcript/corrections.py:210
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Noul segment vine după cel de la {time}:"
+msgid "{count} failed"
+msgstr "Eșuate: {count}"
 
-#: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1441
-msgid "Delete the segment"
-msgstr "Șterge segmentul"
-
-#: src/views/transcript/corrections.py:241
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Ștergeți segmentul „{text}”?"
+msgid "{count} files"
+msgstr "Fișiere: {count}"
 
-#: src/views/transcript/corrections.py:275
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Segmentul de la {time}, netradus încă."
+msgid "{count} transcriptions"
+msgstr "Transcrieri: {count}"
 
-#: src/views/transcript/edit_dialogs.py:78
-msgid "Rename speakers"
-msgstr "Redenumește vorbitorii"
-
-#: src/views/transcript/edit_dialogs.py:85
-msgid ""
-"Give a name to each speaker. Giving two speakers the same name merges "
-"them."
-msgstr ""
-"Dați un nume fiecărui vorbitor. Dacă dați același nume la doi vorbitori, "
-"aceștia sunt combinați."
-
-#: src/views/transcript/edit_dialogs.py:155
-msgid "Start:"
-msgstr "Început:"
-
-#: src/views/transcript/edit_dialogs.py:155
-msgid "End:"
-msgstr "Sfârșit:"
-
-#: src/views/transcript/edit_dialogs.py:194
-msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
-msgstr "Scrieți timpii ca 00:01:05,900, 01:05,9 sau 65.9."
-
-#: src/views/transcript/edit_dialogs.py:196
-msgid "The segment must end after it starts."
-msgstr "Segmentul trebuie să se termine după ce începe."
-
-#: src/views/transcript/find_dialog.py:80
-msgid "Find:"
-msgstr "Caută:"
-
-#: src/views/transcript/find_dialog.py:83
-msgid "Replace with:"
-msgstr "Înlocuiește cu:"
-
-#: src/views/transcript/find_dialog.py:93
-msgid "Match case"
-msgstr "Potrivire majuscule"
-
-#: src/views/transcript/find_dialog.py:108
-msgid "Stay on top"
-msgstr "Păstrează deasupra"
-
-#: src/views/transcript/find_dialog.py:113
-msgid "Unpin from the main window"
-msgstr "Nu mai păstra deasupra ferestrei principale"
-
-#: src/views/transcript/find_dialog.py:115
-msgid "Keep above the main window"
-msgstr "Păstrează deasupra ferestrei principale"
-
-#: src/views/transcript/find_dialog.py:126
-msgid "Replace"
-msgstr "Înlocuiește"
-
-#: src/views/transcript/find_dialog.py:131
-msgid "Replace all"
-msgstr "Înlocuiește tot"
-
-#: src/views/transcript/find_dialog.py:189
-#: src/views/transcript/find_dialog.py:235
 #, python-brace-format
 msgid "{current} of {total}"
 msgstr "{current} din {total}"
 
-#: src/views/transcript/find_dialog.py:250
-msgid "Previous match"
-msgstr "Rezultatul anterior"
-
-#: src/views/transcript/find_dialog.py:257
-msgid "Next match"
-msgstr "Rezultatul următor"
-
-#: src/views/transcript/player_bar.py:172
-msgid "Loading the audio…"
-msgstr "Se încarcă audio…"
-
-#: src/views/transcript/player_bar.py:202
 #, python-brace-format
-msgid "Space: play/pause · ←/→: {seconds} s back/forward"
-msgstr "Spațiu: redare/pauză · ←/→: {seconds} s înapoi/înainte"
+msgid "{done}/{total} files"
+msgstr "Fișiere: {done}/{total}"
 
-#: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1592
 #, python-brace-format
-msgid "The audio can't be played: {error}"
-msgstr "Audio nu poate fi redat: {error}"
+msgid "{minutes} min {seconds} s"
+msgstr "{minutes} min {seconds} s"
 
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:92
-msgid "Only flagged"
-msgstr "Doar cele marcate"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:105
-msgid "Auto-play"
-msgstr "Redare automată"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:111
-msgid "Undo"
-msgstr "Anulează"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:121
-msgid "Accept remaining"
-msgstr "Acceptă restul"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:132
-msgid "Adjust threshold"
-msgstr "Ajustează pragul"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:143
-msgid "Review accepted words again"
-msgstr "Verifică din nou cuvintele acceptate"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:156
-msgid "Review low-confidence words"
-msgstr "Verifică cuvintele cu încredere scăzută"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:237
 #, python-brace-format
-msgid "{remaining} of {total} to review"
-msgstr "{remaining} din {total} de verificat"
+msgid "{name}: {message}"
+msgstr "{name}: {message}"
 
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:241
-#, python-brace-format
-msgid "All reviewed · {total} of {total}"
-msgstr "Totul verificat · {total} din {total}"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:243
-msgid "No low-confidence words at this threshold"
-msgstr "Niciun cuvânt cu încredere scăzută la acest prag"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:245
-msgid "Confidence data isn’t available for this transcript"
-msgstr "Nu există date de încredere pentru această transcriere"
-
-#: src/views/transcript/summary_panel.py:202
-#, python-brace-format
-msgid "Find ({shortcut})"
-msgstr "Caută ({shortcut})"
-
-#: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:713
-#: src/views/transcript/translation_panel.py:149
-msgid "Export"
-msgstr "Exportă"
-
-#: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1109
-msgid "Regenerate the summary"
-msgstr "Regenerează rezumatul"
-
-#: src/views/transcript/summary_panel.py:272
-msgid "Summarizing…"
-msgstr "Se rezumă…"
-
-#: src/views/transcript/summary_panel.py:273
 #, python-brace-format
 msgid "{provider} is reading the transcription. It takes a moment."
 msgstr "{provider} citește transcrierea. Durează un moment."
 
-#: src/views/transcript/summary_panel.py:279
-#: src/views/transcript/summary_panel.py:292
-msgid "No summary yet"
-msgstr "Încă niciun rezumat"
-
-#: src/views/transcript/summary_panel.py:281
-#, python-brace-format
-msgid ""
-"Generate a summary, the key points and the chapters of the transcription "
-"with {provider}."
-msgstr ""
-"Generați un rezumat, punctele cheie și capitolele transcrierii cu "
-"{provider}."
-
-#: src/views/transcript/summary_panel.py:286
-msgid "Generate summary"
-msgstr "Generează rezumat"
-
-#: src/views/transcript/summary_panel.py:294
-#, python-brace-format
-msgid ""
-"Set the API key of {provider} to summarize, or choose another provider in"
-" the settings."
-msgstr ""
-"Setați cheia API pentru {provider} pentru a rezuma sau alegeți alt "
-"furnizor în setări."
-
-#: src/views/transcript/summary_panel.py:374
-msgid "The transcription is very long, so only its beginning was summarized."
-msgstr "Transcrierea este foarte lungă, așa că a fost rezumat doar începutul ei."
-
-#: src/views/transcript/summary_panel.py:389
-#, python-brace-format
-msgid "Generated by {model} · {date}"
-msgstr "Generat de {model} · {date}"
-
-#: src/views/transcript/transcript_text.py:336
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr ""
-"Faceți clic pe un segment pentru a-l reda. Faceți clic dreapta pentru a-l"
-" edita."
-
-#: src/views/transcript/transcript_text.py:341
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Textul simplu a fost editat; transcrierea cu marcaje păstrează originalul."
-
-#: src/views/transcript/transcript_text.py:347
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Puteți edita textul. Modificările sunt salvate automat."
-
-#: src/views/transcript/transcript_text.py:352
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Marcajele de timp sunt disponibile doar cu WhisperX și cu modelele "
-"whisper-1 și gpt-4o-transcribe-diarize ale API-ului Whisper."
-
-#: src/views/transcript/transcript_text.py:825
-msgid "This transcription has no timestamps."
-msgstr "Această transcriere nu are marcaje de timp."
-
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:147
-msgid "There is no alignment model for its language"
-msgstr "Nu există un model de aliniere pentru limba sa"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:148
-msgid "Turn on “Word-level timings” and transcribe it again"
-msgstr "Activează „Temporizare pe cuvânt” și transcrie din nou"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:155
-msgid "Transcribe it again to score its words"
-msgstr "Transcrie din nou pentru a evalua cuvintele"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:156
-msgid "Only WhisperX and whisper-1 score the words"
-msgstr "Doar WhisperX și whisper-1 evaluează cuvintele"
-
-#: src/views/transcript/transcript_view.py:161
-msgid "Plain text (.txt)"
-msgstr "Text simplu (.txt)"
-
-#: src/views/transcript/transcript_view.py:162
-msgid "Markdown (.md)"
-msgstr "Markdown (.md)"
-
-#: src/views/transcript/transcript_view.py:163
-msgid "Word document (.docx)"
-msgstr "Document Word (.docx)"
-
-#: src/views/transcript/transcript_view.py:164
-msgid "Subtitles (.srt)"
-msgstr "Subtitrări (.srt)"
-
-#: src/views/transcript/transcript_view.py:165
-msgid "Web subtitles (.vtt)"
-msgstr "Subtitrări web (.vtt)"
-
-#: src/views/transcript/transcript_view.py:166
-msgid "Styled subtitles (.ass)"
-msgstr "Subtitrări cu stil (.ass)"
-
-#: src/views/transcript/transcript_view.py:167
-msgid "Table (.tsv)"
-msgstr "Tabel (.tsv)"
-
-#: src/views/transcript/transcript_view.py:168
-msgid "JSON (.json)"
-msgstr "JSON (.json)"
-
-#: src/views/transcript/transcript_view.py:310
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Nu mai derula traducerea împreună cu transcrierea"
-
-#: src/views/transcript/transcript_view.py:312
-msgid "Scroll the translation with the transcription"
-msgstr "Derulează traducerea împreună cu transcrierea"
-
-#: src/views/transcript/transcript_view.py:497
-msgid "Stop adding the subtitles to the video"
-msgstr "Oprește adăugarea subtitrărilor în videoclip"
-
-#: src/views/transcript/transcript_view.py:502
-msgid "Video with subtitles (.mp4)…"
-msgstr "Videoclip cu subtitrări (.mp4)…"
-
-#: src/views/transcript/transcript_view.py:523
-msgid "Export transcription"
-msgstr "Exportă transcrierea"
-
-#: src/views/transcript/transcript_view.py:544
 #, python-brace-format
-msgid "Export translation into {language}"
-msgstr "Exportă traducerea în limba {language}"
+msgid "{remaining} of {total} to review"
+msgstr "{remaining} din {total} de verificat"
 
-#: src/views/transcript/transcript_view.py:557
-msgid "Export summary"
-msgstr "Exportă rezumatul"
-
-#: src/views/transcript/transcript_view.py:586
-#: src/views/transcript/video_export.py:89
 #, python-brace-format
-msgid "Could not export: {error}"
-msgstr "Nu s-a putut exporta: {error}"
+msgid "{seconds} s"
+msgstr "{seconds} s"
 
-#: src/views/transcript/transcript_view.py:589
-#: src/views/transcript/video_export.py:101
 #, python-brace-format
-msgid "Exported to {path}"
-msgstr "Exportat în {path}"
-
-#: src/views/transcript/transcript_view.py:616
-msgid "All files"
-msgstr "Toate fișierele"
-
-#: src/views/transcript/transcript_view.py:632
-msgid "Export video with subtitles"
-msgstr "Exportă videoclipul cu subtitrări"
-
-#: src/views/transcript/transcript_view.py:705
-#: src/views/transcript/translation_panel.py:143
-#, python-brace-format
-msgid "Find and replace ({shortcut})"
-msgstr "Caută și înlocuiește ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:753
-msgid "No low-confidence words left to review"
-msgstr "Nu mai sunt cuvinte cu încredere scăzută de verificat"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:763
-msgid "Show all segments"
-msgstr "Arată toate segmentele"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:800
-#, python-brace-format
-msgid "Previous low-confidence word ({shortcut})"
-msgstr "Cuvântul anterior cu încredere scăzută ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:802
-#, python-brace-format
-msgid "Next low-confidence word ({shortcut})"
-msgstr "Următorul cuvânt cu încredere scăzută ({shortcut})"
-
-#: src/views/transcript/transcript_view.py:814
-msgid "Plain text"
-msgstr "Text simplu"
-
-#: src/views/transcript/transcript_view.py:823
-#: src/views/transcript/translation_panel.py:409
-msgid "Translate"
-msgstr "Tradu"
-
-#: src/views/transcript/transcript_view.py:936
-#: src/views/transcript/transcript_view.py:1480
-msgid "Edit text"
-msgstr "Editează textul"
-
-#: src/views/transcript/transcript_view.py:936
-#, python-brace-format
-msgid "Text said at {time}:"
-msgstr "Text rostit la {time}:"
-
-#: src/views/transcript/transcript_view.py:1013
-msgid "Find and replace in the transcription"
-msgstr "Caută și înlocuiește în transcriere"
-
-#: src/views/transcript/transcript_view.py:1023
-msgid "Find and replace in the translation"
-msgstr "Caută și înlocuiește în traducere"
-
-#: src/views/transcript/transcript_view.py:1024
-#, python-brace-format
-msgid "Find and replace in the translation into {language}"
-msgstr "Caută și înlocuiește în traducerea în {language}"
-
-#: src/views/transcript/transcript_view.py:1037
-msgid "Find in the summary"
-msgstr "Caută în rezumat"
-
-#: src/views/transcript/transcript_view.py:1110
-msgid "Generate the summary again? The current one will be replaced."
-msgstr "Regenerezi rezumatul? Cel actual va fi înlocuit."
-
-#: src/views/transcript/transcript_view.py:1268
-#: src/views/transcript/translation_panel.py:155
-msgid "Hide the translation"
-msgstr "Ascunde traducerea"
-
-#: src/views/transcript/transcript_view.py:1273
-msgid "Show the translation"
-msgstr "Afișează traducerea"
-
-#: src/views/transcript/transcript_view.py:1277
-#: src/views/transcript/translation_panel.py:298
-msgid "Translate into another language…"
-msgstr "Tradu în altă limbă…"
-
-#: src/views/transcript/transcript_view.py:1288
-msgid "Show it as the subtitles of the video"
-msgstr "Afișeaz-o ca subtitrări ale videoclipului"
-
-#: src/views/transcript/transcript_view.py:1295
-msgid "Delete the translation"
-msgstr "Șterge traducerea"
-
-#: src/views/transcript/transcript_view.py:1420
-#: src/views/transcript/transcript_view.py:1659
-msgid "Play from here"
-msgstr "Redă de aici"
-
-#: src/views/transcript/transcript_view.py:1428
-#: src/views/transcript/transcript_view.py:1663
-msgid "Edit text…"
-msgstr "Editează textul…"
-
-#: src/views/transcript/transcript_view.py:1428
-msgid "Translate text…"
-msgstr "Tradu textul…"
-
-#: src/views/transcript/transcript_view.py:1432
-msgid "Edit the timing…"
-msgstr "Editează temporizarea…"
-
-#: src/views/transcript/transcript_view.py:1436
-msgid "Add a segment after…"
-msgstr "Adaugă un segment după…"
-
-#: src/views/transcript/transcript_view.py:1480
-msgid "Translate text"
-msgstr "Tradu textul"
-
-#: src/views/transcript/transcript_view.py:1483
-#, python-brace-format
-msgid "Translation of “{text}”, said from {start} to {end}:"
-msgstr "Traducerea pentru „{text}”, rostit de la {start} la {end}:"
-
-#: src/views/transcript/transcript_view.py:1485
-#, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Traducerea segmentului de la {start} la {end}:"
-
-#: src/views/transcript/transcript_view.py:1521
-#: src/views/transcript/translation_panel.py:152
-msgid "Translate again"
-msgstr "Tradu din nou"
-
-#: src/views/transcript/transcript_view.py:1523
-#, python-brace-format
-msgid ""
-"Translate the transcription into {language} again? The changes made to "
-"the translation will be lost."
-msgstr ""
-"Traduci din nou transcrierea în {language}? Modificările aduse traducerii"
-" se vor pierde."
-
-#: src/views/transcript/transcript_view.py:1546
-msgid "The audio isn't available: the source file was moved or deleted."
-msgstr "Audio nu este disponibil: fișierul sursă a fost mutat sau șters."
-
-#: src/views/transcript/transcript_view.py:1549
-msgid "The audio isn't available."
-msgstr "Audio nu este disponibil."
-
-#: src/views/transcript/transcript_view.py:1667
-#: src/views/transcript/transcript_view.py:1745
-msgid "Rename speakers…"
-msgstr "Redenumește vorbitorii…"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1688
-msgid "Highlight low-confidence words"
-msgstr "Evidențiază cuvintele cu încredere scăzută"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1696
-msgid "Low-confidence threshold"
-msgstr "Prag de încredere scăzută"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1718
-#, python-brace-format
-msgid "Below {percent}%"
-msgstr "Sub {percent}%"
-
-#: src/views/transcript/transcript_view.py:1734
-#, python-brace-format
-msgid "Transcribe “{title}” again? The changes made to its text will be lost."
-msgstr "Transcrii din nou „{title}”? Modificările aduse textului se vor pierde."
-
-#: src/views/transcript/transcript_view.py:1755
-msgid "Precise timestamps (HH:MM:SS,mmm)"
-msgstr "Marcaje de timp precise (HH:MM:SS,mmm)"
-
-#: src/views/transcript/transcript_view.py:1779
-msgid "Rename…"
-msgstr "Redenumește…"
-
-#: src/views/transcript/translation_panel.py:188
-msgid "Not translated yet"
-msgstr "Netradus încă"
-
-#: src/views/transcript/translation_panel.py:220
-#, python-brace-format
-msgid "Translating into {language}…"
-msgstr "Se traduce în limba: {language}…"
-
-#: src/views/transcript/translation_panel.py:224
-msgid "Translating…"
-msgstr "Se traduce…"
-
-#: src/views/transcript/translation_panel.py:227
-msgid "It takes a moment."
-msgstr "Durează un moment."
-
-#: src/views/transcript/translation_panel.py:229
-msgid "The transcription is being translated. It takes a moment."
-msgstr "Transcrierea este în curs de traducere. Durează un moment."
-
-#: src/views/transcript/translation_panel.py:236
-msgid "There is no translation yet."
-msgstr "Încă nu există traducere."
-
-#: src/views/transcript/translation_panel.py:238
-msgid "Translate…"
-msgstr "Tradu…"
-
-#: src/views/transcript/translation_panel.py:364
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-"Segmente rămase de tradus: {count}. Faceți clic dreapta pe unul pentru "
-"a-l traduce."
-
-#: src/views/transcript/translation_panel.py:371
-#: src/views/transcript/translation_panel.py:450
-msgid "Manual"
-msgstr "Manual"
-
-#: src/views/transcript/translation_panel.py:418
-msgid "Translate into:"
-msgstr "Tradu în:"
-
-#: src/views/transcript/translation_panel.py:439
-msgid "Translate with:"
-msgstr "Tradu cu:"
-
-#: src/views/transcript/translation_panel.py:496
-msgid "More options in the settings"
-msgstr "Mai multe opțiuni în setări"
-
-#: src/views/transcript/translation_panel.py:527
-#, python-brace-format
-msgid "No API key for {provider}."
-msgstr "Nu există cheie API pentru {provider}."
-
-#: src/views/transcript/translation_panel.py:534
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr ""
-"Creează segmente goale cu marcajele de timp originale, pe care le "
-"completezi."
-
-#: src/views/transcript/translation_panel.py:544
-#, python-brace-format
-msgid "Uses the model {model}."
-msgstr "Folosește modelul {model}."
-
-#: src/views/transcript/translation_panel.py:547
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Traduce fiecare segment, păstrând marcajele de timp."
-
-#: src/views/transcript/translation_panel.py:559
-msgid "Set…"
-msgstr "Setează…"
-
-#: src/views/transcript/video_export.py:84
-msgid "Adding the subtitles to the video was cancelled."
-msgstr "Adăugarea subtitrărilor în videoclip a fost anulată."
-
-#: src/views/transcript/video_export.py:105
-#, python-brace-format
-msgid ""
-"Exported to {path}, but no font has these characters, so they're shown as"
-" boxes: {characters}"
-msgstr ""
-"Exportat în {path}, dar niciun font nu conține aceste caractere, așa că "
-"sunt afișate ca pătrățele: {characters}"
-
-#: src/views/transcript/video_export.py:114
-msgid "Adding the subtitles to the video…"
-msgstr "Se adaugă subtitrările în videoclip…"
-
-#: src/views/transcript/video_export.py:115
-#, python-brace-format
-msgid "Adding the subtitles to the video… {percent}%"
-msgstr "Se adaugă subtitrările în videoclip… {percent}%"
-
-#: src/views/transcript/video_pane.py:260
-msgid "Show subtitles on the video"
-msgstr "Afișează subtitrările pe videoclip"
-
-#: src/views/transcript/video_pane.py:281
-#, python-brace-format
-msgid "Translation into {language}"
-msgstr "Traducere în limba {language}"
-
-#: src/views/transcript/video_pane.py:292
-msgid "Size"
-msgstr "Dimensiune"
-
-#: src/views/transcript/video_pane.py:296
-msgid "Small"
-msgstr "Mic"
-
-#: src/views/transcript/video_pane.py:297
-msgid "Medium"
-msgstr "Mediu"
-
-#: src/views/transcript/video_pane.py:298
-msgid "Large"
-msgstr "Mare"
-
-#: src/views/transcript/video_pane.py:302
-msgid "Position"
-msgstr "Poziție"
-
-#: src/views/transcript/video_pane.py:305
-msgid "Bottom"
-msgstr "Jos"
-
-#: src/views/transcript/video_pane.py:305
-msgid "Top"
-msgstr "Sus"
-
-#: src/views/transcript/video_pane.py:308
-msgid "Style"
-msgstr "Stil"
-
-#: src/views/transcript/video_pane.py:312
-msgid "Dark background"
-msgstr "Fundal întunecat"
-
-#: src/views/transcript/video_pane.py:313
-msgid "Outline"
-msgstr "Contur"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:67
-msgid "Replay"
-msgstr "Redă din nou"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:72
-#, python-brace-format
-msgid "Replay ({shortcut})"
-msgstr "Redă din nou ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:85
-msgid "Accept"
-msgstr "Acceptă"
+msgid "“{name}” is not a supported audio or video file."
+msgstr "„{name}” nu este un fișier audio sau video acceptat."
