@@ -45,6 +45,77 @@ def test_srt(tmp_path: Path) -> None:
     )
 
 
+def ass_events(path: Path) -> list[str]:
+    return [
+        line
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.startswith("Dialogue:")
+    ]
+
+
+def test_ass(tmp_path: Path) -> None:
+    path = export(tmp_path / "talk.mp4", "ass", document())
+
+    assert path == tmp_path / "talk.ass"
+    content = path.read_text(encoding="utf-8")
+    assert content.startswith("[Script Info]\nScriptType: v4.00+\n")
+    assert "PlayResX: 1920\nPlayResY: 1080\n" in content
+    assert ass_events(path) == [
+        "Dialogue: 0,0:00:00.00,0:00:01.50,Default,,0,0,0,,Hello.",
+        "Dialogue: 0,1:01:01.25,1:01:02.00,Speaker1,SPEAKER_01,0,0,0,,"
+        "[SPEAKER_01]: Bye.",
+    ]
+
+
+def test_ass_gives_each_speaker_a_color(tmp_path: Path) -> None:
+    segments = [
+        TranscriptSegment(0, 1, "Hi.", speaker="SPEAKER_00"),
+        TranscriptSegment(1, 2, "Hello.", speaker="SPEAKER_01"),
+        TranscriptSegment(2, 3, "Bye.", speaker="SPEAKER_00"),
+    ]
+
+    content = export(tmp_path / "talk", "ass", document(segments=segments))
+    styles = [
+        line.split(",")[:4]
+        for line in content.read_text(encoding="utf-8").splitlines()
+        if line.startswith("Style:")
+    ]
+
+    assert [style[0] for style in styles] == [
+        "Style: Default",
+        "Style: Speaker1",
+        "Style: Speaker2",
+    ]
+    # Each speaker has a color of its own
+    assert len({style[3] for style in styles}) == 3
+    assert [event.split(",")[3] for event in ass_events(content)] == [
+        "Speaker1",
+        "Speaker2",
+        "Speaker1",
+    ]
+
+
+def test_ass_escapes_the_tags_and_breaks_the_lines(tmp_path: Path) -> None:
+    section = ConfigSubtitles.Key.SECTION
+    ConfigManager.modify_value(section, ConfigSubtitles.Key.MAX_LINE_WIDTH, "12")
+    ConfigManager.modify_value(section, ConfigSubtitles.Key.MAX_LINE_COUNT, "2")
+    segment = TranscriptSegment(0, 2, r"Say {hi} to C:\Users now")
+
+    path = export(tmp_path / "talk", "ass", document(segments=[segment]))
+
+    assert ass_events(path) == [
+        r"Dialogue: 0,0:00:00.00,0:00:02.00,Default,,0,0,0,,Say (hi) to\NC:/Users now"
+    ]
+
+
+def test_ass_of_a_vertical_video(tmp_path: Path) -> None:
+    content = export(tmp_path / "talk", "ass", document(is_vertical=True)).read_text(
+        encoding="utf-8"
+    )
+
+    assert "PlayResX: 1080\nPlayResY: 1920\n" in content
+
+
 def test_srt_splits_long_segments_as_configured(tmp_path: Path) -> None:
     section = ConfigSubtitles.Key.SECTION
     ConfigManager.modify_value(section, ConfigSubtitles.Key.MAX_LINE_WIDTH, "10")
@@ -167,6 +238,7 @@ def test_timed_formats_need_segments(tmp_path: Path) -> None:
         "docx",
         "srt",
         "vtt",
+        "ass",
         "tsv",
         "json",
     }
