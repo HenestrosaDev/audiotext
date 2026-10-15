@@ -330,10 +330,7 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             logger.debug("Could not set the window icon")
 
 
-if __name__ == "__main__":
-    # The bundled app is also run for the helper processes of multiprocessing (e.g.
-    # the resource tracker used by PyTorch), which would otherwise open another window
-    multiprocessing.freeze_support()
+def main() -> None:
     hide_console_windows()
 
     logging.basicConfig(
@@ -342,3 +339,10 @@ if __name__ == "__main__":
 
     app = App()
     app.mainloop()
+
+
+if __name__ == "__main__":
+    # The bundled app is also run for the helper processes of multiprocessing (e.g.
+    # the resource tracker used by PyTorch), which would otherwise open another window
+    multiprocessing.freeze_support()
+    main()

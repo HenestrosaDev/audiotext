@@ -86,6 +86,15 @@ jobs:
       - name: Check that the app opens (macOS)
         if: runner.os == 'macOS'
         run: uv run --no-sync python .github/scripts/smoke_test_app.py dist/Audiotext.app/Contents/MacOS/Audiotext
+      - name: Check that the command-line interface runs (Linux)
+        if: runner.os == 'Linux'
+        run: dist/Audiotext/Audiotext --version
+      - name: Check that the command-line interface runs (macOS)
+        if: runner.os == 'macOS'
+        run: dist/Audiotext.app/Contents/MacOS/Audiotext --version
+      - name: Check that the command-line interface runs (Windows)
+        if: runner.os == 'Windows'
+        run: dist/Audiotext/audiotext-cli.exe --version
       - name: Upload the app
         uses: actions/upload-artifact@v7
         with:
