@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 19:55+0200\n"
+"POT-Creation-Date: 2026-10-15 20:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -292,7 +292,7 @@ msgstr "Транскрипція"
 #: src/views/transcript/summary_panel.py:196
 #: src/views/transcript/transcript_view.py:567
 #: src/views/transcript/transcript_view.py:572
-#: src/views/transcript/transcript_view.py:829
+#: src/views/transcript/transcript_view.py:828
 msgid "Summary"
 msgstr "Підсумок"
 
@@ -340,14 +340,14 @@ msgid "{count} failed"
 msgstr "З помилкою: {count}"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1828
+#: src/views/transcript/transcript_view.py:1841
 msgid "Open the folder of the saved files"
 msgstr "Відкрити папку збережених файлів"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
 #: src/views/transcript/transcript_view.py:734
-#: src/views/transcript/transcript_view.py:1789
+#: src/views/transcript/transcript_view.py:1802
 msgid "Transcribe again"
 msgstr "Транскрибувати знову"
 
@@ -566,22 +566,22 @@ msgid "Rename"
 msgstr "Перейменувати"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1840
+#: src/views/transcript/transcript_view.py:1853
 msgid "Edit note…"
 msgstr "Змінити нотатку…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1840
+#: src/views/transcript/transcript_view.py:1853
 msgid "Add note…"
 msgstr "Додати нотатку…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1845
+#: src/views/transcript/transcript_view.py:1858
 msgid "Delete note…"
 msgstr "Видалити нотатку…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1851
+#: src/views/transcript/transcript_view.py:1864
 msgid "Edit tag…"
 msgstr "Змінити мітку…"
 
@@ -606,7 +606,7 @@ msgid "Move to group"
 msgstr "Перемістити до групи"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1856
+#: src/views/transcript/transcript_view.py:1869
 msgid "Delete…"
 msgstr "Видалити…"
 
@@ -888,8 +888,8 @@ msgstr "Запишіть себе або зустріч. Запис збереж
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
 #: src/views/transcript/transcript_view.py:724
-#: src/views/transcript/transcript_view.py:1480
-#: src/views/transcript/transcript_view.py:1718
+#: src/views/transcript/transcript_view.py:1489
+#: src/views/transcript/transcript_view.py:1727
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Копіювати"
@@ -1195,7 +1195,7 @@ msgstr "Ключі API"
 
 #: src/views/settings/preferences_dialog.py:190
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:827
+#: src/views/transcript/transcript_view.py:826
 msgid "Subtitles"
 msgstr "Субтитри"
 
@@ -1754,12 +1754,12 @@ msgid "Choose where to save the transcriptions"
 msgstr "Виберіть, куди зберігати транскрипції"
 
 #: src/views/transcript/ask_panel.py:178 src/views/transcript/ask_panel.py:207
-#: src/views/transcript/transcript_view.py:830
+#: src/views/transcript/transcript_view.py:829
 msgid "Ask"
 msgstr "Запитати"
 
 #: src/views/transcript/ask_panel.py:181
-#: src/views/transcript/transcript_view.py:1137
+#: src/views/transcript/transcript_view.py:1146
 msgid "Clear the conversation"
 msgstr "Очистити розмову"
 
@@ -1814,7 +1814,7 @@ msgid "The new segment goes after the one at {time}:"
 msgstr "Новий сегмент буде після сегмента о {time}:"
 
 #: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1498
+#: src/views/transcript/transcript_view.py:1507
 msgid "Delete the segment"
 msgstr "Видалити сегмент"
 
@@ -1912,65 +1912,60 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Пробіл: відтворення/пауза · ←/→: на {seconds} с назад/вперед"
 
 #: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1649
+#: src/views/transcript/transcript_view.py:1658
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Не вдається відтворити аудіо: {error}"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:92
+#: src/views/transcript/review_bar.py:90
 msgid "Only flagged"
 msgstr "Лише позначені"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:105
+#: src/views/transcript/review_bar.py:103
 msgid "Auto-play"
 msgstr "Автовідтворення"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:111
+#: src/views/transcript/review_bar.py:109
 msgid "Undo"
 msgstr "Скасувати"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:121
+#: src/views/transcript/review_bar.py:119
 msgid "Accept remaining"
 msgstr "Прийняти решту"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:132
+#: src/views/transcript/review_bar.py:130
 msgid "Adjust threshold"
 msgstr "Змінити поріг"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:143
+#: src/views/transcript/review_bar.py:141
 msgid "Review accepted words again"
 msgstr "Перевірити прийняті слова знову"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:156
-msgid "Review low-confidence words"
-msgstr "Перевірити слова з низькою впевненістю"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:237
+#: src/views/transcript/review_bar.py:218
 #, python-brace-format
 msgid "{remaining} of {total} to review"
 msgstr "{remaining} з {total} на перевірку"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:241
+#: src/views/transcript/review_bar.py:222
 #, python-brace-format
 msgid "All reviewed · {total} of {total}"
 msgstr "Усе перевірено · {total} з {total}"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:243
+#: src/views/transcript/review_bar.py:224
 msgid "No low-confidence words at this threshold"
 msgstr "За цього порогу немає слів із низькою впевненістю"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:245
+#: src/views/transcript/review_bar.py:226
 msgid "Confidence data isn’t available for this transcript"
 msgstr "Для цієї транскрипції немає даних про впевненість"
 
@@ -1986,7 +1981,7 @@ msgid "Export"
 msgstr "Експорт"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1166
+#: src/views/transcript/transcript_view.py:1175
 msgid "Regenerate the summary"
 msgstr "Створити підсумок знову"
 
@@ -2174,125 +2169,125 @@ msgid "Show all segments"
 msgstr "Показати всі сегменти"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:814
+#: src/views/transcript/transcript_view.py:813
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Попереднє слово з низькою впевненістю ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:816
+#: src/views/transcript/transcript_view.py:815
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Наступне слово з низькою впевненістю ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:828
+#: src/views/transcript/transcript_view.py:827
 msgid "Plain text"
 msgstr "Звичайний текст"
 
-#: src/views/transcript/transcript_view.py:838
+#: src/views/transcript/transcript_view.py:837
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Перекласти"
 
-#: src/views/transcript/transcript_view.py:962
-#: src/views/transcript/transcript_view.py:1537
+#: src/views/transcript/transcript_view.py:957
+#: src/views/transcript/transcript_view.py:1546
 msgid "Edit text"
 msgstr "Змінити текст"
 
-#: src/views/transcript/transcript_view.py:962
+#: src/views/transcript/transcript_view.py:957
 #, python-brace-format
 msgid "Text said at {time}:"
 msgstr "Текст, сказаний о {time}:"
 
-#: src/views/transcript/transcript_view.py:1039
+#: src/views/transcript/transcript_view.py:1048
 msgid "Find and replace in the transcription"
 msgstr "Знайти й замінити в транскрипції"
 
-#: src/views/transcript/transcript_view.py:1049
+#: src/views/transcript/transcript_view.py:1058
 msgid "Find and replace in the translation"
 msgstr "Знайти й замінити в перекладі"
 
-#: src/views/transcript/transcript_view.py:1050
+#: src/views/transcript/transcript_view.py:1059
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Знайти й замінити в перекладі мовою {language}"
 
-#: src/views/transcript/transcript_view.py:1063
+#: src/views/transcript/transcript_view.py:1072
 msgid "Find in the summary"
 msgstr "Знайти в підсумку"
 
-#: src/views/transcript/transcript_view.py:1138
+#: src/views/transcript/transcript_view.py:1147
 msgid "Delete the questions and their answers?"
 msgstr "Видалити запитання та відповіді на них?"
 
-#: src/views/transcript/transcript_view.py:1167
+#: src/views/transcript/transcript_view.py:1176
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Створити підсумок знову? Поточний буде замінено."
 
-#: src/views/transcript/transcript_view.py:1325
+#: src/views/transcript/transcript_view.py:1334
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Сховати переклад"
 
-#: src/views/transcript/transcript_view.py:1330
+#: src/views/transcript/transcript_view.py:1339
 msgid "Show the translation"
 msgstr "Показати переклад"
 
-#: src/views/transcript/transcript_view.py:1334
+#: src/views/transcript/transcript_view.py:1343
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Перекласти іншою мовою…"
 
-#: src/views/transcript/transcript_view.py:1345
+#: src/views/transcript/transcript_view.py:1354
 msgid "Show it as the subtitles of the video"
 msgstr "Показувати як субтитри відео"
 
-#: src/views/transcript/transcript_view.py:1352
+#: src/views/transcript/transcript_view.py:1361
 msgid "Delete the translation"
 msgstr "Видалити переклад"
 
-#: src/views/transcript/transcript_view.py:1477
-#: src/views/transcript/transcript_view.py:1716
+#: src/views/transcript/transcript_view.py:1486
+#: src/views/transcript/transcript_view.py:1725
 msgid "Play from here"
 msgstr "Відтворити звідси"
 
-#: src/views/transcript/transcript_view.py:1485
-#: src/views/transcript/transcript_view.py:1720
+#: src/views/transcript/transcript_view.py:1494
+#: src/views/transcript/transcript_view.py:1729
 msgid "Edit text…"
 msgstr "Змінити текст…"
 
-#: src/views/transcript/transcript_view.py:1485
+#: src/views/transcript/transcript_view.py:1494
 msgid "Translate text…"
 msgstr "Перекласти текст…"
 
-#: src/views/transcript/transcript_view.py:1489
+#: src/views/transcript/transcript_view.py:1498
 msgid "Edit the timing…"
 msgstr "Змінити таймінг…"
 
-#: src/views/transcript/transcript_view.py:1493
+#: src/views/transcript/transcript_view.py:1502
 msgid "Add a segment after…"
 msgstr "Додати сегмент після…"
 
-#: src/views/transcript/transcript_view.py:1537
+#: src/views/transcript/transcript_view.py:1546
 msgid "Translate text"
 msgstr "Перекласти текст"
 
-#: src/views/transcript/transcript_view.py:1540
+#: src/views/transcript/transcript_view.py:1549
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Переклад «{text}», сказаного з {start} до {end}:"
 
-#: src/views/transcript/transcript_view.py:1542
+#: src/views/transcript/transcript_view.py:1551
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Переклад сегмента з {start} до {end}:"
 
-#: src/views/transcript/transcript_view.py:1578
+#: src/views/transcript/transcript_view.py:1587
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Перекласти знову"
 
-#: src/views/transcript/transcript_view.py:1580
+#: src/views/transcript/transcript_view.py:1589
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2301,45 +2296,45 @@ msgstr ""
 "Перекласти транскрипцію мовою {language} знову? Зміни в перекладі буде "
 "втрачено."
 
-#: src/views/transcript/transcript_view.py:1603
+#: src/views/transcript/transcript_view.py:1612
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Аудіо недоступне: вихідний файл переміщено або видалено."
 
-#: src/views/transcript/transcript_view.py:1606
+#: src/views/transcript/transcript_view.py:1615
 msgid "The audio isn't available."
 msgstr "Аудіо недоступне."
 
-#: src/views/transcript/transcript_view.py:1724
-#: src/views/transcript/transcript_view.py:1802
+#: src/views/transcript/transcript_view.py:1733
+#: src/views/transcript/transcript_view.py:1815
 msgid "Rename speakers…"
 msgstr "Перейменувати мовців…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1745
+#: src/views/transcript/transcript_view.py:1756
 msgid "Highlight low-confidence words"
 msgstr "Виділяти слова з низькою впевненістю"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1753
+#: src/views/transcript/transcript_view.py:1763
 msgid "Low-confidence threshold"
 msgstr "Поріг низької впевненості"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1775
+#: src/views/transcript/transcript_view.py:1788
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "Нижче {percent}%"
 
-#: src/views/transcript/transcript_view.py:1791
+#: src/views/transcript/transcript_view.py:1804
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Транскрибувати «{title}» знову? Зміни в тексті буде втрачено."
 
-#: src/views/transcript/transcript_view.py:1812
+#: src/views/transcript/transcript_view.py:1825
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Точні часові позначки (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1836
+#: src/views/transcript/transcript_view.py:1849
 msgid "Rename…"
 msgstr "Перейменувати…"
 

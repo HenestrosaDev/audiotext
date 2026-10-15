@@ -1502,10 +1502,16 @@ def test_the_low_confidence_options_need_the_scores_of_the_words(
     ui.window.select_entry(entry.id)
     ui.pump()
     labels()
-    assert states() == [tk.DISABLED] * 2
-    # A note says why
+    # The highlighting can always be turned on and off
+    assert states() == [tk.NORMAL, tk.DISABLED]
+    # A note says why the threshold is disabled
     hint = "Transcribe it again to score its words"
     assert menus[-1].entrycget(hint, "state") == tk.DISABLED
+    # Unless the user doesn't want to hear of the scores
+    ui.window._entry_view._toggle_low_confidence()
+    assert hint not in labels()
+    assert states() == [tk.NORMAL, tk.DISABLED]
+    ui.window._entry_view._toggle_low_confidence()
 
     words = (TranscriptWord(0.0, 1.0, "Hello", 0.1),)
     entry = ui.add(segments=[replace(SEGMENTS[0], words=words)], text=TEXT)
@@ -1620,12 +1626,15 @@ def test_the_review_bar_shows_the_state_of_the_review(ui: Ui) -> None:
     view._set_low_confidence_threshold(40)
     assert status() == "2 of 2 to review"
 
-    # Without the highlighting, it's a link that turns it on
+    # Without the highlighting, the bar isn't shown
     view._toggle_low_confidence()
-    assert status() == ""
-    assert is_shown(bar.btn_enable)
+    assert not is_shown(bar)
     assert view.text.tbx_transcript.tag_ranges("low_confidence") == ()
-    bar.btn_enable.invoke()
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    view._on_mode_change(TRANSCRIPT_MODE)
+    assert not is_shown(bar)
+    view._toggle_low_confidence()
+    assert is_shown(bar)
     assert status() == "2 of 2 to review"
     assert tagged_texts(view.text.tbx_transcript, "low_confidence") == [
         "wisper",
@@ -1661,6 +1670,10 @@ def test_the_review_bar_never_counts_without_scores(ui: Ui) -> None:
         "Confidence data isn’t available for this transcript"
     )
     assert not bar.frm_arrows.grid_info()
+
+    # Not even that, without the highlighting
+    ui.window._entry_view._toggle_low_confidence()
+    assert not bar.grid_info()
 
 
 def test_the_source_and_the_date_of_the_translation_are_next_to_its_language(

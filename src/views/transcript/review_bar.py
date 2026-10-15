@@ -26,7 +26,6 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         master: Any,
         on_previous: Callable[[], None],
         on_next: Callable[[], None],
-        on_enable: Callable[[], None],
         on_adjust_threshold: Callable[[Any], None],
         on_review_again: Callable[[], None],
         on_undo: Callable[[], Any],
@@ -38,7 +37,6 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
         next_tooltip: Text,
     ) -> None:
         """
-        :param on_enable: Turns the highlighting of the low confidence words on.
         :param on_adjust_threshold: Shows the thresholds below the widget given.
         :param on_review_again: Forgets which words were accepted.
         :param on_undo: Undoes the last review.
@@ -142,19 +140,6 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             # Not all of them: the corrected words stay reviewed
             text=L_("Review accepted words again"),
         )
-        # The only content while the words aren't highlighted
-        self.btn_enable = localize(
-            ctk.CTkButton(
-                self,
-                image=icons.icon("warning", 14, theme.ACCENT_TEXT),
-                compound=ctk.LEFT,
-                width=0,
-                height=28,
-                command=on_enable,
-                **(theme.GHOST_BUTTON | {"text_color": theme.ACCENT_TEXT}),
-            ),
-            text=L_("Review low-confidence words"),
-        )
 
     @property
     def review(self) -> Review:
@@ -176,17 +161,13 @@ class ReviewBar(ctk.CTkFrame):  # type: ignore[misc]
             self.btn_accept_remaining,
             self.btn_adjust,
             self.btn_review_again,
-            self.btn_enable,
         ):
             widget.grid_forget()
 
-        # Collapsed to a link that turns the highlighting on
+        # The view hides the bar while the words aren't highlighted
         if state == ReviewState.OFF:
-            self.configure(fg_color="transparent", border_width=0)
-            self.btn_enable.grid(row=0, column=0, pady=6, sticky=ctk.W)
             return
 
-        self.configure(fg_color=theme.SUBTLE_BG, border_width=1)
         icon, color = {
             ReviewState.ACTIVE: ("warning", LOW_CONFIDENCE_COLOR),
             ReviewState.ALL_REVIEWED: ("check_circle", theme.STATUS_DONE),
