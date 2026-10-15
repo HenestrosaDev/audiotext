@@ -19,9 +19,10 @@ from models.transcript_segment import ReviewMark, TranscriptSegment, has_scores
 
 
 class ReviewState(Enum):
-    # The transcription has no scores (e.g. its engine doesn't score the words)
+    # The transcription has no scores (e.g. its engine doesn't score the words),
+    # while the low confidence texts are highlighted
     NO_DATA = "no_data"
-    # The low confidence texts are not highlighted
+    # The low confidence texts are not highlighted, so the review isn't shown
     OFF = "off"
     # No text scores below the threshold
     NOTHING_FLAGGED = "nothing_flagged"
@@ -138,11 +139,12 @@ def build_review(
     :param is_highlighted: Whether the low confidence texts are highlighted.
     :param min_score: The score below which a text may be wrong.
     """
-    # Without scores there's nothing to count, whatever the other options
-    if not has_scores(list(segments)):
-        return Review(ReviewState.NO_DATA)
+    # Without the highlighting, nothing is said of the scores, not even that
+    # there are none
     if not is_highlighted:
         return Review(ReviewState.OFF)
+    if not has_scores(list(segments)):
+        return Review(ReviewState.NO_DATA)
 
     flagged = tuple(flagged_texts(segments, min_score))
     if not flagged:
