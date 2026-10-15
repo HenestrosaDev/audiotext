@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -132,6 +132,20 @@ msgstr "Clave de API de Anthropic"
 msgid "Appearance"
 msgstr "Apariencia"
 
+msgid "Ask"
+msgstr "Preguntar"
+
+msgid "Ask a question about the transcription…"
+msgstr "Haz una pregunta sobre la transcripción…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"Pregunta a {provider} sobre la transcripción, como qué se decidió o quién"
+" dijo algo. Las respuestas enlazan con donde se dice."
+
 msgid "Audio"
 msgstr "Audio"
 
@@ -235,6 +249,9 @@ msgstr ""
 
 msgid "Choose where to save the transcriptions"
 msgstr "Elige dónde guardar las transcripciones"
+
+msgid "Clear the conversation"
+msgstr "Borrar la conversación"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "Haz clic en un segmento para reproducirlo. Haz clic derecho para editarlo."
@@ -344,6 +361,9 @@ msgstr "¿Eliminar el grupo «{name}»? Sus transcripciones se conservan, sin gr
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "¿Eliminar la nota de «{title}»?"
+
+msgid "Delete the questions and their answers?"
+msgstr "¿Eliminar las preguntas y sus respuestas?"
 
 msgid "Delete the segment"
 msgstr "Eliminar el segmento"
@@ -1156,6 +1176,14 @@ msgstr "Configurar clave de API…"
 
 msgid "Set Hugging Face token…"
 msgstr "Configurar token de Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Introduce la clave de API de {provider} para preguntar sobre la "
+"transcripción, o elige otro proveedor en los ajustes."
 
 #, python-brace-format
 msgid ""

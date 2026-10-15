@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -131,6 +131,21 @@ msgstr "Anthropic API anahtarı"
 msgid "Appearance"
 msgstr "Görünüm"
 
+msgid "Ask"
+msgstr "Sor"
+
+msgid "Ask a question about the transcription…"
+msgstr "Transkripsiyon hakkında bir soru sorun…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"Transkripsiyon hakkında {provider} hizmetine soru sorun; örneğin neye "
+"karar verildiğini veya kimin ne söylediğini. Yanıtlar söylendiği yere "
+"bağlantı verir."
+
 msgid "Audio"
 msgstr "Ses"
 
@@ -234,6 +249,9 @@ msgstr ""
 
 msgid "Choose where to save the transcriptions"
 msgstr "Transkripsiyonların nereye kaydedileceğini seçin"
+
+msgid "Clear the conversation"
+msgstr "Konuşmayı temizle"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "Oynatmak için bir segmente tıklayın. Düzenlemek için sağ tıklayın."
@@ -341,6 +359,9 @@ msgstr "\"{name}\" grubu silinsin mi? Transkripsiyonları grupsuz olarak korunur
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "“{title}” notu silinsin mi?"
+
+msgid "Delete the questions and their answers?"
+msgstr "Sorular ve yanıtları silinsin mi?"
 
 msgid "Delete the segment"
 msgstr "Segmenti sil"
@@ -1148,6 +1169,14 @@ msgstr "API anahtarını ayarla…"
 
 msgid "Set Hugging Face token…"
 msgstr "Hugging Face belirtecini ayarla…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Transkripsiyon hakkında soru sormak için API anahtarını ayarlayın "
+"(sağlayıcı: {provider}) veya ayarlardan başka bir sağlayıcı seçin."
 
 #, python-brace-format
 msgid ""

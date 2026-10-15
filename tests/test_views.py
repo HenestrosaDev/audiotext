@@ -29,10 +29,17 @@ from controllers.transcription_queue import Job
 from models.config.config_subtitles import ConfigSubtitles
 from models.config.config_system import ConfigSystem
 from models.history import EntryStatus, HistoryEntry
+from models.question import TranscriptAnswer
 from models.summary import Chapter, TranscriptSummary
 from models.transcript_segment import TranscriptSegment, TranscriptWord
 from models.transcription_settings import TranscriptionSettings
-from tests.conftest import FakeSummarizer, FakeTranslator, MemoryKeyring, make_tone
+from tests.conftest import (
+    FakeAnswerer,
+    FakeSummarizer,
+    FakeTranslator,
+    MemoryKeyring,
+    make_tone,
+)
 from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
 from utils.i18n import DOMAIN, LOCALES_PATH, get_language
@@ -125,10 +132,17 @@ def translator() -> FakeTranslator:
 
 
 @pytest.fixture(scope="module")
+def answerer() -> FakeAnswerer:
+    """Answers the questions instead of a language model. It's shared by the tests."""
+    return FakeAnswerer()
+
+
+@pytest.fixture(scope="module")
 def app(
     tmp_path_factory: pytest.TempPathFactory,
     summarizer: FakeSummarizer,
     translator: FakeTranslator,
+    answerer: FakeAnswerer,
 ) -> Iterator[Any]:
     """
     The app, shared by the tests, since Tk can only create its window once per
@@ -149,7 +163,7 @@ def app(
         keyring.set_keyring(MemoryKeyring())
         import app as app_module
 
-        application = app_module.App(summarizer, translator)
+        application = app_module.App(summarizer, translator, answerer)
         yield application
         application.destroy()
         keyring.set_keyring(previous_keyring)
@@ -2125,6 +2139,7 @@ def test_the_open_views_keep_their_state_in_another_language(
             "Subtítulos",
             "Texto plano",
             "Resumen",
+            "Preguntar",
         ]
         transcript._on_mode_change(transcript._modes.value("Resumen"))
         ui.pump()
@@ -3345,6 +3360,85 @@ def test_a_dialog_moved_off_the_screen_opens_centered(ui: Ui) -> None:
     dialog = _open_text_dialog(ui)
     assert _position(dialog)[0] > 0
     dialog.destroy()
+
+
+def test_questions_are_answered_with_their_sources(
+    ui: Ui, answerer: FakeAnswerer, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.transcript import transcript_view
+
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(view._modes.value("Ask"))
+    ui.pump()
+    panel = view.ask_panel
+    assert panel.winfo_ismapped()
+    assert not view.frm_texts.winfo_ismapped()
+    # Nothing to clear yet
+    assert panel.btn_clear.cget("state") == ctk.DISABLED
+
+    panel.ent_question.insert(0, "  Who says hello?  ")
+    panel.btn_ask.invoke()
+    assert answerer.has_answered.wait(5)
+    ui.pump(0.3)
+
+    assert answerer.questions[-1] == ("Who says hello?", 0)
+    assert entry.questions == [
+        TranscriptAnswer(
+            "Who says hello?", "They say hello.", answerer.sources, "model"
+        ).to_dict()
+    ]
+    conversation = panel.text.get("1.0", "end")
+    assert "Who says hello?" in conversation and "They say hello." in conversation
+    assert panel.ent_question.get() == ""
+    assert panel.btn_clear.cget("state") == ctk.NORMAL
+
+    # Clicking its source plays the audio from where it's said
+    played: list[float] = []
+    monkeypatch.setattr(panel.text, "_on_source", played.append)
+    textbox = panel.text._textbox
+    start = textbox.tag_ranges("source_0_0")[0]
+    x, y, _width, height = textbox.bbox(start)
+    position = {"x": x + 2, "y": y + height // 2}
+    # Tk sends the events of a tag to the text under the pointer, once it moves
+    textbox.event_generate("<Motion>", **position)
+    textbox.event_generate("<ButtonPress-1>", **position)
+    textbox.event_generate("<ButtonRelease-1>", **position)
+    assert played == [0.0]
+
+    # A follow-up question gets the previous answers
+    answerer.has_answered.clear()
+    view._ask("And then?")
+    assert answerer.has_answered.wait(5)
+    ui.pump(0.3)
+    assert answerer.questions[-1] == ("And then?", 1)
+    assert len(entry.questions) == 2
+
+    monkeypatch.setattr(
+        transcript_view.messagebox, "askyesno", lambda *_args, **_kwargs: True
+    )
+    panel.btn_clear.invoke()
+    ui.pump()
+    assert ui.store.get(entry.id).questions == []
+    assert panel.frm_message.winfo_ismapped()
+
+
+def test_questions_need_the_api_key_of_the_provider(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(view._modes.value("Ask"))
+    ui.pump()
+
+    assert view.ask_panel.ent_question.cget("state") == ctk.DISABLED
+    assert view.ask_panel.btn_ask.cget("state") == ctk.DISABLED
 
 
 def test_the_video_is_exported_with_its_subtitles(

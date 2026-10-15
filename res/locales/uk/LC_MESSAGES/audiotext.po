@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -130,6 +130,20 @@ msgstr "Ключ API Anthropic"
 msgid "Appearance"
 msgstr "Оформлення"
 
+msgid "Ask"
+msgstr "Запитати"
+
+msgid "Ask a question about the transcription…"
+msgstr "Поставте запитання про транскрипцію…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"Запитайте {provider} про транскрипцію, наприклад що було вирішено або хто"
+" що сказав. Відповіді посилаються на місце, де це сказано."
+
 msgid "Audio"
 msgstr "Аудіо"
 
@@ -233,6 +247,9 @@ msgstr ""
 
 msgid "Choose where to save the transcriptions"
 msgstr "Виберіть, куди зберігати транскрипції"
+
+msgid "Clear the conversation"
+msgstr "Очистити розмову"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr ""
@@ -343,6 +360,9 @@ msgstr "Видалити групу «{name}»? Її транскрипції з
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "Видалити нотатку до «{title}»?"
+
+msgid "Delete the questions and their answers?"
+msgstr "Видалити запитання та відповіді на них?"
 
 msgid "Delete the segment"
 msgstr "Видалити сегмент"
@@ -1158,6 +1178,14 @@ msgstr "Задати ключ API…"
 
 msgid "Set Hugging Face token…"
 msgstr "Задати токен Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Задайте ключ API для {provider}, щоб ставити запитання про транскрипцію, "
+"або виберіть іншого постачальника в налаштуваннях."
 
 #, python-brace-format
 msgid ""

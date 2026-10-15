@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 3.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,6 +121,18 @@ msgstr ""
 msgid "Appearance"
 msgstr ""
 
+msgid "Ask"
+msgstr ""
+
+msgid "Ask a question about the transcription…"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+
 msgid "Audio"
 msgstr ""
 
@@ -217,6 +229,9 @@ msgid ""
 msgstr ""
 
 msgid "Choose where to save the transcriptions"
+msgstr ""
+
+msgid "Clear the conversation"
 msgstr ""
 
 msgid "Click a segment to play it. Right-click it to edit it."
@@ -320,6 +335,9 @@ msgstr ""
 
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
+msgstr ""
+
+msgid "Delete the questions and their answers?"
 msgstr ""
 
 msgid "Delete the segment"
@@ -1078,6 +1096,12 @@ msgid "Set API key…"
 msgstr ""
 
 msgid "Set Hugging Face token…"
+msgstr ""
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
 msgstr ""
 
 #, python-brace-format
