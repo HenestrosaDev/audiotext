@@ -786,7 +786,6 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             self.frm_text_pane,
             on_previous=lambda: self.reviewer.go_to(-1),
             on_next=lambda: self.reviewer.go_to(1),
-            on_enable=self._toggle_low_confidence,
             on_adjust_threshold=lambda anchor: self._popup_below(
                 self._threshold_menu(self), anchor
             ),
@@ -900,11 +899,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         is_summary = self._mode == SUMMARY_MODE
         if self._mode != TRANSCRIPT_MODE:
             self.word_popover.hide()
-        # The review is of the words of the subtitles
-        if self._mode == TRANSCRIPT_MODE:
-            self.review_bar.grid(row=1, column=0, pady=(0, 10), sticky=ctk.EW)
-        else:
-            self.review_bar.grid_forget()
+        self._place_review_bar()
 
         if is_summary:
             self.frm_texts.grid_forget()
@@ -963,11 +958,25 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         self.text.set_precise_timestamps(is_precise)
         self.translation_panel.set_precise_timestamps(is_precise)
 
+    def _place_review_bar(self) -> None:
+        """
+        The review is of the words of the subtitles, and only shown while they're
+        highlighted: turning that off means not wanting to hear of the scores.
+        """
+        if (
+            self._mode == TRANSCRIPT_MODE
+            and self._config_system.highlight_low_confidence
+        ):
+            self.review_bar.grid(row=1, column=0, pady=(0, 10), sticky=ctk.EW)
+        else:
+            self.review_bar.grid_forget()
+
     def _toggle_low_confidence(self) -> None:
         is_highlighted = not self._config_system.highlight_low_confidence
         self._config_system.highlight_low_confidence = is_highlighted
         save_config(ConfigSystem.Key.HIGHLIGHT_LOW_CONFIDENCE, str(is_highlighted))
         self.reviewer.refresh()
+        self._place_review_bar()
         self._refresh_find_dialog()
 
     def _set_low_confidence_threshold(self, threshold: int) -> None:
@@ -1675,8 +1684,10 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
 
     def _add_low_confidence_items(self, menu: tk.Menu) -> None:
         """
-        Adds the options to highlight the words that may be wrong, which are only
-        enabled if the transcription has scores. The review bar goes to them.
+        Adds the options to highlight the words that may be wrong. The highlighting
+        can always be turned on and off (it's an option of all the transcriptions),
+        but the threshold needs the transcription to have scores. The review bar
+        goes to the words.
         """
         is_scored = has_scores(self._entry.segments)
         config = self._config_system
@@ -1688,7 +1699,6 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             label=_("Highlight low-confidence words"),
             command=self._toggle_low_confidence,
             variable=self._low_confidence_variable,
-            state=tk.NORMAL if is_scored else tk.DISABLED,
         )
 
         threshold_menu = self._threshold_menu(menu)
@@ -1701,8 +1711,11 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
                 else tk.DISABLED
             ),
         )
-        # Says why they're disabled, as a note: menus have no tooltips
-        if hint := low_confidence_hint(self._entry):
+        # Says why the threshold is disabled, as a note (menus have no tooltips),
+        # unless the user doesn't want to hear of the scores
+        if config.highlight_low_confidence and (
+            hint := low_confidence_hint(self._entry)
+        ):
             menu.add_command(label=hint, state=tk.DISABLED)
 
     def _threshold_menu(self, master: Any) -> tk.Menu:

@@ -131,8 +131,8 @@ def test_unaligned_words_are_never_flagged() -> None:
     ("segments", "is_highlighted", "min_score", "state"),
     [
         ([TranscriptSegment(0, 1, "Hello")], True, 0.4, ReviewState.NO_DATA),
-        # Without scores, there's nothing to turn on
-        ([TranscriptSegment(0, 1, "Hello")], False, 0.4, ReviewState.NO_DATA),
+        # Without the highlighting, not even the lack of scores is said
+        ([TranscriptSegment(0, 1, "Hello")], False, 0.4, ReviewState.OFF),
         (SEGMENTS, False, 0.4, ReviewState.OFF),
         (SEGMENTS, True, 0.1, ReviewState.NOTHING_FLAGGED),
         (SEGMENTS, True, 0.4, ReviewState.ACTIVE),
