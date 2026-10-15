@@ -247,7 +247,7 @@ class MainController:
         """
         Transcribes the audio of a file, sends the result to the view and saves it
         if autosave is enabled. Temporary audio files (microphone and URL) are
-        removed after the transcription unless the history keeps them.
+        removed afterwards, once saved, unless the history keeps them.
         """
         transcriber = self._get_transcriber(transcription.method)
         source = transcription.audio_source
@@ -259,28 +259,31 @@ class MainController:
                 dataclasses.replace(transcription, audio_source_path=file_path),
                 on_progress,
             )
+
+            self._ui(
+                self.view.on_file_transcribed,
+                file_path,
+                result.text,
+                result.segments,
+                result.language,
+            )
+
+            if not has_several_files:
+                self._ui(self.view.display_text, result.text)
+
+            if transcription.should_autosave:
+                # Before the file is removed, since saving reads it (e.g. to know
+                # if it's a vertical video, which narrows its subtitles)
+                folder = TranscriptionSaver(transcription).save(
+                    transcriber, result, file_path
+                )
+                # The files of a folder are notified once all of them are
+                # transcribed
+                if not has_several_files:
+                    self._ui(self.view.on_transcription_saved, folder)
         finally:
             if source.is_temporary and transcription.media_path is None:
                 file_path.unlink(missing_ok=True)
-
-        self._ui(
-            self.view.on_file_transcribed,
-            file_path,
-            result.text,
-            result.segments,
-            result.language,
-        )
-
-        if not has_several_files:
-            self._ui(self.view.display_text, result.text)
-
-        if transcription.should_autosave:
-            folder = TranscriptionSaver(transcription).save(
-                transcriber, result, file_path
-            )
-            # The files of a folder are notified once all of them are transcribed
-            if not has_several_files:
-                self._ui(self.view.on_transcription_saved, folder)
 
     def _transcribe_audio(
         self,

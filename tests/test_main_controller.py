@@ -259,6 +259,68 @@ class TestFileTranscription:
         assert fake_view.displayed_texts == ["whisperx text"]
         assert not downloaded_file.exists()
 
+    def test_a_downloaded_video_is_saved_before_being_removed(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        downloader: MagicMock,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        # Like the command line, which saves what it downloads without keeping it
+        downloaded_file = tmp_path / "download" / "audiotext-url-download.mp4"
+        downloaded_file.parent.mkdir()
+        downloaded_file.touch()
+        downloader.download.return_value = downloaded_file
+        checked: list[tuple[Path | None, bool]] = []
+
+        def is_vertical_video(path: Path | None) -> bool:
+            checked.append((path, bool(path and path.exists())))
+            return True
+
+        monkeypatch.setattr(transcribers, "is_vertical_video", is_vertical_video)
+
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.YOUTUBE,
+                url="https://example.com/short.mp4",
+                should_autosave=True,
+                output_dir=tmp_path / "output",
+            )
+        )
+
+        # The video was still there to be checked
+        assert checked == [(downloaded_file, True)]
+        assert whisperx_handler.save_transcription.call_args.kwargs["is_vertical"]
+        assert fake_view.saved_folders == [(tmp_path / "output").resolve()]
+        assert not downloaded_file.exists()
+
+    def test_a_downloaded_file_is_removed_if_saving_fails(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        downloader: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        downloaded_file = tmp_path / "audiotext-url-download.mp4"
+        downloaded_file.touch()
+        downloader.download.return_value = downloaded_file
+        whisperx_handler.save_transcription.side_effect = OSError("disk full")
+
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.YOUTUBE,
+                url="https://example.com/short.mp4",
+                should_autosave=True,
+                output_dir=tmp_path / "output",
+            )
+        )
+
+        assert fake_view.errors == ["OSError: disk full"]
+        assert not downloaded_file.exists()
+
     def test_url_media_is_kept_when_the_history_needs_it(
         self,
         controller: MainController,
