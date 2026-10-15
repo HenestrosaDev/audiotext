@@ -30,6 +30,7 @@ from typing import Any, TextIO
 
 import utils.config_manager as cm
 import utils.constants as c
+import utils.devices as devices
 from controllers.main_controller import MainController
 from controllers.transcription_saver import get_file_extension, get_output_dir
 from handlers import translation_handler
@@ -481,8 +482,11 @@ def add_common_arguments(parser: argparse.ArgumentParser) -> None:
 def get_whisperx_config(args: argparse.Namespace) -> ConfigWhisperX:
     """
     Returns the configured WhisperX options, replaced by the ones given in the
-    command line. Without a CUDA GPU, it always runs on the CPU.
+    command line. Without a GPU (CUDA, or Apple Silicon with MLX), it always runs
+    on the CPU.
     """
+    # Like the app when it starts, e.g. to use the GPU of a Mac once it can
+    devices.configure_whisperx_device()
     config = cm.ConfigManager.get_config_whisperx()
     overrides = {
         "model_size": args.model_size,
@@ -496,14 +500,14 @@ def get_whisperx_config(args: argparse.Namespace) -> ConfigWhisperX:
         config, **{key: value for key, value in overrides.items() if value is not None}
     )
 
-    # Imported here because it takes several seconds
-    import torch
-
-    if not torch.cuda.is_available():
+    if not devices.can_use_gpu():
         config.use_cpu = True
-        # The CPU doesn't support float16
-        if config.compute_type == ComputeType.FLOAT16.value:
-            config.compute_type = ComputeType.INT8.value
+    # Without CUDA, faster-whisper runs on the CPU, which doesn't support float16
+    if (
+        not devices.is_cuda_available()
+        and config.compute_type == ComputeType.FLOAT16.value
+    ):
+        config.compute_type = ComputeType.INT8.value
 
     return config
 

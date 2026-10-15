@@ -13,6 +13,7 @@ from keyring.errors import PasswordDeleteError
 from pydub import AudioSegment
 from pydub.generators import Sine
 
+import utils.devices as devices
 import utils.env_keys as env_keys
 import utils.notifications as notifications
 from models.question import AnswerSource, TranscriptAnswer
@@ -102,6 +103,15 @@ def config_file(
     monkeypatch.setattr("views.history.formatting._formats", None)
 
     return path
+
+
+@pytest.fixture(autouse=True)
+def without_mlx(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    Runs the tests like on a computer without the GPU of Apple Silicon, so they
+    don't download the models of MLX. The tests of MLX turn it on.
+    """
+    monkeypatch.setattr(devices, "is_mlx_available", lambda: False)
 
 
 @pytest.fixture(autouse=True)

@@ -1,4 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
+import importlib.util
 import platform
 import re
 import shutil
@@ -6,7 +7,12 @@ import sysconfig
 from pathlib import Path
 
 from PyInstaller.compat import is_darwin, is_win
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy_metadata
+from PyInstaller.utils.hooks import (
+    collect_data_files,
+    collect_dynamic_libs,
+    collect_submodules,
+    copy_metadata,
+)
 
 import sys ; sys.setrecursionlimit(sys.getrecursionlimit() * 5)
 
@@ -89,6 +95,16 @@ binaries = [
 
 if flac_path := find_executable("flac", required=False):
     binaries += [(flac_path, ".")]
+
+# MLX Whisper, which transcribes on the GPU of Apple Silicon. It's only installed
+# there (see `pyproject.toml`)
+if importlib.util.find_spec("mlx_whisper"):
+    # Its tokenizers and filters, the compiled shaders of the GPU, and its library
+    datas += [
+        *collect_data_files("mlx_whisper"),
+        *collect_data_files("mlx", includes=["lib/*.metallib"]),
+    ]
+    binaries += collect_dynamic_libs("mlx")
 
 a = Analysis(
     # It opens the window, or runs the command-line interface if given a command

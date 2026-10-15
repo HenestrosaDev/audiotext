@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:19+0200\n"
+"POT-Creation-Date: 2026-10-15 20:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -933,6 +933,9 @@ msgstr ""
 
 msgid "Options"
 msgstr "Opcións"
+
+msgid "Otherwise, the GPU of the Mac transcribes (with MLX), much faster."
+msgstr "Se non, a GPU do Mac transcribe (con MLX), moito máis rápido."
 
 msgid "Outline"
 msgstr "Contorno"
