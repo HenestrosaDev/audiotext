@@ -236,6 +236,7 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   ├───src
   │   │   app.py
   │   │   cli.py
+  │   │   launcher.py
   │   │
   │   ├───controllers
   │   │       __init__.py
@@ -475,20 +476,33 @@ The [documentation](https://getaudiotext.com) explains how to use each feature:
 
 ### Command-Line Interface
 
-When [running it from the source code](#setting-up-the-project-locally), **Audiotext** can also transcribe from the command line:
+**Audiotext** can also transcribe from the command line, e.g. from scripts. The installed app runs it when it's given a command:
+
+| System | Command |
+| --- | --- |
+| Linux | `audiotext` (installed in `~/.local/bin` by `install.sh`) |
+| macOS | `/Applications/Audiotext.app/Contents/MacOS/Audiotext` |
+| Windows | `audiotext-cli.exe`, in the folder where Audiotext is installed (`%LOCALAPPDATA%\Programs\Audiotext` by default) |
+
+From the source code, run `uv run src/cli.py` instead:
 
 ```bash
 # Transcribe a file. The text is also printed, so it can be redirected
-uv run src/cli.py transcribe interview.mp3 --language es --output-types txt,srt
+audiotext transcribe interview.mp3 --language es --output-types txt,srt
 
 # Transcribe the files of a folder identifying the speakers
-uv run src/cli.py transcribe recordings/ --diarize --speakers 2 --output-dir transcriptions/
+audiotext transcribe recordings/ --diarize --speakers 2 --output-dir transcriptions/
+
+# Save the subtitles and a Word document, summarize it, and translate it into Spanish
+audiotext transcribe talk.mp4 --output-types srt,docx --summarize --translate-to es
 
 # Transcribe the files added to a folder until stopped with Ctrl+C
-uv run src/cli.py watch inbox/ --output-types srt
+audiotext watch inbox/ --output-types srt
 ```
 
-Run `uv run src/cli.py transcribe --help` to see all the options, or see [the command-line interface](https://getaudiotext.com/en/reference/cli/).
+The output types that the transcription method doesn't save itself (e.g. `md` or `docx`) are exported from its result. `--summarize` writes a `.summary.md` file next to each transcription, and `--translate-to` writes the translation in its output types (e.g. `talk.es.srt`), with the providers configured in the app unless `--summary-provider` or `--translation-provider` are given.
+
+Run `audiotext transcribe --help` to see all the options, or see [the command-line interface](https://getaudiotext.com/en/reference/cli/).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
