@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 02:45+0200\n"
+"POT-Creation-Date: 2026-10-15 19:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -92,7 +92,7 @@ msgid "Could not load the WhisperX model: {error}"
 msgstr "Không thể tải mô hình WhisperX: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:217
+#: src/handlers/whisperx_handler.py:222
 msgid "No output file types selected. Please select at least one."
 msgstr "Chưa chọn loại tệp đầu ra nào. Vui lòng chọn ít nhất một loại."
 
@@ -141,7 +141,7 @@ msgid "The reply of the model was too long."
 msgstr "Phản hồi của mô hình quá dài."
 
 #: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:241
+#: src/handlers/whisperx_handler.py:246
 msgid "Loading audio…"
 msgstr "Đang tải âm thanh…"
 
@@ -151,7 +151,7 @@ msgid "Unsupported file type: {extension}"
 msgstr "Loại tệp không được hỗ trợ: {extension}"
 
 #: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:251 src/handlers/whisperx_handler.py:258
+#: src/handlers/whisperx_handler.py:256 src/handlers/whisperx_handler.py:263
 #: src/views/history/formatting.py:43
 #: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
@@ -166,7 +166,7 @@ msgstr "Đang chép lời đoạn {current}/{total}…"
 msgid "The text can't be shown while recording."
 msgstr "Không thể hiển thị văn bản khi đang ghi âm."
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:482
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:487
 #, python-brace-format
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr ""
@@ -186,7 +186,7 @@ msgstr "Mô hình không trả về bản tóm tắt hợp lệ."
 msgid "There is no text to summarize."
 msgstr "Không có văn bản để tóm tắt."
 
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:331
+#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:336
 msgid "There is no transcription to save. Please generate it first."
 msgstr "Không có bản chép lời nào để lưu. Vui lòng tạo trước."
 
@@ -224,15 +224,15 @@ msgstr ""
 msgid "The file could not be downloaded: {error}"
 msgstr "Không thể tải xuống tệp: {error}"
 
-#: src/handlers/whisperx_handler.py:371 src/handlers/whisperx_handler.py:380
+#: src/handlers/whisperx_handler.py:376 src/handlers/whisperx_handler.py:385
 msgid "Aligning subtitles…"
 msgstr "Đang căn chỉnh phụ đề…"
 
-#: src/handlers/whisperx_handler.py:404 src/handlers/whisperx_handler.py:409
+#: src/handlers/whisperx_handler.py:409 src/handlers/whisperx_handler.py:414
 msgid "Identifying speakers…"
 msgstr "Đang nhận diện người nói…"
 
-#: src/handlers/whisperx_handler.py:430
+#: src/handlers/whisperx_handler.py:435
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -243,11 +243,11 @@ msgstr ""
 "{tokens_url}, chấp nhận điều khoản của {model_url} và đặt token trong tùy"
 " chọn WhisperX."
 
-#: src/handlers/whisperx_handler.py:515
+#: src/handlers/whisperx_handler.py:520
 msgid "Loading the subtitle alignment model…"
 msgstr "Đang tải mô hình căn chỉnh phụ đề…"
 
-#: src/handlers/whisperx_handler.py:548
+#: src/handlers/whisperx_handler.py:553
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
@@ -255,7 +255,7 @@ msgstr ""
 "Đang tải mô hình nhận diện người nói (mô hình được tải xuống trong lần sử"
 " dụng đầu tiên)…"
 
-#: src/handlers/whisperx_handler.py:562
+#: src/handlers/whisperx_handler.py:567
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -281,29 +281,29 @@ msgstr "Video YouTube không có rãnh âm thanh."
 msgid "No audio was recorded."
 msgstr "Không ghi được âm thanh nào."
 
-#: src/utils/exporters.py:177 src/utils/exporters.py:248
+#: src/utils/exporters.py:289 src/utils/exporters.py:360
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:713
+#: src/views/transcript/transcript_view.py:786
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Chép lời"
 
-#: src/utils/exporters.py:195 src/utils/exporters.py:223
-#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:507
+#: src/utils/exporters.py:307 src/utils/exporters.py:335
+#: src/utils/exporters.py:420 src/views/settings/preferences_dialog.py:507
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:531
-#: src/views/transcript/transcript_view.py:536
-#: src/views/transcript/transcript_view.py:756
+#: src/views/transcript/transcript_view.py:567
+#: src/views/transcript/transcript_view.py:572
+#: src/views/transcript/transcript_view.py:829
 msgid "Summary"
 msgstr "Bản tóm tắt"
 
-#: src/utils/exporters.py:197 src/utils/exporters.py:226
-#: src/utils/exporters.py:310 src/views/transcript/summary_panel.py:90
+#: src/utils/exporters.py:309 src/utils/exporters.py:338
+#: src/utils/exporters.py:423 src/views/transcript/summary_panel.py:90
 msgid "Key points"
 msgstr "Ý chính"
 
-#: src/utils/exporters.py:201 src/utils/exporters.py:230
-#: src/utils/exporters.py:315 src/views/transcript/summary_panel.py:94
+#: src/utils/exporters.py:313 src/utils/exporters.py:342
+#: src/utils/exporters.py:428 src/views/transcript/summary_panel.py:94
 msgid "Chapters"
 msgstr "Chương"
 
@@ -341,14 +341,14 @@ msgid "{count} failed"
 msgstr "{count} thất bại"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1755
+#: src/views/transcript/transcript_view.py:1828
 msgid "Open the folder of the saved files"
 msgstr "Mở thư mục chứa các tệp đã lưu"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:661
-#: src/views/transcript/transcript_view.py:1716
+#: src/views/transcript/transcript_view.py:734
+#: src/views/transcript/transcript_view.py:1789
 msgid "Transcribe again"
 msgstr "Chép lời lại"
 
@@ -567,22 +567,22 @@ msgid "Rename"
 msgstr "Đổi tên"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1767
+#: src/views/transcript/transcript_view.py:1840
 msgid "Edit note…"
 msgstr "Chỉnh sửa ghi chú…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1767
+#: src/views/transcript/transcript_view.py:1840
 msgid "Add note…"
 msgstr "Thêm ghi chú…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1772
+#: src/views/transcript/transcript_view.py:1845
 msgid "Delete note…"
 msgstr "Xóa ghi chú…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1778
+#: src/views/transcript/transcript_view.py:1851
 msgid "Edit tag…"
 msgstr "Chỉnh sửa nhãn…"
 
@@ -607,7 +607,7 @@ msgid "Move to group"
 msgstr "Chuyển vào nhóm"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1783
+#: src/views/transcript/transcript_view.py:1856
 msgid "Delete…"
 msgstr "Xóa…"
 
@@ -888,9 +888,9 @@ msgstr ""
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:651
-#: src/views/transcript/transcript_view.py:1407
-#: src/views/transcript/transcript_view.py:1645
+#: src/views/transcript/transcript_view.py:724
+#: src/views/transcript/transcript_view.py:1480
+#: src/views/transcript/transcript_view.py:1718
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Sao chép"
@@ -1193,7 +1193,7 @@ msgstr "Khóa API"
 
 #: src/views/settings/preferences_dialog.py:190
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:754
+#: src/views/transcript/transcript_view.py:827
 msgid "Subtitles"
 msgstr "Phụ đề"
 
@@ -1746,12 +1746,12 @@ msgid "Choose where to save the transcriptions"
 msgstr "Chọn nơi lưu các bản chép lời"
 
 #: src/views/transcript/ask_panel.py:178 src/views/transcript/ask_panel.py:207
-#: src/views/transcript/transcript_view.py:757
+#: src/views/transcript/transcript_view.py:830
 msgid "Ask"
 msgstr "Hỏi"
 
 #: src/views/transcript/ask_panel.py:181
-#: src/views/transcript/transcript_view.py:1064
+#: src/views/transcript/transcript_view.py:1137
 msgid "Clear the conversation"
 msgstr "Xóa cuộc trò chuyện"
 
@@ -1806,7 +1806,7 @@ msgid "The new segment goes after the one at {time}:"
 msgstr "Đoạn mới nằm sau đoạn lúc {time}:"
 
 #: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1425
+#: src/views/transcript/transcript_view.py:1498
 msgid "Delete the segment"
 msgstr "Xóa đoạn"
 
@@ -1904,7 +1904,7 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Phím cách: phát/tạm dừng · ←/→: lùi/tới {seconds} giây"
 
 #: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1576
+#: src/views/transcript/transcript_view.py:1649
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Không thể phát âm thanh: {error}"
@@ -1972,13 +1972,13 @@ msgid "Find ({shortcut})"
 msgstr "Tìm ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:654
+#: src/views/transcript/transcript_view.py:727
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "Xuất"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1093
+#: src/views/transcript/transcript_view.py:1166
 msgid "Regenerate the summary"
 msgstr "Tạo lại bản tóm tắt"
 
@@ -2047,224 +2047,242 @@ msgid "This transcription has no timestamps."
 msgstr "Bản chép lời này không có dấu thời gian."
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:149
+#: src/views/transcript/transcript_view.py:150
 msgid "There is no alignment model for its language"
 msgstr "Không có mô hình căn chỉnh cho ngôn ngữ này"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:150
+#: src/views/transcript/transcript_view.py:151
 msgid "Turn on “Word-level timings” and transcribe it again"
 msgstr "Bật “Thời gian theo từng từ” và phiên âm lại"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:157
+#: src/views/transcript/transcript_view.py:158
 msgid "Transcribe it again to score its words"
 msgstr "Phiên âm lại để chấm điểm các từ"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:158
+#: src/views/transcript/transcript_view.py:159
 msgid "Only WhisperX and whisper-1 score the words"
 msgstr "Chỉ WhisperX và whisper-1 chấm điểm các từ"
 
-#: src/views/transcript/transcript_view.py:163
+#: src/views/transcript/transcript_view.py:164
 msgid "Plain text (.txt)"
 msgstr "Văn bản thuần (.txt)"
 
-#: src/views/transcript/transcript_view.py:164
+#: src/views/transcript/transcript_view.py:165
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:165
+#: src/views/transcript/transcript_view.py:166
 msgid "Word document (.docx)"
 msgstr "Tài liệu Word (.docx)"
 
-#: src/views/transcript/transcript_view.py:166
+#: src/views/transcript/transcript_view.py:167
 msgid "Subtitles (.srt)"
 msgstr "Phụ đề (.srt)"
 
-#: src/views/transcript/transcript_view.py:167
+#: src/views/transcript/transcript_view.py:168
 msgid "Web subtitles (.vtt)"
 msgstr "Phụ đề web (.vtt)"
 
-#: src/views/transcript/transcript_view.py:168
+#: src/views/transcript/transcript_view.py:169
+msgid "Styled subtitles (.ass)"
+msgstr "Phụ đề có định dạng (.ass)"
+
+#: src/views/transcript/transcript_view.py:170
 msgid "Table (.tsv)"
 msgstr "Bảng (.tsv)"
 
-#: src/views/transcript/transcript_view.py:169
+#: src/views/transcript/transcript_view.py:171
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:311
+#: src/views/transcript/transcript_view.py:313
 msgid "Stop scrolling the translation with the transcription"
 msgstr "Ngừng cuộn bản dịch cùng với bản chép lời"
 
-#: src/views/transcript/transcript_view.py:313
+#: src/views/transcript/transcript_view.py:315
 msgid "Scroll the translation with the transcription"
 msgstr "Cuộn bản dịch cùng với bản chép lời"
 
-#: src/views/transcript/transcript_view.py:501
+#: src/views/transcript/transcript_view.py:511
+msgid "Stop adding the subtitles to the video"
+msgstr "Dừng thêm phụ đề vào video"
+
+#: src/views/transcript/transcript_view.py:516
+msgid "Video with subtitles (.mp4)…"
+msgstr "Video có phụ đề (.mp4)…"
+
+#: src/views/transcript/transcript_view.py:537
 msgid "Export transcription"
 msgstr "Xuất bản chép lời"
 
-#: src/views/transcript/transcript_view.py:522
+#: src/views/transcript/transcript_view.py:558
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Xuất bản dịch sang {language}"
 
-#: src/views/transcript/transcript_view.py:535
+#: src/views/transcript/transcript_view.py:571
 msgid "Export summary"
 msgstr "Xuất bản tóm tắt"
 
-#: src/views/transcript/transcript_view.py:572
-msgid "All files"
-msgstr "Tất cả tệp"
-
-#: src/views/transcript/transcript_view.py:581
+#: src/views/transcript/transcript_view.py:600
+#: src/views/transcript/video_export.py:89
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Không thể xuất: {error}"
 
-#: src/views/transcript/transcript_view.py:584
+#: src/views/transcript/transcript_view.py:603
+#: src/views/transcript/video_export.py:101
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Đã xuất sang {path}"
 
+#: src/views/transcript/transcript_view.py:630
+msgid "All files"
+msgstr "Tất cả tệp"
+
 #: src/views/transcript/transcript_view.py:646
+msgid "Export video with subtitles"
+msgstr "Xuất video có phụ đề"
+
+#: src/views/transcript/transcript_view.py:719
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Tìm và thay thế ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:694
+#: src/views/transcript/transcript_view.py:767
 msgid "No low-confidence words left to review"
 msgstr "Không còn từ nào có độ tin cậy thấp cần xem lại"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:704
+#: src/views/transcript/transcript_view.py:777
 msgid "Show all segments"
 msgstr "Hiện tất cả các đoạn"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:741
+#: src/views/transcript/transcript_view.py:814
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Từ có độ tin cậy thấp trước đó ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:743
+#: src/views/transcript/transcript_view.py:816
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Từ có độ tin cậy thấp tiếp theo ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:755
+#: src/views/transcript/transcript_view.py:828
 msgid "Plain text"
 msgstr "Văn bản thuần"
 
-#: src/views/transcript/transcript_view.py:765
+#: src/views/transcript/transcript_view.py:838
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Dịch"
 
-#: src/views/transcript/transcript_view.py:889
-#: src/views/transcript/transcript_view.py:1464
+#: src/views/transcript/transcript_view.py:962
+#: src/views/transcript/transcript_view.py:1537
 msgid "Edit text"
 msgstr "Chỉnh sửa văn bản"
 
-#: src/views/transcript/transcript_view.py:889
+#: src/views/transcript/transcript_view.py:962
 #, python-brace-format
 msgid "Text said at {time}:"
 msgstr "Văn bản được nói lúc {time}:"
 
-#: src/views/transcript/transcript_view.py:966
+#: src/views/transcript/transcript_view.py:1039
 msgid "Find and replace in the transcription"
 msgstr "Tìm và thay thế trong bản chép lời"
 
-#: src/views/transcript/transcript_view.py:976
+#: src/views/transcript/transcript_view.py:1049
 msgid "Find and replace in the translation"
 msgstr "Tìm và thay thế trong bản dịch"
 
-#: src/views/transcript/transcript_view.py:977
+#: src/views/transcript/transcript_view.py:1050
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Tìm và thay thế trong bản dịch sang {language}"
 
-#: src/views/transcript/transcript_view.py:990
+#: src/views/transcript/transcript_view.py:1063
 msgid "Find in the summary"
 msgstr "Tìm trong bản tóm tắt"
 
-#: src/views/transcript/transcript_view.py:1065
+#: src/views/transcript/transcript_view.py:1138
 msgid "Delete the questions and their answers?"
 msgstr "Xóa các câu hỏi và câu trả lời?"
 
-#: src/views/transcript/transcript_view.py:1094
+#: src/views/transcript/transcript_view.py:1167
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Tạo lại bản tóm tắt? Bản hiện tại sẽ bị thay thế."
 
-#: src/views/transcript/transcript_view.py:1252
+#: src/views/transcript/transcript_view.py:1325
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Ẩn bản dịch"
 
-#: src/views/transcript/transcript_view.py:1257
+#: src/views/transcript/transcript_view.py:1330
 msgid "Show the translation"
 msgstr "Hiển thị bản dịch"
 
-#: src/views/transcript/transcript_view.py:1261
+#: src/views/transcript/transcript_view.py:1334
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Dịch sang ngôn ngữ khác…"
 
-#: src/views/transcript/transcript_view.py:1272
+#: src/views/transcript/transcript_view.py:1345
 msgid "Show it as the subtitles of the video"
 msgstr "Hiển thị làm phụ đề của video"
 
-#: src/views/transcript/transcript_view.py:1279
+#: src/views/transcript/transcript_view.py:1352
 msgid "Delete the translation"
 msgstr "Xóa bản dịch"
 
-#: src/views/transcript/transcript_view.py:1404
-#: src/views/transcript/transcript_view.py:1643
+#: src/views/transcript/transcript_view.py:1477
+#: src/views/transcript/transcript_view.py:1716
 msgid "Play from here"
 msgstr "Phát từ đây"
 
-#: src/views/transcript/transcript_view.py:1412
-#: src/views/transcript/transcript_view.py:1647
+#: src/views/transcript/transcript_view.py:1485
+#: src/views/transcript/transcript_view.py:1720
 msgid "Edit text…"
 msgstr "Chỉnh sửa văn bản…"
 
-#: src/views/transcript/transcript_view.py:1412
+#: src/views/transcript/transcript_view.py:1485
 msgid "Translate text…"
 msgstr "Dịch văn bản…"
 
-#: src/views/transcript/transcript_view.py:1416
+#: src/views/transcript/transcript_view.py:1489
 msgid "Edit the timing…"
 msgstr "Chỉnh sửa thời gian…"
 
-#: src/views/transcript/transcript_view.py:1420
+#: src/views/transcript/transcript_view.py:1493
 msgid "Add a segment after…"
 msgstr "Thêm một đoạn phía sau…"
 
-#: src/views/transcript/transcript_view.py:1464
+#: src/views/transcript/transcript_view.py:1537
 msgid "Translate text"
 msgstr "Dịch văn bản"
 
-#: src/views/transcript/transcript_view.py:1467
+#: src/views/transcript/transcript_view.py:1540
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Bản dịch của \"{text}\", được nói từ {start} đến {end}:"
 
-#: src/views/transcript/transcript_view.py:1469
+#: src/views/transcript/transcript_view.py:1542
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Bản dịch của đoạn từ {start} đến {end}:"
 
-#: src/views/transcript/transcript_view.py:1505
+#: src/views/transcript/transcript_view.py:1578
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Dịch lại"
 
-#: src/views/transcript/transcript_view.py:1507
+#: src/views/transcript/transcript_view.py:1580
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2273,45 +2291,45 @@ msgstr ""
 "Dịch lại bản chép lời sang {language}? Các thay đổi trong bản dịch sẽ bị "
 "mất."
 
-#: src/views/transcript/transcript_view.py:1530
+#: src/views/transcript/transcript_view.py:1603
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Âm thanh không khả dụng: tệp nguồn đã bị di chuyển hoặc xóa."
 
-#: src/views/transcript/transcript_view.py:1533
+#: src/views/transcript/transcript_view.py:1606
 msgid "The audio isn't available."
 msgstr "Âm thanh không khả dụng."
 
-#: src/views/transcript/transcript_view.py:1651
-#: src/views/transcript/transcript_view.py:1729
+#: src/views/transcript/transcript_view.py:1724
+#: src/views/transcript/transcript_view.py:1802
 msgid "Rename speakers…"
 msgstr "Đổi tên người nói…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1672
+#: src/views/transcript/transcript_view.py:1745
 msgid "Highlight low-confidence words"
 msgstr "Đánh dấu các từ có độ tin cậy thấp"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1680
+#: src/views/transcript/transcript_view.py:1753
 msgid "Low-confidence threshold"
 msgstr "Ngưỡng độ tin cậy thấp"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1702
+#: src/views/transcript/transcript_view.py:1775
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "Dưới {percent}%"
 
-#: src/views/transcript/transcript_view.py:1718
+#: src/views/transcript/transcript_view.py:1791
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Chép lời lại “{title}”? Các thay đổi trong văn bản sẽ bị mất."
 
-#: src/views/transcript/transcript_view.py:1739
+#: src/views/transcript/transcript_view.py:1812
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Dấu thời gian chính xác (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1763
+#: src/views/transcript/transcript_view.py:1836
 msgid "Rename…"
 msgstr "Đổi tên…"
 
@@ -2387,6 +2405,28 @@ msgstr "Dịch từng đoạn, giữ nguyên dấu thời gian."
 #: src/views/transcript/translation_panel.py:559
 msgid "Set…"
 msgstr "Đặt…"
+
+#: src/views/transcript/video_export.py:84
+msgid "Adding the subtitles to the video was cancelled."
+msgstr "Đã hủy thêm phụ đề vào video."
+
+#: src/views/transcript/video_export.py:105
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr ""
+"Đã xuất sang {path}, nhưng không có phông chữ nào có các ký tự này nên "
+"chúng hiển thị dưới dạng ô vuông: {characters}"
+
+#: src/views/transcript/video_export.py:114
+msgid "Adding the subtitles to the video…"
+msgstr "Đang thêm phụ đề vào video…"
+
+#: src/views/transcript/video_export.py:115
+#, python-brace-format
+msgid "Adding the subtitles to the video… {percent}%"
+msgstr "Đang thêm phụ đề vào video… {percent}%"
 
 #: src/views/transcript/video_pane.py:260
 msgid "Show subtitles on the video"

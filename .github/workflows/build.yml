@@ -14,6 +14,7 @@ on:
       - "pyproject.toml"
       - ".github/scripts/**"
       - ".github/workflows/build.yml"
+      - "packaging/macos/build_ffmpeg.sh"
   push:
     branches:
       - main
@@ -25,6 +26,7 @@ on:
       - "pyproject.toml"
       - ".github/scripts/**"
       - ".github/workflows/build.yml"
+      - "packaging/macos/build_ffmpeg.sh"
   workflow_dispatch:
 
 permissions:
@@ -63,9 +65,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libportaudio2 ffmpeg xvfb
+      # The FFmpeg of Homebrew can't draw subtitles, so an LGPL build with libass
       - name: Install system dependencies (macOS)
         if: runner.os == 'macOS'
-        run: brew install ffmpeg
+        run: |
+          packaging/macos/build_ffmpeg.sh "$RUNNER_TEMP/ffmpeg"
+          echo "$RUNNER_TEMP/ffmpeg/bin" >> "$GITHUB_PATH"
       - name: Install system dependencies (Windows)
         if: runner.os == 'Windows'
         run: |
@@ -86,6 +91,34 @@ jobs:
       - name: Check that the app opens (macOS)
         if: runner.os == 'macOS'
         run: uv run --no-sync python .github/scripts/smoke_test_app.py dist/Audiotext.app/Contents/MacOS/Audiotext
+      - name: Check that the command-line interface runs (Linux)
+        if: runner.os == 'Linux'
+        run: dist/Audiotext/Audiotext --version
+      - name: Check that the command-line interface runs (macOS)
+        if: runner.os == 'macOS'
+        run: dist/Audiotext.app/Contents/MacOS/Audiotext --version
+      - name: Check that the command-line interface runs (Windows)
+        if: runner.os == 'Windows'
+        run: dist/Audiotext/audiotext-cli.exe --version
+      # The FFmpeg of the app, with the libraries it bundles, draws the subtitles of
+      # several scripts with the fonts of the system. Linux runners have no font of
+      # Chinese, Japanese nor Devanagari, which the desktops have
+      - name: Install the fonts of the scripts (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y fonts-noto-cjk fonts-noto-core
+      - name: Check that the app burns subtitles
+        run: >
+          uv run --no-sync python .github/scripts/smoke_test_burn.py
+          ${{ runner.os == 'macOS' && 'dist/Audiotext.app' || 'dist/Audiotext' }}
+          build/smoke-test-burn
+      - name: Upload the frames with subtitles
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: subtitles-${{ runner.os }}
+          path: build/smoke-test-burn/frames.png
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Upload the app
         uses: actions/upload-artifact@v7
         with:

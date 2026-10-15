@@ -2619,8 +2619,11 @@ def test_a_translation_is_exported_like_the_transcription(
     view.show_export_menu()
     view.show_translation_export_menu(view.translation_panel.btn_export)
     for menu in menus:
-        assert menu.entrycget("end", "label") == "Word document (.docx)"
-        assert menu.type("end") == "command"
+        # The documents, and then the video with the subtitles
+        last = int(menu.index("end"))
+        assert menu.entrycget(last - 2, "label") == "Word document (.docx)"
+        assert menu.type(last - 1) == "separator"
+        assert menu.entrycget(last, "label") == "Video with subtitles (.mp4)…"
     assert menus[0].index("end") == menus[1].index("end")
     ui.pump()
     for menu in menus:
@@ -3423,3 +3426,66 @@ def test_questions_need_the_api_key_of_the_provider(
 
     assert view.ask_panel.ent_question.cget("state") == ctk.DISABLED
     assert view.ask_panel.btn_ask.cget("state") == ctk.DISABLED
+
+
+def test_the_video_is_exported_with_its_subtitles(
+    ui: Ui, audio_file: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from tests.test_subtitle_burner import make_sound_video
+    from utils.subtitle_burner import BurnedVideo
+    from views.transcript import transcript_view, video_export
+    from views.transcript.transcript_view import TranscriptView
+
+    menus: list[tk.Menu] = []
+    monkeypatch.setattr(
+        TranscriptView,
+        "_popup_below",
+        staticmethod(lambda menu, _widget: menus.append(menu)),
+    )
+
+    def video_item() -> tuple[str, str]:
+        ui.window._entry_view.show_export_menu()
+        last = int(menus[-1].index("end"))
+        return (
+            str(menus[-1].entrycget(last, "label")),
+            str(menus[-1].entrycget(last, "state")),
+        )
+
+    # An audio has no video to add the subtitles to
+    entry = ui.add(segments=SEGMENTS, text=TEXT, media_path=str(audio_file))
+    ui.window.select_entry(entry.id)
+    ui.pump(0.5)
+    assert video_item() == ("Video with subtitles (.mp4)…", tk.DISABLED)
+
+    video = make_sound_video(tmp_path / "talk.mp4")
+    entry = ui.add(segments=SEGMENTS, text=TEXT, media_path=str(video))
+    ui.window.select_entry(entry.id)
+    deadline = time.monotonic() + 5
+    while not ui.window._entry_view.layout.has_video:
+        assert time.monotonic() < deadline, "The video wasn't loaded"
+        ui.pump(0.1)
+    assert video_item() == ("Video with subtitles (.mp4)…", tk.NORMAL)
+
+    burned: list[tuple[Path, list[str], Path]] = []
+
+    def burn(
+        video_path: Path, cues: list[Any], output: Path, *_args: Any
+    ) -> BurnedVideo:
+        burned.append((video_path, [cue.text for cue in cues], output))
+        return BurnedVideo(output)
+
+    monkeypatch.setattr(video_export, "burn_subtitles", burn)
+    monkeypatch.setattr(
+        transcript_view.filedialog,
+        "asksaveasfilename",
+        lambda **kwargs: str(tmp_path / kwargs["initialfile"]),
+    )
+    menus[-1].invoke(int(menus[-1].index("end")))
+    ui.pump(0.3)
+
+    output = tmp_path / "Entry.subtitled.mp4"
+    assert burned == [
+        (video, ["Hello wisper", "Nice to meet you.", "Bye wisper."], output)
+    ]
+    assert ui.window.top_bar._status_message == f"Exported to {output}"
+    assert not video_export.VideoExport.is_running()
