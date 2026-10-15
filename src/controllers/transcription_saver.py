@@ -1,3 +1,4 @@
+import dataclasses
 import logging
 from pathlib import Path
 
@@ -121,7 +122,13 @@ class TranscriptionSaver:
         output_dir.mkdir(parents=True, exist_ok=True)
         save_path = output_dir / f"{file_path.stem}{self._get_extension()}"
 
-        transcriber.save(result, self._transcription, save_path)
+        # Pointing to the file, not to its folder, e.g. to know if it's a vertical
+        # video, which narrows its subtitles
+        transcriber.save(
+            result,
+            dataclasses.replace(self._transcription, audio_source_path=file_path),
+            save_path,
+        )
 
         return save_path.parent.resolve()
 
