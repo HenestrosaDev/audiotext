@@ -18,8 +18,7 @@ from controllers.transcription_queue import TranscriptionQueue
 from interfaces.summarizer import Summarizer
 from interfaces.translator import Translator
 from models.config.config_system import ConfigSystem
-from models.config.config_whisperx import ConfigWhisperX
-from utils.enums import ComputeType
+from utils.devices import configure_whisperx_device
 from utils.env_keys import migrate_env_file
 from utils.history_store import HistoryStore
 from utils.system import hide_console_windows
@@ -64,35 +63,6 @@ def parse_geometry(geometry: str) -> tuple[int, int, int, int] | None:
     # Tk writes "+-10" for a negative position
     x, y = (int(value.replace("+-", "-")) for value in (match[3], match[4]))
     return width, height, x, y
-
-
-def configure_whisperx_device() -> None:
-    """
-    Stores in the configuration whether a GPU is available. If not, WhisperX is
-    configured to run on the CPU with a compute type the CPU supports.
-    """
-    # Imported here to avoid the "No ffmpeg exe could be found" error
-    import torch
-
-    can_use_gpu = torch.cuda.is_available()
-
-    cm.ConfigManager.modify_value(
-        section=ConfigWhisperX.Key.SECTION,
-        key=ConfigWhisperX.Key.CAN_USE_GPU,
-        new_value=str(can_use_gpu),
-    )
-
-    if not can_use_gpu:
-        cm.ConfigManager.modify_value(
-            section=ConfigWhisperX.Key.SECTION,
-            key=ConfigWhisperX.Key.COMPUTE_TYPE,
-            new_value=ComputeType.INT8.value,
-        )
-        cm.ConfigManager.modify_value(
-            section=ConfigWhisperX.Key.SECTION,
-            key=ConfigWhisperX.Key.USE_CPU,
-            new_value="True",
-        )
 
 
 class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]

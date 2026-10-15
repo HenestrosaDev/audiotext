@@ -10,6 +10,7 @@ from pydub import AudioSegment
 import cli
 import utils.config_manager as cm
 import utils.constants as c
+import utils.devices as devices
 import utils.update_checker as update_checker
 from models.config.config_transcription import ConfigTranscription
 from utils.enums import AudioSource, TranscriptionMethod
@@ -165,9 +166,7 @@ class TestBuildTranscription:
         assert not transcription.should_translate
 
     def test_runs_on_the_cpu_without_gpu(self, monkeypatch: pytest.MonkeyPatch) -> None:
-        import torch
-
-        monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+        monkeypatch.setattr(devices, "is_cuda_available", lambda: False)
 
         config = cli.get_whisperx_config(
             parse("transcribe", "a.mp3", "--compute-type", "float16")
@@ -300,3 +299,18 @@ def test_version(capsys: pytest.CaptureFixture[str]) -> None:
 
     assert exc_info.value.code == 0
     assert capsys.readouterr().out == f"audiotext {c.APP_VERSION}\n"
+
+
+def test_the_gpu_of_a_mac_transcribes_with_float_types_for_the_cpu(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(devices, "is_cuda_available", lambda: False)
+    monkeypatch.setattr(devices, "is_mlx_available", lambda: True)
+
+    config = cli.get_whisperx_config(
+        parse("transcribe", "a.mp3", "--compute-type", "float16")
+    )
+
+    # MLX transcribes on the GPU, and faster-whisper (e.g. alignment) on the CPU
+    assert not config.use_cpu
+    assert config.compute_type == "int8"
