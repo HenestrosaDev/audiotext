@@ -98,7 +98,15 @@ class MainController:
         """
         try:
             validate_transcription(transcription)
+        except ValueError as e:
+            # The settings can't be transcribed (e.g. no file is selected), which
+            # the user fixes
+            logger.info("Invalid transcription settings: %s", e)
+            self._show_failure(e)
+            return
         except Exception as e:
+            # A bug, which is still reported, so the queue goes on
+            logger.error("Could not start the transcription", exc_info=e)
             self._show_failure(e)
             return
 
@@ -155,7 +163,7 @@ class MainController:
             return functools.partial(self._transcribe_url, transcription)
         if source in (AudioSource.DIRECTORY, AudioSource.WATCH):
             folder_transcriber = FolderTranscriber(
-                transcription.audio_source_path,
+                transcription.path,
                 self.view,
                 TranscriptionSaver(transcription),
                 functools.partial(self._transcribe_file, transcription),
@@ -168,7 +176,7 @@ class MainController:
         return functools.partial(
             self._transcribe_single_file,
             transcription,
-            transcription.audio_source_path,
+            transcription.path,
         )
 
     def _run_process(self, process: Callable[[], str]) -> None:
@@ -239,11 +247,11 @@ class MainController:
         """
         Transcribes the audio of a file, sends the result to the view and saves it
         if autosave is enabled. Temporary audio files (microphone and URL) are
-        removed after the transcription unless the history keeps them.
+        removed afterwards, once saved, unless the history keeps them.
         """
         transcriber = self._get_transcriber(transcription.method)
         source = transcription.audio_source
-        has_several_files = bool(source and source.has_several_files)
+        has_several_files = source.has_several_files
 
         try:
             result = self._transcribe_audio(
@@ -251,28 +259,31 @@ class MainController:
                 dataclasses.replace(transcription, audio_source_path=file_path),
                 on_progress,
             )
-        finally:
-            if source and source.is_temporary and transcription.media_path is None:
-                file_path.unlink(missing_ok=True)
 
-        self._ui(
-            self.view.on_file_transcribed,
-            file_path,
-            result.text,
-            result.segments,
-            result.language,
-        )
-
-        if not has_several_files:
-            self._ui(self.view.display_text, result.text)
-
-        if transcription.should_autosave:
-            folder = TranscriptionSaver(transcription).save(
-                transcriber, result, file_path
+            self._ui(
+                self.view.on_file_transcribed,
+                file_path,
+                result.text,
+                result.segments,
+                result.language,
             )
-            # The files of a folder are notified once all of them are transcribed
+
             if not has_several_files:
-                self._ui(self.view.on_transcription_saved, folder)
+                self._ui(self.view.display_text, result.text)
+
+            if transcription.should_autosave:
+                # Before the file is removed, since saving reads it (e.g. to know
+                # if it's a vertical video, which narrows its subtitles)
+                folder = TranscriptionSaver(transcription).save(
+                    transcriber, result, file_path
+                )
+                # The files of a folder are notified once all of them are
+                # transcribed
+                if not has_several_files:
+                    self._ui(self.view.on_transcription_saved, folder)
+        finally:
+            if source.is_temporary and transcription.media_path is None:
+                file_path.unlink(missing_ok=True)
 
     def _transcribe_audio(
         self,
@@ -291,7 +302,7 @@ class MainController:
 
         on_progress(_("Isolating the speech…"), None)
         isolated_path = au.isolate_speech(
-            transcription.audio_source_path,
+            transcription.path,
             TEMP_DIR / f"audiotext-speech-{os.getpid()}-{threading.get_ident()}.wav",
         )
 
@@ -305,11 +316,11 @@ class MainController:
         finally:
             isolated_path.unlink(missing_ok=True)
 
-    def _get_transcriber(self, method: TranscriptionMethod | None) -> Transcriber:
+    def _get_transcriber(self, method: TranscriptionMethod) -> Transcriber:
         """
         :raises ValueError: If the transcription method is not supported.
         """
-        if method is None or method not in self._transcribers:
+        if method not in self._transcribers:
             raise ValueError(f"Unsupported transcription method: {method}")
 
         return self._transcribers[method]
@@ -352,6 +363,5 @@ class MainController:
 
     def _show_failure(self, e: Exception) -> None:
         """Shows the error of a transcription that couldn't start."""
-        logger.error("Could not start the transcription", exc_info=e)
         self._ui(self.view.show_error, format_error(e))
         self._ui(self.view.on_processed_transcription, None)

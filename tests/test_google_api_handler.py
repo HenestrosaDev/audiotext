@@ -5,6 +5,7 @@ import speech_recognition as sr
 
 import handlers.google_api_handler as google_api
 from models.transcription import Transcription
+from utils.enums import AudioSource, TranscriptionMethod
 
 
 @pytest.fixture
@@ -20,7 +21,12 @@ def test_transcription_is_punctuated(
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
     audio_data = sr.AudioData(b"\0\0", 16000, 2)
 
-    text = google_api.transcribe(audio_data, Transcription(language_code="en"))
+    text = google_api.transcribe(
+        audio_data,
+        Transcription(
+            AudioSource.FILE, TranscriptionMethod.GOOGLE_API, language_code="en"
+        ),
+    )
 
     assert text == "hello world. "
     recognize_google.assert_called_once_with(audio_data, language="en", key=None)
@@ -31,7 +37,10 @@ def test_api_key_is_used_if_set(
 ) -> None:
     monkeypatch.setenv("GOOGLE_API_KEY", "google-key")
 
-    google_api.transcribe(sr.AudioData(b"\0\0", 16000, 2), Transcription())
+    google_api.transcribe(
+        sr.AudioData(b"\0\0", 16000, 2),
+        Transcription(AudioSource.FILE, TranscriptionMethod.GOOGLE_API),
+    )
 
     assert recognize_google.call_args.kwargs["key"] == "google-key"
 
@@ -41,6 +50,9 @@ def test_free_tier_is_used_without_env_variable(
 ) -> None:
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
 
-    google_api.transcribe(sr.AudioData(b"\0\0", 16000, 2), Transcription())
+    google_api.transcribe(
+        sr.AudioData(b"\0\0", 16000, 2),
+        Transcription(AudioSource.FILE, TranscriptionMethod.GOOGLE_API),
+    )
 
     assert recognize_google.call_args.kwargs["key"] is None

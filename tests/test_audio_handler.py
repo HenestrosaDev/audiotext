@@ -9,6 +9,7 @@ from handlers.audio_handler import TranscriptionFunc
 from models.transcription import Transcription
 from tests.conftest import make_tone
 from utils.cancellation import CancellationToken, TranscriptionCancelledError
+from utils.enums import AudioSource, TranscriptionMethod
 
 
 def numbered_transcription_func() -> tuple[list[sr.AudioData], TranscriptionFunc]:
@@ -33,7 +34,11 @@ def test_all_chunks_are_transcribed_and_joined() -> None:
     received_chunks, transcribe = numbered_transcription_func()
     chunks = [make_tone(), make_tone(), make_tone()]
 
-    text = audio_handler.process_audio_chunks(chunks, Transcription(), transcribe)
+    text = audio_handler.process_audio_chunks(
+        chunks,
+        Transcription(AudioSource.FILE, TranscriptionMethod.GOOGLE_API),
+        transcribe,
+    )
 
     assert len(received_chunks) == 3
     assert text == "chunk1 chunk2 chunk3"
@@ -51,7 +56,11 @@ def test_chunks_without_recognizable_speech_are_skipped() -> None:
 
     chunks = [make_tone(), make_tone(), make_tone()]
 
-    text = audio_handler.process_audio_chunks(chunks, Transcription(), transcribe)
+    text = audio_handler.process_audio_chunks(
+        chunks,
+        Transcription(AudioSource.FILE, TranscriptionMethod.GOOGLE_API),
+        transcribe,
+    )
 
     assert text == "chunk1 chunk3"
 
@@ -61,7 +70,11 @@ def test_other_transcription_errors_are_propagated() -> None:
         raise sr.RequestError("API unavailable")
 
     with pytest.raises(sr.RequestError):
-        audio_handler.process_audio_chunks([make_tone()], Transcription(), transcribe)
+        audio_handler.process_audio_chunks(
+            [make_tone()],
+            Transcription(AudioSource.FILE, TranscriptionMethod.GOOGLE_API),
+            transcribe,
+        )
 
 
 def test_get_transcription_reads_the_file_and_splits_it(
@@ -72,7 +85,11 @@ def test_get_transcription_reads_the_file_and_splits_it(
     received_chunks, transcribe = numbered_transcription_func()
 
     text = audio_handler.get_transcription(
-        transcription=Transcription(audio_source_path=file_path),
+        transcription=Transcription(
+            AudioSource.FILE,
+            TranscriptionMethod.GOOGLE_API,
+            audio_source_path=file_path,
+        ),
         should_split_on_silence=True,
         transcription_func=transcribe,
     )
@@ -88,7 +105,11 @@ def test_get_transcription_without_splitting_sends_the_whole_audio(
     received_chunks, transcribe = numbered_transcription_func()
 
     audio_handler.get_transcription(
-        transcription=Transcription(audio_source_path=file_path),
+        transcription=Transcription(
+            AudioSource.FILE,
+            TranscriptionMethod.GOOGLE_API,
+            audio_source_path=file_path,
+        ),
         should_split_on_silence=False,
         transcription_func=transcribe,
     )
@@ -110,7 +131,7 @@ def test_progress_is_reported_for_each_chunk() -> None:
 
     audio_handler.process_audio_chunks(
         [make_tone(), make_tone()],
-        Transcription(),
+        Transcription(AudioSource.FILE, TranscriptionMethod.GOOGLE_API),
         transcribe,
         on_progress=lambda message, fraction: updates.append((message, fraction)),
     )
@@ -134,7 +155,7 @@ def test_cancellation_stops_before_the_next_chunk() -> None:
     with pytest.raises(TranscriptionCancelledError):
         audio_handler.process_audio_chunks(
             [make_tone(), make_tone()],
-            Transcription(),
+            Transcription(AudioSource.FILE, TranscriptionMethod.GOOGLE_API),
             cancel_after_first_chunk,
             cancellation_token=token,
         )

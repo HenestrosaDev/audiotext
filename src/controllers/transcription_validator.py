@@ -66,16 +66,18 @@ def _validate_audio_source(transcription: Transcription) -> None:
                         valid.
     """
     source = transcription.audio_source
+    path = transcription.audio_source_path
 
     if source == AudioSource.FILE:
-        file_path = transcription.audio_source_path
-        is_file_supported = file_path.suffix.lower() in c.SUPPORTED_FILE_EXTENSIONS
-
-        if not (file_path.is_file() and is_file_supported):
+        if not (
+            path
+            and path.is_file()
+            and path.suffix.lower() in c.SUPPORTED_FILE_EXTENSIONS
+        ):
             raise ValueError(_("Please select a valid audio or video file."))
 
-    elif source and source.has_several_files:
-        if not transcription.audio_source_path.is_dir():
+    elif source.has_several_files:
+        if not (path and path.is_dir()):
             raise ValueError(_("Please select a valid folder."))
 
     elif source == AudioSource.YOUTUBE and not (

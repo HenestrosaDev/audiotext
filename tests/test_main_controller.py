@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock
@@ -9,6 +10,7 @@ from pydub import AudioSegment
 import controllers.folder_transcriber as folder_transcriber
 import controllers.main_controller as main_controller
 import controllers.mic_recorder as mic_recorder
+import handlers.transcribers as transcribers
 import utils.audio_utils as au
 from controllers.directory_report import DirectoryReport, FileStatus
 from controllers.main_controller import MainController
@@ -129,6 +131,9 @@ class TestValidation:
         [
             ({"output_file_types": []}, "No output file types selected"),
             ({"audio_source_path": Path("missing.mp3")}, "valid audio or video file"),
+            # No path at all
+            ({}, "valid audio or video file"),
+            ({"audio_source": AudioSource.DIRECTORY}, "valid folder"),
             (
                 {"audio_source": AudioSource.DIRECTORY, "audio_source_path": Path("x")},
                 "valid folder",
@@ -157,6 +162,37 @@ class TestValidation:
         assert expected_error in fake_view.errors[-1]
         assert fake_view.processed_statuses == [None]
         whisperx_handler.transcribe_file.assert_not_called()
+
+    def test_invalid_settings_are_logged_without_a_traceback(
+        self,
+        controller: MainController,
+        caplog: pytest.LogCaptureFixture,
+    ) -> None:
+        with caplog.at_level(logging.INFO, logger=main_controller.__name__):
+            controller.prepare_for_transcription(make_transcription())
+
+        assert [record.levelno for record in caplog.records] == [logging.INFO]
+        assert caplog.records[0].exc_info is None
+
+    def test_a_bug_while_validating_is_logged_and_ends_the_transcription(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        caplog: pytest.LogCaptureFixture,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        def validate(_transcription: Transcription) -> None:
+            raise TypeError("a bug")
+
+        monkeypatch.setattr(main_controller, "validate_transcription", validate)
+        with caplog.at_level(logging.INFO, logger=main_controller.__name__):
+            controller.prepare_for_transcription(make_transcription())
+
+        assert fake_view.errors == ["TypeError: a bug"]
+        # So the queue goes on with the next transcription
+        assert fake_view.processed_statuses == [None]
+        assert caplog.records[-1].levelno == logging.ERROR
+        assert caplog.records[-1].exc_info is not None
 
     def test_whisperx_can_detect_the_language(
         self,
@@ -221,6 +257,68 @@ class TestFileTranscription:
             main_controller.URL_DOWNLOAD_PATH,
         )
         assert fake_view.displayed_texts == ["whisperx text"]
+        assert not downloaded_file.exists()
+
+    def test_a_downloaded_video_is_saved_before_being_removed(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        downloader: MagicMock,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        # Like the command line, which saves what it downloads without keeping it
+        downloaded_file = tmp_path / "download" / "audiotext-url-download.mp4"
+        downloaded_file.parent.mkdir()
+        downloaded_file.touch()
+        downloader.download.return_value = downloaded_file
+        checked: list[tuple[Path | None, bool]] = []
+
+        def is_vertical_video(path: Path | None) -> bool:
+            checked.append((path, bool(path and path.exists())))
+            return True
+
+        monkeypatch.setattr(transcribers, "is_vertical_video", is_vertical_video)
+
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.YOUTUBE,
+                url="https://example.com/short.mp4",
+                should_autosave=True,
+                output_dir=tmp_path / "output",
+            )
+        )
+
+        # The video was still there to be checked
+        assert checked == [(downloaded_file, True)]
+        assert whisperx_handler.save_transcription.call_args.kwargs["is_vertical"]
+        assert fake_view.saved_folders == [(tmp_path / "output").resolve()]
+        assert not downloaded_file.exists()
+
+    def test_a_downloaded_file_is_removed_if_saving_fails(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        downloader: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        downloaded_file = tmp_path / "audiotext-url-download.mp4"
+        downloaded_file.touch()
+        downloader.download.return_value = downloaded_file
+        whisperx_handler.save_transcription.side_effect = OSError("disk full")
+
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.YOUTUBE,
+                url="https://example.com/short.mp4",
+                should_autosave=True,
+                output_dir=tmp_path / "output",
+            )
+        )
+
+        assert fake_view.errors == ["OSError: disk full"]
         assert not downloaded_file.exists()
 
     def test_url_media_is_kept_when_the_history_needs_it(
@@ -679,6 +777,34 @@ class TestSaveTranscription:
             # The transcribed file is an audio
             is_vertical=False,
         )
+
+    def test_the_files_of_a_folder_are_checked_for_vertical_videos(
+        self,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        checked: list[Path | None] = []
+
+        def is_vertical_video(path: Path | None) -> bool:
+            checked.append(path)
+            return True
+
+        monkeypatch.setattr(transcribers, "is_vertical_video", is_vertical_video)
+        saver = TranscriptionSaver(
+            make_transcription(
+                audio_source=AudioSource.DIRECTORY, audio_source_path=tmp_path
+            )
+        )
+        video = tmp_path / "clips" / "video.mp4"
+
+        saver.save(
+            WhisperXTranscriber(whisperx_handler), TranscriptionResult(""), video
+        )
+
+        # The video, not the folder that has it
+        assert checked == [video]
+        assert whisperx_handler.save_transcription.call_args.kwargs["is_vertical"]
 
 
 class TestOpenAiApi:

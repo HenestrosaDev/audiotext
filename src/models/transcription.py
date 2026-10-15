@@ -13,10 +13,12 @@ class Transcription:
     transcribed with a copy that points to it.
     """
 
+    audio_source: AudioSource
+    method: TranscriptionMethod
+    # The file or the folder to transcribe. None for the sources without one (a
+    # URL or the microphone) until the controller downloads or records the file
+    audio_source_path: Path | None = None
     language_code: str | None = None
-    audio_source: AudioSource | None = None
-    audio_source_path: Path = Path("/")
-    method: TranscriptionMethod | None = None
     # Model of WhisperX (e.g. "large-v2"). If None, the configured one is used
     model_size: str | None = None
     output_file_types: list[str] = field(default_factory=list)
@@ -51,6 +53,17 @@ class Transcription:
     prompt: str = ""
     # Names, terms or acronyms said in the audio, so they're spelled right
     keywords: list[str] = field(default_factory=list)
+
+    @property
+    def path(self) -> Path:
+        """
+        The file or the folder to transcribe.
+
+        :raises ValueError: If there is none, e.g. a URL not downloaded yet.
+        """
+        if self.audio_source_path is None:
+            raise ValueError(f"There is no file to transcribe from {self.audio_source}")
+        return self.audio_source_path
 
     @property
     def whisper_prompt(self) -> str:
