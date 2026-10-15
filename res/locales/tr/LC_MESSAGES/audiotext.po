@@ -279,7 +279,7 @@ msgstr "Hiç ses kaydedilmedi."
 
 #: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:699
+#: src/views/transcript/transcript_view.py:771
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Transkripsiyon"
@@ -287,9 +287,9 @@ msgstr "Transkripsiyon"
 #: src/utils/exporters.py:195 src/utils/exporters.py:223
 #: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:507
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:517
-#: src/views/transcript/transcript_view.py:522
-#: src/views/transcript/transcript_view.py:742
+#: src/views/transcript/transcript_view.py:552
+#: src/views/transcript/transcript_view.py:557
+#: src/views/transcript/transcript_view.py:814
 msgid "Summary"
 msgstr "Özet"
 
@@ -337,14 +337,14 @@ msgid "{count} failed"
 msgstr "{count} başarısız"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1698
+#: src/views/transcript/transcript_view.py:1770
 msgid "Open the folder of the saved files"
 msgstr "Kaydedilen dosyaların klasörünü aç"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:647
-#: src/views/transcript/transcript_view.py:1659
+#: src/views/transcript/transcript_view.py:719
+#: src/views/transcript/transcript_view.py:1731
 msgid "Transcribe again"
 msgstr "Yeniden yazıya dök"
 
@@ -562,22 +562,22 @@ msgid "Rename"
 msgstr "Yeniden adlandır"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1710
+#: src/views/transcript/transcript_view.py:1782
 msgid "Edit note…"
 msgstr "Notu düzenle…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1710
+#: src/views/transcript/transcript_view.py:1782
 msgid "Add note…"
 msgstr "Not ekle…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1715
+#: src/views/transcript/transcript_view.py:1787
 msgid "Delete note…"
 msgstr "Notu sil…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1721
+#: src/views/transcript/transcript_view.py:1793
 msgid "Edit tag…"
 msgstr "Etiketi düzenle…"
 
@@ -602,7 +602,7 @@ msgid "Move to group"
 msgstr "Gruba taşı"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1726
+#: src/views/transcript/transcript_view.py:1798
 msgid "Delete…"
 msgstr "Sil…"
 
@@ -883,9 +883,9 @@ msgstr "Kendinizi veya bir toplantıyı kaydedin. Kayıt geçmişinizde saklanı
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:637
-#: src/views/transcript/transcript_view.py:1350
-#: src/views/transcript/transcript_view.py:1588
+#: src/views/transcript/transcript_view.py:709
+#: src/views/transcript/transcript_view.py:1422
+#: src/views/transcript/transcript_view.py:1660
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Kopyala"
@@ -1189,7 +1189,7 @@ msgstr "API anahtarları"
 
 #: src/views/settings/preferences_dialog.py:190
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:740
+#: src/views/transcript/transcript_view.py:812
 msgid "Subtitles"
 msgstr "Altyazılar"
 
@@ -1772,7 +1772,7 @@ msgid "The new segment goes after the one at {time}:"
 msgstr "Yeni segment, {time} anındaki segmentten sonra gelir:"
 
 #: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1368
+#: src/views/transcript/transcript_view.py:1440
 msgid "Delete the segment"
 msgstr "Segmenti sil"
 
@@ -1870,7 +1870,7 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Boşluk: oynat/duraklat · ←/→: {seconds} sn geri/ileri"
 
 #: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1519
+#: src/views/transcript/transcript_view.py:1591
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Ses oynatılamıyor: {error}"
@@ -1938,13 +1938,13 @@ msgid "Find ({shortcut})"
 msgstr "Bul ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:640
+#: src/views/transcript/transcript_view.py:712
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "Dışa aktar"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1036
+#: src/views/transcript/transcript_view.py:1108
 msgid "Regenerate the summary"
 msgstr "Özeti yeniden oluştur"
 
@@ -2018,220 +2018,234 @@ msgid "This transcription has no timestamps."
 msgstr "Bu transkripsiyonun zaman damgası yok."
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:146
+#: src/views/transcript/transcript_view.py:147
 msgid "There is no alignment model for its language"
 msgstr "Bu dil için hizalama modeli yok"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:147
+#: src/views/transcript/transcript_view.py:148
 msgid "Turn on “Word-level timings” and transcribe it again"
 msgstr "“Kelime düzeyinde zamanlama”yı açıp yeniden yazıya dökün"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:154
+#: src/views/transcript/transcript_view.py:155
 msgid "Transcribe it again to score its words"
 msgstr "Kelimeleri puanlamak için yeniden yazıya dökün"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:155
+#: src/views/transcript/transcript_view.py:156
 msgid "Only WhisperX and whisper-1 score the words"
 msgstr "Kelimeleri yalnızca WhisperX ve whisper-1 puanlar"
 
-#: src/views/transcript/transcript_view.py:160
+#: src/views/transcript/transcript_view.py:161
 msgid "Plain text (.txt)"
 msgstr "Düz metin (.txt)"
 
-#: src/views/transcript/transcript_view.py:161
+#: src/views/transcript/transcript_view.py:162
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:162
+#: src/views/transcript/transcript_view.py:163
 msgid "Word document (.docx)"
 msgstr "Word belgesi (.docx)"
 
-#: src/views/transcript/transcript_view.py:163
+#: src/views/transcript/transcript_view.py:164
 msgid "Subtitles (.srt)"
 msgstr "Altyazılar (.srt)"
 
-#: src/views/transcript/transcript_view.py:164
+#: src/views/transcript/transcript_view.py:165
 msgid "Web subtitles (.vtt)"
 msgstr "Web altyazıları (.vtt)"
 
-#: src/views/transcript/transcript_view.py:165
+#: src/views/transcript/transcript_view.py:166
 msgid "Table (.tsv)"
 msgstr "Tablo (.tsv)"
 
-#: src/views/transcript/transcript_view.py:166
+#: src/views/transcript/transcript_view.py:167
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:308
+#: src/views/transcript/transcript_view.py:309
 msgid "Stop scrolling the translation with the transcription"
 msgstr "Çeviriyi transkripsiyonla birlikte kaydırmayı durdur"
 
-#: src/views/transcript/transcript_view.py:310
+#: src/views/transcript/transcript_view.py:311
 msgid "Scroll the translation with the transcription"
 msgstr "Çeviriyi transkripsiyonla birlikte kaydır"
 
-#: src/views/transcript/transcript_view.py:487
+#: src/views/transcript/transcript_view.py:496
+msgid "Stop adding the subtitles to the video"
+msgstr "Altyazıları videoya eklemeyi durdur"
+
+#: src/views/transcript/transcript_view.py:501
+msgid "Video with subtitles (.mp4)…"
+msgstr "Altyazılı video (.mp4)…"
+
+#: src/views/transcript/transcript_view.py:522
 msgid "Export transcription"
 msgstr "Transkripsiyonu dışa aktar"
 
-#: src/views/transcript/transcript_view.py:508
+#: src/views/transcript/transcript_view.py:543
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Çeviriyi dışa aktar ({language})"
 
-#: src/views/transcript/transcript_view.py:521
+#: src/views/transcript/transcript_view.py:556
 msgid "Export summary"
 msgstr "Özeti dışa aktar"
 
-#: src/views/transcript/transcript_view.py:558
-msgid "All files"
-msgstr "Tüm dosyalar"
-
-#: src/views/transcript/transcript_view.py:567
+#: src/views/transcript/transcript_view.py:585
+#: src/views/transcript/video_export.py:89
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Dışa aktarılamadı: {error}"
 
-#: src/views/transcript/transcript_view.py:570
+#: src/views/transcript/transcript_view.py:588
+#: src/views/transcript/video_export.py:92
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Dışa aktarıldı: {path}"
 
-#: src/views/transcript/transcript_view.py:632
+#: src/views/transcript/transcript_view.py:615
+msgid "All files"
+msgstr "Tüm dosyalar"
+
+#: src/views/transcript/transcript_view.py:631
+msgid "Export video with subtitles"
+msgstr "Altyazılı videoyu dışa aktar"
+
+#: src/views/transcript/transcript_view.py:704
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Bul ve değiştir ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:680
+#: src/views/transcript/transcript_view.py:752
 msgid "No low-confidence words left to review"
 msgstr "İncelenecek düşük güvenilirlikli kelime kalmadı"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:690
+#: src/views/transcript/transcript_view.py:762
 msgid "Show all segments"
 msgstr "Tüm bölümleri göster"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:727
+#: src/views/transcript/transcript_view.py:799
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Önceki düşük güvenilirlikli kelime ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:729
+#: src/views/transcript/transcript_view.py:801
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Sonraki düşük güvenilirlikli kelime ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:741
+#: src/views/transcript/transcript_view.py:813
 msgid "Plain text"
 msgstr "Düz metin"
 
-#: src/views/transcript/transcript_view.py:750
+#: src/views/transcript/transcript_view.py:822
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Çevir"
 
-#: src/views/transcript/transcript_view.py:863
-#: src/views/transcript/transcript_view.py:1407
+#: src/views/transcript/transcript_view.py:935
+#: src/views/transcript/transcript_view.py:1479
 msgid "Edit text"
 msgstr "Metni düzenle"
 
-#: src/views/transcript/transcript_view.py:863
+#: src/views/transcript/transcript_view.py:935
 #, python-brace-format
 msgid "Text said at {time}:"
 msgstr "Söylenen metin ({time}):"
 
-#: src/views/transcript/transcript_view.py:940
+#: src/views/transcript/transcript_view.py:1012
 msgid "Find and replace in the transcription"
 msgstr "Transkripsiyonda bul ve değiştir"
 
-#: src/views/transcript/transcript_view.py:950
+#: src/views/transcript/transcript_view.py:1022
 msgid "Find and replace in the translation"
 msgstr "Çeviride bul ve değiştir"
 
-#: src/views/transcript/transcript_view.py:951
+#: src/views/transcript/transcript_view.py:1023
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "{language} çeviride bul ve değiştir"
 
-#: src/views/transcript/transcript_view.py:964
+#: src/views/transcript/transcript_view.py:1036
 msgid "Find in the summary"
 msgstr "Özette bul"
 
-#: src/views/transcript/transcript_view.py:1037
+#: src/views/transcript/transcript_view.py:1109
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Özet yeniden oluşturulsun mu? Mevcut özet değiştirilecek."
 
-#: src/views/transcript/transcript_view.py:1195
+#: src/views/transcript/transcript_view.py:1267
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Çeviriyi gizle"
 
-#: src/views/transcript/transcript_view.py:1200
+#: src/views/transcript/transcript_view.py:1272
 msgid "Show the translation"
 msgstr "Çeviriyi göster"
 
-#: src/views/transcript/transcript_view.py:1204
+#: src/views/transcript/transcript_view.py:1276
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Başka bir dile çevir…"
 
-#: src/views/transcript/transcript_view.py:1215
+#: src/views/transcript/transcript_view.py:1287
 msgid "Show it as the subtitles of the video"
 msgstr "Videonun altyazısı olarak göster"
 
-#: src/views/transcript/transcript_view.py:1222
+#: src/views/transcript/transcript_view.py:1294
 msgid "Delete the translation"
 msgstr "Çeviriyi sil"
 
-#: src/views/transcript/transcript_view.py:1347
-#: src/views/transcript/transcript_view.py:1586
+#: src/views/transcript/transcript_view.py:1419
+#: src/views/transcript/transcript_view.py:1658
 msgid "Play from here"
 msgstr "Buradan oynat"
 
-#: src/views/transcript/transcript_view.py:1355
-#: src/views/transcript/transcript_view.py:1590
+#: src/views/transcript/transcript_view.py:1427
+#: src/views/transcript/transcript_view.py:1662
 msgid "Edit text…"
 msgstr "Metni düzenle…"
 
-#: src/views/transcript/transcript_view.py:1355
+#: src/views/transcript/transcript_view.py:1427
 msgid "Translate text…"
 msgstr "Metni çevir…"
 
-#: src/views/transcript/transcript_view.py:1359
+#: src/views/transcript/transcript_view.py:1431
 msgid "Edit the timing…"
 msgstr "Zamanlamayı düzenle…"
 
-#: src/views/transcript/transcript_view.py:1363
+#: src/views/transcript/transcript_view.py:1435
 msgid "Add a segment after…"
 msgstr "Sonrasına segment ekle…"
 
-#: src/views/transcript/transcript_view.py:1407
+#: src/views/transcript/transcript_view.py:1479
 msgid "Translate text"
 msgstr "Metni çevir"
 
-#: src/views/transcript/transcript_view.py:1410
+#: src/views/transcript/transcript_view.py:1482
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "\"{text}\" çevirisi, {start} ile {end} arasında söylenen:"
 
-#: src/views/transcript/transcript_view.py:1412
+#: src/views/transcript/transcript_view.py:1484
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "{start} ile {end} arasındaki segmentin çevirisi:"
 
-#: src/views/transcript/transcript_view.py:1448
+#: src/views/transcript/transcript_view.py:1520
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Yeniden çevir"
 
-#: src/views/transcript/transcript_view.py:1450
+#: src/views/transcript/transcript_view.py:1522
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2240,47 +2254,47 @@ msgstr ""
 "Transkripsiyon yeniden {language} diline çevrilsin mi? Çeviride yapılan "
 "değişiklikler kaybolacak."
 
-#: src/views/transcript/transcript_view.py:1473
+#: src/views/transcript/transcript_view.py:1545
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Ses kullanılamıyor: kaynak dosya taşındı veya silindi."
 
-#: src/views/transcript/transcript_view.py:1476
+#: src/views/transcript/transcript_view.py:1548
 msgid "The audio isn't available."
 msgstr "Ses kullanılamıyor."
 
-#: src/views/transcript/transcript_view.py:1594
-#: src/views/transcript/transcript_view.py:1672
+#: src/views/transcript/transcript_view.py:1666
+#: src/views/transcript/transcript_view.py:1744
 msgid "Rename speakers…"
 msgstr "Konuşmacıları yeniden adlandır…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1615
+#: src/views/transcript/transcript_view.py:1687
 msgid "Highlight low-confidence words"
 msgstr "Düşük güvenilirlikli kelimeleri vurgula"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1623
+#: src/views/transcript/transcript_view.py:1695
 msgid "Low-confidence threshold"
 msgstr "Düşük güvenilirlik eşiği"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1645
+#: src/views/transcript/transcript_view.py:1717
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "%{percent} altında"
 
-#: src/views/transcript/transcript_view.py:1661
+#: src/views/transcript/transcript_view.py:1733
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr ""
 "“{title}” yeniden yazıya dökülsün mü? Metninde yapılan değişiklikler "
 "kaybolacak."
 
-#: src/views/transcript/transcript_view.py:1682
+#: src/views/transcript/transcript_view.py:1754
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Hassas zaman damgaları (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1706
+#: src/views/transcript/transcript_view.py:1778
 msgid "Rename…"
 msgstr "Yeniden adlandır…"
 
@@ -2356,6 +2370,19 @@ msgstr "Her segmenti zaman damgalarını koruyarak çevirir."
 #: src/views/transcript/translation_panel.py:559
 msgid "Set…"
 msgstr "Ayarla…"
+
+#: src/views/transcript/video_export.py:84
+msgid "Adding the subtitles to the video was cancelled."
+msgstr "Altyazıların videoya eklenmesi iptal edildi."
+
+#: src/views/transcript/video_export.py:100
+msgid "Adding the subtitles to the video…"
+msgstr "Altyazılar videoya ekleniyor…"
+
+#: src/views/transcript/video_export.py:101
+#, python-brace-format
+msgid "Adding the subtitles to the video… {percent}%"
+msgstr "Altyazılar videoya ekleniyor… %{percent}"
 
 #: src/views/transcript/video_pane.py:260
 msgid "Show subtitles on the video"

@@ -86,6 +86,7 @@ from views.transcript.translation_panel import (
     has_timed_texts,
     language_name,
 )
+from views.transcript.video_export import VideoExport, subtitle_look
 from views.transcript.video_pane import VideoPane
 from views.transcript.word_popover import WordPopover
 from views.widgets.button import icon_button, set_button_state, show_toggled
@@ -440,7 +441,12 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
     def show_export_menu(self) -> None:
         """The formats to export the transcription to."""
         menu = tk.Menu(self, tearoff=False)
-        self._add_export_commands(menu, bool(self._entry.segments), self.export)
+        self._add_export_commands(
+            menu,
+            bool(self._entry.segments),
+            self.export,
+            lambda: self.export_video(self._entry.segments),
+        )
         # The button is hidden with the transcript, e.g. while the summary is shown
         anchor = self.btn_export if self.btn_export.winfo_viewable() else self.btn_more
         self._popup_below(menu, anchor)
@@ -459,16 +465,45 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             return
         menu = tk.Menu(self, tearoff=False)
         self._add_export_commands(
-            menu, has_timed_texts(translation), self.export_translation
+            menu,
+            has_timed_texts(translation),
+            self.export_translation,
+            # The segments not translated yet are left out of the subtitles
+            lambda: self.export_video(
+                [segment for segment in translation.segments if segment.text],
+                translation.language,
+            ),
         )
         self._popup_below(menu, anchor)
 
-    @staticmethod
     def _add_export_commands(
-        menu: tk.Menu, has_segments: bool, command: Callable[[str], None]
+        self,
+        menu: tk.Menu,
+        has_segments: bool,
+        command: Callable[[str], None],
+        export_video: Callable[[], None],
     ) -> None:
+        """
+        :param export_video: Exports the video with the subtitles, if it has a
+                             video and segments.
+        """
         for file_type, label in sorted_export_labels(available_formats(has_segments)):
             menu.add_command(label=label, command=partial(command, file_type))
+
+        menu.add_separator()
+        if VideoExport.is_running():
+            menu.add_command(
+                label=_("Stop adding the subtitles to the video"),
+                command=VideoExport.cancel,
+            )
+        else:
+            menu.add_command(
+                label=_("Video with subtitles (.mp4)…"),
+                command=export_video,
+                state=(
+                    tk.NORMAL if has_segments and self.layout.has_video else tk.DISABLED
+                ),
+            )
 
     def export(self, file_type: str) -> None:
         self.text.save_pending_text()
@@ -539,6 +574,28 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         :param suffix: Added to the name of the file, if given (e.g. to not
                        replace the transcription with its summary).
         """
+        selected = self._ask_export_path(file_type, title, language_code, suffix)
+        if selected is None:
+            return
+
+        try:
+            path = write(selected)
+        except (OSError, ValueError) as e:
+            self._actions.window.show_status(
+                _("Could not export: {error}").format(error=e), is_error=True
+            )
+            return
+        self._actions.window.show_status(_("Exported to {path}").format(path=path))
+
+    def _ask_export_path(
+        self, file_type: str, title: str, language_code: str = "", suffix: str = ""
+    ) -> Path | None:
+        """
+        Asks where to export a file, next to the source file by default. See
+        `_export`.
+
+        :return: The chosen path, or None if the user cancelled.
+        """
         entry = self._entry
         source_path = entry.source_path
         initial_dir = str(source_path.parent) if source_path else str(Path.home())
@@ -557,17 +614,32 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             defaultextension=f".{file_type}",
             filetypes=[(f".{file_type}", f"*.{file_type}"), (_("All files"), "*.*")],
         )
-        if not selected:
-            return
+        return Path(selected) if selected else None
 
-        try:
-            path = write(Path(selected))
-        except (OSError, ValueError) as e:
-            self._actions.window.show_status(
-                _("Could not export: {error}").format(error=e), is_error=True
-            )
+    def export_video(
+        self, segments: list[TranscriptSegment], language_code: str = ""
+    ) -> None:
+        """
+        Exports a copy of the video with the subtitles of the segments drawn on it,
+        as they're shown over the video.
+
+        :param language_code: The language of the translation, if the segments are
+                              the ones of a translation.
+        """
+        media_path = Path(self._entry.media_path or "")
+        output_path = self._ask_export_path(
+            "mp4", _("Export video with subtitles"), language_code, "subtitled"
+        )
+        if output_path is None:
             return
-        self._actions.window.show_status(_("Exported to {path}").format(path=path))
+        VideoExport.start(
+            media_path,
+            build_cue_track(segments, self._is_vertical).cues,
+            output_path,
+            subtitle_look(self._config_system),
+            self._actions.window.show_status,
+            self._run_on_ui_thread,
+        )
 
     # WIDGETS
 
