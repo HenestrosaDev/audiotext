@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 14:48+0200\n"
+"POT-Creation-Date: 2026-10-15 14:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -93,7 +93,7 @@ msgid "Could not load the WhisperX model: {error}"
 msgstr "WhisperX मॉडल लोड नहीं हो सका: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:217
+#: src/handlers/whisperx_handler.py:222
 msgid "No output file types selected. Please select at least one."
 msgstr "कोई आउटपुट फ़ाइल प्रकार नहीं चुना गया है। कृपया कम से कम एक चुनें।"
 
@@ -140,7 +140,7 @@ msgid "The reply of the model was too long."
 msgstr "मॉडल का जवाब बहुत लंबा था।"
 
 #: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:241
+#: src/handlers/whisperx_handler.py:246
 msgid "Loading audio…"
 msgstr "ऑडियो लोड किया जा रहा है…"
 
@@ -150,7 +150,7 @@ msgid "Unsupported file type: {extension}"
 msgstr "असमर्थित फ़ाइल प्रकार: {extension}"
 
 #: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:251 src/handlers/whisperx_handler.py:258
+#: src/handlers/whisperx_handler.py:256 src/handlers/whisperx_handler.py:263
 #: src/views/history/formatting.py:43
 #: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
@@ -165,7 +165,7 @@ msgstr "भाग {current}/{total} ट्रांसक्राइब कि�
 msgid "The text can't be shown while recording."
 msgstr "रिकॉर्डिंग के दौरान टेक्स्ट नहीं दिखाया जा सकता।"
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:482
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:487
 #, python-brace-format
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr ""
@@ -185,7 +185,7 @@ msgstr "मॉडल ने मान्य सारांश नहीं ल�
 msgid "There is no text to summarize."
 msgstr "सारांश बनाने के लिए कोई टेक्स्ट नहीं है।"
 
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:331
+#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:336
 msgid "There is no transcription to save. Please generate it first."
 msgstr "सहेजने के लिए कोई ट्रांसक्रिप्शन नहीं है। कृपया पहले इसे बनाएँ।"
 
@@ -223,15 +223,15 @@ msgstr ""
 msgid "The file could not be downloaded: {error}"
 msgstr "फ़ाइल डाउनलोड नहीं हो सकी: {error}"
 
-#: src/handlers/whisperx_handler.py:371 src/handlers/whisperx_handler.py:380
+#: src/handlers/whisperx_handler.py:376 src/handlers/whisperx_handler.py:385
 msgid "Aligning subtitles…"
 msgstr "सबटाइटल संरेखित किए जा रहे हैं…"
 
-#: src/handlers/whisperx_handler.py:404 src/handlers/whisperx_handler.py:409
+#: src/handlers/whisperx_handler.py:409 src/handlers/whisperx_handler.py:414
 msgid "Identifying speakers…"
 msgstr "वक्ताओं की पहचान की जा रही है…"
 
-#: src/handlers/whisperx_handler.py:430
+#: src/handlers/whisperx_handler.py:435
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -242,11 +242,11 @@ msgstr ""
 "टोकन बनाएँ, {model_url} की शर्तें स्वीकार करें और WhisperX विकल्पों में "
 "टोकन सेट करें।"
 
-#: src/handlers/whisperx_handler.py:515
+#: src/handlers/whisperx_handler.py:520
 msgid "Loading the subtitle alignment model…"
 msgstr "सबटाइटल संरेखण मॉडल लोड किया जा रहा है…"
 
-#: src/handlers/whisperx_handler.py:548
+#: src/handlers/whisperx_handler.py:553
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
@@ -254,7 +254,7 @@ msgstr ""
 "वक्ता पहचान मॉडल लोड हो रहा है (पहली बार उपयोग करने पर यह डाउनलोड होता "
 "है)…"
 
-#: src/handlers/whisperx_handler.py:562
+#: src/handlers/whisperx_handler.py:567
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 14:48+0200\n"
+"POT-Creation-Date: 2026-10-15 14:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -94,7 +94,7 @@ msgid "Could not load the WhisperX model: {error}"
 msgstr "Nie udało się wczytać modelu WhisperX: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:217
+#: src/handlers/whisperx_handler.py:222
 msgid "No output file types selected. Please select at least one."
 msgstr "Nie wybrano żadnego typu pliku wyjściowego. Wybierz co najmniej jeden."
 
@@ -141,7 +141,7 @@ msgid "The reply of the model was too long."
 msgstr "Odpowiedź modelu była za długa."
 
 #: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:241
+#: src/handlers/whisperx_handler.py:246
 msgid "Loading audio…"
 msgstr "Wczytywanie dźwięku…"
 
@@ -151,7 +151,7 @@ msgid "Unsupported file type: {extension}"
 msgstr "Nieobsługiwany typ pliku: {extension}"
 
 #: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:251 src/handlers/whisperx_handler.py:258
+#: src/handlers/whisperx_handler.py:256 src/handlers/whisperx_handler.py:263
 #: src/views/history/formatting.py:43
 #: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
@@ -166,7 +166,7 @@ msgstr "Transkrypcja fragmentu {current} z {total}…"
 msgid "The text can't be shown while recording."
 msgstr "Tekstu nie można pokazywać podczas nagrywania."
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:482
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:487
 #, python-brace-format
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr "Wczytywanie modelu {model} (przy pierwszym użyciu zostanie pobrany)…"
@@ -184,7 +184,7 @@ msgstr "Model nie zwrócił prawidłowego podsumowania."
 msgid "There is no text to summarize."
 msgstr "Brak tekstu do podsumowania."
 
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:331
+#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:336
 msgid "There is no transcription to save. Please generate it first."
 msgstr "Brak transkrypcji do zapisania. Najpierw ją wygeneruj."
 
@@ -222,15 +222,15 @@ msgstr ""
 msgid "The file could not be downloaded: {error}"
 msgstr "Nie udało się pobrać pliku: {error}"
 
-#: src/handlers/whisperx_handler.py:371 src/handlers/whisperx_handler.py:380
+#: src/handlers/whisperx_handler.py:376 src/handlers/whisperx_handler.py:385
 msgid "Aligning subtitles…"
 msgstr "Wyrównywanie napisów…"
 
-#: src/handlers/whisperx_handler.py:404 src/handlers/whisperx_handler.py:409
+#: src/handlers/whisperx_handler.py:409 src/handlers/whisperx_handler.py:414
 msgid "Identifying speakers…"
 msgstr "Rozpoznawanie mówców…"
 
-#: src/handlers/whisperx_handler.py:430
+#: src/handlers/whisperx_handler.py:435
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -241,11 +241,11 @@ msgstr ""
 "{tokens_url}, zaakceptuj warunki {model_url} i ustaw token w opcjach "
 "WhisperX."
 
-#: src/handlers/whisperx_handler.py:515
+#: src/handlers/whisperx_handler.py:520
 msgid "Loading the subtitle alignment model…"
 msgstr "Wczytywanie modelu wyrównywania napisów…"
 
-#: src/handlers/whisperx_handler.py:548
+#: src/handlers/whisperx_handler.py:553
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
@@ -253,7 +253,7 @@ msgstr ""
 "Wczytywanie modelu rozpoznawania mówców (jest pobierany przy pierwszym "
 "użyciu)…"
 
-#: src/handlers/whisperx_handler.py:562
+#: src/handlers/whisperx_handler.py:567
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "

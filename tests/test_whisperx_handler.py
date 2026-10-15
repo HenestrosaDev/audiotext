@@ -1,3 +1,4 @@
+import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -425,3 +426,15 @@ def test_the_words_keep_their_alignment_score() -> None:
         TranscriptWord(0.0, 0.5, "Hello", 0.9),
         TranscriptWord(0.5, 0.5, "42"),
     )
+
+
+def test_whisperx_logs_go_to_the_root_logger_and_not_to_stdout(
+    capsys: pytest.CaptureFixture[str], caplog: pytest.LogCaptureFixture
+) -> None:
+    from whisperx.log_utils import get_logger
+
+    with caplog.at_level(logging.INFO):
+        get_logger("whisperx.asr").info("Detected language: en")
+
+    assert capsys.readouterr().out == ""
+    assert "Detected language: en" in caplog.text
