@@ -103,6 +103,30 @@ def load_audio_samples(
     return np.frombuffer(result.stdout, dtype=np.int16)
 
 
+def decoded_video_size(path: Path) -> tuple[int, int]:
+    """
+    The size of the frames of a video as FFmpeg decodes them to process them: its
+    width and height swapped if it's rotated (e.g. the videos of phones), unlike
+    the ones stored in the file.
+
+    :raises OSError: If the file can't be read or has no video.
+    """
+    import av
+
+    try:
+        with av.open(str(path)) as container:
+            stream = _find_video_stream(container)
+            if stream is None:
+                raise OSError(f"{path.name} has no video")
+            frame = next(container.decode(stream))
+            width, height = frame.width, frame.height
+            if abs(round(frame.rotation)) % 180 == 90:
+                width, height = height, width
+            return width, height
+    except (av.FFmpegError, StopIteration) as e:
+        raise OSError(str(e) or f"{path.name} has no frames") from e
+
+
 def _find_video_stream(container: Any) -> Any:
     import av
 
