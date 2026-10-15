@@ -50,7 +50,7 @@ def get_transcription(
     :return: The transcribed text.
     """
     on_progress(_("Loading audio…"), None)
-    audio = load_audio_file(transcription.audio_source_path)
+    audio = load_audio_file(transcription.path)
 
     if should_split_on_silence:
         audio_chunks = split_audio_into_chunks(audio)

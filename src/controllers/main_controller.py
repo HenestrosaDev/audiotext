@@ -155,7 +155,7 @@ class MainController:
             return functools.partial(self._transcribe_url, transcription)
         if source in (AudioSource.DIRECTORY, AudioSource.WATCH):
             folder_transcriber = FolderTranscriber(
-                transcription.audio_source_path,
+                transcription.path,
                 self.view,
                 TranscriptionSaver(transcription),
                 functools.partial(self._transcribe_file, transcription),
@@ -168,7 +168,7 @@ class MainController:
         return functools.partial(
             self._transcribe_single_file,
             transcription,
-            transcription.audio_source_path,
+            transcription.path,
         )
 
     def _run_process(self, process: Callable[[], str]) -> None:
@@ -243,7 +243,7 @@ class MainController:
         """
         transcriber = self._get_transcriber(transcription.method)
         source = transcription.audio_source
-        has_several_files = bool(source and source.has_several_files)
+        has_several_files = source.has_several_files
 
         try:
             result = self._transcribe_audio(
@@ -252,7 +252,7 @@ class MainController:
                 on_progress,
             )
         finally:
-            if source and source.is_temporary and transcription.media_path is None:
+            if source.is_temporary and transcription.media_path is None:
                 file_path.unlink(missing_ok=True)
 
         self._ui(
@@ -291,7 +291,7 @@ class MainController:
 
         on_progress(_("Isolating the speech…"), None)
         isolated_path = au.isolate_speech(
-            transcription.audio_source_path,
+            transcription.path,
             TEMP_DIR / f"audiotext-speech-{os.getpid()}-{threading.get_ident()}.wav",
         )
 
@@ -305,11 +305,11 @@ class MainController:
         finally:
             isolated_path.unlink(missing_ok=True)
 
-    def _get_transcriber(self, method: TranscriptionMethod | None) -> Transcriber:
+    def _get_transcriber(self, method: TranscriptionMethod) -> Transcriber:
         """
         :raises ValueError: If the transcription method is not supported.
         """
-        if method is None or method not in self._transcribers:
+        if method not in self._transcribers:
             raise ValueError(f"Unsupported transcription method: {method}")
 
         return self._transcribers[method]

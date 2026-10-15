@@ -14,6 +14,7 @@ from models.transcript_segment import TranscriptWord
 from models.transcription import Transcription
 from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.config_manager import ConfigManager
+from utils.enums import AudioSource, TranscriptionMethod
 
 SEGMENTS = [
     {"start": 0.0, "end": 1.0, "text": " Hello "},
@@ -56,6 +57,8 @@ def whisperx(monkeypatch: pytest.MonkeyPatch) -> MagicMock:
 
 def make_transcription(**kwargs: Any) -> Transcription:
     defaults: dict[str, Any] = {
+        "audio_source": AudioSource.FILE,
+        "method": TranscriptionMethod.WHISPERX,
         "audio_source_path": Path("audio.mp3"),
         "language_code": "es",
         "output_file_types": ["txt"],

@@ -65,10 +65,7 @@ class TranscriptionSaver:
         self._transcription = transcription
         # The subfolders of a transcribed folder are recreated in the output folder
         self._source_dir = (
-            transcription.audio_source_path
-            if transcription.audio_source
-            and transcription.audio_source.has_several_files
-            else None
+            transcription.path if transcription.audio_source.has_several_files else None
         )
 
     def get_output_dir(self, file_path: Path) -> Path:
@@ -78,7 +75,7 @@ class TranscriptionSaver:
 
     def get_output_root(self) -> Path:
         """The folder where the transcriptions of a folder are saved."""
-        return self._transcription.output_dir or self._transcription.audio_source_path
+        return self._transcription.output_dir or self._transcription.path
 
     def has_transcription(self, file_path: Path) -> bool:
         return has_transcription(
