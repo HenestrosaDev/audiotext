@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:21+0200\n"
+"POT-Creation-Date: 2026-10-15 20:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -129,6 +129,21 @@ msgstr "Kunci API Anthropic"
 msgid "Appearance"
 msgstr "Tampilan"
 
+msgid "Ask"
+msgstr "Tanya"
+
+msgid "Ask a question about the transcription…"
+msgstr "Ajukan pertanyaan tentang transkripsi…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"Tanyakan kepada {provider} tentang transkripsi, misalnya apa yang "
+"diputuskan atau siapa yang mengatakan sesuatu. Jawabannya ditautkan ke "
+"bagian yang mengatakannya."
+
 msgid "Audio"
 msgstr "Audio"
 
@@ -232,6 +247,9 @@ msgstr ""
 
 msgid "Choose where to save the transcriptions"
 msgstr "Pilih tempat menyimpan transkripsi"
+
+msgid "Clear the conversation"
+msgstr "Hapus percakapan"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "Klik segmen untuk memutarnya. Klik kanan untuk mengeditnya."
@@ -338,6 +356,9 @@ msgstr "Hapus grup \"{name}\"? Transkripsinya tetap disimpan, tanpa grup."
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "Hapus catatan untuk “{title}”?"
+
+msgid "Delete the questions and their answers?"
+msgstr "Hapus pertanyaan dan jawabannya?"
 
 msgid "Delete the segment"
 msgstr "Hapus segmen"
@@ -1157,6 +1178,14 @@ msgstr "Atur kunci API…"
 
 msgid "Set Hugging Face token…"
 msgstr "Atur token Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Atur kunci API {provider} untuk bertanya tentang transkripsi, atau pilih "
+"penyedia lain di pengaturan."
 
 #, python-brace-format
 msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:21+0200\n"
+"POT-Creation-Date: 2026-10-15 20:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -132,6 +132,21 @@ msgstr "Clé API Anthropic"
 msgid "Appearance"
 msgstr "Apparence"
 
+msgid "Ask"
+msgstr "Demander"
+
+msgid "Ask a question about the transcription…"
+msgstr "Posez une question sur la transcription…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"Interrogez {provider} sur la transcription, par exemple ce qui a été "
+"décidé ou qui a dit quelque chose. Les réponses renvoient à l'endroit où "
+"c'est dit."
+
 msgid "Audio"
 msgstr "Audio"
 
@@ -237,6 +252,9 @@ msgstr ""
 
 msgid "Choose where to save the transcriptions"
 msgstr "Choisissez où enregistrer les transcriptions"
+
+msgid "Clear the conversation"
+msgstr "Effacer la conversation"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr ""
@@ -350,6 +368,9 @@ msgstr ""
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "Supprimer la note de « {title} » ?"
+
+msgid "Delete the questions and their answers?"
+msgstr "Supprimer les questions et leurs réponses ?"
 
 msgid "Delete the segment"
 msgstr "Supprimer le segment"
@@ -1172,6 +1193,14 @@ msgstr "Configurer la clé API…"
 
 msgid "Set Hugging Face token…"
 msgstr "Configurer le jeton Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Configurez la clé API de {provider} pour poser des questions sur la "
+"transcription, ou choisissez un autre fournisseur dans les paramètres."
 
 #, python-brace-format
 msgid ""

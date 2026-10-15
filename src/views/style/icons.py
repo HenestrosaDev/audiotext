@@ -102,6 +102,14 @@ def _note(d: Draw) -> None:
     _line(d, [(18, 32), (38, 32)], width=4)
 
 
+def _chat(d: Draw) -> None:
+    # A speech bubble with its tail at the bottom left
+    d.rounded_rectangle((6, 8, 58, 44), radius=10, outline=ON, width=STROKE)
+    _line(d, [(18, 44), (14, 56), (30, 44)])
+    for x in (21, 32, 43):
+        d.ellipse((x - 3, 23, x + 3, 29), fill=ON)
+
+
 def _chevron_right(d: Draw) -> None:
     _line(d, [(24, 14), (42, 32), (24, 50)], width=6)
 
@@ -318,6 +326,7 @@ ICONS: dict[str, Callable[[Draw], None]] = {
     "export": _export,
     "import": _import,
     "trash": _trash,
+    "chat": _chat,
     "record": _record,
     "stop": _stop,
     "waveform": _waveform,
