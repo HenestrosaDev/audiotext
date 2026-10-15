@@ -4,7 +4,6 @@ from pathlib import Path
 import av
 import numpy as np
 import pytest
-from PIL import Image
 from pydub import AudioSegment
 
 from tests.test_media import make_video
@@ -16,10 +15,9 @@ from utils.subtitle_burner import (
     LibassFonts,
     SubtitleLook,
     burn_subtitles,
-    render_subtitle,
-    wrap_line,
+    cjk_style,
+    video_encoder_options,
     write_ass,
-    write_overlays,
 )
 from utils.subtitle_cues import Cue
 
@@ -34,17 +32,11 @@ def ass_lines(path: Path, prefix: str) -> list[str]:
     ]
 
 
-def alpha_rows(image: Image.Image) -> tuple[int, int]:
-    """The first and the last rows of the image that are not transparent."""
-    rows = np.flatnonzero(np.asarray(image.getchannel("A")).any(axis=1))
-    return int(rows[0]), int(rows[-1])
-
-
 def test_ass_is_in_the_resolution_of_the_video(tmp_path: Path) -> None:
     path = tmp_path / "subtitles.ass"
     cues = [Cue(0.5, 2.0, "Say {hi}\nC:\\Users"), Cue(3600, 3601.25, "你好")]
 
-    write_ass(cues, path, SubtitleLook(), (1280, 720), LibassFonts("Arial", "Wide"))
+    write_ass(cues, path, SubtitleLook(), (1280, 720), LibassFonts("Arial", "Han"))
 
     content = path.read_text(encoding="utf-8")
     assert "PlayResX: 1280\nPlayResY: 720\n" in content
@@ -52,11 +44,11 @@ def test_ass_is_in_the_resolution_of_the_video(tmp_path: Path) -> None:
     styles = ass_lines(path, "Style:")
     assert styles[0].startswith("Style: Default,Arial,43,")
     assert styles[0].split(",")[15] == "3"
-    assert styles[1].startswith("Style: Wide,Wide,43,")
+    assert styles[1].startswith("Style: Chinese,Han,43,")
     assert ass_lines(path, "Dialogue:") == [
         "Dialogue: 0,0:00:00.50,0:00:02.00,Default,,0,0,0,,Say (hi)\\NC:/Users",
-        # The Chinese text has the font with its glyphs
-        "Dialogue: 0,1:00:00.00,1:00:01.25,Wide,,0,0,0,,你好",
+        # The Chinese text has the font with its characters
+        "Dialogue: 0,1:00:00.00,1:00:01.25,Chinese,,0,0,0,,你好",
     ]
 
 
@@ -72,61 +64,42 @@ def test_ass_follows_the_look(tmp_path: Path) -> None:
     assert fields[18] == "8"  # At the top
 
 
-def test_overlays_show_each_subtitle_from_its_start(tmp_path: Path) -> None:
-    cues = [Cue(0.5, 2.0, "One"), Cue(1.5, 3.0, "Two"), Cue(2.5, 2.8, "Three")]
-
-    write_overlays(cues, tmp_path, SubtitleLook(), (320, 180))
-
-    lines = (tmp_path / "subtitles.ffconcat").read_text().splitlines()
-    assert lines == [
-        "ffconcat version 1.0",
-        "file blank.png",
-        "duration 0.500",
-        "file subtitle00000.png",
-        "duration 1.500",
-        # The overlapping subtitle starts when the previous one ends
-        "file subtitle00001.png",
-        "duration 1.000",
-        # The one hidden behind it is left out
-        "file blank.png",
-        "duration 1",
-        "file blank.png",
-    ]
-    assert Image.open(tmp_path / "subtitle00000.png").size == (320, 180)
-    assert not (tmp_path / "subtitle00002.png").exists()
+@pytest.mark.parametrize(
+    ("text", "style"),
+    [
+        ("Hello", "Default"),
+        ("مرحبا नमस्ते", "Default"),
+        ("안녕하세요", "Default"),
+        ("你好，说话", "Chinese"),
+        ("臺灣 𠀀", "Chinese"),
+        # Japanese has Han characters too, along with kana
+        ("日本語です", "Japanese"),
+        ("ｶﾀｶﾅ", "Japanese"),
+    ],
+)
+def test_chinese_and_japanese_have_their_own_style(text: str, style: str) -> None:
+    assert cjk_style(text) == style
 
 
-@pytest.mark.parametrize("is_top", [False, True])
-def test_subtitle_images_are_placed_as_configured(is_top: bool) -> None:
-    image = render_subtitle("Hello", SubtitleLook(is_top=is_top), (640, 360))
+def test_videotoolbox_is_given_a_bitrate_for_the_size_of_the_video() -> None:
+    options = video_encoder_options("h264_videotoolbox", (1920, 1080))
 
-    first, last = alpha_rows(image)
-    if is_top:
-        assert first < 40
-    else:
-        assert last > 320
-
-
-def test_subtitle_images_have_a_box_or_an_outline() -> None:
-    size = (640, 360)
-    box = render_subtitle("Hello", SubtitleLook(), size)
-    outline = render_subtitle("Hello", SubtitleLook(is_outline=True), size)
-
-    def box_pixels(image: Image.Image) -> int:
-        alpha = np.asarray(image.getchannel("A"))
-        return int((alpha == round(subtitle_burner.BACKGROUND_OPACITY * 255)).sum())
-
-    assert box_pixels(box) > 500
-    assert box_pixels(outline) == 0
+    assert options[options.index("-b:v") + 1] == str(1920 * 1080 * 3)
+    # Its constant quality isn't supported by its software encoder
+    assert "-q:v" not in options
+    assert video_encoder_options("libx264", (1920, 1080))[:2] == ["-c:v", "libx264"]
+    assert video_encoder_options(None, (1920, 1080)) == []
 
 
-def test_long_lines_are_wrapped() -> None:
-    font = subtitle_burner.load_font(20, False)
+def test_ffmpeg_without_libass_cant_burn_subtitles(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    features = FFmpegFeatures(has_libass=False, video_encoder="libx264")
+    monkeypatch.setattr(subtitle_burner, "ffmpeg_features", lambda _ffmpeg: features)
+    video = make_video(tmp_path / "video.mp4", 64, 32)
 
-    assert len(wrap_line("word " * 40, font, 200)) > 1
-    assert wrap_line("short", font, 200) == ["short"]
-    # Without spaces, between the characters
-    assert len(wrap_line("你" * 40, subtitle_burner.load_font(20, True), 200)) > 1
+    with pytest.raises(OSError, match="libass"):
+        burn_subtitles(video, CUES, tmp_path / "output.mp4", SubtitleLook())
 
 
 def test_progress_reports_are_read() -> None:
@@ -150,20 +123,17 @@ def make_sound_video(path: Path) -> Path:
     return path
 
 
-@pytest.fixture(params=[False, True], ids=["overlays", "libass"])
-def ffmpeg_features(
-    request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch
-) -> FFmpegFeatures:
-    """The FFmpeg used with and without libass, if it has it."""
-    features = subtitle_burner.ffmpeg_features(AudioSegment.converter)
-    if request.param and not features.has_libass:
+@pytest.fixture
+def ffmpeg_with_libass() -> None:
+    """
+    Skips the test if the FFmpeg installed can't draw subtitles (e.g. the one of
+    Homebrew, while the app bundles its own).
+    """
+    if not subtitle_burner.ffmpeg_features(AudioSegment.converter).has_libass:
         pytest.skip("FFmpeg is built without libass")
-    features = FFmpegFeatures(has_libass=request.param, has_x264=features.has_x264)
-    monkeypatch.setattr(subtitle_burner, "ffmpeg_features", lambda _ffmpeg: features)
-    return features
 
 
-@pytest.mark.usefixtures("ffmpeg_features")
+@pytest.mark.usefixtures("ffmpeg_with_libass")
 def test_subtitles_are_burned_into_a_copy_of_the_video(tmp_path: Path) -> None:
     video = make_sound_video(tmp_path / "video.mp4")
     output = tmp_path / "video.subtitled.mp4"
@@ -190,6 +160,7 @@ def test_subtitles_are_burned_into_a_copy_of_the_video(tmp_path: Path) -> None:
     assert progress and progress[-1] == pytest.approx(1.0, abs=0.1)
 
 
+@pytest.mark.usefixtures("ffmpeg_with_libass")
 def test_a_cancelled_burn_leaves_no_file(tmp_path: Path) -> None:
     video = make_video(tmp_path / "video.mp4", 64, 32, frames=10)
     output = tmp_path / "output.mp4"

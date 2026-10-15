@@ -445,6 +445,7 @@ On Windows and Linux, the installer offers to download GPU acceleration (CUDA) i
    # Windows
    choco install ffmpeg
    ```
+   The FFmpeg of Homebrew can't burn subtitles into videos, since it's built without libass. To burn them on macOS, build the one the app bundles (after cloning the repository) and add it to `PATH`: `packaging/macos/build_ffmpeg.sh && export PATH="$PWD/build/ffmpeg/bin:$PATH"`.
 2. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git` and change the current working directory to `audiotext` by running `cd audiotext`.
 3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), which manages the dependencies and the virtual environment of the project. It also downloads a supported version of Python (**3.10 to 3.13**, since WhisperX doesn't support Python 3.14 yet) if you don't have one.
 4. Run `uv sync` to create the virtual environment (`.venv`) and install the dependencies, including the development ones.
@@ -575,7 +576,7 @@ I used the following resources to create this project:
 
 Distributed under the MIT license. See [`LICENSE`](https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE) for more information.
 
-The app includes third-party software under its own licenses, such as FFmpeg (GPL). They are listed in `THIRD_PARTY_LICENSES.txt`, which is included with the app.
+The app includes third-party software under its own licenses, such as FFmpeg (GPL on Linux and Windows, LGPL on macOS). They are listed in `THIRD_PARTY_LICENSES.txt`, which is included with the app.
 
 <!-- SUPPORT -->
 
