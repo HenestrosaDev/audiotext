@@ -93,10 +93,10 @@ jobs:
         run: uv run --no-sync python .github/scripts/smoke_test_app.py dist/Audiotext.app/Contents/MacOS/Audiotext
       # The FFmpeg of the app, with the libraries it bundles, draws the subtitles of
       # several scripts with the fonts of the system. Linux runners have no font of
-      # Chinese and Japanese, which the desktops have
-      - name: Install the fonts of Chinese and Japanese (Linux)
+      # Chinese, Japanese nor Devanagari, which the desktops have
+      - name: Install the fonts of the scripts (Linux)
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y fonts-noto-cjk
+        run: sudo apt-get install -y fonts-noto-cjk fonts-noto-core
       - name: Check that the app burns subtitles
         run: >
           uv run --no-sync python .github/scripts/smoke_test_burn.py
