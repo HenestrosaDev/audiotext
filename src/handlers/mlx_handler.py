@@ -76,12 +76,12 @@ def load_model(model_size: str) -> Any:
 
     :raises ValueError: If the model has no MLX version.
     """
-    import mlx.core as mx
-    from mlx_whisper.transcribe import ModelHolder
-
     repo = MLX_MODELS.get(model_size)
     if repo is None:
         raise ValueError(f"{model_size} has no MLX version")
+
+    import mlx.core as mx
+    from mlx_whisper.transcribe import ModelHolder
 
     logger.info("Loading MLX Whisper model %s", repo)
     # In half precision, like `mlx_whisper.transcribe` loads it
