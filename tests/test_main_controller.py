@@ -9,6 +9,7 @@ from pydub import AudioSegment
 import controllers.folder_transcriber as folder_transcriber
 import controllers.main_controller as main_controller
 import controllers.mic_recorder as mic_recorder
+import handlers.transcribers as transcribers
 import utils.audio_utils as au
 from controllers.directory_report import DirectoryReport, FileStatus
 from controllers.main_controller import MainController
@@ -679,6 +680,34 @@ class TestSaveTranscription:
             # The transcribed file is an audio
             is_vertical=False,
         )
+
+    def test_the_files_of_a_folder_are_checked_for_vertical_videos(
+        self,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        checked: list[Path | None] = []
+
+        def is_vertical_video(path: Path | None) -> bool:
+            checked.append(path)
+            return True
+
+        monkeypatch.setattr(transcribers, "is_vertical_video", is_vertical_video)
+        saver = TranscriptionSaver(
+            make_transcription(
+                audio_source=AudioSource.DIRECTORY, audio_source_path=tmp_path
+            )
+        )
+        video = tmp_path / "clips" / "video.mp4"
+
+        saver.save(
+            WhisperXTranscriber(whisperx_handler), TranscriptionResult(""), video
+        )
+
+        # The video, not the folder that has it
+        assert checked == [video]
+        assert whisperx_handler.save_transcription.call_args.kwargs["is_vertical"]
 
 
 class TestOpenAiApi:
