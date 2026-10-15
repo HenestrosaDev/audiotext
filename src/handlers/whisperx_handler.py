@@ -10,7 +10,9 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
+import handlers.mlx_handler as mlx
 import utils.config_manager as cm
+import utils.devices as devices
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcript_segment import (
     TranscriptSegment,
@@ -67,7 +69,9 @@ HF_TOKENS_URL = "https://huggingface.co/settings/tokens"
 
 class WhisperXHandler:
     """
-    Transcribes audio with WhisperX.
+    Transcribes audio with WhisperX. On Apple Silicon, unless the CPU is chosen,
+    the transcription step runs on the GPU with MLX Whisper (see `mlx_handler`),
+    and the alignment and the speaker identification on the CPU.
 
     Loading a model takes from seconds to minutes (it is downloaded the first time),
     so the last loaded transcription and alignment models are kept in memory and
@@ -179,14 +183,23 @@ class WhisperXHandler:
         :return: Whether the model was loaded.
         """
         config_whisperx = self._config_provider()
+        model_size = config_whisperx.model_size
+        uses_mlx = self._uses_mlx(config_whisperx)
 
-        if not is_model_downloaded(config_whisperx.model_size):
-            logger.info(
-                "Not preloading %s, it's not downloaded", config_whisperx.model_size
-            )
+        is_downloaded = (
+            mlx.is_model_downloaded(model_size)
+            if uses_mlx
+            else is_model_downloaded(model_size)
+        )
+        if not is_downloaded:
+            logger.info("Not preloading %s, it's not downloaded", model_size)
             return False
 
-        self._get_model(config_whisperx, on_progress)
+        if uses_mlx:
+            on_progress(self._loading_message(model_size), None)
+            mlx.load_model(model_size)
+        else:
+            self._get_model(config_whisperx, on_progress)
         return True
 
     def transcribe_file(
@@ -210,7 +223,6 @@ class WhisperXHandler:
                  paragraph is prefixed with the label of its speaker.
         """
         # Imported here because WhisperX takes several seconds to load
-        import whisperx
 
         if not transcription.output_file_types:
             raise ValueError(
@@ -235,29 +247,15 @@ class WhisperXHandler:
         device = self._get_device(config_whisperx)
         task = "translate" if transcription.should_translate else "transcribe"
 
-        model = self._get_model(config_whisperx, on_progress)
-        token.raise_if_cancelled()
-
-        on_progress(_("Loading audio…"), None)
-        audio = whisperx.load_audio(str(transcription.path))
-        token.raise_if_cancelled()
-
-        # The prompt is an option of the loaded model, so it's replaced on each
-        # transcription instead of loading the model again
-        model.options = dataclasses.replace(
-            model.options, initial_prompt=transcription.whisper_prompt or None
-        )
-
-        on_progress(_("Transcribing…"), 0)
-        result = model.transcribe(
-            audio,
-            batch_size=config_whisperx.batch_size,
-            language=transcription.language_code,
-            task=task,
-            progress_callback=self._progress_callback(
-                _("Transcribing…"), on_progress, token
-            ),
-        )
+        if self._uses_mlx(config_whisperx):
+            result = self._transcribe_with_mlx(
+                transcription, config_whisperx.model_size, task, on_progress, token
+            )
+            audio = result.pop("audio")
+        else:
+            result, audio = self._transcribe_with_whisperx(
+                transcription, config_whisperx, task, on_progress, token
+            )
 
         if transcription.should_translate:
             result_language = TRANSLATION_LANGUAGE
@@ -299,6 +297,92 @@ class WhisperXHandler:
         self._result_audio = (np.clip(audio, -1, 1) * 32767).astype(np.int16)
 
         return join_segments(self.segments)
+
+    def _transcribe_with_whisperx(
+        self,
+        transcription: Transcription,
+        config_whisperx: ConfigWhisperX,
+        task: str,
+        on_progress: ProgressCallback,
+        token: CancellationToken,
+    ) -> tuple["TranscriptionResult", np.ndarray]:
+        """:return: The result of the transcription, and its audio."""
+        import whisperx
+
+        model = self._get_model(config_whisperx, on_progress)
+        token.raise_if_cancelled()
+
+        on_progress(_("Loading audio…"), None)
+        audio = whisperx.load_audio(str(transcription.path))
+        token.raise_if_cancelled()
+
+        # The prompt is an option of the loaded model, so it's replaced on each
+        # transcription instead of loading the model again
+        model.options = dataclasses.replace(
+            model.options, initial_prompt=transcription.whisper_prompt or None
+        )
+
+        on_progress(_("Transcribing…"), 0)
+        result: TranscriptionResult = model.transcribe(
+            audio,
+            batch_size=config_whisperx.batch_size,
+            language=transcription.language_code,
+            task=task,
+            progress_callback=self._progress_callback(
+                _("Transcribing…"), on_progress, token
+            ),
+        )
+        return result, audio
+
+    def _transcribe_with_mlx(
+        self,
+        transcription: Transcription,
+        model_size: str,
+        task: str,
+        on_progress: ProgressCallback,
+        token: CancellationToken,
+    ) -> dict[str, Any]:
+        """
+        :return: The result of the transcription, like the one of WhisperX, with
+                 its audio in "audio".
+        """
+        import whisperx
+
+        on_progress(_("Loading audio…"), None)
+        audio = whisperx.load_audio(str(transcription.path))
+        token.raise_if_cancelled()
+
+        if not mlx.is_model_downloaded(model_size):
+            on_progress(self._loading_message(model_size), None)
+        result = mlx.transcribe(
+            audio,
+            model_size,
+            language=transcription.language_code,
+            task=task,
+            prompt=transcription.whisper_prompt or None,
+            on_progress=on_progress,
+            message=_("Transcribing…"),
+            cancellation_token=token,
+        )
+        return {**result, "audio": audio}
+
+    @staticmethod
+    def _uses_mlx(config_whisperx: ConfigWhisperX) -> bool:
+        """
+        Whether the transcription runs on the GPU of Apple Silicon. The models
+        without an MLX version run on the CPU.
+        """
+        return (
+            not config_whisperx.use_cpu
+            and devices.is_mlx_available()
+            and mlx.has_mlx_model(config_whisperx.model_size)
+        )
+
+    @staticmethod
+    def _loading_message(model_size: str) -> str:
+        return _(
+            "Loading the {model} model (it's downloaded the first time it's used)…"
+        ).format(model=model_size)
 
     def save_transcription(
         self,
@@ -437,7 +521,8 @@ class WhisperXHandler:
 
     @staticmethod
     def _get_device(config_whisperx: ConfigWhisperX) -> str:
-        return "cpu" if config_whisperx.use_cpu else "cuda"
+        """The device of the models of PyTorch and faster-whisper."""
+        return devices.torch_device(config_whisperx.use_cpu)
 
     @staticmethod
     def _progress_callback(
@@ -477,13 +562,7 @@ class WhisperXHandler:
                 self._model = self._model_key = None
                 self._release_memory()
 
-            on_progress(
-                _(
-                    "Loading the {model} model (it's downloaded the first time it's "
-                    "used)…"
-                ).format(model=config_whisperx.model_size),
-                None,
-            )
+            on_progress(self._loading_message(config_whisperx.model_size), None)
             logger.info("Loading WhisperX model %s", model_key)
             self._model = whisperx.load_model(
                 config_whisperx.model_size,

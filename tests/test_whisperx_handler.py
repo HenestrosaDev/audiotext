@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 import handlers.whisperx_handler as whisperx_handler
+import utils.devices as devices
 from handlers.whisperx_handler import WhisperXHandler, is_model_downloaded
 from models.config.config_whisperx import ConfigWhisperX
 from models.transcript_segment import TranscriptWord
@@ -52,6 +53,8 @@ def whisperx(monkeypatch: pytest.MonkeyPatch) -> MagicMock:
     monkeypatch.setitem(sys.modules, "whisperx.utils", fake_whisperx.utils)
     monkeypatch.setattr(WhisperXHandler, "_release_memory", staticmethod(lambda: None))
     monkeypatch.setattr(whisperx_handler, "is_model_downloaded", lambda _size: True)
+    # Like on a computer with a CUDA GPU
+    monkeypatch.setattr(devices, "is_cuda_available", lambda: True)
     return fake_whisperx
 
 
