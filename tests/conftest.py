@@ -1,3 +1,4 @@
+import logging
 import shutil
 import threading
 from collections.abc import Callable, Iterator
@@ -64,6 +65,18 @@ def memory_keyring(
 
     keyring.set_keyring(previous_backend)
     env_keys.clear_cache()
+
+
+@pytest.fixture(autouse=True)
+def root_log_level() -> Iterator[None]:
+    """
+    Restores the level of the root logger, which the command line changes (see
+    `cli.main`), so the logs of the next tests aren't hidden.
+    """
+    root = logging.getLogger()
+    level = root.level
+    yield
+    root.setLevel(level)
 
 
 @pytest.fixture

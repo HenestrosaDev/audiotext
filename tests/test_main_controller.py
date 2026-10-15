@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock
@@ -130,6 +131,9 @@ class TestValidation:
         [
             ({"output_file_types": []}, "No output file types selected"),
             ({"audio_source_path": Path("missing.mp3")}, "valid audio or video file"),
+            # No path at all
+            ({}, "valid audio or video file"),
+            ({"audio_source": AudioSource.DIRECTORY}, "valid folder"),
             (
                 {"audio_source": AudioSource.DIRECTORY, "audio_source_path": Path("x")},
                 "valid folder",
@@ -158,6 +162,37 @@ class TestValidation:
         assert expected_error in fake_view.errors[-1]
         assert fake_view.processed_statuses == [None]
         whisperx_handler.transcribe_file.assert_not_called()
+
+    def test_invalid_settings_are_logged_without_a_traceback(
+        self,
+        controller: MainController,
+        caplog: pytest.LogCaptureFixture,
+    ) -> None:
+        with caplog.at_level(logging.INFO, logger=main_controller.__name__):
+            controller.prepare_for_transcription(make_transcription())
+
+        assert [record.levelno for record in caplog.records] == [logging.INFO]
+        assert caplog.records[0].exc_info is None
+
+    def test_a_bug_while_validating_is_logged_and_ends_the_transcription(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        caplog: pytest.LogCaptureFixture,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        def validate(_transcription: Transcription) -> None:
+            raise TypeError("a bug")
+
+        monkeypatch.setattr(main_controller, "validate_transcription", validate)
+        with caplog.at_level(logging.INFO, logger=main_controller.__name__):
+            controller.prepare_for_transcription(make_transcription())
+
+        assert fake_view.errors == ["TypeError: a bug"]
+        # So the queue goes on with the next transcription
+        assert fake_view.processed_statuses == [None]
+        assert caplog.records[-1].levelno == logging.ERROR
+        assert caplog.records[-1].exc_info is not None
 
     def test_whisperx_can_detect_the_language(
         self,

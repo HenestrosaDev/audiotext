@@ -98,7 +98,15 @@ class MainController:
         """
         try:
             validate_transcription(transcription)
+        except ValueError as e:
+            # The settings can't be transcribed (e.g. no file is selected), which
+            # the user fixes
+            logger.info("Invalid transcription settings: %s", e)
+            self._show_failure(e)
+            return
         except Exception as e:
+            # A bug, which is still reported, so the queue goes on
+            logger.error("Could not start the transcription", exc_info=e)
             self._show_failure(e)
             return
 
@@ -352,6 +360,5 @@ class MainController:
 
     def _show_failure(self, e: Exception) -> None:
         """Shows the error of a transcription that couldn't start."""
-        logger.error("Could not start the transcription", exc_info=e)
         self._ui(self.view.show_error, format_error(e))
         self._ui(self.view.on_processed_transcription, None)
