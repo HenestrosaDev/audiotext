@@ -11,6 +11,9 @@ dependencies = [
     "babel==2.18.0",
     "customtkinter==6.0.0",
     "keyring==25.7.0",
+    # Transcribes on the GPU of Apple Silicon (see `handlers/mlx_handler.py`)
+    "mlx==0.32.3; sys_platform == 'darwin' and platform_machine == 'arm64'",
+    "mlx-whisper==0.4.3; sys_platform == 'darwin' and platform_machine == 'arm64'",
     "openai==3.24.0",
     "pydub==0.25.1",
     "python-docx==1.2.0",
@@ -123,4 +126,9 @@ disable_error_code = "import-untyped"
 
 [[tool.mypy.overrides]]
 module = ["whisperx.*", "speech_recognition.*", "pytubefix.*", "pydub.*"]
+ignore_missing_imports = true
+
+# Only installed on Apple Silicon
+[[tool.mypy.overrides]]
+module = ["mlx", "mlx.*", "mlx_whisper", "mlx_whisper.*"]
 ignore_missing_imports = true

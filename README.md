@@ -128,7 +128,7 @@ https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
 ### Features
 
 - **Any source**: audio and video files, YouTube videos and direct links to media files, the microphone (with a live draft of the text while you speak), the files of a folder and its subfolders, or a folder that is watched to transcribe the files added to it.
-- **Private and offline**: WhisperX runs on your computer, on the CPU or, much faster, on an NVIDIA GPU with CUDA.
+- **Private and offline**: WhisperX runs on your computer, on the CPU or, much faster, on an NVIDIA GPU with CUDA or on the GPU of a Mac with Apple Silicon (with [MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper)).
 - **Speaker identification**, word-level timings, speech extraction (to reduce music and background noise), and keywords and context to spell names and terms right.
 - **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL or Google Translate.
 - **A transcript you can play**: click a segment to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps.
@@ -402,6 +402,7 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
 
 - [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the interface, and [tkinterdnd2](https://github.com/Eliav2/tkinterdnd2) for dropping files and folders on the window.
 - [WhisperX](https://github.com/m-bain/whisperX) for fast automatic speech recognition on your computer. This product includes software developed by Max Bain. Uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper), which is a reimplementation of [OpenAI's Whisper](https://github.com/openai/whisper) model using [CTranslate2](https://github.com/OpenNMT/CTranslate2/), and [pyannote.audio](https://github.com/pyannote/pyannote-audio) to identify the speakers.
+- [MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper), which runs Whisper on the GPU of Apple Silicon with [MLX](https://github.com/ml-explore/mlx).
 - [PyTorch](https://github.com/pytorch/pytorch) and [Torchaudio](https://pytorch.org/audio/stable/index.html), which WhisperX runs on, with [CUDA](https://pytorch.org/docs/stable/cuda.html) for NVIDIA GPUs.
 - [OpenAI Python API library](https://pypi.org/project/openai/) for the **Whisper API**, and for the summaries and translations with OpenAI, DeepSeek, Gemini, Mistral, Grok and Ollama.
 - [Anthropic Python API library](https://pypi.org/project/anthropic/) for the summaries and translations with Claude.
@@ -451,7 +452,7 @@ On Windows and Linux, the installer offers to download GPU acceleration (CUDA) i
 2. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git` and change the current working directory to `audiotext` by running `cd audiotext`.
 3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), which manages the dependencies and the virtual environment of the project. It also downloads a supported version of Python (**3.10 to 3.13**, since WhisperX doesn't support Python 3.14 yet) if you don't have one.
 4. Run `uv sync` to create the virtual environment (`.venv`) and install the dependencies, including the development ones.
-   - `uv sync` installs PyTorch with CUDA support, which is a large download (several GB) on Linux and Windows. If you don't have an NVIDIA GPU, run `uv sync --no-group cuda --group cpu` instead to install the CPU-only build. On macOS, there's no CUDA, so the CPU build is always used.
+   - `uv sync` installs PyTorch with CUDA support, which is a large download (several GB) on Linux and Windows. If you don't have an NVIDIA GPU, run `uv sync --no-group cuda --group cpu` instead to install the CPU-only build. On macOS, there's no CUDA, so the CPU build is always used, and Macs with Apple Silicon transcribe on their GPU with MLX Whisper.
 5. If you intend to contribute to the project, run `uv run pre-commit install` to install the pre-commit hooks in your `.git/` directory. The hooks are required to contribute: they run the same checks as the [Code Quality](.github/workflows/code-quality.yml) workflow on each commit, so a commit that would fail them isn't created.
 6. (Optional) The API keys can be set from the app. To set them beforehand, copy the `.env.example` file as `.env` to your user configuration folder (see the notes below) and fill them in. They can also be set as environment variables.
 7. Run `uv run src/app.py` to start the program. The first time a **WhisperX** model is used, it's downloaded (from ~75 MB for `tiny` to ~3 GB for `large-v2`), so it may take a while. To try the program quickly, choose the `tiny` model in the `Engine` settings of the transcription.

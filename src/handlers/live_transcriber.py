@@ -16,6 +16,7 @@ from typing import Any
 import numpy as np
 
 import utils.config_manager as cm
+import utils.devices as devices
 from utils.audio_utils import MIN_LEVEL_DBFS, SpeechDetector
 from utils.i18n import _
 
@@ -270,7 +271,7 @@ class LiveTranscriber:
         from faster_whisper import WhisperModel
 
         config = cm.ConfigManager.get_config_whisperx()
-        device = "cpu" if config.use_cpu else "cuda"
+        device = devices.torch_device(config.use_cpu)
         model_key = (model_size, device, config.compute_type)
 
         if self._model is None or self._model_key != model_key:

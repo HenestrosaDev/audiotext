@@ -7,6 +7,7 @@ import customtkinter as ctk
 from PIL import Image
 
 import utils.constants as c
+import utils.devices as devices
 import utils.path_helper as ph
 import utils.validators as validators
 from handlers.ai_providers import PROVIDERS, AiProvider, get_provider
@@ -664,7 +665,11 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             tab,
             2,
             L_("Use CPU"),
-            None
+            (
+                L_("Otherwise, the GPU of the Mac transcribes (with MLX), much faster.")
+                if devices.is_mlx_available()
+                else None
+            )
             if self._config_whisperx.can_use_gpu
             else L_("No CUDA GPU was found, so WhisperX runs on the CPU."),
         )
