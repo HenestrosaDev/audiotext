@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -131,6 +131,20 @@ msgstr "Khóa API Anthropic"
 msgid "Appearance"
 msgstr "Chế độ hiển thị"
 
+msgid "Ask"
+msgstr "Hỏi"
+
+msgid "Ask a question about the transcription…"
+msgstr "Đặt câu hỏi về bản chép lời…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"Hỏi {provider} về bản chép lời, chẳng hạn điều gì đã được quyết định hoặc"
+" ai đã nói gì. Câu trả lời liên kết đến chỗ được nói."
+
 msgid "Audio"
 msgstr "Âm thanh"
 
@@ -232,6 +246,9 @@ msgstr "Chọn một nguồn, hoặc chọn một bản chép lời trong lịch
 
 msgid "Choose where to save the transcriptions"
 msgstr "Chọn nơi lưu các bản chép lời"
+
+msgid "Clear the conversation"
+msgstr "Xóa cuộc trò chuyện"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "Nhấp vào một đoạn để phát. Nhấp chuột phải để chỉnh sửa."
@@ -340,6 +357,9 @@ msgstr ""
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "Xóa ghi chú của “{title}”?"
+
+msgid "Delete the questions and their answers?"
+msgstr "Xóa các câu hỏi và câu trả lời?"
 
 msgid "Delete the segment"
 msgstr "Xóa đoạn"
@@ -1146,6 +1166,14 @@ msgstr "Đặt khóa API…"
 
 msgid "Set Hugging Face token…"
 msgstr "Đặt token Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Đặt khóa API của {provider} để hỏi về bản chép lời, hoặc chọn nhà cung "
+"cấp khác trong phần cài đặt."
 
 #, python-brace-format
 msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -127,6 +127,18 @@ msgstr "Anthropic API 키"
 msgid "Appearance"
 msgstr "모양"
 
+msgid "Ask"
+msgstr "질문"
+
+msgid "Ask a question about the transcription…"
+msgstr "받아쓰기에 대해 질문하기…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr "결정된 내용이나 누가 무엇을 말했는지 등 받아쓰기에 대해 {provider}에 질문하세요. 답변은 해당 발언 위치로 연결됩니다."
+
 msgid "Audio"
 msgstr "오디오"
 
@@ -226,6 +238,9 @@ msgstr "소스를 선택하거나 기록에서 받아쓰기를 선택하여 읽�
 
 msgid "Choose where to save the transcriptions"
 msgstr "받아쓰기를 저장할 위치를 선택하세요"
+
+msgid "Clear the conversation"
+msgstr "대화 지우기"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "세그먼트를 클릭하면 재생합니다. 마우스 오른쪽 버튼을 클릭하면 편집합니다."
@@ -332,6 +347,9 @@ msgstr "'{name}' 그룹을 삭제할까요? 그룹의 받아쓰기는 그룹 없
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "“{title}”의 메모를 삭제할까요?"
+
+msgid "Delete the questions and their answers?"
+msgstr "질문과 답변을 삭제할까요?"
 
 msgid "Delete the segment"
 msgstr "세그먼트 삭제"
@@ -1107,6 +1125,12 @@ msgstr "API 키 설정…"
 
 msgid "Set Hugging Face token…"
 msgstr "Hugging Face 토큰 설정…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr "받아쓰기에 대해 질문하려면 {provider} API 키를 설정하거나 설정에서 다른 제공자를 선택하세요."
 
 #, python-brace-format
 msgid ""

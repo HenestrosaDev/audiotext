@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -130,6 +130,20 @@ msgstr "Anthropic API कुंजी"
 msgid "Appearance"
 msgstr "रूप-रंग"
 
+msgid "Ask"
+msgstr "पूछें"
+
+msgid "Ask a question about the transcription…"
+msgstr "ट्रांसक्रिप्शन के बारे में प्रश्न पूछें…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"ट्रांसक्रिप्शन के बारे में {provider} से पूछें, जैसे क्या तय हुआ या किसने"
+" क्या कहा। उत्तर उस जगह से जुड़े होते हैं जहाँ यह कहा गया है।"
+
 msgid "Audio"
 msgstr "ऑडियो"
 
@@ -231,6 +245,9 @@ msgstr ""
 
 msgid "Choose where to save the transcriptions"
 msgstr "चुनें कि ट्रांसक्रिप्शन कहाँ सहेजे जाएँ"
+
+msgid "Clear the conversation"
+msgstr "बातचीत साफ़ करें"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr ""
@@ -339,6 +356,9 @@ msgstr "समूह \"{name}\" हटाएँ? इसके ट्रांस
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "“{title}” का नोट हटाएँ?"
+
+msgid "Delete the questions and their answers?"
+msgstr "प्रश्न और उनके उत्तर हटाएँ?"
 
 msgid "Delete the segment"
 msgstr "सेगमेंट हटाएँ"
@@ -1147,6 +1167,14 @@ msgstr "API कुंजी सेट करें…"
 
 msgid "Set Hugging Face token…"
 msgstr "Hugging Face टोकन सेट करें…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"ट्रांसक्रिप्शन के बारे में पूछने के लिए {provider} की API कुंजी सेट करें,"
+" या सेटिंग्स में कोई दूसरा प्रदाता चुनें।"
 
 #, python-brace-format
 msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -128,6 +128,18 @@ msgstr "Anthropic API 密钥"
 msgid "Appearance"
 msgstr "外观"
 
+msgid "Ask"
+msgstr "提问"
+
+msgid "Ask a question about the transcription…"
+msgstr "就转写内容提问…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr "向 {provider} 询问转写内容，例如做出了什么决定或谁说了什么。回答会链接到相应的发言位置。"
+
 msgid "Audio"
 msgstr "音频"
 
@@ -227,6 +239,9 @@ msgstr "选择一个来源，或从历史记录中选择转写来阅读和播放
 
 msgid "Choose where to save the transcriptions"
 msgstr "选择转写的保存位置"
+
+msgid "Clear the conversation"
+msgstr "清除对话"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr "点击片段即可播放。右键点击即可编辑。"
@@ -331,6 +346,9 @@ msgstr "删除分组“{name}”？其中的转写会保留，但不再属于任
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "删除“{title}”的备注？"
+
+msgid "Delete the questions and their answers?"
+msgstr "删除这些问题及其回答？"
 
 msgid "Delete the segment"
 msgstr "删除片段"
@@ -1106,6 +1124,12 @@ msgstr "设置 API 密钥…"
 
 msgid "Set Hugging Face token…"
 msgstr "设置 Hugging Face 令牌…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr "请设置 {provider} 的 API 密钥以询问转写内容，或在设置中选择其他提供商。"
 
 #, python-brace-format
 msgid ""

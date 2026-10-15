@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:05+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -132,6 +132,20 @@ msgstr "Clau d'API d'Anthropic"
 msgid "Appearance"
 msgstr "Aparença"
 
+msgid "Ask"
+msgstr "Pregunta"
+
+msgid "Ask a question about the transcription…"
+msgstr "Fes una pregunta sobre la transcripció…"
+
+#, python-brace-format
+msgid ""
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
+msgstr ""
+"Pregunta a {provider} sobre la transcripció, com ara què es va decidir o "
+"qui va dir alguna cosa. Les respostes enllacen amb on es diu."
+
 msgid "Audio"
 msgstr "Àudio"
 
@@ -235,6 +249,9 @@ msgstr ""
 
 msgid "Choose where to save the transcriptions"
 msgstr "Tria on desar les transcripcions"
+
+msgid "Clear the conversation"
+msgstr "Esborra la conversa"
 
 msgid "Click a segment to play it. Right-click it to edit it."
 msgstr ""
@@ -346,6 +363,9 @@ msgstr ""
 #, python-brace-format
 msgid "Delete the note of “{title}”?"
 msgstr "Vols eliminar la nota de «{title}»?"
+
+msgid "Delete the questions and their answers?"
+msgstr "Vols suprimir les preguntes i les seves respostes?"
 
 msgid "Delete the segment"
 msgstr "Elimina el segment"
@@ -1161,6 +1181,14 @@ msgstr "Configura la clau d'API…"
 
 msgid "Set Hugging Face token…"
 msgstr "Configura el testimoni de Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Introdueix la clau d'API de {provider} per preguntar sobre la "
+"transcripció, o tria un altre proveïdor a la configuració."
 
 #, python-brace-format
 msgid ""

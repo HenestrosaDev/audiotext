@@ -4,12 +4,15 @@ from dataclasses import replace
 from datetime import datetime
 from pathlib import Path
 
+from handlers.question_handler import QuestionHandler
 from handlers.summary_handler import SummaryHandler
 from handlers.translation_handler import MANUAL, TranslationHandler
+from interfaces.answerer import Answerer
 from interfaces.history_view import HistoryView
 from interfaces.summarizer import Summarizer
 from interfaces.translator import Translator
 from models.history import HistoryEntry
+from models.question import TranscriptAnswer
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
@@ -23,9 +26,9 @@ logger = logging.getLogger(__name__)
 
 class HistoryController:
     """
-    Renames, annotates, groups, corrects, summarizes, translates and deletes the
-    entries of the history. The view asks the user for the values (e.g. the new
-    name) and to confirm the deletions before calling it.
+    Renames, annotates, groups, corrects, summarizes, translates, answers questions
+    about and deletes the entries of the history. The view asks the user for the
+    values (e.g. the new name) and to confirm the deletions before calling it.
     """
 
     def __init__(
@@ -35,19 +38,23 @@ class HistoryController:
         summarizer: Summarizer | None = None,
         translator: Translator | None = None,
         start_task: TaskStarter = start_in_background,
+        answerer: Answerer | None = None,
     ) -> None:
         """
         :param summarizer: Summarizes the transcriptions. By default, with the
                            configured language model.
         :param translator: Translates the transcriptions. By default, with the
                            provider chosen by the user.
-        :param start_task: Starts the summaries and the translations, which take a
-                           while, without waiting for them.
+        :param start_task: Starts the summaries, the translations and the answers,
+                           which take a while, without waiting for them.
+        :param answerer: Answers the questions about the transcriptions. By
+                         default, with the language model of the summaries.
         """
         self._store = store
         self.view = view
         self._summarizer = summarizer or SummaryHandler()
         self._translator = translator or TranslationHandler()
+        self._answerer = answerer or QuestionHandler()
         self._start_task = start_task
         # The entries being summarized, and why the last summary of each failed
         self._summarizing: set[str] = set()
@@ -55,6 +62,9 @@ class HistoryController:
         # The same for the translations, by the entry and the language
         self._translating: set[tuple[str, str]] = set()
         self._translation_errors: dict[tuple[str, str], str] = {}
+        # The question being answered of each entry, and why the last one failed
+        self._questions: dict[str, str] = {}
+        self._question_errors: dict[str, str] = {}
 
     # ENTRIES
 
@@ -190,6 +200,68 @@ class HistoryController:
         else:
             self._summary_errors[entry_id] = error
             self.view.on_summary_finished(entry, error)
+
+    # QUESTIONS
+
+    def ask_question(self, entry_id: str, question: str) -> None:
+        """
+        Answers a question about a transcription in the background. An entry
+        answers one question at a time.
+        """
+        entry = self._store.get(entry_id)
+        question = question.strip()
+        if entry is None or not question or entry_id in self._questions:
+            return
+
+        self._questions[entry_id] = question
+        self._question_errors.pop(entry_id, None)
+        text, segments = entry.text, entry.segments
+        previous = [TranscriptAnswer.from_dict(data) for data in entry.questions]
+
+        def answer() -> None:
+            result: TranscriptAnswer | None = None
+            error = ""
+            try:
+                result = self._answerer.answer(text, segments, question, previous)
+            except Exception as e:
+                logger.error("Could not answer about %s", entry_id, exc_info=e)
+                error = format_error(e)
+            self.view.run_on_ui_thread(
+                self._on_question_answered, entry_id, result, error
+            )
+
+        self._start_task(answer)
+
+    def get_question(self, entry_id: str) -> str | None:
+        """:return: The question being answered, or None if there is none."""
+        return self._questions.get(entry_id)
+
+    def get_question_error(self, entry_id: str) -> str:
+        return self._question_errors.get(entry_id, "")
+
+    def clear_questions(self, entry_id: str) -> None:
+        """Deletes the questions asked about a transcription and their answers."""
+        entry = self._store.get(entry_id)
+        if entry is None:
+            return
+
+        self._question_errors.pop(entry_id, None)
+        self._store.update(entry, questions=[])
+        self.view.refresh_entry_view(entry_id)
+
+    def _on_question_answered(
+        self, entry_id: str, answer: TranscriptAnswer | None, error: str
+    ) -> None:
+        self._questions.pop(entry_id, None)
+        entry = self._store.get(entry_id)
+        if entry is None:
+            return
+
+        if answer:
+            self._store.update(entry, questions=[*entry.questions, answer.to_dict()])
+        else:
+            self._question_errors[entry_id] = error
+        self.view.refresh_entry_view(entry_id)
 
     # TRANSLATIONS
 

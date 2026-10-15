@@ -17,6 +17,7 @@ from handlers.translation_handler import MANUAL
 from models.config.config_ai import ConfigAi
 from models.config.config_system import LOW_CONFIDENCE_THRESHOLDS, ConfigSystem
 from models.history import HistoryEntry
+from models.question import TranscriptAnswer
 from models.review import (
     differ_only_in_reviews,
 )
@@ -62,6 +63,7 @@ from views.localization import Text, localize, on_language_change
 from views.settings.option_labels import save_config
 from views.settings.preferences_dialog import AI_TAB
 from views.style import icons, theme
+from views.transcript.ask_panel import AskPanel
 from views.transcript.corrections import SegmentEditor, SegmentSource
 from views.transcript.find_dialog import FindDialog, FindTarget, SearchableText
 from views.transcript.media_layout import MediaLayout
@@ -96,6 +98,7 @@ from views.widgets.splitter import Splitter
 logger = logging.getLogger(__name__)
 
 SUMMARY_MODE = "summary"
+ASK_MODE = "ask"
 # Part of the width taken by the text when its translation is shown next to it
 DEFAULT_TRANSLATION_RATIO = 0.5
 MIN_TRANSLATION_RATIO = 0.2
@@ -324,6 +327,15 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
             on_set_api_key=self._set_summary_api_key,
         )
+        self.ask_panel = AskPanel(
+            self.frm_text_pane,
+            on_ask=self._ask,
+            on_clear=self._clear_questions,
+            on_source=self._play_from,
+            on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
+            # The questions are answered by the provider of the summaries
+            on_set_api_key=self._set_summary_api_key,
+        )
         self.player = PlayerBar(
             self,
             on_tick=self._on_tick,
@@ -375,8 +387,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
     def _on_language_change(self) -> None:
         """Shows again the texts built from the transcription and its state."""
         self._refresh_find_dialog()
-        if self._mode == SUMMARY_MODE:
-            self._refresh_summary()
+        self._refresh_panel()
         self._refresh_translation()
         # The subtitles of the translation are named after its language
         self._subtitled_translation = ("", ())
@@ -401,8 +412,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         self.reviewer.refresh(advance=True)
         self._refresh_translation()
         self._refresh_translation_subtitles()
-        if self._mode == SUMMARY_MODE:
-            self._refresh_summary()
+        self._refresh_panel()
         self._refresh_find_dialog()
 
     def focus_search(self) -> None:
@@ -410,6 +420,8 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         Finds in the text that the user is working on (the transcription or its
         translation), or in the summary, if it's shown.
         """
+        if self._mode == ASK_MODE:
+            return
         if self._mode == SUMMARY_MODE:
             if self._entry.summary:
                 self._find_in_summary()
@@ -423,6 +435,8 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         The formats to export the text that the user is working on to, or the
         summary, if it's shown.
         """
+        if self._mode == ASK_MODE:
+            return
         if self._mode == SUMMARY_MODE:
             if self._entry.summary:
                 self.show_summary_export_menu(self.summary_panel.btn_export)
@@ -812,6 +826,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
                 TRANSCRIPT_MODE: _("Subtitles"),
                 PLAIN_TEXT_MODE: _("Plain text"),
                 SUMMARY_MODE: _("Summary"),
+                ASK_MODE: _("Ask"),
             },
             values=[self._mode],
             command=self._on_mode_change,
@@ -886,7 +901,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         if has_new_segments:
             self.video.set_cue_track(build_cue_track(entry.segments, self._is_vertical))
 
-        modes = [PLAIN_TEXT_MODE, SUMMARY_MODE]
+        modes = [PLAIN_TEXT_MODE, SUMMARY_MODE, ASK_MODE]
         if entry.segments:
             modes.insert(0, TRANSCRIPT_MODE)
         self._modes.show_values(modes)
@@ -901,21 +916,32 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             self.word_popover.hide()
         self._place_review_bar()
 
-        if is_summary:
+        # The summary and the questions are shown instead of the texts
+        panels: dict[str, ctk.CTkFrame] = {
+            SUMMARY_MODE: self.summary_panel,
+            ASK_MODE: self.ask_panel,
+        }
+        panel = panels.get(self._mode)
+        for other in panels.values():
+            if other is not panel:
+                other.grid_forget()
+        if panel:
             self.frm_texts.grid_forget()
-            self.summary_panel.grid(row=2, column=0, sticky=ctk.NSEW)
-            self._refresh_summary()
+            panel.grid(row=2, column=0, sticky=ctk.NSEW)
+            self._refresh_panel()
         else:
-            self.summary_panel.grid_forget()
             self.frm_texts.grid(row=2, column=0, sticky=ctk.NSEW)
             self.text.set_mode(self._mode)
             self.translation_panel.set_mode(self._mode)
 
-        state = ctk.DISABLED if is_summary else ctk.NORMAL
+        state = ctk.DISABLED if panel else ctk.NORMAL
         set_button_state(self.btn_translate, state)
         # The text it searches is hidden
         dialog = self._find_dialog
-        if dialog and (dialog.target.text is self.summary_panel.text) != is_summary:
+        if dialog and (
+            self._mode == ASK_MODE
+            or (dialog.target.text is self.summary_panel.text) != is_summary
+        ):
             self._close_find_dialog()
         self._refresh_find_dialog()
 
@@ -1091,7 +1117,38 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         if text != self._entry.text:
             self._actions.transcript.save_text(self.entry_id, text)
 
-    # SUMMARY
+    # SUMMARY AND QUESTIONS
+
+    def _refresh_panel(self) -> None:
+        """Shows the changes of the summary or the questions, if they're shown."""
+        if self._mode == SUMMARY_MODE:
+            self._refresh_summary()
+        elif self._mode == ASK_MODE:
+            self._refresh_questions()
+
+    def _refresh_questions(self) -> None:
+        provider = get_provider(ConfigManager.get_config_ai().summary_provider)
+        self.ask_panel.show(
+            [TranscriptAnswer.from_dict(data) for data in self._entry.questions],
+            provider=PROVIDERS[provider].name,
+            pending=self._actions.transcript.get_question(self.entry_id),
+            error=self._actions.transcript.get_question_error(self.entry_id),
+            can_ask=has_api_key(provider),
+        )
+
+    def _ask(self, question: str) -> None:
+        self.text.save_pending_text()
+        self._actions.transcript.ask_question(self.entry_id, question)
+        self._refresh_questions()
+
+    def _clear_questions(self) -> None:
+        if messagebox.askyesno(
+            _("Clear the conversation"),
+            _("Delete the questions and their answers?"),
+            icon=messagebox.WARNING,
+            parent=self.winfo_toplevel(),
+        ):
+            self._actions.transcript.clear_questions(self.entry_id)
 
     def _refresh_summary(self) -> None:
         provider = get_provider(ConfigManager.get_config_ai().summary_provider)

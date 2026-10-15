@@ -15,6 +15,7 @@ from pydub.generators import Sine
 
 import utils.env_keys as env_keys
 import utils.notifications as notifications
+from models.question import AnswerSource, TranscriptAnswer
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
@@ -207,6 +208,34 @@ class FakeSummarizer:
         if self.error:
             raise self.error
         return self.summary
+
+
+class FakeAnswerer:
+    """
+    Answers with its answer, or raises its error, and records the questions and
+    the number of answers given before each one.
+    """
+
+    def __init__(self) -> None:
+        self.answer_text = "They say hello."
+        self.sources: tuple[AnswerSource, ...] = (AnswerSource(0.0, "Hello"),)
+        self.error: Exception | None = None
+        self.questions: list[tuple[str, int]] = []
+        # Set when it's called, since it's called from a background thread
+        self.has_answered = threading.Event()
+
+    def answer(
+        self,
+        text: str,
+        segments: list[TranscriptSegment],
+        question: str,
+        previous: list[TranscriptAnswer],
+    ) -> TranscriptAnswer:
+        self.questions.append((question, len(previous)))
+        self.has_answered.set()
+        if self.error:
+            raise self.error
+        return TranscriptAnswer(question, self.answer_text, self.sources, "model")
 
 
 class FakeTranslator:
