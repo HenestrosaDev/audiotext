@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:00+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -19,238 +19,262 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: src/controllers/folder_transcriber.py:58
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
+msgid "1 audio or video file (subfolders included)"
+msgstr "1 ses veya video dosyası (alt klasörler dahil)"
+
+msgid "1 transcription"
+msgstr "1 transkripsiyon"
+
+msgid "A YouTube video or a direct link to an audio or video file."
 msgstr ""
-"Klasörde transkripsiyonu yapılacak dosya yok. \"Mevcut dosyaların üzerine"
-" yaz\" seçeneğini işaretlemediğiniz sürece, zaten transkripsiyonu olan "
-"dosyalar atlanır."
+"Bir YouTube videosu veya bir ses ya da video dosyasının doğrudan "
+"bağlantısı."
 
-#: src/controllers/folder_transcriber.py:81
-#, python-brace-format
-msgid "Transcribed {done} of {total} files."
-msgstr "{total} dosyadan {done} tanesinin transkripsiyonu yapıldı."
-
-#: src/controllers/folder_transcriber.py:97
-#, python-brace-format
-msgid "Waiting for new files in {folder}…"
-msgstr "{folder} içinde yeni dosyalar bekleniyor…"
-
-#: src/controllers/folder_transcriber.py:114
-#, python-brace-format
-msgid "Stopped watching the folder. Files transcribed: {done}."
-msgstr "Klasörün izlenmesi durduruldu. Yazıya dökülen dosyalar: {done}."
-
-#: src/controllers/folder_transcriber.py:137
-msgid "cancelled"
-msgstr "iptal edildi"
-
-#: src/controllers/folder_transcriber.py:176
-#, python-brace-format
-msgid "File {current} of {total} ({name}): {message}"
-msgstr "Dosya {current}/{total} ({name}): {message}"
-
-#: src/controllers/folder_transcriber.py:191
-#, python-brace-format
-msgid "{name}: {message}"
-msgstr "{name}: {message}"
-
-#: src/controllers/main_controller.py:125
-msgid "Cancelling…"
-msgstr "İptal ediliyor…"
-
-#: src/controllers/main_controller.py:194
-msgid "Transcription cancelled."
-msgstr "Transkripsiyon iptal edildi."
-
-#: src/controllers/main_controller.py:209
-msgid "Downloading…"
-msgstr "İndiriliyor…"
-
-#: src/controllers/main_controller.py:220
-msgid "Recording…"
-msgstr "Kaydediliyor…"
-
-#: src/controllers/main_controller.py:237
-#, python-brace-format
-msgid "Done in {duration}."
-msgstr "{duration} içinde tamamlandı."
-
-#: src/controllers/main_controller.py:303
-msgid "Isolating the speech…"
-msgstr "Konuşma ayıklanıyor…"
-
-#: src/controllers/main_controller.py:335
-msgid "WhisperX model ready."
-msgstr "WhisperX modeli hazır."
-
-#: src/controllers/main_controller.py:342
-#, python-brace-format
-msgid "Could not load the WhisperX model: {error}"
-msgstr "WhisperX modeli yüklenemedi: {error}"
-
-#: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:222
-msgid "No output file types selected. Please select at least one."
-msgstr "Hiçbir çıktı dosyası türü seçilmedi. Lütfen en az birini seçin."
-
-#: src/controllers/transcription_validator.py:26
-#: src/views/settings/settings_form.py:176
 msgid ""
-"The Google API can't detect the language. Please select the language of "
-"the audio."
-msgstr "Google API dili algılayamaz. Lütfen sesin dilini seçin."
-
-#: src/controllers/transcription_validator.py:57
-#, python-brace-format
-msgid ""
-"The {model} model doesn't return timestamps, so it can't save {format} "
-"files. Choose another format or the whisper-1 model."
+"A fast model writes a draft while you speak. When you stop, the whole "
+"recording is transcribed again with the model of the engine, which is "
+"more accurate."
 msgstr ""
-"{model} modeli zaman damgası döndürmez, bu nedenle {format} dosyaları "
-"kaydedemez. Başka bir biçim veya whisper-1 modelini seçin."
+"Siz konuşurken hızlı bir model taslak yazar. Durduğunuzda kaydın tamamı, "
+"daha doğru olan motorun modeliyle yeniden yazıya dökülür."
 
-#: src/controllers/transcription_validator.py:77
-msgid "Please select a valid audio or video file."
-msgstr "Lütfen geçerli bir ses veya video dosyası seçin."
-
-#: src/controllers/transcription_validator.py:81
-#: src/views/new_transcription/new_transcription_view.py:491
-msgid "Please select a valid folder."
-msgstr "Lütfen geçerli bir klasör seçin."
-
-#: src/controllers/transcription_validator.py:88
-msgid ""
-"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
-" or video file)."
-msgstr ""
-"Lütfen geçerli bir URL girin (ör. bir YouTube videosunun veya bir ses ya "
-"da video dosyasının bağlantısı)."
-
-#: src/handlers/ai_providers.py:108 src/handlers/ai_providers.py:113
-#: src/handlers/ai_providers.py:116 src/handlers/question_handler.py:96
-msgid "The model didn't return a valid reply."
-msgstr "Model geçerli bir yanıt döndürmedi."
-
-#: src/handlers/ai_providers.py:161 src/handlers/ai_providers.py:194
-msgid "The reply of the model was too long."
-msgstr "Modelin yanıtı çok uzundu."
-
-#: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:246
-msgid "Loading audio…"
-msgstr "Ses yükleniyor…"
-
-#: src/handlers/audio_handler.py:79
 #, python-brace-format
-msgid "Unsupported file type: {extension}"
-msgstr "Desteklenmeyen dosya türü: {extension}"
+msgid "A note about “{title}”:"
+msgstr "\"{title}\" hakkında bir not:"
 
-#: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:256 src/handlers/whisperx_handler.py:263
-#: src/views/history/formatting.py:43
-#: src/views/new_transcription/microphone_view.py:407
-msgid "Transcribing…"
-msgstr "Transkripsiyon yapılıyor…"
+msgid "AI"
+msgstr "YZ"
 
-#: src/handlers/audio_handler.py:131 src/handlers/openai_api_handler.py:372
+msgid "API key removed."
+msgstr "API anahtarı kaldırıldı."
+
+msgid "API key saved."
+msgstr "API anahtarı kaydedildi."
+
+msgid "API key set"
+msgstr "API anahtarı ayarlandı"
+
+msgid "API keys"
+msgstr "API anahtarları"
+
+msgid "About"
+msgstr "Hakkında"
+
+# Needs review by a native speaker
+msgid "Accept"
+msgstr "Kabul et"
+
+# Needs review by a native speaker
+msgid "Accept remaining"
+msgstr "Kalanları kabul et"
+
+msgid "Add"
+msgstr "Ekle"
+
+msgid "Add a segment"
+msgstr "Segment ekle"
+
+msgid "Add a segment after…"
+msgstr "Sonrasına segment ekle…"
+
+msgid "Add note"
+msgstr "Not ekle"
+
+msgid "Add note…"
+msgstr "Not ekle…"
+
+msgid "Add to queue"
+msgstr "Kuyruğa ekle"
+
+msgid "Adding the subtitles to the video was cancelled."
+msgstr "Altyazıların videoya eklenmesi iptal edildi."
+
+msgid "Adding the subtitles to the video…"
+msgstr "Altyazılar videoya ekleniyor…"
+
 #, python-brace-format
-msgid "Transcribing chunk {current} of {total}…"
-msgstr "Parça {current}/{total} için transkripsiyon yapılıyor…"
+msgid "Adding the subtitles to the video… {percent}%"
+msgstr "Altyazılar videoya ekleniyor… %{percent}"
 
-#: src/handlers/live_transcriber.py:246
-msgid "The text can't be shown while recording."
-msgstr "Kayıt sırasında metin gösterilemez."
+# Needs review by a native speaker
+msgid "Adjust threshold"
+msgstr "Eşiği ayarla"
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:487
-#, python-brace-format
-msgid "Loading the {model} model (it's downloaded the first time it's used)…"
-msgstr "{model} modeli yükleniyor (ilk kullanımda indirilir)…"
-
-#: src/handlers/openai_api_handler.py:483
-#, python-brace-format
-msgid "The audio is too large for the OpenAI API ({size} MB)."
-msgstr "Ses, OpenAI API için çok büyük ({size} MB)."
-
-#: src/handlers/summary_handler.py:103 src/handlers/summary_handler.py:118
-msgid "The model didn't return a valid summary."
-msgstr "Model geçerli bir özet döndürmedi."
-
-#: src/handlers/summary_handler.py:174
-msgid "There is no text to summarize."
-msgstr "Özetlenecek metin yok."
-
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:336
-msgid "There is no transcription to save. Please generate it first."
-msgstr "Kaydedilecek bir transkripsiyon yok. Lütfen önce oluşturun."
-
-#: src/handlers/translation_handler.py:311
-msgid "The model didn't return a valid translation."
-msgstr "Model geçerli bir çeviri döndürmedi."
-
-#: src/handlers/translation_handler.py:382
-#, python-brace-format
-msgid "DeepL can't translate into {language}."
-msgstr "DeepL bu dile çeviremiyor: {language}."
-
-#: src/handlers/translation_handler.py:401
-msgid "DeepL didn't return a valid translation."
-msgstr "DeepL geçerli bir çeviri döndürmedi."
-
-#: src/handlers/translation_handler.py:422
-msgid "Google Translate didn't return a valid translation."
-msgstr "Google Çeviri geçerli bir çeviri döndürmedi."
-
-#: src/handlers/translation_handler.py:452
-msgid "There is no text to translate."
-msgstr "Çevrilecek metin yok."
-
-#: src/handlers/url_handler.py:87
-msgid ""
-"The URL doesn't point to an audio or video file. Use the link of a "
-"YouTube video or of a media file."
-msgstr ""
-"URL bir ses veya video dosyasını göstermiyor. Bir YouTube videosunun veya"
-" bir medya dosyasının bağlantısını kullanın."
-
-#: src/handlers/url_handler.py:105
-#, python-brace-format
-msgid "The file could not be downloaded: {error}"
-msgstr "Dosya indirilemedi: {error}"
-
-#: src/handlers/whisperx_handler.py:376 src/handlers/whisperx_handler.py:385
 msgid "Aligning subtitles…"
 msgstr "Altyazılar hizalanıyor…"
 
-#: src/handlers/whisperx_handler.py:409 src/handlers/whisperx_handler.py:414
-msgid "Identifying speakers…"
-msgstr "Konuşmacılar belirleniyor…"
+msgid "All files"
+msgstr "Tüm dosyalar"
 
-#: src/handlers/whisperx_handler.py:435
+# Needs review by a native speaker
+#, python-brace-format
+msgid "All reviewed · {total} of {total}"
+msgstr "Tümü incelendi · {total}/{total}"
+
+msgid "All supported files"
+msgstr "Desteklenen tüm dosyalar"
+
+msgid ""
+"All the audio and video files of a folder, or the new ones as they're "
+"added."
+msgstr "Bir klasördeki tüm ses ve video dosyaları veya eklendikçe yeni dosyalar."
+
+msgid "An audio or video file"
+msgstr "Bir ses veya video dosyası"
+
+msgid "An unknown error occurred."
+msgstr "Bilinmeyen bir hata oluştu."
+
+msgid "Anthropic API key"
+msgstr "Anthropic API anahtarı"
+
+msgid "Appearance"
+msgstr "Görünüm"
+
+msgid "Ask"
+msgstr "Sor"
+
+msgid "Ask a question about the transcription…"
+msgstr "Transkripsiyon hakkında bir soru sorun…"
+
 #, python-brace-format
 msgid ""
-"Identifying speakers requires a Hugging Face token. Create one at "
-"{tokens_url}, accept the conditions of {model_url} and set the token in "
-"the WhisperX options."
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
 msgstr ""
-"Konuşmacıları belirlemek için bir Hugging Face belirteci gerekir. "
-"{tokens_url} adresinde bir tane oluşturun, {model_url} koşullarını kabul "
-"edin ve belirteci WhisperX seçeneklerinde ayarlayın."
+"Transkripsiyon hakkında {provider} hizmetine soru sorun; örneğin neye "
+"karar verildiğini veya kimin ne söylediğini. Yanıtlar söylendiği yere "
+"bağlantı verir."
 
-#: src/handlers/whisperx_handler.py:520
-msgid "Loading the subtitle alignment model…"
-msgstr "Altyazı hizalama modeli yükleniyor…"
+msgid "Audio"
+msgstr "Ses"
 
-#: src/handlers/whisperx_handler.py:553
+msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
+msgstr "Ses ve video dosyaları: MP3, WAV, M4A, MP4, MOV, MKV ve daha fazlası."
+
+msgid "Audio files"
+msgstr "Ses dosyaları"
+
+msgid "Audiotext was closed before it finished."
+msgstr "Audiotext işlem bitmeden kapatıldı."
+
+msgid "Auto-detect"
+msgstr "Otomatik algıla"
+
+# Needs review by a native speaker
+msgid "Auto-play"
+msgstr "Otomatik oynat"
+
+msgid "Automatic"
+msgstr "Otomatik"
+
+msgid "Automatic uses the clock of the interface language."
+msgstr "Otomatik, arayüz dilinin saat biçimini kullanır."
+
+msgid "Back"
+msgstr "Geri"
+
+msgid "Batch size"
+msgstr "Toplu iş boyutu"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Below {percent}%"
+msgstr "%{percent} altında"
+
+msgid "Between 0 and 1. Higher values are more random."
+msgstr "0 ile 1 arasında. Daha yüksek değerler daha rastgeledir."
+
+msgid "Bottom"
+msgstr "Alt"
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Cancelled"
+msgstr "İptal edildi"
+
+msgid "Cancelling…"
+msgstr "İptal ediliyor…"
+
+msgid "Change API key…"
+msgstr "API anahtarını değiştir…"
+
+msgid "Change…"
+msgstr "Değiştir…"
+
+msgid "Chapters"
+msgstr "Bölümler"
+
+msgid "Check for updates"
+msgstr "Güncellemeleri denetle"
+
+msgid "Checking for updates…"
+msgstr "Güncellemeler denetleniyor…"
+
+msgid "Checks for a new version when the app opens."
+msgstr "Uygulama açıldığında yeni bir sürüm olup olmadığını denetler."
+
+msgid "Chinese, Japanese and Korean"
+msgstr "Çince, Japonca ve Korece"
+
 msgid ""
-"Loading the speaker identification model (it's downloaded the first time "
-"it's used)…"
-msgstr "Konuşmacı belirleme modeli yükleniyor (ilk kullanımda indirilir)…"
+"Chinese, Japanese and Korean characters are about twice as wide as Latin "
+"ones."
+msgstr ""
+"Çince, Japonca ve Korece karakterler Latin karakterlerinin yaklaşık iki "
+"katı genişliktedir."
 
-#: src/handlers/whisperx_handler.py:567
+msgid "Choose a file"
+msgstr "Bir dosya seçin"
+
+msgid "Choose a file…"
+msgstr "Dosya seç…"
+
+msgid "Choose a folder"
+msgstr "Bir klasör seçin"
+
+msgid "Choose a folder…"
+msgstr "Klasör seç…"
+
+msgid "Choose a source above to transcribe your first file."
+msgstr "İlk dosyanızın transkripsiyonunu yapmak için yukarıdan bir kaynak seçin."
+
+msgid ""
+"Choose a source, or select a transcription of your history to read and "
+"play it."
+msgstr ""
+"Bir kaynak seçin veya okumak ve oynatmak için geçmişinizden bir "
+"transkripsiyon seçin."
+
+msgid "Choose where to save the transcriptions"
+msgstr "Transkripsiyonların nereye kaydedileceğini seçin"
+
+msgid "Clear the conversation"
+msgstr "Konuşmayı temizle"
+
+msgid "Click a segment to play it. Right-click it to edit it."
+msgstr "Oynatmak için bir segmente tıklayın. Düzenlemek için sağ tıklayın."
+
+msgid "Compute type"
+msgstr "Hesaplama türü"
+
+# Needs review by a native speaker
+msgid "Confidence data isn’t available for this transcript"
+msgstr "Bu transkript için güvenilirlik verisi yok"
+
+msgid "Context"
+msgstr "Bağlam"
+
+msgid "Continue"
+msgstr "Devam"
+
+msgid "Copy"
+msgstr "Kopyala"
+
+msgid "Could not check for updates."
+msgstr "Güncellemeler denetlenemedi."
+
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -261,751 +285,173 @@ msgstr ""
 "geçerli olduğunu ve {model_url} koşullarını kabul ettiğinizi kontrol "
 "edin."
 
-#: src/handlers/youtube_handler.py:34
-msgid ""
-"The audio of the YouTube video could not be downloaded. Please make sure "
-"the URL is correct."
-msgstr ""
-"YouTube videosunun sesi indirilemedi. Lütfen URL'nin doğru olduğundan "
-"emin olun."
-
-#: src/handlers/youtube_handler.py:40
-msgid "The YouTube video doesn't have an audio track."
-msgstr "YouTube videosunda ses parçası yok."
-
-#: src/utils/audio_utils.py:30
-msgid "No audio was recorded."
-msgstr "Hiç ses kaydedilmedi."
-
-#: src/utils/exporters.py:289 src/utils/exporters.py:360
-#: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:786
-#: src/views/transcript/video_pane.py:275
-msgid "Transcription"
-msgstr "Transkripsiyon"
-
-#: src/utils/exporters.py:307 src/utils/exporters.py:335
-#: src/utils/exporters.py:420 src/views/settings/preferences_dialog.py:507
-#: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:567
-#: src/views/transcript/transcript_view.py:572
-#: src/views/transcript/transcript_view.py:828
-msgid "Summary"
-msgstr "Özet"
-
-#: src/utils/exporters.py:309 src/utils/exporters.py:338
-#: src/utils/exporters.py:423 src/views/transcript/summary_panel.py:90
-msgid "Key points"
-msgstr "Önemli noktalar"
-
-#: src/utils/exporters.py:313 src/utils/exporters.py:342
-#: src/utils/exporters.py:428 src/views/transcript/summary_panel.py:94
-msgid "Chapters"
-msgstr "Bölümler"
-
-#: src/utils/time_format.py:80
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
-msgstr "{minutes} dk {seconds} sn"
+msgid "Could not export: {error}"
+msgstr "Dışa aktarılamadı: {error}"
 
-#: src/utils/time_format.py:82
 #, python-brace-format
-msgid "{seconds} s"
-msgstr "{seconds} sn"
+msgid "Could not load the WhisperX model: {error}"
+msgstr "WhisperX modeli yüklenemedi: {error}"
 
-#: src/views/entries/entry_header.py:98
-msgid "Add note"
-msgstr "Not ekle"
-
-#: src/views/entries/folder_view.py:56
-msgid "Files"
-msgstr "Dosyalar"
-
-#: src/views/entries/folder_view.py:95
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} dosya"
+msgid "Could not open the file manager: {error}"
+msgstr "Dosya yöneticisi açılamadı: {error}"
 
-#: src/views/entries/folder_view.py:96
 #, python-brace-format
-msgid "{count} done"
-msgstr "{count} tamamlandı"
+msgid "Could not open the folder: {error}"
+msgstr "Klasör açılamadı: {error}"
 
-#: src/views/entries/folder_view.py:99
 #, python-brace-format
-msgid "{count} failed"
-msgstr "{count} başarısız"
+msgid "Could not summarize “{title}”: {error}"
+msgstr "Özetlenemedi: \"{title}\" ({error})"
 
-#: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1841
-msgid "Open the folder of the saved files"
-msgstr "Kaydedilen dosyaların klasörünü aç"
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "Çevrilemedi: \"{title}\" ({error})"
 
-#: src/views/entries/folder_view.py:116
-#: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:734
-#: src/views/transcript/transcript_view.py:1802
-msgid "Transcribe again"
-msgstr "Yeniden yazıya dök"
+msgid "Create"
+msgstr "Oluştur"
 
-#: src/views/entries/folder_view.py:136
-msgid "Waiting for new files…"
-msgstr "Yeni dosyalar bekleniyor…"
+msgid "Creates empty segments with the original timestamps for you to fill in."
+msgstr "Doldurmanız için orijinal zaman damgalarıyla boş segmentler oluşturur."
 
-#: src/views/entries/folder_view.py:138
-msgid "No files"
-msgstr "Dosya yok"
+msgid "Dark"
+msgstr "Koyu"
 
-#: src/views/entries/progress_card.py:20
-#: src/views/new_transcription/new_transcription_view.py:107
-msgid "Choose a file"
-msgstr "Bir dosya seçin"
+msgid "Dark background"
+msgstr "Koyu arka plan"
 
-#: src/views/entries/progress_card.py:21
-#: src/views/new_transcription/new_transcription_view.py:113
-msgid "Enter the URL"
-msgstr "URL'yi girin"
+msgid "Date format"
+msgstr "Tarih biçimi"
 
-#: src/views/entries/progress_card.py:22
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:474
-msgid "Record"
-msgstr "Kayıt yap"
+msgid "DeepL API key"
+msgstr "DeepL API anahtarı"
 
-#: src/views/entries/progress_card.py:23 src/views/entries/progress_card.py:24
-#: src/views/new_transcription/new_transcription_view.py:121
-msgid "Choose a folder"
-msgstr "Bir klasör seçin"
+#, python-brace-format
+msgid "DeepL can't translate into {language}."
+msgstr "DeepL bu dile çeviremiyor: {language}."
 
-#: src/views/entries/progress_card.py:25
-msgid "Source"
-msgstr "Kaynak"
+msgid "DeepL didn't return a valid translation."
+msgstr "DeepL geçerli bir çeviri döndürmedi."
 
-#: src/views/entries/progress_card.py:51
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:467
-#: src/views/new_transcription/microphone_view.py:473
-#: src/views/new_transcription/new_transcription_view.py:148
-#: src/views/transcript/ask_panel.py:260 src/views/transcript/ask_panel.py:271
-#: src/views/transcript/summary_panel.py:287
-#: src/views/transcript/summary_panel.py:300
-msgid "Settings"
-msgstr "Ayarlar"
+msgid "DeepSeek API key"
+msgstr "DeepSeek API anahtarı"
 
-#: src/views/entries/progress_card.py:52
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:475
-#: src/views/new_transcription/new_transcription_view.py:148
-msgid "Transcribe"
-msgstr "Yazıya dök"
-
-#: src/views/entries/progress_card.py:121
-#: src/views/history/history_sidebar.py:372
-msgid "Stop watching"
-msgstr "İzlemeyi durdur"
-
-#: src/views/entries/progress_card.py:121
-#: src/views/history/history_sidebar.py:374
-#: src/views/transcript/edit_dialogs.py:41 src/views/widgets/text_dialog.py:63
-msgid "Cancel"
-msgstr "İptal"
-
-#: src/views/entries/progress_card.py:132
-msgid ""
-"You can keep using Audiotext meanwhile. The result is saved in your "
-"history and opens here when it's ready."
-msgstr ""
-"Bu sırada Audiotext'i kullanmaya devam edebilirsiniz. Sonuç geçmişinize "
-"kaydedilir ve hazır olduğunda burada açılır."
-
-#: src/views/entries/progress_card.py:144
-msgid "The transcription failed"
-msgstr "Transkripsiyon başarısız oldu"
-
-#: src/views/entries/progress_card.py:145
-msgid "An unknown error occurred."
-msgstr "Bilinmeyen bir hata oluştu."
-
-#: src/views/entries/progress_card.py:147
-msgid "The transcription was interrupted"
-msgstr "Transkripsiyon yarıda kesildi"
-
-#: src/views/entries/progress_card.py:148
-msgid "Audiotext was closed before it finished."
-msgstr "Audiotext işlem bitmeden kapatıldı."
-
-#: src/views/entries/progress_card.py:150
-msgid "The transcription was cancelled"
-msgstr "Transkripsiyon iptal edildi"
-
-#: src/views/entries/progress_card.py:165
-#: src/views/new_transcription/new_transcription_view.py:303
-msgid "Back"
-msgstr "Geri"
-
-#: src/views/entries/progress_card.py:174
-msgid "Try again"
-msgstr "Yeniden dene"
-
-#: src/views/entries/progress_card.py:182
 msgid "Delete"
 msgstr "Sil"
 
-#: src/views/entries/progress_card.py:195
-#, python-brace-format
-msgid "Waiting for {count} transcription(s) to finish."
-msgstr "Bitmesi beklenen transkripsiyonlar: {count}."
+msgid "Delete group"
+msgstr "Grubu sil"
 
-#: src/views/entries/progress_card.py:199
-msgid "Waiting for the current transcription to finish."
-msgstr "Geçerli transkripsiyonun bitmesi bekleniyor."
-
-#: src/views/entries/progress_card.py:206
-msgid "Starting…"
-msgstr "Başlatılıyor…"
-
-#: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:27
-#: src/views/main_window/welcome_view.py:40
-msgid "File"
-msgstr "Dosya"
-
-#: src/views/history/formatting.py:23 src/views/main_window/top_bar.py:28
-#: src/views/main_window/welcome_view.py:46
-#: src/views/new_transcription/new_transcription_view.py:244
-msgid "URL"
-msgstr "URL"
-
-#: src/views/history/formatting.py:24 src/views/main_window/top_bar.py:29
-#: src/views/main_window/welcome_view.py:52
-msgid "Microphone"
-msgstr "Mikrofon"
-
-#: src/views/history/formatting.py:25 src/views/main_window/top_bar.py:30
-#: src/views/main_window/welcome_view.py:58
-#: src/views/settings/cards/folder_card.py:19
-msgid "Folder"
-msgstr "Klasör"
-
-#: src/views/history/formatting.py:26
-msgid "Watched folder"
-msgstr "İzlenen klasör"
-
-#: src/views/history/formatting.py:42
-msgid "Queued"
-msgstr "Kuyrukta"
-
-#: src/views/history/formatting.py:44
-msgid "Watching"
-msgstr "İzleniyor"
-
-#: src/views/history/formatting.py:45
-msgid "Done"
-msgstr "Tamamlandı"
-
-#: src/views/history/formatting.py:46
-msgid "Failed"
-msgstr "Başarısız"
-
-#: src/views/history/formatting.py:47
-msgid "Cancelled"
-msgstr "İptal edildi"
-
-#: src/views/history/formatting.py:48
-msgid "Interrupted"
-msgstr "Yarıda kaldı"
-
-#: src/views/history/formatting.py:163
-msgid "Show in Finder"
-msgstr "Finder'da göster"
-
-#: src/views/history/formatting.py:165
-msgid "Show in Explorer"
-msgstr "Explorer'da göster"
-
-#: src/views/history/formatting.py:166
-msgid "Show in file manager"
-msgstr "Dosya yöneticisinde göster"
-
-#: src/views/history/history_row.py:241
-#, python-brace-format
-msgid "{done}/{total} files"
-msgstr "{done}/{total} dosya"
-
-#: src/views/history/history_sidebar.py:142
-msgid "Search"
-msgstr "Ara"
-
-#: src/views/history/history_sidebar.py:167
-#: src/views/main_window/entry_dialogs.py:114
-msgid "New group"
-msgstr "Yeni grup"
-
-#: src/views/history/history_sidebar.py:225
-#, python-brace-format
-msgid "{count} transcriptions"
-msgstr "{count} transkripsiyon"
-
-#: src/views/history/history_sidebar.py:227
-msgid "1 transcription"
-msgstr "1 transkripsiyon"
-
-#: src/views/history/history_sidebar.py:234
-msgid "No transcriptions yet"
-msgstr "Henüz transkripsiyon yok"
-
-#: src/views/history/history_sidebar.py:235
-msgid "Choose a source above to transcribe your first file."
-msgstr "İlk dosyanızın transkripsiyonunu yapmak için yukarıdan bir kaynak seçin."
-
-#: src/views/history/history_sidebar.py:317
-#: src/views/main_window/entry_dialogs.py:40
-msgid "Rename"
-msgstr "Yeniden adlandır"
-
-#: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1853
-msgid "Edit note…"
-msgstr "Notu düzenle…"
-
-#: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1853
-msgid "Add note…"
-msgstr "Not ekle…"
-
-#: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1858
-msgid "Delete note…"
-msgstr "Notu sil…"
-
-#: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1864
-msgid "Edit tag…"
-msgstr "Etiketi düzenle…"
-
-#: src/views/history/history_sidebar.py:334
-msgid "Unpin"
-msgstr "Sabitlemeyi kaldır"
-
-#: src/views/history/history_sidebar.py:334
-msgid "Pin to the top"
-msgstr "En üste sabitle"
-
-#: src/views/history/history_sidebar.py:340
-msgid "No group"
-msgstr "Grup yok"
-
-#: src/views/history/history_sidebar.py:356
-msgid "New group…"
-msgstr "Yeni grup…"
-
-#: src/views/history/history_sidebar.py:359
-msgid "Move to group"
-msgstr "Gruba taşı"
-
-#: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1869
-msgid "Delete…"
-msgstr "Sil…"
-
-#: src/views/history/history_sidebar.py:398
-msgid "Rename group…"
-msgstr "Grubu yeniden adlandır…"
-
-#: src/views/history/history_sidebar.py:402
 msgid "Delete group…"
 msgstr "Grubu sil…"
 
-#: src/views/history/history_sidebar.py:425
-msgid "Pinned"
-msgstr "Sabitlenenler"
+msgid "Delete note"
+msgstr "Notu sil"
 
-#: src/views/history/history_sidebar.py:433
-msgid "Transcriptions"
-msgstr "Transkripsiyonlar"
+msgid "Delete note…"
+msgstr "Notu sil…"
 
-#: src/views/history/history_sidebar.py:476
+#, python-brace-format
+msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
+msgstr "\"{name}\" grubu silinsin mi? Transkripsiyonları grupsuz olarak korunur."
+
+#, python-brace-format
+msgid "Delete the note of “{title}”?"
+msgstr "“{title}” notu silinsin mi?"
+
+msgid "Delete the questions and their answers?"
+msgstr "Sorular ve yanıtları silinsin mi?"
+
+msgid "Delete the segment"
+msgstr "Segmenti sil"
+
+#, python-brace-format
+msgid "Delete the segment “{text}”?"
+msgstr "\"{text}\" segmenti silinsin mi?"
+
+msgid "Delete the translation"
+msgstr "Çeviriyi sil"
+
+msgid "Delete transcription"
+msgstr "Transkripsiyonu sil"
+
+#, python-brace-format
+msgid "Delete “{title}” from the history?"
+msgstr "\"{title}\" geçmişten silinsin mi?"
+
+msgid "Delete…"
+msgstr "Sil…"
+
+msgid "Description"
+msgstr "Açıklama"
+
+msgid "Documentation"
+msgstr "Belgeler"
+
+msgid "Donate"
+msgstr "Bağış yap"
+
+msgid "Done"
+msgstr "Tamamlandı"
+
+#, python-brace-format
+msgid "Done in {duration}."
+msgstr "{duration} içinde tamamlandı."
+
+msgid "Done. Press the button to record again."
+msgstr "Bitti. Yeniden kaydetmek için düğmeye basın."
+
+msgid "Download"
+msgstr "İndir"
+
+msgid "Downloading…"
+msgstr "İndiriliyor…"
+
+msgid "Draft. It's replaced when the final transcription finishes."
+msgstr "Taslak. Son transkripsiyon bittiğinde değiştirilir."
+
+msgid "Drop a folder here"
+msgstr "Bir klasörü buraya bırakın"
+
+msgid "Drop an audio or video file here"
+msgstr "Bir ses veya video dosyasını buraya bırakın"
+
+msgid "Edit note…"
+msgstr "Notu düzenle…"
+
+msgid "Edit tag…"
+msgstr "Etiketi düzenle…"
+
+msgid "Edit text"
+msgstr "Metni düzenle"
+
+msgid "Edit text…"
+msgstr "Metni düzenle…"
+
+msgid "Edit the timing"
+msgstr "Zamanlamayı düzenle"
+
+msgid "Edit the timing…"
+msgstr "Zamanlamayı düzenle…"
+
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Boş. Bir transkripsiyon eklemek için üzerine sağ tıklayıp \"Gruba taşı\" "
 "seçeneğini seçin."
 
-#: src/views/history/history_sidebar.py:511
-msgid "No files yet"
-msgstr "Henüz dosya yok"
+msgid "End:"
+msgstr "Bitiş:"
 
-#: src/views/history/history_sidebar.py:589
-#: src/views/transcript/find_dialog.py:187
-#: src/views/transcript/find_dialog.py:234
-msgid "No results"
-msgstr "Sonuç yok"
+msgid "Engine"
+msgstr "Motor"
 
-#: src/views/history/history_sidebar.py:590
-#, python-brace-format
-msgid "No transcription contains “{query}”."
-msgstr "Hiçbir transkripsiyon şunu içermiyor: \"{query}\"."
+msgid "Enter a URL that starts with http:// or https://"
+msgstr "http:// veya https:// ile başlayan bir URL girin"
 
-#: src/views/main_window/entry_dialogs.py:41
-msgid "Name of the transcription:"
-msgstr "Transkripsiyonun adı:"
+msgid "Enter the URL"
+msgstr "URL'yi girin"
 
-#: src/views/main_window/entry_dialogs.py:54
-msgid "Note"
-msgstr "Not"
-
-#: src/views/main_window/entry_dialogs.py:55
-#, python-brace-format
-msgid "A note about “{title}”:"
-msgstr "\"{title}\" hakkında bir not:"
-
-#: src/views/main_window/entry_dialogs.py:67
-msgid "Delete note"
-msgstr "Notu sil"
-
-#: src/views/main_window/entry_dialogs.py:68
-#, python-brace-format
-msgid "Delete the note of “{title}”?"
-msgstr "“{title}” notu silinsin mi?"
-
-#: src/views/main_window/entry_dialogs.py:80
-msgid "Tag"
-msgstr "Etiket"
-
-#: src/views/main_window/entry_dialogs.py:81
-#, python-brace-format
-msgid "Tag of “{title}”. Leave it empty to show the kind of source."
-msgstr "\"{title}\" etiketi. Kaynak türünü göstermek için boş bırakın."
-
-#: src/views/main_window/entry_dialogs.py:95
-#, python-brace-format
-msgid "Delete “{title}” from the history?"
-msgstr "\"{title}\" geçmişten silinsin mi?"
-
-#: src/views/main_window/entry_dialogs.py:97
-msgid "The transcriptions of its files are deleted too."
-msgstr "Dosyalarının transkripsiyonları da silinir."
-
-#: src/views/main_window/entry_dialogs.py:98
-msgid "Your audio, video and saved files are not deleted."
-msgstr "Ses, video ve kaydedilmiş dosyalarınız silinmez."
-
-#: src/views/main_window/entry_dialogs.py:100
-msgid "Delete transcription"
-msgstr "Transkripsiyonu sil"
-
-#: src/views/main_window/entry_dialogs.py:115
-#: src/views/main_window/entry_dialogs.py:132
-msgid "Name of the group:"
-msgstr "Grubun adı:"
-
-#: src/views/main_window/entry_dialogs.py:116
-msgid "Create"
-msgstr "Oluştur"
-
-#: src/views/main_window/entry_dialogs.py:131
-msgid "Rename group"
-msgstr "Grubu yeniden adlandır"
-
-#: src/views/main_window/entry_dialogs.py:144
-msgid "Delete group"
-msgstr "Grubu sil"
-
-#: src/views/main_window/entry_dialogs.py:146
-#, python-brace-format
-msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
-msgstr "\"{name}\" grubu silinsin mi? Transkripsiyonları grupsuz olarak korunur."
-
-#: src/views/main_window/main_window.py:464
-#, python-brace-format
-msgid "Recording · {date}"
-msgstr "Kayıt · {date}"
-
-#: src/views/main_window/main_window.py:484
-msgid "Processing the recording…"
-msgstr "Kayıt işleniyor…"
-
-#: src/views/main_window/main_window.py:510
-msgid "The transcription was cancelled."
-msgstr "Transkripsiyon iptal edildi."
-
-#: src/views/main_window/main_window.py:598
-#: src/views/new_transcription/new_transcription_view.py:485
-#, python-brace-format
-msgid "“{name}” is not a supported audio or video file."
-msgstr "\"{name}\" desteklenen bir ses veya video dosyası değil."
-
-#: src/views/main_window/main_window.py:611
-msgid ""
-"Only one file can be added at a time. To transcribe several files, drop "
-"the folder that contains them."
-msgstr ""
-"Aynı anda yalnızca bir dosya eklenebilir. Birden fazla dosyanın "
-"transkripsiyonunu yapmak için onları içeren klasörü bırakın."
-
-#: src/views/main_window/main_window.py:699
-msgid ""
-"Type in the API key. It's kept in the credential store of your system. "
-"Leave it empty to remove it."
-msgstr ""
-"API anahtarını yazın. Sisteminizin kimlik bilgisi deposunda saklanır. "
-"Kaldırmak için boş bırakın."
-
-#: src/views/main_window/main_window.py:703
-msgid "OK"
-msgstr "Tamam"
-
-#: src/views/main_window/main_window.py:710
-msgid "API key saved."
-msgstr "API anahtarı kaydedildi."
-
-#: src/views/main_window/main_window.py:710
-msgid "API key removed."
-msgstr "API anahtarı kaldırıldı."
-
-#: src/views/main_window/status_messages.py:40
-msgid "Transcription ready"
-msgstr "Transkripsiyon hazır"
-
-#: src/views/main_window/status_messages.py:43
-#, python-brace-format
-msgid "Saved in {folder}."
-msgstr "{folder} konumuna kaydedildi."
-
-#: src/views/main_window/status_messages.py:47
-msgid "The recording is no longer available."
-msgstr "Kayıt artık kullanılamıyor."
-
-#: src/views/main_window/status_messages.py:54
-#, python-brace-format
-msgid "The file was moved or deleted: {path}"
-msgstr "Dosya taşındı veya silindi: {path}"
-
-#: src/views/main_window/status_messages.py:56
-#, python-brace-format
-msgid "Could not open the file manager: {error}"
-msgstr "Dosya yöneticisi açılamadı: {error}"
-
-#: src/views/main_window/status_messages.py:61
-#, python-brace-format
-msgid "Could not open the folder: {error}"
-msgstr "Klasör açılamadı: {error}"
-
-#: src/views/main_window/status_messages.py:69
-#, python-brace-format
-msgid "The summary of “{title}” is ready."
-msgstr "Özet hazır: \"{title}\"."
-
-#: src/views/main_window/status_messages.py:73
-#, python-brace-format
-msgid "Could not summarize “{title}”: {error}"
-msgstr "Özetlenemedi: \"{title}\" ({error})"
-
-#: src/views/main_window/status_messages.py:83
-#, python-brace-format
-msgid "The translation of “{title}” is ready."
-msgstr "Çeviri hazır: \"{title}\"."
-
-#: src/views/main_window/status_messages.py:87
-#, python-brace-format
-msgid "Could not translate “{title}”: {error}"
-msgstr "Çevrilemedi: \"{title}\" ({error})"
-
-#: src/views/main_window/top_bar.py:72
-msgid "New transcription:"
-msgstr "Yeni transkripsiyon:"
-
-#: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:909
-#, python-brace-format
-msgid "Version {version} is available"
-msgstr "Sürüm {version} kullanılabilir"
-
-#: src/views/main_window/welcome_view.py:25
-msgid "What do you want to transcribe?"
-msgstr "Neyi yazıya dökmek istiyorsunuz?"
-
-#: src/views/main_window/welcome_view.py:30
-msgid ""
-"Choose a source, or select a transcription of your history to read and "
-"play it."
-msgstr ""
-"Bir kaynak seçin veya okumak ve oynatmak için geçmişinizden bir "
-"transkripsiyon seçin."
-
-#: src/views/main_window/welcome_view.py:41
-msgid "An audio or video file"
-msgstr "Bir ses veya video dosyası"
-
-#: src/views/main_window/welcome_view.py:47
-msgid "YouTube or a link to a file"
-msgstr "YouTube veya bir dosya bağlantısı"
-
-#: src/views/main_window/welcome_view.py:53
-#: src/views/new_transcription/microphone_view.py:468
-msgid "Record and transcribe"
-msgstr "Kaydedin ve yazıya dökün"
-
-#: src/views/main_window/welcome_view.py:59
-msgid "Many files at once, or watch it"
-msgstr "Aynı anda çok sayıda dosya veya klasörü izleme"
-
-#: src/views/main_window/welcome_view.py:75
-msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
-msgstr ""
-"İpucu: transkripsiyonunu yapmak için bir dosyayı veya klasörü pencerenin "
-"herhangi bir yerine bırakın."
-
-#: src/views/new_transcription/microphone_view.py:80
-msgid "No sound. Check that the microphone is on and allowed."
-msgstr "Ses yok. Mikrofonun açık olduğunu ve izin verildiğini kontrol edin."
-
-#: src/views/new_transcription/microphone_view.py:82
-msgid "Waiting for speech…"
-msgstr "Konuşma bekleniyor…"
-
-#: src/views/new_transcription/microphone_view.py:85
-msgid "Too quiet. Speak louder or closer to the microphone."
-msgstr "Çok sessiz. Daha yüksek sesle veya mikrofona daha yakından konuşun."
-
-#: src/views/new_transcription/microphone_view.py:87
-msgid "Good level"
-msgstr "İyi seviye"
-
-#: src/views/new_transcription/microphone_view.py:90
-msgid "Too loud. Move away from the microphone."
-msgstr "Çok yüksek. Mikrofondan uzaklaşın."
-
-#: src/views/new_transcription/microphone_view.py:134
-msgid "Transcribe from the microphone"
-msgstr "Mikrofondan yazıya dök"
-
-#: src/views/new_transcription/microphone_view.py:139
-msgid "Record yourself or a meeting. The recording is kept in your history."
-msgstr "Kendinizi veya bir toplantıyı kaydedin. Kayıt geçmişinizde saklanır."
-
-#: src/views/new_transcription/microphone_view.py:276
-#: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:724
-#: src/views/transcript/transcript_view.py:1489
-#: src/views/transcript/transcript_view.py:1727
-#: src/views/transcript/translation_panel.py:147
-msgid "Copy"
-msgstr "Kopyala"
-
-#: src/views/new_transcription/microphone_view.py:283
-msgid "Open in history"
-msgstr "Geçmişte aç"
-
-#: src/views/new_transcription/microphone_view.py:302
-msgid "Wait until the current transcription finishes, or cancel it."
-msgstr "Geçerli transkripsiyonun bitmesini bekleyin veya iptal edin."
-
-#: src/views/new_transcription/microphone_view.py:391
-#, python-brace-format
-msgid "Press the button to start recording ({shortcut})"
-msgstr "Kayda başlamak için düğmeye basın ({shortcut})"
-
-#: src/views/new_transcription/microphone_view.py:395
-msgid "The level is shown while recording"
-msgstr "Kayıt sırasında seviye gösterilir"
-
-#: src/views/new_transcription/microphone_view.py:400
-msgid "Recording… Press the button to stop and transcribe."
-msgstr "Kaydediliyor… Durdurmak ve yazıya dökmek için düğmeye basın."
-
-#: src/views/new_transcription/microphone_view.py:415
-msgid "Done. Press the button to record again."
-msgstr "Bitti. Yeniden kaydetmek için düğmeye basın."
-
-#: src/views/new_transcription/microphone_view.py:419
-msgid "Press the button to try again."
-msgstr "Yeniden denemek için düğmeye basın."
-
-#: src/views/new_transcription/microphone_view.py:435
-msgid "Draft. It's replaced when the final transcription finishes."
-msgstr "Taslak. Son transkripsiyon bittiğinde değiştirilir."
-
-#: src/views/new_transcription/microphone_view.py:445
-msgid "The text will appear here as you speak."
-msgstr "Siz konuştukça metin burada görünecek."
-
-#: src/views/new_transcription/microphone_view.py:447
-msgid "The transcription will appear here when you stop recording."
-msgstr "Kaydı durdurduğunuzda transkripsiyon burada görünecek."
-
-#: src/views/new_transcription/microphone_view.py:469
-msgid "Refine"
-msgstr "İyileştir"
-
-#: src/views/new_transcription/microphone_view.py:521
-msgid "default"
-msgstr "varsayılan"
-
-#: src/views/new_transcription/microphone_view.py:523
-msgid "Loading…"
-msgstr "Yükleniyor…"
-
-#: src/views/new_transcription/microphone_view.py:524
-msgid "No microphone found"
-msgstr "Mikrofon bulunamadı"
-
-#: src/views/new_transcription/new_transcription_view.py:105
-msgid "Transcribe a file"
-msgstr "Dosyayı yazıya dök"
-
-#: src/views/new_transcription/new_transcription_view.py:106
-msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
-msgstr "Ses ve video dosyaları: MP3, WAV, M4A, MP4, MOV, MKV ve daha fazlası."
-
-#: src/views/new_transcription/new_transcription_view.py:111
-msgid "Transcribe from a URL"
-msgstr "URL'den yazıya dök"
-
-#: src/views/new_transcription/new_transcription_view.py:112
-msgid "A YouTube video or a direct link to an audio or video file."
-msgstr ""
-"Bir YouTube videosu veya bir ses ya da video dosyasının doğrudan "
-"bağlantısı."
-
-#: src/views/new_transcription/new_transcription_view.py:117
-msgid "Transcribe a folder"
-msgstr "Klasörü yazıya dök"
-
-#: src/views/new_transcription/new_transcription_view.py:119
-msgid ""
-"All the audio and video files of a folder, or the new ones as they're "
-"added."
-msgstr "Bir klasördeki tüm ses ve video dosyaları veya eklendikçe yeni dosyalar."
-
-#: src/views/new_transcription/new_transcription_view.py:175
-msgid "Drop an audio or video file here"
-msgstr "Bir ses veya video dosyasını buraya bırakın"
-
-#: src/views/new_transcription/new_transcription_view.py:177
-msgid "Drop a folder here"
-msgstr "Bir klasörü buraya bırakın"
-
-#: src/views/new_transcription/new_transcription_view.py:184
-msgid "or"
-msgstr "veya"
-
-#: src/views/new_transcription/new_transcription_view.py:194
-msgid "Choose a file…"
-msgstr "Dosya seç…"
-
-#: src/views/new_transcription/new_transcription_view.py:194
-msgid "Choose a folder…"
-msgstr "Klasör seç…"
-
-#: src/views/new_transcription/new_transcription_view.py:234
-#: src/views/settings/cards/output_card.py:98
-msgid "Change…"
-msgstr "Değiştir…"
-
-#: src/views/new_transcription/new_transcription_view.py:266
-msgid "Paste"
-msgstr "Yapıştır"
-
-#: src/views/new_transcription/new_transcription_view.py:280
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
@@ -1013,144 +459,468 @@ msgstr ""
 "Örnekler: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
 
-#: src/views/new_transcription/new_transcription_view.py:358
-msgid "Select a file"
-msgstr "Bir dosya seçin"
+msgid "Export"
+msgstr "Dışa aktar"
 
-#: src/views/new_transcription/new_transcription_view.py:360
-msgid "All supported files"
-msgstr "Desteklenen tüm dosyalar"
+msgid "Export summary"
+msgstr "Özeti dışa aktar"
 
-#: src/views/new_transcription/new_transcription_view.py:361
-msgid "Audio files"
-msgstr "Ses dosyaları"
+msgid "Export transcription"
+msgstr "Transkripsiyonu dışa aktar"
 
-#: src/views/new_transcription/new_transcription_view.py:362
-msgid "Video files"
-msgstr "Video dosyaları"
-
-#: src/views/new_transcription/new_transcription_view.py:366
-msgid "Select a folder"
-msgstr "Bir klasör seçin"
-
-#: src/views/new_transcription/new_transcription_view.py:395
-msgid "Continue"
-msgstr "Devam"
-
-#: src/views/new_transcription/new_transcription_view.py:426
-msgid "Add to queue"
-msgstr "Kuyruğa ekle"
-
-#: src/views/new_transcription/new_transcription_view.py:426
-msgid "Start transcription"
-msgstr "Transkripsiyonu başlat"
-
-#: src/views/new_transcription/new_transcription_view.py:438
-msgid "It will start when the current transcription finishes."
-msgstr "Geçerli transkripsiyon bittiğinde başlayacak."
-
-#: src/views/new_transcription/new_transcription_view.py:503
-msgid "Reading…"
-msgstr "Okunuyor…"
-
-#: src/views/new_transcription/new_transcription_view.py:525
-msgid "Video"
-msgstr "Video"
-
-#: src/views/new_transcription/new_transcription_view.py:525
-msgid "Audio"
-msgstr "Ses"
-
-#: src/views/new_transcription/new_transcription_view.py:544
-msgid "No audio or video files found (subfolders included)."
-msgstr "Ses veya video dosyası bulunamadı (alt klasörler dahil)."
-
-#: src/views/new_transcription/new_transcription_view.py:546
-msgid "1 audio or video file (subfolders included)"
-msgstr "1 ses veya video dosyası (alt klasörler dahil)"
-
-#: src/views/new_transcription/new_transcription_view.py:547
 #, python-brace-format
-msgid "{count} audio and video files (subfolders included)"
-msgstr "{count} ses ve video dosyası (alt klasörler dahil)"
+msgid "Export translation into {language}"
+msgstr "Çeviriyi dışa aktar ({language})"
 
-#: src/views/new_transcription/new_transcription_view.py:583
-msgid "YouTube video"
-msgstr "YouTube videosu"
+msgid "Export video with subtitles"
+msgstr "Altyazılı videoyu dışa aktar"
 
-#: src/views/new_transcription/new_transcription_view.py:583
-msgid "Link to a file"
-msgstr "Dosya bağlantısı"
+#, python-brace-format
+msgid "Exported to {path}"
+msgstr "Dışa aktarıldı: {path}"
 
-#: src/views/new_transcription/new_transcription_view.py:590
-msgid "Enter a URL that starts with http:// or https://"
-msgstr "http:// veya https:// ile başlayan bir URL girin"
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr ""
+"Dışa aktarıldı: {path}. Ancak hiçbir yazı tipinde bu karakterler yok, bu "
+"yüzden kutu olarak gösteriliyorlar: {characters}"
 
-#: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:74
-msgid "OpenAI API key"
-msgstr "OpenAI API anahtarı"
+msgid "Extract speech"
+msgstr "Konuşmayı ayıkla"
 
-#: src/views/settings/preferences_dialog.py:76
-msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
-msgstr "Whisper API ve OpenAI ile özetleme ve çeviri için gereklidir."
+msgid "Failed"
+msgstr "Başarısız"
 
-#: src/views/settings/preferences_dialog.py:80
-msgid "Anthropic API key"
-msgstr "Anthropic API anahtarı"
+msgid "File"
+msgstr "Dosya"
 
-#: src/views/settings/preferences_dialog.py:81
-msgid "Required to summarize and translate with Claude."
-msgstr "Claude ile özetleme ve çeviri için gereklidir."
+msgid "File types"
+msgstr "Dosya türleri"
 
-#: src/views/settings/preferences_dialog.py:84
-msgid "DeepSeek API key"
-msgstr "DeepSeek API anahtarı"
+#, python-brace-format
+msgid "File {current} of {total} ({name}): {message}"
+msgstr "Dosya {current}/{total} ({name}): {message}"
 
-#: src/views/settings/preferences_dialog.py:85
-msgid "Required to summarize and translate with DeepSeek."
-msgstr "DeepSeek ile özetleme ve çeviri için gereklidir."
+msgid "Files"
+msgstr "Dosyalar"
 
-#: src/views/settings/preferences_dialog.py:88
+#, python-brace-format
+msgid "Find ({shortcut})"
+msgstr "Bul ({shortcut})"
+
+#, python-brace-format
+msgid "Find and replace ({shortcut})"
+msgstr "Bul ve değiştir ({shortcut})"
+
+msgid "Find and replace in the transcription"
+msgstr "Transkripsiyonda bul ve değiştir"
+
+msgid "Find and replace in the translation"
+msgstr "Çeviride bul ve değiştir"
+
+#, python-brace-format
+msgid "Find and replace in the translation into {language}"
+msgstr "{language} çeviride bul ve değiştir"
+
+msgid "Find in the summary"
+msgstr "Özette bul"
+
+msgid "Find:"
+msgstr "Bul:"
+
+msgid "Folder"
+msgstr "Klasör"
+
+msgid "Format of the files."
+msgstr "Dosyaların biçimi."
+
 msgid "Gemini API key"
 msgstr "Gemini API anahtarı"
 
-#: src/views/settings/preferences_dialog.py:90
-msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgid "General"
+msgstr "Genel"
+
+#, python-brace-format
+msgid ""
+"Generate a summary, the key points and the chapters of the transcription "
+"with {provider}."
 msgstr ""
-"Gemini ile özetleme ve çeviri için gereklidir (Google AI Studio'dan "
-"alınır)."
+"Transkripsiyonun özetini, önemli noktalarını ve bölümlerini oluşturun "
+"(sağlayıcı: {provider})."
 
-#: src/views/settings/preferences_dialog.py:94
-msgid "Mistral API key"
-msgstr "Mistral API anahtarı"
+msgid "Generate summary"
+msgstr "Özet oluştur"
 
-#: src/views/settings/preferences_dialog.py:95
-msgid "Required to summarize and translate with Mistral."
-msgstr "Mistral ile özetleme ve çeviri için gereklidir."
+msgid "Generate the summary again? The current one will be replaced."
+msgstr "Özet yeniden oluşturulsun mu? Mevcut özet değiştirilecek."
 
-#: src/views/settings/preferences_dialog.py:98
-msgid "xAI API key"
-msgstr "xAI API anahtarı"
+#, python-brace-format
+msgid "Generated by {model} · {date}"
+msgstr "Oluşturan: {model} · {date}"
 
-#: src/views/settings/preferences_dialog.py:99
-msgid "Required to summarize and translate with Grok."
-msgstr "Grok ile özetleme ve çeviri için gereklidir."
+msgid ""
+"Give a name to each speaker. Giving two speakers the same name merges "
+"them."
+msgstr ""
+"Her konuşmacıya bir ad verin. İki konuşmacıya aynı adı vermek onları "
+"birleştirir."
 
-#: src/views/settings/preferences_dialog.py:102
-msgid "DeepL API key"
-msgstr "DeepL API anahtarı"
+msgid "Good level"
+msgstr "İyi seviye"
 
-#: src/views/settings/preferences_dialog.py:103
-msgid "Required to translate with DeepL. Keys of the free plan work too."
-msgstr "DeepL ile çeviri için gereklidir. Ücretsiz planın anahtarları da çalışır."
-
-#: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:106
 msgid "Google API key"
 msgstr "Google API anahtarı"
 
-#: src/views/settings/preferences_dialog.py:108
+msgid "Google Translate didn't return a valid translation."
+msgstr "Google Çeviri geçerli bir çeviri döndürmedi."
+
+msgid "Hide the translation"
+msgstr "Çeviriyi gizle"
+
+# Needs review by a native speaker
+msgid "Highlight low-confidence words"
+msgstr "Düşük güvenilirlikli kelimeleri vurgula"
+
+msgid "Highlight words"
+msgstr "Kelimeleri vurgula"
+
+msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgstr "Oynatırken her kelimeyi vurgular (whisper-1 modeli). Daha uzun sürer."
+
+msgid "Highlights each word while playing. Takes a bit longer."
+msgstr "Oynatırken her kelimeyi vurgular. Biraz daha uzun sürer."
+
+msgid "Highlights each word while playing. The subtitles already use them."
+msgstr "Oynatırken her kelimeyi vurgular. Altyazılar bunları zaten kullanır."
+
+msgid "Hugging Face token"
+msgstr "Hugging Face belirteci"
+
+msgid "Identifies the speakers. With timestamps."
+msgstr "Konuşmacıları belirler. Zaman damgalarıyla."
+
+msgid "Identify speakers"
+msgstr "Konuşmacıları belirle"
+
+#, python-brace-format
+msgid ""
+"Identifying speakers requires a Hugging Face token. Create one at "
+"{tokens_url}, accept the conditions of {model_url} and set the token in "
+"the WhisperX options."
+msgstr ""
+"Konuşmacıları belirlemek için bir Hugging Face belirteci gerekir. "
+"{tokens_url} adresinde bir tane oluşturun, {model_url} koşullarını kabul "
+"edin ve belirteci WhisperX seçeneklerinde ayarlayın."
+
+msgid "Identifying speakers…"
+msgstr "Konuşmacılar belirleniyor…"
+
+msgid "Interface language"
+msgstr "Arayüz dili"
+
+msgid "Interface size"
+msgstr "Arayüz boyutu"
+
+msgid "Interrupted"
+msgstr "Yarıda kaldı"
+
+msgid "Isolating the speech…"
+msgstr "Konuşma ayıklanıyor…"
+
+msgid "It takes a moment."
+msgstr "Bu biraz zaman alır."
+
+msgid "It will start when the current transcription finishes."
+msgstr "Geçerli transkripsiyon bittiğinde başlayacak."
+
+msgid "JSON (.json)"
+msgstr "JSON (.json)"
+
+msgid "Keep above the main window"
+msgstr "Ana pencerenin üstünde tut"
+
+msgid ""
+"Keeps running and transcribes the files added to the folder, until you "
+"stop it. The files it already contains are skipped."
+msgstr ""
+"Siz durdurana kadar çalışmaya devam eder ve klasöre eklenen dosyaların "
+"transkripsiyonunu yapar. Klasörde zaten bulunan dosyalar atlanır."
+
+msgid "Key points"
+msgstr "Önemli noktalar"
+
+msgid "Keywords"
+msgstr "Anahtar kelimeler"
+
+msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgstr ""
+"Her bölümde kimin konuştuğunu etiketler. Hugging Face belirteci "
+"gerektirir."
+
+msgid "Landscape"
+msgstr "Yatay"
+
+msgid "Language"
+msgstr "Dil"
+
+msgid "Language of the audio"
+msgstr "Sesin dili"
+
+msgid "Language of the transcription"
+msgstr "Transkripsiyonun dili"
+
+msgid "Large"
+msgstr "Büyük"
+
+msgid "Larger models are more accurate, but slower."
+msgstr "Daha büyük modeller daha doğrudur ama daha yavaştır."
+
+msgid "Light"
+msgstr "Açık"
+
+msgid "Link to a file"
+msgstr "Dosya bağlantısı"
+
+msgid "Live model"
+msgstr "Canlı model"
+
+msgid "Live text"
+msgstr "Canlı metin"
+
+msgid "Loading audio…"
+msgstr "Ses yükleniyor…"
+
+msgid "Loading the audio…"
+msgstr "Ses yükleniyor…"
+
+msgid ""
+"Loading the speaker identification model (it's downloaded the first time "
+"it's used)…"
+msgstr "Konuşmacı belirleme modeli yükleniyor (ilk kullanımda indirilir)…"
+
+msgid "Loading the subtitle alignment model…"
+msgstr "Altyazı hizalama modeli yükleniyor…"
+
+#, python-brace-format
+msgid "Loading the {model} model (it's downloaded the first time it's used)…"
+msgstr "{model} modeli yükleniyor (ilk kullanımda indirilir)…"
+
+msgid "Loading…"
+msgstr "Yükleniyor…"
+
+# Needs review by a native speaker
+msgid "Low-confidence threshold"
+msgstr "Düşük güvenilirlik eşiği"
+
+msgid "Lower it if you run out of memory."
+msgstr "Bellek yetmezse düşürün."
+
+#, python-brace-format
+msgid "Made by {author}"
+msgstr "Geliştiren: {author}"
+
+msgid "Manual"
+msgstr "Elle"
+
+msgid "Many files at once, or watch it"
+msgstr "Aynı anda çok sayıda dosya veya klasörü izleme"
+
+msgid "Markdown (.md)"
+msgstr "Markdown (.md)"
+
+msgid "Match case"
+msgstr "Büyük/küçük harf eşleştir"
+
+msgid "Max. characters per line"
+msgstr "Satır başına maks. karakter"
+
+msgid "Max. lines per subtitle"
+msgstr "Altyazı başına maks. satır"
+
+msgid "Medium"
+msgstr "Orta"
+
+msgid "Microphone"
+msgstr "Mikrofon"
+
+msgid "Mistral API key"
+msgstr "Mistral API anahtarı"
+
+msgid "Model"
+msgstr "Model"
+
+msgid ""
+"More accurate, but without timestamps: the transcription can't be played "
+"segment by segment nor subtitled."
+msgstr ""
+"Daha doğru, ancak zaman damgası yok: transkripsiyon segment segment "
+"oynatılamaz ve altyazılanamaz."
+
+msgid "More options in the settings"
+msgstr "Ayarlarda daha fazla seçenek"
+
+msgid "Move to group"
+msgstr "Gruba taşı"
+
+msgid "Name of the group:"
+msgstr "Grubun adı:"
+
+msgid "Name of the transcription:"
+msgstr "Transkripsiyonun adı:"
+
+msgid ""
+"Names, terms or acronyms said in the audio, separated by commas, so "
+"they're spelled right."
+msgstr ""
+"Seste geçen adlar, terimler veya kısaltmalar; doğru yazılmaları için "
+"virgülle ayrılmış olarak."
+
+msgid "New group"
+msgstr "Yeni grup"
+
+msgid "New group…"
+msgstr "Yeni grup…"
+
+msgid "New transcription:"
+msgstr "Yeni transkripsiyon:"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Next low-confidence word ({shortcut})"
+msgstr "Sonraki düşük güvenilirlikli kelime ({shortcut})"
+
+msgid "Next match"
+msgstr "Sonraki sonuç"
+
+msgid "Next to the source"
+msgstr "Kaynağın yanına"
+
+#, python-brace-format
+msgid "No API key for {provider}."
+msgstr "{provider} için API anahtarı yok."
+
+msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgstr "CUDA destekli GPU bulunamadı, bu nedenle WhisperX CPU üzerinde çalışıyor."
+
+msgid "No audio or video files found (subfolders included)."
+msgstr "Ses veya video dosyası bulunamadı (alt klasörler dahil)."
+
+msgid "No audio was recorded."
+msgstr "Hiç ses kaydedilmedi."
+
+msgid "No files"
+msgstr "Dosya yok"
+
+msgid "No files yet"
+msgstr "Henüz dosya yok"
+
+msgid "No group"
+msgstr "Grup yok"
+
+msgid "No languages found."
+msgstr "Dil bulunamadı."
+
+# Needs review by a native speaker
+msgid "No low-confidence words at this threshold"
+msgstr "Bu eşikte düşük güvenilirlikli kelime yok"
+
+# Needs review by a native speaker
+msgid "No low-confidence words left to review"
+msgstr "İncelenecek düşük güvenilirlikli kelime kalmadı"
+
+msgid "No microphone found"
+msgstr "Mikrofon bulunamadı"
+
+msgid "No output file types selected. Please select at least one."
+msgstr "Hiçbir çıktı dosyası türü seçilmedi. Lütfen en az birini seçin."
+
+msgid "No results"
+msgstr "Sonuç yok"
+
+msgid "No sound. Check that the microphone is on and allowed."
+msgstr "Ses yok. Mikrofonun açık olduğunu ve izin verildiğini kontrol edin."
+
+msgid "No summary yet"
+msgstr "Henüz özet yok"
+
+#, python-brace-format
+msgid "No transcription contains “{query}”."
+msgstr "Hiçbir transkripsiyon şunu içermiyor: \"{query}\"."
+
+msgid "No transcriptions yet"
+msgstr "Henüz transkripsiyon yok"
+
+msgid "Not translated yet"
+msgstr "Henüz çevrilmedi"
+
+msgid "Not used by the Google API."
+msgstr "Google API tarafından kullanılmaz."
+
+#, python-brace-format
+msgid "Not used by the {model} model."
+msgstr "{model} modeli tarafından kullanılmaz."
+
+msgid "Note"
+msgstr "Not"
+
+msgid "Notifications"
+msgstr "Bildirimler"
+
+msgid "Number of speakers (0 = auto)"
+msgstr "Konuşmacı sayısı (0 = otomatik)"
+
+msgid "OK"
+msgstr "Tamam"
+
+msgid "Ollama"
+msgstr "Ollama"
+
+msgid "Ollama runs the models on your computer, without an API key."
+msgstr "Ollama, modelleri API anahtarı olmadan bilgisayarınızda çalıştırır."
+
+# Needs review by a native speaker
+msgid "Only WhisperX and whisper-1 score the words"
+msgstr "Kelimeleri yalnızca WhisperX ve whisper-1 puanlar"
+
+msgid ""
+"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
+" of the Whisper API."
+msgstr ""
+"Yalnızca WhisperX ile veya Whisper API'nin gpt-4o-transcribe-diarize "
+"modeliyle kullanılabilir."
+
+msgid "Only available with WhisperX."
+msgstr "Yalnızca WhisperX ile kullanılabilir."
+
+# Needs review by a native speaker
+msgid "Only flagged"
+msgstr "Yalnızca işaretliler"
+
+msgid ""
+"Only one file can be added at a time. To transcribe several files, drop "
+"the folder that contains them."
+msgstr ""
+"Aynı anda yalnızca bir dosya eklenebilir. Birden fazla dosyanın "
+"transkripsiyonunu yapmak için onları içeren klasörü bırakın."
+
+msgid ""
+"Only transcribes English, faster than the multilingual model of the same "
+"size."
+msgstr ""
+"Yalnızca İngilizce yazıya döker; aynı boyuttaki çok dilli modelden daha "
+"hızlıdır."
+
+msgid "Open in history"
+msgstr "Geçmişte aç"
+
+msgid "Open the folder of the saved files"
+msgstr "Kaydedilen dosyaların klasörünü aç"
+
+msgid "OpenAI API key"
+msgstr "OpenAI API anahtarı"
+
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1159,12 +929,155 @@ msgstr ""
 "kullanılır. Google Çeviri (Cloud Translation API) ile çeviri için "
 "gereklidir."
 
-#: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:112
-msgid "Hugging Face token"
-msgstr "Hugging Face belirteci"
+msgid "Options"
+msgstr "Seçenekler"
 
-#: src/views/settings/preferences_dialog.py:114
+msgid "Outline"
+msgstr "Kontur"
+
+msgid "Output"
+msgstr "Çıktı"
+
+msgid "Overwrite existing files"
+msgstr "Mevcut dosyaların üzerine yaz"
+
+msgid "Paste"
+msgstr "Yapıştır"
+
+msgid "Pin to the top"
+msgstr "En üste sabitle"
+
+msgid "Pinned"
+msgstr "Sabitlenenler"
+
+msgid "Plain text"
+msgstr "Düz metin"
+
+msgid "Plain text (.txt)"
+msgstr "Düz metin (.txt)"
+
+msgid "Play from here"
+msgstr "Buradan oynat"
+
+msgid ""
+"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
+" or video file)."
+msgstr ""
+"Lütfen geçerli bir URL girin (ör. bir YouTube videosunun veya bir ses ya "
+"da video dosyasının bağlantısı)."
+
+msgid "Please select a valid audio or video file."
+msgstr "Lütfen geçerli bir ses veya video dosyası seçin."
+
+msgid "Please select a valid folder."
+msgstr "Lütfen geçerli bir klasör seçin."
+
+msgid "Portrait"
+msgstr "Dikey"
+
+msgid "Position"
+msgstr "Konum"
+
+msgid "Precise timestamps (HH:MM:SS,mmm)"
+msgstr "Hassas zaman damgaları (HH:MM:SS,mmm)"
+
+msgid "Preferences"
+msgstr "Tercihler"
+
+#, python-brace-format
+msgid "Press the button to start recording ({shortcut})"
+msgstr "Kayda başlamak için düğmeye basın ({shortcut})"
+
+msgid "Press the button to try again."
+msgstr "Yeniden denemek için düğmeye basın."
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Previous low-confidence word ({shortcut})"
+msgstr "Önceki düşük güvenilirlikli kelime ({shortcut})"
+
+msgid "Previous match"
+msgstr "Önceki sonuç"
+
+msgid "Processing the recording…"
+msgstr "Kayıt işleniyor…"
+
+msgid "Provider"
+msgstr "Sağlayıcı"
+
+msgid "Queued"
+msgstr "Kuyrukta"
+
+msgid "Reading…"
+msgstr "Okunuyor…"
+
+msgid "Record"
+msgstr "Kayıt yap"
+
+msgid "Record and transcribe"
+msgstr "Kaydedin ve yazıya dökün"
+
+msgid "Record yourself or a meeting. The recording is kept in your history."
+msgstr "Kendinizi veya bir toplantıyı kaydedin. Kayıt geçmişinizde saklanır."
+
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "Kayıt · {date}"
+
+msgid "Recording…"
+msgstr "Kaydediliyor…"
+
+msgid "Recording… Press the button to stop and transcribe."
+msgstr "Kaydediliyor… Durdurmak ve yazıya dökmek için düğmeye basın."
+
+msgid "Reduces music and background noise before transcribing."
+msgstr "Transkripsiyondan önce müziği ve arka plan gürültüsünü azaltır."
+
+msgid "Refine"
+msgstr "İyileştir"
+
+msgid "Regenerate the summary"
+msgstr "Özeti yeniden oluştur"
+
+msgid "Rename"
+msgstr "Yeniden adlandır"
+
+msgid "Rename group"
+msgstr "Grubu yeniden adlandır"
+
+msgid "Rename group…"
+msgstr "Grubu yeniden adlandır…"
+
+msgid "Rename speakers"
+msgstr "Konuşmacıları yeniden adlandır"
+
+msgid "Rename speakers…"
+msgstr "Konuşmacıları yeniden adlandır…"
+
+msgid "Rename…"
+msgstr "Yeniden adlandır…"
+
+msgid "Replace"
+msgstr "Değiştir"
+
+msgid "Replace all"
+msgstr "Tümünü değiştir"
+
+msgid "Replace with:"
+msgstr "Şununla değiştir:"
+
+# Needs review by a native speaker
+msgid "Replay"
+msgstr "Yeniden oynat"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Replay ({shortcut})"
+msgstr "Yeniden oynat ({shortcut})"
+
+msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
+msgstr "Whisper API ve OpenAI ile özetleme ve çeviri için gereklidir."
+
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1172,257 +1085,378 @@ msgstr ""
 "WhisperX ile konuşmacıları belirlemek için gereklidir (pyannote/speaker-"
 "diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:172
-msgid "Preferences"
-msgstr "Tercihler"
+msgid "Required to summarize and translate with Claude."
+msgstr "Claude ile özetleme ve çeviri için gereklidir."
 
-#: src/views/settings/preferences_dialog.py:186
-msgid "General"
-msgstr "Genel"
+msgid "Required to summarize and translate with DeepSeek."
+msgstr "DeepSeek ile özetleme ve çeviri için gereklidir."
 
-#: src/views/settings/preferences_dialog.py:187
-msgid "AI"
-msgstr "YZ"
-
-#: src/views/settings/preferences_dialog.py:188
-msgid "API keys"
-msgstr "API anahtarları"
-
-#: src/views/settings/preferences_dialog.py:190
-#: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:826
-msgid "Subtitles"
-msgstr "Altyazılar"
-
-#: src/views/settings/preferences_dialog.py:192
-msgid "About"
-msgstr "Hakkında"
-
-#: src/views/settings/preferences_dialog.py:320
-msgid "Appearance"
-msgstr "Görünüm"
-
-#: src/views/settings/preferences_dialog.py:324
-msgid "System"
-msgstr "Sistem"
-
-#: src/views/settings/preferences_dialog.py:324
-msgid "Light"
-msgstr "Açık"
-
-#: src/views/settings/preferences_dialog.py:324
-msgid "Dark"
-msgstr "Koyu"
-
-#: src/views/settings/preferences_dialog.py:330
-msgid "Interface size"
-msgstr "Arayüz boyutu"
-
-#: src/views/settings/preferences_dialog.py:339
-msgid "Interface language"
-msgstr "Arayüz dili"
-
-#: src/views/settings/preferences_dialog.py:345
-msgid "System language"
-msgstr "Sistem dili"
-
-#: src/views/settings/preferences_dialog.py:358
-msgid "Notifications"
-msgstr "Bildirimler"
-
-#: src/views/settings/preferences_dialog.py:359
-msgid "Shows a notification of the system when a transcription is ready."
-msgstr "Bir transkripsiyon hazır olduğunda sistem bildirimi gösterir."
-
-#: src/views/settings/preferences_dialog.py:370
-msgid "Updates"
-msgstr "Güncellemeler"
-
-#: src/views/settings/preferences_dialog.py:371
-msgid "Checks for a new version when the app opens."
-msgstr "Uygulama açıldığında yeni bir sürüm olup olmadığını denetler."
-
-#: src/views/settings/preferences_dialog.py:387
-msgid "Date format"
-msgstr "Tarih biçimi"
-
-#: src/views/settings/preferences_dialog.py:404
-msgid "Time format"
-msgstr "Saat biçimi"
-
-#: src/views/settings/preferences_dialog.py:405
-msgid "Automatic uses the clock of the interface language."
-msgstr "Otomatik, arayüz dilinin saat biçimini kullanır."
-
-#: src/views/settings/preferences_dialog.py:411
-msgid "Automatic"
-msgstr "Otomatik"
-
-#: src/views/settings/preferences_dialog.py:470
-#: src/views/settings/preferences_dialog.py:483
-msgid "Change API key…"
-msgstr "API anahtarını değiştir…"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/settings/preferences_dialog.py:470
-#: src/views/settings/preferences_dialog.py:483
-#: src/views/transcript/ask_panel.py:270
-#: src/views/transcript/summary_panel.py:299
-#: src/views/transcript/translation_panel.py:485
-#: src/views/transcript/translation_panel.py:557
-msgid "Set API key…"
-msgstr "API anahtarını ayarla…"
-
-#: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:532
-#: src/views/transcript/translation_panel.py:232
-msgid "Translation"
-msgstr "Çeviri"
-
-#: src/views/settings/preferences_dialog.py:544
-msgid "Ollama"
-msgstr "Ollama"
-
-#: src/views/settings/preferences_dialog.py:549
-msgid "Server URL"
-msgstr "Sunucu URL'si"
-
-#: src/views/settings/preferences_dialog.py:550
-msgid "Ollama runs the models on your computer, without an API key."
-msgstr "Ollama, modelleri API anahtarı olmadan bilgisayarınızda çalıştırır."
-
-#: src/views/settings/preferences_dialog.py:581
-msgid "Provider"
-msgstr "Sağlayıcı"
-
-#: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:588
-msgid "Model"
-msgstr "Model"
-
-#: src/views/settings/preferences_dialog.py:589
-msgid "The default model of the provider if empty."
-msgstr "Boşsa sağlayıcının varsayılan modeli."
-
-#: src/views/settings/preferences_dialog.py:636
-msgid "Compute type"
-msgstr "Hesaplama türü"
-
-#: src/views/settings/preferences_dialog.py:637
-msgid "float16 is faster on GPUs. int8 uses less memory."
-msgstr "float16 GPU'larda daha hızlıdır. int8 daha az bellek kullanır."
-
-#: src/views/settings/preferences_dialog.py:653
-msgid "Batch size"
-msgstr "Toplu iş boyutu"
-
-#: src/views/settings/preferences_dialog.py:654
-msgid "Lower it if you run out of memory."
-msgstr "Bellek yetmezse düşürün."
-
-#: src/views/settings/preferences_dialog.py:666
-msgid "Use CPU"
-msgstr "CPU kullan"
-
-#: src/views/settings/preferences_dialog.py:669
-msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
-msgstr "CUDA destekli GPU bulunamadı, bu nedenle WhisperX CPU üzerinde çalışıyor."
-
-#: src/views/settings/preferences_dialog.py:684
-msgid "Highlight words"
-msgstr "Kelimeleri vurgula"
-
-#: src/views/settings/preferences_dialog.py:685
-msgid "Underlines each word as it's said (.srt and .vtt)."
-msgstr "Her kelimenin altını söylendiği anda çizer (.srt ve .vtt)."
-
-#: src/views/settings/preferences_dialog.py:704
-msgid "Landscape"
-msgstr "Yatay"
-
-#: src/views/settings/preferences_dialog.py:704
-msgid "Portrait"
-msgstr "Dikey"
-
-#: src/views/settings/preferences_dialog.py:712
-msgid "Max. lines per subtitle"
-msgstr "Altyazı başına maks. satır"
-
-#: src/views/settings/preferences_dialog.py:717
-msgid "Max. characters per line"
-msgstr "Satır başına maks. karakter"
-
-#: src/views/settings/preferences_dialog.py:722
-msgid "Chinese, Japanese and Korean"
-msgstr "Çince, Japonca ve Korece"
-
-#: src/views/settings/preferences_dialog.py:759
-msgid ""
-"Chinese, Japanese and Korean characters are about twice as wide as Latin "
-"ones."
+msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr ""
-"Çince, Japonca ve Korece karakterler Latin karakterlerinin yaklaşık iki "
-"katı genişliktedir."
+"Gemini ile özetleme ve çeviri için gereklidir (Google AI Studio'dan "
+"alınır)."
 
-#: src/views/settings/preferences_dialog.py:768
-msgid "Temperature"
-msgstr "Sıcaklık"
+msgid "Required to summarize and translate with Grok."
+msgstr "Grok ile özetleme ve çeviri için gereklidir."
 
-#: src/views/settings/preferences_dialog.py:769
-msgid "Between 0 and 1. Higher values are more random."
-msgstr "0 ile 1 arasında. Daha yüksek değerler daha rastgeledir."
+msgid "Required to summarize and translate with Mistral."
+msgstr "Mistral ile özetleme ve çeviri için gereklidir."
 
-#: src/views/settings/preferences_dialog.py:781
-msgid "Timestamps of the words"
-msgstr "Kelimelerin zaman damgaları"
+msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgstr "DeepL ile çeviri için gereklidir. Ücretsiz planın anahtarları da çalışır."
 
-#: src/views/settings/preferences_dialog.py:782
-msgid "Highlights each word while playing (whisper-1 model). Takes longer."
-msgstr "Oynatırken her kelimeyi vurgular (whisper-1 modeli). Daha uzun sürer."
+# Needs review by a native speaker
+msgid "Review accepted words again"
+msgstr "Kabul edilen kelimeleri yeniden incele"
 
-#: src/views/settings/preferences_dialog.py:812
+msgid ""
+"Runs on the servers of Google. An API key is optional; without it, the "
+"free tier is used."
+msgstr ""
+"Google'ın sunucularında çalışır. API anahtarı isteğe bağlıdır; olmadan "
+"ücretsiz katman kullanılır."
+
+msgid "Runs on the servers of OpenAI. Requires an API key."
+msgstr "OpenAI'ın sunucularında çalışır. API anahtarı gerektirir."
+
+msgid "Runs on your computer. Free, private and unlimited."
+msgstr "Bilgisayarınızda çalışır. Ücretsiz, gizli ve sınırsız."
+
+msgid "Same as the audio"
+msgstr "Sesle aynı"
+
+msgid "Save"
+msgstr "Kaydet"
+
 #, python-brace-format
-msgid "Version {version}"
-msgstr "Sürüm {version}"
+msgid "Saved in {folder}"
+msgstr "Kaydedilen konum: {folder}"
 
-#: src/views/settings/preferences_dialog.py:816
 #, python-brace-format
-msgid "Made by {author}"
-msgstr "Geliştiren: {author}"
+msgid "Saved in {folder}."
+msgstr "{folder} konumuna kaydedildi."
 
-#: src/views/settings/preferences_dialog.py:832
-msgid "Documentation"
-msgstr "Belgeler"
+msgid "Saved next to the source"
+msgstr "Kaynağın yanına kaydedilir"
 
-#: src/views/settings/preferences_dialog.py:852
-msgid "Donate"
-msgstr "Bağış yap"
+msgid "Scroll the translation with the transcription"
+msgstr "Çeviriyi transkripsiyonla birlikte kaydır"
 
-#: src/views/settings/preferences_dialog.py:866
-msgid "Check for updates"
-msgstr "Güncellemeleri denetle"
+msgid "Search"
+msgstr "Ara"
 
-#: src/views/settings/preferences_dialog.py:885
-msgid "Checking for updates…"
-msgstr "Güncellemeler denetleniyor…"
+msgid "Search language…"
+msgstr "Dil ara…"
 
-#: src/views/settings/preferences_dialog.py:896
-msgid "Could not check for updates."
-msgstr "Güncellemeler denetlenemedi."
+#, python-brace-format
+msgid "Segments left to translate: {count}. Right-click one to translate it."
+msgstr "Çevrilecek segment sayısı: {count}. Çevirmek için birine sağ tıklayın."
 
-#: src/views/settings/preferences_dialog.py:905
-msgid "Download"
-msgstr "İndir"
+msgid "Select a file"
+msgstr "Bir dosya seçin"
 
-#: src/views/settings/preferences_dialog.py:915
-msgid "You have the latest version."
-msgstr "En son sürümü kullanıyorsunuz."
+msgid "Select a folder"
+msgstr "Bir klasör seçin"
 
-#: src/views/settings/settings_form.py:169
 msgid "Select at least one output file type."
 msgstr "En az bir çıktı dosyası türü seçin."
 
-#: src/views/settings/settings_form.py:186
+msgid "Server URL"
+msgstr "Sunucu URL'si"
+
+msgid "Set API key…"
+msgstr "API anahtarını ayarla…"
+
+msgid "Set Hugging Face token…"
+msgstr "Hugging Face belirtecini ayarla…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Transkripsiyon hakkında soru sormak için API anahtarını ayarlayın "
+"(sağlayıcı: {provider}) veya ayarlardan başka bir sağlayıcı seçin."
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to summarize, or choose another provider in"
+" the settings."
+msgstr ""
+"Özetlemek için API anahtarını ayarlayın (sağlayıcı: {provider}) veya "
+"ayarlardan başka bir sağlayıcı seçin."
+
+msgid "Settings"
+msgstr "Ayarlar"
+
+msgid "Set…"
+msgstr "Ayarla…"
+
+# Needs review by a native speaker
+msgid "Show all segments"
+msgstr "Tüm bölümleri göster"
+
+msgid "Show in Explorer"
+msgstr "Explorer'da göster"
+
+msgid "Show in Finder"
+msgstr "Finder'da göster"
+
+msgid "Show in file manager"
+msgstr "Dosya yöneticisinde göster"
+
+msgid "Show it as the subtitles of the video"
+msgstr "Videonun altyazısı olarak göster"
+
+msgid "Show subtitles on the video"
+msgstr "Altyazıları videoda göster"
+
+msgid "Show the text while recording"
+msgstr "Kayıt sırasında metni göster"
+
+msgid "Show the translation"
+msgstr "Çeviriyi göster"
+
+msgid "Shows a notification of the system when a transcription is ready."
+msgstr "Bir transkripsiyon hazır olduğunda sistem bildirimi gösterir."
+
+msgid "Size"
+msgstr "Boyut"
+
+msgid "Small"
+msgstr "Küçük"
+
+msgid "Source"
+msgstr "Kaynak"
+
+#, python-brace-format
+msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr "Boşluk: oynat/duraklat · ←/→: {seconds} sn geri/ileri"
+
+msgid "Start transcription"
+msgstr "Transkripsiyonu başlat"
+
+msgid "Start:"
+msgstr "Başlangıç:"
+
+msgid "Starting…"
+msgstr "Başlatılıyor…"
+
+msgid "Stay on top"
+msgstr "Üstte tut"
+
+msgid "Stop adding the subtitles to the video"
+msgstr "Altyazıları videoya eklemeyi durdur"
+
+msgid "Stop scrolling the translation with the transcription"
+msgstr "Çeviriyi transkripsiyonla birlikte kaydırmayı durdur"
+
+msgid "Stop watching"
+msgstr "İzlemeyi durdur"
+
+#, python-brace-format
+msgid "Stopped watching the folder. Files transcribed: {done}."
+msgstr "Klasörün izlenmesi durduruldu. Yazıya dökülen dosyalar: {done}."
+
+msgid "Style"
+msgstr "Stil"
+
+msgid "Styled subtitles (.ass)"
+msgstr "Biçimli altyazılar (.ass)"
+
+msgid "Subtitles"
+msgstr "Altyazılar"
+
+msgid "Subtitles (.srt)"
+msgstr "Altyazılar (.srt)"
+
+msgid "Summarizing…"
+msgstr "Özetleniyor…"
+
+msgid "Summary"
+msgstr "Özet"
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "System language"
+msgstr "Sistem dili"
+
+msgid "Table (.tsv)"
+msgstr "Tablo (.tsv)"
+
+msgid "Tag"
+msgstr "Etiket"
+
+#, python-brace-format
+msgid "Tag of “{title}”. Leave it empty to show the kind of source."
+msgstr "\"{title}\" etiketi. Kaynak türünü göstermek için boş bırakın."
+
+msgid "Temperature"
+msgstr "Sıcaklık"
+
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "Söylenen metin ({time}):"
+
+msgid ""
+"The Google API can't detect the language. Please select the language of "
+"the audio."
+msgstr "Google API dili algılayamaz. Lütfen sesin dilini seçin."
+
+msgid ""
+"The Google API can't translate. The transcription will be in the language"
+" of the audio."
+msgstr "Google API çeviri yapamaz. Transkripsiyon sesin dilinde olacaktır."
+
+msgid "The Google API returns plain text (.txt)."
+msgstr "Google API düz metin (.txt) döndürür."
+
+msgid ""
+"The URL doesn't point to an audio or video file. Use the link of a "
+"YouTube video or of a media file."
+msgstr ""
+"URL bir ses veya video dosyasını göstermiyor. Bir YouTube videosunun veya"
+" bir medya dosyasının bağlantısını kullanın."
+
+msgid "The Whisper API requires an OpenAI API key."
+msgstr "Whisper API için bir OpenAI API anahtarı gerekir."
+
+msgid "The YouTube video doesn't have an audio track."
+msgstr "YouTube videosunda ses parçası yok."
+
+#, python-brace-format
+msgid "The audio can't be played: {error}"
+msgstr "Ses oynatılamıyor: {error}"
+
+#, python-brace-format
+msgid "The audio is too large for the OpenAI API ({size} MB)."
+msgstr "Ses, OpenAI API için çok büyük ({size} MB)."
+
+msgid "The audio isn't available."
+msgstr "Ses kullanılamıyor."
+
+msgid "The audio isn't available: the source file was moved or deleted."
+msgstr "Ses kullanılamıyor: kaynak dosya taşındı veya silindi."
+
+msgid ""
+"The audio of the YouTube video could not be downloaded. Please make sure "
+"the URL is correct."
+msgstr ""
+"YouTube videosunun sesi indirilemedi. Lütfen URL'nin doğru olduğundan "
+"emin olun."
+
+msgid "The default model of the provider if empty."
+msgstr "Boşsa sağlayıcının varsayılan modeli."
+
+#, python-brace-format
+msgid "The file could not be downloaded: {error}"
+msgstr "Dosya indirilemedi: {error}"
+
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "Dosya taşındı veya silindi: {path}"
+
+msgid "The files of a folder are always saved."
+msgstr "Bir klasördeki dosyalar her zaman kaydedilir."
+
+msgid ""
+"The folder doesn't contain files to transcribe. The files that already "
+"have a transcription are skipped unless you check 'Overwrite existing "
+"files'."
+msgstr ""
+"Klasörde transkripsiyonu yapılacak dosya yok. \"Mevcut dosyaların üzerine"
+" yaz\" seçeneğini işaretlemediğiniz sürece, zaten transkripsiyonu olan "
+"dosyalar atlanır."
+
+msgid "The level is shown while recording"
+msgstr "Kayıt sırasında seviye gösterilir"
+
+msgid "The model didn't return a valid reply."
+msgstr "Model geçerli bir yanıt döndürmedi."
+
+msgid "The model didn't return a valid summary."
+msgstr "Model geçerli bir özet döndürmedi."
+
+msgid "The model didn't return a valid translation."
+msgstr "Model geçerli bir çeviri döndürmedi."
+
+msgid "The model of the Whisper API identifies the speakers."
+msgstr "Whisper API'nin modeli konuşmacıları belirler."
+
+#, python-brace-format
+msgid "The new segment goes after the one at {time}:"
+msgstr "Yeni segment, {time} anındaki segmentten sonra gelir:"
+
+msgid "The plain text has been edited; the transcript keeps the original."
+msgstr "Düz metin düzenlendi; zaman damgalı döküm orijinali korur."
+
+msgid "The recording is no longer available."
+msgstr "Kayıt artık kullanılamıyor."
+
+msgid "The reply of the model was too long."
+msgstr "Modelin yanıtı çok uzundu."
+
+#, python-brace-format
+msgid "The segment at {time}, not translated yet."
+msgstr "{time} anındaki segment, henüz çevrilmedi."
+
+msgid "The segment must end after it starts."
+msgstr "Segment, başladıktan sonra bitmelidir."
+
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "Özet hazır: \"{title}\"."
+
+msgid "The text can't be shown while recording."
+msgstr "Kayıt sırasında metin gösterilemez."
+
+msgid "The text is shown when you stop recording."
+msgstr "Metin, kaydı durdurduğunuzda gösterilir."
+
+msgid "The text will appear here as you speak."
+msgstr "Siz konuştukça metin burada görünecek."
+
+msgid "The transcription failed"
+msgstr "Transkripsiyon başarısız oldu"
+
+msgid "The transcription is being translated. It takes a moment."
+msgstr "Transkripsiyon çevriliyor. Bu biraz zaman alır."
+
+msgid "The transcription is very long, so only its beginning was summarized."
+msgstr "Transkripsiyon çok uzun olduğu için yalnızca başı özetlendi."
+
+msgid "The transcription was cancelled"
+msgstr "Transkripsiyon iptal edildi"
+
+msgid "The transcription was cancelled."
+msgstr "Transkripsiyon iptal edildi."
+
+msgid "The transcription was interrupted"
+msgstr "Transkripsiyon yarıda kesildi"
+
+msgid "The transcription will appear here when you stop recording."
+msgstr "Kaydı durdurduğunuzda transkripsiyon burada görünecek."
+
+msgid "The transcriptions of its files are deleted too."
+msgstr "Dosyalarının transkripsiyonları da silinir."
+
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "Çeviri hazır: \"{title}\"."
+
+#, python-brace-format
+msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
+msgstr "{model} modeli zaman damgası döndürmez, bu nedenle altyazı kaydedemez."
+
+#, python-brace-format
+msgid ""
+"The {model} model doesn't return timestamps, so it can't save {format} "
+"files. Choose another format or the whisper-1 model."
+msgstr ""
+"{model} modeli zaman damgası döndürmez, bu nedenle {format} dosyaları "
+"kaydedemez. Başka bir biçim veya whisper-1 modelini seçin."
+
 #, python-brace-format
 msgid ""
 "The {model} model only transcribes English. Choose a multilingual model "
@@ -1431,124 +1465,84 @@ msgstr ""
 "{model} modeli yalnızca İngilizce yazıya döker. Çok dilli bir model seçin"
 " veya sesin dilini İngilizce olarak ayarlayın."
 
-#: src/views/settings/settings_form.py:194
-msgid "The Whisper API requires an OpenAI API key."
-msgstr "Whisper API için bir OpenAI API anahtarı gerekir."
+# Needs review by a native speaker
+msgid "There is no alignment model for its language"
+msgstr "Bu dil için hizalama modeli yok"
 
-#: src/views/settings/cards/context_card.py:29
-msgid "Context"
-msgstr "Bağlam"
+msgid "There is no text to summarize."
+msgstr "Özetlenecek metin yok."
 
-#: src/views/settings/cards/context_card.py:35
-msgid "Keywords"
-msgstr "Anahtar kelimeler"
+msgid "There is no text to translate."
+msgstr "Çevrilecek metin yok."
 
-#: src/views/settings/cards/context_card.py:39
-msgid "e.g. Audiotext, WhisperX, Henestrosa"
-msgstr "ör. Audiotext, WhisperX, Henestrosa"
+msgid "There is no transcription to save. Please generate it first."
+msgstr "Kaydedilecek bir transkripsiyon yok. Lütfen önce oluşturun."
 
-#: src/views/settings/cards/context_card.py:46
+msgid "There is no translation yet."
+msgstr "Henüz çeviri yok."
+
+msgid "This transcription has no timestamps."
+msgstr "Bu transkripsiyonun zaman damgası yok."
+
+msgid "Time format"
+msgstr "Saat biçimi"
+
 msgid ""
-"Names, terms or acronyms said in the audio, separated by commas, so "
-"they're spelled right."
+"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
+"transcribe-diarize models of the Whisper API."
 msgstr ""
-"Seste geçen adlar, terimler veya kısaltmalar; doğru yazılmaları için "
-"virgülle ayrılmış olarak."
+"Zaman damgaları yalnızca WhisperX ile ve Whisper API'nin whisper-1 ve "
+"gpt-4o-transcribe-diarize modelleriyle kullanılabilir."
 
-#: src/views/settings/cards/context_card.py:51
-msgid "Description"
-msgstr "Açıklama"
+msgid "Timestamps of the words"
+msgstr "Kelimelerin zaman damgaları"
 
-#: src/views/settings/cards/context_card.py:60
-msgid "e.g. An interview about speech recognition"
-msgstr "ör. Konuşma tanıma hakkında bir röportaj"
+msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
+msgstr ""
+"İpucu: transkripsiyonunu yapmak için bir dosyayı veya klasörü pencerenin "
+"herhangi bir yerine bırakın."
 
-#: src/views/settings/cards/context_card.py:65
-msgid "What the audio is about, such as its topic or setting."
-msgstr "Sesin ne hakkında olduğu, örneğin konusu veya ortamı."
+msgid "Too loud. Move away from the microphone."
+msgstr "Çok yüksek. Mikrofondan uzaklaşın."
 
-#: src/views/settings/cards/context_card.py:103
-msgid "Not used by the Google API."
-msgstr "Google API tarafından kullanılmaz."
+msgid "Too quiet. Speak louder or closer to the microphone."
+msgstr "Çok sessiz. Daha yüksek sesle veya mikrofona daha yakından konuşun."
 
-#: src/views/settings/cards/context_card.py:115
+msgid "Top"
+msgstr "Üst"
+
+msgid "Transcribe"
+msgstr "Yazıya dök"
+
+msgid "Transcribe a file"
+msgstr "Dosyayı yazıya dök"
+
+msgid "Transcribe a folder"
+msgstr "Klasörü yazıya dök"
+
+msgid "Transcribe again"
+msgstr "Yeniden yazıya dök"
+
+msgid "Transcribe from a URL"
+msgstr "URL'den yazıya dök"
+
+msgid "Transcribe from the microphone"
+msgstr "Mikrofondan yazıya dök"
+
+# Needs review by a native speaker
+msgid "Transcribe it again to score its words"
+msgstr "Kelimeleri puanlamak için yeniden yazıya dökün"
+
 #, python-brace-format
-msgid "Not used by the {model} model."
-msgstr "{model} modeli tarafından kullanılmaz."
-
-#: src/views/settings/cards/engine_card.py:25
-msgid "Identifies the speakers. With timestamps."
-msgstr "Konuşmacıları belirler. Zaman damgalarıyla."
-
-#: src/views/settings/cards/engine_card.py:28
-msgid ""
-"With timestamps, to play the transcription segment by segment and "
-"generate subtitles."
+msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr ""
-"Zaman damgalarıyla; transkripsiyonu segment segment oynatmak ve altyazı "
-"oluşturmak için."
+"“{title}” yeniden yazıya dökülsün mü? Metninde yapılan değişiklikler "
+"kaybolacak."
 
-#: src/views/settings/cards/engine_card.py:32
-msgid ""
-"More accurate, but without timestamps: the transcription can't be played "
-"segment by segment nor subtitled."
-msgstr ""
-"Daha doğru, ancak zaman damgası yok: transkripsiyon segment segment "
-"oynatılamaz ve altyazılanamaz."
+#, python-brace-format
+msgid "Transcribed {done} of {total} files."
+msgstr "{total} dosyadan {done} tanesinin transkripsiyonu yapıldı."
 
-#: src/views/settings/cards/engine_card.py:50
-msgid "Engine"
-msgstr "Motor"
-
-#: src/views/settings/cards/engine_card.py:54
-msgid "Transcription method"
-msgstr "Transkripsiyon yöntemi"
-
-#: src/views/settings/cards/engine_card.py:114
-msgid ""
-"Only transcribes English, faster than the multilingual model of the same "
-"size."
-msgstr ""
-"Yalnızca İngilizce yazıya döker; aynı boyuttaki çok dilli modelden daha "
-"hızlıdır."
-
-#: src/views/settings/cards/engine_card.py:118
-msgid "Larger models are more accurate, but slower."
-msgstr "Daha büyük modeller daha doğrudur ama daha yavaştır."
-
-#: src/views/settings/cards/engine_card.py:121
-msgid "Runs on your computer. Free, private and unlimited."
-msgstr "Bilgisayarınızda çalışır. Ücretsiz, gizli ve sınırsız."
-
-#: src/views/settings/cards/engine_card.py:131
-msgid "Runs on the servers of OpenAI. Requires an API key."
-msgstr "OpenAI'ın sunucularında çalışır. API anahtarı gerektirir."
-
-#: src/views/settings/cards/engine_card.py:135
-msgid ""
-"Runs on the servers of Google. An API key is optional; without it, the "
-"free tier is used."
-msgstr ""
-"Google'ın sunucularında çalışır. API anahtarı isteğe bağlıdır; olmadan "
-"ücretsiz katman kullanılır."
-
-#: src/views/settings/cards/engine_card.py:140
-msgid "API key set"
-msgstr "API anahtarı ayarlandı"
-
-#: src/views/settings/cards/folder_card.py:22
-msgid "Watch the folder"
-msgstr "Klasörü izle"
-
-#: src/views/settings/cards/folder_card.py:34
-msgid ""
-"Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
-msgstr ""
-"Siz durdurana kadar çalışmaya devam eder ve klasöre eklenen dosyaların "
-"transkripsiyonunu yapar. Klasörde zaten bulunan dosyalar atlanır."
-
-#: src/views/settings/cards/folder_card.py:39
 msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
 "Files that already have a transcription are skipped unless you overwrite "
@@ -1558,58 +1552,190 @@ msgstr ""
 "transkripsiyonunu yapar. Zaten transkripsiyonu olan dosyalar, üzerine "
 "yazmadığınız sürece atlanır."
 
-#: src/views/settings/cards/language_card.py:54
-msgid "Language"
-msgstr "Dil"
+#, python-brace-format
+msgid "Transcribing chunk {current} of {total}…"
+msgstr "Parça {current}/{total} için transkripsiyon yapılıyor…"
 
-#: src/views/settings/cards/language_card.py:61
-msgid "Language of the audio"
-msgstr "Sesin dili"
+msgid "Transcribing…"
+msgstr "Transkripsiyon yapılıyor…"
 
-#: src/views/settings/cards/language_card.py:65
-#: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:423
-msgid "Search language…"
-msgstr "Dil ara…"
+msgid "Transcription"
+msgstr "Transkripsiyon"
 
-#: src/views/settings/cards/language_card.py:66
-#: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:424
-msgid "No languages found."
-msgstr "Dil bulunamadı."
+msgid "Transcription cancelled."
+msgstr "Transkripsiyon iptal edildi."
 
-#: src/views/settings/cards/language_card.py:71
-msgid "Auto-detect"
-msgstr "Otomatik algıla"
+msgid "Transcription method"
+msgstr "Transkripsiyon yöntemi"
 
-#: src/views/settings/cards/language_card.py:80
-msgid "Language of the transcription"
-msgstr "Transkripsiyonun dili"
+msgid "Transcription ready"
+msgstr "Transkripsiyon hazır"
 
-#: src/views/settings/cards/language_card.py:90
-msgid "Same as the audio"
-msgstr "Sesle aynı"
+msgid "Transcriptions"
+msgstr "Transkripsiyonlar"
 
-#: src/views/settings/cards/language_card.py:131
+msgid "Translate"
+msgstr "Çevir"
+
+msgid "Translate again"
+msgstr "Yeniden çevir"
+
+msgid "Translate into another language…"
+msgstr "Başka bir dile çevir…"
+
+msgid "Translate into:"
+msgstr "Hedef dil:"
+
+msgid "Translate text"
+msgstr "Metni çevir"
+
+msgid "Translate text…"
+msgstr "Metni çevir…"
+
+#, python-brace-format
+msgid ""
+"Translate the transcription into {language} again? The changes made to "
+"the translation will be lost."
+msgstr ""
+"Transkripsiyon yeniden {language} diline çevrilsin mi? Çeviride yapılan "
+"değişiklikler kaybolacak."
+
 msgid "Translate with Whisper (recommended)"
 msgstr "Whisper ile çevir (önerilen)"
 
-#: src/views/settings/cards/language_card.py:183
-msgid ""
-"The Google API can't translate. The transcription will be in the language"
-" of the audio."
-msgstr "Google API çeviri yapamaz. Transkripsiyon sesin dilinde olacaktır."
+msgid "Translate with:"
+msgstr "Şununla çevir:"
 
-#: src/views/settings/cards/language_card.py:193
+msgid "Translates each segment, keeping its timestamps."
+msgstr "Her segmenti zaman damgalarını koruyarak çevirir."
+
+msgid "Translate…"
+msgstr "Çevir…"
+
 #, python-brace-format
-msgid "Write it directly in {language} (experimental)"
-msgstr "Doğrudan hedef dilde yaz ({language}, deneysel)"
+msgid "Translating into {language}…"
+msgstr "Çevriliyor ({language})…"
 
-#: src/views/settings/cards/language_card.py:211
-msgid "Whisper transcribes and translates the audio in one step."
-msgstr "Whisper sesi tek adımda yazıya döker ve çevirir."
+msgid "Translating…"
+msgstr "Çevriliyor…"
 
-#: src/views/settings/cards/language_card.py:215
+msgid "Translation"
+msgstr "Çeviri"
+
+#, python-brace-format
+msgid "Translation into {language}"
+msgstr "Çeviri ({language})"
+
+#, python-brace-format
+msgid "Translation of the segment from {start} to {end}:"
+msgstr "{start} ile {end} arasındaki segmentin çevirisi:"
+
+#, python-brace-format
+msgid "Translation of “{text}”, said from {start} to {end}:"
+msgstr "\"{text}\" çevirisi, {start} ile {end} arasında söylenen:"
+
+msgid "Try again"
+msgstr "Yeniden dene"
+
+# Needs review by a native speaker
+msgid "Turn on “Word-level timings” and transcribe it again"
+msgstr "“Kelime düzeyinde zamanlama”yı açıp yeniden yazıya dökün"
+
+msgid ""
+"Type in the API key. It's kept in the credential store of your system. "
+"Leave it empty to remove it."
+msgstr ""
+"API anahtarını yazın. Sisteminizin kimlik bilgisi deposunda saklanır. "
+"Kaldırmak için boş bırakın."
+
+msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
+msgstr "Zamanları 00:01:05,900, 01:05,9 veya 65.9 biçiminde yazın."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Underlines each word as it's said (.srt and .vtt)."
+msgstr "Her kelimenin altını söylendiği anda çizer (.srt ve .vtt)."
+
+# Needs review by a native speaker
+msgid "Undo"
+msgstr "Geri al"
+
+msgid "Unpin"
+msgstr "Sabitlemeyi kaldır"
+
+msgid "Unpin from the main window"
+msgstr "Ana pencerenin üstünde tutma"
+
+#, python-brace-format
+msgid "Unsupported file type: {extension}"
+msgstr "Desteklenmeyen dosya türü: {extension}"
+
+msgid "Updates"
+msgstr "Güncellemeler"
+
+msgid "Use CPU"
+msgstr "CPU kullan"
+
+#, python-brace-format
+msgid "Uses the model {model}."
+msgstr "{model} modelini kullanır."
+
+#, python-brace-format
+msgid "Version {version}"
+msgstr "Sürüm {version}"
+
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "Sürüm {version} kullanılabilir"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Video files"
+msgstr "Video dosyaları"
+
+msgid "Video with subtitles (.mp4)…"
+msgstr "Altyazılı video (.mp4)…"
+
+msgid "Wait until the current transcription finishes, or cancel it."
+msgstr "Geçerli transkripsiyonun bitmesini bekleyin veya iptal edin."
+
+#, python-brace-format
+msgid "Waiting for new files in {folder}…"
+msgstr "{folder} içinde yeni dosyalar bekleniyor…"
+
+msgid "Waiting for new files…"
+msgstr "Yeni dosyalar bekleniyor…"
+
+msgid "Waiting for speech…"
+msgstr "Konuşma bekleniyor…"
+
+msgid "Waiting for the current transcription to finish."
+msgstr "Geçerli transkripsiyonun bitmesi bekleniyor."
+
+#, python-brace-format
+msgid "Waiting for {count} transcription(s) to finish."
+msgstr "Bitmesi beklenen transkripsiyonlar: {count}."
+
+msgid "Watch the folder"
+msgstr "Klasörü izle"
+
+msgid "Watched folder"
+msgstr "İzlenen klasör"
+
+msgid "Watching"
+msgstr "İzleniyor"
+
+msgid "Web subtitles (.vtt)"
+msgstr "Web altyazıları (.vtt)"
+
+msgid "What do you want to transcribe?"
+msgstr "Neyi yazıya dökmek istiyorsunuz?"
+
+msgid "What the audio is about, such as its topic or setting."
+msgstr "Sesin ne hakkında olduğu, örneğin konusu veya ortamı."
+
 #, python-brace-format
 msgid ""
 "Whisper can only translate into {english}. For other languages, it's "
@@ -1620,879 +1746,121 @@ msgstr ""
 "transkripsiyonu doğrudan hedef dilde ({language}) yazması istenir. Birçok"
 " dilde iyi çalışır, ancak sonucu kontrol edin."
 
-#: src/views/settings/cards/live_card.py:27
-msgid "Live text"
-msgstr "Canlı metin"
+msgid "Whisper transcribes and translates the audio in one step."
+msgstr "Whisper sesi tek adımda yazıya döker ve çevirir."
 
-#: src/views/settings/cards/live_card.py:30
-msgid "Show the text while recording"
-msgstr "Kayıt sırasında metni göster"
+msgid "WhisperX model ready."
+msgstr "WhisperX modeli hazır."
 
-#: src/views/settings/cards/live_card.py:35
-msgid "Live model"
-msgstr "Canlı model"
-
-#: src/views/settings/cards/live_card.py:62
-#: src/views/settings/cards/options_card.py:120
-#: src/views/settings/cards/options_card.py:149
-msgid "Only available with WhisperX."
-msgstr "Yalnızca WhisperX ile kullanılabilir."
-
-#: src/views/settings/cards/live_card.py:65
 msgid ""
-"A fast model writes a draft while you speak. When you stop, the whole "
-"recording is transcribed again with the model of the engine, which is "
-"more accurate."
+"With timestamps, to play the transcription segment by segment and "
+"generate subtitles."
 msgstr ""
-"Siz konuşurken hızlı bir model taslak yazar. Durduğunuzda kaydın tamamı, "
-"daha doğru olan motorun modeliyle yeniden yazıya dökülür."
+"Zaman damgalarıyla; transkripsiyonu segment segment oynatmak ve altyazı "
+"oluşturmak için."
 
-#: src/views/settings/cards/live_card.py:70
-msgid "The text is shown when you stop recording."
-msgstr "Metin, kaydı durdurduğunuzda gösterilir."
+msgid "Word document (.docx)"
+msgstr "Word belgesi (.docx)"
 
-#: src/views/settings/cards/options_card.py:38
-msgid "Options"
-msgstr "Seçenekler"
-
-#: src/views/settings/cards/options_card.py:44
 msgid "Word-level timings"
 msgstr "Kelime düzeyinde zamanlama"
 
-#: src/views/settings/cards/options_card.py:52
-msgid "Extract speech"
-msgstr "Konuşmayı ayıkla"
+#, python-brace-format
+msgid "Write it directly in {language} (experimental)"
+msgstr "Doğrudan hedef dilde yaz ({language}, deneysel)"
 
-#: src/views/settings/cards/options_card.py:56
-msgid "Reduces music and background noise before transcribing."
-msgstr "Transkripsiyondan önce müziği ve arka plan gürültüsünü azaltır."
+msgid "You can edit the text. The changes are saved automatically."
+msgstr "Metni düzenleyebilirsiniz. Değişiklikler otomatik olarak kaydedilir."
 
-#: src/views/settings/cards/options_card.py:60
-msgid "Identify speakers"
-msgstr "Konuşmacıları belirle"
-
-#: src/views/settings/cards/options_card.py:70
-msgid "Number of speakers (0 = auto)"
-msgstr "Konuşmacı sayısı (0 = otomatik)"
-
-#: src/views/settings/cards/options_card.py:94
-msgid "Set Hugging Face token…"
-msgstr "Hugging Face belirtecini ayarla…"
-
-#: src/views/settings/cards/options_card.py:123
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Oynatırken her kelimeyi vurgular. Altyazılar bunları zaten kullanır."
-
-#: src/views/settings/cards/options_card.py:126
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Oynatırken her kelimeyi vurgular. Biraz daha uzun sürer."
-
-#: src/views/settings/cards/options_card.py:136
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr ""
-"Her bölümde kimin konuştuğunu etiketler. Hugging Face belirteci "
-"gerektirir."
-
-#: src/views/settings/cards/options_card.py:142
-msgid "The model of the Whisper API identifies the speakers."
-msgstr "Whisper API'nin modeli konuşmacıları belirler."
-
-#: src/views/settings/cards/options_card.py:145
 msgid ""
-"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
-" of the Whisper API."
+"You can keep using Audiotext meanwhile. The result is saved in your "
+"history and opens here when it's ready."
 msgstr ""
-"Yalnızca WhisperX ile veya Whisper API'nin gpt-4o-transcribe-diarize "
-"modeliyle kullanılabilir."
+"Bu sırada Audiotext'i kullanmaya devam edebilirsiniz. Sonuç geçmişinize "
+"kaydedilir ve hazır olduğunda burada açılır."
 
-#: src/views/settings/cards/output_card.py:38
-msgid "Output"
-msgstr "Çıktı"
+msgid "You have the latest version."
+msgstr "En son sürümü kullanıyorsunuz."
 
-#: src/views/settings/cards/output_card.py:42
-msgid "File types"
-msgstr "Dosya türleri"
+msgid "YouTube or a link to a file"
+msgstr "YouTube veya bir dosya bağlantısı"
 
-#: src/views/settings/cards/output_card.py:108
-msgid "Next to the source"
-msgstr "Kaynağın yanına"
+msgid "YouTube video"
+msgstr "YouTube videosu"
 
-#: src/views/settings/cards/output_card.py:115
-msgid "Overwrite existing files"
-msgstr "Mevcut dosyaların üzerine yaz"
+msgid "Your audio, video and saved files are not deleted."
+msgstr "Ses, video ve kaydedilmiş dosyalarınız silinmez."
 
-#: src/views/settings/cards/output_card.py:119
-msgid "The files of a folder are always saved."
-msgstr "Bir klasördeki dosyalar her zaman kaydedilir."
+msgid "cancelled"
+msgstr "iptal edildi"
 
-#: src/views/settings/cards/output_card.py:147
-msgid "The Google API returns plain text (.txt)."
-msgstr "Google API düz metin (.txt) döndürür."
+msgid "default"
+msgstr "varsayılan"
 
-#: src/views/settings/cards/output_card.py:152
+msgid "e.g. An interview about speech recognition"
+msgstr "ör. Konuşma tanıma hakkında bir röportaj"
+
+msgid "e.g. Audiotext, WhisperX, Henestrosa"
+msgstr "ör. Audiotext, WhisperX, Henestrosa"
+
+msgid "float16 is faster on GPUs. int8 uses less memory."
+msgstr "float16 GPU'larda daha hızlıdır. int8 daha az bellek kullanır."
+
+msgid "or"
+msgstr "veya"
+
+msgid "xAI API key"
+msgstr "xAI API anahtarı"
+
 #, python-brace-format
-msgid "Saved in {folder}"
-msgstr "Kaydedilen konum: {folder}"
+msgid "{count} audio and video files (subfolders included)"
+msgstr "{count} ses ve video dosyası (alt klasörler dahil)"
 
-#: src/views/settings/cards/output_card.py:155
-msgid "Saved next to the source"
-msgstr "Kaynağın yanına kaydedilir"
-
-#: src/views/settings/cards/output_card.py:174
-msgid "Format of the files."
-msgstr "Dosyaların biçimi."
-
-#: src/views/settings/cards/output_card.py:177
 #, python-brace-format
-msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
-msgstr "{model} modeli zaman damgası döndürmez, bu nedenle altyazı kaydedemez."
+msgid "{count} done"
+msgstr "{count} tamamlandı"
 
-#: src/views/settings/cards/output_card.py:197
-msgid "Choose where to save the transcriptions"
-msgstr "Transkripsiyonların nereye kaydedileceğini seçin"
-
-#: src/views/transcript/ask_panel.py:178 src/views/transcript/ask_panel.py:207
-#: src/views/transcript/transcript_view.py:829
-msgid "Ask"
-msgstr "Sor"
-
-#: src/views/transcript/ask_panel.py:181
-#: src/views/transcript/transcript_view.py:1146
-msgid "Clear the conversation"
-msgstr "Konuşmayı temizle"
-
-#: src/views/transcript/ask_panel.py:194
-msgid "Ask a question about the transcription…"
-msgstr "Transkripsiyon hakkında bir soru sorun…"
-
-#: src/views/transcript/ask_panel.py:244
-#: src/views/transcript/summary_panel.py:273
 #, python-brace-format
-msgid "{provider} is reading the transcription. It takes a moment."
-msgstr "Transkripsiyon okunuyor ({provider}). Bu biraz zaman alır."
+msgid "{count} failed"
+msgstr "{count} başarısız"
 
-#: src/views/transcript/ask_panel.py:255
 #, python-brace-format
-msgid ""
-"Ask {provider} about the transcription, such as what was decided or who "
-"said something. The answers link to where it's said."
-msgstr ""
-"Transkripsiyon hakkında {provider} hizmetine soru sorun; örneğin neye "
-"karar verildiğini veya kimin ne söylediğini. Yanıtlar söylendiği yere "
-"bağlantı verir."
+msgid "{count} files"
+msgstr "{count} dosya"
 
-#: src/views/transcript/ask_panel.py:265
 #, python-brace-format
-msgid ""
-"Set the API key of {provider} to ask about the transcription, or choose "
-"another provider in the settings."
-msgstr ""
-"Transkripsiyon hakkında soru sormak için API anahtarını ayarlayın "
-"(sağlayıcı: {provider}) veya ayarlardan başka bir sağlayıcı seçin."
+msgid "{count} transcriptions"
+msgstr "{count} transkripsiyon"
 
-#: src/views/transcript/corrections.py:180
-msgid "Edit the timing"
-msgstr "Zamanlamayı düzenle"
-
-#: src/views/transcript/corrections.py:181
-#: src/views/transcript/edit_dialogs.py:78 src/views/widgets/text_dialog.py:69
-msgid "Save"
-msgstr "Kaydet"
-
-#: src/views/transcript/corrections.py:208
-msgid "Add a segment"
-msgstr "Segment ekle"
-
-#: src/views/transcript/corrections.py:209
-msgid "Add"
-msgstr "Ekle"
-
-#: src/views/transcript/corrections.py:210
-#, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Yeni segment, {time} anındaki segmentten sonra gelir:"
-
-#: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1507
-msgid "Delete the segment"
-msgstr "Segmenti sil"
-
-#: src/views/transcript/corrections.py:241
-#, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "\"{text}\" segmenti silinsin mi?"
-
-#: src/views/transcript/corrections.py:275
-#, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "{time} anındaki segment, henüz çevrilmedi."
-
-#: src/views/transcript/edit_dialogs.py:78
-msgid "Rename speakers"
-msgstr "Konuşmacıları yeniden adlandır"
-
-#: src/views/transcript/edit_dialogs.py:85
-msgid ""
-"Give a name to each speaker. Giving two speakers the same name merges "
-"them."
-msgstr ""
-"Her konuşmacıya bir ad verin. İki konuşmacıya aynı adı vermek onları "
-"birleştirir."
-
-#: src/views/transcript/edit_dialogs.py:155
-msgid "Start:"
-msgstr "Başlangıç:"
-
-#: src/views/transcript/edit_dialogs.py:155
-msgid "End:"
-msgstr "Bitiş:"
-
-#: src/views/transcript/edit_dialogs.py:194
-msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
-msgstr "Zamanları 00:01:05,900, 01:05,9 veya 65.9 biçiminde yazın."
-
-#: src/views/transcript/edit_dialogs.py:196
-msgid "The segment must end after it starts."
-msgstr "Segment, başladıktan sonra bitmelidir."
-
-#: src/views/transcript/find_dialog.py:80
-msgid "Find:"
-msgstr "Bul:"
-
-#: src/views/transcript/find_dialog.py:83
-msgid "Replace with:"
-msgstr "Şununla değiştir:"
-
-#: src/views/transcript/find_dialog.py:93
-msgid "Match case"
-msgstr "Büyük/küçük harf eşleştir"
-
-#: src/views/transcript/find_dialog.py:108
-msgid "Stay on top"
-msgstr "Üstte tut"
-
-#: src/views/transcript/find_dialog.py:113
-msgid "Unpin from the main window"
-msgstr "Ana pencerenin üstünde tutma"
-
-#: src/views/transcript/find_dialog.py:115
-msgid "Keep above the main window"
-msgstr "Ana pencerenin üstünde tut"
-
-#: src/views/transcript/find_dialog.py:126
-msgid "Replace"
-msgstr "Değiştir"
-
-#: src/views/transcript/find_dialog.py:131
-msgid "Replace all"
-msgstr "Tümünü değiştir"
-
-#: src/views/transcript/find_dialog.py:189
-#: src/views/transcript/find_dialog.py:235
 #, python-brace-format
 msgid "{current} of {total}"
 msgstr "{current} / {total}"
 
-#: src/views/transcript/find_dialog.py:250
-msgid "Previous match"
-msgstr "Önceki sonuç"
-
-#: src/views/transcript/find_dialog.py:257
-msgid "Next match"
-msgstr "Sonraki sonuç"
-
-#: src/views/transcript/player_bar.py:172
-msgid "Loading the audio…"
-msgstr "Ses yükleniyor…"
-
-#: src/views/transcript/player_bar.py:202
 #, python-brace-format
-msgid "Space: play/pause · ←/→: {seconds} s back/forward"
-msgstr "Boşluk: oynat/duraklat · ←/→: {seconds} sn geri/ileri"
+msgid "{done}/{total} files"
+msgstr "{done}/{total} dosya"
 
-#: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1658
 #, python-brace-format
-msgid "The audio can't be played: {error}"
-msgstr "Ses oynatılamıyor: {error}"
+msgid "{minutes} min {seconds} s"
+msgstr "{minutes} dk {seconds} sn"
+
+#, python-brace-format
+msgid "{name}: {message}"
+msgstr "{name}: {message}"
+
+#, python-brace-format
+msgid "{provider} is reading the transcription. It takes a moment."
+msgstr "Transkripsiyon okunuyor ({provider}). Bu biraz zaman alır."
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:90
-msgid "Only flagged"
-msgstr "Yalnızca işaretliler"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:103
-msgid "Auto-play"
-msgstr "Otomatik oynat"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:109
-msgid "Undo"
-msgstr "Geri al"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:119
-msgid "Accept remaining"
-msgstr "Kalanları kabul et"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:130
-msgid "Adjust threshold"
-msgstr "Eşiği ayarla"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:141
-msgid "Review accepted words again"
-msgstr "Kabul edilen kelimeleri yeniden incele"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:218
 #, python-brace-format
 msgid "{remaining} of {total} to review"
 msgstr "İncelenecek {total} kelimeden {remaining} kaldı"
 
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:222
 #, python-brace-format
-msgid "All reviewed · {total} of {total}"
-msgstr "Tümü incelendi · {total}/{total}"
+msgid "{seconds} s"
+msgstr "{seconds} sn"
 
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:224
-msgid "No low-confidence words at this threshold"
-msgstr "Bu eşikte düşük güvenilirlikli kelime yok"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:226
-msgid "Confidence data isn’t available for this transcript"
-msgstr "Bu transkript için güvenilirlik verisi yok"
-
-#: src/views/transcript/summary_panel.py:202
 #, python-brace-format
-msgid "Find ({shortcut})"
-msgstr "Bul ({shortcut})"
-
-#: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:727
-#: src/views/transcript/translation_panel.py:149
-msgid "Export"
-msgstr "Dışa aktar"
-
-#: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1175
-msgid "Regenerate the summary"
-msgstr "Özeti yeniden oluştur"
-
-#: src/views/transcript/summary_panel.py:272
-msgid "Summarizing…"
-msgstr "Özetleniyor…"
-
-#: src/views/transcript/summary_panel.py:279
-#: src/views/transcript/summary_panel.py:292
-msgid "No summary yet"
-msgstr "Henüz özet yok"
-
-#: src/views/transcript/summary_panel.py:281
-#, python-brace-format
-msgid ""
-"Generate a summary, the key points and the chapters of the transcription "
-"with {provider}."
-msgstr ""
-"Transkripsiyonun özetini, önemli noktalarını ve bölümlerini oluşturun "
-"(sağlayıcı: {provider})."
-
-#: src/views/transcript/summary_panel.py:286
-msgid "Generate summary"
-msgstr "Özet oluştur"
-
-#: src/views/transcript/summary_panel.py:294
-#, python-brace-format
-msgid ""
-"Set the API key of {provider} to summarize, or choose another provider in"
-" the settings."
-msgstr ""
-"Özetlemek için API anahtarını ayarlayın (sağlayıcı: {provider}) veya "
-"ayarlardan başka bir sağlayıcı seçin."
-
-#: src/views/transcript/summary_panel.py:374
-msgid "The transcription is very long, so only its beginning was summarized."
-msgstr "Transkripsiyon çok uzun olduğu için yalnızca başı özetlendi."
-
-#: src/views/transcript/summary_panel.py:389
-#, python-brace-format
-msgid "Generated by {model} · {date}"
-msgstr "Oluşturan: {model} · {date}"
-
-#: src/views/transcript/transcript_text.py:336
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr "Oynatmak için bir segmente tıklayın. Düzenlemek için sağ tıklayın."
-
-#: src/views/transcript/transcript_text.py:341
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Düz metin düzenlendi; zaman damgalı döküm orijinali korur."
-
-#: src/views/transcript/transcript_text.py:347
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Metni düzenleyebilirsiniz. Değişiklikler otomatik olarak kaydedilir."
-
-#: src/views/transcript/transcript_text.py:352
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Zaman damgaları yalnızca WhisperX ile ve Whisper API'nin whisper-1 ve "
-"gpt-4o-transcribe-diarize modelleriyle kullanılabilir."
-
-#: src/views/transcript/transcript_text.py:825
-msgid "This transcription has no timestamps."
-msgstr "Bu transkripsiyonun zaman damgası yok."
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:150
-msgid "There is no alignment model for its language"
-msgstr "Bu dil için hizalama modeli yok"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:151
-msgid "Turn on “Word-level timings” and transcribe it again"
-msgstr "“Kelime düzeyinde zamanlama”yı açıp yeniden yazıya dökün"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:158
-msgid "Transcribe it again to score its words"
-msgstr "Kelimeleri puanlamak için yeniden yazıya dökün"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:159
-msgid "Only WhisperX and whisper-1 score the words"
-msgstr "Kelimeleri yalnızca WhisperX ve whisper-1 puanlar"
-
-#: src/views/transcript/transcript_view.py:164
-msgid "Plain text (.txt)"
-msgstr "Düz metin (.txt)"
-
-#: src/views/transcript/transcript_view.py:165
-msgid "Markdown (.md)"
-msgstr "Markdown (.md)"
-
-#: src/views/transcript/transcript_view.py:166
-msgid "Word document (.docx)"
-msgstr "Word belgesi (.docx)"
-
-#: src/views/transcript/transcript_view.py:167
-msgid "Subtitles (.srt)"
-msgstr "Altyazılar (.srt)"
-
-#: src/views/transcript/transcript_view.py:168
-msgid "Web subtitles (.vtt)"
-msgstr "Web altyazıları (.vtt)"
-
-#: src/views/transcript/transcript_view.py:169
-msgid "Styled subtitles (.ass)"
-msgstr "Biçimli altyazılar (.ass)"
-
-#: src/views/transcript/transcript_view.py:170
-msgid "Table (.tsv)"
-msgstr "Tablo (.tsv)"
-
-#: src/views/transcript/transcript_view.py:171
-msgid "JSON (.json)"
-msgstr "JSON (.json)"
-
-#: src/views/transcript/transcript_view.py:313
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Çeviriyi transkripsiyonla birlikte kaydırmayı durdur"
-
-#: src/views/transcript/transcript_view.py:315
-msgid "Scroll the translation with the transcription"
-msgstr "Çeviriyi transkripsiyonla birlikte kaydır"
-
-#: src/views/transcript/transcript_view.py:511
-msgid "Stop adding the subtitles to the video"
-msgstr "Altyazıları videoya eklemeyi durdur"
-
-#: src/views/transcript/transcript_view.py:516
-msgid "Video with subtitles (.mp4)…"
-msgstr "Altyazılı video (.mp4)…"
-
-#: src/views/transcript/transcript_view.py:537
-msgid "Export transcription"
-msgstr "Transkripsiyonu dışa aktar"
-
-#: src/views/transcript/transcript_view.py:558
-#, python-brace-format
-msgid "Export translation into {language}"
-msgstr "Çeviriyi dışa aktar ({language})"
-
-#: src/views/transcript/transcript_view.py:571
-msgid "Export summary"
-msgstr "Özeti dışa aktar"
-
-#: src/views/transcript/transcript_view.py:600
-#: src/views/transcript/video_export.py:89
-#, python-brace-format
-msgid "Could not export: {error}"
-msgstr "Dışa aktarılamadı: {error}"
-
-#: src/views/transcript/transcript_view.py:603
-#: src/views/transcript/video_export.py:101
-#, python-brace-format
-msgid "Exported to {path}"
-msgstr "Dışa aktarıldı: {path}"
-
-#: src/views/transcript/transcript_view.py:630
-msgid "All files"
-msgstr "Tüm dosyalar"
-
-#: src/views/transcript/transcript_view.py:646
-msgid "Export video with subtitles"
-msgstr "Altyazılı videoyu dışa aktar"
-
-#: src/views/transcript/transcript_view.py:719
-#: src/views/transcript/translation_panel.py:143
-#, python-brace-format
-msgid "Find and replace ({shortcut})"
-msgstr "Bul ve değiştir ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:767
-msgid "No low-confidence words left to review"
-msgstr "İncelenecek düşük güvenilirlikli kelime kalmadı"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:777
-msgid "Show all segments"
-msgstr "Tüm bölümleri göster"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:813
-#, python-brace-format
-msgid "Previous low-confidence word ({shortcut})"
-msgstr "Önceki düşük güvenilirlikli kelime ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:815
-#, python-brace-format
-msgid "Next low-confidence word ({shortcut})"
-msgstr "Sonraki düşük güvenilirlikli kelime ({shortcut})"
-
-#: src/views/transcript/transcript_view.py:827
-msgid "Plain text"
-msgstr "Düz metin"
-
-#: src/views/transcript/transcript_view.py:837
-#: src/views/transcript/translation_panel.py:409
-msgid "Translate"
-msgstr "Çevir"
-
-#: src/views/transcript/transcript_view.py:957
-#: src/views/transcript/transcript_view.py:1546
-msgid "Edit text"
-msgstr "Metni düzenle"
-
-#: src/views/transcript/transcript_view.py:957
-#, python-brace-format
-msgid "Text said at {time}:"
-msgstr "Söylenen metin ({time}):"
-
-#: src/views/transcript/transcript_view.py:1048
-msgid "Find and replace in the transcription"
-msgstr "Transkripsiyonda bul ve değiştir"
-
-#: src/views/transcript/transcript_view.py:1058
-msgid "Find and replace in the translation"
-msgstr "Çeviride bul ve değiştir"
-
-#: src/views/transcript/transcript_view.py:1059
-#, python-brace-format
-msgid "Find and replace in the translation into {language}"
-msgstr "{language} çeviride bul ve değiştir"
-
-#: src/views/transcript/transcript_view.py:1072
-msgid "Find in the summary"
-msgstr "Özette bul"
-
-#: src/views/transcript/transcript_view.py:1147
-msgid "Delete the questions and their answers?"
-msgstr "Sorular ve yanıtları silinsin mi?"
-
-#: src/views/transcript/transcript_view.py:1176
-msgid "Generate the summary again? The current one will be replaced."
-msgstr "Özet yeniden oluşturulsun mu? Mevcut özet değiştirilecek."
-
-#: src/views/transcript/transcript_view.py:1334
-#: src/views/transcript/translation_panel.py:155
-msgid "Hide the translation"
-msgstr "Çeviriyi gizle"
-
-#: src/views/transcript/transcript_view.py:1339
-msgid "Show the translation"
-msgstr "Çeviriyi göster"
-
-#: src/views/transcript/transcript_view.py:1343
-#: src/views/transcript/translation_panel.py:298
-msgid "Translate into another language…"
-msgstr "Başka bir dile çevir…"
-
-#: src/views/transcript/transcript_view.py:1354
-msgid "Show it as the subtitles of the video"
-msgstr "Videonun altyazısı olarak göster"
-
-#: src/views/transcript/transcript_view.py:1361
-msgid "Delete the translation"
-msgstr "Çeviriyi sil"
-
-#: src/views/transcript/transcript_view.py:1486
-#: src/views/transcript/transcript_view.py:1725
-msgid "Play from here"
-msgstr "Buradan oynat"
-
-#: src/views/transcript/transcript_view.py:1494
-#: src/views/transcript/transcript_view.py:1729
-msgid "Edit text…"
-msgstr "Metni düzenle…"
-
-#: src/views/transcript/transcript_view.py:1494
-msgid "Translate text…"
-msgstr "Metni çevir…"
-
-#: src/views/transcript/transcript_view.py:1498
-msgid "Edit the timing…"
-msgstr "Zamanlamayı düzenle…"
-
-#: src/views/transcript/transcript_view.py:1502
-msgid "Add a segment after…"
-msgstr "Sonrasına segment ekle…"
-
-#: src/views/transcript/transcript_view.py:1546
-msgid "Translate text"
-msgstr "Metni çevir"
-
-#: src/views/transcript/transcript_view.py:1549
-#, python-brace-format
-msgid "Translation of “{text}”, said from {start} to {end}:"
-msgstr "\"{text}\" çevirisi, {start} ile {end} arasında söylenen:"
-
-#: src/views/transcript/transcript_view.py:1551
-#, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "{start} ile {end} arasındaki segmentin çevirisi:"
-
-#: src/views/transcript/transcript_view.py:1587
-#: src/views/transcript/translation_panel.py:152
-msgid "Translate again"
-msgstr "Yeniden çevir"
-
-#: src/views/transcript/transcript_view.py:1589
-#, python-brace-format
-msgid ""
-"Translate the transcription into {language} again? The changes made to "
-"the translation will be lost."
-msgstr ""
-"Transkripsiyon yeniden {language} diline çevrilsin mi? Çeviride yapılan "
-"değişiklikler kaybolacak."
-
-#: src/views/transcript/transcript_view.py:1612
-msgid "The audio isn't available: the source file was moved or deleted."
-msgstr "Ses kullanılamıyor: kaynak dosya taşındı veya silindi."
-
-#: src/views/transcript/transcript_view.py:1615
-msgid "The audio isn't available."
-msgstr "Ses kullanılamıyor."
-
-#: src/views/transcript/transcript_view.py:1733
-#: src/views/transcript/transcript_view.py:1815
-msgid "Rename speakers…"
-msgstr "Konuşmacıları yeniden adlandır…"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1756
-msgid "Highlight low-confidence words"
-msgstr "Düşük güvenilirlikli kelimeleri vurgula"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1763
-msgid "Low-confidence threshold"
-msgstr "Düşük güvenilirlik eşiği"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1788
-#, python-brace-format
-msgid "Below {percent}%"
-msgstr "%{percent} altında"
-
-#: src/views/transcript/transcript_view.py:1804
-#, python-brace-format
-msgid "Transcribe “{title}” again? The changes made to its text will be lost."
-msgstr ""
-"“{title}” yeniden yazıya dökülsün mü? Metninde yapılan değişiklikler "
-"kaybolacak."
-
-#: src/views/transcript/transcript_view.py:1825
-msgid "Precise timestamps (HH:MM:SS,mmm)"
-msgstr "Hassas zaman damgaları (HH:MM:SS,mmm)"
-
-#: src/views/transcript/transcript_view.py:1849
-msgid "Rename…"
-msgstr "Yeniden adlandır…"
-
-#: src/views/transcript/translation_panel.py:188
-msgid "Not translated yet"
-msgstr "Henüz çevrilmedi"
-
-#: src/views/transcript/translation_panel.py:220
-#, python-brace-format
-msgid "Translating into {language}…"
-msgstr "Çevriliyor ({language})…"
-
-#: src/views/transcript/translation_panel.py:224
-msgid "Translating…"
-msgstr "Çevriliyor…"
-
-#: src/views/transcript/translation_panel.py:227
-msgid "It takes a moment."
-msgstr "Bu biraz zaman alır."
-
-#: src/views/transcript/translation_panel.py:229
-msgid "The transcription is being translated. It takes a moment."
-msgstr "Transkripsiyon çevriliyor. Bu biraz zaman alır."
-
-#: src/views/transcript/translation_panel.py:236
-msgid "There is no translation yet."
-msgstr "Henüz çeviri yok."
-
-#: src/views/transcript/translation_panel.py:238
-msgid "Translate…"
-msgstr "Çevir…"
-
-#: src/views/transcript/translation_panel.py:364
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr "Çevrilecek segment sayısı: {count}. Çevirmek için birine sağ tıklayın."
-
-#: src/views/transcript/translation_panel.py:371
-#: src/views/transcript/translation_panel.py:450
-msgid "Manual"
-msgstr "Elle"
-
-#: src/views/transcript/translation_panel.py:418
-msgid "Translate into:"
-msgstr "Hedef dil:"
-
-#: src/views/transcript/translation_panel.py:439
-msgid "Translate with:"
-msgstr "Şununla çevir:"
-
-#: src/views/transcript/translation_panel.py:496
-msgid "More options in the settings"
-msgstr "Ayarlarda daha fazla seçenek"
-
-#: src/views/transcript/translation_panel.py:527
-#, python-brace-format
-msgid "No API key for {provider}."
-msgstr "{provider} için API anahtarı yok."
-
-#: src/views/transcript/translation_panel.py:534
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "Doldurmanız için orijinal zaman damgalarıyla boş segmentler oluşturur."
-
-#: src/views/transcript/translation_panel.py:544
-#, python-brace-format
-msgid "Uses the model {model}."
-msgstr "{model} modelini kullanır."
-
-#: src/views/transcript/translation_panel.py:547
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Her segmenti zaman damgalarını koruyarak çevirir."
-
-#: src/views/transcript/translation_panel.py:559
-msgid "Set…"
-msgstr "Ayarla…"
-
-#: src/views/transcript/video_export.py:84
-msgid "Adding the subtitles to the video was cancelled."
-msgstr "Altyazıların videoya eklenmesi iptal edildi."
-
-#: src/views/transcript/video_export.py:105
-#, python-brace-format
-msgid ""
-"Exported to {path}, but no font has these characters, so they're shown as"
-" boxes: {characters}"
-msgstr ""
-"Dışa aktarıldı: {path}. Ancak hiçbir yazı tipinde bu karakterler yok, bu "
-"yüzden kutu olarak gösteriliyorlar: {characters}"
-
-#: src/views/transcript/video_export.py:114
-msgid "Adding the subtitles to the video…"
-msgstr "Altyazılar videoya ekleniyor…"
-
-#: src/views/transcript/video_export.py:115
-#, python-brace-format
-msgid "Adding the subtitles to the video… {percent}%"
-msgstr "Altyazılar videoya ekleniyor… %{percent}"
-
-#: src/views/transcript/video_pane.py:260
-msgid "Show subtitles on the video"
-msgstr "Altyazıları videoda göster"
-
-#: src/views/transcript/video_pane.py:281
-#, python-brace-format
-msgid "Translation into {language}"
-msgstr "Çeviri ({language})"
-
-#: src/views/transcript/video_pane.py:292
-msgid "Size"
-msgstr "Boyut"
-
-#: src/views/transcript/video_pane.py:296
-msgid "Small"
-msgstr "Küçük"
-
-#: src/views/transcript/video_pane.py:297
-msgid "Medium"
-msgstr "Orta"
-
-#: src/views/transcript/video_pane.py:298
-msgid "Large"
-msgstr "Büyük"
-
-#: src/views/transcript/video_pane.py:302
-msgid "Position"
-msgstr "Konum"
-
-#: src/views/transcript/video_pane.py:305
-msgid "Bottom"
-msgstr "Alt"
-
-#: src/views/transcript/video_pane.py:305
-msgid "Top"
-msgstr "Üst"
-
-#: src/views/transcript/video_pane.py:308
-msgid "Style"
-msgstr "Stil"
-
-#: src/views/transcript/video_pane.py:312
-msgid "Dark background"
-msgstr "Koyu arka plan"
-
-#: src/views/transcript/video_pane.py:313
-msgid "Outline"
-msgstr "Kontur"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:67
-msgid "Replay"
-msgstr "Yeniden oynat"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:72
-#, python-brace-format
-msgid "Replay ({shortcut})"
-msgstr "Yeniden oynat ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:85
-msgid "Accept"
-msgstr "Kabul et"
+msgid "“{name}” is not a supported audio or video file."
+msgstr "\"{name}\" desteklenen bir ses veya video dosyası değil."

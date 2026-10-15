@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:00+0200\n"
+"POT-Creation-Date: 2026-10-15 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -19,242 +19,262 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: src/controllers/folder_transcriber.py:58
+msgid "1 audio or video file (subfolders included)"
+msgstr "1 archivo de audio o vídeo (subcarpetas incluidas)"
+
+msgid "1 transcription"
+msgstr "1 transcripción"
+
+msgid "A YouTube video or a direct link to an audio or video file."
+msgstr "Un vídeo de YouTube o un enlace directo a un archivo de audio o vídeo."
+
 msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
+"A fast model writes a draft while you speak. When you stop, the whole "
+"recording is transcribed again with the model of the engine, which is "
+"more accurate."
 msgstr ""
-"La carpeta no contiene archivos que transcribir. Los archivos que ya "
-"tienen una transcripción se omiten a menos que marques «Sobrescribir "
-"archivos existentes»."
+"Un modelo rápido escribe un borrador mientras hablas. Cuando paras, toda "
+"la grabación se vuelve a transcribir con el modelo del motor, que es más "
+"preciso."
 
-#: src/controllers/folder_transcriber.py:81
 #, python-brace-format
-msgid "Transcribed {done} of {total} files."
-msgstr "Se han transcrito {done} de {total} archivos."
+msgid "A note about “{title}”:"
+msgstr "Una nota sobre «{title}»:"
 
-#: src/controllers/folder_transcriber.py:97
+msgid "AI"
+msgstr "IA"
+
+msgid "API key removed."
+msgstr "Clave de API eliminada."
+
+msgid "API key saved."
+msgstr "Clave de API guardada."
+
+msgid "API key set"
+msgstr "Clave de API configurada"
+
+msgid "API keys"
+msgstr "Claves de API"
+
+msgid "About"
+msgstr "Acerca de"
+
+# Needs review by a native speaker
+msgid "Accept"
+msgstr "Aceptar"
+
+# Needs review by a native speaker
+msgid "Accept remaining"
+msgstr "Aceptar las restantes"
+
+msgid "Add"
+msgstr "Añadir"
+
+msgid "Add a segment"
+msgstr "Añadir un segmento"
+
+msgid "Add a segment after…"
+msgstr "Añadir un segmento después…"
+
+msgid "Add note"
+msgstr "Añadir nota"
+
+msgid "Add note…"
+msgstr "Añadir nota…"
+
+msgid "Add to queue"
+msgstr "Añadir a la cola"
+
+msgid "Adding the subtitles to the video was cancelled."
+msgstr "Se ha cancelado la adición de los subtítulos al vídeo."
+
+msgid "Adding the subtitles to the video…"
+msgstr "Añadiendo los subtítulos al vídeo…"
+
 #, python-brace-format
-msgid "Waiting for new files in {folder}…"
-msgstr "Esperando archivos nuevos en {folder}…"
+msgid "Adding the subtitles to the video… {percent}%"
+msgstr "Añadiendo los subtítulos al vídeo… {percent} %"
 
-#: src/controllers/folder_transcriber.py:114
-#, python-brace-format
-msgid "Stopped watching the folder. Files transcribed: {done}."
-msgstr "Se ha dejado de vigilar la carpeta. Archivos transcritos: {done}."
+# Needs review by a native speaker
+msgid "Adjust threshold"
+msgstr "Ajustar umbral"
 
-#: src/controllers/folder_transcriber.py:137
-msgid "cancelled"
-msgstr "cancelado"
-
-#: src/controllers/folder_transcriber.py:176
-#, python-brace-format
-msgid "File {current} of {total} ({name}): {message}"
-msgstr "Archivo {current} de {total} ({name}): {message}"
-
-#: src/controllers/folder_transcriber.py:191
-#, python-brace-format
-msgid "{name}: {message}"
-msgstr "{name}: {message}"
-
-#: src/controllers/main_controller.py:125
-msgid "Cancelling…"
-msgstr "Cancelando…"
-
-#: src/controllers/main_controller.py:194
-msgid "Transcription cancelled."
-msgstr "Transcripción cancelada."
-
-#: src/controllers/main_controller.py:209
-msgid "Downloading…"
-msgstr "Descargando…"
-
-#: src/controllers/main_controller.py:220
-msgid "Recording…"
-msgstr "Grabando…"
-
-#: src/controllers/main_controller.py:237
-#, python-brace-format
-msgid "Done in {duration}."
-msgstr "Completado en {duration}."
-
-#: src/controllers/main_controller.py:303
-msgid "Isolating the speech…"
-msgstr "Aislando la voz…"
-
-#: src/controllers/main_controller.py:335
-msgid "WhisperX model ready."
-msgstr "Modelo de WhisperX listo."
-
-#: src/controllers/main_controller.py:342
-#, python-brace-format
-msgid "Could not load the WhisperX model: {error}"
-msgstr "No se pudo cargar el modelo de WhisperX: {error}"
-
-#: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:222
-msgid "No output file types selected. Please select at least one."
-msgstr "No hay tipos de archivo de salida seleccionados. Selecciona al menos uno."
-
-#: src/controllers/transcription_validator.py:26
-#: src/views/settings/settings_form.py:176
-msgid ""
-"The Google API can't detect the language. Please select the language of "
-"the audio."
-msgstr ""
-"La API de Google no puede detectar el idioma. Selecciona el idioma del "
-"audio."
-
-#: src/controllers/transcription_validator.py:57
-#, python-brace-format
-msgid ""
-"The {model} model doesn't return timestamps, so it can't save {format} "
-"files. Choose another format or the whisper-1 model."
-msgstr ""
-"El modelo {model} no devuelve marcas de tiempo, así que no puede guardar "
-"archivos {format}. Elige otro formato o el modelo whisper-1."
-
-#: src/controllers/transcription_validator.py:77
-msgid "Please select a valid audio or video file."
-msgstr "Selecciona un archivo de audio o vídeo válido."
-
-#: src/controllers/transcription_validator.py:81
-#: src/views/new_transcription/new_transcription_view.py:491
-msgid "Please select a valid folder."
-msgstr "Selecciona una carpeta válida."
-
-#: src/controllers/transcription_validator.py:88
-msgid ""
-"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
-" or video file)."
-msgstr ""
-"Introduce una URL válida (p. ej., el enlace de un vídeo de YouTube o de "
-"un archivo de audio o vídeo)."
-
-#: src/handlers/ai_providers.py:108 src/handlers/ai_providers.py:113
-#: src/handlers/ai_providers.py:116 src/handlers/question_handler.py:96
-msgid "The model didn't return a valid reply."
-msgstr "El modelo no ha devuelto una respuesta válida."
-
-#: src/handlers/ai_providers.py:161 src/handlers/ai_providers.py:194
-msgid "The reply of the model was too long."
-msgstr "La respuesta del modelo era demasiado larga."
-
-#: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:246
-msgid "Loading audio…"
-msgstr "Cargando el audio…"
-
-#: src/handlers/audio_handler.py:79
-#, python-brace-format
-msgid "Unsupported file type: {extension}"
-msgstr "Tipo de archivo no compatible: {extension}"
-
-#: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:256 src/handlers/whisperx_handler.py:263
-#: src/views/history/formatting.py:43
-#: src/views/new_transcription/microphone_view.py:407
-msgid "Transcribing…"
-msgstr "Transcribiendo…"
-
-#: src/handlers/audio_handler.py:131 src/handlers/openai_api_handler.py:372
-#, python-brace-format
-msgid "Transcribing chunk {current} of {total}…"
-msgstr "Transcribiendo el fragmento {current} de {total}…"
-
-#: src/handlers/live_transcriber.py:246
-msgid "The text can't be shown while recording."
-msgstr "El texto no se puede mostrar mientras se graba."
-
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:487
-#, python-brace-format
-msgid "Loading the {model} model (it's downloaded the first time it's used)…"
-msgstr "Cargando el modelo {model} (se descarga la primera vez que se usa)…"
-
-#: src/handlers/openai_api_handler.py:483
-#, python-brace-format
-msgid "The audio is too large for the OpenAI API ({size} MB)."
-msgstr "El audio es demasiado grande para la API de OpenAI ({size} MB)."
-
-#: src/handlers/summary_handler.py:103 src/handlers/summary_handler.py:118
-msgid "The model didn't return a valid summary."
-msgstr "El modelo no ha devuelto un resumen válido."
-
-#: src/handlers/summary_handler.py:174
-msgid "There is no text to summarize."
-msgstr "No hay texto que resumir."
-
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:336
-msgid "There is no transcription to save. Please generate it first."
-msgstr "No hay ninguna transcripción que guardar. Genérala primero."
-
-#: src/handlers/translation_handler.py:311
-msgid "The model didn't return a valid translation."
-msgstr "El modelo no ha devuelto una traducción válida."
-
-#: src/handlers/translation_handler.py:382
-#, python-brace-format
-msgid "DeepL can't translate into {language}."
-msgstr "DeepL no puede traducir al {language}."
-
-#: src/handlers/translation_handler.py:401
-msgid "DeepL didn't return a valid translation."
-msgstr "DeepL no ha devuelto una traducción válida."
-
-#: src/handlers/translation_handler.py:422
-msgid "Google Translate didn't return a valid translation."
-msgstr "Google Translate no ha devuelto una traducción válida."
-
-#: src/handlers/translation_handler.py:452
-msgid "There is no text to translate."
-msgstr "No hay texto que traducir."
-
-#: src/handlers/url_handler.py:87
-msgid ""
-"The URL doesn't point to an audio or video file. Use the link of a "
-"YouTube video or of a media file."
-msgstr ""
-"La URL no apunta a un archivo de audio o vídeo. Usa el enlace de un vídeo"
-" de YouTube o de un archivo multimedia."
-
-#: src/handlers/url_handler.py:105
-#, python-brace-format
-msgid "The file could not be downloaded: {error}"
-msgstr "No se pudo descargar el archivo: {error}"
-
-#: src/handlers/whisperx_handler.py:376 src/handlers/whisperx_handler.py:385
 msgid "Aligning subtitles…"
 msgstr "Alineando los subtítulos…"
 
-#: src/handlers/whisperx_handler.py:409 src/handlers/whisperx_handler.py:414
-msgid "Identifying speakers…"
-msgstr "Identificando hablantes…"
+msgid "All files"
+msgstr "Todos los archivos"
 
-#: src/handlers/whisperx_handler.py:435
+# Needs review by a native speaker
+#, python-brace-format
+msgid "All reviewed · {total} of {total}"
+msgstr "Todo revisado · {total} de {total}"
+
+msgid "All supported files"
+msgstr "Todos los archivos compatibles"
+
+msgid ""
+"All the audio and video files of a folder, or the new ones as they're "
+"added."
+msgstr ""
+"Todos los archivos de audio y vídeo de una carpeta, o los nuevos a medida"
+" que se añaden."
+
+msgid "An audio or video file"
+msgstr "Un archivo de audio o vídeo"
+
+msgid "An unknown error occurred."
+msgstr "Se ha producido un error desconocido."
+
+msgid "Anthropic API key"
+msgstr "Clave de API de Anthropic"
+
+msgid "Appearance"
+msgstr "Apariencia"
+
+msgid "Ask"
+msgstr "Preguntar"
+
+msgid "Ask a question about the transcription…"
+msgstr "Haz una pregunta sobre la transcripción…"
+
 #, python-brace-format
 msgid ""
-"Identifying speakers requires a Hugging Face token. Create one at "
-"{tokens_url}, accept the conditions of {model_url} and set the token in "
-"the WhisperX options."
+"Ask {provider} about the transcription, such as what was decided or who "
+"said something. The answers link to where it's said."
 msgstr ""
-"Para identificar hablantes se necesita un token de Hugging Face. Créalo "
-"en {tokens_url}, acepta las condiciones de {model_url} e introduce el "
-"token en las opciones de WhisperX."
+"Pregunta a {provider} sobre la transcripción, como qué se decidió o quién"
+" dijo algo. Las respuestas enlazan con donde se dice."
 
-#: src/handlers/whisperx_handler.py:520
-msgid "Loading the subtitle alignment model…"
-msgstr "Cargando el modelo de alineación de subtítulos…"
+msgid "Audio"
+msgstr "Audio"
 
-#: src/handlers/whisperx_handler.py:553
+msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
+msgstr "Archivos de audio y vídeo: MP3, WAV, M4A, MP4, MOV, MKV y más."
+
+msgid "Audio files"
+msgstr "Archivos de audio"
+
+msgid "Audiotext was closed before it finished."
+msgstr "Audiotext se cerró antes de que terminara."
+
+msgid "Auto-detect"
+msgstr "Detectar automáticamente"
+
+# Needs review by a native speaker
+msgid "Auto-play"
+msgstr "Reproducir automáticamente"
+
+msgid "Automatic"
+msgstr "Automático"
+
+msgid "Automatic uses the clock of the interface language."
+msgstr "Automático usa el reloj del idioma de la interfaz."
+
+msgid "Back"
+msgstr "Atrás"
+
+msgid "Batch size"
+msgstr "Tamaño de lote"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Below {percent}%"
+msgstr "Por debajo del {percent} %"
+
+msgid "Between 0 and 1. Higher values are more random."
+msgstr "Entre 0 y 1. Los valores más altos son más aleatorios."
+
+msgid "Bottom"
+msgstr "Abajo"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Cancelled"
+msgstr "Cancelada"
+
+msgid "Cancelling…"
+msgstr "Cancelando…"
+
+msgid "Change API key…"
+msgstr "Cambiar clave de API…"
+
+msgid "Change…"
+msgstr "Cambiar…"
+
+msgid "Chapters"
+msgstr "Capítulos"
+
+msgid "Check for updates"
+msgstr "Buscar actualizaciones"
+
+msgid "Checking for updates…"
+msgstr "Buscando actualizaciones…"
+
+msgid "Checks for a new version when the app opens."
+msgstr "Comprueba si hay una versión nueva al abrir la aplicación."
+
+msgid "Chinese, Japanese and Korean"
+msgstr "Chino, japonés y coreano"
+
 msgid ""
-"Loading the speaker identification model (it's downloaded the first time "
-"it's used)…"
+"Chinese, Japanese and Korean characters are about twice as wide as Latin "
+"ones."
 msgstr ""
-"Cargando el modelo de identificación de hablantes (se descarga la primera"
-" vez que se usa)…"
+"Los caracteres chinos, japoneses y coreanos son casi el doble de anchos "
+"que los latinos."
 
-#: src/handlers/whisperx_handler.py:567
+msgid "Choose a file"
+msgstr "Elige un archivo"
+
+msgid "Choose a file…"
+msgstr "Elegir un archivo…"
+
+msgid "Choose a folder"
+msgstr "Elige una carpeta"
+
+msgid "Choose a folder…"
+msgstr "Elegir una carpeta…"
+
+msgid "Choose a source above to transcribe your first file."
+msgstr "Elige un origen arriba para transcribir tu primer archivo."
+
+msgid ""
+"Choose a source, or select a transcription of your history to read and "
+"play it."
+msgstr ""
+"Elige un origen o selecciona una transcripción de tu historial para "
+"leerla y reproducirla."
+
+msgid "Choose where to save the transcriptions"
+msgstr "Elige dónde guardar las transcripciones"
+
+msgid "Clear the conversation"
+msgstr "Borrar la conversación"
+
+msgid "Click a segment to play it. Right-click it to edit it."
+msgstr "Haz clic en un segmento para reproducirlo. Haz clic derecho para editarlo."
+
+msgid "Compute type"
+msgstr "Tipo de cómputo"
+
+# Needs review by a native speaker
+msgid "Confidence data isn’t available for this transcript"
+msgstr "No hay datos de confianza para esta transcripción"
+
+msgid "Context"
+msgstr "Contexto"
+
+msgid "Continue"
+msgstr "Continuar"
+
+msgid "Copy"
+msgstr "Copiar"
+
+msgid "Could not check for updates."
+msgstr "No se pudo comprobar si hay actualizaciones."
+
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -265,751 +285,175 @@ msgstr ""
 "Comprueba que el token de Hugging Face es válido y que has aceptado las "
 "condiciones de {model_url}."
 
-#: src/handlers/youtube_handler.py:34
-msgid ""
-"The audio of the YouTube video could not be downloaded. Please make sure "
-"the URL is correct."
+#, python-brace-format
+msgid "Could not export: {error}"
+msgstr "No se pudo exportar: {error}"
+
+#, python-brace-format
+msgid "Could not load the WhisperX model: {error}"
+msgstr "No se pudo cargar el modelo de WhisperX: {error}"
+
+#, python-brace-format
+msgid "Could not open the file manager: {error}"
+msgstr "No se pudo abrir el gestor de archivos: {error}"
+
+#, python-brace-format
+msgid "Could not open the folder: {error}"
+msgstr "No se pudo abrir la carpeta: {error}"
+
+#, python-brace-format
+msgid "Could not summarize “{title}”: {error}"
+msgstr "No se pudo resumir «{title}»: {error}"
+
+#, python-brace-format
+msgid "Could not translate “{title}”: {error}"
+msgstr "No se ha podido traducir «{title}»: {error}"
+
+msgid "Create"
+msgstr "Crear"
+
+msgid "Creates empty segments with the original timestamps for you to fill in."
 msgstr ""
-"No se pudo descargar el audio del vídeo de YouTube. Comprueba que la URL "
-"es correcta."
+"Crea segmentos vacíos con las marcas de tiempo originales para que los "
+"rellenes."
 
-#: src/handlers/youtube_handler.py:40
-msgid "The YouTube video doesn't have an audio track."
-msgstr "El vídeo de YouTube no tiene pista de audio."
+msgid "Dark"
+msgstr "Oscuro"
 
-#: src/utils/audio_utils.py:30
-msgid "No audio was recorded."
-msgstr "No se ha grabado ningún audio."
+msgid "Dark background"
+msgstr "Fondo oscuro"
 
-#: src/utils/exporters.py:289 src/utils/exporters.py:360
-#: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:786
-#: src/views/transcript/video_pane.py:275
-msgid "Transcription"
-msgstr "Transcripción"
+msgid "Date format"
+msgstr "Formato de la fecha"
 
-#: src/utils/exporters.py:307 src/utils/exporters.py:335
-#: src/utils/exporters.py:420 src/views/settings/preferences_dialog.py:507
-#: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:567
-#: src/views/transcript/transcript_view.py:572
-#: src/views/transcript/transcript_view.py:828
-msgid "Summary"
-msgstr "Resumen"
+msgid "DeepL API key"
+msgstr "Clave de API de DeepL"
 
-#: src/utils/exporters.py:309 src/utils/exporters.py:338
-#: src/utils/exporters.py:423 src/views/transcript/summary_panel.py:90
-msgid "Key points"
-msgstr "Puntos clave"
-
-#: src/utils/exporters.py:313 src/utils/exporters.py:342
-#: src/utils/exporters.py:428 src/views/transcript/summary_panel.py:94
-msgid "Chapters"
-msgstr "Capítulos"
-
-#: src/utils/time_format.py:80
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
-msgstr "{minutes} min {seconds} s"
+msgid "DeepL can't translate into {language}."
+msgstr "DeepL no puede traducir al {language}."
 
-#: src/utils/time_format.py:82
-#, python-brace-format
-msgid "{seconds} s"
-msgstr "{seconds} s"
+msgid "DeepL didn't return a valid translation."
+msgstr "DeepL no ha devuelto una traducción válida."
 
-#: src/views/entries/entry_header.py:98
-msgid "Add note"
-msgstr "Añadir nota"
+msgid "DeepSeek API key"
+msgstr "Clave de API de DeepSeek"
 
-#: src/views/entries/folder_view.py:56
-msgid "Files"
-msgstr "Archivos"
-
-#: src/views/entries/folder_view.py:95
-#, python-brace-format
-msgid "{count} files"
-msgstr "{count} archivos"
-
-#: src/views/entries/folder_view.py:96
-#, python-brace-format
-msgid "{count} done"
-msgstr "{count} completados"
-
-#: src/views/entries/folder_view.py:99
-#, python-brace-format
-msgid "{count} failed"
-msgstr "{count} con errores"
-
-#: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1841
-msgid "Open the folder of the saved files"
-msgstr "Abrir la carpeta de los archivos guardados"
-
-#: src/views/entries/folder_view.py:116
-#: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:734
-#: src/views/transcript/transcript_view.py:1802
-msgid "Transcribe again"
-msgstr "Volver a transcribir"
-
-#: src/views/entries/folder_view.py:136
-msgid "Waiting for new files…"
-msgstr "Esperando archivos nuevos…"
-
-#: src/views/entries/folder_view.py:138
-msgid "No files"
-msgstr "Sin archivos"
-
-#: src/views/entries/progress_card.py:20
-#: src/views/new_transcription/new_transcription_view.py:107
-msgid "Choose a file"
-msgstr "Elige un archivo"
-
-#: src/views/entries/progress_card.py:21
-#: src/views/new_transcription/new_transcription_view.py:113
-msgid "Enter the URL"
-msgstr "Introduce la URL"
-
-#: src/views/entries/progress_card.py:22
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:474
-msgid "Record"
-msgstr "Grabar"
-
-#: src/views/entries/progress_card.py:23 src/views/entries/progress_card.py:24
-#: src/views/new_transcription/new_transcription_view.py:121
-msgid "Choose a folder"
-msgstr "Elige una carpeta"
-
-#: src/views/entries/progress_card.py:25
-msgid "Source"
-msgstr "Origen"
-
-#: src/views/entries/progress_card.py:51
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:467
-#: src/views/new_transcription/microphone_view.py:473
-#: src/views/new_transcription/new_transcription_view.py:148
-#: src/views/transcript/ask_panel.py:260 src/views/transcript/ask_panel.py:271
-#: src/views/transcript/summary_panel.py:287
-#: src/views/transcript/summary_panel.py:300
-msgid "Settings"
-msgstr "Ajustes"
-
-#: src/views/entries/progress_card.py:52
-#: src/views/new_transcription/microphone_view.py:145
-#: src/views/new_transcription/microphone_view.py:475
-#: src/views/new_transcription/new_transcription_view.py:148
-msgid "Transcribe"
-msgstr "Transcribir"
-
-#: src/views/entries/progress_card.py:121
-#: src/views/history/history_sidebar.py:372
-msgid "Stop watching"
-msgstr "Dejar de vigilar"
-
-#: src/views/entries/progress_card.py:121
-#: src/views/history/history_sidebar.py:374
-#: src/views/transcript/edit_dialogs.py:41 src/views/widgets/text_dialog.py:63
-msgid "Cancel"
-msgstr "Cancelar"
-
-#: src/views/entries/progress_card.py:132
-msgid ""
-"You can keep using Audiotext meanwhile. The result is saved in your "
-"history and opens here when it's ready."
-msgstr ""
-"Mientras tanto, puedes seguir usando Audiotext. El resultado se guarda en"
-" tu historial y se abre aquí cuando esté listo."
-
-#: src/views/entries/progress_card.py:144
-msgid "The transcription failed"
-msgstr "La transcripción ha fallado"
-
-#: src/views/entries/progress_card.py:145
-msgid "An unknown error occurred."
-msgstr "Se ha producido un error desconocido."
-
-#: src/views/entries/progress_card.py:147
-msgid "The transcription was interrupted"
-msgstr "La transcripción se interrumpió"
-
-#: src/views/entries/progress_card.py:148
-msgid "Audiotext was closed before it finished."
-msgstr "Audiotext se cerró antes de que terminara."
-
-#: src/views/entries/progress_card.py:150
-msgid "The transcription was cancelled"
-msgstr "La transcripción se canceló"
-
-#: src/views/entries/progress_card.py:165
-#: src/views/new_transcription/new_transcription_view.py:303
-msgid "Back"
-msgstr "Atrás"
-
-#: src/views/entries/progress_card.py:174
-msgid "Try again"
-msgstr "Reintentar"
-
-#: src/views/entries/progress_card.py:182
 msgid "Delete"
 msgstr "Eliminar"
 
-#: src/views/entries/progress_card.py:195
-#, python-brace-format
-msgid "Waiting for {count} transcription(s) to finish."
-msgstr "Esperando a que terminen {count} transcripciones."
+msgid "Delete group"
+msgstr "Eliminar grupo"
 
-#: src/views/entries/progress_card.py:199
-msgid "Waiting for the current transcription to finish."
-msgstr "Esperando a que termine la transcripción actual."
-
-#: src/views/entries/progress_card.py:206
-msgid "Starting…"
-msgstr "Iniciando…"
-
-#: src/views/history/formatting.py:22 src/views/main_window/top_bar.py:27
-#: src/views/main_window/welcome_view.py:40
-msgid "File"
-msgstr "Archivo"
-
-#: src/views/history/formatting.py:23 src/views/main_window/top_bar.py:28
-#: src/views/main_window/welcome_view.py:46
-#: src/views/new_transcription/new_transcription_view.py:244
-msgid "URL"
-msgstr "URL"
-
-#: src/views/history/formatting.py:24 src/views/main_window/top_bar.py:29
-#: src/views/main_window/welcome_view.py:52
-msgid "Microphone"
-msgstr "Micrófono"
-
-#: src/views/history/formatting.py:25 src/views/main_window/top_bar.py:30
-#: src/views/main_window/welcome_view.py:58
-#: src/views/settings/cards/folder_card.py:19
-msgid "Folder"
-msgstr "Carpeta"
-
-#: src/views/history/formatting.py:26
-msgid "Watched folder"
-msgstr "Carpeta vigilada"
-
-#: src/views/history/formatting.py:42
-msgid "Queued"
-msgstr "En cola"
-
-#: src/views/history/formatting.py:44
-msgid "Watching"
-msgstr "Vigilando"
-
-#: src/views/history/formatting.py:45
-msgid "Done"
-msgstr "Completada"
-
-#: src/views/history/formatting.py:46
-msgid "Failed"
-msgstr "Con errores"
-
-#: src/views/history/formatting.py:47
-msgid "Cancelled"
-msgstr "Cancelada"
-
-#: src/views/history/formatting.py:48
-msgid "Interrupted"
-msgstr "Interrumpida"
-
-#: src/views/history/formatting.py:163
-msgid "Show in Finder"
-msgstr "Mostrar en el Finder"
-
-#: src/views/history/formatting.py:165
-msgid "Show in Explorer"
-msgstr "Mostrar en el Explorador"
-
-#: src/views/history/formatting.py:166
-msgid "Show in file manager"
-msgstr "Mostrar en el gestor de archivos"
-
-#: src/views/history/history_row.py:241
-#, python-brace-format
-msgid "{done}/{total} files"
-msgstr "{done}/{total} archivos"
-
-#: src/views/history/history_sidebar.py:142
-msgid "Search"
-msgstr "Buscar"
-
-#: src/views/history/history_sidebar.py:167
-#: src/views/main_window/entry_dialogs.py:114
-msgid "New group"
-msgstr "Nuevo grupo"
-
-#: src/views/history/history_sidebar.py:225
-#, python-brace-format
-msgid "{count} transcriptions"
-msgstr "{count} transcripciones"
-
-#: src/views/history/history_sidebar.py:227
-msgid "1 transcription"
-msgstr "1 transcripción"
-
-#: src/views/history/history_sidebar.py:234
-msgid "No transcriptions yet"
-msgstr "Aún no hay transcripciones"
-
-#: src/views/history/history_sidebar.py:235
-msgid "Choose a source above to transcribe your first file."
-msgstr "Elige un origen arriba para transcribir tu primer archivo."
-
-#: src/views/history/history_sidebar.py:317
-#: src/views/main_window/entry_dialogs.py:40
-msgid "Rename"
-msgstr "Renombrar"
-
-#: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1853
-msgid "Edit note…"
-msgstr "Editar nota…"
-
-#: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1853
-msgid "Add note…"
-msgstr "Añadir nota…"
-
-#: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1858
-msgid "Delete note…"
-msgstr "Eliminar nota…"
-
-#: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1864
-msgid "Edit tag…"
-msgstr "Editar etiqueta…"
-
-#: src/views/history/history_sidebar.py:334
-msgid "Unpin"
-msgstr "Desfijar"
-
-#: src/views/history/history_sidebar.py:334
-msgid "Pin to the top"
-msgstr "Fijar arriba"
-
-#: src/views/history/history_sidebar.py:340
-msgid "No group"
-msgstr "Sin grupo"
-
-#: src/views/history/history_sidebar.py:356
-msgid "New group…"
-msgstr "Nuevo grupo…"
-
-#: src/views/history/history_sidebar.py:359
-msgid "Move to group"
-msgstr "Mover al grupo"
-
-#: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1869
-msgid "Delete…"
-msgstr "Eliminar…"
-
-#: src/views/history/history_sidebar.py:398
-msgid "Rename group…"
-msgstr "Renombrar grupo…"
-
-#: src/views/history/history_sidebar.py:402
 msgid "Delete group…"
 msgstr "Eliminar grupo…"
 
-#: src/views/history/history_sidebar.py:425
-msgid "Pinned"
-msgstr "Fijadas"
+msgid "Delete note"
+msgstr "Eliminar nota"
 
-#: src/views/history/history_sidebar.py:433
-msgid "Transcriptions"
-msgstr "Transcripciones"
+msgid "Delete note…"
+msgstr "Eliminar nota…"
 
-#: src/views/history/history_sidebar.py:476
+#, python-brace-format
+msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
+msgstr "¿Eliminar el grupo «{name}»? Sus transcripciones se conservan, sin grupo."
+
+#, python-brace-format
+msgid "Delete the note of “{title}”?"
+msgstr "¿Eliminar la nota de «{title}»?"
+
+msgid "Delete the questions and their answers?"
+msgstr "¿Eliminar las preguntas y sus respuestas?"
+
+msgid "Delete the segment"
+msgstr "Eliminar el segmento"
+
+#, python-brace-format
+msgid "Delete the segment “{text}”?"
+msgstr "¿Eliminar el segmento «{text}»?"
+
+msgid "Delete the translation"
+msgstr "Eliminar la traducción"
+
+msgid "Delete transcription"
+msgstr "Eliminar transcripción"
+
+#, python-brace-format
+msgid "Delete “{title}” from the history?"
+msgstr "¿Eliminar «{title}» del historial?"
+
+msgid "Delete…"
+msgstr "Eliminar…"
+
+msgid "Description"
+msgstr "Descripción"
+
+msgid "Documentation"
+msgstr "Documentación"
+
+msgid "Donate"
+msgstr "Donar"
+
+msgid "Done"
+msgstr "Completada"
+
+#, python-brace-format
+msgid "Done in {duration}."
+msgstr "Completado en {duration}."
+
+msgid "Done. Press the button to record again."
+msgstr "Listo. Pulsa el botón para volver a grabar."
+
+msgid "Download"
+msgstr "Descargar"
+
+msgid "Downloading…"
+msgstr "Descargando…"
+
+msgid "Draft. It's replaced when the final transcription finishes."
+msgstr "Borrador. Se sustituye cuando termina la transcripción final."
+
+msgid "Drop a folder here"
+msgstr "Suelta aquí una carpeta"
+
+msgid "Drop an audio or video file here"
+msgstr "Suelta aquí un archivo de audio o vídeo"
+
+msgid "Edit note…"
+msgstr "Editar nota…"
+
+msgid "Edit tag…"
+msgstr "Editar etiqueta…"
+
+msgid "Edit text"
+msgstr "Editar texto"
+
+msgid "Edit text…"
+msgstr "Editar texto…"
+
+msgid "Edit the timing"
+msgstr "Editar los tiempos"
+
+msgid "Edit the timing…"
+msgstr "Editar los tiempos…"
+
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Vacío. Para añadir una transcripción, haz clic derecho sobre ella y elige"
 " «Mover al grupo»."
 
-#: src/views/history/history_sidebar.py:511
-msgid "No files yet"
-msgstr "Aún no hay archivos"
+msgid "End:"
+msgstr "Fin:"
 
-#: src/views/history/history_sidebar.py:589
-#: src/views/transcript/find_dialog.py:187
-#: src/views/transcript/find_dialog.py:234
-msgid "No results"
-msgstr "Sin resultados"
+msgid "Engine"
+msgstr "Motor"
 
-#: src/views/history/history_sidebar.py:590
-#, python-brace-format
-msgid "No transcription contains “{query}”."
-msgstr "Ninguna transcripción contiene «{query}»."
+msgid "Enter a URL that starts with http:// or https://"
+msgstr "Introduce una URL que empiece por http:// o https://"
 
-#: src/views/main_window/entry_dialogs.py:41
-msgid "Name of the transcription:"
-msgstr "Nombre de la transcripción:"
+msgid "Enter the URL"
+msgstr "Introduce la URL"
 
-#: src/views/main_window/entry_dialogs.py:54
-msgid "Note"
-msgstr "Nota"
-
-#: src/views/main_window/entry_dialogs.py:55
-#, python-brace-format
-msgid "A note about “{title}”:"
-msgstr "Una nota sobre «{title}»:"
-
-#: src/views/main_window/entry_dialogs.py:67
-msgid "Delete note"
-msgstr "Eliminar nota"
-
-#: src/views/main_window/entry_dialogs.py:68
-#, python-brace-format
-msgid "Delete the note of “{title}”?"
-msgstr "¿Eliminar la nota de «{title}»?"
-
-#: src/views/main_window/entry_dialogs.py:80
-msgid "Tag"
-msgstr "Etiqueta"
-
-#: src/views/main_window/entry_dialogs.py:81
-#, python-brace-format
-msgid "Tag of “{title}”. Leave it empty to show the kind of source."
-msgstr "Etiqueta de «{title}». Déjala vacía para mostrar el tipo de origen."
-
-#: src/views/main_window/entry_dialogs.py:95
-#, python-brace-format
-msgid "Delete “{title}” from the history?"
-msgstr "¿Eliminar «{title}» del historial?"
-
-#: src/views/main_window/entry_dialogs.py:97
-msgid "The transcriptions of its files are deleted too."
-msgstr "También se eliminan las transcripciones de sus archivos."
-
-#: src/views/main_window/entry_dialogs.py:98
-msgid "Your audio, video and saved files are not deleted."
-msgstr "Tus archivos de audio, vídeo y los guardados no se eliminan."
-
-#: src/views/main_window/entry_dialogs.py:100
-msgid "Delete transcription"
-msgstr "Eliminar transcripción"
-
-#: src/views/main_window/entry_dialogs.py:115
-#: src/views/main_window/entry_dialogs.py:132
-msgid "Name of the group:"
-msgstr "Nombre del grupo:"
-
-#: src/views/main_window/entry_dialogs.py:116
-msgid "Create"
-msgstr "Crear"
-
-#: src/views/main_window/entry_dialogs.py:131
-msgid "Rename group"
-msgstr "Renombrar grupo"
-
-#: src/views/main_window/entry_dialogs.py:144
-msgid "Delete group"
-msgstr "Eliminar grupo"
-
-#: src/views/main_window/entry_dialogs.py:146
-#, python-brace-format
-msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
-msgstr "¿Eliminar el grupo «{name}»? Sus transcripciones se conservan, sin grupo."
-
-#: src/views/main_window/main_window.py:464
-#, python-brace-format
-msgid "Recording · {date}"
-msgstr "Grabación · {date}"
-
-#: src/views/main_window/main_window.py:484
-msgid "Processing the recording…"
-msgstr "Procesando la grabación…"
-
-#: src/views/main_window/main_window.py:510
-msgid "The transcription was cancelled."
-msgstr "La transcripción se canceló."
-
-#: src/views/main_window/main_window.py:598
-#: src/views/new_transcription/new_transcription_view.py:485
-#, python-brace-format
-msgid "“{name}” is not a supported audio or video file."
-msgstr "«{name}» no es un archivo de audio o vídeo compatible."
-
-#: src/views/main_window/main_window.py:611
-msgid ""
-"Only one file can be added at a time. To transcribe several files, drop "
-"the folder that contains them."
-msgstr ""
-"Solo se puede añadir un archivo a la vez. Para transcribir varios, suelta"
-" la carpeta que los contiene."
-
-#: src/views/main_window/main_window.py:699
-msgid ""
-"Type in the API key. It's kept in the credential store of your system. "
-"Leave it empty to remove it."
-msgstr ""
-"Escribe la clave de API. Se guarda en el almacén de credenciales de tu "
-"sistema. Déjala vacía para eliminarla."
-
-#: src/views/main_window/main_window.py:703
-msgid "OK"
-msgstr "Aceptar"
-
-#: src/views/main_window/main_window.py:710
-msgid "API key saved."
-msgstr "Clave de API guardada."
-
-#: src/views/main_window/main_window.py:710
-msgid "API key removed."
-msgstr "Clave de API eliminada."
-
-#: src/views/main_window/status_messages.py:40
-msgid "Transcription ready"
-msgstr "Transcripción lista"
-
-#: src/views/main_window/status_messages.py:43
-#, python-brace-format
-msgid "Saved in {folder}."
-msgstr "Guardado en {folder}."
-
-#: src/views/main_window/status_messages.py:47
-msgid "The recording is no longer available."
-msgstr "La grabación ya no está disponible."
-
-#: src/views/main_window/status_messages.py:54
-#, python-brace-format
-msgid "The file was moved or deleted: {path}"
-msgstr "El archivo se ha movido o eliminado: {path}"
-
-#: src/views/main_window/status_messages.py:56
-#, python-brace-format
-msgid "Could not open the file manager: {error}"
-msgstr "No se pudo abrir el gestor de archivos: {error}"
-
-#: src/views/main_window/status_messages.py:61
-#, python-brace-format
-msgid "Could not open the folder: {error}"
-msgstr "No se pudo abrir la carpeta: {error}"
-
-#: src/views/main_window/status_messages.py:69
-#, python-brace-format
-msgid "The summary of “{title}” is ready."
-msgstr "El resumen de «{title}» está listo."
-
-#: src/views/main_window/status_messages.py:73
-#, python-brace-format
-msgid "Could not summarize “{title}”: {error}"
-msgstr "No se pudo resumir «{title}»: {error}"
-
-#: src/views/main_window/status_messages.py:83
-#, python-brace-format
-msgid "The translation of “{title}” is ready."
-msgstr "La traducción de «{title}» está lista."
-
-#: src/views/main_window/status_messages.py:87
-#, python-brace-format
-msgid "Could not translate “{title}”: {error}"
-msgstr "No se ha podido traducir «{title}»: {error}"
-
-#: src/views/main_window/top_bar.py:72
-msgid "New transcription:"
-msgstr "Nueva transcripción:"
-
-#: src/views/main_window/top_bar.py:160
-#: src/views/settings/preferences_dialog.py:909
-#, python-brace-format
-msgid "Version {version} is available"
-msgstr "La versión {version} está disponible"
-
-#: src/views/main_window/welcome_view.py:25
-msgid "What do you want to transcribe?"
-msgstr "¿Qué quieres transcribir?"
-
-#: src/views/main_window/welcome_view.py:30
-msgid ""
-"Choose a source, or select a transcription of your history to read and "
-"play it."
-msgstr ""
-"Elige un origen o selecciona una transcripción de tu historial para "
-"leerla y reproducirla."
-
-#: src/views/main_window/welcome_view.py:41
-msgid "An audio or video file"
-msgstr "Un archivo de audio o vídeo"
-
-#: src/views/main_window/welcome_view.py:47
-msgid "YouTube or a link to a file"
-msgstr "YouTube o el enlace a un archivo"
-
-#: src/views/main_window/welcome_view.py:53
-#: src/views/new_transcription/microphone_view.py:468
-msgid "Record and transcribe"
-msgstr "Graba y transcribe"
-
-#: src/views/main_window/welcome_view.py:59
-msgid "Many files at once, or watch it"
-msgstr "Muchos archivos a la vez, o vigílala"
-
-#: src/views/main_window/welcome_view.py:75
-msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
-msgstr ""
-"Consejo: suelta un archivo o una carpeta en cualquier parte de la ventana"
-" para transcribirlo."
-
-#: src/views/new_transcription/microphone_view.py:80
-msgid "No sound. Check that the microphone is on and allowed."
-msgstr "No hay sonido. Comprueba que el micrófono está encendido y tiene permiso."
-
-#: src/views/new_transcription/microphone_view.py:82
-msgid "Waiting for speech…"
-msgstr "Esperando a que hables…"
-
-#: src/views/new_transcription/microphone_view.py:85
-msgid "Too quiet. Speak louder or closer to the microphone."
-msgstr "Demasiado bajo. Habla más alto o más cerca del micrófono."
-
-#: src/views/new_transcription/microphone_view.py:87
-msgid "Good level"
-msgstr "Buen nivel"
-
-#: src/views/new_transcription/microphone_view.py:90
-msgid "Too loud. Move away from the microphone."
-msgstr "Demasiado alto. Aléjate del micrófono."
-
-#: src/views/new_transcription/microphone_view.py:134
-msgid "Transcribe from the microphone"
-msgstr "Transcribir desde el micrófono"
-
-#: src/views/new_transcription/microphone_view.py:139
-msgid "Record yourself or a meeting. The recording is kept in your history."
-msgstr "Grábate a ti o una reunión. La grabación se guarda en tu historial."
-
-#: src/views/new_transcription/microphone_view.py:276
-#: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:724
-#: src/views/transcript/transcript_view.py:1489
-#: src/views/transcript/transcript_view.py:1727
-#: src/views/transcript/translation_panel.py:147
-msgid "Copy"
-msgstr "Copiar"
-
-#: src/views/new_transcription/microphone_view.py:283
-msgid "Open in history"
-msgstr "Abrir en el historial"
-
-#: src/views/new_transcription/microphone_view.py:302
-msgid "Wait until the current transcription finishes, or cancel it."
-msgstr "Espera a que termine la transcripción actual o cancélala."
-
-#: src/views/new_transcription/microphone_view.py:391
-#, python-brace-format
-msgid "Press the button to start recording ({shortcut})"
-msgstr "Pulsa el botón para empezar a grabar ({shortcut})"
-
-#: src/views/new_transcription/microphone_view.py:395
-msgid "The level is shown while recording"
-msgstr "El nivel se muestra mientras grabas"
-
-#: src/views/new_transcription/microphone_view.py:400
-msgid "Recording… Press the button to stop and transcribe."
-msgstr "Grabando… Pulsa el botón para detener y transcribir."
-
-#: src/views/new_transcription/microphone_view.py:415
-msgid "Done. Press the button to record again."
-msgstr "Listo. Pulsa el botón para volver a grabar."
-
-#: src/views/new_transcription/microphone_view.py:419
-msgid "Press the button to try again."
-msgstr "Pulsa el botón para volver a intentarlo."
-
-#: src/views/new_transcription/microphone_view.py:435
-msgid "Draft. It's replaced when the final transcription finishes."
-msgstr "Borrador. Se sustituye cuando termina la transcripción final."
-
-#: src/views/new_transcription/microphone_view.py:445
-msgid "The text will appear here as you speak."
-msgstr "El texto aparecerá aquí mientras hablas."
-
-#: src/views/new_transcription/microphone_view.py:447
-msgid "The transcription will appear here when you stop recording."
-msgstr "La transcripción aparecerá aquí cuando dejes de grabar."
-
-#: src/views/new_transcription/microphone_view.py:469
-msgid "Refine"
-msgstr "Refinar"
-
-#: src/views/new_transcription/microphone_view.py:521
-msgid "default"
-msgstr "predeterminado"
-
-#: src/views/new_transcription/microphone_view.py:523
-msgid "Loading…"
-msgstr "Cargando…"
-
-#: src/views/new_transcription/microphone_view.py:524
-msgid "No microphone found"
-msgstr "No se ha encontrado ningún micrófono"
-
-#: src/views/new_transcription/new_transcription_view.py:105
-msgid "Transcribe a file"
-msgstr "Transcribir un archivo"
-
-#: src/views/new_transcription/new_transcription_view.py:106
-msgid "Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."
-msgstr "Archivos de audio y vídeo: MP3, WAV, M4A, MP4, MOV, MKV y más."
-
-#: src/views/new_transcription/new_transcription_view.py:111
-msgid "Transcribe from a URL"
-msgstr "Transcribir desde una URL"
-
-#: src/views/new_transcription/new_transcription_view.py:112
-msgid "A YouTube video or a direct link to an audio or video file."
-msgstr "Un vídeo de YouTube o un enlace directo a un archivo de audio o vídeo."
-
-#: src/views/new_transcription/new_transcription_view.py:117
-msgid "Transcribe a folder"
-msgstr "Transcribir una carpeta"
-
-#: src/views/new_transcription/new_transcription_view.py:119
-msgid ""
-"All the audio and video files of a folder, or the new ones as they're "
-"added."
-msgstr ""
-"Todos los archivos de audio y vídeo de una carpeta, o los nuevos a medida"
-" que se añaden."
-
-#: src/views/new_transcription/new_transcription_view.py:175
-msgid "Drop an audio or video file here"
-msgstr "Suelta aquí un archivo de audio o vídeo"
-
-#: src/views/new_transcription/new_transcription_view.py:177
-msgid "Drop a folder here"
-msgstr "Suelta aquí una carpeta"
-
-#: src/views/new_transcription/new_transcription_view.py:184
-msgid "or"
-msgstr "o"
-
-#: src/views/new_transcription/new_transcription_view.py:194
-msgid "Choose a file…"
-msgstr "Elegir un archivo…"
-
-#: src/views/new_transcription/new_transcription_view.py:194
-msgid "Choose a folder…"
-msgstr "Elegir una carpeta…"
-
-#: src/views/new_transcription/new_transcription_view.py:234
-#: src/views/settings/cards/output_card.py:98
-msgid "Change…"
-msgstr "Cambiar…"
-
-#: src/views/new_transcription/new_transcription_view.py:266
-msgid "Paste"
-msgstr "Pegar"
-
-#: src/views/new_transcription/new_transcription_view.py:280
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
@@ -1017,146 +461,472 @@ msgstr ""
 "Ejemplos: https://youtu.be/dQw4w9WgXcQ · "
 "https://example.com/podcast/episode-12.mp3"
 
-#: src/views/new_transcription/new_transcription_view.py:358
-msgid "Select a file"
-msgstr "Selecciona un archivo"
+msgid "Export"
+msgstr "Exportar"
 
-#: src/views/new_transcription/new_transcription_view.py:360
-msgid "All supported files"
-msgstr "Todos los archivos compatibles"
+msgid "Export summary"
+msgstr "Exportar el resumen"
 
-#: src/views/new_transcription/new_transcription_view.py:361
-msgid "Audio files"
-msgstr "Archivos de audio"
+msgid "Export transcription"
+msgstr "Exportar transcripción"
 
-#: src/views/new_transcription/new_transcription_view.py:362
-msgid "Video files"
-msgstr "Archivos de vídeo"
-
-#: src/views/new_transcription/new_transcription_view.py:366
-msgid "Select a folder"
-msgstr "Selecciona una carpeta"
-
-#: src/views/new_transcription/new_transcription_view.py:395
-msgid "Continue"
-msgstr "Continuar"
-
-#: src/views/new_transcription/new_transcription_view.py:426
-msgid "Add to queue"
-msgstr "Añadir a la cola"
-
-#: src/views/new_transcription/new_transcription_view.py:426
-msgid "Start transcription"
-msgstr "Empezar la transcripción"
-
-#: src/views/new_transcription/new_transcription_view.py:438
-msgid "It will start when the current transcription finishes."
-msgstr "Empezará cuando termine la transcripción actual."
-
-#: src/views/new_transcription/new_transcription_view.py:503
-msgid "Reading…"
-msgstr "Leyendo…"
-
-#: src/views/new_transcription/new_transcription_view.py:525
-msgid "Video"
-msgstr "Vídeo"
-
-#: src/views/new_transcription/new_transcription_view.py:525
-msgid "Audio"
-msgstr "Audio"
-
-#: src/views/new_transcription/new_transcription_view.py:544
-msgid "No audio or video files found (subfolders included)."
-msgstr "No se han encontrado archivos de audio ni vídeo (subcarpetas incluidas)."
-
-#: src/views/new_transcription/new_transcription_view.py:546
-msgid "1 audio or video file (subfolders included)"
-msgstr "1 archivo de audio o vídeo (subcarpetas incluidas)"
-
-#: src/views/new_transcription/new_transcription_view.py:547
 #, python-brace-format
-msgid "{count} audio and video files (subfolders included)"
-msgstr "{count} archivos de audio y vídeo (subcarpetas incluidas)"
+msgid "Export translation into {language}"
+msgstr "Exportar la traducción al {language}"
 
-#: src/views/new_transcription/new_transcription_view.py:583
-msgid "YouTube video"
-msgstr "Vídeo de YouTube"
+msgid "Export video with subtitles"
+msgstr "Exportar el vídeo con subtítulos"
 
-#: src/views/new_transcription/new_transcription_view.py:583
-msgid "Link to a file"
-msgstr "Enlace a un archivo"
+#, python-brace-format
+msgid "Exported to {path}"
+msgstr "Exportado a {path}"
 
-#: src/views/new_transcription/new_transcription_view.py:590
-msgid "Enter a URL that starts with http:// or https://"
-msgstr "Introduce una URL que empiece por http:// o https://"
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr ""
+"Exportado a {path}, pero ninguna fuente tiene estos caracteres, así que "
+"se muestran como recuadros: {characters}"
 
-#: src/views/settings/cards/engine_card.py:163
-#: src/views/settings/preferences_dialog.py:74
-msgid "OpenAI API key"
-msgstr "Clave de API de OpenAI"
+msgid "Extract speech"
+msgstr "Extraer la voz"
 
-#: src/views/settings/preferences_dialog.py:76
-msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
-msgstr "Necesaria para la API de Whisper, y para resumir y traducir con OpenAI."
+msgid "Failed"
+msgstr "Con errores"
 
-#: src/views/settings/preferences_dialog.py:80
-msgid "Anthropic API key"
-msgstr "Clave de API de Anthropic"
+msgid "File"
+msgstr "Archivo"
 
-#: src/views/settings/preferences_dialog.py:81
-msgid "Required to summarize and translate with Claude."
-msgstr "Necesaria para resumir y traducir con Claude."
+msgid "File types"
+msgstr "Tipos de archivo"
 
-#: src/views/settings/preferences_dialog.py:84
-msgid "DeepSeek API key"
-msgstr "Clave de API de DeepSeek"
+#, python-brace-format
+msgid "File {current} of {total} ({name}): {message}"
+msgstr "Archivo {current} de {total} ({name}): {message}"
 
-#: src/views/settings/preferences_dialog.py:85
-msgid "Required to summarize and translate with DeepSeek."
-msgstr "Necesaria para resumir y traducir con DeepSeek."
+msgid "Files"
+msgstr "Archivos"
 
-#: src/views/settings/preferences_dialog.py:88
+#, python-brace-format
+msgid "Find ({shortcut})"
+msgstr "Buscar ({shortcut})"
+
+#, python-brace-format
+msgid "Find and replace ({shortcut})"
+msgstr "Buscar y reemplazar ({shortcut})"
+
+msgid "Find and replace in the transcription"
+msgstr "Buscar y reemplazar en la transcripción"
+
+msgid "Find and replace in the translation"
+msgstr "Buscar y reemplazar en la traducción"
+
+#, python-brace-format
+msgid "Find and replace in the translation into {language}"
+msgstr "Buscar y reemplazar en la traducción al {language}"
+
+msgid "Find in the summary"
+msgstr "Buscar en el resumen"
+
+msgid "Find:"
+msgstr "Buscar:"
+
+msgid "Folder"
+msgstr "Carpeta"
+
+msgid "Format of the files."
+msgstr "Formato de los archivos."
+
 msgid "Gemini API key"
 msgstr "Clave de API de Gemini"
 
-#: src/views/settings/preferences_dialog.py:90
-msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
+msgid "General"
+msgstr "General"
+
+#, python-brace-format
+msgid ""
+"Generate a summary, the key points and the chapters of the transcription "
+"with {provider}."
 msgstr ""
-"Necesaria para resumir y traducir con Gemini (se obtiene en Google AI "
-"Studio)."
+"Genera un resumen, los puntos clave y los capítulos de la transcripción "
+"con {provider}."
 
-#: src/views/settings/preferences_dialog.py:94
-msgid "Mistral API key"
-msgstr "Clave de API de Mistral"
+msgid "Generate summary"
+msgstr "Generar resumen"
 
-#: src/views/settings/preferences_dialog.py:95
-msgid "Required to summarize and translate with Mistral."
-msgstr "Necesaria para resumir y traducir con Mistral."
+msgid "Generate the summary again? The current one will be replaced."
+msgstr "¿Volver a generar el resumen? Se reemplazará el actual."
 
-#: src/views/settings/preferences_dialog.py:98
-msgid "xAI API key"
-msgstr "Clave de API de xAI"
+#, python-brace-format
+msgid "Generated by {model} · {date}"
+msgstr "Generado por {model} · {date}"
 
-#: src/views/settings/preferences_dialog.py:99
-msgid "Required to summarize and translate with Grok."
-msgstr "Necesaria para resumir y traducir con Grok."
-
-#: src/views/settings/preferences_dialog.py:102
-msgid "DeepL API key"
-msgstr "Clave de API de DeepL"
-
-#: src/views/settings/preferences_dialog.py:103
-msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgid ""
+"Give a name to each speaker. Giving two speakers the same name merges "
+"them."
 msgstr ""
-"Necesaria para traducir con DeepL. También sirven las claves del plan "
-"gratuito."
+"Pon un nombre a cada hablante. Si das el mismo nombre a dos hablantes, se"
+" fusionan."
 
-#: src/views/settings/cards/engine_card.py:165
-#: src/views/settings/preferences_dialog.py:106
+msgid "Good level"
+msgstr "Buen nivel"
+
 msgid "Google API key"
 msgstr "Clave de API de Google"
 
-#: src/views/settings/preferences_dialog.py:108
+msgid "Google Translate didn't return a valid translation."
+msgstr "Google Translate no ha devuelto una traducción válida."
+
+msgid "Hide the translation"
+msgstr "Ocultar la traducción"
+
+# Needs review by a native speaker
+msgid "Highlight low-confidence words"
+msgstr "Resaltar palabras de baja confianza"
+
+msgid "Highlight words"
+msgstr "Resaltar palabras"
+
+msgid "Highlights each word while playing (whisper-1 model). Takes longer."
+msgstr ""
+"Resalta cada palabra durante la reproducción (modelo whisper-1). Tarda "
+"más."
+
+msgid "Highlights each word while playing. Takes a bit longer."
+msgstr "Resalta cada palabra durante la reproducción. Tarda un poco más."
+
+msgid "Highlights each word while playing. The subtitles already use them."
+msgstr "Resalta cada palabra durante la reproducción. Los subtítulos ya los usan."
+
+msgid "Hugging Face token"
+msgstr "Token de Hugging Face"
+
+msgid "Identifies the speakers. With timestamps."
+msgstr "Identifica a los hablantes. Con marcas de tiempo."
+
+msgid "Identify speakers"
+msgstr "Identificar hablantes"
+
+#, python-brace-format
+msgid ""
+"Identifying speakers requires a Hugging Face token. Create one at "
+"{tokens_url}, accept the conditions of {model_url} and set the token in "
+"the WhisperX options."
+msgstr ""
+"Para identificar hablantes se necesita un token de Hugging Face. Créalo "
+"en {tokens_url}, acepta las condiciones de {model_url} e introduce el "
+"token en las opciones de WhisperX."
+
+msgid "Identifying speakers…"
+msgstr "Identificando hablantes…"
+
+msgid "Interface language"
+msgstr "Idioma de la interfaz"
+
+msgid "Interface size"
+msgstr "Tamaño de la interfaz"
+
+msgid "Interrupted"
+msgstr "Interrumpida"
+
+msgid "Isolating the speech…"
+msgstr "Aislando la voz…"
+
+msgid "It takes a moment."
+msgstr "Tardará un momento."
+
+msgid "It will start when the current transcription finishes."
+msgstr "Empezará cuando termine la transcripción actual."
+
+msgid "JSON (.json)"
+msgstr "JSON (.json)"
+
+msgid "Keep above the main window"
+msgstr "Mantener sobre la ventana principal"
+
+msgid ""
+"Keeps running and transcribes the files added to the folder, until you "
+"stop it. The files it already contains are skipped."
+msgstr ""
+"Sigue en marcha y transcribe los archivos que se añaden a la carpeta "
+"hasta que lo detengas. Los archivos que ya contiene se omiten."
+
+msgid "Key points"
+msgstr "Puntos clave"
+
+msgid "Keywords"
+msgstr "Palabras clave"
+
+msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgstr "Indica quién habla en cada parte. Necesita un token de Hugging Face."
+
+msgid "Landscape"
+msgstr "Horizontal"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Language of the audio"
+msgstr "Idioma del audio"
+
+msgid "Language of the transcription"
+msgstr "Idioma de la transcripción"
+
+msgid "Large"
+msgstr "Grande"
+
+msgid "Larger models are more accurate, but slower."
+msgstr "Los modelos más grandes son más precisos, pero más lentos."
+
+msgid "Light"
+msgstr "Claro"
+
+msgid "Link to a file"
+msgstr "Enlace a un archivo"
+
+msgid "Live model"
+msgstr "Modelo en directo"
+
+msgid "Live text"
+msgstr "Texto en directo"
+
+msgid "Loading audio…"
+msgstr "Cargando el audio…"
+
+msgid "Loading the audio…"
+msgstr "Cargando el audio…"
+
+msgid ""
+"Loading the speaker identification model (it's downloaded the first time "
+"it's used)…"
+msgstr ""
+"Cargando el modelo de identificación de hablantes (se descarga la primera"
+" vez que se usa)…"
+
+msgid "Loading the subtitle alignment model…"
+msgstr "Cargando el modelo de alineación de subtítulos…"
+
+#, python-brace-format
+msgid "Loading the {model} model (it's downloaded the first time it's used)…"
+msgstr "Cargando el modelo {model} (se descarga la primera vez que se usa)…"
+
+msgid "Loading…"
+msgstr "Cargando…"
+
+# Needs review by a native speaker
+msgid "Low-confidence threshold"
+msgstr "Umbral de baja confianza"
+
+msgid "Lower it if you run out of memory."
+msgstr "Redúcelo si te quedas sin memoria."
+
+#, python-brace-format
+msgid "Made by {author}"
+msgstr "Creado por {author}"
+
+msgid "Manual"
+msgstr "Manual"
+
+msgid "Many files at once, or watch it"
+msgstr "Muchos archivos a la vez, o vigílala"
+
+msgid "Markdown (.md)"
+msgstr "Markdown (.md)"
+
+msgid "Match case"
+msgstr "Distinguir mayúsculas"
+
+msgid "Max. characters per line"
+msgstr "Máx. de caracteres por línea"
+
+msgid "Max. lines per subtitle"
+msgstr "Máx. de líneas por subtítulo"
+
+msgid "Medium"
+msgstr "Mediano"
+
+msgid "Microphone"
+msgstr "Micrófono"
+
+msgid "Mistral API key"
+msgstr "Clave de API de Mistral"
+
+msgid "Model"
+msgstr "Modelo"
+
+msgid ""
+"More accurate, but without timestamps: the transcription can't be played "
+"segment by segment nor subtitled."
+msgstr ""
+"Más preciso, pero sin marcas de tiempo: la transcripción no se puede "
+"reproducir segmento a segmento ni subtitular."
+
+msgid "More options in the settings"
+msgstr "Más opciones en los ajustes"
+
+msgid "Move to group"
+msgstr "Mover al grupo"
+
+msgid "Name of the group:"
+msgstr "Nombre del grupo:"
+
+msgid "Name of the transcription:"
+msgstr "Nombre de la transcripción:"
+
+msgid ""
+"Names, terms or acronyms said in the audio, separated by commas, so "
+"they're spelled right."
+msgstr ""
+"Nombres, términos o siglas que se dicen en el audio, separados por comas,"
+" para que se escriban bien."
+
+msgid "New group"
+msgstr "Nuevo grupo"
+
+msgid "New group…"
+msgstr "Nuevo grupo…"
+
+msgid "New transcription:"
+msgstr "Nueva transcripción:"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Next low-confidence word ({shortcut})"
+msgstr "Siguiente palabra de baja confianza ({shortcut})"
+
+msgid "Next match"
+msgstr "Resultado siguiente"
+
+msgid "Next to the source"
+msgstr "Junto al origen"
+
+#, python-brace-format
+msgid "No API key for {provider}."
+msgstr "No hay clave de API de {provider}."
+
+msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgstr ""
+"No se ha encontrado ninguna GPU con CUDA, así que WhisperX se ejecuta en "
+"la CPU."
+
+msgid "No audio or video files found (subfolders included)."
+msgstr "No se han encontrado archivos de audio ni vídeo (subcarpetas incluidas)."
+
+msgid "No audio was recorded."
+msgstr "No se ha grabado ningún audio."
+
+msgid "No files"
+msgstr "Sin archivos"
+
+msgid "No files yet"
+msgstr "Aún no hay archivos"
+
+msgid "No group"
+msgstr "Sin grupo"
+
+msgid "No languages found."
+msgstr "No se han encontrado idiomas."
+
+# Needs review by a native speaker
+msgid "No low-confidence words at this threshold"
+msgstr "No hay palabras de baja confianza con este umbral"
+
+# Needs review by a native speaker
+msgid "No low-confidence words left to review"
+msgstr "No quedan palabras de baja confianza por revisar"
+
+msgid "No microphone found"
+msgstr "No se ha encontrado ningún micrófono"
+
+msgid "No output file types selected. Please select at least one."
+msgstr "No hay tipos de archivo de salida seleccionados. Selecciona al menos uno."
+
+msgid "No results"
+msgstr "Sin resultados"
+
+msgid "No sound. Check that the microphone is on and allowed."
+msgstr "No hay sonido. Comprueba que el micrófono está encendido y tiene permiso."
+
+msgid "No summary yet"
+msgstr "Aún no hay resumen"
+
+#, python-brace-format
+msgid "No transcription contains “{query}”."
+msgstr "Ninguna transcripción contiene «{query}»."
+
+msgid "No transcriptions yet"
+msgstr "Aún no hay transcripciones"
+
+msgid "Not translated yet"
+msgstr "Sin traducir todavía"
+
+msgid "Not used by the Google API."
+msgstr "La API de Google no lo usa."
+
+#, python-brace-format
+msgid "Not used by the {model} model."
+msgstr "El modelo {model} no lo usa."
+
+msgid "Note"
+msgstr "Nota"
+
+msgid "Notifications"
+msgstr "Notificaciones"
+
+msgid "Number of speakers (0 = auto)"
+msgstr "Número de hablantes (0 = auto)"
+
+msgid "OK"
+msgstr "Aceptar"
+
+msgid "Ollama"
+msgstr "Ollama"
+
+msgid "Ollama runs the models on your computer, without an API key."
+msgstr "Ollama ejecuta los modelos en tu ordenador, sin clave de API."
+
+# Needs review by a native speaker
+msgid "Only WhisperX and whisper-1 score the words"
+msgstr "Solo WhisperX y whisper-1 puntúan las palabras"
+
+msgid ""
+"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
+" of the Whisper API."
+msgstr ""
+"Solo disponible con WhisperX o con el modelo gpt-4o-transcribe-diarize de"
+" la API de Whisper."
+
+msgid "Only available with WhisperX."
+msgstr "Solo disponible con WhisperX."
+
+# Needs review by a native speaker
+msgid "Only flagged"
+msgstr "Solo marcadas"
+
+msgid ""
+"Only one file can be added at a time. To transcribe several files, drop "
+"the folder that contains them."
+msgstr ""
+"Solo se puede añadir un archivo a la vez. Para transcribir varios, suelta"
+" la carpeta que los contiene."
+
+msgid ""
+"Only transcribes English, faster than the multilingual model of the same "
+"size."
+msgstr ""
+"Solo transcribe inglés, más rápido que el modelo multilingüe del mismo "
+"tamaño."
+
+msgid "Open in history"
+msgstr "Abrir en el historial"
+
+msgid "Open the folder of the saved files"
+msgstr "Abrir la carpeta de los archivos guardados"
+
+msgid "OpenAI API key"
+msgstr "Clave de API de OpenAI"
+
 msgid ""
 "Optional for Google Speech-to-Text: without it, the free tier is used. "
 "Required to translate with Google Translate (Cloud Translation API)."
@@ -1164,12 +934,155 @@ msgstr ""
 "Opcional para Google Speech-to-Text: sin ella, se usa el nivel gratuito. "
 "Necesaria para traducir con Google Translate (Cloud Translation API)."
 
-#: src/views/settings/cards/options_card.py:90
-#: src/views/settings/preferences_dialog.py:112
-msgid "Hugging Face token"
-msgstr "Token de Hugging Face"
+msgid "Options"
+msgstr "Opciones"
 
-#: src/views/settings/preferences_dialog.py:114
+msgid "Outline"
+msgstr "Contorno"
+
+msgid "Output"
+msgstr "Salida"
+
+msgid "Overwrite existing files"
+msgstr "Sobrescribir archivos existentes"
+
+msgid "Paste"
+msgstr "Pegar"
+
+msgid "Pin to the top"
+msgstr "Fijar arriba"
+
+msgid "Pinned"
+msgstr "Fijadas"
+
+msgid "Plain text"
+msgstr "Texto plano"
+
+msgid "Plain text (.txt)"
+msgstr "Texto plano (.txt)"
+
+msgid "Play from here"
+msgstr "Reproducir desde aquí"
+
+msgid ""
+"Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
+" or video file)."
+msgstr ""
+"Introduce una URL válida (p. ej., el enlace de un vídeo de YouTube o de "
+"un archivo de audio o vídeo)."
+
+msgid "Please select a valid audio or video file."
+msgstr "Selecciona un archivo de audio o vídeo válido."
+
+msgid "Please select a valid folder."
+msgstr "Selecciona una carpeta válida."
+
+msgid "Portrait"
+msgstr "Vertical"
+
+msgid "Position"
+msgstr "Posición"
+
+msgid "Precise timestamps (HH:MM:SS,mmm)"
+msgstr "Marcas de tiempo precisas (HH:MM:SS,mmm)"
+
+msgid "Preferences"
+msgstr "Preferencias"
+
+#, python-brace-format
+msgid "Press the button to start recording ({shortcut})"
+msgstr "Pulsa el botón para empezar a grabar ({shortcut})"
+
+msgid "Press the button to try again."
+msgstr "Pulsa el botón para volver a intentarlo."
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Previous low-confidence word ({shortcut})"
+msgstr "Palabra anterior de baja confianza ({shortcut})"
+
+msgid "Previous match"
+msgstr "Resultado anterior"
+
+msgid "Processing the recording…"
+msgstr "Procesando la grabación…"
+
+msgid "Provider"
+msgstr "Proveedor"
+
+msgid "Queued"
+msgstr "En cola"
+
+msgid "Reading…"
+msgstr "Leyendo…"
+
+msgid "Record"
+msgstr "Grabar"
+
+msgid "Record and transcribe"
+msgstr "Graba y transcribe"
+
+msgid "Record yourself or a meeting. The recording is kept in your history."
+msgstr "Grábate a ti o una reunión. La grabación se guarda en tu historial."
+
+#, python-brace-format
+msgid "Recording · {date}"
+msgstr "Grabación · {date}"
+
+msgid "Recording…"
+msgstr "Grabando…"
+
+msgid "Recording… Press the button to stop and transcribe."
+msgstr "Grabando… Pulsa el botón para detener y transcribir."
+
+msgid "Reduces music and background noise before transcribing."
+msgstr "Reduce la música y el ruido de fondo antes de transcribir."
+
+msgid "Refine"
+msgstr "Refinar"
+
+msgid "Regenerate the summary"
+msgstr "Volver a generar el resumen"
+
+msgid "Rename"
+msgstr "Renombrar"
+
+msgid "Rename group"
+msgstr "Renombrar grupo"
+
+msgid "Rename group…"
+msgstr "Renombrar grupo…"
+
+msgid "Rename speakers"
+msgstr "Renombrar hablantes"
+
+msgid "Rename speakers…"
+msgstr "Renombrar hablantes…"
+
+msgid "Rename…"
+msgstr "Renombrar…"
+
+msgid "Replace"
+msgstr "Reemplazar"
+
+msgid "Replace all"
+msgstr "Reemplazar todo"
+
+msgid "Replace with:"
+msgstr "Reemplazar por:"
+
+# Needs review by a native speaker
+msgid "Replay"
+msgstr "Volver a reproducir"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Replay ({shortcut})"
+msgstr "Volver a reproducir ({shortcut})"
+
+msgid "Required by the Whisper API, and to summarize and translate with OpenAI."
+msgstr "Necesaria para la API de Whisper, y para resumir y traducir con OpenAI."
+
 msgid ""
 "Required to identify speakers with WhisperX (pyannote/speaker-"
 "diarization-community-1)."
@@ -1177,261 +1090,388 @@ msgstr ""
 "Necesario para identificar hablantes con WhisperX (pyannote/speaker-"
 "diarization-community-1)."
 
-#: src/views/settings/preferences_dialog.py:172
-msgid "Preferences"
-msgstr "Preferencias"
+msgid "Required to summarize and translate with Claude."
+msgstr "Necesaria para resumir y traducir con Claude."
 
-#: src/views/settings/preferences_dialog.py:186
-msgid "General"
-msgstr "General"
+msgid "Required to summarize and translate with DeepSeek."
+msgstr "Necesaria para resumir y traducir con DeepSeek."
 
-#: src/views/settings/preferences_dialog.py:187
-msgid "AI"
-msgstr "IA"
-
-#: src/views/settings/preferences_dialog.py:188
-msgid "API keys"
-msgstr "Claves de API"
-
-#: src/views/settings/preferences_dialog.py:190
-#: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:826
-msgid "Subtitles"
-msgstr "Subtítulos"
-
-#: src/views/settings/preferences_dialog.py:192
-msgid "About"
-msgstr "Acerca de"
-
-#: src/views/settings/preferences_dialog.py:320
-msgid "Appearance"
-msgstr "Apariencia"
-
-#: src/views/settings/preferences_dialog.py:324
-msgid "System"
-msgstr "Sistema"
-
-#: src/views/settings/preferences_dialog.py:324
-msgid "Light"
-msgstr "Claro"
-
-#: src/views/settings/preferences_dialog.py:324
-msgid "Dark"
-msgstr "Oscuro"
-
-#: src/views/settings/preferences_dialog.py:330
-msgid "Interface size"
-msgstr "Tamaño de la interfaz"
-
-#: src/views/settings/preferences_dialog.py:339
-msgid "Interface language"
-msgstr "Idioma de la interfaz"
-
-#: src/views/settings/preferences_dialog.py:345
-msgid "System language"
-msgstr "Idioma del sistema"
-
-#: src/views/settings/preferences_dialog.py:358
-msgid "Notifications"
-msgstr "Notificaciones"
-
-#: src/views/settings/preferences_dialog.py:359
-msgid "Shows a notification of the system when a transcription is ready."
-msgstr "Muestra una notificación del sistema cuando una transcripción está lista."
-
-#: src/views/settings/preferences_dialog.py:370
-msgid "Updates"
-msgstr "Actualizaciones"
-
-#: src/views/settings/preferences_dialog.py:371
-msgid "Checks for a new version when the app opens."
-msgstr "Comprueba si hay una versión nueva al abrir la aplicación."
-
-#: src/views/settings/preferences_dialog.py:387
-msgid "Date format"
-msgstr "Formato de la fecha"
-
-#: src/views/settings/preferences_dialog.py:404
-msgid "Time format"
-msgstr "Formato de la hora"
-
-#: src/views/settings/preferences_dialog.py:405
-msgid "Automatic uses the clock of the interface language."
-msgstr "Automático usa el reloj del idioma de la interfaz."
-
-#: src/views/settings/preferences_dialog.py:411
-msgid "Automatic"
-msgstr "Automático"
-
-#: src/views/settings/preferences_dialog.py:470
-#: src/views/settings/preferences_dialog.py:483
-msgid "Change API key…"
-msgstr "Cambiar clave de API…"
-
-#: src/views/settings/cards/engine_card.py:140
-#: src/views/settings/preferences_dialog.py:470
-#: src/views/settings/preferences_dialog.py:483
-#: src/views/transcript/ask_panel.py:270
-#: src/views/transcript/summary_panel.py:299
-#: src/views/transcript/translation_panel.py:485
-#: src/views/transcript/translation_panel.py:557
-msgid "Set API key…"
-msgstr "Configurar clave de API…"
-
-#: src/views/settings/cards/language_card.py:117
-#: src/views/settings/preferences_dialog.py:532
-#: src/views/transcript/translation_panel.py:232
-msgid "Translation"
-msgstr "Traducción"
-
-#: src/views/settings/preferences_dialog.py:544
-msgid "Ollama"
-msgstr "Ollama"
-
-#: src/views/settings/preferences_dialog.py:549
-msgid "Server URL"
-msgstr "URL del servidor"
-
-#: src/views/settings/preferences_dialog.py:550
-msgid "Ollama runs the models on your computer, without an API key."
-msgstr "Ollama ejecuta los modelos en tu ordenador, sin clave de API."
-
-#: src/views/settings/preferences_dialog.py:581
-msgid "Provider"
-msgstr "Proveedor"
-
-#: src/views/settings/cards/engine_card.py:66
-#: src/views/settings/preferences_dialog.py:588
-msgid "Model"
-msgstr "Modelo"
-
-#: src/views/settings/preferences_dialog.py:589
-msgid "The default model of the provider if empty."
-msgstr "Si está vacío, el modelo predeterminado del proveedor."
-
-#: src/views/settings/preferences_dialog.py:636
-msgid "Compute type"
-msgstr "Tipo de cómputo"
-
-#: src/views/settings/preferences_dialog.py:637
-msgid "float16 is faster on GPUs. int8 uses less memory."
-msgstr "float16 es más rápido en GPU. int8 usa menos memoria."
-
-#: src/views/settings/preferences_dialog.py:653
-msgid "Batch size"
-msgstr "Tamaño de lote"
-
-#: src/views/settings/preferences_dialog.py:654
-msgid "Lower it if you run out of memory."
-msgstr "Redúcelo si te quedas sin memoria."
-
-#: src/views/settings/preferences_dialog.py:666
-msgid "Use CPU"
-msgstr "Usar CPU"
-
-#: src/views/settings/preferences_dialog.py:669
-msgid "No CUDA GPU was found, so WhisperX runs on the CPU."
+msgid "Required to summarize and translate with Gemini (from Google AI Studio)."
 msgstr ""
-"No se ha encontrado ninguna GPU con CUDA, así que WhisperX se ejecuta en "
-"la CPU."
+"Necesaria para resumir y traducir con Gemini (se obtiene en Google AI "
+"Studio)."
 
-#: src/views/settings/preferences_dialog.py:684
-msgid "Highlight words"
-msgstr "Resaltar palabras"
+msgid "Required to summarize and translate with Grok."
+msgstr "Necesaria para resumir y traducir con Grok."
 
-#: src/views/settings/preferences_dialog.py:685
-msgid "Underlines each word as it's said (.srt and .vtt)."
-msgstr "Subraya cada palabra a medida que se dice (.srt y .vtt)."
+msgid "Required to summarize and translate with Mistral."
+msgstr "Necesaria para resumir y traducir con Mistral."
 
-#: src/views/settings/preferences_dialog.py:704
-msgid "Landscape"
-msgstr "Horizontal"
+msgid "Required to translate with DeepL. Keys of the free plan work too."
+msgstr ""
+"Necesaria para traducir con DeepL. También sirven las claves del plan "
+"gratuito."
 
-#: src/views/settings/preferences_dialog.py:704
-msgid "Portrait"
-msgstr "Vertical"
+# Needs review by a native speaker
+msgid "Review accepted words again"
+msgstr "Revisar de nuevo las palabras aceptadas"
 
-#: src/views/settings/preferences_dialog.py:712
-msgid "Max. lines per subtitle"
-msgstr "Máx. de líneas por subtítulo"
-
-#: src/views/settings/preferences_dialog.py:717
-msgid "Max. characters per line"
-msgstr "Máx. de caracteres por línea"
-
-#: src/views/settings/preferences_dialog.py:722
-msgid "Chinese, Japanese and Korean"
-msgstr "Chino, japonés y coreano"
-
-#: src/views/settings/preferences_dialog.py:759
 msgid ""
-"Chinese, Japanese and Korean characters are about twice as wide as Latin "
-"ones."
+"Runs on the servers of Google. An API key is optional; without it, the "
+"free tier is used."
 msgstr ""
-"Los caracteres chinos, japoneses y coreanos son casi el doble de anchos "
-"que los latinos."
+"Se ejecuta en los servidores de Google. La clave de API es opcional; sin "
+"ella, se usa el nivel gratuito."
 
-#: src/views/settings/preferences_dialog.py:768
-msgid "Temperature"
-msgstr "Temperatura"
+msgid "Runs on the servers of OpenAI. Requires an API key."
+msgstr "Se ejecuta en los servidores de OpenAI. Necesita una clave de API."
 
-#: src/views/settings/preferences_dialog.py:769
-msgid "Between 0 and 1. Higher values are more random."
-msgstr "Entre 0 y 1. Los valores más altos son más aleatorios."
+msgid "Runs on your computer. Free, private and unlimited."
+msgstr "Se ejecuta en tu ordenador. Gratis, privado e ilimitado."
 
-#: src/views/settings/preferences_dialog.py:781
-msgid "Timestamps of the words"
-msgstr "Marcas de tiempo de las palabras"
+msgid "Same as the audio"
+msgstr "El mismo que el audio"
 
-#: src/views/settings/preferences_dialog.py:782
-msgid "Highlights each word while playing (whisper-1 model). Takes longer."
-msgstr ""
-"Resalta cada palabra durante la reproducción (modelo whisper-1). Tarda "
-"más."
+msgid "Save"
+msgstr "Guardar"
 
-#: src/views/settings/preferences_dialog.py:812
 #, python-brace-format
-msgid "Version {version}"
-msgstr "Versión {version}"
+msgid "Saved in {folder}"
+msgstr "Se guarda en {folder}"
 
-#: src/views/settings/preferences_dialog.py:816
 #, python-brace-format
-msgid "Made by {author}"
-msgstr "Creado por {author}"
+msgid "Saved in {folder}."
+msgstr "Guardado en {folder}."
 
-#: src/views/settings/preferences_dialog.py:832
-msgid "Documentation"
-msgstr "Documentación"
+msgid "Saved next to the source"
+msgstr "Se guarda junto al origen"
 
-#: src/views/settings/preferences_dialog.py:852
-msgid "Donate"
-msgstr "Donar"
+msgid "Scroll the translation with the transcription"
+msgstr "Desplazar la traducción con la transcripción"
 
-#: src/views/settings/preferences_dialog.py:866
-msgid "Check for updates"
-msgstr "Buscar actualizaciones"
+msgid "Search"
+msgstr "Buscar"
 
-#: src/views/settings/preferences_dialog.py:885
-msgid "Checking for updates…"
-msgstr "Buscando actualizaciones…"
+msgid "Search language…"
+msgstr "Buscar idioma…"
 
-#: src/views/settings/preferences_dialog.py:896
-msgid "Could not check for updates."
-msgstr "No se pudo comprobar si hay actualizaciones."
+#, python-brace-format
+msgid "Segments left to translate: {count}. Right-click one to translate it."
+msgstr "Segmentos por traducir: {count}. Haz clic derecho en uno para traducirlo."
 
-#: src/views/settings/preferences_dialog.py:905
-msgid "Download"
-msgstr "Descargar"
+msgid "Select a file"
+msgstr "Selecciona un archivo"
 
-#: src/views/settings/preferences_dialog.py:915
-msgid "You have the latest version."
-msgstr "Tienes la última versión."
+msgid "Select a folder"
+msgstr "Selecciona una carpeta"
 
-#: src/views/settings/settings_form.py:169
 msgid "Select at least one output file type."
 msgstr "Selecciona al menos un tipo de archivo de salida."
 
-#: src/views/settings/settings_form.py:186
+msgid "Server URL"
+msgstr "URL del servidor"
+
+msgid "Set API key…"
+msgstr "Configurar clave de API…"
+
+msgid "Set Hugging Face token…"
+msgstr "Configurar token de Hugging Face…"
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to ask about the transcription, or choose "
+"another provider in the settings."
+msgstr ""
+"Introduce la clave de API de {provider} para preguntar sobre la "
+"transcripción, o elige otro proveedor en los ajustes."
+
+#, python-brace-format
+msgid ""
+"Set the API key of {provider} to summarize, or choose another provider in"
+" the settings."
+msgstr ""
+"Introduce la clave de API de {provider} para resumir, o elige otro "
+"proveedor en los ajustes."
+
+msgid "Settings"
+msgstr "Ajustes"
+
+msgid "Set…"
+msgstr "Configurar…"
+
+# Needs review by a native speaker
+msgid "Show all segments"
+msgstr "Mostrar todos los segmentos"
+
+msgid "Show in Explorer"
+msgstr "Mostrar en el Explorador"
+
+msgid "Show in Finder"
+msgstr "Mostrar en el Finder"
+
+msgid "Show in file manager"
+msgstr "Mostrar en el gestor de archivos"
+
+msgid "Show it as the subtitles of the video"
+msgstr "Mostrarla como subtítulos del vídeo"
+
+msgid "Show subtitles on the video"
+msgstr "Mostrar subtítulos en el vídeo"
+
+msgid "Show the text while recording"
+msgstr "Mostrar el texto mientras se graba"
+
+msgid "Show the translation"
+msgstr "Mostrar la traducción"
+
+msgid "Shows a notification of the system when a transcription is ready."
+msgstr "Muestra una notificación del sistema cuando una transcripción está lista."
+
+msgid "Size"
+msgstr "Tamaño"
+
+msgid "Small"
+msgstr "Pequeño"
+
+msgid "Source"
+msgstr "Origen"
+
+#, python-brace-format
+msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr "Espacio: reproducir/pausar · ←/→: {seconds} s atrás/adelante"
+
+msgid "Start transcription"
+msgstr "Empezar la transcripción"
+
+msgid "Start:"
+msgstr "Inicio:"
+
+msgid "Starting…"
+msgstr "Iniciando…"
+
+msgid "Stay on top"
+msgstr "Mantener encima"
+
+msgid "Stop adding the subtitles to the video"
+msgstr "Dejar de añadir los subtítulos al vídeo"
+
+msgid "Stop scrolling the translation with the transcription"
+msgstr "Dejar de desplazar la traducción con la transcripción"
+
+msgid "Stop watching"
+msgstr "Dejar de vigilar"
+
+#, python-brace-format
+msgid "Stopped watching the folder. Files transcribed: {done}."
+msgstr "Se ha dejado de vigilar la carpeta. Archivos transcritos: {done}."
+
+msgid "Style"
+msgstr "Estilo"
+
+msgid "Styled subtitles (.ass)"
+msgstr "Subtítulos con estilo (.ass)"
+
+msgid "Subtitles"
+msgstr "Subtítulos"
+
+msgid "Subtitles (.srt)"
+msgstr "Subtítulos (.srt)"
+
+msgid "Summarizing…"
+msgstr "Resumiendo…"
+
+msgid "Summary"
+msgstr "Resumen"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "System language"
+msgstr "Idioma del sistema"
+
+msgid "Table (.tsv)"
+msgstr "Tabla (.tsv)"
+
+msgid "Tag"
+msgstr "Etiqueta"
+
+#, python-brace-format
+msgid "Tag of “{title}”. Leave it empty to show the kind of source."
+msgstr "Etiqueta de «{title}». Déjala vacía para mostrar el tipo de origen."
+
+msgid "Temperature"
+msgstr "Temperatura"
+
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "Texto dicho en {time}:"
+
+msgid ""
+"The Google API can't detect the language. Please select the language of "
+"the audio."
+msgstr ""
+"La API de Google no puede detectar el idioma. Selecciona el idioma del "
+"audio."
+
+msgid ""
+"The Google API can't translate. The transcription will be in the language"
+" of the audio."
+msgstr ""
+"La API de Google no puede traducir. La transcripción estará en el idioma "
+"del audio."
+
+msgid "The Google API returns plain text (.txt)."
+msgstr "La API de Google devuelve texto plano (.txt)."
+
+msgid ""
+"The URL doesn't point to an audio or video file. Use the link of a "
+"YouTube video or of a media file."
+msgstr ""
+"La URL no apunta a un archivo de audio o vídeo. Usa el enlace de un vídeo"
+" de YouTube o de un archivo multimedia."
+
+msgid "The Whisper API requires an OpenAI API key."
+msgstr "La API de Whisper necesita una clave de API de OpenAI."
+
+msgid "The YouTube video doesn't have an audio track."
+msgstr "El vídeo de YouTube no tiene pista de audio."
+
+#, python-brace-format
+msgid "The audio can't be played: {error}"
+msgstr "No se puede reproducir el audio: {error}"
+
+#, python-brace-format
+msgid "The audio is too large for the OpenAI API ({size} MB)."
+msgstr "El audio es demasiado grande para la API de OpenAI ({size} MB)."
+
+msgid "The audio isn't available."
+msgstr "El audio no está disponible."
+
+msgid "The audio isn't available: the source file was moved or deleted."
+msgstr ""
+"El audio no está disponible: el archivo de origen se ha movido o "
+"eliminado."
+
+msgid ""
+"The audio of the YouTube video could not be downloaded. Please make sure "
+"the URL is correct."
+msgstr ""
+"No se pudo descargar el audio del vídeo de YouTube. Comprueba que la URL "
+"es correcta."
+
+msgid "The default model of the provider if empty."
+msgstr "Si está vacío, el modelo predeterminado del proveedor."
+
+#, python-brace-format
+msgid "The file could not be downloaded: {error}"
+msgstr "No se pudo descargar el archivo: {error}"
+
+#, python-brace-format
+msgid "The file was moved or deleted: {path}"
+msgstr "El archivo se ha movido o eliminado: {path}"
+
+msgid "The files of a folder are always saved."
+msgstr "Los archivos de una carpeta siempre se guardan."
+
+msgid ""
+"The folder doesn't contain files to transcribe. The files that already "
+"have a transcription are skipped unless you check 'Overwrite existing "
+"files'."
+msgstr ""
+"La carpeta no contiene archivos que transcribir. Los archivos que ya "
+"tienen una transcripción se omiten a menos que marques «Sobrescribir "
+"archivos existentes»."
+
+msgid "The level is shown while recording"
+msgstr "El nivel se muestra mientras grabas"
+
+msgid "The model didn't return a valid reply."
+msgstr "El modelo no ha devuelto una respuesta válida."
+
+msgid "The model didn't return a valid summary."
+msgstr "El modelo no ha devuelto un resumen válido."
+
+msgid "The model didn't return a valid translation."
+msgstr "El modelo no ha devuelto una traducción válida."
+
+msgid "The model of the Whisper API identifies the speakers."
+msgstr "El modelo de la API de Whisper identifica a los hablantes."
+
+#, python-brace-format
+msgid "The new segment goes after the one at {time}:"
+msgstr "El nuevo segmento va después del de {time}:"
+
+msgid "The plain text has been edited; the transcript keeps the original."
+msgstr "El texto plano se ha editado; la transcripción conserva el original."
+
+msgid "The recording is no longer available."
+msgstr "La grabación ya no está disponible."
+
+msgid "The reply of the model was too long."
+msgstr "La respuesta del modelo era demasiado larga."
+
+#, python-brace-format
+msgid "The segment at {time}, not translated yet."
+msgstr "El segmento de {time}, sin traducir todavía."
+
+msgid "The segment must end after it starts."
+msgstr "El segmento debe terminar después de empezar."
+
+#, python-brace-format
+msgid "The summary of “{title}” is ready."
+msgstr "El resumen de «{title}» está listo."
+
+msgid "The text can't be shown while recording."
+msgstr "El texto no se puede mostrar mientras se graba."
+
+msgid "The text is shown when you stop recording."
+msgstr "El texto se muestra cuando dejas de grabar."
+
+msgid "The text will appear here as you speak."
+msgstr "El texto aparecerá aquí mientras hablas."
+
+msgid "The transcription failed"
+msgstr "La transcripción ha fallado"
+
+msgid "The transcription is being translated. It takes a moment."
+msgstr "Se está traduciendo la transcripción. Tardará un momento."
+
+msgid "The transcription is very long, so only its beginning was summarized."
+msgstr "La transcripción es muy larga, así que solo se ha resumido su principio."
+
+msgid "The transcription was cancelled"
+msgstr "La transcripción se canceló"
+
+msgid "The transcription was cancelled."
+msgstr "La transcripción se canceló."
+
+msgid "The transcription was interrupted"
+msgstr "La transcripción se interrumpió"
+
+msgid "The transcription will appear here when you stop recording."
+msgstr "La transcripción aparecerá aquí cuando dejes de grabar."
+
+msgid "The transcriptions of its files are deleted too."
+msgstr "También se eliminan las transcripciones de sus archivos."
+
+#, python-brace-format
+msgid "The translation of “{title}” is ready."
+msgstr "La traducción de «{title}» está lista."
+
+#, python-brace-format
+msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
+msgstr ""
+"El modelo {model} no devuelve marcas de tiempo, así que no puede guardar "
+"subtítulos."
+
+#, python-brace-format
+msgid ""
+"The {model} model doesn't return timestamps, so it can't save {format} "
+"files. Choose another format or the whisper-1 model."
+msgstr ""
+"El modelo {model} no devuelve marcas de tiempo, así que no puede guardar "
+"archivos {format}. Elige otro formato o el modelo whisper-1."
+
 #, python-brace-format
 msgid ""
 "The {model} model only transcribes English. Choose a multilingual model "
@@ -1440,124 +1480,84 @@ msgstr ""
 "El modelo {model} solo transcribe inglés. Elige un modelo multilingüe o "
 "indica que el idioma del audio es inglés."
 
-#: src/views/settings/settings_form.py:194
-msgid "The Whisper API requires an OpenAI API key."
-msgstr "La API de Whisper necesita una clave de API de OpenAI."
+# Needs review by a native speaker
+msgid "There is no alignment model for its language"
+msgstr "No hay modelo de alineación para su idioma"
 
-#: src/views/settings/cards/context_card.py:29
-msgid "Context"
-msgstr "Contexto"
+msgid "There is no text to summarize."
+msgstr "No hay texto que resumir."
 
-#: src/views/settings/cards/context_card.py:35
-msgid "Keywords"
-msgstr "Palabras clave"
+msgid "There is no text to translate."
+msgstr "No hay texto que traducir."
 
-#: src/views/settings/cards/context_card.py:39
-msgid "e.g. Audiotext, WhisperX, Henestrosa"
-msgstr "p. ej., Audiotext, WhisperX, Henestrosa"
+msgid "There is no transcription to save. Please generate it first."
+msgstr "No hay ninguna transcripción que guardar. Genérala primero."
 
-#: src/views/settings/cards/context_card.py:46
+msgid "There is no translation yet."
+msgstr "Todavía no hay traducción."
+
+msgid "This transcription has no timestamps."
+msgstr "Esta transcripción no tiene marcas de tiempo."
+
+msgid "Time format"
+msgstr "Formato de la hora"
+
 msgid ""
-"Names, terms or acronyms said in the audio, separated by commas, so "
-"they're spelled right."
+"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
+"transcribe-diarize models of the Whisper API."
 msgstr ""
-"Nombres, términos o siglas que se dicen en el audio, separados por comas,"
-" para que se escriban bien."
+"Las marcas de tiempo solo están disponibles con WhisperX y con los "
+"modelos whisper-1 y gpt-4o-transcribe-diarize de la API de Whisper."
 
-#: src/views/settings/cards/context_card.py:51
-msgid "Description"
-msgstr "Descripción"
+msgid "Timestamps of the words"
+msgstr "Marcas de tiempo de las palabras"
 
-#: src/views/settings/cards/context_card.py:60
-msgid "e.g. An interview about speech recognition"
-msgstr "p. ej., Una entrevista sobre reconocimiento de voz"
+msgid "Tip: drop a file or a folder anywhere on the window to transcribe it."
+msgstr ""
+"Consejo: suelta un archivo o una carpeta en cualquier parte de la ventana"
+" para transcribirlo."
 
-#: src/views/settings/cards/context_card.py:65
-msgid "What the audio is about, such as its topic or setting."
-msgstr "De qué trata el audio, como su tema o el lugar donde se grabó."
+msgid "Too loud. Move away from the microphone."
+msgstr "Demasiado alto. Aléjate del micrófono."
 
-#: src/views/settings/cards/context_card.py:103
-msgid "Not used by the Google API."
-msgstr "La API de Google no lo usa."
+msgid "Too quiet. Speak louder or closer to the microphone."
+msgstr "Demasiado bajo. Habla más alto o más cerca del micrófono."
 
-#: src/views/settings/cards/context_card.py:115
+msgid "Top"
+msgstr "Arriba"
+
+msgid "Transcribe"
+msgstr "Transcribir"
+
+msgid "Transcribe a file"
+msgstr "Transcribir un archivo"
+
+msgid "Transcribe a folder"
+msgstr "Transcribir una carpeta"
+
+msgid "Transcribe again"
+msgstr "Volver a transcribir"
+
+msgid "Transcribe from a URL"
+msgstr "Transcribir desde una URL"
+
+msgid "Transcribe from the microphone"
+msgstr "Transcribir desde el micrófono"
+
+# Needs review by a native speaker
+msgid "Transcribe it again to score its words"
+msgstr "Vuelve a transcribirlo para puntuar sus palabras"
+
 #, python-brace-format
-msgid "Not used by the {model} model."
-msgstr "El modelo {model} no lo usa."
-
-#: src/views/settings/cards/engine_card.py:25
-msgid "Identifies the speakers. With timestamps."
-msgstr "Identifica a los hablantes. Con marcas de tiempo."
-
-#: src/views/settings/cards/engine_card.py:28
-msgid ""
-"With timestamps, to play the transcription segment by segment and "
-"generate subtitles."
+msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr ""
-"Con marcas de tiempo, para reproducir la transcripción segmento a "
-"segmento y generar subtítulos."
+"¿Volver a transcribir «{title}»? Se perderán los cambios hechos en su "
+"texto."
 
-#: src/views/settings/cards/engine_card.py:32
-msgid ""
-"More accurate, but without timestamps: the transcription can't be played "
-"segment by segment nor subtitled."
-msgstr ""
-"Más preciso, pero sin marcas de tiempo: la transcripción no se puede "
-"reproducir segmento a segmento ni subtitular."
+#, python-brace-format
+msgid "Transcribed {done} of {total} files."
+msgstr "Se han transcrito {done} de {total} archivos."
 
-#: src/views/settings/cards/engine_card.py:50
-msgid "Engine"
-msgstr "Motor"
-
-#: src/views/settings/cards/engine_card.py:54
-msgid "Transcription method"
-msgstr "Método de transcripción"
-
-#: src/views/settings/cards/engine_card.py:114
-msgid ""
-"Only transcribes English, faster than the multilingual model of the same "
-"size."
-msgstr ""
-"Solo transcribe inglés, más rápido que el modelo multilingüe del mismo "
-"tamaño."
-
-#: src/views/settings/cards/engine_card.py:118
-msgid "Larger models are more accurate, but slower."
-msgstr "Los modelos más grandes son más precisos, pero más lentos."
-
-#: src/views/settings/cards/engine_card.py:121
-msgid "Runs on your computer. Free, private and unlimited."
-msgstr "Se ejecuta en tu ordenador. Gratis, privado e ilimitado."
-
-#: src/views/settings/cards/engine_card.py:131
-msgid "Runs on the servers of OpenAI. Requires an API key."
-msgstr "Se ejecuta en los servidores de OpenAI. Necesita una clave de API."
-
-#: src/views/settings/cards/engine_card.py:135
-msgid ""
-"Runs on the servers of Google. An API key is optional; without it, the "
-"free tier is used."
-msgstr ""
-"Se ejecuta en los servidores de Google. La clave de API es opcional; sin "
-"ella, se usa el nivel gratuito."
-
-#: src/views/settings/cards/engine_card.py:140
-msgid "API key set"
-msgstr "Clave de API configurada"
-
-#: src/views/settings/cards/folder_card.py:22
-msgid "Watch the folder"
-msgstr "Vigilar la carpeta"
-
-#: src/views/settings/cards/folder_card.py:34
-msgid ""
-"Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
-msgstr ""
-"Sigue en marcha y transcribe los archivos que se añaden a la carpeta "
-"hasta que lo detengas. Los archivos que ya contiene se omiten."
-
-#: src/views/settings/cards/folder_card.py:39
 msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
 "Files that already have a transcription are skipped unless you overwrite "
@@ -1567,60 +1567,190 @@ msgstr ""
 " Los archivos que ya tienen una transcripción se omiten, salvo que los "
 "sobrescribas."
 
-#: src/views/settings/cards/language_card.py:54
-msgid "Language"
-msgstr "Idioma"
+#, python-brace-format
+msgid "Transcribing chunk {current} of {total}…"
+msgstr "Transcribiendo el fragmento {current} de {total}…"
 
-#: src/views/settings/cards/language_card.py:61
-msgid "Language of the audio"
-msgstr "Idioma del audio"
+msgid "Transcribing…"
+msgstr "Transcribiendo…"
 
-#: src/views/settings/cards/language_card.py:65
-#: src/views/settings/cards/language_card.py:84
-#: src/views/transcript/translation_panel.py:423
-msgid "Search language…"
-msgstr "Buscar idioma…"
+msgid "Transcription"
+msgstr "Transcripción"
 
-#: src/views/settings/cards/language_card.py:66
-#: src/views/settings/cards/language_card.py:85
-#: src/views/transcript/translation_panel.py:424
-msgid "No languages found."
-msgstr "No se han encontrado idiomas."
+msgid "Transcription cancelled."
+msgstr "Transcripción cancelada."
 
-#: src/views/settings/cards/language_card.py:71
-msgid "Auto-detect"
-msgstr "Detectar automáticamente"
+msgid "Transcription method"
+msgstr "Método de transcripción"
 
-#: src/views/settings/cards/language_card.py:80
-msgid "Language of the transcription"
-msgstr "Idioma de la transcripción"
+msgid "Transcription ready"
+msgstr "Transcripción lista"
 
-#: src/views/settings/cards/language_card.py:90
-msgid "Same as the audio"
-msgstr "El mismo que el audio"
+msgid "Transcriptions"
+msgstr "Transcripciones"
 
-#: src/views/settings/cards/language_card.py:131
+msgid "Translate"
+msgstr "Traducir"
+
+msgid "Translate again"
+msgstr "Volver a traducir"
+
+msgid "Translate into another language…"
+msgstr "Traducir a otro idioma…"
+
+msgid "Translate into:"
+msgstr "Traducir al:"
+
+msgid "Translate text"
+msgstr "Traducir texto"
+
+msgid "Translate text…"
+msgstr "Traducir texto…"
+
+#, python-brace-format
+msgid ""
+"Translate the transcription into {language} again? The changes made to "
+"the translation will be lost."
+msgstr ""
+"¿Volver a traducir la transcripción al {language}? Se perderán los "
+"cambios hechos en la traducción."
+
 msgid "Translate with Whisper (recommended)"
 msgstr "Traducir con Whisper (recomendado)"
 
-#: src/views/settings/cards/language_card.py:183
-msgid ""
-"The Google API can't translate. The transcription will be in the language"
-" of the audio."
-msgstr ""
-"La API de Google no puede traducir. La transcripción estará en el idioma "
-"del audio."
+msgid "Translate with:"
+msgstr "Traducir con:"
 
-#: src/views/settings/cards/language_card.py:193
+msgid "Translates each segment, keeping its timestamps."
+msgstr "Traduce cada segmento, manteniendo sus marcas de tiempo."
+
+msgid "Translate…"
+msgstr "Traducir…"
+
 #, python-brace-format
-msgid "Write it directly in {language} (experimental)"
-msgstr "Escribirla directamente en {language} (experimental)"
+msgid "Translating into {language}…"
+msgstr "Traduciendo al {language}…"
 
-#: src/views/settings/cards/language_card.py:211
-msgid "Whisper transcribes and translates the audio in one step."
-msgstr "Whisper transcribe y traduce el audio en un solo paso."
+msgid "Translating…"
+msgstr "Traduciendo…"
 
-#: src/views/settings/cards/language_card.py:215
+msgid "Translation"
+msgstr "Traducción"
+
+#, python-brace-format
+msgid "Translation into {language}"
+msgstr "Traducción al {language}"
+
+#, python-brace-format
+msgid "Translation of the segment from {start} to {end}:"
+msgstr "Traducción del segmento de {start} a {end}:"
+
+#, python-brace-format
+msgid "Translation of “{text}”, said from {start} to {end}:"
+msgstr "Traducción de «{text}», dicho de {start} a {end}:"
+
+msgid "Try again"
+msgstr "Reintentar"
+
+# Needs review by a native speaker
+msgid "Turn on “Word-level timings” and transcribe it again"
+msgstr "Activa «Tiempos por palabra» y vuelve a transcribirlo"
+
+msgid ""
+"Type in the API key. It's kept in the credential store of your system. "
+"Leave it empty to remove it."
+msgstr ""
+"Escribe la clave de API. Se guarda en el almacén de credenciales de tu "
+"sistema. Déjala vacía para eliminarla."
+
+msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
+msgstr "Escribe los tiempos como 00:01:05,900, 01:05,9 o 65.9."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Underlines each word as it's said (.srt and .vtt)."
+msgstr "Subraya cada palabra a medida que se dice (.srt y .vtt)."
+
+# Needs review by a native speaker
+msgid "Undo"
+msgstr "Deshacer"
+
+msgid "Unpin"
+msgstr "Desfijar"
+
+msgid "Unpin from the main window"
+msgstr "Dejar de mantener sobre la ventana principal"
+
+#, python-brace-format
+msgid "Unsupported file type: {extension}"
+msgstr "Tipo de archivo no compatible: {extension}"
+
+msgid "Updates"
+msgstr "Actualizaciones"
+
+msgid "Use CPU"
+msgstr "Usar CPU"
+
+#, python-brace-format
+msgid "Uses the model {model}."
+msgstr "Usa el modelo {model}."
+
+#, python-brace-format
+msgid "Version {version}"
+msgstr "Versión {version}"
+
+#, python-brace-format
+msgid "Version {version} is available"
+msgstr "La versión {version} está disponible"
+
+msgid "Video"
+msgstr "Vídeo"
+
+msgid "Video files"
+msgstr "Archivos de vídeo"
+
+msgid "Video with subtitles (.mp4)…"
+msgstr "Vídeo con subtítulos (.mp4)…"
+
+msgid "Wait until the current transcription finishes, or cancel it."
+msgstr "Espera a que termine la transcripción actual o cancélala."
+
+#, python-brace-format
+msgid "Waiting for new files in {folder}…"
+msgstr "Esperando archivos nuevos en {folder}…"
+
+msgid "Waiting for new files…"
+msgstr "Esperando archivos nuevos…"
+
+msgid "Waiting for speech…"
+msgstr "Esperando a que hables…"
+
+msgid "Waiting for the current transcription to finish."
+msgstr "Esperando a que termine la transcripción actual."
+
+#, python-brace-format
+msgid "Waiting for {count} transcription(s) to finish."
+msgstr "Esperando a que terminen {count} transcripciones."
+
+msgid "Watch the folder"
+msgstr "Vigilar la carpeta"
+
+msgid "Watched folder"
+msgstr "Carpeta vigilada"
+
+msgid "Watching"
+msgstr "Vigilando"
+
+msgid "Web subtitles (.vtt)"
+msgstr "Subtítulos web (.vtt)"
+
+msgid "What do you want to transcribe?"
+msgstr "¿Qué quieres transcribir?"
+
+msgid "What the audio is about, such as its topic or setting."
+msgstr "De qué trata el audio, como su tema o el lugar donde se grabó."
+
 #, python-brace-format
 msgid ""
 "Whisper can only translate into {english}. For other languages, it's "
@@ -1631,883 +1761,121 @@ msgstr ""
 "que escriba la transcripción directamente en {language}. Funciona bien "
 "con muchos idiomas, pero revisa el resultado."
 
-#: src/views/settings/cards/live_card.py:27
-msgid "Live text"
-msgstr "Texto en directo"
+msgid "Whisper transcribes and translates the audio in one step."
+msgstr "Whisper transcribe y traduce el audio en un solo paso."
 
-#: src/views/settings/cards/live_card.py:30
-msgid "Show the text while recording"
-msgstr "Mostrar el texto mientras se graba"
+msgid "WhisperX model ready."
+msgstr "Modelo de WhisperX listo."
 
-#: src/views/settings/cards/live_card.py:35
-msgid "Live model"
-msgstr "Modelo en directo"
-
-#: src/views/settings/cards/live_card.py:62
-#: src/views/settings/cards/options_card.py:120
-#: src/views/settings/cards/options_card.py:149
-msgid "Only available with WhisperX."
-msgstr "Solo disponible con WhisperX."
-
-#: src/views/settings/cards/live_card.py:65
 msgid ""
-"A fast model writes a draft while you speak. When you stop, the whole "
-"recording is transcribed again with the model of the engine, which is "
-"more accurate."
+"With timestamps, to play the transcription segment by segment and "
+"generate subtitles."
 msgstr ""
-"Un modelo rápido escribe un borrador mientras hablas. Cuando paras, toda "
-"la grabación se vuelve a transcribir con el modelo del motor, que es más "
-"preciso."
+"Con marcas de tiempo, para reproducir la transcripción segmento a "
+"segmento y generar subtítulos."
 
-#: src/views/settings/cards/live_card.py:70
-msgid "The text is shown when you stop recording."
-msgstr "El texto se muestra cuando dejas de grabar."
+msgid "Word document (.docx)"
+msgstr "Documento de Word (.docx)"
 
-#: src/views/settings/cards/options_card.py:38
-msgid "Options"
-msgstr "Opciones"
-
-#: src/views/settings/cards/options_card.py:44
 msgid "Word-level timings"
 msgstr "Tiempos por palabra"
 
-#: src/views/settings/cards/options_card.py:52
-msgid "Extract speech"
-msgstr "Extraer la voz"
+#, python-brace-format
+msgid "Write it directly in {language} (experimental)"
+msgstr "Escribirla directamente en {language} (experimental)"
 
-#: src/views/settings/cards/options_card.py:56
-msgid "Reduces music and background noise before transcribing."
-msgstr "Reduce la música y el ruido de fondo antes de transcribir."
+msgid "You can edit the text. The changes are saved automatically."
+msgstr "Puedes editar el texto. Los cambios se guardan automáticamente."
 
-#: src/views/settings/cards/options_card.py:60
-msgid "Identify speakers"
-msgstr "Identificar hablantes"
-
-#: src/views/settings/cards/options_card.py:70
-msgid "Number of speakers (0 = auto)"
-msgstr "Número de hablantes (0 = auto)"
-
-#: src/views/settings/cards/options_card.py:94
-msgid "Set Hugging Face token…"
-msgstr "Configurar token de Hugging Face…"
-
-#: src/views/settings/cards/options_card.py:123
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Resalta cada palabra durante la reproducción. Los subtítulos ya los usan."
-
-#: src/views/settings/cards/options_card.py:126
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Resalta cada palabra durante la reproducción. Tarda un poco más."
-
-#: src/views/settings/cards/options_card.py:136
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Indica quién habla en cada parte. Necesita un token de Hugging Face."
-
-#: src/views/settings/cards/options_card.py:142
-msgid "The model of the Whisper API identifies the speakers."
-msgstr "El modelo de la API de Whisper identifica a los hablantes."
-
-#: src/views/settings/cards/options_card.py:145
 msgid ""
-"Only available with WhisperX, or with the gpt-4o-transcribe-diarize model"
-" of the Whisper API."
+"You can keep using Audiotext meanwhile. The result is saved in your "
+"history and opens here when it's ready."
 msgstr ""
-"Solo disponible con WhisperX o con el modelo gpt-4o-transcribe-diarize de"
-" la API de Whisper."
+"Mientras tanto, puedes seguir usando Audiotext. El resultado se guarda en"
+" tu historial y se abre aquí cuando esté listo."
 
-#: src/views/settings/cards/output_card.py:38
-msgid "Output"
-msgstr "Salida"
+msgid "You have the latest version."
+msgstr "Tienes la última versión."
 
-#: src/views/settings/cards/output_card.py:42
-msgid "File types"
-msgstr "Tipos de archivo"
+msgid "YouTube or a link to a file"
+msgstr "YouTube o el enlace a un archivo"
 
-#: src/views/settings/cards/output_card.py:108
-msgid "Next to the source"
-msgstr "Junto al origen"
+msgid "YouTube video"
+msgstr "Vídeo de YouTube"
 
-#: src/views/settings/cards/output_card.py:115
-msgid "Overwrite existing files"
-msgstr "Sobrescribir archivos existentes"
+msgid "Your audio, video and saved files are not deleted."
+msgstr "Tus archivos de audio, vídeo y los guardados no se eliminan."
 
-#: src/views/settings/cards/output_card.py:119
-msgid "The files of a folder are always saved."
-msgstr "Los archivos de una carpeta siempre se guardan."
+msgid "cancelled"
+msgstr "cancelado"
 
-#: src/views/settings/cards/output_card.py:147
-msgid "The Google API returns plain text (.txt)."
-msgstr "La API de Google devuelve texto plano (.txt)."
+msgid "default"
+msgstr "predeterminado"
 
-#: src/views/settings/cards/output_card.py:152
+msgid "e.g. An interview about speech recognition"
+msgstr "p. ej., Una entrevista sobre reconocimiento de voz"
+
+msgid "e.g. Audiotext, WhisperX, Henestrosa"
+msgstr "p. ej., Audiotext, WhisperX, Henestrosa"
+
+msgid "float16 is faster on GPUs. int8 uses less memory."
+msgstr "float16 es más rápido en GPU. int8 usa menos memoria."
+
+msgid "or"
+msgstr "o"
+
+msgid "xAI API key"
+msgstr "Clave de API de xAI"
+
 #, python-brace-format
-msgid "Saved in {folder}"
-msgstr "Se guarda en {folder}"
+msgid "{count} audio and video files (subfolders included)"
+msgstr "{count} archivos de audio y vídeo (subcarpetas incluidas)"
 
-#: src/views/settings/cards/output_card.py:155
-msgid "Saved next to the source"
-msgstr "Se guarda junto al origen"
-
-#: src/views/settings/cards/output_card.py:174
-msgid "Format of the files."
-msgstr "Formato de los archivos."
-
-#: src/views/settings/cards/output_card.py:177
 #, python-brace-format
-msgid "The {model} model doesn't return timestamps, so it can't save subtitles."
-msgstr ""
-"El modelo {model} no devuelve marcas de tiempo, así que no puede guardar "
-"subtítulos."
+msgid "{count} done"
+msgstr "{count} completados"
 
-#: src/views/settings/cards/output_card.py:197
-msgid "Choose where to save the transcriptions"
-msgstr "Elige dónde guardar las transcripciones"
-
-#: src/views/transcript/ask_panel.py:178 src/views/transcript/ask_panel.py:207
-#: src/views/transcript/transcript_view.py:829
-msgid "Ask"
-msgstr "Preguntar"
-
-#: src/views/transcript/ask_panel.py:181
-#: src/views/transcript/transcript_view.py:1146
-msgid "Clear the conversation"
-msgstr "Borrar la conversación"
-
-#: src/views/transcript/ask_panel.py:194
-msgid "Ask a question about the transcription…"
-msgstr "Haz una pregunta sobre la transcripción…"
-
-#: src/views/transcript/ask_panel.py:244
-#: src/views/transcript/summary_panel.py:273
 #, python-brace-format
-msgid "{provider} is reading the transcription. It takes a moment."
-msgstr "{provider} está leyendo la transcripción. Tardará un momento."
+msgid "{count} failed"
+msgstr "{count} con errores"
 
-#: src/views/transcript/ask_panel.py:255
 #, python-brace-format
-msgid ""
-"Ask {provider} about the transcription, such as what was decided or who "
-"said something. The answers link to where it's said."
-msgstr ""
-"Pregunta a {provider} sobre la transcripción, como qué se decidió o quién"
-" dijo algo. Las respuestas enlazan con donde se dice."
+msgid "{count} files"
+msgstr "{count} archivos"
 
-#: src/views/transcript/ask_panel.py:265
 #, python-brace-format
-msgid ""
-"Set the API key of {provider} to ask about the transcription, or choose "
-"another provider in the settings."
-msgstr ""
-"Introduce la clave de API de {provider} para preguntar sobre la "
-"transcripción, o elige otro proveedor en los ajustes."
+msgid "{count} transcriptions"
+msgstr "{count} transcripciones"
 
-#: src/views/transcript/corrections.py:180
-msgid "Edit the timing"
-msgstr "Editar los tiempos"
-
-#: src/views/transcript/corrections.py:181
-#: src/views/transcript/edit_dialogs.py:78 src/views/widgets/text_dialog.py:69
-msgid "Save"
-msgstr "Guardar"
-
-#: src/views/transcript/corrections.py:208
-msgid "Add a segment"
-msgstr "Añadir un segmento"
-
-#: src/views/transcript/corrections.py:209
-msgid "Add"
-msgstr "Añadir"
-
-#: src/views/transcript/corrections.py:210
-#, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "El nuevo segmento va después del de {time}:"
-
-#: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1507
-msgid "Delete the segment"
-msgstr "Eliminar el segmento"
-
-#: src/views/transcript/corrections.py:241
-#, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "¿Eliminar el segmento «{text}»?"
-
-#: src/views/transcript/corrections.py:275
-#, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "El segmento de {time}, sin traducir todavía."
-
-#: src/views/transcript/edit_dialogs.py:78
-msgid "Rename speakers"
-msgstr "Renombrar hablantes"
-
-#: src/views/transcript/edit_dialogs.py:85
-msgid ""
-"Give a name to each speaker. Giving two speakers the same name merges "
-"them."
-msgstr ""
-"Pon un nombre a cada hablante. Si das el mismo nombre a dos hablantes, se"
-" fusionan."
-
-#: src/views/transcript/edit_dialogs.py:155
-msgid "Start:"
-msgstr "Inicio:"
-
-#: src/views/transcript/edit_dialogs.py:155
-msgid "End:"
-msgstr "Fin:"
-
-#: src/views/transcript/edit_dialogs.py:194
-msgid "Type the times as 00:01:05,900, 01:05,9 or 65.9."
-msgstr "Escribe los tiempos como 00:01:05,900, 01:05,9 o 65.9."
-
-#: src/views/transcript/edit_dialogs.py:196
-msgid "The segment must end after it starts."
-msgstr "El segmento debe terminar después de empezar."
-
-#: src/views/transcript/find_dialog.py:80
-msgid "Find:"
-msgstr "Buscar:"
-
-#: src/views/transcript/find_dialog.py:83
-msgid "Replace with:"
-msgstr "Reemplazar por:"
-
-#: src/views/transcript/find_dialog.py:93
-msgid "Match case"
-msgstr "Distinguir mayúsculas"
-
-#: src/views/transcript/find_dialog.py:108
-msgid "Stay on top"
-msgstr "Mantener encima"
-
-#: src/views/transcript/find_dialog.py:113
-msgid "Unpin from the main window"
-msgstr "Dejar de mantener sobre la ventana principal"
-
-#: src/views/transcript/find_dialog.py:115
-msgid "Keep above the main window"
-msgstr "Mantener sobre la ventana principal"
-
-#: src/views/transcript/find_dialog.py:126
-msgid "Replace"
-msgstr "Reemplazar"
-
-#: src/views/transcript/find_dialog.py:131
-msgid "Replace all"
-msgstr "Reemplazar todo"
-
-#: src/views/transcript/find_dialog.py:189
-#: src/views/transcript/find_dialog.py:235
 #, python-brace-format
 msgid "{current} of {total}"
 msgstr "{current} de {total}"
 
-#: src/views/transcript/find_dialog.py:250
-msgid "Previous match"
-msgstr "Resultado anterior"
-
-#: src/views/transcript/find_dialog.py:257
-msgid "Next match"
-msgstr "Resultado siguiente"
-
-#: src/views/transcript/player_bar.py:172
-msgid "Loading the audio…"
-msgstr "Cargando el audio…"
-
-#: src/views/transcript/player_bar.py:202
 #, python-brace-format
-msgid "Space: play/pause · ←/→: {seconds} s back/forward"
-msgstr "Espacio: reproducir/pausar · ←/→: {seconds} s atrás/adelante"
+msgid "{done}/{total} files"
+msgstr "{done}/{total} archivos"
 
-#: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1658
 #, python-brace-format
-msgid "The audio can't be played: {error}"
-msgstr "No se puede reproducir el audio: {error}"
+msgid "{minutes} min {seconds} s"
+msgstr "{minutes} min {seconds} s"
+
+#, python-brace-format
+msgid "{name}: {message}"
+msgstr "{name}: {message}"
+
+#, python-brace-format
+msgid "{provider} is reading the transcription. It takes a moment."
+msgstr "{provider} está leyendo la transcripción. Tardará un momento."
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:90
-msgid "Only flagged"
-msgstr "Solo marcadas"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:103
-msgid "Auto-play"
-msgstr "Reproducir automáticamente"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:109
-msgid "Undo"
-msgstr "Deshacer"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:119
-msgid "Accept remaining"
-msgstr "Aceptar las restantes"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:130
-msgid "Adjust threshold"
-msgstr "Ajustar umbral"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:141
-msgid "Review accepted words again"
-msgstr "Revisar de nuevo las palabras aceptadas"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:218
 #, python-brace-format
 msgid "{remaining} of {total} to review"
 msgstr "{remaining} de {total} por revisar"
 
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:222
 #, python-brace-format
-msgid "All reviewed · {total} of {total}"
-msgstr "Todo revisado · {total} de {total}"
+msgid "{seconds} s"
+msgstr "{seconds} s"
 
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:224
-msgid "No low-confidence words at this threshold"
-msgstr "No hay palabras de baja confianza con este umbral"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:226
-msgid "Confidence data isn’t available for this transcript"
-msgstr "No hay datos de confianza para esta transcripción"
-
-#: src/views/transcript/summary_panel.py:202
 #, python-brace-format
-msgid "Find ({shortcut})"
-msgstr "Buscar ({shortcut})"
-
-#: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:727
-#: src/views/transcript/translation_panel.py:149
-msgid "Export"
-msgstr "Exportar"
-
-#: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1175
-msgid "Regenerate the summary"
-msgstr "Volver a generar el resumen"
-
-#: src/views/transcript/summary_panel.py:272
-msgid "Summarizing…"
-msgstr "Resumiendo…"
-
-#: src/views/transcript/summary_panel.py:279
-#: src/views/transcript/summary_panel.py:292
-msgid "No summary yet"
-msgstr "Aún no hay resumen"
-
-#: src/views/transcript/summary_panel.py:281
-#, python-brace-format
-msgid ""
-"Generate a summary, the key points and the chapters of the transcription "
-"with {provider}."
-msgstr ""
-"Genera un resumen, los puntos clave y los capítulos de la transcripción "
-"con {provider}."
-
-#: src/views/transcript/summary_panel.py:286
-msgid "Generate summary"
-msgstr "Generar resumen"
-
-#: src/views/transcript/summary_panel.py:294
-#, python-brace-format
-msgid ""
-"Set the API key of {provider} to summarize, or choose another provider in"
-" the settings."
-msgstr ""
-"Introduce la clave de API de {provider} para resumir, o elige otro "
-"proveedor en los ajustes."
-
-#: src/views/transcript/summary_panel.py:374
-msgid "The transcription is very long, so only its beginning was summarized."
-msgstr "La transcripción es muy larga, así que solo se ha resumido su principio."
-
-#: src/views/transcript/summary_panel.py:389
-#, python-brace-format
-msgid "Generated by {model} · {date}"
-msgstr "Generado por {model} · {date}"
-
-#: src/views/transcript/transcript_text.py:336
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr "Haz clic en un segmento para reproducirlo. Haz clic derecho para editarlo."
-
-#: src/views/transcript/transcript_text.py:341
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "El texto plano se ha editado; la transcripción conserva el original."
-
-#: src/views/transcript/transcript_text.py:347
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Puedes editar el texto. Los cambios se guardan automáticamente."
-
-#: src/views/transcript/transcript_text.py:352
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Las marcas de tiempo solo están disponibles con WhisperX y con los "
-"modelos whisper-1 y gpt-4o-transcribe-diarize de la API de Whisper."
-
-#: src/views/transcript/transcript_text.py:825
-msgid "This transcription has no timestamps."
-msgstr "Esta transcripción no tiene marcas de tiempo."
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:150
-msgid "There is no alignment model for its language"
-msgstr "No hay modelo de alineación para su idioma"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:151
-msgid "Turn on “Word-level timings” and transcribe it again"
-msgstr "Activa «Tiempos por palabra» y vuelve a transcribirlo"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:158
-msgid "Transcribe it again to score its words"
-msgstr "Vuelve a transcribirlo para puntuar sus palabras"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:159
-msgid "Only WhisperX and whisper-1 score the words"
-msgstr "Solo WhisperX y whisper-1 puntúan las palabras"
-
-#: src/views/transcript/transcript_view.py:164
-msgid "Plain text (.txt)"
-msgstr "Texto plano (.txt)"
-
-#: src/views/transcript/transcript_view.py:165
-msgid "Markdown (.md)"
-msgstr "Markdown (.md)"
-
-#: src/views/transcript/transcript_view.py:166
-msgid "Word document (.docx)"
-msgstr "Documento de Word (.docx)"
-
-#: src/views/transcript/transcript_view.py:167
-msgid "Subtitles (.srt)"
-msgstr "Subtítulos (.srt)"
-
-#: src/views/transcript/transcript_view.py:168
-msgid "Web subtitles (.vtt)"
-msgstr "Subtítulos web (.vtt)"
-
-#: src/views/transcript/transcript_view.py:169
-msgid "Styled subtitles (.ass)"
-msgstr "Subtítulos con estilo (.ass)"
-
-#: src/views/transcript/transcript_view.py:170
-msgid "Table (.tsv)"
-msgstr "Tabla (.tsv)"
-
-#: src/views/transcript/transcript_view.py:171
-msgid "JSON (.json)"
-msgstr "JSON (.json)"
-
-#: src/views/transcript/transcript_view.py:313
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Dejar de desplazar la traducción con la transcripción"
-
-#: src/views/transcript/transcript_view.py:315
-msgid "Scroll the translation with the transcription"
-msgstr "Desplazar la traducción con la transcripción"
-
-#: src/views/transcript/transcript_view.py:511
-msgid "Stop adding the subtitles to the video"
-msgstr "Dejar de añadir los subtítulos al vídeo"
-
-#: src/views/transcript/transcript_view.py:516
-msgid "Video with subtitles (.mp4)…"
-msgstr "Vídeo con subtítulos (.mp4)…"
-
-#: src/views/transcript/transcript_view.py:537
-msgid "Export transcription"
-msgstr "Exportar transcripción"
-
-#: src/views/transcript/transcript_view.py:558
-#, python-brace-format
-msgid "Export translation into {language}"
-msgstr "Exportar la traducción al {language}"
-
-#: src/views/transcript/transcript_view.py:571
-msgid "Export summary"
-msgstr "Exportar el resumen"
-
-#: src/views/transcript/transcript_view.py:600
-#: src/views/transcript/video_export.py:89
-#, python-brace-format
-msgid "Could not export: {error}"
-msgstr "No se pudo exportar: {error}"
-
-#: src/views/transcript/transcript_view.py:603
-#: src/views/transcript/video_export.py:101
-#, python-brace-format
-msgid "Exported to {path}"
-msgstr "Exportado a {path}"
-
-#: src/views/transcript/transcript_view.py:630
-msgid "All files"
-msgstr "Todos los archivos"
-
-#: src/views/transcript/transcript_view.py:646
-msgid "Export video with subtitles"
-msgstr "Exportar el vídeo con subtítulos"
-
-#: src/views/transcript/transcript_view.py:719
-#: src/views/transcript/translation_panel.py:143
-#, python-brace-format
-msgid "Find and replace ({shortcut})"
-msgstr "Buscar y reemplazar ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:767
-msgid "No low-confidence words left to review"
-msgstr "No quedan palabras de baja confianza por revisar"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:777
-msgid "Show all segments"
-msgstr "Mostrar todos los segmentos"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:813
-#, python-brace-format
-msgid "Previous low-confidence word ({shortcut})"
-msgstr "Palabra anterior de baja confianza ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:815
-#, python-brace-format
-msgid "Next low-confidence word ({shortcut})"
-msgstr "Siguiente palabra de baja confianza ({shortcut})"
-
-#: src/views/transcript/transcript_view.py:827
-msgid "Plain text"
-msgstr "Texto plano"
-
-#: src/views/transcript/transcript_view.py:837
-#: src/views/transcript/translation_panel.py:409
-msgid "Translate"
-msgstr "Traducir"
-
-#: src/views/transcript/transcript_view.py:957
-#: src/views/transcript/transcript_view.py:1546
-msgid "Edit text"
-msgstr "Editar texto"
-
-#: src/views/transcript/transcript_view.py:957
-#, python-brace-format
-msgid "Text said at {time}:"
-msgstr "Texto dicho en {time}:"
-
-#: src/views/transcript/transcript_view.py:1048
-msgid "Find and replace in the transcription"
-msgstr "Buscar y reemplazar en la transcripción"
-
-#: src/views/transcript/transcript_view.py:1058
-msgid "Find and replace in the translation"
-msgstr "Buscar y reemplazar en la traducción"
-
-#: src/views/transcript/transcript_view.py:1059
-#, python-brace-format
-msgid "Find and replace in the translation into {language}"
-msgstr "Buscar y reemplazar en la traducción al {language}"
-
-#: src/views/transcript/transcript_view.py:1072
-msgid "Find in the summary"
-msgstr "Buscar en el resumen"
-
-#: src/views/transcript/transcript_view.py:1147
-msgid "Delete the questions and their answers?"
-msgstr "¿Eliminar las preguntas y sus respuestas?"
-
-#: src/views/transcript/transcript_view.py:1176
-msgid "Generate the summary again? The current one will be replaced."
-msgstr "¿Volver a generar el resumen? Se reemplazará el actual."
-
-#: src/views/transcript/transcript_view.py:1334
-#: src/views/transcript/translation_panel.py:155
-msgid "Hide the translation"
-msgstr "Ocultar la traducción"
-
-#: src/views/transcript/transcript_view.py:1339
-msgid "Show the translation"
-msgstr "Mostrar la traducción"
-
-#: src/views/transcript/transcript_view.py:1343
-#: src/views/transcript/translation_panel.py:298
-msgid "Translate into another language…"
-msgstr "Traducir a otro idioma…"
-
-#: src/views/transcript/transcript_view.py:1354
-msgid "Show it as the subtitles of the video"
-msgstr "Mostrarla como subtítulos del vídeo"
-
-#: src/views/transcript/transcript_view.py:1361
-msgid "Delete the translation"
-msgstr "Eliminar la traducción"
-
-#: src/views/transcript/transcript_view.py:1486
-#: src/views/transcript/transcript_view.py:1725
-msgid "Play from here"
-msgstr "Reproducir desde aquí"
-
-#: src/views/transcript/transcript_view.py:1494
-#: src/views/transcript/transcript_view.py:1729
-msgid "Edit text…"
-msgstr "Editar texto…"
-
-#: src/views/transcript/transcript_view.py:1494
-msgid "Translate text…"
-msgstr "Traducir texto…"
-
-#: src/views/transcript/transcript_view.py:1498
-msgid "Edit the timing…"
-msgstr "Editar los tiempos…"
-
-#: src/views/transcript/transcript_view.py:1502
-msgid "Add a segment after…"
-msgstr "Añadir un segmento después…"
-
-#: src/views/transcript/transcript_view.py:1546
-msgid "Translate text"
-msgstr "Traducir texto"
-
-#: src/views/transcript/transcript_view.py:1549
-#, python-brace-format
-msgid "Translation of “{text}”, said from {start} to {end}:"
-msgstr "Traducción de «{text}», dicho de {start} a {end}:"
-
-#: src/views/transcript/transcript_view.py:1551
-#, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Traducción del segmento de {start} a {end}:"
-
-#: src/views/transcript/transcript_view.py:1587
-#: src/views/transcript/translation_panel.py:152
-msgid "Translate again"
-msgstr "Volver a traducir"
-
-#: src/views/transcript/transcript_view.py:1589
-#, python-brace-format
-msgid ""
-"Translate the transcription into {language} again? The changes made to "
-"the translation will be lost."
-msgstr ""
-"¿Volver a traducir la transcripción al {language}? Se perderán los "
-"cambios hechos en la traducción."
-
-#: src/views/transcript/transcript_view.py:1612
-msgid "The audio isn't available: the source file was moved or deleted."
-msgstr ""
-"El audio no está disponible: el archivo de origen se ha movido o "
-"eliminado."
-
-#: src/views/transcript/transcript_view.py:1615
-msgid "The audio isn't available."
-msgstr "El audio no está disponible."
-
-#: src/views/transcript/transcript_view.py:1733
-#: src/views/transcript/transcript_view.py:1815
-msgid "Rename speakers…"
-msgstr "Renombrar hablantes…"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1756
-msgid "Highlight low-confidence words"
-msgstr "Resaltar palabras de baja confianza"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1763
-msgid "Low-confidence threshold"
-msgstr "Umbral de baja confianza"
-
-# Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1788
-#, python-brace-format
-msgid "Below {percent}%"
-msgstr "Por debajo del {percent} %"
-
-#: src/views/transcript/transcript_view.py:1804
-#, python-brace-format
-msgid "Transcribe “{title}” again? The changes made to its text will be lost."
-msgstr ""
-"¿Volver a transcribir «{title}»? Se perderán los cambios hechos en su "
-"texto."
-
-#: src/views/transcript/transcript_view.py:1825
-msgid "Precise timestamps (HH:MM:SS,mmm)"
-msgstr "Marcas de tiempo precisas (HH:MM:SS,mmm)"
-
-#: src/views/transcript/transcript_view.py:1849
-msgid "Rename…"
-msgstr "Renombrar…"
-
-#: src/views/transcript/translation_panel.py:188
-msgid "Not translated yet"
-msgstr "Sin traducir todavía"
-
-#: src/views/transcript/translation_panel.py:220
-#, python-brace-format
-msgid "Translating into {language}…"
-msgstr "Traduciendo al {language}…"
-
-#: src/views/transcript/translation_panel.py:224
-msgid "Translating…"
-msgstr "Traduciendo…"
-
-#: src/views/transcript/translation_panel.py:227
-msgid "It takes a moment."
-msgstr "Tardará un momento."
-
-#: src/views/transcript/translation_panel.py:229
-msgid "The transcription is being translated. It takes a moment."
-msgstr "Se está traduciendo la transcripción. Tardará un momento."
-
-#: src/views/transcript/translation_panel.py:236
-msgid "There is no translation yet."
-msgstr "Todavía no hay traducción."
-
-#: src/views/transcript/translation_panel.py:238
-msgid "Translate…"
-msgstr "Traducir…"
-
-#: src/views/transcript/translation_panel.py:364
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr "Segmentos por traducir: {count}. Haz clic derecho en uno para traducirlo."
-
-#: src/views/transcript/translation_panel.py:371
-#: src/views/transcript/translation_panel.py:450
-msgid "Manual"
-msgstr "Manual"
-
-#: src/views/transcript/translation_panel.py:418
-msgid "Translate into:"
-msgstr "Traducir al:"
-
-#: src/views/transcript/translation_panel.py:439
-msgid "Translate with:"
-msgstr "Traducir con:"
-
-#: src/views/transcript/translation_panel.py:496
-msgid "More options in the settings"
-msgstr "Más opciones en los ajustes"
-
-#: src/views/transcript/translation_panel.py:527
-#, python-brace-format
-msgid "No API key for {provider}."
-msgstr "No hay clave de API de {provider}."
-
-#: src/views/transcript/translation_panel.py:534
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr ""
-"Crea segmentos vacíos con las marcas de tiempo originales para que los "
-"rellenes."
-
-#: src/views/transcript/translation_panel.py:544
-#, python-brace-format
-msgid "Uses the model {model}."
-msgstr "Usa el modelo {model}."
-
-#: src/views/transcript/translation_panel.py:547
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Traduce cada segmento, manteniendo sus marcas de tiempo."
-
-#: src/views/transcript/translation_panel.py:559
-msgid "Set…"
-msgstr "Configurar…"
-
-#: src/views/transcript/video_export.py:84
-msgid "Adding the subtitles to the video was cancelled."
-msgstr "Se ha cancelado la adición de los subtítulos al vídeo."
-
-#: src/views/transcript/video_export.py:105
-#, python-brace-format
-msgid ""
-"Exported to {path}, but no font has these characters, so they're shown as"
-" boxes: {characters}"
-msgstr ""
-"Exportado a {path}, pero ninguna fuente tiene estos caracteres, así que "
-"se muestran como recuadros: {characters}"
-
-#: src/views/transcript/video_export.py:114
-msgid "Adding the subtitles to the video…"
-msgstr "Añadiendo los subtítulos al vídeo…"
-
-#: src/views/transcript/video_export.py:115
-#, python-brace-format
-msgid "Adding the subtitles to the video… {percent}%"
-msgstr "Añadiendo los subtítulos al vídeo… {percent} %"
-
-#: src/views/transcript/video_pane.py:260
-msgid "Show subtitles on the video"
-msgstr "Mostrar subtítulos en el vídeo"
-
-#: src/views/transcript/video_pane.py:281
-#, python-brace-format
-msgid "Translation into {language}"
-msgstr "Traducción al {language}"
-
-#: src/views/transcript/video_pane.py:292
-msgid "Size"
-msgstr "Tamaño"
-
-#: src/views/transcript/video_pane.py:296
-msgid "Small"
-msgstr "Pequeño"
-
-#: src/views/transcript/video_pane.py:297
-msgid "Medium"
-msgstr "Mediano"
-
-#: src/views/transcript/video_pane.py:298
-msgid "Large"
-msgstr "Grande"
-
-#: src/views/transcript/video_pane.py:302
-msgid "Position"
-msgstr "Posición"
-
-#: src/views/transcript/video_pane.py:305
-msgid "Bottom"
-msgstr "Abajo"
-
-#: src/views/transcript/video_pane.py:305
-msgid "Top"
-msgstr "Arriba"
-
-#: src/views/transcript/video_pane.py:308
-msgid "Style"
-msgstr "Estilo"
-
-#: src/views/transcript/video_pane.py:312
-msgid "Dark background"
-msgstr "Fondo oscuro"
-
-#: src/views/transcript/video_pane.py:313
-msgid "Outline"
-msgstr "Contorno"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:67
-msgid "Replay"
-msgstr "Volver a reproducir"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:72
-#, python-brace-format
-msgid "Replay ({shortcut})"
-msgstr "Volver a reproducir ({shortcut})"
-
-# Needs review by a native speaker
-#: src/views/transcript/word_popover.py:85
-msgid "Accept"
-msgstr "Aceptar"
+msgid "“{name}” is not a supported audio or video file."
+msgstr "«{name}» no es un archivo de audio o vídeo compatible."
