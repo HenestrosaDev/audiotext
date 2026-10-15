@@ -19,7 +19,9 @@ any catalog is out of date.
 """
 
 import os
+import re
 import sys
+import tempfile
 from pathlib import Path
 
 from babel.messages.catalog import Message
@@ -53,9 +55,36 @@ def extract(output_path: Path = TEMPLATE_PATH) -> None:
         "--copyright-holder=HenestrosaDev",
         "--msgid-bugs-address=https://github.com/HenestrosaDev/audiotext/issues",
         f"--output-file={output_path}",
-        # Relative, so the references of the texts don't include the local path
+        # Without the lines of each text and sorted, so the catalogs only change
+        # when the texts do, and the texts added by different branches don't
+        # conflict when merged
+        "--no-location",
+        "--sort-output",
         str(SRC_PATH.relative_to(ROOT_PATH)),
     )
+
+
+def extract_if_changed() -> None:
+    """
+    Extracts the texts of the code into the template, keeping the template as it
+    is (with its creation date) if the texts didn't change, so the catalogs don't
+    change either.
+    """
+    with tempfile.TemporaryDirectory() as directory:
+        extracted_path = Path(directory) / TEMPLATE_PATH.name
+        extract(extracted_path)
+        end_with_one_newline(extracted_path)
+        extracted = extracted_path.read_text(encoding="utf-8")
+
+    if TEMPLATE_PATH.exists() and without_creation_date(
+        extracted
+    ) == without_creation_date(TEMPLATE_PATH.read_text(encoding="utf-8")):
+        return
+    TEMPLATE_PATH.write_text(extracted, encoding="utf-8")
+
+
+def without_creation_date(template: str) -> str:
+    return re.sub(r'^"POT-Creation-Date: .*"$', "", template, flags=re.MULTILINE)
 
 
 def update() -> None:
@@ -130,7 +159,7 @@ def translations(message: Message) -> list[str]:
 
 
 def main() -> None:
-    extract()
+    extract_if_changed()
     update()
     for path in [TEMPLATE_PATH, *catalog_paths()]:
         end_with_one_newline(path)
