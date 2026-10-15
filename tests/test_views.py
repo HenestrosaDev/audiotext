@@ -3338,6 +3338,7 @@ def test_the_video_is_exported_with_its_subtitles(
     ui: Ui, audio_file: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     from tests.test_subtitle_burner import make_sound_video
+    from utils.subtitle_burner import BurnedVideo
     from views.transcript import transcript_view, video_export
     from views.transcript.transcript_view import TranscriptView
 
@@ -3373,9 +3374,11 @@ def test_the_video_is_exported_with_its_subtitles(
 
     burned: list[tuple[Path, list[str], Path]] = []
 
-    def burn(video_path: Path, cues: list[Any], output: Path, *_args: Any) -> Path:
+    def burn(
+        video_path: Path, cues: list[Any], output: Path, *_args: Any
+    ) -> BurnedVideo:
         burned.append((video_path, [cue.text for cue in cues], output))
-        return output
+        return BurnedVideo(output)
 
     monkeypatch.setattr(video_export, "burn_subtitles", burn)
     monkeypatch.setattr(

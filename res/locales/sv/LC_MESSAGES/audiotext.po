@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 02:45+0200\n"
+"POT-Creation-Date: 2026-10-15 10:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -2103,7 +2103,7 @@ msgid "Could not export: {error}"
 msgstr "Det gick inte att exportera: {error}"
 
 #: src/views/transcript/transcript_view.py:588
-#: src/views/transcript/video_export.py:92
+#: src/views/transcript/video_export.py:101
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Exporterad till {path}"
@@ -2377,11 +2377,20 @@ msgstr "Ange…"
 msgid "Adding the subtitles to the video was cancelled."
 msgstr "Tillägget av undertexterna i videon avbröts."
 
-#: src/views/transcript/video_export.py:100
+#: src/views/transcript/video_export.py:105
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr ""
+"Exporterad till {path}, men inget typsnitt har de här tecknen, så de "
+"visas som rutor: {characters}"
+
+#: src/views/transcript/video_export.py:114
 msgid "Adding the subtitles to the video…"
 msgstr "Lägger till undertexterna i videon…"
 
-#: src/views/transcript/video_export.py:101
+#: src/views/transcript/video_export.py:115
 #, python-brace-format
 msgid "Adding the subtitles to the video… {percent}%"
 msgstr "Lägger till undertexterna i videon… {percent} %"

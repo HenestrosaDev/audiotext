@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 3.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 02:45+0200\n"
+"POT-Creation-Date: 2026-10-15 10:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2008,7 +2008,7 @@ msgid "Could not export: {error}"
 msgstr ""
 
 #: src/views/transcript/transcript_view.py:588
-#: src/views/transcript/video_export.py:92
+#: src/views/transcript/video_export.py:101
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr ""
@@ -2271,11 +2271,18 @@ msgstr ""
 msgid "Adding the subtitles to the video was cancelled."
 msgstr ""
 
-#: src/views/transcript/video_export.py:100
+#: src/views/transcript/video_export.py:105
+#, python-brace-format
+msgid ""
+"Exported to {path}, but no font has these characters, so they're shown as"
+" boxes: {characters}"
+msgstr ""
+
+#: src/views/transcript/video_export.py:114
 msgid "Adding the subtitles to the video…"
 msgstr ""
 
-#: src/views/transcript/video_export.py:101
+#: src/views/transcript/video_export.py:115
 #, python-brace-format
 msgid "Adding the subtitles to the video… {percent}%"
 msgstr ""
