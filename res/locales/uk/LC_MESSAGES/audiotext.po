@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 00:34+0200\n"
+"POT-Creation-Date: 2026-10-15 14:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -58,42 +58,42 @@ msgstr "Файл {current} з {total} ({name}): {message}"
 msgid "{name}: {message}"
 msgstr "{name}: {message}"
 
-#: src/controllers/main_controller.py:113
+#: src/controllers/main_controller.py:125
 msgid "Cancelling…"
 msgstr "Скасування…"
 
-#: src/controllers/main_controller.py:182
+#: src/controllers/main_controller.py:194
 msgid "Transcription cancelled."
 msgstr "Транскрипцію скасовано."
 
-#: src/controllers/main_controller.py:197
+#: src/controllers/main_controller.py:209
 msgid "Downloading…"
 msgstr "Завантаження…"
 
-#: src/controllers/main_controller.py:208
+#: src/controllers/main_controller.py:220
 msgid "Recording…"
 msgstr "Запис…"
 
-#: src/controllers/main_controller.py:225
+#: src/controllers/main_controller.py:237
 #, python-brace-format
 msgid "Done in {duration}."
 msgstr "Готово за {duration}."
 
-#: src/controllers/main_controller.py:288
+#: src/controllers/main_controller.py:303
 msgid "Isolating the speech…"
 msgstr "Виділення мовлення…"
 
-#: src/controllers/main_controller.py:321
+#: src/controllers/main_controller.py:335
 msgid "WhisperX model ready."
 msgstr "Модель WhisperX готова."
 
-#: src/controllers/main_controller.py:328
+#: src/controllers/main_controller.py:342
 #, python-brace-format
 msgid "Could not load the WhisperX model: {error}"
 msgstr "Не вдалося завантажити модель WhisperX: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:202
+#: src/handlers/whisperx_handler.py:217
 msgid "No output file types selected. Please select at least one."
 msgstr "Не вибрано жодного типу вихідного файлу. Виберіть принаймні один."
 
@@ -113,16 +113,16 @@ msgstr ""
 "Модель {model} не повертає часові мітки, тому не може зберігати файли "
 "{format}. Виберіть інший формат або модель whisper-1."
 
-#: src/controllers/transcription_validator.py:75
+#: src/controllers/transcription_validator.py:77
 msgid "Please select a valid audio or video file."
 msgstr "Виберіть коректний аудіо- або відеофайл."
 
-#: src/controllers/transcription_validator.py:79
+#: src/controllers/transcription_validator.py:81
 #: src/views/new_transcription/new_transcription_view.py:491
 msgid "Please select a valid folder."
 msgstr "Виберіть коректну папку."
 
-#: src/controllers/transcription_validator.py:86
+#: src/controllers/transcription_validator.py:88
 msgid ""
 "Please enter a valid URL (e.g. the link of a YouTube video or of an audio"
 " or video file)."
@@ -130,33 +130,33 @@ msgstr ""
 "Введіть коректний URL (наприклад, посилання на відео YouTube або на "
 "аудіо- чи відеофайл)."
 
-#: src/handlers/ai_providers.py:104 src/handlers/ai_providers.py:109
-#: src/handlers/ai_providers.py:112
+#: src/handlers/ai_providers.py:108 src/handlers/ai_providers.py:113
+#: src/handlers/ai_providers.py:116
 msgid "The model didn't return a valid reply."
 msgstr "Модель не повернула коректну відповідь."
 
-#: src/handlers/ai_providers.py:157 src/handlers/ai_providers.py:190
+#: src/handlers/ai_providers.py:161 src/handlers/ai_providers.py:194
 msgid "The reply of the model was too long."
 msgstr "Відповідь моделі була задовгою."
 
-#: src/handlers/audio_handler.py:54 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:226
+#: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
+#: src/handlers/whisperx_handler.py:241
 msgid "Loading audio…"
 msgstr "Завантаження аудіо…"
 
-#: src/handlers/audio_handler.py:81
+#: src/handlers/audio_handler.py:79
 #, python-brace-format
 msgid "Unsupported file type: {extension}"
 msgstr "Непідтримуваний тип файлу: {extension}"
 
-#: src/handlers/audio_handler.py:132 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:236 src/handlers/whisperx_handler.py:243
+#: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
+#: src/handlers/whisperx_handler.py:251 src/handlers/whisperx_handler.py:258
 #: src/views/history/formatting.py:43
 #: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
 msgstr "Транскрибування…"
 
-#: src/handlers/audio_handler.py:135 src/handlers/openai_api_handler.py:372
+#: src/handlers/audio_handler.py:131 src/handlers/openai_api_handler.py:372
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
 msgstr "Транскрибування фрагмента {current} з {total}…"
@@ -165,7 +165,7 @@ msgstr "Транскрибування фрагмента {current} з {total}�
 msgid "The text can't be shown while recording."
 msgstr "Текст не можна показувати під час запису."
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:465
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:482
 #, python-brace-format
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr ""
@@ -185,28 +185,28 @@ msgstr "Модель не повернула коректний підсумок
 msgid "There is no text to summarize."
 msgstr "Немає тексту для підсумку."
 
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:312
+#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:331
 msgid "There is no transcription to save. Please generate it first."
 msgstr "Немає транскрипції для збереження. Спочатку створіть її."
 
-#: src/handlers/translation_handler.py:310
+#: src/handlers/translation_handler.py:311
 msgid "The model didn't return a valid translation."
 msgstr "Модель не повернула коректний переклад."
 
-#: src/handlers/translation_handler.py:381
+#: src/handlers/translation_handler.py:382
 #, python-brace-format
 msgid "DeepL can't translate into {language}."
 msgstr "DeepL не може перекладати цією мовою: {language}."
 
-#: src/handlers/translation_handler.py:400
+#: src/handlers/translation_handler.py:401
 msgid "DeepL didn't return a valid translation."
 msgstr "DeepL не повернув коректний переклад."
 
-#: src/handlers/translation_handler.py:421
+#: src/handlers/translation_handler.py:422
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Перекладач не повернув коректний переклад."
 
-#: src/handlers/translation_handler.py:451
+#: src/handlers/translation_handler.py:452
 msgid "There is no text to translate."
 msgstr "Немає тексту для перекладу."
 
@@ -223,15 +223,15 @@ msgstr ""
 msgid "The file could not be downloaded: {error}"
 msgstr "Не вдалося завантажити файл: {error}"
 
-#: src/handlers/whisperx_handler.py:354 src/handlers/whisperx_handler.py:363
+#: src/handlers/whisperx_handler.py:371 src/handlers/whisperx_handler.py:380
 msgid "Aligning subtitles…"
 msgstr "Вирівнювання субтитрів…"
 
-#: src/handlers/whisperx_handler.py:387 src/handlers/whisperx_handler.py:392
+#: src/handlers/whisperx_handler.py:404 src/handlers/whisperx_handler.py:409
 msgid "Identifying speakers…"
 msgstr "Визначення мовців…"
 
-#: src/handlers/whisperx_handler.py:413
+#: src/handlers/whisperx_handler.py:430
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -242,11 +242,11 @@ msgstr ""
 "{tokens_url}, прийміть умови {model_url} і вкажіть токен у параметрах "
 "WhisperX."
 
-#: src/handlers/whisperx_handler.py:498
+#: src/handlers/whisperx_handler.py:515
 msgid "Loading the subtitle alignment model…"
 msgstr "Завантаження моделі вирівнювання субтитрів…"
 
-#: src/handlers/whisperx_handler.py:531
+#: src/handlers/whisperx_handler.py:548
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
@@ -254,7 +254,7 @@ msgstr ""
 "Завантаження моделі визначення мовців (вона завантажується під час "
 "першого використання)…"
 
-#: src/handlers/whisperx_handler.py:545
+#: src/handlers/whisperx_handler.py:562
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
@@ -282,7 +282,7 @@ msgstr "Аудіо не записано."
 
 #: src/utils/exporters.py:177 src/utils/exporters.py:248
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:716
+#: src/views/transcript/transcript_view.py:699
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Транскрипція"
@@ -290,9 +290,9 @@ msgstr "Транскрипція"
 #: src/utils/exporters.py:195 src/utils/exporters.py:223
 #: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:507
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:536
-#: src/views/transcript/transcript_view.py:541
-#: src/views/transcript/transcript_view.py:759
+#: src/views/transcript/transcript_view.py:517
+#: src/views/transcript/transcript_view.py:522
+#: src/views/transcript/transcript_view.py:741
 msgid "Summary"
 msgstr "Підсумок"
 
@@ -340,14 +340,14 @@ msgid "{count} failed"
 msgstr "З помилкою: {count}"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:2259
+#: src/views/transcript/transcript_view.py:1711
 msgid "Open the folder of the saved files"
 msgstr "Відкрити папку збережених файлів"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:666
-#: src/views/transcript/transcript_view.py:2220
+#: src/views/transcript/transcript_view.py:647
+#: src/views/transcript/transcript_view.py:1672
 msgid "Transcribe again"
 msgstr "Транскрибувати знову"
 
@@ -565,22 +565,22 @@ msgid "Rename"
 msgstr "Перейменувати"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2271
+#: src/views/transcript/transcript_view.py:1723
 msgid "Edit note…"
 msgstr "Змінити нотатку…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:2271
+#: src/views/transcript/transcript_view.py:1723
 msgid "Add note…"
 msgstr "Додати нотатку…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:2276
+#: src/views/transcript/transcript_view.py:1728
 msgid "Delete note…"
 msgstr "Видалити нотатку…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:2282
+#: src/views/transcript/transcript_view.py:1734
 msgid "Edit tag…"
 msgstr "Змінити мітку…"
 
@@ -605,7 +605,7 @@ msgid "Move to group"
 msgstr "Перемістити до групи"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:2287
+#: src/views/transcript/transcript_view.py:1739
 msgid "Delete…"
 msgstr "Видалити…"
 
@@ -886,9 +886,9 @@ msgstr "Запишіть себе або зустріч. Запис збереж
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:656
-#: src/views/transcript/transcript_view.py:1738
-#: src/views/transcript/transcript_view.py:2154
+#: src/views/transcript/transcript_view.py:637
+#: src/views/transcript/transcript_view.py:1359
+#: src/views/transcript/transcript_view.py:1597
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Копіювати"
@@ -1194,7 +1194,7 @@ msgstr "Ключі API"
 
 #: src/views/settings/preferences_dialog.py:190
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:757
+#: src/views/transcript/transcript_view.py:739
 msgid "Subtitles"
 msgstr "Субтитри"
 
@@ -1751,25 +1751,46 @@ msgstr "Модель {model} не повертає часові мітки, то
 msgid "Choose where to save the transcriptions"
 msgstr "Виберіть, куди зберігати транскрипції"
 
-#: src/views/transcript/corrections.py:104
-#: src/views/transcript/transcript_view.py:1835
-msgid "Edit text"
-msgstr "Змінити текст"
+#: src/views/transcript/corrections.py:180
+msgid "Edit the timing"
+msgstr "Змінити таймінг"
 
-#: src/views/transcript/corrections.py:105
+#: src/views/transcript/corrections.py:181
+#: src/views/transcript/edit_dialogs.py:78 src/views/widgets/text_dialog.py:69
+msgid "Save"
+msgstr "Зберегти"
+
+#: src/views/transcript/corrections.py:208
+msgid "Add a segment"
+msgstr "Додати сегмент"
+
+#: src/views/transcript/corrections.py:209
+msgid "Add"
+msgstr "Додати"
+
+#: src/views/transcript/corrections.py:210
 #, python-brace-format
-msgid "Text said at {time}:"
-msgstr "Текст, сказаний о {time}:"
+msgid "The new segment goes after the one at {time}:"
+msgstr "Новий сегмент буде після сегмента о {time}:"
+
+#: src/views/transcript/corrections.py:240
+#: src/views/transcript/transcript_view.py:1377
+msgid "Delete the segment"
+msgstr "Видалити сегмент"
+
+#: src/views/transcript/corrections.py:241
+#, python-brace-format
+msgid "Delete the segment “{text}”?"
+msgstr "Видалити сегмент «{text}»?"
+
+#: src/views/transcript/corrections.py:275
+#, python-brace-format
+msgid "The segment at {time}, not translated yet."
+msgstr "Сегмент о {time}, ще не перекладено."
 
 #: src/views/transcript/edit_dialogs.py:78
 msgid "Rename speakers"
 msgstr "Перейменувати мовців"
-
-#: src/views/transcript/edit_dialogs.py:78
-#: src/views/transcript/transcript_view.py:1864
-#: src/views/widgets/text_dialog.py:69
-msgid "Save"
-msgstr "Зберегти"
 
 #: src/views/transcript/edit_dialogs.py:85
 msgid ""
@@ -1851,65 +1872,60 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Пробіл: відтворення/пауза · ←/→: на {seconds} с назад/вперед"
 
 #: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:2085
+#: src/views/transcript/transcript_view.py:1528
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Не вдається відтворити аудіо: {error}"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:92
+#: src/views/transcript/review_bar.py:90
 msgid "Only flagged"
 msgstr "Лише позначені"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:105
+#: src/views/transcript/review_bar.py:103
 msgid "Auto-play"
 msgstr "Автовідтворення"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:111
+#: src/views/transcript/review_bar.py:109
 msgid "Undo"
 msgstr "Скасувати"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:121
+#: src/views/transcript/review_bar.py:119
 msgid "Accept remaining"
 msgstr "Прийняти решту"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:132
+#: src/views/transcript/review_bar.py:130
 msgid "Adjust threshold"
 msgstr "Змінити поріг"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:143
+#: src/views/transcript/review_bar.py:141
 msgid "Review accepted words again"
 msgstr "Перевірити прийняті слова знову"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:156
-msgid "Review low-confidence words"
-msgstr "Перевірити слова з низькою впевненістю"
-
-# Needs review by a native speaker
-#: src/views/transcript/review_bar.py:237
+#: src/views/transcript/review_bar.py:218
 #, python-brace-format
 msgid "{remaining} of {total} to review"
 msgstr "{remaining} з {total} на перевірку"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:241
+#: src/views/transcript/review_bar.py:222
 #, python-brace-format
 msgid "All reviewed · {total} of {total}"
 msgstr "Усе перевірено · {total} з {total}"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:243
+#: src/views/transcript/review_bar.py:224
 msgid "No low-confidence words at this threshold"
 msgstr "За цього порогу немає слів із низькою впевненістю"
 
 # Needs review by a native speaker
-#: src/views/transcript/review_bar.py:245
+#: src/views/transcript/review_bar.py:226
 msgid "Confidence data isn’t available for this transcript"
 msgstr "Для цієї транскрипції немає даних про впевненість"
 
@@ -1919,13 +1935,13 @@ msgid "Find ({shortcut})"
 msgstr "Знайти ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:659
+#: src/views/transcript/transcript_view.py:640
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "Експорт"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1422
+#: src/views/transcript/transcript_view.py:1045
 msgid "Regenerate the summary"
 msgstr "Створити підсумок знову"
 
@@ -2001,242 +2017,220 @@ msgid "This transcription has no timestamps."
 msgstr "Ця транскрипція не має часових міток."
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:199
+#: src/views/transcript/transcript_view.py:146
 msgid "There is no alignment model for its language"
 msgstr "Для цієї мови немає моделі вирівнювання"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:200
+#: src/views/transcript/transcript_view.py:147
 msgid "Turn on “Word-level timings” and transcribe it again"
 msgstr "Увімкніть «Таймінг слів» і транскрибуйте знову"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:207
+#: src/views/transcript/transcript_view.py:154
 msgid "Transcribe it again to score its words"
 msgstr "Транскрибуйте знову, щоб оцінити слова"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:208
+#: src/views/transcript/transcript_view.py:155
 msgid "Only WhisperX and whisper-1 score the words"
 msgstr "Слова оцінюють лише WhisperX і whisper-1"
 
-#: src/views/transcript/transcript_view.py:213
+#: src/views/transcript/transcript_view.py:160
 msgid "Plain text (.txt)"
 msgstr "Звичайний текст (.txt)"
 
-#: src/views/transcript/transcript_view.py:214
+#: src/views/transcript/transcript_view.py:161
 msgid "Markdown (.md)"
 msgstr "Markdown (.md)"
 
-#: src/views/transcript/transcript_view.py:215
+#: src/views/transcript/transcript_view.py:162
 msgid "Word document (.docx)"
 msgstr "Документ Word (.docx)"
 
-#: src/views/transcript/transcript_view.py:216
+#: src/views/transcript/transcript_view.py:163
 msgid "Subtitles (.srt)"
 msgstr "Субтитри (.srt)"
 
-#: src/views/transcript/transcript_view.py:217
+#: src/views/transcript/transcript_view.py:164
 msgid "Web subtitles (.vtt)"
 msgstr "Вебсубтитри (.vtt)"
 
-#: src/views/transcript/transcript_view.py:218
+#: src/views/transcript/transcript_view.py:165
 msgid "Table (.tsv)"
 msgstr "Таблиця (.tsv)"
 
-#: src/views/transcript/transcript_view.py:219
+#: src/views/transcript/transcript_view.py:166
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:343
+#: src/views/transcript/transcript_view.py:308
 msgid "Stop scrolling the translation with the transcription"
 msgstr "Не прокручувати переклад разом із транскрипцією"
 
-#: src/views/transcript/transcript_view.py:345
+#: src/views/transcript/transcript_view.py:310
 msgid "Scroll the translation with the transcription"
 msgstr "Прокручувати переклад разом із транскрипцією"
 
-#: src/views/transcript/transcript_view.py:506
+#: src/views/transcript/transcript_view.py:487
 msgid "Export transcription"
 msgstr "Експортувати транскрипцію"
 
-#: src/views/transcript/transcript_view.py:527
+#: src/views/transcript/transcript_view.py:508
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Експортувати переклад (мова: {language})"
 
-#: src/views/transcript/transcript_view.py:540
+#: src/views/transcript/transcript_view.py:521
 msgid "Export summary"
 msgstr "Експортувати підсумок"
 
-#: src/views/transcript/transcript_view.py:577
+#: src/views/transcript/transcript_view.py:558
 msgid "All files"
 msgstr "Усі файли"
 
-#: src/views/transcript/transcript_view.py:586
+#: src/views/transcript/transcript_view.py:567
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Не вдалося експортувати: {error}"
 
-#: src/views/transcript/transcript_view.py:589
+#: src/views/transcript/transcript_view.py:570
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Експортовано в {path}"
 
-#: src/views/transcript/transcript_view.py:651
+#: src/views/transcript/transcript_view.py:632
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Знайти й замінити ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:697
+#: src/views/transcript/transcript_view.py:680
 msgid "No low-confidence words left to review"
 msgstr "Слів із низькою впевненістю для перевірки не залишилося"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:707
+#: src/views/transcript/transcript_view.py:690
 msgid "Show all segments"
 msgstr "Показати всі сегменти"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:744
+#: src/views/transcript/transcript_view.py:726
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Попереднє слово з низькою впевненістю ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:746
+#: src/views/transcript/transcript_view.py:728
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Наступне слово з низькою впевненістю ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:758
+#: src/views/transcript/transcript_view.py:740
 msgid "Plain text"
 msgstr "Звичайний текст"
 
-#: src/views/transcript/transcript_view.py:767
+#: src/views/transcript/transcript_view.py:749
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Перекласти"
 
-#: src/views/transcript/transcript_view.py:1326
+#: src/views/transcript/transcript_view.py:858
+#: src/views/transcript/transcript_view.py:1416
+msgid "Edit text"
+msgstr "Змінити текст"
+
+#: src/views/transcript/transcript_view.py:858
+#, python-brace-format
+msgid "Text said at {time}:"
+msgstr "Текст, сказаний о {time}:"
+
+#: src/views/transcript/transcript_view.py:949
 msgid "Find and replace in the transcription"
 msgstr "Знайти й замінити в транскрипції"
 
-#: src/views/transcript/transcript_view.py:1336
+#: src/views/transcript/transcript_view.py:959
 msgid "Find and replace in the translation"
 msgstr "Знайти й замінити в перекладі"
 
-#: src/views/transcript/transcript_view.py:1337
+#: src/views/transcript/transcript_view.py:960
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Знайти й замінити в перекладі мовою {language}"
 
-#: src/views/transcript/transcript_view.py:1350
+#: src/views/transcript/transcript_view.py:973
 msgid "Find in the summary"
 msgstr "Знайти в підсумку"
 
-#: src/views/transcript/transcript_view.py:1423
+#: src/views/transcript/transcript_view.py:1046
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Створити підсумок знову? Поточний буде замінено."
 
-#: src/views/transcript/transcript_view.py:1581
+#: src/views/transcript/transcript_view.py:1204
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Сховати переклад"
 
-#: src/views/transcript/transcript_view.py:1586
+#: src/views/transcript/transcript_view.py:1209
 msgid "Show the translation"
 msgstr "Показати переклад"
 
-#: src/views/transcript/transcript_view.py:1590
+#: src/views/transcript/transcript_view.py:1213
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Перекласти іншою мовою…"
 
-#: src/views/transcript/transcript_view.py:1601
+#: src/views/transcript/transcript_view.py:1224
 msgid "Show it as the subtitles of the video"
 msgstr "Показувати як субтитри відео"
 
-#: src/views/transcript/transcript_view.py:1608
+#: src/views/transcript/transcript_view.py:1231
 msgid "Delete the translation"
 msgstr "Видалити переклад"
 
-#: src/views/transcript/transcript_view.py:1735
-#: src/views/transcript/transcript_view.py:2152
+#: src/views/transcript/transcript_view.py:1356
+#: src/views/transcript/transcript_view.py:1595
 msgid "Play from here"
 msgstr "Відтворити звідси"
 
-#: src/views/transcript/transcript_view.py:1743
-#: src/views/transcript/transcript_view.py:2155
+#: src/views/transcript/transcript_view.py:1364
+#: src/views/transcript/transcript_view.py:1599
 msgid "Edit text…"
 msgstr "Змінити текст…"
 
-#: src/views/transcript/transcript_view.py:1743
+#: src/views/transcript/transcript_view.py:1364
 msgid "Translate text…"
 msgstr "Перекласти текст…"
 
-#: src/views/transcript/transcript_view.py:1747
+#: src/views/transcript/transcript_view.py:1368
 msgid "Edit the timing…"
 msgstr "Змінити таймінг…"
 
-#: src/views/transcript/transcript_view.py:1751
+#: src/views/transcript/transcript_view.py:1372
 msgid "Add a segment after…"
 msgstr "Додати сегмент після…"
 
-#: src/views/transcript/transcript_view.py:1756
-#: src/views/transcript/transcript_view.py:1921
-msgid "Delete the segment"
-msgstr "Видалити сегмент"
-
-#: src/views/transcript/transcript_view.py:1835
+#: src/views/transcript/transcript_view.py:1416
 msgid "Translate text"
 msgstr "Перекласти текст"
 
-#: src/views/transcript/transcript_view.py:1836
+#: src/views/transcript/transcript_view.py:1419
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Переклад «{text}», сказаного з {start} до {end}:"
 
-#: src/views/transcript/transcript_view.py:1840
+#: src/views/transcript/transcript_view.py:1421
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Переклад сегмента з {start} до {end}:"
 
-#: src/views/transcript/transcript_view.py:1863
-msgid "Edit the timing"
-msgstr "Змінити таймінг"
-
-#: src/views/transcript/transcript_view.py:1889
-msgid "Add a segment"
-msgstr "Додати сегмент"
-
-#: src/views/transcript/transcript_view.py:1890
-msgid "Add"
-msgstr "Додати"
-
-#: src/views/transcript/transcript_view.py:1891
-#, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Новий сегмент буде після сегмента о {time}:"
-
-#: src/views/transcript/transcript_view.py:1922
-#, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Видалити сегмент «{text}»?"
-
-#: src/views/transcript/transcript_view.py:1978
-#, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Сегмент о {time}, ще не перекладено."
-
-#: src/views/transcript/transcript_view.py:2014
+#: src/views/transcript/transcript_view.py:1457
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Перекласти знову"
 
-#: src/views/transcript/transcript_view.py:2016
+#: src/views/transcript/transcript_view.py:1459
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2245,45 +2239,45 @@ msgstr ""
 "Перекласти транскрипцію мовою {language} знову? Зміни в перекладі буде "
 "втрачено."
 
-#: src/views/transcript/transcript_view.py:2039
+#: src/views/transcript/transcript_view.py:1482
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr "Аудіо недоступне: вихідний файл переміщено або видалено."
 
-#: src/views/transcript/transcript_view.py:2042
+#: src/views/transcript/transcript_view.py:1485
 msgid "The audio isn't available."
 msgstr "Аудіо недоступне."
 
-#: src/views/transcript/transcript_view.py:2157
-#: src/views/transcript/transcript_view.py:2233
+#: src/views/transcript/transcript_view.py:1603
+#: src/views/transcript/transcript_view.py:1685
 msgid "Rename speakers…"
 msgstr "Перейменувати мовців…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2176
+#: src/views/transcript/transcript_view.py:1626
 msgid "Highlight low-confidence words"
 msgstr "Виділяти слова з низькою впевненістю"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2184
+#: src/views/transcript/transcript_view.py:1633
 msgid "Low-confidence threshold"
 msgstr "Поріг низької впевненості"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:2206
+#: src/views/transcript/transcript_view.py:1658
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "Нижче {percent}%"
 
-#: src/views/transcript/transcript_view.py:2222
+#: src/views/transcript/transcript_view.py:1674
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Транскрибувати «{title}» знову? Зміни в тексті буде втрачено."
 
-#: src/views/transcript/transcript_view.py:2243
+#: src/views/transcript/transcript_view.py:1695
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Точні часові позначки (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:2267
+#: src/views/transcript/transcript_view.py:1719
 msgid "Rename…"
 msgstr "Перейменувати…"
 
