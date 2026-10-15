@@ -42,7 +42,8 @@ def find_ffmpeg(app_dir: Path) -> Path:
     paths = [path for path in app_dir.rglob(name) if path.is_file()]
     if not paths:
         raise SystemExit(f"There's no {name} in {app_dir}")
-    return paths[0]
+    # Absolute, since FFmpeg runs from the folder of the subtitles
+    return paths[0].resolve()
 
 
 def frames_at_cues(video: Path) -> list[np.ndarray]:
@@ -57,6 +58,9 @@ def frames_at_cues(video: Path) -> list[np.ndarray]:
 
 
 def main() -> int:
+    # The console of Windows doesn't encode the texts of the subtitles otherwise
+    sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+    sys.stderr.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
     app_dir, output_dir = Path(sys.argv[1]), Path(sys.argv[2])
     output_dir.mkdir(parents=True, exist_ok=True)
     ffmpeg = find_ffmpeg(app_dir)
