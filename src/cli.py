@@ -10,6 +10,8 @@ Examples:
     python src/cli.py watch inbox/ --output-types srt
     python src/cli.py check-update
 
+The installed app runs it too when it's given a command (see `launcher.py`).
+
 The options that are not given take the values configured in the app.
 """
 
@@ -509,8 +511,12 @@ def run(
     return EXIT_SUCCESS
 
 
-if __name__ == "__main__":
+def main() -> None:
     logging.basicConfig(format="%(levelname)s %(name)s: %(message)s")
     # Services are stopped with SIGTERM, which stops the process like Ctrl+C
     signal.signal(signal.SIGTERM, _raise_keyboard_interrupt)
     sys.exit(run())
+
+
+if __name__ == "__main__":
+    main()
