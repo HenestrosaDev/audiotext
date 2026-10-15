@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 14:48+0200\n"
+"POT-Creation-Date: 2026-10-15 14:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -93,7 +93,7 @@ msgid "Could not load the WhisperX model: {error}"
 msgstr "Non se puido cargar o modelo de WhisperX: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:217
+#: src/handlers/whisperx_handler.py:222
 msgid "No output file types selected. Please select at least one."
 msgstr ""
 "Non hai ningún tipo de ficheiro de saída seleccionado. Selecciona polo "
@@ -142,7 +142,7 @@ msgid "The reply of the model was too long."
 msgstr "A resposta do modelo era demasiado longa."
 
 #: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:241
+#: src/handlers/whisperx_handler.py:246
 msgid "Loading audio…"
 msgstr "Cargando o audio…"
 
@@ -152,7 +152,7 @@ msgid "Unsupported file type: {extension}"
 msgstr "Tipo de ficheiro non compatible: {extension}"
 
 #: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:251 src/handlers/whisperx_handler.py:258
+#: src/handlers/whisperx_handler.py:256 src/handlers/whisperx_handler.py:263
 #: src/views/history/formatting.py:43
 #: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
@@ -167,7 +167,7 @@ msgstr "Transcribindo o fragmento {current} de {total}…"
 msgid "The text can't be shown while recording."
 msgstr "O texto non se pode mostrar mentres se grava."
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:482
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:487
 #, python-brace-format
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr "Cargando o modelo {model} (descárgase a primeira vez que se usa)…"
@@ -185,7 +185,7 @@ msgstr "O modelo non devolveu un resumo válido."
 msgid "There is no text to summarize."
 msgstr "Non hai texto que resumir."
 
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:331
+#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:336
 msgid "There is no transcription to save. Please generate it first."
 msgstr "Non hai ningunha transcrición que gardar. Xérala primeiro."
 
@@ -223,15 +223,15 @@ msgstr ""
 msgid "The file could not be downloaded: {error}"
 msgstr "Non se puido descargar o ficheiro: {error}"
 
-#: src/handlers/whisperx_handler.py:371 src/handlers/whisperx_handler.py:380
+#: src/handlers/whisperx_handler.py:376 src/handlers/whisperx_handler.py:385
 msgid "Aligning subtitles…"
 msgstr "Aliñando os subtítulos…"
 
-#: src/handlers/whisperx_handler.py:404 src/handlers/whisperx_handler.py:409
+#: src/handlers/whisperx_handler.py:409 src/handlers/whisperx_handler.py:414
 msgid "Identifying speakers…"
 msgstr "Identificando falantes…"
 
-#: src/handlers/whisperx_handler.py:430
+#: src/handlers/whisperx_handler.py:435
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -242,11 +242,11 @@ msgstr ""
 "{tokens_url}, acepta as condicións de {model_url} e introduce o token nas"
 " opcións de WhisperX."
 
-#: src/handlers/whisperx_handler.py:515
+#: src/handlers/whisperx_handler.py:520
 msgid "Loading the subtitle alignment model…"
 msgstr "Cargando o modelo de aliñamento de subtítulos…"
 
-#: src/handlers/whisperx_handler.py:548
+#: src/handlers/whisperx_handler.py:553
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
@@ -254,7 +254,7 @@ msgstr ""
 "Cargando o modelo de identificación de falantes (descárgase a primeira "
 "vez que se usa)…"
 
-#: src/handlers/whisperx_handler.py:562
+#: src/handlers/whisperx_handler.py:567
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "

@@ -91,7 +91,8 @@ if flac_path := find_executable("flac", required=False):
     binaries += [(flac_path, ".")]
 
 a = Analysis(
-    ["src/app.py"],
+    # It opens the window, or runs the command-line interface if given a command
+    ["src/launcher.py"],
     pathex=[],
     binaries=binaries,
     datas=datas,
@@ -140,8 +141,34 @@ exe = EXE(
     icon=windows_icon if is_win else macos_icon,
 )
 
+executables = [exe]
+if is_win:
+    # The app has no console on Windows, so the command-line interface has its own
+    # executable, which prints to the console it's run from
+    executables.append(
+        EXE(
+            pyz,
+            a.scripts,
+            options,
+            exclude_binaries=True,
+            name="audiotext-cli",
+            debug=is_debug,
+            bootloader_ignore_signals=False,
+            strip=False,
+            upx=True,
+            upx_exclude=[],
+            runtime_tmpdir=None,
+            console=True,
+            disable_windowed_traceback=False,
+            argv_emulation=False,
+            target_arch=None,
+            codesign_identity=None,
+            icon=windows_icon,
+        )
+    )
+
 coll = COLLECT(
-    exe,
+    *executables,
     a.binaries,
     a.zipfiles,
     a.datas,

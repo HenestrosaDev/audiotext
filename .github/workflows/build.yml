@@ -91,6 +91,15 @@ jobs:
       - name: Check that the app opens (macOS)
         if: runner.os == 'macOS'
         run: uv run --no-sync python .github/scripts/smoke_test_app.py dist/Audiotext.app/Contents/MacOS/Audiotext
+      - name: Check that the command-line interface runs (Linux)
+        if: runner.os == 'Linux'
+        run: dist/Audiotext/Audiotext --version
+      - name: Check that the command-line interface runs (macOS)
+        if: runner.os == 'macOS'
+        run: dist/Audiotext.app/Contents/MacOS/Audiotext --version
+      - name: Check that the command-line interface runs (Windows)
+        if: runner.os == 'Windows'
+        run: dist/Audiotext/audiotext-cli.exe --version
       # The FFmpeg of the app, with the libraries it bundles, draws the subtitles of
       # several scripts with the fonts of the system. Linux runners have no font of
       # Chinese, Japanese nor Devanagari, which the desktops have

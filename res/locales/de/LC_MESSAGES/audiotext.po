@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 14:48+0200\n"
+"POT-Creation-Date: 2026-10-15 14:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -93,7 +93,7 @@ msgid "Could not load the WhisperX model: {error}"
 msgstr "Das WhisperX-Modell konnte nicht geladen werden: {error}"
 
 #: src/controllers/transcription_validator.py:17
-#: src/handlers/whisperx_handler.py:217
+#: src/handlers/whisperx_handler.py:222
 msgid "No output file types selected. Please select at least one."
 msgstr "Keine Ausgabedateitypen ausgewählt. Bitte wählen Sie mindestens einen aus."
 
@@ -143,7 +143,7 @@ msgid "The reply of the model was too long."
 msgstr "Die Antwort des Modells war zu lang."
 
 #: src/handlers/audio_handler.py:52 src/handlers/openai_api_handler.py:344
-#: src/handlers/whisperx_handler.py:241
+#: src/handlers/whisperx_handler.py:246
 msgid "Loading audio…"
 msgstr "Audio wird geladen…"
 
@@ -153,7 +153,7 @@ msgid "Unsupported file type: {extension}"
 msgstr "Nicht unterstützter Dateityp: {extension}"
 
 #: src/handlers/audio_handler.py:128 src/handlers/openai_api_handler.py:369
-#: src/handlers/whisperx_handler.py:251 src/handlers/whisperx_handler.py:258
+#: src/handlers/whisperx_handler.py:256 src/handlers/whisperx_handler.py:263
 #: src/views/history/formatting.py:43
 #: src/views/new_transcription/microphone_view.py:407
 msgid "Transcribing…"
@@ -168,7 +168,7 @@ msgstr "Abschnitt {current} von {total} wird transkribiert…"
 msgid "The text can't be shown while recording."
 msgstr "Der Text kann während der Aufnahme nicht angezeigt werden."
 
-#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:482
+#: src/handlers/live_transcriber.py:280 src/handlers/whisperx_handler.py:487
 #, python-brace-format
 msgid "Loading the {model} model (it's downloaded the first time it's used)…"
 msgstr ""
@@ -188,7 +188,7 @@ msgstr "Das Modell hat keine gültige Zusammenfassung zurückgegeben."
 msgid "There is no text to summarize."
 msgstr "Es gibt keinen Text zum Zusammenfassen."
 
-#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:331
+#: src/handlers/transcribers.py:28 src/handlers/whisperx_handler.py:336
 msgid "There is no transcription to save. Please generate it first."
 msgstr ""
 "Es gibt keine Transkription zum Speichern. Bitte erstellen Sie zuerst "
@@ -228,15 +228,15 @@ msgstr ""
 msgid "The file could not be downloaded: {error}"
 msgstr "Die Datei konnte nicht heruntergeladen werden: {error}"
 
-#: src/handlers/whisperx_handler.py:371 src/handlers/whisperx_handler.py:380
+#: src/handlers/whisperx_handler.py:376 src/handlers/whisperx_handler.py:385
 msgid "Aligning subtitles…"
 msgstr "Untertitel werden ausgerichtet…"
 
-#: src/handlers/whisperx_handler.py:404 src/handlers/whisperx_handler.py:409
+#: src/handlers/whisperx_handler.py:409 src/handlers/whisperx_handler.py:414
 msgid "Identifying speakers…"
 msgstr "Sprecher werden erkannt…"
 
-#: src/handlers/whisperx_handler.py:430
+#: src/handlers/whisperx_handler.py:435
 #, python-brace-format
 msgid ""
 "Identifying speakers requires a Hugging Face token. Create one at "
@@ -247,11 +247,11 @@ msgstr ""
 "eines unter {tokens_url}, akzeptiere die Bedingungen von {model_url} und "
 "gib das Token in den WhisperX-Optionen ein."
 
-#: src/handlers/whisperx_handler.py:515
+#: src/handlers/whisperx_handler.py:520
 msgid "Loading the subtitle alignment model…"
 msgstr "Das Modell zur Untertitelausrichtung wird geladen…"
 
-#: src/handlers/whisperx_handler.py:548
+#: src/handlers/whisperx_handler.py:553
 msgid ""
 "Loading the speaker identification model (it's downloaded the first time "
 "it's used)…"
@@ -259,7 +259,7 @@ msgstr ""
 "Modell zur Sprechererkennung wird geladen (es wird bei der ersten "
 "Verwendung heruntergeladen)…"
 
-#: src/handlers/whisperx_handler.py:562
+#: src/handlers/whisperx_handler.py:567
 #, python-brace-format
 msgid ""
 "Could not download the speaker identification model. Check that the "
