@@ -1,119 +1,277 @@
 from collections.abc import Callable
-from typing import TYPE_CHECKING
+from dataclasses import dataclass
+from tkinter import messagebox
+from typing import TYPE_CHECKING, Any
 
-from models.history import HistoryEntry
 from models.transcript_segment import TranscriptSegment, join_segments
 from utils.i18n import _
 from utils.subtitle_cues import SegmentPart
 from utils.transcript_editing import (
+    delete_segment,
     edit_segment_part,
+    insert_segment,
     rename_speakers,
     rename_speakers_in_text,
     replace_in_segments,
     replace_range,
     replace_text,
+    set_segment_timing,
     speakers,
+    split_segment,
 )
-from views.entries.delegates import EntryActions
-from views.transcript.edit_dialogs import SpeakersDialog
+from views.transcript.edit_dialogs import SpeakersDialog, Timing, TimingDialog
 from views.transcript.transcript_text import PLAIN_TEXT_MODE
 from views.widgets.text_dialog import TextDialog
 
 if TYPE_CHECKING:
     from views.transcript.transcript_text import TranscriptText
 
+# How long a segment added by default lasts, if there is no gap to fill until the
+# next one
+NEW_SEGMENT_SECONDS = 2.0
 
-class TranscriptCorrectionsMixin:
+
+@dataclass(frozen=True)
+class SegmentSource:
     """
-    Corrects the transcription of the view: replaces a text, renames the speakers
-    or edits the text of a segment.
+    The segments that a `SegmentEditor` corrects (those of the transcription or of
+    a translation), where they're shown and how they're saved.
     """
 
-    # Provided by the view
-    entry_id: str
-    _entry: HistoryEntry
-    # The parts of the segments shown in the transcript
-    _parts: list[SegmentPart]
-    _actions: EntryActions
     text: "TranscriptText"
-    _format_time: Callable[[float], str]
+    # The segments, or None if there are none to correct (e.g. no translation)
+    segments: Callable[[], list[TranscriptSegment] | None]
+    # The parts of the segments shown in the text (see `transcript_parts`)
+    parts: Callable[[], list[SegmentPart]]
+    # Whether the user edited the text, which then doesn't follow the segments
+    is_text_edited: Callable[[], bool]
+    # Saves the corrected segments and the text
+    save: Callable[[list[TranscriptSegment], str], None]
+    # The title and the message of the dialog to edit the text of a segment
+    edit_prompt: Callable[[TranscriptSegment], tuple[str, str]]
+    # Whether a segment can be left without text, e.g. one of a translation, which
+    # can be translated later
+    allow_empty: bool = False
 
-    def _update_transcript(
+
+class SegmentEditor:
+    """
+    Corrects the segments of a text: replaces a text, renames the speakers, edits
+    the text or the timing of a segment, or adds and deletes segments.
+    """
+
+    def __init__(
+        self,
+        master: Any,
+        source: SegmentSource,
+        format_time: Callable[[float], str],
+    ) -> None:
+        """
+        :param master: The widget the dialogs are shown over.
+        :param format_time: Formats the time of a segment, as the user chose.
+        """
+        self._master = master
+        self._source = source
+        self._format_time = format_time
+
+    def update(
         self, segments: list[TranscriptSegment], change_text: Callable[[str], str]
     ) -> None:
         """
         Saves the corrected segments. The text follows them, unless the user
         edited it, in which case the same correction is applied to it.
         """
-        self.text.save_pending_text()
-        entry = self._entry
-        if entry.is_text_edited or not segments:
-            text = change_text(self.text.get_text())
+        source = self._source
+        source.text.save_pending_text()
+        if source.is_text_edited() or not segments:
+            text = change_text(source.text.get_text())
         else:
             text = join_segments(segments)
-        self._actions.transcript.update_transcript(self.entry_id, segments, text)
+        source.save(segments, text)
 
-    def _replace_current(self, replacement: str) -> None:
-        """Replaces the current match of the search in the transcription."""
-        if self.text.mode == PLAIN_TEXT_MODE:
-            self.text.replace_current_match(replacement)
+    def replace_current(self, replacement: str) -> None:
+        """Replaces the current match of the search."""
+        text = self._source.text
+        if text.mode == PLAIN_TEXT_MODE:
+            text.replace_current_match(replacement)
             return
-        if (match := self.text.current_match()) is None:
+        segments = self._source.segments()
+        if segments is None or (match := text.current_match()) is None:
             return
 
         idx, first, last = match
-        part = self._parts[idx]
+        part = self._source.parts()[idx]
         try:
             segments = replace_range(
-                self._entry.segments,
+                segments,
                 part.segment_idx,
                 part.first + first,
                 part.first + last,
                 replacement,
+                allow_empty=self._source.allow_empty,
             )
         except ValueError:
             # A segment can't be left without text
             return
         # The edited text keeps the changes of the user, so only the segment changes
-        self._update_transcript(segments, lambda text: text)
+        self.update(segments, lambda edited_text: edited_text)
 
-    def _replace_all(self, find: str, replacement: str, match_case: bool) -> None:
-        """Replaces a text in the whole transcription."""
-        segments = replace_in_segments(
-            self._entry.segments, find, replacement, match_case
-        )
-        self._update_transcript(
-            segments, lambda text: replace_text(text, find, replacement, match_case)
+    def replace_all(self, find: str, replacement: str, match_case: bool) -> None:
+        """Replaces a text everywhere."""
+        self._source.text.save_pending_text()
+        segments = self._source.segments()
+        if segments is None:
+            return
+
+        self.update(
+            replace_in_segments(segments, find, replacement, match_case),
+            lambda text: replace_text(text, find, replacement, match_case),
         )
 
-    def _rename_speakers(self) -> None:
-        names = SpeakersDialog(self, speakers(self._entry.segments)).get_result()
+    def rename_speakers(self) -> None:
+        segments = self._source.segments()
+        if not segments:
+            return
+        names = SpeakersDialog(self._master, speakers(segments)).get_result()
         if not names:
             return
 
-        self._update_transcript(
-            rename_speakers(self._entry.segments, names),
+        self.update(
+            rename_speakers(segments, names),
             lambda text: rename_speakers_in_text(text, names),
         )
 
-    def _edit_segment(self, idx: int) -> None:
-        part = self._parts[idx]
+    def edit_text(self, idx: int) -> None:
+        """Edits the text of a part shown in the text, keeping the rest of it."""
+        segments = self._source.segments()
+        parts = self._source.parts()
+        if segments is None or idx >= len(parts):
+            return
+
+        part = parts[idx]
         segment = part.segment
+        title, message = self._source.edit_prompt(segment)
         text = TextDialog(
-            self,
-            _("Edit text"),
-            _("Text said at {time}:").format(time=self._format_time(segment.start)),
+            self._master,
+            title,
+            message,
             segment.text,
             is_multiline=True,
             allow_empty=False,
         ).get_input()
-        if not text or text == segment.text:
+        if not text or not text.strip() or text == segment.text:
             return
 
         # The edited text keeps the changes of the user, so only the segment changes
-        self._update_transcript(
-            edit_segment_part(
-                self._entry.segments, part.segment_idx, part.first, part.last, text
-            ),
+        self.update(
+            edit_segment_part(segments, part.segment_idx, part.first, part.last, text),
+            lambda edited_text: edited_text,
+        )
+
+    def edit_timing(self, idx: int) -> None:
+        split = self._split_part(idx)
+        if split is None:
+            return
+
+        segments, idx = split
+        segment = segments[idx]
+        timing = TimingDialog(
+            self._master,
+            _("Edit the timing"),
+            _("Save"),
+            self._describe(segment),
+            Timing(segment.start, segment.end),
+        ).get_result()
+        if timing is None or (timing.start, timing.end) == (segment.start, segment.end):
+            return
+
+        self.update(
+            set_segment_timing(segments, idx, timing.start, timing.end),
             lambda text: text,
+        )
+
+    def add_after(self, idx: int) -> None:
+        """Adds a segment after a part, and asks for its text right away."""
+        split = self._split_part(idx)
+        if split is None:
+            return
+
+        segments, idx = split
+
+        # By default, it fills the gap until the next segment
+        previous = segments[idx]
+        start = previous.end
+        following = segments[idx + 1].start if idx + 1 < len(segments) else start
+        end = following if following > start else start + NEW_SEGMENT_SECONDS
+        timing = TimingDialog(
+            self._master,
+            _("Add a segment"),
+            _("Add"),
+            _("The new segment goes after the one at {time}:").format(
+                time=self._format_time(previous.start)
+            ),
+            Timing(start, end),
+        ).get_result()
+        if timing is None:
+            return
+
+        added = TranscriptSegment(timing.start, timing.end, "", previous.speaker)
+        segments = insert_segment(segments, added)
+        self.update(segments, lambda text: text)
+        # It's filled right away, or it's left to fill later
+        added_idx = next(i for i, segment in enumerate(segments) if segment is added)
+        self.edit_text(
+            next(
+                i
+                for i, part in enumerate(self._source.parts())
+                if part.segment_idx == added_idx
+            )
+        )
+
+    def delete(self, idx: int) -> None:
+        """Deletes a part, once confirmed if it has text."""
+        split = self._split_part(idx)
+        if split is None or len(split[0]) <= 1:
+            return
+
+        segments, idx = split
+        segment = segments[idx]
+        if segment.text and not messagebox.askyesno(
+            _("Delete the segment"),
+            _("Delete the segment “{text}”?").format(text=segment.text),
+            icon=messagebox.WARNING,
+            parent=self._master.winfo_toplevel(),
+        ):
+            return
+        self.update(delete_segment(segments, idx), lambda text: text)
+
+    def _split_part(self, idx: int) -> tuple[list[TranscriptSegment], int] | None:
+        """
+        Makes a part shown in the text a segment of its own, to change its timing,
+        add a segment after it or delete it, which are changes of what the user
+        sees, not of the whole segment.
+
+        :return: The segments, with the segment of the part split into its parts,
+                 and the index of the part among them.
+        """
+        segments = self._source.segments()
+        parts = self._source.parts()
+        if segments is None or idx >= len(parts):
+            return None
+
+        part = parts[idx]
+        pieces = [p for p in parts if p.segment_idx == part.segment_idx]
+        if len(pieces) == 1:
+            return segments, part.segment_idx
+        segments = split_segment(
+            segments, part.segment_idx, [piece.segment for piece in pieces]
+        )
+        return segments, part.segment_idx + pieces.index(part)
+
+    def _describe(self, segment: TranscriptSegment) -> str:
+        """Its text, or the time it starts if it has none yet."""
+        if segment.text:
+            return f"“{segment.text}”"
+        return _("The segment at {time}, not translated yet.").format(
+            time=self._format_time(segment.start)
         )

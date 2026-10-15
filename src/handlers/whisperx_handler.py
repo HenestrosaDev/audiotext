@@ -111,16 +111,31 @@ class WhisperXHandler:
         """The segments of the last transcription, with their timestamps."""
         if self._whisperx_result is None:
             return []
+        return self._get_segments(self._whisperx_result)
 
+    @property
+    def raw_result(self) -> dict[str, Any] | None:
+        """
+        The result of the last transcription as WhisperX returns it, with its
+        language, to save it (see `save_transcription`).
+        """
+        if self._whisperx_result is None:
+            return None
+        # The writers expect the language of the result, which the aligned result
+        # lacks: https://github.com/m-bain/whisperX/issues/455
+        return {**self._whisperx_result, "language": self._result_language}
+
+    @classmethod
+    def _get_segments(cls, result: Any) -> list[TranscriptSegment]:
         return [
             TranscriptSegment(
                 start=float(segment["start"]),
                 end=float(segment["end"]),
                 text=segment["text"].strip(),
                 speaker=segment.get("speaker"),
-                words=self._get_words(segment),
+                words=cls._get_words(segment),
             )
-            for segment in self._whisperx_result["segments"]
+            for segment in result["segments"]
         ]
 
     @staticmethod
@@ -224,7 +239,7 @@ class WhisperXHandler:
         token.raise_if_cancelled()
 
         on_progress(_("Loading audio…"), None)
-        audio = whisperx.load_audio(str(transcription.audio_source_path))
+        audio = whisperx.load_audio(str(transcription.path))
         token.raise_if_cancelled()
 
         # The prompt is an option of the loaded model, so it's replaced on each
@@ -287,14 +302,18 @@ class WhisperXHandler:
 
     def save_transcription(
         self,
+        result: dict[str, Any] | None,
         file_path: Path,
         output_file_types: list[str],
         should_overwrite: bool,
         is_vertical: bool = False,
     ) -> None:
         """
-        Save the last transcription as the specified file types.
+        Save a transcription as the specified file types.
 
+        :param result: The result of the transcription (see `raw_result`). It's
+                       passed instead of using the last one, which another
+                       transcription may have replaced meanwhile.
         :param file_path: The path of the output files. Its extension is replaced by
                           each of the output file types.
         :param output_file_types: The file types to generate (e.g. "txt", "srt").
@@ -307,23 +326,21 @@ class WhisperXHandler:
         """
         from whisperx.utils import get_writer
 
-        if self._whisperx_result is None:
+        if result is None:
             raise ValueError(
                 _("There is no transcription to save. Please generate it first.")
             )
 
         config = cm.ConfigManager.get_config_subtitles()
-        max_line_width, max_line_count = line_limits(config, self.segments, is_vertical)
+        max_line_width, max_line_count = line_limits(
+            config, self._get_segments(result), is_vertical
+        )
         options = {
             "highlight_words": config.highlight_words,
             "max_line_count": max_line_count,
             "max_line_width": max_line_width,
         }
         output_dir = file_path.parent
-
-        # The writers expect the language of the result, which the aligned result
-        # lacks: https://github.com/m-bain/whisperX/issues/455
-        result = {**self._whisperx_result, "language": self._result_language}
 
         for output_type in output_file_types:
             output_file_path = file_path.with_suffix(f".{output_type}")
