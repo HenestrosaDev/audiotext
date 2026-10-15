@@ -23,6 +23,26 @@ from utils.time_format import format_subtitle_time, format_timestamp
 PARAGRAPH_PAUSE_SECONDS = 2.0
 PARAGRAPH_MAX_CHARS = 600
 
+# The colors of the ASS subtitles, as `&HAABBGGRR`: white without speakers, and one
+# color per speaker, light enough to be read over the video
+ASS_DEFAULT_COLOR = "&H00FFFFFF"
+ASS_SPEAKER_COLORS = (
+    "&H0000FFFF",  # Yellow
+    "&H00FFFF00",  # Cyan
+    "&H0080FF80",  # Green
+    "&H00FF80FF",  # Pink
+    "&H000080FF",  # Orange
+    "&H00FFB080",  # Blue
+    "&H00FF80B0",  # Purple
+    "&H008080FF",  # Red
+)
+# For the resolution of the script (1920x1080, or 1080x1920 if vertical), which the
+# players scale to the one of the video
+ASS_FONT_SIZE = 64
+ASS_FONT_SIZE_VERTICAL = 56
+ASS_MARGIN = 60
+ASS_MARGIN_VERTICAL = 160
+
 
 @dataclass
 class ExportDocument:
@@ -51,13 +71,16 @@ def _cue_text(segment: TranscriptSegment) -> str:
     return f"[{segment.speaker}]: {segment.text}" if segment.speaker else segment.text
 
 
-def subtitle_cues(
+def speaker_cues(
     segments: list[TranscriptSegment], is_vertical: bool = False
-) -> list[Cue]:
-    """The segments split into subtitles, as the user configured them."""
+) -> list[tuple[Cue, str | None]]:
+    """
+    The segments split into subtitles, as the user configured them, with the
+    speaker of each one.
+    """
     config = ConfigManager.get_config_subtitles()
     width, count = line_limits(config, segments, is_vertical)
-    cues = []
+    cues: list[tuple[Cue, str | None]] = []
     for segment in segments:
         segment_cues = build_cues([segment], width, count)
         # The speaker is added after splitting, so the subtitles are the ones
@@ -65,8 +88,15 @@ def subtitle_cues(
         if segment.speaker and segment_cues:
             first = segment_cues[0]
             segment_cues[0] = replace(first, text=f"[{segment.speaker}]: {first.text}")
-        cues.extend(segment_cues)
+        cues.extend((cue, segment.speaker) for cue in segment_cues)
     return cues
+
+
+def subtitle_cues(
+    segments: list[TranscriptSegment], is_vertical: bool = False
+) -> list[Cue]:
+    """The segments split into subtitles, as the user configured them."""
+    return [cue for cue, _speaker in speaker_cues(segments, is_vertical)]
 
 
 def segments_to_srt(
@@ -89,6 +119,84 @@ def segments_to_vtt(
         for cue in subtitle_cues(segments, is_vertical)
     ]
     return "WEBVTT\n\n" + "\n".join(cues)
+
+
+def _ass_time(seconds: float) -> str:
+    """Formats a position as `H:MM:SS.cc`, the times of the ASS subtitles."""
+    centiseconds = round(max(seconds, 0) * 100)
+    hours, centiseconds = divmod(centiseconds, 360_000)
+    minutes, centiseconds = divmod(centiseconds, 6_000)
+    seconds_part, centiseconds = divmod(centiseconds, 100)
+    return f"{hours}:{minutes:02}:{seconds_part:02}.{centiseconds:02}"
+
+
+def _ass_text(text: str) -> str:
+    """
+    Escapes the text of a subtitle: the braces start the tags of ASS, and the
+    backslash its line breaks, which can't be escaped.
+    """
+    text = text.replace("\\", "/").replace("{", "(").replace("}", ")")
+    return text.replace("\n", "\\N")
+
+
+def _ass_style(name: str, color: str, is_vertical: bool) -> str:
+    # Like the subtitles shown over the video: white or colored, with a black
+    # outline and a shadow, centered at the bottom
+    font_size = ASS_FONT_SIZE_VERTICAL if is_vertical else ASS_FONT_SIZE
+    margin = ASS_MARGIN_VERTICAL if is_vertical else ASS_MARGIN
+    return (
+        f"Style: {name},Arial,{font_size},{color},{color},&H00000000,&H80000000,"
+        f"0,0,0,0,100,100,0,0,1,3,1,2,{margin},{margin},{margin},1"
+    )
+
+
+def segments_to_ass(
+    segments: list[TranscriptSegment], is_vertical: bool = False
+) -> str:
+    """
+    The subtitles in the Advanced SubStation Alpha format, which video editors and
+    players (e.g. VLC or mpv) show with the style of the file. Each speaker has a
+    color of its own, so their lines can be told apart.
+    """
+    cues = speaker_cues(segments, is_vertical)
+    speakers = list(dict.fromkeys(speaker for _cue, speaker in cues if speaker))
+    styles = {speaker: f"Speaker{idx}" for idx, speaker in enumerate(speakers, start=1)}
+    width, height = (1080, 1920) if is_vertical else (1920, 1080)
+
+    lines = [
+        "[Script Info]",
+        "ScriptType: v4.00+",
+        f"PlayResX: {width}",
+        f"PlayResY: {height}",
+        "WrapStyle: 2",
+        "ScaledBorderAndShadow: yes",
+        "",
+        "[V4+ Styles]",
+        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, "
+        "OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, "
+        "ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, "
+        "MarginL, MarginR, MarginV, Encoding",
+        _ass_style("Default", ASS_DEFAULT_COLOR, is_vertical),
+    ]
+    lines += [
+        _ass_style(
+            style, ASS_SPEAKER_COLORS[idx % len(ASS_SPEAKER_COLORS)], is_vertical
+        )
+        for idx, style in enumerate(styles.values())
+    ]
+    lines += [
+        "",
+        "[Events]",
+        "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, "
+        "Effect, Text",
+    ]
+    lines += [
+        f"Dialogue: 0,{_ass_time(cue.start)},{_ass_time(cue.end)},"
+        f"{styles.get(speaker or '', 'Default')},{(speaker or '').replace(',', ' ')},"
+        f"0,0,0,,{_ass_text(cue.text)}"
+        for cue, speaker in cues
+    ]
+    return "\n".join(lines) + "\n"
 
 
 def paragraphs(document: ExportDocument) -> list[Paragraph]:
@@ -142,6 +250,10 @@ def to_srt(document: ExportDocument) -> str:
 
 def to_vtt(document: ExportDocument) -> str:
     return segments_to_vtt(document.segments, document.is_vertical)
+
+
+def to_ass(document: ExportDocument) -> str:
+    return segments_to_ass(document.segments, document.is_vertical)
 
 
 def to_tsv(document: ExportDocument) -> str:
@@ -268,11 +380,12 @@ EXPORTERS: dict[str, Exporter] = {
     "docx": to_docx,
     "srt": to_srt,
     "vtt": to_vtt,
+    "ass": to_ass,
     "tsv": to_tsv,
     "json": to_json,
 }
 # Formats that need the timestamps of the segments
-TIMED_FORMATS = {"srt", "vtt", "tsv"}
+TIMED_FORMATS = {"srt", "vtt", "ass", "tsv"}
 
 
 def available_formats(has_segments: bool) -> list[str]:
