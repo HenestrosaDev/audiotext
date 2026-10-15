@@ -16,7 +16,7 @@ class Transcriber(Protocol):
         cancellation_token: CancellationToken,
     ) -> TranscriptionResult:
         """
-        Transcribes the file of `transcription.audio_source_path`.
+        Transcribes the file of `transcription.path`.
 
         :raises TranscriptionCancelledError: If the token is cancelled.
         """

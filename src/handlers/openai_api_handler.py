@@ -343,7 +343,7 @@ class OpenAiApiHandler:
 
         on_progress(_("Loading audio…"), None)
         audio = (
-            load_audio_file(transcription.audio_source_path)
+            load_audio_file(transcription.path)
             .set_channels(1)
             .set_frame_rate(EXPORT_FRAME_RATE)
         )

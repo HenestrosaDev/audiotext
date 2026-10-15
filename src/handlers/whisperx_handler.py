@@ -239,7 +239,7 @@ class WhisperXHandler:
         token.raise_if_cancelled()
 
         on_progress(_("Loading audio…"), None)
-        audio = whisperx.load_audio(str(transcription.audio_source_path))
+        audio = whisperx.load_audio(str(transcription.path))
         token.raise_if_cancelled()
 
         # The prompt is an option of the loaded model, so it's replaced on each

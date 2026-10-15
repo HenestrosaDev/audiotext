@@ -25,6 +25,7 @@ from models.transcription import Transcription
 from tests.conftest import make_tone
 from utils.cancellation import CancellationToken, TranscriptionCancelledError
 from utils.config_manager import ConfigManager
+from utils.enums import AudioSource, TranscriptionMethod
 
 
 @pytest.fixture
@@ -97,7 +98,12 @@ def diarized_response(segments: list[tuple[float, float, str, str]]) -> Any:
 
 
 def make_transcription(audio_file: Path, **kwargs: Any) -> Transcription:
-    return Transcription(audio_source_path=audio_file, **kwargs)
+    return Transcription(
+        AudioSource.FILE,
+        TranscriptionMethod.WHISPER_API,
+        audio_source_path=audio_file,
+        **kwargs,
+    )
 
 
 def set_config(key: ConfigWhisperApi.Key, value: str) -> None:
