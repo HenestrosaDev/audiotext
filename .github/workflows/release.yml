@@ -85,9 +85,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libportaudio2 ffmpeg
+      # The FFmpeg of Homebrew can't draw subtitles, so an LGPL build with libass
       - name: Install system dependencies (macOS)
         if: runner.os == 'macOS'
-        run: brew install ffmpeg
+        run: |
+          packaging/macos/build_ffmpeg.sh "$RUNNER_TEMP/ffmpeg"
+          echo "$RUNNER_TEMP/ffmpeg/bin" >> "$GITHUB_PATH"
       - name: Install system dependencies (Windows)
         if: runner.os == 'Windows'
         run: |

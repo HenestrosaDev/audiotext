@@ -133,7 +133,8 @@ https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
 - **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL or Google Translate.
 - **A transcript you can play**: click a segment to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps.
 - **Summaries** with the key points and the chapters of the transcription.
-- **Export** to plain text, Markdown, Word, SRT, VTT, TSV and JSON.
+- **Export** to plain text, Markdown, Word, SRT, VTT, ASS (with a color per speaker), TSV and JSON.
+- **Subtitles burned into the video**, to share it where subtitle files can't be loaded, as they're shown in the app (size, position and outline or box).
 - **History** of all your transcriptions, with search, groups, pins, tags and notes, and a queue to transcribe while you keep working, with a notification when each transcription is ready (or, in a watched folder, each new file).
 - **Command-line interface** to transcribe from scripts.
 - **The interface in 22 languages**, with a light, dark or system theme.
@@ -146,7 +147,7 @@ The full documentation of **Audiotext** is available at [**getaudiotext.com**](h
 
 ### Languages and Formats
 
-WhisperX and the Whisper API transcribe about 100 languages and detect them automatically. **Audiotext** transcribes the most common audio and video formats (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.mkv`, `.webm` and many more), and exports to `.txt`, `.md`, `.docx`, `.srt`, `.vtt`, `.tsv` and `.json`. See the full lists in [formats and languages](https://getaudiotext.com/en/reference/formats-and-languages/).
+WhisperX and the Whisper API transcribe about 100 languages and detect them automatically. **Audiotext** transcribes the most common audio and video formats (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.mkv`, `.webm` and many more), and exports to `.txt`, `.md`, `.docx`, `.srt`, `.vtt`, `.ass`, `.tsv` and `.json`. See the full lists in [formats and languages](https://getaudiotext.com/en/reference/formats-and-languages/).
 
 <!-- PROJECT STRUCTURE -->
 
@@ -236,6 +237,7 @@ WhisperX and the Whisper API transcribe about 100 languages and detect them auto
   ├───src
   │   │   app.py
   │   │   cli.py
+  │   │   launcher.py
   │   │
   │   ├───controllers
   │   │       __init__.py
@@ -444,6 +446,7 @@ On Windows and Linux, the installer offers to download GPU acceleration (CUDA) i
    # Windows
    choco install ffmpeg
    ```
+   The FFmpeg of Homebrew can't burn subtitles into videos, since it's built without libass. To burn them on macOS, build the one the app bundles (after cloning the repository) and add it to `PATH`: `packaging/macos/build_ffmpeg.sh && export PATH="$PWD/build/ffmpeg/bin:$PATH"`.
 2. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git` and change the current working directory to `audiotext` by running `cd audiotext`.
 3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), which manages the dependencies and the virtual environment of the project. It also downloads a supported version of Python (**3.10 to 3.13**, since WhisperX doesn't support Python 3.14 yet) if you don't have one.
 4. Run `uv sync` to create the virtual environment (`.venv`) and install the dependencies, including the development ones.
@@ -475,20 +478,33 @@ The [documentation](https://getaudiotext.com) explains how to use each feature:
 
 ### Command-Line Interface
 
-When [running it from the source code](#setting-up-the-project-locally), **Audiotext** can also transcribe from the command line:
+**Audiotext** can also transcribe from the command line, e.g. from scripts. The installed app runs it when it's given a command:
+
+| System | Command |
+| --- | --- |
+| Linux | `audiotext` (installed in `~/.local/bin` by `install.sh`) |
+| macOS | `/Applications/Audiotext.app/Contents/MacOS/Audiotext` |
+| Windows | `audiotext-cli.exe`, in the folder where Audiotext is installed (`%LOCALAPPDATA%\Programs\Audiotext` by default) |
+
+From the source code, run `uv run src/cli.py` instead:
 
 ```bash
 # Transcribe a file. The text is also printed, so it can be redirected
-uv run src/cli.py transcribe interview.mp3 --language es --output-types txt,srt
+audiotext transcribe interview.mp3 --language es --output-types txt,srt
 
 # Transcribe the files of a folder identifying the speakers
-uv run src/cli.py transcribe recordings/ --diarize --speakers 2 --output-dir transcriptions/
+audiotext transcribe recordings/ --diarize --speakers 2 --output-dir transcriptions/
+
+# Save the subtitles and a Word document, summarize it, and translate it into Spanish
+audiotext transcribe talk.mp4 --output-types srt,docx --summarize --translate-to es
 
 # Transcribe the files added to a folder until stopped with Ctrl+C
-uv run src/cli.py watch inbox/ --output-types srt
+audiotext watch inbox/ --output-types srt
 ```
 
-Run `uv run src/cli.py transcribe --help` to see all the options, or see [the command-line interface](https://getaudiotext.com/en/reference/cli/).
+The output types that the transcription method doesn't save itself (e.g. `md` or `docx`) are exported from its result. `--summarize` writes a `.summary.md` file next to each transcription, and `--translate-to` writes the translation in its output types (e.g. `talk.es.srt`), with the providers configured in the app unless `--summary-provider` or `--translation-provider` are given.
+
+Run `audiotext transcribe --help` to see all the options, or see [the command-line interface](https://getaudiotext.com/en/reference/cli/).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -574,7 +590,7 @@ I used the following resources to create this project:
 
 Distributed under the MIT license. See [`LICENSE`](https://github.com/HenestrosaDev/audiotext/blob/main/LICENSE) for more information.
 
-The app includes third-party software under its own licenses, such as FFmpeg (GPL). They are listed in `THIRD_PARTY_LICENSES.txt`, which is included with the app.
+The app includes third-party software under its own licenses, such as FFmpeg (GPL on Linux and Windows, LGPL on macOS). They are listed in `THIRD_PARTY_LICENSES.txt`, which is included with the app.
 
 <!-- SUPPORT -->
 
