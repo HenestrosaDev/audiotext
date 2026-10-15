@@ -162,6 +162,7 @@ def export_labels() -> dict[str, str]:
         "docx": _("Word document (.docx)"),
         "srt": _("Subtitles (.srt)"),
         "vtt": _("Web subtitles (.vtt)"),
+        "ass": _("Styled subtitles (.ass)"),
         "tsv": _("Table (.tsv)"),
         "json": _("JSON (.json)"),
     }

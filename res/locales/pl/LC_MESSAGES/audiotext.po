@@ -279,29 +279,29 @@ msgstr "Film na YouTube nie ma ścieżki dźwiękowej."
 msgid "No audio was recorded."
 msgstr "Nie nagrano żadnego dźwięku."
 
-#: src/utils/exporters.py:177 src/utils/exporters.py:248
+#: src/utils/exporters.py:289 src/utils/exporters.py:360
 #: src/views/new_transcription/microphone_view.py:244
-#: src/views/transcript/transcript_view.py:699
+#: src/views/transcript/transcript_view.py:700
 #: src/views/transcript/video_pane.py:275
 msgid "Transcription"
 msgstr "Transkrypcja"
 
-#: src/utils/exporters.py:195 src/utils/exporters.py:223
-#: src/utils/exporters.py:307 src/views/settings/preferences_dialog.py:507
+#: src/utils/exporters.py:307 src/utils/exporters.py:335
+#: src/utils/exporters.py:420 src/views/settings/preferences_dialog.py:507
 #: src/views/transcript/summary_panel.py:196
-#: src/views/transcript/transcript_view.py:517
-#: src/views/transcript/transcript_view.py:522
-#: src/views/transcript/transcript_view.py:742
+#: src/views/transcript/transcript_view.py:518
+#: src/views/transcript/transcript_view.py:523
+#: src/views/transcript/transcript_view.py:743
 msgid "Summary"
 msgstr "Podsumowanie"
 
-#: src/utils/exporters.py:197 src/utils/exporters.py:226
-#: src/utils/exporters.py:310 src/views/transcript/summary_panel.py:90
+#: src/utils/exporters.py:309 src/utils/exporters.py:338
+#: src/utils/exporters.py:423 src/views/transcript/summary_panel.py:90
 msgid "Key points"
 msgstr "Najważniejsze punkty"
 
-#: src/utils/exporters.py:201 src/utils/exporters.py:230
-#: src/utils/exporters.py:315 src/views/transcript/summary_panel.py:94
+#: src/utils/exporters.py:313 src/utils/exporters.py:342
+#: src/utils/exporters.py:428 src/views/transcript/summary_panel.py:94
 msgid "Chapters"
 msgstr "Rozdziały"
 
@@ -339,14 +339,14 @@ msgid "{count} failed"
 msgstr "Nieudane: {count}"
 
 #: src/views/entries/folder_view.py:108
-#: src/views/transcript/transcript_view.py:1698
+#: src/views/transcript/transcript_view.py:1699
 msgid "Open the folder of the saved files"
 msgstr "Otwórz folder zapisanych plików"
 
 #: src/views/entries/folder_view.py:116
 #: src/views/history/history_sidebar.py:379
-#: src/views/transcript/transcript_view.py:647
-#: src/views/transcript/transcript_view.py:1659
+#: src/views/transcript/transcript_view.py:648
+#: src/views/transcript/transcript_view.py:1660
 msgid "Transcribe again"
 msgstr "Transkrybuj ponownie"
 
@@ -564,22 +564,22 @@ msgid "Rename"
 msgstr "Zmień nazwę"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1710
+#: src/views/transcript/transcript_view.py:1711
 msgid "Edit note…"
 msgstr "Edytuj notatkę…"
 
 #: src/views/history/history_sidebar.py:319
-#: src/views/transcript/transcript_view.py:1710
+#: src/views/transcript/transcript_view.py:1711
 msgid "Add note…"
 msgstr "Dodaj notatkę…"
 
 #: src/views/history/history_sidebar.py:324
-#: src/views/transcript/transcript_view.py:1715
+#: src/views/transcript/transcript_view.py:1716
 msgid "Delete note…"
 msgstr "Usuń notatkę…"
 
 #: src/views/history/history_sidebar.py:328
-#: src/views/transcript/transcript_view.py:1721
+#: src/views/transcript/transcript_view.py:1722
 msgid "Edit tag…"
 msgstr "Edytuj etykietę…"
 
@@ -604,7 +604,7 @@ msgid "Move to group"
 msgstr "Przenieś do grupy"
 
 #: src/views/history/history_sidebar.py:385
-#: src/views/transcript/transcript_view.py:1726
+#: src/views/transcript/transcript_view.py:1727
 msgid "Delete…"
 msgstr "Usuń…"
 
@@ -885,9 +885,9 @@ msgstr "Nagraj siebie lub spotkanie. Nagranie zostanie zachowane w historii."
 
 #: src/views/new_transcription/microphone_view.py:276
 #: src/views/transcript/summary_panel.py:206
-#: src/views/transcript/transcript_view.py:637
-#: src/views/transcript/transcript_view.py:1350
-#: src/views/transcript/transcript_view.py:1588
+#: src/views/transcript/transcript_view.py:638
+#: src/views/transcript/transcript_view.py:1351
+#: src/views/transcript/transcript_view.py:1589
 #: src/views/transcript/translation_panel.py:147
 msgid "Copy"
 msgstr "Kopiuj"
@@ -1197,7 +1197,7 @@ msgstr "Klucze API"
 
 #: src/views/settings/preferences_dialog.py:190
 #: src/views/transcript/player_bar.py:154
-#: src/views/transcript/transcript_view.py:740
+#: src/views/transcript/transcript_view.py:741
 msgid "Subtitles"
 msgstr "Napisy"
 
@@ -1778,7 +1778,7 @@ msgid "The new segment goes after the one at {time}:"
 msgstr "Nowy segment znajdzie się po segmencie z {time}:"
 
 #: src/views/transcript/corrections.py:240
-#: src/views/transcript/transcript_view.py:1368
+#: src/views/transcript/transcript_view.py:1369
 msgid "Delete the segment"
 msgstr "Usuń segment"
 
@@ -1876,7 +1876,7 @@ msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spacja: odtwórz/wstrzymaj · ←/→: {seconds} s do tyłu/do przodu"
 
 #: src/views/transcript/player_bar.py:410
-#: src/views/transcript/transcript_view.py:1519
+#: src/views/transcript/transcript_view.py:1520
 #, python-brace-format
 msgid "The audio can't be played: {error}"
 msgstr "Nie można odtworzyć dźwięku: {error}"
@@ -1944,13 +1944,13 @@ msgid "Find ({shortcut})"
 msgstr "Szukaj ({shortcut})"
 
 #: src/views/transcript/summary_panel.py:208
-#: src/views/transcript/transcript_view.py:640
+#: src/views/transcript/transcript_view.py:641
 #: src/views/transcript/translation_panel.py:149
 msgid "Export"
 msgstr "Eksportuj"
 
 #: src/views/transcript/summary_panel.py:211
-#: src/views/transcript/transcript_view.py:1036
+#: src/views/transcript/transcript_view.py:1037
 msgid "Regenerate the summary"
 msgstr "Wygeneruj podsumowanie ponownie"
 
@@ -2066,180 +2066,184 @@ msgid "Web subtitles (.vtt)"
 msgstr "Napisy internetowe (.vtt)"
 
 #: src/views/transcript/transcript_view.py:165
+msgid "Styled subtitles (.ass)"
+msgstr "Napisy ze stylem (.ass)"
+
+#: src/views/transcript/transcript_view.py:166
 msgid "Table (.tsv)"
 msgstr "Tabela (.tsv)"
 
-#: src/views/transcript/transcript_view.py:166
+#: src/views/transcript/transcript_view.py:167
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-#: src/views/transcript/transcript_view.py:308
+#: src/views/transcript/transcript_view.py:309
 msgid "Stop scrolling the translation with the transcription"
 msgstr "Nie przewijaj tłumaczenia razem z transkrypcją"
 
-#: src/views/transcript/transcript_view.py:310
+#: src/views/transcript/transcript_view.py:311
 msgid "Scroll the translation with the transcription"
 msgstr "Przewijaj tłumaczenie razem z transkrypcją"
 
-#: src/views/transcript/transcript_view.py:487
+#: src/views/transcript/transcript_view.py:488
 msgid "Export transcription"
 msgstr "Eksportuj transkrypcję"
 
-#: src/views/transcript/transcript_view.py:508
+#: src/views/transcript/transcript_view.py:509
 #, python-brace-format
 msgid "Export translation into {language}"
 msgstr "Eksportuj tłumaczenie (język: {language})"
 
-#: src/views/transcript/transcript_view.py:521
+#: src/views/transcript/transcript_view.py:522
 msgid "Export summary"
 msgstr "Eksportuj podsumowanie"
 
-#: src/views/transcript/transcript_view.py:558
+#: src/views/transcript/transcript_view.py:559
 msgid "All files"
 msgstr "Wszystkie pliki"
 
-#: src/views/transcript/transcript_view.py:567
+#: src/views/transcript/transcript_view.py:568
 #, python-brace-format
 msgid "Could not export: {error}"
 msgstr "Nie udało się wyeksportować: {error}"
 
-#: src/views/transcript/transcript_view.py:570
+#: src/views/transcript/transcript_view.py:571
 #, python-brace-format
 msgid "Exported to {path}"
 msgstr "Wyeksportowano do {path}"
 
-#: src/views/transcript/transcript_view.py:632
+#: src/views/transcript/transcript_view.py:633
 #: src/views/transcript/translation_panel.py:143
 #, python-brace-format
 msgid "Find and replace ({shortcut})"
 msgstr "Znajdź i zamień ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:680
+#: src/views/transcript/transcript_view.py:681
 msgid "No low-confidence words left to review"
 msgstr "Nie zostało słów o niskiej pewności do sprawdzenia"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:690
+#: src/views/transcript/transcript_view.py:691
 msgid "Show all segments"
 msgstr "Pokaż wszystkie segmenty"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:727
+#: src/views/transcript/transcript_view.py:728
 #, python-brace-format
 msgid "Previous low-confidence word ({shortcut})"
 msgstr "Poprzednie słowo o niskiej pewności ({shortcut})"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:729
+#: src/views/transcript/transcript_view.py:730
 #, python-brace-format
 msgid "Next low-confidence word ({shortcut})"
 msgstr "Następne słowo o niskiej pewności ({shortcut})"
 
-#: src/views/transcript/transcript_view.py:741
+#: src/views/transcript/transcript_view.py:742
 msgid "Plain text"
 msgstr "Zwykły tekst"
 
-#: src/views/transcript/transcript_view.py:750
+#: src/views/transcript/transcript_view.py:751
 #: src/views/transcript/translation_panel.py:409
 msgid "Translate"
 msgstr "Przetłumacz"
 
-#: src/views/transcript/transcript_view.py:863
-#: src/views/transcript/transcript_view.py:1407
+#: src/views/transcript/transcript_view.py:864
+#: src/views/transcript/transcript_view.py:1408
 msgid "Edit text"
 msgstr "Edytuj tekst"
 
-#: src/views/transcript/transcript_view.py:863
+#: src/views/transcript/transcript_view.py:864
 #, python-brace-format
 msgid "Text said at {time}:"
 msgstr "Tekst wypowiedziany w {time}:"
 
-#: src/views/transcript/transcript_view.py:940
+#: src/views/transcript/transcript_view.py:941
 msgid "Find and replace in the transcription"
 msgstr "Znajdź i zamień w transkrypcji"
 
-#: src/views/transcript/transcript_view.py:950
+#: src/views/transcript/transcript_view.py:951
 msgid "Find and replace in the translation"
 msgstr "Znajdź i zamień w tłumaczeniu"
 
-#: src/views/transcript/transcript_view.py:951
+#: src/views/transcript/transcript_view.py:952
 #, python-brace-format
 msgid "Find and replace in the translation into {language}"
 msgstr "Znajdź i zamień w tłumaczeniu na język {language}"
 
-#: src/views/transcript/transcript_view.py:964
+#: src/views/transcript/transcript_view.py:965
 msgid "Find in the summary"
 msgstr "Szukaj w podsumowaniu"
 
-#: src/views/transcript/transcript_view.py:1037
+#: src/views/transcript/transcript_view.py:1038
 msgid "Generate the summary again? The current one will be replaced."
 msgstr "Wygenerować podsumowanie ponownie? Obecne zostanie zastąpione."
 
-#: src/views/transcript/transcript_view.py:1195
+#: src/views/transcript/transcript_view.py:1196
 #: src/views/transcript/translation_panel.py:155
 msgid "Hide the translation"
 msgstr "Ukryj tłumaczenie"
 
-#: src/views/transcript/transcript_view.py:1200
+#: src/views/transcript/transcript_view.py:1201
 msgid "Show the translation"
 msgstr "Pokaż tłumaczenie"
 
-#: src/views/transcript/transcript_view.py:1204
+#: src/views/transcript/transcript_view.py:1205
 #: src/views/transcript/translation_panel.py:298
 msgid "Translate into another language…"
 msgstr "Przetłumacz na inny język…"
 
-#: src/views/transcript/transcript_view.py:1215
+#: src/views/transcript/transcript_view.py:1216
 msgid "Show it as the subtitles of the video"
 msgstr "Pokaż jako napisy wideo"
 
-#: src/views/transcript/transcript_view.py:1222
+#: src/views/transcript/transcript_view.py:1223
 msgid "Delete the translation"
 msgstr "Usuń tłumaczenie"
 
-#: src/views/transcript/transcript_view.py:1347
-#: src/views/transcript/transcript_view.py:1586
+#: src/views/transcript/transcript_view.py:1348
+#: src/views/transcript/transcript_view.py:1587
 msgid "Play from here"
 msgstr "Odtwórz od tego miejsca"
 
-#: src/views/transcript/transcript_view.py:1355
-#: src/views/transcript/transcript_view.py:1590
+#: src/views/transcript/transcript_view.py:1356
+#: src/views/transcript/transcript_view.py:1591
 msgid "Edit text…"
 msgstr "Edytuj tekst…"
 
-#: src/views/transcript/transcript_view.py:1355
+#: src/views/transcript/transcript_view.py:1356
 msgid "Translate text…"
 msgstr "Przetłumacz tekst…"
 
-#: src/views/transcript/transcript_view.py:1359
+#: src/views/transcript/transcript_view.py:1360
 msgid "Edit the timing…"
 msgstr "Edytuj czasy…"
 
-#: src/views/transcript/transcript_view.py:1363
+#: src/views/transcript/transcript_view.py:1364
 msgid "Add a segment after…"
 msgstr "Dodaj segment po…"
 
-#: src/views/transcript/transcript_view.py:1407
+#: src/views/transcript/transcript_view.py:1408
 msgid "Translate text"
 msgstr "Przetłumacz tekst"
 
-#: src/views/transcript/transcript_view.py:1410
+#: src/views/transcript/transcript_view.py:1411
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
 msgstr "Tłumaczenie „{text}”, wypowiedziane od {start} do {end}:"
 
-#: src/views/transcript/transcript_view.py:1412
+#: src/views/transcript/transcript_view.py:1413
 #, python-brace-format
 msgid "Translation of the segment from {start} to {end}:"
 msgstr "Tłumaczenie segmentu od {start} do {end}:"
 
-#: src/views/transcript/transcript_view.py:1448
+#: src/views/transcript/transcript_view.py:1449
 #: src/views/transcript/translation_panel.py:152
 msgid "Translate again"
 msgstr "Przetłumacz ponownie"
 
-#: src/views/transcript/transcript_view.py:1450
+#: src/views/transcript/transcript_view.py:1451
 #, python-brace-format
 msgid ""
 "Translate the transcription into {language} again? The changes made to "
@@ -2248,49 +2252,49 @@ msgstr ""
 "Przetłumaczyć transkrypcję ponownie na język {language}? Zmiany "
 "wprowadzone w tłumaczeniu zostaną utracone."
 
-#: src/views/transcript/transcript_view.py:1473
+#: src/views/transcript/transcript_view.py:1474
 msgid "The audio isn't available: the source file was moved or deleted."
 msgstr ""
 "Nagranie nie jest dostępne: plik źródłowy został przeniesiony lub "
 "usunięty."
 
-#: src/views/transcript/transcript_view.py:1476
+#: src/views/transcript/transcript_view.py:1477
 msgid "The audio isn't available."
 msgstr "Nagranie nie jest dostępne."
 
-#: src/views/transcript/transcript_view.py:1594
-#: src/views/transcript/transcript_view.py:1672
+#: src/views/transcript/transcript_view.py:1595
+#: src/views/transcript/transcript_view.py:1673
 msgid "Rename speakers…"
 msgstr "Zmień nazwy mówców…"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1615
+#: src/views/transcript/transcript_view.py:1616
 msgid "Highlight low-confidence words"
 msgstr "Wyróżniaj słowa o niskiej pewności"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1623
+#: src/views/transcript/transcript_view.py:1624
 msgid "Low-confidence threshold"
 msgstr "Próg niskiej pewności"
 
 # Needs review by a native speaker
-#: src/views/transcript/transcript_view.py:1645
+#: src/views/transcript/transcript_view.py:1646
 #, python-brace-format
 msgid "Below {percent}%"
 msgstr "Poniżej {percent}%"
 
-#: src/views/transcript/transcript_view.py:1661
+#: src/views/transcript/transcript_view.py:1662
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr ""
 "Transkrybować ponownie „{title}”? Zmiany wprowadzone w tekście zostaną "
 "utracone."
 
-#: src/views/transcript/transcript_view.py:1682
+#: src/views/transcript/transcript_view.py:1683
 msgid "Precise timestamps (HH:MM:SS,mmm)"
 msgstr "Dokładne znaczniki czasu (HH:MM:SS,mmm)"
 
-#: src/views/transcript/transcript_view.py:1706
+#: src/views/transcript/transcript_view.py:1707
 msgid "Rename…"
 msgstr "Zmień nazwę…"
 
