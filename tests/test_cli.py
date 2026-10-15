@@ -11,7 +11,11 @@ import cli
 import utils.config_manager as cm
 import utils.constants as c
 import utils.update_checker as update_checker
+from handlers.ai_providers import AiProvider
 from models.config.config_transcription import ConfigTranscription
+from models.summary import TranscriptSummary
+from models.transcript_segment import TranscriptSegment
+from models.translation import TranscriptTranslation
 from utils.enums import AudioSource, TranscriptionMethod
 
 
@@ -105,6 +109,36 @@ class TestBuildTranscription:
         assert transcription.num_speakers == 3
         assert transcription.should_translate
 
+    def test_whisperx_saves_its_types_and_exports_the_others(self) -> None:
+        args = parse("transcribe", "a.mp3", "-m", "whisperx", "-t", "srt,md,docx")
+
+        transcription = cli.build_transcription(args, cli.get_whisperx_config(args))
+
+        assert transcription.output_file_types == ["srt"]
+        assert transcription.should_autosave
+        assert cli.get_exported_types(transcription, args.output_types) == [
+            "md",
+            "docx",
+        ]
+
+    @pytest.mark.parametrize(
+        ("method", "output_types"), [("whisperx", "md"), ("google", "txt,md")]
+    )
+    def test_the_types_that_the_method_does_not_save_are_exported(
+        self, method: str, output_types: str
+    ) -> None:
+        args = parse("transcribe", "a.mp3", "-m", method, "-t", output_types)
+        config = cli.get_whisperx_config(args) if method == "whisperx" else None
+
+        transcription = cli.build_transcription(args, config)
+
+        # Which also skips the files of a folder that have them
+        assert transcription.output_file_types == output_types.split(",")
+        assert not transcription.should_autosave
+        assert cli.get_exported_types(transcription, args.output_types) == (
+            output_types.split(",")
+        )
+
     def test_whisper_api_options(self) -> None:
         args = parse(
             "transcribe",
@@ -185,6 +219,8 @@ class TestBuildTranscription:
         ["transcribe", "a.mp3", "--speakers", "-1"],
         ["transcribe", "a.mp3", "-m", "other"],
         ["transcribe", "a.mp3", "--openai-model", "gpt-1"],
+        ["transcribe", "a.mp3", "--translate-to", "auto"],
+        ["transcribe", "a.mp3", "--summary-provider", "other"],
         ["transcribe"],
     ],
 )
@@ -247,6 +283,142 @@ class TestRun:
         assert exit_code == cli.EXIT_ERROR
         assert stdout == ""
         assert stderr == "Error: Please select a valid audio or video file.\n"
+
+    def test_exports_the_types_that_the_method_does_not_save(
+        self, audio_file: Path, tmp_path: Path
+    ) -> None:
+        output_dir = tmp_path / "out"
+
+        exit_code, _stdout, stderr = run(
+            "transcribe", str(audio_file), "-m", "google", "-l", "en", "-o",
+            str(output_dir), "-t", "txt,md,docx",
+        )  # fmt: skip
+
+        assert exit_code == cli.EXIT_SUCCESS
+        assert (output_dir / "speech.txt").read_text() == "hi. hi. hi.\n"
+        assert "hi. hi. hi." in (output_dir / "speech.md").read_text()
+        assert (output_dir / "speech.docx").exists()
+        assert f"Saved {output_dir / 'speech.md'}." in stderr
+
+    def test_summarizes_and_translates(
+        self, audio_file: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        calls: list[tuple[Any, ...]] = []
+
+        class FakeSummaryHandler:
+            def summarize(self, text: str, *args: Any) -> TranscriptSummary:
+                calls.append(("summarize", text, *args))
+                return TranscriptSummary("A short talk.", ("They say hi",))
+
+        class FakeTranslationHandler:
+            def translate(self, text: str, *_args: Any, **kwargs: Any) -> Any:
+                calls.append(("translate", text, kwargs["language"]))
+                return TranscriptTranslation(language="es", text="hola. hola.")
+
+        monkeypatch.setattr(cli, "SummaryHandler", FakeSummaryHandler)
+        monkeypatch.setattr(cli, "TranslationHandler", FakeTranslationHandler)
+        monkeypatch.setattr(cli, "has_api_key", lambda _provider: True)
+        monkeypatch.setattr(
+            cli.translation_handler, "has_api_key", lambda _provider: True
+        )
+
+        exit_code, _stdout, stderr = run(
+            "transcribe", str(audio_file), "-m", "google", "-l", "en",
+            "--summarize", "--summary-provider", "anthropic", "--summary-model",
+            "claude-x", "--translate-to", "es",
+        )  # fmt: skip
+
+        assert exit_code == cli.EXIT_SUCCESS, stderr
+        summary = audio_file.with_name("speech.summary.md").read_text()
+        assert "A short talk." in summary and "They say hi" in summary
+        # Saved like the transcription (txt for Google)
+        assert audio_file.with_name("speech.es.txt").read_text() == "hola. hola.\n"
+        assert calls == [
+            ("summarize", "hi. hi. hi.", [], AiProvider.ANTHROPIC, "claude-x"),
+            ("translate", "hi. hi. hi.", "es"),
+        ]
+
+    def test_a_missing_key_stops_before_transcribing(
+        self, audio_file: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr(cli, "has_api_key", lambda _provider: False)
+        recognize = MagicMock(return_value="hi")
+        monkeypatch.setattr(sr.Recognizer, "recognize_google", recognize)
+
+        exit_code, stdout, stderr = run(
+            "transcribe", str(audio_file), "-m", "google", "-l", "en", "--summarize"
+        )
+
+        assert exit_code == cli.EXIT_ERROR
+        assert stdout == ""
+        assert "can't summarize" in stderr
+        recognize.assert_not_called()
+
+    def test_the_errors_of_the_follow_ups_are_reported(
+        self, audio_file: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        class FailingSummaryHandler:
+            def summarize(self, *_args: Any) -> TranscriptSummary:
+                raise ValueError("The model didn't return a valid summary.")
+
+        monkeypatch.setattr(cli, "SummaryHandler", FailingSummaryHandler)
+        monkeypatch.setattr(cli, "has_api_key", lambda _provider: True)
+
+        exit_code, stdout, stderr = run(
+            "transcribe", str(audio_file), "-m", "google", "-l", "en", "--summarize"
+        )
+
+        # The transcription is still saved and printed
+        assert exit_code == cli.EXIT_ERROR
+        assert stdout == "hi. hi. hi.\n"
+        assert audio_file.with_suffix(".txt").exists()
+        assert (
+            "Error: Could not summarize speech.wav: The model didn't return a valid "
+            "summary." in stderr
+        )
+
+
+class TestFollowUps:
+    def test_existing_files_are_kept_unless_overwritten(self, tmp_path: Path) -> None:
+        file_path = tmp_path / "talk.mp3"
+        segments = [TranscriptSegment(0, 1, "Hi.")]
+        (tmp_path / "talk.md").write_text("old")
+
+        saved, errors = cli.FollowUps(output_types=["md", "srt"]).run(
+            file_path, "Hi.", segments
+        )
+
+        assert saved == [tmp_path / "talk.srt"]
+        assert errors == []
+        assert (tmp_path / "talk.md").read_text() == "old"
+
+        cli.FollowUps(output_types=["md"], should_overwrite=True).run(
+            file_path, "Hi.", segments
+        )
+        assert "Hi." in (tmp_path / "talk.md").read_text()
+
+    def test_the_subfolders_are_recreated_in_the_output_folder(
+        self, tmp_path: Path
+    ) -> None:
+        source_dir, output_dir = tmp_path / "in", tmp_path / "out"
+        follow_ups = cli.FollowUps(
+            output_types=["txt"], output_dir=output_dir, source_dir=source_dir
+        )
+
+        follow_ups.run(source_dir / "day 1" / "talk.v2.mp3", "Hi.", [])
+
+        # The dots of its name are kept
+        assert (output_dir / "day 1" / "talk.v2.txt").read_text() == "Hi.\n"
+
+    def test_timed_formats_need_the_timestamps(self, tmp_path: Path) -> None:
+        saved, errors = cli.FollowUps(output_types=["srt"]).run(
+            tmp_path / "talk.mp3", "Hi.", []
+        )
+
+        assert saved == []
+        assert errors == [
+            "Could not save talk.srt: The .srt format needs the timestamps"
+        ]
 
 
 class TestCheckUpdate:
