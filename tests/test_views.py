@@ -2784,6 +2784,9 @@ def test_a_segment_left_to_translate_has_a_button_on_hover(
     assert button is not None
 
     def hover(idx: int) -> None:
+        # A small window, as on macOS runners, may leave the segment out of view
+        textbox.see(text._text_starts[idx])
+        textbox.update_idletasks()
         x, y, _width, _height = textbox.bbox(text._text_starts[idx])
         text._on_transcript_motion(SimpleNamespace(x=x + 1, y=y + 1))
         ui.pump()
