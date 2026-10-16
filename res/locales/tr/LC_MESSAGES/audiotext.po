@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -495,9 +495,6 @@ msgstr ""
 "Dışa aktarıldı: {path}. Ancak hiçbir yazı tipinde bu karakterler yok, bu "
 "yüzden kutu olarak gösteriliyorlar: {characters}"
 
-msgid "Extract speech"
-msgstr "Konuşmayı ayıkla"
-
 msgid "Failed"
 msgstr "Başarısız"
 
@@ -597,11 +594,19 @@ msgstr "Kelimeleri vurgula"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Oynatırken her kelimeyi vurgular (whisper-1 modeli). Daha uzun sürer."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Oynatırken her kelimeyi vurgular. Biraz daha uzun sürer."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr ""
+"Oynatırken her kelimeyi vurgular ve yanlış olabilecek kelimeleri bulur. "
+"Altyazılar için gereklidir."
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Oynatırken her kelimeyi vurgular. Altyazılar bunları zaten kullanır."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Oynatırken her kelimeyi vurgular ve yanlış olabilecek kelimeleri bulur. "
+"Biraz daha uzun sürer."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -672,10 +677,12 @@ msgstr "Anahtar kelimeler"
 msgid "LLM providers"
 msgstr "LLM sağlayıcıları"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
 msgstr ""
 "Her bölümde kimin konuştuğunu etiketler. Hugging Face belirteci "
-"gerektirir."
+"gerektirir. Belirgin şekilde daha uzun sürer."
 
 msgid "Landscape"
 msgstr "Yatay"
@@ -1053,8 +1060,15 @@ msgstr "Kaydediliyor…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Kaydediliyor… Durdurmak ve yazıya dökmek için düğmeye basın."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Transkripsiyondan önce müziği ve arka plan gürültüsünü azaltır."
+msgid "Reduce background noise"
+msgstr "Arka plan gürültüsünü azalt"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Uğultuyu ve sabit arka plan gürültüsünü azaltır, alçak sesli konuşmayı "
+"dengeler. Daha uzun sürer."
 
 msgid "Refine"
 msgstr "İyileştir"
@@ -1141,9 +1155,6 @@ msgstr "{folder} konumuna kaydedildi."
 
 msgid "Saved next to the source"
 msgstr "Kaynağın yanına kaydedilir"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Çeviriyi transkripsiyonla birlikte kaydır"
 
 msgid "Search"
 msgstr "Ara"
@@ -1251,8 +1262,8 @@ msgstr "Üstte tut"
 msgid "Stop adding the subtitles to the video"
 msgstr "Altyazıları videoya eklemeyi durdur"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Çeviriyi transkripsiyonla birlikte kaydırmayı durdur"
+msgid "Stop syncing scrolling"
+msgstr "Kaydırmayı eşitlemeyi durdur"
 
 msgid "Stop watching"
 msgstr "İzlemeyi durdur"
@@ -1281,6 +1292,9 @@ msgstr "Özet"
 
 msgid "Supported models"
 msgstr "Desteklenen modeller"
+
+msgid "Sync scrolling"
+msgstr "Kaydırmayı eşitle"
 
 msgid "System"
 msgstr "Sistem"
@@ -1861,7 +1875,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} dosya"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} dk {seconds} sn"
 
 #, python-brace-format
@@ -1878,7 +1892,7 @@ msgid "{remaining} of {total} to review"
 msgstr "İncelenecek {total} kelimeden {remaining} kaldı"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} sn"
 
 #, python-brace-format

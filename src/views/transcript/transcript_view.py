@@ -310,9 +310,9 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             "link",
             self._toggle_sync_scroll,
             lambda: (
-                _("Stop scrolling the translation with the transcription")
+                _("Stop syncing scrolling")
                 if self._config_system.sync_scroll
-                else _("Scroll the translation with the transcription")
+                else _("Sync scrolling")
             ),
             is_round=True,
         )

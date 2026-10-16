@@ -36,8 +36,8 @@ def test_english_only_models() -> None:
 
 
 def test_format_elapsed_time() -> None:
-    assert format_elapsed_time(4.6) == "5 s"
-    assert format_elapsed_time(125) == "2 min 5 s"
+    assert format_elapsed_time(4.6) == "5 sec"
+    assert format_elapsed_time(125) == "2 min 5 sec"
 
 
 def test_format_segment_time() -> None:

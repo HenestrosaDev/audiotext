@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -492,9 +492,6 @@ msgstr ""
 "{path} में निर्यात किया गया, लेकिन किसी भी फ़ॉन्ट में ये अक्षर नहीं हैं, "
 "इसलिए ये बक्सों के रूप में दिखते हैं: {characters}"
 
-msgid "Extract speech"
-msgstr "आवाज़ अलग करें"
-
 msgid "Failed"
 msgstr "विफल"
 
@@ -590,11 +587,19 @@ msgstr "शब्द हाइलाइट करें"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "चलाते समय हर शब्द हाइलाइट करता है (whisper-1 मॉडल)। ज़्यादा समय लगता है।"
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "चलाते समय हर शब्द हाइलाइट करता है। थोड़ा ज़्यादा समय लगता है।"
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr ""
+"चलाते समय हर शब्द हाइलाइट करता है और उन शब्दों को ढूँढता है जो गलत हो "
+"सकते हैं। सबटाइटल के लिए आवश्यक है।"
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "चलाते समय हर शब्द हाइलाइट करता है। सबटाइटल पहले से इनका उपयोग करते हैं।"
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"चलाते समय हर शब्द हाइलाइट करता है और उन शब्दों को ढूँढता है जो गलत हो "
+"सकते हैं। थोड़ा ज़्यादा समय लगता है।"
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -666,8 +671,12 @@ msgstr "कीवर्ड"
 msgid "LLM providers"
 msgstr "LLM प्रदाता"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "बताता है कि हर हिस्से में कौन बोल रहा है। Hugging Face टोकन आवश्यक है।"
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr ""
+"बताता है कि हर हिस्से में कौन बोल रहा है। Hugging Face टोकन आवश्यक है। "
+"इसमें काफ़ी ज़्यादा समय लगता है।"
 
 msgid "Landscape"
 msgstr "क्षैतिज"
@@ -1049,8 +1058,15 @@ msgstr "रिकॉर्ड हो रहा है…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "रिकॉर्ड हो रहा है… रोकने और ट्रांसक्राइब करने के लिए बटन दबाएँ।"
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "ट्रांसक्राइब करने से पहले संगीत और पृष्ठभूमि शोर कम करता है।"
+msgid "Reduce background noise"
+msgstr "पृष्ठभूमि शोर कम करें"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"भिनभिनाहट और लगातार पृष्ठभूमि शोर कम करता है, और धीमी आवाज़ को बराबर करता"
+" है। इसमें अधिक समय लगता है।"
 
 msgid "Refine"
 msgstr "परिष्कृत करें"
@@ -1137,9 +1153,6 @@ msgstr "{folder} में सहेजा गया।"
 
 msgid "Saved next to the source"
 msgstr "स्रोत के पास सहेजा जाता है"
-
-msgid "Scroll the translation with the transcription"
-msgstr "अनुवाद को ट्रांसक्रिप्शन के साथ स्क्रॉल करें"
 
 msgid "Search"
 msgstr "खोजें"
@@ -1249,8 +1262,8 @@ msgstr "सबसे ऊपर रखें"
 msgid "Stop adding the subtitles to the video"
 msgstr "वीडियो में सबटाइटल जोड़ना रोकें"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "अनुवाद को ट्रांसक्रिप्शन के साथ स्क्रॉल करना बंद करें"
+msgid "Stop syncing scrolling"
+msgstr "स्क्रॉलिंग सिंक करना बंद करें"
 
 msgid "Stop watching"
 msgstr "निगरानी बंद करें"
@@ -1279,6 +1292,9 @@ msgstr "सारांश"
 
 msgid "Supported models"
 msgstr "समर्थित मॉडल"
+
+msgid "Sync scrolling"
+msgstr "स्क्रॉलिंग सिंक करें"
 
 msgid "System"
 msgstr "सिस्टम"
@@ -1858,7 +1874,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} फ़ाइलें"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} मि {seconds} से"
 
 #, python-brace-format
@@ -1875,7 +1891,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{total} में से {remaining} की समीक्षा बाकी"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} से"
 
 #, python-brace-format

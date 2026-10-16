@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -475,9 +475,6 @@ msgid ""
 " boxes: {characters}"
 msgstr "已导出到 {path}，但没有字体包含这些字符，因此它们显示为方框：{characters}"
 
-msgid "Extract speech"
-msgstr "提取人声"
-
 msgid "Failed"
 msgstr "失败"
 
@@ -573,11 +570,15 @@ msgstr "高亮单词"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "播放时高亮每个单词（whisper-1 模型）。耗时更长。"
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "播放时高亮每个单词。耗时稍长。"
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr "播放时高亮每个单词，并找出可能有误的单词。字幕需要此功能。"
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "播放时高亮每个单词。字幕已在使用。"
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr "播放时高亮每个单词，并找出可能有误的单词。耗时稍长。"
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -643,8 +644,10 @@ msgstr "关键词"
 msgid "LLM providers"
 msgstr "LLM 提供商"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "标注每段由谁说话。需要 Hugging Face 令牌。"
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr "标注每段由谁说话。需要 Hugging Face 令牌。耗时明显更长。"
 
 msgid "Landscape"
 msgstr "横屏"
@@ -1007,8 +1010,13 @@ msgstr "正在录音…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "正在录音… 按下按钮停止并转写。"
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "转写前降低音乐和背景噪音。"
+msgid "Reduce background noise"
+msgstr "降低背景噪音"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr "降低嗡嗡声和持续的背景噪音，并均衡较轻的语音。耗时更长。"
 
 msgid "Refine"
 msgstr "精修"
@@ -1091,9 +1099,6 @@ msgstr "已保存到 {folder}。"
 
 msgid "Saved next to the source"
 msgstr "保存在来源旁边"
-
-msgid "Scroll the translation with the transcription"
-msgstr "让译文与转录内容同步滚动"
 
 msgid "Search"
 msgstr "搜索"
@@ -1197,8 +1202,8 @@ msgstr "保持置顶"
 msgid "Stop adding the subtitles to the video"
 msgstr "停止向视频添加字幕"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "停止让译文与转录内容同步滚动"
+msgid "Stop syncing scrolling"
+msgstr "停止同步滚动"
 
 msgid "Stop watching"
 msgstr "停止监视"
@@ -1227,6 +1232,9 @@ msgstr "摘要"
 
 msgid "Supported models"
 msgstr "支持的模型"
+
+msgid "Sync scrolling"
+msgstr "同步滚动"
 
 msgid "System"
 msgstr "跟随系统"
@@ -1772,7 +1780,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} 个文件"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} 分 {seconds} 秒"
 
 #, python-brace-format
@@ -1789,7 +1797,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{total} 个中还有 {remaining} 个待检查"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} 秒"
 
 #, python-brace-format

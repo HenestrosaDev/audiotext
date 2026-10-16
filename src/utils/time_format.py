@@ -73,13 +73,13 @@ def format_duration(seconds: float) -> str:
 
 
 def format_elapsed_time(seconds: float) -> str:
-    """Formats how long a process took, in words (e.g. "2 min 5 s")."""
+    """Formats how long a process took, in words (e.g. "2 min 5 sec")."""
     minutes, seconds = divmod(round(seconds), 60)
 
     if minutes:
-        return _("{minutes} min {seconds} s").format(minutes=minutes, seconds=seconds)
+        return _("{minutes} min {seconds} sec").format(minutes=minutes, seconds=seconds)
 
-    return _("{seconds} s").format(seconds=seconds)
+    return _("{seconds} sec").format(seconds=seconds)
 
 
 def format_subtitle_time(seconds: float, decimal_marker: str) -> str:
