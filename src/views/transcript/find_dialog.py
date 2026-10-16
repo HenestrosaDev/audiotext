@@ -241,6 +241,9 @@ class FindDialog(ctk.CTkToplevel):  # type: ignore[misc]
             width=max(width + 8, 70),
             font=font,
             text_color=theme.HINT_TEXT,
+            # Aligned to the buttons, so "of 36" stays still while the current
+            # match changes, instead of the whole text moving to stay centered
+            anchor=ctk.E,
         )
         self.lbl_matches.grid(row=0, column=0)
         self.btn_previous = icon_button(

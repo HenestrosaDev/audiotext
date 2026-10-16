@@ -2773,6 +2773,27 @@ class FakePlayer:
         pass
 
 
+def test_the_split_button_of_the_subtitles_is_highlighted_whole(ui: Ui) -> None:
+    from views.style import theme
+    from views.transcript.player_bar import PlayerBar
+
+    bar = PlayerBar(
+        ui.window,
+        on_tick=lambda _position, _is_playing: None,
+        on_toggle_subtitles=lambda: None,
+        on_subtitle_menu=lambda _anchor: None,
+    )
+    try:
+        bar.show_subtitle_buttons(True)
+        for button in (bar.btn_subtitles, bar.btn_subtitle_options):
+            assert button.cget("fg_color") == theme.ROW_SELECTED
+        bar.set_subtitles_on(False)
+        for button in (bar.btn_subtitles, bar.btn_subtitle_options):
+            assert button.cget("fg_color") == "transparent"
+    finally:
+        bar.destroy()
+
+
 def test_a_clip_pauses_at_its_end_unless_the_user_takes_over(ui: Ui) -> None:
     from views.transcript.player_bar import PlayerBar
 
