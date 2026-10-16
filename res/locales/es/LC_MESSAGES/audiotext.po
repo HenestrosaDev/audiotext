@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -442,9 +442,6 @@ msgstr "Editar los tiempos"
 msgid "Edit the timing…"
 msgstr "Editar los tiempos…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "Los cambios que hagas aquí no modifican los subtítulos."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Vacío. Para añadir una transcripción, haz clic derecho sobre ella y elige"
@@ -533,6 +530,16 @@ msgstr "Buscar y reemplazar en la traducción al {language}"
 
 msgid "Find in the summary"
 msgstr "Buscar en el resumen"
+
+msgid "Find in the transcription"
+msgstr "Buscar en la transcripción"
+
+msgid "Find in the translation"
+msgstr "Buscar en la traducción"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "Buscar en la traducción al {language}"
 
 msgid "Find:"
 msgstr "Buscar:"
@@ -1051,6 +1058,9 @@ msgstr "Proveedores"
 msgid "Queued"
 msgstr "En cola"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "Solo lectura. Edita los subtítulos para cambiar este texto."
+
 msgid "Reading…"
 msgstr "Leyendo…"
 
@@ -1250,11 +1260,6 @@ msgstr "Tamaño"
 
 msgid "Small"
 msgstr "Pequeño"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr ""
-"Algunos subtítulos aún no están traducidos, así que no aparecen en este "
-"texto."
 
 msgid "Source"
 msgstr "Origen"
@@ -1541,13 +1546,6 @@ msgstr "Esta transcripción no tiene marcas de tiempo."
 
 msgid "Time format"
 msgstr "Formato de la hora"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Las marcas de tiempo solo están disponibles con WhisperX y con los "
-"modelos whisper-1 y gpt-4o-transcribe-diarize de la API de Whisper."
 
 msgid "Timestamps of the words"
 msgstr "Marcas de tiempo de las palabras"
@@ -1840,9 +1838,6 @@ msgstr "Tiempos por palabra"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Escribirla directamente en {language} (experimental)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Puedes editar el texto. Los cambios se guardan automáticamente."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

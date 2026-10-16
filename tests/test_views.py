@@ -683,25 +683,20 @@ def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) ->
         "1.0", "end"
     )
 
-    # The plain text, which then keeps the changes of the user
+    # The plain text is built from the subtitles, so it's only read
     view._on_mode_change(view._modes.value("Plain text"))
     ui.pump()
     plain = view.translation_panel.text.tbx_plain
-    plain.delete("1.0", "end")
-    plain.insert("1.0", "Hola a todos")
-    view.translation_panel.text._schedule_text_save()
-    view.translation_panel.save_pending_text()
-    edited = entry.get_translation("es")
-    assert edited is not None
-    assert edited.text == "Hola a todos"
-    assert edited.is_text_edited
+    assert plain.cget("state") == "disabled"
+    assert view.lbl_read_only.winfo_ismapped()
 
+    # and follows them
     view.translation_editor.edit_text(1)
     ui.pump()
     edited = entry.get_translation("es")
     assert edited is not None
     assert edited.segments[1].text == "Hola Whisper"
-    assert edited.text == "Hola a todos"
+    assert "[SPEAKER_01]: Hola Whisper" in plain.get("1.0", "end")
 
 
 def test_a_transcription_can_be_translated_from_scratch(
@@ -2687,21 +2682,20 @@ def test_the_hints_are_only_where_they_are_needed(ui: Ui) -> None:
         == translated_text.tbx_transcript.winfo_rooty()
     )
 
-    # That the edits of the plain text stop there is told with the plain text
-    view.text.set_content(view.text._segments, "Edited", is_text_edited=True)
-    ui.pump()
-    edited_hint = "Edits made here don't change the subtitles."
-    assert edited_hint not in transcript.lbl_hint.cget("text")
+    # The plain text is read-only, which is told once next to the modes, instead
+    # of with hints in each text
+    assert not view.lbl_read_only.winfo_ismapped()
     view._on_mode_change(PLAIN_TEXT_MODE)
     ui.pump()
-    assert edited_hint in transcript.lbl_hint.cget("text")
-    assert "Subtitles:" not in transcript.lbl_hint.cget("text")
-    # The progress counts subtitles, which the plain text doesn't show, but it
-    # leaves out the ones not translated yet
-    assert translated_text.lbl_note.cget("text") == (
-        "Some subtitles aren't translated yet, so they're left out of this text."
+    assert view.lbl_read_only.winfo_ismapped()
+    assert view.lbl_read_only.cget("text") == (
+        "Read-only. Edit the subtitles to change this text."
     )
-    assert not translated_text.btn_next_empty.winfo_ismapped()
+    assert transcript.tbx_plain.cget("state") == "disabled"
+    # Neither plain text has hints, even if the translation isn't finished
+    for text in (transcript, translated_text):
+        assert not text.frm_hints.winfo_ismapped()
+        assert not text.lbl_spacer.winfo_ismapped()
 
 
 def test_a_whole_translation_has_no_note_with_its_plain_text(ui: Ui) -> None:
@@ -3788,3 +3782,45 @@ def test_the_video_is_exported_with_its_subtitles(
     ]
     assert ui.window.top_bar._status_message == f"Exported to {output}"
     assert not video_export.VideoExport.is_running()
+
+
+def test_the_plain_text_built_from_the_subtitles_is_only_searched(ui: Ui) -> None:
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE, TRANSCRIPT_MODE
+
+    entry = ui.add(segments=SEGMENTS, text=TEXT)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(TRANSCRIPT_MODE)
+    view.btn_search.invoke()
+    ui.pump()
+    dialog = view._find_dialog
+    assert dialog is not None
+    assert dialog.btn_replace.winfo_ismapped()
+
+    # Its matches can't be traced back to the subtitles
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    ui.pump()
+    assert dialog.title() == "Find in the transcription"
+    assert not dialog.btn_replace.winfo_ismapped()
+    dialog._find.set("wisper")
+    ui.pump()
+    assert view.text.match_status[1] == 2
+
+    view._on_mode_change(TRANSCRIPT_MODE)
+    ui.pump()
+    assert dialog.title() == "Find and replace in the transcription"
+    assert dialog.btn_replace.winfo_ismapped()
+
+
+def test_a_transcription_without_subtitles_can_still_be_edited(ui: Ui) -> None:
+    entry = ui.add(text="Hello wisper")
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+
+    # Its text is all there is to correct
+    assert view.text.tbx_plain.cget("state") == "normal"
+    assert not view.lbl_read_only.winfo_ismapped()
+    # The plain text has no hints
+    assert not view.text.frm_hints.winfo_ismapped()

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 3.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -414,9 +414,6 @@ msgstr ""
 msgid "Edit the timing…"
 msgstr ""
 
-msgid "Edits made here don't change the subtitles."
-msgstr ""
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 
@@ -498,6 +495,16 @@ msgid "Find and replace in the translation into {language}"
 msgstr ""
 
 msgid "Find in the summary"
+msgstr ""
+
+msgid "Find in the transcription"
+msgstr ""
+
+msgid "Find in the translation"
+msgstr ""
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
 msgstr ""
 
 msgid "Find:"
@@ -970,6 +977,9 @@ msgstr ""
 msgid "Queued"
 msgstr ""
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr ""
+
 msgid "Reading…"
 msgstr ""
 
@@ -1152,9 +1162,6 @@ msgid "Size"
 msgstr ""
 
 msgid "Small"
-msgstr ""
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
 msgstr ""
 
 msgid "Source"
@@ -1418,11 +1425,6 @@ msgid "This transcription has no timestamps."
 msgstr ""
 
 msgid "Time format"
-msgstr ""
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
 msgstr ""
 
 msgid "Timestamps of the words"
@@ -1691,9 +1693,6 @@ msgstr ""
 
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
-msgstr ""
-
-msgid "You can edit the text. The changes are saved automatically."
 msgstr ""
 
 msgid ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -437,9 +437,6 @@ msgstr "Chỉnh sửa thời gian"
 msgid "Edit the timing…"
 msgstr "Chỉnh sửa thời gian…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "Các chỉnh sửa ở đây không thay đổi phụ đề."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Trống. Để thêm bản chép lời, nhấp chuột phải vào bản đó và chọn \"Chuyển "
@@ -528,6 +525,16 @@ msgstr "Tìm và thay thế trong bản dịch sang {language}"
 
 msgid "Find in the summary"
 msgstr "Tìm trong bản tóm tắt"
+
+msgid "Find in the transcription"
+msgstr "Tìm trong bản chép lời"
+
+msgid "Find in the translation"
+msgstr "Tìm trong bản dịch"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "Tìm trong bản dịch sang {language}"
 
 msgid "Find:"
 msgstr "Tìm:"
@@ -1040,6 +1047,9 @@ msgstr "Nhà cung cấp"
 msgid "Queued"
 msgstr "Đang chờ"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "Chỉ đọc. Hãy chỉnh sửa phụ đề để thay đổi văn bản này."
+
 msgid "Reading…"
 msgstr "Đang đọc…"
 
@@ -1239,9 +1249,6 @@ msgstr "Kích thước"
 
 msgid "Small"
 msgstr "Nhỏ"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr "Một số phụ đề chưa được dịch nên không có trong văn bản này."
 
 msgid "Source"
 msgstr "Nguồn"
@@ -1520,13 +1527,6 @@ msgstr "Bản chép lời này không có dấu thời gian."
 
 msgid "Time format"
 msgstr "Định dạng giờ"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Dấu thời gian chỉ khả dụng với WhisperX và các mô hình whisper-1 và gpt-"
-"4o-transcribe-diarize của Whisper API."
 
 msgid "Timestamps of the words"
 msgstr "Dấu thời gian của từ"
@@ -1809,9 +1809,6 @@ msgstr "Thời gian theo từng từ"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Viết trực tiếp bằng {language} (thử nghiệm)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Bạn có thể chỉnh sửa văn bản. Thay đổi được lưu tự động."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

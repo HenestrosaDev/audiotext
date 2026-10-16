@@ -91,6 +91,7 @@ from views.transcript.translation_panel import (
 from views.transcript.video_export import VideoExport, subtitle_look
 from views.transcript.video_pane import VideoPane
 from views.transcript.word_popover import WordPopover
+from views.widgets.bindings import bind_wraplength
 from views.widgets.button import icon_button, set_button_state, show_toggled
 from views.widgets.localized_options import LocalizedOptions
 from views.widgets.splitter import Splitter
@@ -834,6 +835,20 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             command=self._on_mode_change,
         )
         self.seg_mode.grid(row=0, column=0)
+        # The plain text is built from the subtitles, so it's only corrected there
+        self.lbl_read_only = localize(
+            ctk.CTkLabel(
+                toolbar,
+                font=theme.font(12),
+                text_color=theme.HINT_TEXT,
+                anchor=ctk.W,
+                justify=ctk.LEFT,
+            ),
+            text=L_("Read-only. Edit the subtitles to change this text."),
+        )
+        self.lbl_read_only.grid(row=0, column=1, padx=(12, 0), sticky=ctk.EW)
+        bind_wraplength(self.lbl_read_only, minimum=120)
+        self.lbl_read_only.grid_remove()
 
         self.btn_translate = self._create_action_button(
             toolbar, L_("Translate"), "globe", self._on_translate_button
@@ -897,7 +912,6 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         self.text.set_content(
             [part.segment for part in self._parts],
             entry.text,
-            entry.is_text_edited,
             [part.segment_idx for part in self._parts],
         )
         if has_new_segments:
@@ -910,6 +924,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         if self._mode not in modes:
             self._mode = PLAIN_TEXT_MODE
         self._modes.set(self._mode)
+        self._show_read_only_note()
 
     def _apply_mode(self) -> None:
         self._modes.set(self._mode)
@@ -936,6 +951,8 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             self.text.set_mode(self._mode)
             self.translation_panel.set_mode(self._mode)
 
+        self._show_read_only_note()
+
         state = ctk.DISABLED if panel else ctk.NORMAL
         set_button_state(self.btn_translate, state)
         # The text it searches is hidden
@@ -945,7 +962,18 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             or (dialog.target.text is self.summary_panel.text) != is_summary
         ):
             self._close_find_dialog()
+        self._retarget_find_dialog()
         self._refresh_find_dialog()
+
+    def _show_read_only_note(self) -> None:
+        if self._is_plain_text_read_only():
+            self.lbl_read_only.grid()
+        else:
+            self.lbl_read_only.grid_remove()
+
+    def _is_plain_text_read_only(self) -> bool:
+        """Whether the plain text is shown, built from the subtitles."""
+        return self._mode == PLAIN_TEXT_MODE and bool(self._entry.segments)
 
     def _on_mode_change(self, mode: str) -> None:
         self._mode = mode
@@ -1046,6 +1074,10 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         self.show_translation_export_menu(anchor)
 
     def _transcript_find_target(self) -> FindTarget:
+        # A match in the plain text built from the subtitles can't be traced back
+        # to them, so it's only found there
+        if self._is_plain_text_read_only():
+            return FindTarget(title=L_("Find in the transcription"), text=self.text)
         return FindTarget(
             title=L_("Find and replace in the transcription"),
             text=self.text,
@@ -1054,20 +1086,50 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         )
 
     def _translation_find_target(self) -> FindTarget:
+        translation = self._translation()
+        # Like the transcription's (see `_transcript_find_target`)
+        can_replace = not (
+            self._mode == PLAIN_TEXT_MODE and translation and translation.segments
+        )
+
         def title() -> str:
             translation = self._translation()
             if translation is None:
-                return _("Find and replace in the translation")
-            return _("Find and replace in the translation into {language}").format(
-                language=language_name(translation.language)
+                return (
+                    _("Find and replace in the translation")
+                    if can_replace
+                    else _("Find in the translation")
+                )
+            language = language_name(translation.language)
+            if can_replace:
+                return _("Find and replace in the translation into {language}").format(
+                    language=language
+                )
+            return _("Find in the translation into {language}").format(
+                language=language
             )
 
+        if not can_replace:
+            return FindTarget(title=title, text=self.translation_panel.text)
         return FindTarget(
             title=title,
             text=self.translation_panel.text,
             replace_current=self.translation_editor.replace_current,
             replace_all=self.translation_editor.replace_all,
         )
+
+    def _retarget_find_dialog(self) -> None:
+        """
+        Searches the text again in the mode shown, which may not let it be
+        replaced (see `_transcript_find_target`).
+        """
+        dialog = self._find_dialog
+        if not dialog or not dialog.winfo_exists():
+            return
+        if dialog.target.text is self.text:
+            dialog.set_target(self._transcript_find_target())
+        elif dialog.target.text is self.translation_panel.text:
+            dialog.set_target(self._translation_find_target())
 
     def _summary_find_target(self) -> FindTarget:
         # The summary is generated, so it isn't corrected like the texts

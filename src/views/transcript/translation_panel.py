@@ -206,7 +206,6 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             on_text_edit=on_text_edit,
             on_scroll=on_scroll,
             # The transcript on its left already tells it
-            show_usage_hints=False,
             show_summary=False,
             empty_segment_text=L_("Not translated yet"),
             # Like the item of the menu of a segment: the toolbar's "Translate"
@@ -276,13 +275,10 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
                 error or self._progress_note(translation),
                 bool(error),
                 can_go_to_empty=True,
-                plain_text_note=self._missing_text_note(translation),
             )
             self.frm_message.grid_forget()
             self.text.grid(row=2, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
-            self.text.set_content(
-                segments, translation.text, translation.is_text_edited
-            )
+            self.text.set_content(segments, translation.text)
 
         has_translation = translation is not None and not is_loading
         for button in (self.btn_search, self.btn_copy, self.btn_export):
@@ -395,19 +391,6 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             done=format_number(done),
             total=format_number(total),
             percent=format_percent(done / total),
-        )
-
-    @staticmethod
-    def _missing_text_note(translation: TranscriptTranslation) -> str:
-        """
-        Whether its plain text leaves out segments not translated yet, so it may
-        look whole when it isn't. The edited text no longer follows them.
-        """
-        done, total = translation.segment_progress()
-        if done == total or translation.is_text_edited:
-            return ""
-        return _(
-            "Some subtitles aren't translated yet, so they're left out of this text."
         )
 
     @staticmethod
