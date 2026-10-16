@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -492,9 +492,6 @@ msgstr ""
 "Đã xuất sang {path}, nhưng không có phông chữ nào có các ký tự này nên "
 "chúng hiển thị dưới dạng ô vuông: {characters}"
 
-msgid "Extract speech"
-msgstr "Tách giọng nói"
-
 msgid "Failed"
 msgstr "Thất bại"
 
@@ -594,11 +591,19 @@ msgstr "Đánh dấu từ"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Đánh dấu từng từ khi phát (mô hình whisper-1). Mất nhiều thời gian hơn."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Đánh dấu từng từ khi phát. Mất thêm một chút thời gian."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr ""
+"Đánh dấu từng từ khi phát và tìm những từ có thể sai. Cần thiết cho phụ "
+"đề."
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Đánh dấu từng từ khi phát. Phụ đề đã sử dụng chúng."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Đánh dấu từng từ khi phát và tìm những từ có thể sai. Mất thêm một chút "
+"thời gian."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -669,8 +674,12 @@ msgstr "Từ khóa"
 msgid "LLM providers"
 msgstr "Nhà cung cấp LLM"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Gắn nhãn ai đang nói trong từng phần. Cần token Hugging Face."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr ""
+"Gắn nhãn ai đang nói trong từng phần. Cần token Hugging Face. Mất nhiều "
+"thời gian hơn đáng kể."
 
 msgid "Landscape"
 msgstr "Ngang"
@@ -1049,8 +1058,15 @@ msgstr "Đang ghi âm…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Đang ghi âm… Nhấn nút để dừng và chép lời."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Giảm nhạc và tiếng ồn nền trước khi chép lời."
+msgid "Reduce background noise"
+msgstr "Giảm tiếng ồn nền"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Giảm tiếng ù và tiếng ồn nền đều đặn, đồng thời cân bằng giọng nói nhỏ. "
+"Mất nhiều thời gian hơn."
 
 msgid "Refine"
 msgstr "Tinh chỉnh"
@@ -1137,9 +1153,6 @@ msgstr "Đã lưu vào {folder}."
 
 msgid "Saved next to the source"
 msgstr "Lưu cạnh nguồn"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Cuộn bản dịch cùng với bản chép lời"
 
 msgid "Search"
 msgstr "Tìm kiếm"
@@ -1247,8 +1260,8 @@ msgstr "Luôn ở trên cùng"
 msgid "Stop adding the subtitles to the video"
 msgstr "Dừng thêm phụ đề vào video"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Ngừng cuộn bản dịch cùng với bản chép lời"
+msgid "Stop syncing scrolling"
+msgstr "Ngừng đồng bộ cuộn"
 
 msgid "Stop watching"
 msgstr "Dừng theo dõi"
@@ -1277,6 +1290,9 @@ msgstr "Bản tóm tắt"
 
 msgid "Supported models"
 msgstr "Mô hình được hỗ trợ"
+
+msgid "Sync scrolling"
+msgstr "Đồng bộ cuộn"
 
 msgid "System"
 msgstr "Hệ thống"
@@ -1849,7 +1865,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} tệp"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} phút {seconds} giây"
 
 #, python-brace-format
@@ -1866,7 +1882,7 @@ msgid "{remaining} of {total} to review"
 msgstr "Còn {remaining}/{total} cần xem lại"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} giây"
 
 #, python-brace-format

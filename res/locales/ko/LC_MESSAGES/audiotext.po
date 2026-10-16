@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -478,9 +478,6 @@ msgid ""
 " boxes: {characters}"
 msgstr "{path}(으)로 내보냈지만, 다음 문자가 있는 글꼴이 없어 네모로 표시됩니다: {characters}"
 
-msgid "Extract speech"
-msgstr "음성 추출"
-
 msgid "Failed"
 msgstr "실패"
 
@@ -576,11 +573,15 @@ msgstr "단어 강조"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "재생 중 각 단어를 강조합니다(whisper-1 모델). 시간이 더 걸립니다."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "재생 중 각 단어를 강조합니다. 시간이 조금 더 걸립니다."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr "재생 중 각 단어를 강조하고 틀렸을 수 있는 단어를 찾습니다. 자막에 필요합니다."
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "재생 중 각 단어를 강조합니다. 자막에서는 이미 사용합니다."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr "재생 중 각 단어를 강조하고 틀렸을 수 있는 단어를 찾습니다. 시간이 조금 더 걸립니다."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -646,8 +647,10 @@ msgstr "키워드"
 msgid "LLM providers"
 msgstr "LLM 제공자"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "각 부분에서 누가 말하는지 표시합니다. Hugging Face 토큰이 필요합니다."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr "각 부분에서 누가 말하는지 표시합니다. Hugging Face 토큰이 필요합니다. 시간이 훨씬 더 걸립니다."
 
 msgid "Landscape"
 msgstr "가로"
@@ -1010,8 +1013,13 @@ msgstr "녹음 중…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "녹음 중… 중지하고 받아쓰려면 버튼을 누르세요."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "받아쓰기 전에 음악과 배경 소음을 줄입니다."
+msgid "Reduce background noise"
+msgstr "배경 소음 줄이기"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr "험 노이즈와 일정한 배경 소음을 줄이고 작은 목소리를 고르게 합니다. 시간이 더 걸립니다."
 
 msgid "Refine"
 msgstr "다듬기"
@@ -1094,9 +1102,6 @@ msgstr "{folder}에 저장했습니다."
 
 msgid "Saved next to the source"
 msgstr "소스와 같은 위치에 저장"
-
-msgid "Scroll the translation with the transcription"
-msgstr "번역을 전사본과 함께 스크롤"
 
 msgid "Search"
 msgstr "검색"
@@ -1200,8 +1205,8 @@ msgstr "항상 위에 표시"
 msgid "Stop adding the subtitles to the video"
 msgstr "동영상에 자막 추가 중지"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "번역을 전사본과 함께 스크롤하지 않기"
+msgid "Stop syncing scrolling"
+msgstr "스크롤 동기화 중지"
 
 msgid "Stop watching"
 msgstr "감시 중지"
@@ -1230,6 +1235,9 @@ msgstr "요약"
 
 msgid "Supported models"
 msgstr "지원되는 모델"
+
+msgid "Sync scrolling"
+msgstr "스크롤 동기화"
 
 msgid "System"
 msgstr "시스템"
@@ -1783,7 +1791,7 @@ msgid "{done}/{total} files"
 msgstr "파일 {done}/{total}개"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes}분 {seconds}초"
 
 #, python-brace-format
@@ -1800,7 +1808,7 @@ msgid "{remaining} of {total} to review"
 msgstr "검토할 단어 {total}개 중 {remaining}개"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds}초"
 
 #, python-brace-format

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -501,9 +501,6 @@ msgstr ""
 "Geëxporteerd naar {path}, maar geen lettertype bevat deze tekens, dus "
 "worden ze als vakjes weergegeven: {characters}"
 
-msgid "Extract speech"
-msgstr "Spraak isoleren"
-
 msgid "Failed"
 msgstr "Mislukt"
 
@@ -603,11 +600,19 @@ msgstr "Woorden markeren"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Markeert elk woord tijdens het afspelen (model whisper-1). Duurt langer."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Markeert elk woord tijdens het afspelen. Duurt iets langer."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr ""
+"Markeert elk woord tijdens het afspelen en vindt woorden die mogelijk "
+"fout zijn. Nodig voor de ondertitels."
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Markeert elk woord tijdens het afspelen. De ondertitels gebruiken ze al."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Markeert elk woord tijdens het afspelen en vindt woorden die mogelijk "
+"fout zijn. Duurt iets langer."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -680,8 +685,12 @@ msgstr "Trefwoorden"
 msgid "LLM providers"
 msgstr "LLM-aanbieders"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Geeft aan wie er in elk deel spreekt. Vereist een Hugging Face-token."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr ""
+"Geeft aan wie er in elk deel spreekt. Vereist een Hugging Face-token. "
+"Duurt merkbaar langer."
 
 msgid "Landscape"
 msgstr "Horizontaal"
@@ -1061,8 +1070,15 @@ msgstr "Opnemen…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Opnemen… Druk op de knop om te stoppen en te transcriberen."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Vermindert muziek en achtergrondgeluid vóór het transcriberen."
+msgid "Reduce background noise"
+msgstr "Achtergrondruis verminderen"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Vermindert brom en constante achtergrondruis, en maakt zachte spraak "
+"gelijkmatiger. Duurt langer."
 
 msgid "Refine"
 msgstr "Verfijnen"
@@ -1151,9 +1167,6 @@ msgstr "Opgeslagen in {folder}."
 
 msgid "Saved next to the source"
 msgstr "Opgeslagen naast de bron"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Vertaling samen met de transcriptie scrollen"
 
 msgid "Search"
 msgstr "Zoeken"
@@ -1263,8 +1276,8 @@ msgstr "Bovenop houden"
 msgid "Stop adding the subtitles to the video"
 msgstr "Stoppen met het toevoegen van de ondertitels aan de video"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Vertaling niet meer samen met de transcriptie scrollen"
+msgid "Stop syncing scrolling"
+msgstr "Scrollen niet meer synchroniseren"
 
 msgid "Stop watching"
 msgstr "Stoppen met bewaken"
@@ -1293,6 +1306,9 @@ msgstr "Samenvatting"
 
 msgid "Supported models"
 msgstr "Ondersteunde modellen"
+
+msgid "Sync scrolling"
+msgstr "Scrollen synchroniseren"
 
 msgid "System"
 msgstr "Systeem"
@@ -1878,7 +1894,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} bestanden"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} min {seconds} s"
 
 #, python-brace-format
@@ -1895,7 +1911,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{remaining} van {total} na te kijken"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} s"
 
 #, python-brace-format

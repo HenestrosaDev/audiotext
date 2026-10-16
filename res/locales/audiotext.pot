@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 3.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -463,9 +463,6 @@ msgid ""
 " boxes: {characters}"
 msgstr ""
 
-msgid "Extract speech"
-msgstr ""
-
 msgid "Failed"
 msgstr ""
 
@@ -560,10 +557,14 @@ msgstr ""
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr ""
 
-msgid "Highlights each word while playing. Takes a bit longer."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
 msgstr ""
 
-msgid "Highlights each word while playing. The subtitles already use them."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
 msgstr ""
 
 msgid ""
@@ -628,7 +629,9 @@ msgstr ""
 msgid "LLM providers"
 msgstr ""
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
 msgstr ""
 
 msgid "Landscape"
@@ -983,7 +986,12 @@ msgstr ""
 msgid "Recording… Press the button to stop and transcribe."
 msgstr ""
 
-msgid "Reduces music and background noise before transcribing."
+msgid "Reduce background noise"
+msgstr ""
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
 msgstr ""
 
 msgid "Refine"
@@ -1063,9 +1071,6 @@ msgid "Saved in {folder}."
 msgstr ""
 
 msgid "Saved next to the source"
-msgstr ""
-
-msgid "Scroll the translation with the transcription"
 msgstr ""
 
 msgid "Search"
@@ -1169,7 +1174,7 @@ msgstr ""
 msgid "Stop adding the subtitles to the video"
 msgstr ""
 
-msgid "Stop scrolling the translation with the transcription"
+msgid "Stop syncing scrolling"
 msgstr ""
 
 msgid "Stop watching"
@@ -1198,6 +1203,9 @@ msgid "Summary"
 msgstr ""
 
 msgid "Supported models"
+msgstr ""
+
+msgid "Sync scrolling"
 msgstr ""
 
 msgid "System"
@@ -1738,7 +1746,7 @@ msgid "{done}/{total} files"
 msgstr ""
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr ""
 
 #, python-brace-format
@@ -1754,7 +1762,7 @@ msgid "{remaining} of {total} to review"
 msgstr ""
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr ""
 
 #, python-brace-format

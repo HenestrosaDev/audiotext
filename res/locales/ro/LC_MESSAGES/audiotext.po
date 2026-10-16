@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -500,9 +500,6 @@ msgstr ""
 "Exportat în {path}, dar niciun font nu conține aceste caractere, așa că "
 "sunt afișate ca pătrățele: {characters}"
 
-msgid "Extract speech"
-msgstr "Extrage vocea"
-
 msgid "Failed"
 msgstr "Eșuată"
 
@@ -604,13 +601,19 @@ msgstr ""
 "Evidențiază fiecare cuvânt în timpul redării (modelul whisper-1). Durează"
 " mai mult."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Evidențiază fiecare cuvânt în timpul redării. Durează puțin mai mult."
-
-msgid "Highlights each word while playing. The subtitles already use them."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
 msgstr ""
-"Evidențiază fiecare cuvânt în timpul redării. Subtitrările le folosesc "
-"deja."
+"Evidențiază fiecare cuvânt în timpul redării și găsește cuvintele care ar"
+" putea fi greșite. Necesar pentru subtitrări."
+
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Evidențiază fiecare cuvânt în timpul redării și găsește cuvintele care ar"
+" putea fi greșite. Durează puțin mai mult."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -682,8 +685,12 @@ msgstr "Cuvinte cheie"
 msgid "LLM providers"
 msgstr "Furnizori de LLM"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Indică cine vorbește în fiecare parte. Necesită un token Hugging Face."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr ""
+"Indică cine vorbește în fiecare parte. Necesită un token Hugging Face. "
+"Durează mult mai mult."
 
 msgid "Landscape"
 msgstr "Orizontal"
@@ -1065,8 +1072,15 @@ msgstr "Se înregistrează…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Se înregistrează… Apăsați butonul pentru a opri și a transcrie."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Reduce muzica și zgomotul de fond înainte de transcriere."
+msgid "Reduce background noise"
+msgstr "Reduce zgomotul de fond"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Reduce bâzâitul și zgomotul de fond constant și uniformizează vorbirea "
+"încetă. Durează mai mult."
 
 msgid "Refine"
 msgstr "Rafinare"
@@ -1155,9 +1169,6 @@ msgstr "Salvat în {folder}."
 
 msgid "Saved next to the source"
 msgstr "Se salvează lângă sursă"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Derulează traducerea împreună cu transcrierea"
 
 msgid "Search"
 msgstr "Caută"
@@ -1267,8 +1278,8 @@ msgstr "Păstrează deasupra"
 msgid "Stop adding the subtitles to the video"
 msgstr "Oprește adăugarea subtitrărilor în videoclip"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Nu mai derula traducerea împreună cu transcrierea"
+msgid "Stop syncing scrolling"
+msgstr "Nu mai sincroniza derularea"
 
 msgid "Stop watching"
 msgstr "Oprește monitorizarea"
@@ -1297,6 +1308,9 @@ msgstr "Rezumat"
 
 msgid "Supported models"
 msgstr "Modele acceptate"
+
+msgid "Sync scrolling"
+msgstr "Sincronizează derularea"
 
 msgid "System"
 msgstr "Sistem"
@@ -1879,7 +1893,7 @@ msgid "{done}/{total} files"
 msgstr "Fișiere: {done}/{total}"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} min {seconds} s"
 
 #, python-brace-format
@@ -1896,7 +1910,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{remaining} din {total} de verificat"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} s"
 
 #, python-brace-format

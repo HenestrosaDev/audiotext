@@ -93,16 +93,19 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
         self.pil_tag.grid(row=0, column=0)
         self.pil_tag.bind("<Button-1>", lambda _event: prompts.ask_for_tag(entry.id))
         if not entry.note:
+            # With a border, so it reads as a button and not as more metadata.
+            # Rounded and as tall as the tag next to it
             ctk.CTkButton(
                 actions,
                 text=_("Add note"),
-                image=icons.icon("note", 13, theme.ICON_MUTED),
+                image=icons.icon("note", 12, theme.ICON_MUTED),
                 compound=ctk.LEFT,
                 width=0,
                 height=22,
+                corner_radius=11,
                 font=theme.font(12),
                 command=lambda: prompts.ask_for_note(entry.id),
-                **theme.GHOST_BUTTON,
+                **theme.SECONDARY_BUTTON,
             ).grid(row=0, column=1, padx=(8, 0))
 
         if entry.note:
