@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -436,9 +436,6 @@ msgstr "Upravit časování"
 msgid "Edit the timing…"
 msgstr "Upravit časování…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "Úpravy provedené zde nemění titulky."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Prázdné. Chcete-li přidat přepis, klikněte na něj pravým tlačítkem a "
@@ -527,6 +524,16 @@ msgstr "Najít a nahradit v překladu do jazyka {language}"
 
 msgid "Find in the summary"
 msgstr "Hledat ve shrnutí"
+
+msgid "Find in the transcription"
+msgstr "Hledat v přepisu"
+
+msgid "Find in the translation"
+msgstr "Hledat v překladu"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "Hledat v překladu do jazyka {language}"
 
 msgid "Find:"
 msgstr "Najít:"
@@ -1035,6 +1042,9 @@ msgstr "Poskytovatelé"
 msgid "Queued"
 msgstr "Ve frontě"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "Jen pro čtení. Tento text změníte úpravou titulků."
+
 msgid "Reading…"
 msgstr "Čtení…"
 
@@ -1230,9 +1240,6 @@ msgstr "Velikost"
 
 msgid "Small"
 msgstr "Malé"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr "Některé titulky ještě nejsou přeložené, proto v tomto textu chybí."
 
 msgid "Source"
 msgstr "Zdroj"
@@ -1509,13 +1516,6 @@ msgstr "Tento přepis nemá časové značky."
 
 msgid "Time format"
 msgstr "Formát času"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Časové značky jsou k dispozici pouze s WhisperX a s modely whisper-1 a "
-"gpt-4o-transcribe-diarize rozhraní Whisper API."
 
 msgid "Timestamps of the words"
 msgstr "Časové značky slov"
@@ -1800,9 +1800,6 @@ msgstr "Časování slov"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Napsat přímo v jazyce: {language} (experimentální)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Text můžete upravit. Změny se ukládají automaticky."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

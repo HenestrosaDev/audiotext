@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -437,9 +437,6 @@ msgstr "Redigera tiderna"
 msgid "Edit the timing…"
 msgstr "Redigera tiderna…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "Ändringar här påverkar inte undertexterna."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Tom. Lägg till en transkribering genom att högerklicka på den och välja "
@@ -528,6 +525,16 @@ msgstr "Sök och ersätt i översättningen till {language}"
 
 msgid "Find in the summary"
 msgstr "Sök i sammanfattningen"
+
+msgid "Find in the transcription"
+msgstr "Sök i transkriptionen"
+
+msgid "Find in the translation"
+msgstr "Sök i översättningen"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "Sök i översättningen till {language}"
 
 msgid "Find:"
 msgstr "Sök:"
@@ -1040,6 +1047,9 @@ msgstr "Leverantörer"
 msgid "Queued"
 msgstr "I kö"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "Skrivskyddad. Redigera undertexterna för att ändra den här texten."
+
 msgid "Reading…"
 msgstr "Läser…"
 
@@ -1239,9 +1249,6 @@ msgstr "Storlek"
 
 msgid "Small"
 msgstr "Liten"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr "Vissa undertexter är inte översatta än, så de saknas i den här texten."
 
 msgid "Source"
 msgstr "Källa"
@@ -1521,13 +1528,6 @@ msgstr "Den här transkriberingen har inga tidsstämplar."
 
 msgid "Time format"
 msgstr "Tidsformat"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Tidsstämplar är endast tillgängliga med WhisperX och modellerna whisper-1"
-" och gpt-4o-transcribe-diarize i Whisper-API:et."
 
 msgid "Timestamps of the words"
 msgstr "Tidsstämplar för orden"
@@ -1818,9 +1818,6 @@ msgstr "Tider per ord"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Skriv den direkt på {language} (experimentellt)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Du kan redigera texten. Ändringarna sparas automatiskt."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

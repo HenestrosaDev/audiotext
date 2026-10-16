@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -435,9 +435,6 @@ msgstr "समय संपादित करें"
 msgid "Edit the timing…"
 msgstr "समय संपादित करें…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "यहाँ किए गए बदलाव सबटाइटल नहीं बदलते।"
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "खाली। ट्रांसक्रिप्शन जोड़ने के लिए उस पर राइट-क्लिक करें और \"समूह में ले"
@@ -526,6 +523,16 @@ msgstr "{language} अनुवाद में खोजें और बदल
 
 msgid "Find in the summary"
 msgstr "सारांश में खोजें"
+
+msgid "Find in the transcription"
+msgstr "ट्रांसक्रिप्शन में खोजें"
+
+msgid "Find in the translation"
+msgstr "अनुवाद में खोजें"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "{language} अनुवाद में खोजें"
 
 msgid "Find:"
 msgstr "ढूँढें:"
@@ -1038,6 +1045,9 @@ msgstr "प्रदाता"
 msgid "Queued"
 msgstr "कतार में"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "केवल पढ़ने के लिए। इस टेक्स्ट को बदलने के लिए सबटाइटल संपादित करें।"
+
 msgid "Reading…"
 msgstr "पढ़ा जा रहा है…"
 
@@ -1237,11 +1247,6 @@ msgstr "आकार"
 
 msgid "Small"
 msgstr "छोटा"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr ""
-"कुछ सबटाइटल का अभी तक अनुवाद नहीं हुआ है, इसलिए वे इस टेक्स्ट में शामिल "
-"नहीं हैं।"
 
 msgid "Source"
 msgstr "स्रोत"
@@ -1517,13 +1522,6 @@ msgstr "इस ट्रांसक्रिप्शन में टाइम
 
 msgid "Time format"
 msgstr "समय का प्रारूप"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"टाइमस्टैम्प केवल WhisperX के साथ और Whisper API के whisper-1 और gpt-4o-"
-"transcribe-diarize मॉडल के साथ उपलब्ध हैं।"
 
 msgid "Timestamps of the words"
 msgstr "शब्दों के टाइमस्टैम्प"
@@ -1816,9 +1814,6 @@ msgstr "शब्द-स्तरीय समय"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "सीधे {language} में लिखें (प्रयोगात्मक)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "आप टेक्स्ट संपादित कर सकते हैं। बदलाव अपने आप सहेजे जाते हैं।"
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

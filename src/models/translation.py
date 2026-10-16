@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from models.transcript_segment import TranscriptSegment
+from models.transcript_segment import TranscriptSegment, join_segments
 
 
 @dataclass(frozen=True)
@@ -24,7 +24,8 @@ class TranscriptTranslation:
     provider: str = ""
     model: str = ""
     created_at: str = ""
-    # Whether the user edited the text, which then no longer follows the segments
+    # Whether the user edited the text, which can only be done without segments:
+    # with them, the text is always built from them
     is_text_edited: bool = False
 
     def segment_progress(self) -> tuple[int, int]:
@@ -52,17 +53,25 @@ class TranscriptTranslation:
         if not data.get("language"):
             return None
 
+        segments = tuple(
+            TranscriptSegment.from_dict(segment)
+            for segment in data.get("segments", [])
+            # The first versions only kept the texts, without the timestamps
+            if isinstance(segment, dict)
+        )
+        text = str(data.get("text", ""))
+        is_text_edited = bool(data.get("is_text_edited", False))
+        # Older versions let the user edit the text of the segments, which is now
+        # built from them
+        if segments and is_text_edited:
+            text, is_text_edited = join_segments(list(segments)), False
+
         return cls(
             language=str(data["language"]),
-            text=str(data.get("text", "")),
-            segments=tuple(
-                TranscriptSegment.from_dict(segment)
-                for segment in data.get("segments", [])
-                # The first versions only kept the texts, without the timestamps
-                if isinstance(segment, dict)
-            ),
+            text=text,
+            segments=segments,
             provider=str(data.get("provider", "")),
             model=str(data.get("model", "")),
             created_at=str(data.get("created_at", "")),
-            is_text_edited=bool(data.get("is_text_edited", False)),
+            is_text_edited=is_text_edited,
         )

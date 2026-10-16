@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -427,9 +427,6 @@ msgstr "타이밍 편집"
 msgid "Edit the timing…"
 msgstr "타이밍 편집…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "여기서 편집한 내용은 자막에 반영되지 않습니다."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr "비어 있습니다. 받아쓰기를 추가하려면 받아쓰기를 마우스 오른쪽 버튼으로 클릭하고 '그룹으로 이동'을 선택하세요."
 
@@ -514,6 +511,16 @@ msgstr "{language} 번역에서 찾아 바꾸기"
 
 msgid "Find in the summary"
 msgstr "요약에서 찾기"
+
+msgid "Find in the transcription"
+msgstr "전사본에서 찾기"
+
+msgid "Find in the translation"
+msgstr "번역에서 찾기"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "{language} 번역에서 찾기"
 
 msgid "Find:"
 msgstr "찾기:"
@@ -997,6 +1004,9 @@ msgstr "제공자"
 msgid "Queued"
 msgstr "대기 중"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "읽기 전용입니다. 이 텍스트를 바꾸려면 자막을 편집하세요."
+
 msgid "Reading…"
 msgstr "읽는 중…"
 
@@ -1184,9 +1194,6 @@ msgstr "크기"
 
 msgid "Small"
 msgstr "작게"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr "아직 번역되지 않은 자막이 있어 이 텍스트에서 빠져 있습니다."
 
 msgid "Source"
 msgstr "소스"
@@ -1455,13 +1462,6 @@ msgstr "이 받아쓰기에는 타임스탬프가 없습니다."
 
 msgid "Time format"
 msgstr "시간 형식"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"타임스탬프는 WhisperX와 Whisper API의 whisper-1 및 gpt-4o-transcribe-diarize 모델에서만"
-" 사용할 수 있습니다."
 
 msgid "Timestamps of the words"
 msgstr "단어 타임스탬프"
@@ -1737,9 +1737,6 @@ msgstr "단어별 타이밍"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "해당 언어({language})로 바로 작성(실험적)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "텍스트를 편집할 수 있습니다. 변경 사항은 자동으로 저장됩니다."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

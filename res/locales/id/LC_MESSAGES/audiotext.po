@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -437,9 +437,6 @@ msgstr "Edit waktu"
 msgid "Edit the timing…"
 msgstr "Edit waktu…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "Perubahan di sini tidak mengubah subtitle."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Kosong. Untuk menambahkan transkripsi, klik kanan transkripsi tersebut "
@@ -528,6 +525,16 @@ msgstr "Cari dan ganti di terjemahan bahasa {language}"
 
 msgid "Find in the summary"
 msgstr "Cari di ringkasan"
+
+msgid "Find in the transcription"
+msgstr "Cari di transkripsi"
+
+msgid "Find in the translation"
+msgstr "Cari di terjemahan"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "Cari di terjemahan bahasa {language}"
 
 msgid "Find:"
 msgstr "Cari:"
@@ -1045,6 +1052,9 @@ msgstr "Penyedia"
 msgid "Queued"
 msgstr "Dalam antrean"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "Hanya baca. Edit subtitle untuk mengubah teks ini."
+
 msgid "Reading…"
 msgstr "Membaca…"
 
@@ -1244,11 +1254,6 @@ msgstr "Ukuran"
 
 msgid "Small"
 msgstr "Kecil"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr ""
-"Beberapa subtitle belum diterjemahkan, jadi tidak disertakan dalam teks "
-"ini."
 
 msgid "Source"
 msgstr "Sumber"
@@ -1528,13 +1533,6 @@ msgstr "Transkripsi ini tidak memiliki stempel waktu."
 
 msgid "Time format"
 msgstr "Format waktu"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Stempel waktu hanya tersedia dengan WhisperX serta model whisper-1 dan "
-"gpt-4o-transcribe-diarize dari Whisper API."
 
 msgid "Timestamps of the words"
 msgstr "Stempel waktu kata"
@@ -1823,9 +1821,6 @@ msgstr "Waktu per kata"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Tulis langsung dalam bahasa {language} (eksperimental)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Anda dapat mengedit teks. Perubahan disimpan secara otomatis."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "
