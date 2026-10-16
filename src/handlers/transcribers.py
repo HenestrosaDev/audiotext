@@ -6,9 +6,8 @@ doesn't depend on how each method transcribes and saves its results.
 from pathlib import Path
 
 import handlers.google_api_handler as google_api
-import utils.config_manager as cm
 from handlers.audio_handler import get_transcription
-from handlers.openai_api_handler import ApiTranscript, OpenAiApiHandler, render_response
+from handlers.openai_api_handler import ApiTranscript, OpenAiApiHandler, render_file
 from handlers.whisperx_handler import WhisperXHandler
 from interfaces.transcriber import Transcriber
 from models.transcription import Transcription, TranscriptionResult
@@ -126,22 +125,24 @@ class OpenAiApiTranscriber:
     def save(
         self, result: TranscriptionResult, transcription: Transcription, file_path: Path
     ) -> None:
-        """Saves the result in the response format of the API."""
+        """Saves the result in each of the output file types."""
         ensure_text(result.text)
-        response_format = (
-            transcription.api_response_format
-            or cm.ConfigManager.get_config_whisper_api().response_format
-        )
         transcript = ApiTranscript(
             result.text, result.segments, result.language, result.duration
         )
-        write_text(
-            file_path,
-            render_response(
-                transcript, response_format, has_vertical_video(transcription)
-            ),
-            transcription.should_overwrite,
-        )
+        is_vertical = has_vertical_video(transcription)
+        file_types = transcription.output_file_types
+        # With a single file type, the path already has its extension (see
+        # `TranscriptionSaver`). It's replaced by name, since the name of the
+        # transcribed file can have dots
+        stem_path = file_path.with_suffix("") if len(file_types) == 1 else file_path
+
+        for file_type in file_types:
+            write_text(
+                stem_path.with_name(f"{stem_path.name}.{file_type}"),
+                render_file(transcript, file_type, is_vertical),
+                transcription.should_overwrite,
+            )
 
 
 def create_transcribers(

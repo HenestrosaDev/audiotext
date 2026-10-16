@@ -158,8 +158,8 @@ class TestBuildTranscription:
         transcription = cli.build_transcription(args, None)
 
         assert transcription.api_model == "gpt-transcribe"
-        assert transcription.api_response_format == "text"
-        assert transcription.output_file_types == ["text"]
+        # The same file types as WhisperX
+        assert transcription.output_file_types == ["txt"]
         assert transcription.prompt == "A talk"
         assert transcription.keywords == ["Audiotext", "WhisperX"]
         assert transcription.should_translate

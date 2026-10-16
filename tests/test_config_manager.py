@@ -20,6 +20,7 @@ def test_values_are_parsed_with_the_type_of_the_dataclass_fields(
         "max_line_width = 42\n"
         "max_line_count = 2\n"
         "[whisper_api]\n"
+        # No longer used, but still in the files of older versions
         "response_format = text\n"
         "temperature = 0\n"
         "timestamp_granularities = word\n"
@@ -41,7 +42,7 @@ def test_values_are_parsed_with_the_type_of_the_dataclass_fields(
         highlight_words=False, max_line_count=2, max_line_width=42
     )
     assert config_whisper_api == ConfigWhisperApi(
-        response_format="text", temperature=0.0, timestamp_granularities=["word"]
+        temperature=0.0, timestamp_granularities=["word"]
     )
     assert config_whisperx.batch_size == 8
     assert config_whisperx.use_cpu is False

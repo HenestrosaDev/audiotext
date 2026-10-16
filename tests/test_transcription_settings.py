@@ -72,7 +72,7 @@ def test_google_api_does_not_translate() -> None:
 def test_whisperx_only_options_are_ignored_by_the_apis() -> None:
     settings = TranscriptionSettings(
         method=TranscriptionMethod.WHISPER_API.value,
-        response_format="srt",
+        output_file_types=["txt", "srt"],
         align_words=True,
         diarize=True,
         num_speakers=2,
@@ -80,11 +80,7 @@ def test_whisperx_only_options_are_ignored_by_the_apis() -> None:
     )
     transcription = settings.to_transcription(AudioSource.FILE, "/a.mp3")
 
-    assert transcription.output_file_types == ["srt"]
-    # Only the files of a folder are saved in the response format
-    assert transcription.api_response_format == "text"
-    folder = settings.to_transcription(AudioSource.DIRECTORY, "/music")
-    assert folder.api_response_format == "srt"
+    assert transcription.output_file_types == ["txt", "srt"]
     assert not transcription.should_align_words
     assert not transcription.should_diarize
     assert transcription.num_speakers is None

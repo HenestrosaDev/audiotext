@@ -135,7 +135,6 @@ class SettingsForm(CTkScrollableFrame):
                     refresh,
                     config_transcription,
                     config_whisperx,
-                    self._config_whisper_api,
                     output_dir=self._initial_output_dir,
                 )
             )
@@ -152,7 +151,6 @@ class SettingsForm(CTkScrollableFrame):
         # The options without a card take the configured values
         settings = TranscriptionSettings(
             output_file_types=list(self._config_whisperx.output_file_types),
-            response_format=self._config_whisper_api.response_format,
             live_model_size=self._config_whisperx.live_model_size,
             autosave=self._has_output,
         )
@@ -236,7 +234,6 @@ class SettingsForm(CTkScrollableFrame):
                 ConfigWhisperX.Key.OUTPUT_FILE_TYPES: ",".join(
                     settings.output_file_types
                 ),
-                ConfigWhisperApi.Key.RESPONSE_FORMAT: settings.response_format,
             }
         for key, value in values.items():
             save_config(key, value)
