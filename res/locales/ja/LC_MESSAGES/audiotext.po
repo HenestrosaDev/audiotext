@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -244,9 +244,6 @@ msgstr "文字起こしの保存先を選択"
 msgid "Clear the conversation"
 msgstr "会話を消去"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr "セグメントをクリックすると再生します。右クリックすると編集できます。"
-
 msgid "Compute type"
 msgstr "計算タイプ"
 
@@ -427,6 +424,9 @@ msgstr "タイミングを編集"
 
 msgid "Edit the timing…"
 msgstr "タイミングを編集…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "ここでの編集は字幕に反映されません。"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr "空です。文字起こしを追加するには、右クリックして「グループに移動」を選択します。"
@@ -784,6 +784,9 @@ msgstr "次の結果"
 msgid "Next to the source"
 msgstr "ソースと同じ場所"
 
+msgid "Next untranslated subtitle"
+msgstr "次の未翻訳の字幕"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "{provider} の API キーがありません。"
@@ -977,6 +980,9 @@ msgstr "前の信頼度の低い単語 ({shortcut})"
 msgid "Previous match"
 msgstr "前の結果"
 
+msgid "Previous untranslated subtitle"
+msgstr "前の未翻訳の字幕"
+
 msgid "Processing the recording…"
 msgstr "録音を処理しています…"
 
@@ -1107,10 +1113,6 @@ msgstr "検索"
 msgid "Search language…"
 msgstr "言語を検索…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr "未翻訳のセグメント: {count}。右クリックして翻訳してください。"
-
 msgid "Select a file"
 msgstr "ファイルを選択"
 
@@ -1181,12 +1183,19 @@ msgstr "サイズ"
 msgid "Small"
 msgstr "小"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr "まだ翻訳されていない字幕があるため、このテキストには含まれていません。"
+
 msgid "Source"
 msgstr "ソース"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: 再生/一時停止 · ←/→: {seconds} 秒戻る/進む"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "話者: {count}"
 
 msgid "Start transcription"
 msgstr "文字起こしを開始"
@@ -1224,6 +1233,10 @@ msgstr "字幕"
 
 msgid "Subtitles (.srt)"
 msgstr "字幕 (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "字幕: {count}"
 
 msgid "Summarizing…"
 msgstr "要約しています…"
@@ -1338,9 +1351,6 @@ msgstr "Whisper API のモデルが話者を識別します。"
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "新しいセグメントは {time} のセグメントの後に入ります:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "プレーンテキストは編集されています。トランスクリプトには元の内容が残っています。"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1558,6 +1568,10 @@ msgstr "Whisper で翻訳（推奨）"
 
 msgid "Translate with:"
 msgstr "翻訳方法:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "翻訳済み: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "タイムスタンプを保ったまま、各セグメントを翻訳します。"

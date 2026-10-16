@@ -8,10 +8,12 @@ import customtkinter as ctk
 
 from models.review import FlaggedText, review_key
 from models.transcript_segment import TranscriptSegment
-from utils.i18n import _
+from utils.i18n import L_, _, format_number
 from utils.time_format import format_segment_range
-from views.localization import Text, on_language_change
-from views.style import theme
+from views.localization import Text, localize, on_language_change
+from views.style import icons, theme
+from views.widgets.bindings import bind_wraplength
+from views.widgets.button import icon_button
 from views.widgets.textbox import CTkTextbox
 
 TEXT_SAVE_DELAY_MS = 800
@@ -122,7 +124,10 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         on_flagged_click: Callable[[FlaggedText], None] | None = None,
         on_reveal: Callable[[int], None] | None = None,
         show_usage_hints: bool = True,
+        show_summary: bool = True,
         empty_segment_text: Text | None = None,
+        empty_segment_action: tuple[Text, Callable[[int], None]] | None = None,
+        on_hints_change: Callable[[], None] | None = None,
     ) -> None:
         """
         :param on_segment_click: Called with the index of a clicked segment.
@@ -135,10 +140,18 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         :param on_reveal: Called with the index of a segment of the transcription
                           that is hidden (see `show_only`) and has to be shown,
                           e.g. because a search went to it.
-        :param show_usage_hints: Whether to explain above the text how to use it
-                                 (e.g. that its segments can be clicked).
+        :param show_usage_hints: Whether to explain above the plain text how to
+                                 use it (e.g. that it can be edited).
+        :param show_summary: Whether to tell above the segments how many subtitles
+                             are shown, and how many speakers.
         :param empty_segment_text: Shown, dimmed, in place of the text of a
                                    segment that has none (e.g. not translated yet).
+        :param empty_segment_action: The text of a button shown on the right of a
+                                     segment without a text while the pointer is
+                                     over it, and what it does with its index
+                                     (e.g. translate it).
+        :param on_hints_change: Called when the note and the hints above the text
+                                are shown or left out (see `has_hints`).
         """
         super().__init__(
             master,
@@ -154,7 +167,13 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._on_flagged_click = on_flagged_click
         self._on_reveal = on_reveal
         self._show_usage_hints = show_usage_hints
+        self._show_summary = show_summary
         self._empty_segment_text = empty_segment_text
+        self._empty_segment_action = empty_segment_action
+        # The segment without a text with the button of its action, and when the
+        # button is hidden after the pointer leaves it
+        self._hovered_empty: int | None = None
+        self._hide_action_after_id: str | None = None
 
         self._segments: list[TranscriptSegment] = []
         self._segment_starts: list[float] = []
@@ -186,21 +205,81 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._current_match: int | None = None
         self._save_text_after_id: str | None = None
         self._note = ""
+        # Shown instead of the note with the plain text, which has no segments
+        self._plain_text_note = ""
         self._is_note_error = False
+        # Whether the note has buttons to go to the segments without a text
+        self._can_go_to_empty = False
+        self._has_hints = False
+        self._is_hint_row_reserved = False
+        self._on_hints_change = on_hints_change
+        # The segment without a text gone to last (see `go_to_empty_segment`)
+        self._current_empty: int | None = None
         # Where the text was scrolled to follow another one, to not follow it back
         self._synced_view: float | None = None
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        self.lbl_hint = ctk.CTkLabel(
-            self,
+        # The note on its own line, then the hints of the text
+        self.frm_hints = ctk.CTkFrame(self, fg_color="transparent")
+        self.frm_hints.grid(row=0, column=0, padx=16, pady=(2, 0), sticky=ctk.EW)
+        self.frm_hints.grid_columnconfigure(0, weight=1)
+        self.lbl_note = ctk.CTkLabel(
+            self.frm_hints,
             text="",
             font=theme.font(12),
             text_color=theme.HINT_TEXT,
             anchor=ctk.W,
+            justify=ctk.LEFT,
         )
-        self.lbl_hint.grid(row=0, column=0, padx=16, pady=(2, 0), sticky=ctk.EW)
+        self.lbl_note.grid(row=0, column=0, sticky=ctk.EW)
+        # Which of the segments without a text is gone to, e.g. "1 of 3". As wide
+        # as its longest text and aligned to the buttons, so they don't move and
+        # only the current number changes (like the matches of `FindDialog`)
+        position_font = theme.font(12)
+        self.lbl_empty_position = ctk.CTkLabel(
+            self.frm_hints,
+            text="",
+            width=position_font.measure(
+                _("{current} of {total}").format(current=9999, total=9999)
+            )
+            + 8,
+            font=position_font,
+            text_color=theme.HINT_TEXT,
+            anchor=ctk.E,
+        )
+        self.lbl_empty_position.grid(row=0, column=1, padx=(8, 0))
+        self.btn_previous_empty = icon_button(
+            self.frm_hints,
+            "chevron_left",
+            lambda: self.go_to_empty_segment(-1),
+            L_("Previous untranslated subtitle"),
+        )
+        self.btn_previous_empty.grid(row=0, column=2)
+        self.btn_next_empty = icon_button(
+            self.frm_hints,
+            "chevron_right",
+            lambda: self.go_to_empty_segment(1),
+            L_("Next untranslated subtitle"),
+        )
+        self.btn_next_empty.grid(row=0, column=3)
+        self.lbl_hint = ctk.CTkLabel(
+            self.frm_hints,
+            text="",
+            font=theme.font(12),
+            text_color=theme.HINT_TEXT,
+            anchor=ctk.W,
+            justify=ctk.LEFT,
+        )
+        self.lbl_hint.grid(row=1, column=0, columnspan=4, sticky=ctk.EW)
+        # Takes the place of the hints when the text next to it has some
+        self.lbl_spacer = ctk.CTkLabel(self, text="", height=28)
+        self.lbl_spacer.grid(row=0, column=0, pady=(2, 0))
+        self.lbl_spacer.grid_remove()
+        self.frm_hints.grid_remove()
+        for widget in (self.lbl_note, self.lbl_hint):
+            bind_wraplength(widget, minimum=150)
 
         text_options = {
             "wrap": ctk.WORD,
@@ -227,8 +306,40 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             lambda _event: self.after(10, self._schedule_text_save),
             add="+",
         )
+        self.btn_empty_action: ctk.CTkButton | None = None
+        if empty_segment_action:
+            self._init_empty_action(empty_segment_action[0])
         self._configure_tags()
         on_language_change(self, self._on_language_change)
+
+    def _init_empty_action(self, text: Text) -> None:
+        """
+        The button of the action of the segments without a text, shown on the
+        right of the one under the pointer.
+        """
+        self.btn_empty_action = localize(
+            ctk.CTkButton(
+                self.tbx_transcript,
+                image=icons.icon("pencil", 13),
+                compound=ctk.LEFT,
+                width=0,
+                height=24,
+                font=theme.font(12),
+                command=self._run_empty_action,
+                **theme.SECONDARY_BUTTON,
+            ),
+            text=text,
+        )
+        textbox = self.tbx_transcript._textbox
+        textbox.bind("<Motion>", self._on_transcript_motion, add="+")
+        textbox.bind("<Leave>", lambda _event: self._schedule_action_hide(), add="+")
+        # Moving onto the button leaves the text, which mustn't hide it
+        self.btn_empty_action.bind(
+            "<Enter>", lambda _event: self._cancel_action_hide(), add="+"
+        )
+        self.btn_empty_action.bind(
+            "<Leave>", lambda _event: self._schedule_action_hide(), add="+"
+        )
 
     def _set_scaling(
         self, new_widget_scaling: float, new_window_scaling: float
@@ -314,39 +425,55 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             for sequence in ("<FocusIn>", "<ButtonPress>", "<MouseWheel>"):
                 textbox._textbox.bind(sequence, lambda _event: callback(), add="+")
 
-    def set_note(self, note: str, is_error: bool = False) -> None:
-        """Shows a note in place of the hint, before the hints of the text."""
+    def set_note(
+        self,
+        note: str,
+        is_error: bool = False,
+        can_go_to_empty: bool = False,
+        plain_text_note: str = "",
+    ) -> None:
+        """
+        Shows a note on its own line, above the hints of the text. An error
+        replaces the hints, and is shown with the plain text too.
+
+        :param note: Shown with the segments, if it's not an error.
+        :param can_go_to_empty: Whether the note has buttons to go to the segments
+                                without a text (see `go_to_empty_segment`).
+        :param plain_text_note: Shown instead with the plain text.
+        """
         self._note = note
         self._is_note_error = is_error
+        self._can_go_to_empty = can_go_to_empty
+        self._plain_text_note = plain_text_note
         self._show_hint()
+
+    def _shown_note(self) -> str:
+        if self._is_note_error or self._mode == TRANSCRIPT_MODE:
+            return self._note
+        return self._plain_text_note
 
     def _show_hint(self) -> None:
         """
-        Shows the hints of the text above it. Its row is kept even without them,
-        so the text starts at the same height as the one next to it.
+        Shows the note and the hints of the text above it. Their row is left out
+        without them, unless the text next to it has some (see
+        `reserve_hint_row`), so both texts start at the same height.
         """
-        if self._note and self._is_note_error:
-            self.lbl_hint.configure(text=self._note, text_color=theme.ERROR_TEXT)
-            return
-
-        hints = [self._note] if self._note else []
-        if self._mode == TRANSCRIPT_MODE:
+        self._show_note()
+        hints: list[str] = []
+        # An error replaces the hints
+        note = self._shown_note()
+        is_error = bool(note and self._is_note_error)
+        if self._mode == TRANSCRIPT_MODE and self._show_summary and not is_error:
+            if summary := self._summary():
+                hints.append(summary)
+        elif self._mode == PLAIN_TEXT_MODE and not is_error:
             if self._show_usage_hints:
                 hints.append(
-                    _("Click a segment to play it. Right-click it to edit it.")
+                    _("You can edit the text. The changes are saved automatically.")
                 )
             if self._is_text_edited:
-                hints.append(
-                    _(
-                        "The plain text has been edited; the transcript keeps the "
-                        "original."
-                    )
-                )
-        elif self._show_usage_hints:
-            hints.append(
-                _("You can edit the text. The changes are saved automatically.")
-            )
-            if not self._segments:
+                hints.append(_("Edits made here don't change the subtitles."))
+            if self._show_usage_hints and not self._segments:
                 hints.append(
                     _(
                         "Timestamps are only available with WhisperX and the "
@@ -354,13 +481,101 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                         "Whisper API."
                     )
                 )
-        self.lbl_hint.configure(text=" ".join(hints), text_color=theme.HINT_TEXT)
+        self.lbl_hint.configure(text=" ".join(hints))
+        if hints:
+            self.lbl_hint.grid()
+        else:
+            self.lbl_hint.grid_remove()
+
+        has_hints = bool(note or hints)
+        self._place_hints(has_hints)
+        if has_hints != self._has_hints:
+            self._has_hints = has_hints
+            if self._on_hints_change:
+                self._on_hints_change()
+
+    def _summary(self) -> str:
+        """How many subtitles are shown, and how many speakers they have."""
+        if not self._segments:
+            return ""
+        parts = [
+            _("Subtitles: {count}").format(count=format_number(len(self._segments)))
+        ]
+        if speakers := {
+            segment.speaker for segment in self._segments if segment.speaker
+        }:
+            parts.append(
+                _("Speakers: {count}").format(count=format_number(len(speakers)))
+            )
+        return " · ".join(parts)
+
+    @property
+    def has_hints(self) -> bool:
+        """Whether a note or a hint is shown above the text."""
+        return self._has_hints
+
+    def reserve_hint_row(self, is_reserved: bool) -> None:
+        """
+        Keeps the row of the hints even without them, so the text starts at the
+        same height as the one next to it, which has some.
+        """
+        self._is_hint_row_reserved = is_reserved
+        self._place_hints(self._has_hints)
+
+    def _place_hints(self, has_hints: bool) -> None:
+        if has_hints:
+            self.frm_hints.grid()
+            self.lbl_spacer.grid_remove()
+        elif self._is_hint_row_reserved:
+            # As tall as a line of hints with the buttons of the note
+            self.frm_hints.grid_remove()
+            self.lbl_spacer.grid()
+        else:
+            self.frm_hints.grid_remove()
+            self.lbl_spacer.grid_remove()
+
+    def _show_note(self) -> None:
+        """Shows the note, with the buttons to go to the segments without a text."""
+        note = self._shown_note()
+        self.lbl_note.configure(
+            text=note,
+            text_color=theme.ERROR_TEXT if self._is_note_error else theme.HINT_TEXT,
+        )
+        empty = self._empty_segments()
+        can_go = bool(
+            note
+            and self._can_go_to_empty
+            and not self._is_note_error
+            and self._mode == TRANSCRIPT_MODE
+            and empty
+        )
+        position = ""
+        if can_go and self._current_empty in empty:
+            position = _("{current} of {total}").format(
+                current=empty.index(self._current_empty) + 1, total=len(empty)
+            )
+        self.lbl_empty_position.configure(text=position)
+
+        widgets = (
+            self.lbl_empty_position,
+            self.btn_previous_empty,
+            self.btn_next_empty,
+        )
+        for widget in widgets:
+            if can_go:
+                widget.grid()
+            else:
+                widget.grid_remove()
+        if note:
+            self.lbl_note.grid()
+        else:
+            self.lbl_note.grid_remove()
 
     def _on_language_change(self) -> None:
         # The texts shown in place of the missing ones (e.g. a segment not
         # translated yet) are part of the transcript
         if not self._segments or any(
-            not segment.text and not segment.words for segment in self._segments
+            not segment.text.strip() and not segment.words for segment in self._segments
         ):
             self._current_segment = self._current_word = None
             self._render_transcript()
@@ -514,6 +729,9 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
 
     def _on_yscroll(self, textbox: ctk.CTkTextbox, first: str, last: str) -> None:
         textbox._y_scrollbar.set(first, last)
+        # It would no longer be next to its segment
+        if textbox is self.tbx_transcript:
+            self._hide_empty_action()
         if textbox is not self._visible_textbox or not self._on_scroll:
             return
         # It scrolled to follow the other text, which doesn't have to follow it
@@ -642,6 +860,114 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                 self._on_reveal(self._source_indexes[idx])
         textbox.see(start)
 
+    def go_to_empty_segment(self, step: int) -> None:
+        """
+        Highlights the next segment without a text (or the previous one), from the
+        one gone to last, and shows it. Past the last one, it goes to the first.
+
+        :param step: 1 to go forward, -1 to go back.
+        """
+        empty = self._empty_segments()
+        if not empty or self._mode != TRANSCRIPT_MODE:
+            return
+        current = self._current_empty
+        if step > 0:
+            after = [idx for idx in empty if current is None or idx > current]
+            self._current_empty = after[0] if after else empty[0]
+        else:
+            before = [idx for idx in empty if current is None or idx < current]
+            self._current_empty = before[-1] if before else empty[-1]
+
+        self._highlight_empty()
+        self._center_segment(self._current_empty)
+        self._show_note()
+
+    def _empty_segments(self) -> list[int]:
+        """The segments shown without a text (e.g. not translated yet)."""
+        return [
+            idx
+            for idx, segment in enumerate(self._segments)
+            if not segment.text.strip() and not segment.words
+        ]
+
+    def _highlight_empty(self) -> None:
+        """Highlights the segment without a text gone to, while it has none."""
+        textbox = self.tbx_transcript
+        textbox.tag_remove("current_empty", "1.0", ctk.END)
+        idx = self._current_empty
+        if idx is not None and idx in self._empty_segments():
+            start, end = self._segment_indexes[idx], self._next_segment_index(idx)
+            textbox.tag_add("current_empty", start, end)
+
+    def _next_segment_index(self, idx: int) -> str:
+        """Where the segment after one starts, or the end of the transcript."""
+        if idx + 1 < len(self._segment_indexes):
+            return self._segment_indexes[idx + 1]
+        return str(self.tbx_transcript.index("end-1c"))
+
+    # ACTION OF THE SEGMENTS WITHOUT A TEXT
+
+    def _on_transcript_motion(self, event: tk.Event) -> None:
+        idx = self._segment_at(event.x, event.y)
+        if idx is not None and idx in self._empty_segments():
+            self._show_empty_action(idx)
+        else:
+            self._schedule_action_hide()
+
+    def _segment_at(self, x: int, y: int) -> int | None:
+        """The segment shown at a point of the transcript, with its spacing."""
+        if self._mode != TRANSCRIPT_MODE or not self._segment_indexes:
+            return None
+        index = self.tbx_transcript._textbox.index(f"@{x},{y}")
+        idx = (
+            bisect.bisect_right(
+                self._segment_indexes, _index_key(index), key=_index_key
+            )
+            - 1
+        )
+        return idx if idx >= 0 else None
+
+    def _show_empty_action(self, idx: int) -> None:
+        """Shows the button on the right of the line of the segment's placeholder."""
+        self._cancel_action_hide()
+        button = self.btn_empty_action
+        line = self.tbx_transcript._textbox.dlineinfo(self._text_starts[idx])
+        if button is None or line is None:
+            return
+        _x, y, _width, height, _baseline = line
+        self._hovered_empty = idx
+        button.place(
+            in_=self.tbx_transcript._textbox,
+            relx=1.0,
+            x=-12,
+            y=y + height / 2,
+            anchor=ctk.E,
+        )
+        button.lift()
+
+    def _schedule_action_hide(self) -> None:
+        if self.btn_empty_action is None or self._hide_action_after_id:
+            return
+        # Delayed, so the pointer can move from the segment onto the button
+        self._hide_action_after_id = self.after(150, self._hide_empty_action)
+
+    def _cancel_action_hide(self) -> None:
+        if self._hide_action_after_id:
+            self.after_cancel(self._hide_action_after_id)
+            self._hide_action_after_id = None
+
+    def _hide_empty_action(self) -> None:
+        self._cancel_action_hide()
+        self._hovered_empty = None
+        if self.btn_empty_action is not None:
+            self.btn_empty_action.place_forget()
+
+    def _run_empty_action(self) -> None:
+        idx = self._hovered_empty
+        self._hide_empty_action()
+        if idx is not None and self._empty_segment_action:
+            self._empty_segment_action[1](idx)
+
     def set_flagged(self, texts: tuple[FlaggedText, ...]) -> None:
         """
         Highlights the low confidence texts, moving the highlights without
@@ -766,6 +1092,8 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._tag_fonts()
         textbox.tag_config("empty_segment", foreground=self._color(theme.HINT_TEXT))
         textbox.tag_config("current", background=self._color(CURRENT_SEGMENT_COLOR))
+        # The segment without a text gone to (see `go_to_empty_segment`)
+        textbox.tag_config("current_empty", background=self._color(CURRENT_MATCH_COLOR))
         textbox.tag_config("current_word", background=self._color(CURRENT_WORD_COLOR))
         textbox.tag_config(
             "low_confidence",
@@ -805,6 +1133,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
 
     def _render_transcript(self) -> None:
         textbox = self.tbx_transcript
+        self._hide_empty_action()
         textbox.configure(state=ctk.NORMAL)
         textbox.delete("1.0", ctk.END)
         self._word_positions = {}
@@ -855,7 +1184,7 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
                 word_entries.extend(
                     self._insert_words(segment, segment_tag, self._source_indexes[idx])
                 )
-            elif not segment.text:
+            elif not segment.text.strip():
                 empty_text = self._empty_segment_text
                 textbox.insert(
                     ctk.END,
@@ -895,6 +1224,8 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         textbox.tag_raise("current_match")
         self._apply_flagged()
         self._apply_shown()
+        # The segment gone to stays highlighted until it has a text
+        self._highlight_empty()
         textbox.configure(state=ctk.DISABLED)
 
     def _insert_words(

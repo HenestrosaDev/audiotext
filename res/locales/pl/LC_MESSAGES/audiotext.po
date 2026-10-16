@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -259,11 +259,6 @@ msgstr "Wybierz, gdzie zapisywać transkrypcje"
 msgid "Clear the conversation"
 msgstr "Wyczyść rozmowę"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr ""
-"Kliknij segment, aby go odtworzyć. Kliknij prawym przyciskiem, aby go "
-"edytować."
-
 msgid "Compute type"
 msgstr "Typ obliczeń"
 
@@ -448,6 +443,9 @@ msgstr "Edytuj czasy"
 
 msgid "Edit the timing…"
 msgstr "Edytuj czasy…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "Zmiany wprowadzone tutaj nie zmieniają napisów."
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -831,6 +829,9 @@ msgstr "Następny wynik"
 msgid "Next to the source"
 msgstr "Obok źródła"
 
+msgid "Next untranslated subtitle"
+msgstr "Następny nieprzetłumaczony napis"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "Brak klucza API dla {provider}."
@@ -1033,6 +1034,9 @@ msgstr "Poprzednie słowo o niskiej pewności ({shortcut})"
 msgid "Previous match"
 msgstr "Poprzedni wynik"
 
+msgid "Previous untranslated subtitle"
+msgstr "Poprzedni nieprzetłumaczony napis"
+
 msgid "Processing the recording…"
 msgstr "Przetwarzanie nagrania…"
 
@@ -1169,12 +1173,6 @@ msgstr "Szukaj"
 msgid "Search language…"
 msgstr "Szukaj języka…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-"Segmenty do przetłumaczenia: {count}. Kliknij jeden prawym przyciskiem, "
-"aby go przetłumaczyć."
-
 msgid "Select a file"
 msgstr "Wybierz plik"
 
@@ -1249,12 +1247,21 @@ msgstr "Rozmiar"
 msgid "Small"
 msgstr "Mały"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr ""
+"Niektóre napisy nie są jeszcze przetłumaczone, więc brakuje ich w tym "
+"tekście."
+
 msgid "Source"
 msgstr "Źródło"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spacja: odtwórz/wstrzymaj · ←/→: {seconds} s do tyłu/do przodu"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "Mówcy: {count}"
 
 msgid "Start transcription"
 msgstr "Rozpocznij transkrypcję"
@@ -1292,6 +1299,10 @@ msgstr "Napisy"
 
 msgid "Subtitles (.srt)"
 msgstr "Napisy (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "Napisy: {count}"
 
 msgid "Summarizing…"
 msgstr "Podsumowywanie…"
@@ -1415,9 +1426,6 @@ msgstr "Model Whisper API rozpoznaje mówców."
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Nowy segment znajdzie się po segmencie z {time}:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Zwykły tekst został zmieniony; transkrypcja zachowuje oryginał."
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1647,6 +1655,10 @@ msgstr "Tłumacz za pomocą Whisper (zalecane)"
 
 msgid "Translate with:"
 msgstr "Tłumacz za pomocą:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "Przetłumaczono: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "Tłumaczy każdy segment, zachowując jego znaczniki czasu."

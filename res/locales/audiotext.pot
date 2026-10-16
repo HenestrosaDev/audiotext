@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 3.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -236,9 +236,6 @@ msgstr ""
 msgid "Clear the conversation"
 msgstr ""
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr ""
-
 msgid "Compute type"
 msgstr ""
 
@@ -415,6 +412,9 @@ msgid "Edit the timing"
 msgstr ""
 
 msgid "Edit the timing…"
+msgstr ""
+
+msgid "Edits made here don't change the subtitles."
 msgstr ""
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -766,6 +766,9 @@ msgstr ""
 msgid "Next to the source"
 msgstr ""
 
+msgid "Next untranslated subtitle"
+msgstr ""
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr ""
@@ -952,6 +955,9 @@ msgstr ""
 msgid "Previous match"
 msgstr ""
 
+msgid "Previous untranslated subtitle"
+msgstr ""
+
 msgid "Processing the recording…"
 msgstr ""
 
@@ -1079,10 +1085,6 @@ msgstr ""
 msgid "Search language…"
 msgstr ""
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-
 msgid "Select a file"
 msgstr ""
 
@@ -1152,11 +1154,18 @@ msgstr ""
 msgid "Small"
 msgstr ""
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr ""
+
 msgid "Source"
 msgstr ""
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
+msgstr ""
+
+#, python-brace-format
+msgid "Speakers: {count}"
 msgstr ""
 
 msgid "Start transcription"
@@ -1194,6 +1203,10 @@ msgid "Subtitles"
 msgstr ""
 
 msgid "Subtitles (.srt)"
+msgstr ""
+
+#, python-brace-format
+msgid "Subtitles: {count}"
 msgstr ""
 
 msgid "Summarizing…"
@@ -1308,9 +1321,6 @@ msgstr ""
 
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
-msgstr ""
-
-msgid "The plain text has been edited; the transcript keeps the original."
 msgstr ""
 
 msgid ""
@@ -1520,6 +1530,10 @@ msgid "Translate with Whisper (recommended)"
 msgstr ""
 
 msgid "Translate with:"
+msgstr ""
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
 msgstr ""
 
 msgid "Translates each segment, keeping its timestamps."

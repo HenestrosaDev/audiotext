@@ -1,66 +1,38 @@
-from dataclasses import replace
-
 from models.history import HistoryEntry
-from models.transcript_segment import TranscriptSegment, TranscriptWord
+from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
-from utils.sentences import group_by_sentence
-
-ORIGINAL = [
-    TranscriptSegment(0.0, 2.0, "One two three"),
-    TranscriptSegment(2.0, 3.0, "Four"),
-]
 
 
 def translation(*segments: TranscriptSegment, text: str = "") -> TranscriptTranslation:
     return TranscriptTranslation("es", text, segments, "manual")
 
 
-def test_the_ratio_counts_the_words_of_the_translated_segments() -> None:
-    assert (
-        translation(
-            TranscriptSegment(0.0, 2.0, ""), TranscriptSegment(2.0, 3.0, "")
-        ).translated_ratio(ORIGINAL)
-        == 0
-    )
-    assert (
-        translation(
-            TranscriptSegment(0.0, 2.0, "Uno dos tres"), TranscriptSegment(2.0, 3.0, "")
-        ).translated_ratio(ORIGINAL)
-        == 0.75
-    )
-    assert (
-        translation(
-            TranscriptSegment(0.0, 2.0, ""), TranscriptSegment(2.0, 3.0, "Cuatro")
-        ).translated_ratio(ORIGINAL)
-        == 0.25
-    )
+def test_the_progress_counts_the_segments_with_a_text() -> None:
+    assert translation(
+        TranscriptSegment(0.0, 2.0, ""), TranscriptSegment(2.0, 3.0, "")
+    ).segment_progress() == (0, 2)
+    assert translation(
+        TranscriptSegment(0.0, 2.0, "Uno dos tres"), TranscriptSegment(2.0, 3.0, "")
+    ).segment_progress() == (1, 2)
+    assert translation(
+        TranscriptSegment(0.0, 2.0, "Uno"), TranscriptSegment(2.0, 3.0, "Cuatro")
+    ).segment_progress() == (2, 2)
 
 
-def test_the_ratio_follows_the_retimed_segments() -> None:
-    # A single segment translates both of the transcription
-    assert (
-        translation(TranscriptSegment(0.5, 2.5, "Todo")).translated_ratio(ORIGINAL) == 1
-    )
+def test_whitespace_is_not_a_text() -> None:
+    assert translation(TranscriptSegment(0.0, 1.0, " \n")).segment_progress() == (0, 1)
 
 
-def test_the_ratio_counts_the_words_where_they_are_said() -> None:
-    words = (
-        TranscriptWord(0.0, 0.5, "One"),
-        TranscriptWord(0.5, 1.0, "two"),
-        TranscriptWord(1.0, 2.0, "three"),
-    )
-    original = [TranscriptSegment(0.0, 2.0, "One two three", words=words)]
-
-    assert (
-        translation(TranscriptSegment(0.0, 1.0, "Uno dos")).translated_ratio(original)
-        == 2 / 3
-    )
+def test_an_empty_segment_is_left_even_if_another_is_retimed_over_it() -> None:
+    # Two sentences merged into one subtitle: the empty one is still shown as not
+    # translated, so it's counted as left
+    assert translation(
+        TranscriptSegment(0.0, 3.0, "Todo"), TranscriptSegment(2.0, 3.0, "")
+    ).segment_progress() == (1, 2)
 
 
-def test_a_translation_without_timestamps_is_translated_at_once() -> None:
-    assert translation(text="Hola").translated_ratio(ORIGINAL) == 1
-    assert translation(text="").translated_ratio(ORIGINAL) == 0
-    assert translation(TranscriptSegment(0.0, 1.0, "Hola")).translated_ratio([]) == 0
+def test_a_translation_without_segments_has_no_progress() -> None:
+    assert translation(text="Hola").segment_progress() == (0, 0)
 
 
 def test_the_single_translation_of_older_entries_is_kept() -> None:
@@ -76,25 +48,22 @@ def test_the_single_translation_of_older_entries_is_kept() -> None:
     assert "translation" not in entry.to_dict()
 
 
-def test_the_ratio_is_complete_with_fewer_segments_by_sentence() -> None:
-    original = [
-        TranscriptSegment(
-            0.0,
-            2.0,
-            "It is a big advance in the",
-            words=(TranscriptWord(0.0, 1.0, "It"), TranscriptWord(1.9, 2.0, "the")),
-        ),
-        TranscriptSegment(2.0, 4.0, "field."),
-        TranscriptSegment(4.0, 5.0, "Indeed."),
-    ]
-    translation = TranscriptTranslation(
-        "es",
-        "",
-        segments=tuple(
-            replace(segment, text=f"<{segment.text}>", words=())
-            for segment in group_by_sentence(original)
-        ),
-    )
+def test_the_label_and_the_hint_agree() -> None:
+    from views.transcript.translation_panel import TranslationPanel, translation_label
 
-    assert len(translation.segments) < len(original)
-    assert translation.translated_ratio(original) == 1.0
+    partial = translation(
+        TranscriptSegment(0.0, 2.0, "Uno"),
+        TranscriptSegment(2.0, 3.0, ""),
+        TranscriptSegment(3.0, 4.0, " "),
+    )
+    assert translation_label(partial) == "Spanish · 1/3"
+    # Rounded down, so 100% only when all of it is translated
+    assert TranslationPanel._progress_note(partial) == "Translated: 1/3 · 33%"
+
+    done = translation(TranscriptSegment(0.0, 2.5, "Todo"))
+    assert translation_label(done) == "Spanish"
+    # Shown even when it's all translated
+    assert TranslationPanel._progress_note(done) == "Translated: 1/1 · 100%"
+
+    # Without segments, the text is translated at once
+    assert TranslationPanel._progress_note(translation(text="Hola")) == ""

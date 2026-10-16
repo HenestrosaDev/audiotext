@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -256,9 +256,6 @@ msgstr "Pilih tempat menyimpan transkripsi"
 msgid "Clear the conversation"
 msgstr "Hapus percakapan"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr "Klik segmen untuk memutarnya. Klik kanan untuk mengeditnya."
-
 msgid "Compute type"
 msgstr "Jenis komputasi"
 
@@ -439,6 +436,9 @@ msgstr "Edit waktu"
 
 msgid "Edit the timing…"
 msgstr "Edit waktu…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "Perubahan di sini tidak mengubah subtitle."
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -824,6 +824,9 @@ msgstr "Hasil berikutnya"
 msgid "Next to the source"
 msgstr "Di samping sumber"
 
+msgid "Next untranslated subtitle"
+msgstr "Subtitle belum diterjemahkan berikutnya"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "Tidak ada kunci API untuk {provider}."
@@ -1027,6 +1030,9 @@ msgstr "Kata sebelumnya dengan keyakinan rendah ({shortcut})"
 msgid "Previous match"
 msgstr "Hasil sebelumnya"
 
+msgid "Previous untranslated subtitle"
+msgstr "Subtitle belum diterjemahkan sebelumnya"
+
 msgid "Processing the recording…"
 msgstr "Memproses rekaman…"
 
@@ -1165,12 +1171,6 @@ msgstr "Cari"
 msgid "Search language…"
 msgstr "Cari bahasa…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-"Segmen yang belum diterjemahkan: {count}. Klik kanan salah satunya untuk "
-"menerjemahkannya."
-
 msgid "Select a file"
 msgstr "Pilih file"
 
@@ -1245,12 +1245,21 @@ msgstr "Ukuran"
 msgid "Small"
 msgstr "Kecil"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr ""
+"Beberapa subtitle belum diterjemahkan, jadi tidak disertakan dalam teks "
+"ini."
+
 msgid "Source"
 msgstr "Sumber"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spasi: putar/jeda · ←/→: mundur/maju {seconds} dtk"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "Pembicara: {count}"
 
 msgid "Start transcription"
 msgstr "Mulai transkripsi"
@@ -1288,6 +1297,10 @@ msgstr "Subtitle"
 
 msgid "Subtitles (.srt)"
 msgstr "Subtitle (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "Subtitle: {count}"
 
 msgid "Summarizing…"
 msgstr "Meringkas…"
@@ -1408,9 +1421,6 @@ msgstr "Model Whisper API mengidentifikasi pembicara."
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Segmen baru ditempatkan setelah segmen pada {time}:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Teks biasa telah diedit; transkrip tetap menyimpan aslinya."
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1641,6 +1651,10 @@ msgstr "Terjemahkan dengan Whisper (disarankan)"
 
 msgid "Translate with:"
 msgstr "Terjemahkan dengan:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "Diterjemahkan: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "Menerjemahkan setiap segmen dengan mempertahankan stempel waktunya."

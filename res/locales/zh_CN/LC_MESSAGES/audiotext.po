@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -245,9 +245,6 @@ msgstr "选择转写的保存位置"
 msgid "Clear the conversation"
 msgstr "清除对话"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr "点击片段即可播放。右键点击即可编辑。"
-
 msgid "Compute type"
 msgstr "计算类型"
 
@@ -426,6 +423,9 @@ msgstr "编辑时间"
 
 msgid "Edit the timing…"
 msgstr "编辑时间…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "在此处的编辑不会更改字幕。"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr "空。要添加转写，请右键点击它并选择“移到分组”。"
@@ -783,6 +783,9 @@ msgstr "下一个结果"
 msgid "Next to the source"
 msgstr "与来源相同的位置"
 
+msgid "Next untranslated subtitle"
+msgstr "下一条未翻译的字幕"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "没有 {provider} 的 API 密钥。"
@@ -976,6 +979,9 @@ msgstr "上一个低置信度的词 ({shortcut})"
 msgid "Previous match"
 msgstr "上一个结果"
 
+msgid "Previous untranslated subtitle"
+msgstr "上一条未翻译的字幕"
+
 msgid "Processing the recording…"
 msgstr "正在处理录音…"
 
@@ -1106,10 +1112,6 @@ msgstr "搜索"
 msgid "Search language…"
 msgstr "搜索语言…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr "待翻译的片段：{count} 个。右键点击其中一个即可翻译。"
-
 msgid "Select a file"
 msgstr "选择文件"
 
@@ -1180,12 +1182,19 @@ msgstr "大小"
 msgid "Small"
 msgstr "小"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr "部分字幕尚未翻译，因此未包含在此文本中。"
+
 msgid "Source"
 msgstr "来源"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "空格：播放/暂停 · ←/→：后退/前进 {seconds} 秒"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "说话人：{count} 位"
 
 msgid "Start transcription"
 msgstr "开始转写"
@@ -1223,6 +1232,10 @@ msgstr "字幕"
 
 msgid "Subtitles (.srt)"
 msgstr "字幕 (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "字幕：{count} 条"
 
 msgid "Summarizing…"
 msgstr "正在总结…"
@@ -1337,9 +1350,6 @@ msgstr "Whisper API 的模型会识别说话人。"
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "新片段位于 {time} 的片段之后："
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "纯文本已被编辑；逐字稿保留原始内容。"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1553,6 +1563,10 @@ msgstr "使用 Whisper 翻译（推荐）"
 
 msgid "Translate with:"
 msgstr "翻译方式："
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "已翻译：{done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "逐段翻译，并保留时间戳。"

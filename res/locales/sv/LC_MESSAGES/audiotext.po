@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -255,11 +255,6 @@ msgstr "Välj var transkriberingarna ska sparas"
 msgid "Clear the conversation"
 msgstr "Rensa konversationen"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr ""
-"Klicka på ett segment för att spela upp det. Högerklicka för att redigera"
-" det."
-
 msgid "Compute type"
 msgstr "Beräkningstyp"
 
@@ -441,6 +436,9 @@ msgstr "Redigera tiderna"
 
 msgid "Edit the timing…"
 msgstr "Redigera tiderna…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "Ändringar här påverkar inte undertexterna."
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -823,6 +821,9 @@ msgstr "Nästa träff"
 msgid "Next to the source"
 msgstr "Bredvid källan"
 
+msgid "Next untranslated subtitle"
+msgstr "Nästa oöversatta undertext"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "Ingen API-nyckel för {provider}."
@@ -1024,6 +1025,9 @@ msgstr "Föregående ord med låg säkerhet ({shortcut})"
 msgid "Previous match"
 msgstr "Föregående träff"
 
+msgid "Previous untranslated subtitle"
+msgstr "Föregående oöversatta undertext"
+
 msgid "Processing the recording…"
 msgstr "Bearbetar inspelningen…"
 
@@ -1162,12 +1166,6 @@ msgstr "Sök"
 msgid "Search language…"
 msgstr "Sök språk…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-"Segment kvar att översätta: {count}. Högerklicka på ett för att översätta"
-" det."
-
 msgid "Select a file"
 msgstr "Välj en fil"
 
@@ -1242,12 +1240,19 @@ msgstr "Storlek"
 msgid "Small"
 msgstr "Liten"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr "Vissa undertexter är inte översatta än, så de saknas i den här texten."
+
 msgid "Source"
 msgstr "Källa"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Blanksteg: spela upp/pausa · ←/→: {seconds} s bakåt/framåt"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "Talare: {count}"
 
 msgid "Start transcription"
 msgstr "Starta transkriberingen"
@@ -1285,6 +1290,10 @@ msgstr "Undertexter"
 
 msgid "Subtitles (.srt)"
 msgstr "Undertexter (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "Undertexter: {count}"
 
 msgid "Summarizing…"
 msgstr "Sammanfattar…"
@@ -1406,9 +1415,6 @@ msgstr "Modellen i Whisper-API:et identifierar talarna."
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Det nya segmentet hamnar efter det vid {time}:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Den oformaterade texten har redigerats; transkriptet behåller originalet."
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1639,6 +1645,10 @@ msgstr "Översätt med Whisper (rekommenderas)"
 
 msgid "Translate with:"
 msgstr "Översätt med:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "Översatt: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "Översätter varje segment och behåller dess tidsstämplar."

@@ -14,6 +14,7 @@ from contextlib import contextmanager
 from dataclasses import replace
 from functools import cache, partial
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import customtkinter as ctk
@@ -605,16 +606,18 @@ def test_a_transcription_has_a_translation_into_each_language(
     panel = view.translation_panel
     shown = panel.text.tbx_transcript
 
-    # The last one made is shown, and the menu tells how much of each is done
-    assert panel.omn_language.get() == "French · 25%"
+    # The last one made is shown, and the menu tells how much of each is done,
+    # but closed, it only names the language
+    assert panel.omn_language.get() == "French · 1/3"
+    assert panel.omn_language._text_label.cget("text") == "French"
     assert panel.omn_language.cget("values") == [
-        "Spanish · 100%",
-        "French · 25%",
+        "Spanish",
+        "French · 1/3",
         "Translate into another language…",
     ]
     assert "Bonjour" in shown.get("1.0", "end")
 
-    panel._choose_option("Spanish · 100%")
+    panel._choose_option("Spanish")
     ui.pump()
     assert "Encantado." in shown.get("1.0", "end")
     # The segments of the translation shown are the ones edited
@@ -636,14 +639,14 @@ def test_a_transcription_has_a_translation_into_each_language(
     panel._choose_option("Translate into another language…")
     ui.pump()
     assert list(entry.translations) == ["es", "fr", "de"]
-    assert panel.omn_language.get() == "German · 100%"
+    assert panel.omn_language.get() == "German"
 
     # Deleting one shows the last one left
     view._delete_translation()
     ui.pump()
     assert list(entry.translations) == ["es", "fr"]
     assert panel.winfo_ismapped()
-    assert panel.omn_language.get() == "French · 25%"
+    assert panel.omn_language.get() == "French · 1/3"
 
 
 def test_a_translation_can_be_edited(ui: Ui, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -731,11 +734,11 @@ def test_a_transcription_can_be_translated_from_scratch(
     assert "Not translated yet" in panel.text.tbx_transcript.get("1.0", "end")
     # Above the text, in the row of its hints, so it's aligned with the transcript
     assert not panel.lbl_details.winfo_ismapped()
-    hint = panel.text.lbl_hint.cget("text")
-    assert "3" in hint
-    # The transcript on its left already explains how to use the segments
-    assert "Click a segment" not in hint
-    assert panel.text.lbl_hint.winfo_ismapped()
+    assert panel.text.lbl_note.cget("text") == "Translated: 0/3 · 0%"
+    # The transcript on its left already explains how to use the segments, so
+    # the note is the only hint
+    assert panel.text.lbl_note.winfo_ismapped()
+    assert not panel.text.lbl_hint.winfo_ismapped()
 
     monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "Adiós")
     view.translation_editor.edit_text(2)
@@ -744,7 +747,7 @@ def test_a_transcription_can_be_translated_from_scratch(
     assert translation is not None
     assert translation.segments == translated("", "", "Adiós")
     assert translation.text == "[SPEAKER_00]: Adiós"
-    assert "2" in panel.text.lbl_hint.cget("text")
+    assert panel.text.lbl_note.cget("text") == "Translated: 1/3 · 33%"
 
 
 def test_a_translation_from_scratch_has_the_timestamps_of_the_subtitles(
@@ -2594,6 +2597,221 @@ def test_a_manual_translation_cant_be_generated_again(ui: Ui) -> None:
     ui.pump()
     # Hidden, rather than disabled
     assert not ui.window._entry_view.translation_panel.btn_regenerate.winfo_ismapped()
+
+
+def test_the_segments_left_to_translate_are_gone_to_in_turn(ui: Ui) -> None:
+    from models.translation import TranscriptTranslation
+    from views.transcript import corrections
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE, TRANSCRIPT_MODE
+
+    # The last one is only whitespace, which is left to translate too
+    translation = TranscriptTranslation(
+        "es", "Hola", translated("Hola", "", " "), "manual"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(TRANSCRIPT_MODE)
+    ui.pump()
+    text = view.translation_panel.text
+    shown = text.tbx_transcript
+
+    def gone_to() -> str:
+        start, end = shown.tag_ranges("current_empty")
+        return str(shown.get(start, end))
+
+    assert text.lbl_note.cget("text") == "Translated: 1/3 · 33%"
+    assert shown.get("1.0", "end").count("Not translated yet") == 2
+    assert text.btn_next_empty.winfo_ismapped()
+    assert text.lbl_empty_position.cget("text") == ""
+
+    text.btn_next_empty.invoke()
+    assert segment_start(text, 1) in gone_to()
+    assert text.lbl_empty_position.cget("text") == "1 of 2"
+    text.btn_next_empty.invoke()
+    assert segment_start(text, 2) in gone_to()
+    # Past the last one, it goes back to the first one, both ways
+    text.btn_next_empty.invoke()
+    assert segment_start(text, 1) in gone_to()
+    text.btn_previous_empty.invoke()
+    assert segment_start(text, 2) in gone_to()
+    assert text.lbl_empty_position.cget("text") == "2 of 2"
+
+    # Translating the one gone to goes on from it
+    text.btn_previous_empty.invoke()
+    assert segment_start(text, 1) in gone_to()
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "Hi")
+        view.translation_editor.edit_text(1)
+    ui.pump()
+    assert not shown.tag_ranges("current_empty")
+    assert text.lbl_empty_position.cget("text") == ""
+    text.btn_next_empty.invoke()
+    assert segment_start(text, 2) in gone_to()
+    assert text.lbl_empty_position.cget("text") == "1 of 1"
+
+    # The plain text has no segments to go to
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    ui.pump()
+    assert not text.btn_next_empty.winfo_ismapped()
+
+
+def test_the_hints_are_only_where_they_are_needed(ui: Ui) -> None:
+    from models.translation import TranscriptTranslation
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE, TRANSCRIPT_MODE
+
+    translation = TranscriptTranslation("es", "", translated("", "", ""), "manual")
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(TRANSCRIPT_MODE)
+    ui.pump()
+    transcript, translated_text = view.text, view.translation_panel.text
+
+    # The transcript tells what it has, not how to use it
+    assert transcript.lbl_hint.cget("text") == "Subtitles: 3 · Speakers: 2"
+    assert translated_text.lbl_note.cget("text") == "Translated: 0/3 · 0%"
+    assert not translated_text.lbl_hint.winfo_ismapped()
+    assert (
+        transcript.tbx_transcript.winfo_rooty()
+        == translated_text.tbx_transcript.winfo_rooty()
+    )
+
+    # That the edits of the plain text stop there is told with the plain text
+    view.text.set_content(view.text._segments, "Edited", is_text_edited=True)
+    ui.pump()
+    edited_hint = "Edits made here don't change the subtitles."
+    assert edited_hint not in transcript.lbl_hint.cget("text")
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    ui.pump()
+    assert edited_hint in transcript.lbl_hint.cget("text")
+    assert "Subtitles:" not in transcript.lbl_hint.cget("text")
+    # The progress counts subtitles, which the plain text doesn't show, but it
+    # leaves out the ones not translated yet
+    assert translated_text.lbl_note.cget("text") == (
+        "Some subtitles aren't translated yet, so they're left out of this text."
+    )
+    assert not translated_text.btn_next_empty.winfo_ismapped()
+
+
+def test_a_whole_translation_has_no_note_with_its_plain_text(ui: Ui) -> None:
+    from models.translation import TranscriptTranslation
+    from views.transcript.transcript_text import PLAIN_TEXT_MODE
+
+    translation = TranscriptTranslation(
+        "es", "", translated("Hola", "Encantado.", "Adiós."), "deepl"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(PLAIN_TEXT_MODE)
+    ui.pump()
+
+    assert not view.translation_panel.text.lbl_note.winfo_ismapped()
+
+
+def test_the_summary_leaves_out_the_speakers_if_there_are_none(ui: Ui) -> None:
+    from views.transcript.transcript_text import TRANSCRIPT_MODE
+
+    entry = ui.add(
+        segments=[replace(segment, speaker=None) for segment in SEGMENTS],
+        text=TEXT,
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(TRANSCRIPT_MODE)
+    ui.pump()
+
+    assert view.text.lbl_hint.cget("text") == "Subtitles: 3"
+
+
+def test_the_summary_counts_the_subtitles_shown(ui: Ui) -> None:
+    from views.transcript.transcript_text import TRANSCRIPT_MODE
+
+    # A segment too long for a subtitle, which is split
+    long_text = " ".join(["Words that make a long segment."] * 12)
+    entry = ui.add(segments=[TranscriptSegment(0.0, 40.0, long_text)], text=long_text)
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(TRANSCRIPT_MODE)
+    ui.pump()
+
+    count = len(view._parts)
+    assert count > 1
+    assert view.text.lbl_hint.cget("text") == f"Subtitles: {count}"
+
+
+def test_a_segment_left_to_translate_has_a_button_on_hover(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from models.translation import TranscriptTranslation
+    from views.transcript import corrections
+    from views.transcript.transcript_text import TRANSCRIPT_MODE
+
+    translation = TranscriptTranslation(
+        "es", "Hola", translated("Hola", "", ""), "manual"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view._on_mode_change(TRANSCRIPT_MODE)
+    ui.pump()
+    text = view.translation_panel.text
+    textbox = text.tbx_transcript._textbox
+    button = text.btn_empty_action
+    assert button is not None
+
+    def hover(idx: int) -> None:
+        # A small window, as on macOS runners, may leave the segment out of view
+        textbox.see(text._text_starts[idx])
+        textbox.update_idletasks()
+        x, y, _width, _height = textbox.bbox(text._text_starts[idx])
+        text._on_transcript_motion(SimpleNamespace(x=x + 1, y=y + 1))
+        ui.pump()
+
+    # Not on a translated segment
+    hover(0)
+    assert not button.winfo_ismapped()
+
+    hover(2)
+    assert button.winfo_ismapped()
+    assert button.cget("text") == "Translate text…"
+
+    monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "Adiós")
+    button.invoke()
+    ui.pump()
+    edited = entry.get_translation("es")
+    assert edited is not None
+    assert edited.segments[2].text == "Adiós"
+    assert not button.winfo_ismapped()
+
+
+def segment_start(text: Any, idx: int) -> str:
+    """The timestamps of a segment shown, as the first line of the segment."""
+    start = text._segment_indexes[idx]
+    return str(text.tbx_transcript.get(start, f"{start} lineend"))
 
 
 def test_the_translation_scrolls_with_the_transcription(ui: Ui) -> None:
