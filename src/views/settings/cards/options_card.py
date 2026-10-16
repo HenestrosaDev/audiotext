@@ -46,14 +46,24 @@ class OptionsCard(SettingsCard):
             ConfigTranscription.Key.ALIGN_WORDS,
         )
         self.lbl_align_hint = self._hint(3)
+        # The choice of the user, kept while the subtitles force the timings, so
+        # it's restored (and saved) when they're no longer chosen
+        self._align_words = config_transcription.align_words
+        self._is_align_forced = False
 
         self.swi_isolate_speech = self._switch(
             4,
-            L_("Extract speech"),
+            L_("Reduce background noise"),
             config_transcription.isolate_speech,
             ConfigTranscription.Key.ISOLATE_SPEECH,
         )
-        self._hint(5, L_("Reduces music and background noise before transcribing."))
+        self._hint(
+            5,
+            L_(
+                "Reduces hum and steady background noise, and evens out quiet "
+                "speech. Takes longer."
+            ),
+        )
 
         self.swi_diarize = self._switch(
             6,
@@ -104,7 +114,9 @@ class OptionsCard(SettingsCard):
 
     def update_settings(self, settings: TranscriptionSettings) -> None:
         num_speakers = self._num_speakers.get().strip()
-        settings.align_words = bool(self.swi_align_words.get())
+        if not self._is_align_forced:
+            self._align_words = bool(self.swi_align_words.get())
+        settings.align_words = self._align_words
         settings.isolate_speech = bool(self.swi_isolate_speech.get())
         settings.diarize = bool(self.swi_diarize.get())
         settings.num_speakers = int(num_speakers) if num_speakers.isdigit() else 0
@@ -113,17 +125,30 @@ class OptionsCard(SettingsCard):
         method = settings.transcription_method
         is_whisperx = method == TranscriptionMethod.WHISPERX
         state = ctk.NORMAL if is_whisperx else ctk.DISABLED
-        self.swi_align_words.configure(state=state)
         self.swi_diarize.configure(state=state)
+
+        # The subtitles need the timings of the words, so they're always added
+        self._is_align_forced = is_whisperx and self._has_subtitles(settings)
+        if self._is_align_forced or self._align_words:
+            self.swi_align_words.select()
+        else:
+            self.swi_align_words.deselect()
+        self.swi_align_words.configure(
+            state=ctk.DISABLED if self._is_align_forced else state
+        )
 
         if not is_whisperx:
             align_hint = _("Only available with WhisperX.")
-        elif self._has_subtitles(settings) and not settings.align_words:
+        elif self._is_align_forced:
             align_hint = _(
-                "Highlights each word while playing. The subtitles already use them."
+                "Highlights each word while playing and finds the words that may "
+                "be wrong. Needed by the subtitles."
             )
         else:
-            align_hint = _("Highlights each word while playing. Takes a bit longer.")
+            align_hint = _(
+                "Highlights each word while playing and finds the words that may "
+                "be wrong. Takes a bit longer."
+            )
         self.lbl_align_hint.configure(text=align_hint)
 
         if is_whisperx and settings.diarize:
@@ -133,7 +158,8 @@ class OptionsCard(SettingsCard):
 
         if is_whisperx:
             diarize_hint = _(
-                "Labels who speaks in each part. Requires a Hugging Face token."
+                "Labels who speaks in each part. Requires a Hugging Face token. "
+                "Takes noticeably longer."
             )
         elif (
             method == TranscriptionMethod.WHISPER_API

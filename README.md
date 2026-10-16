@@ -129,7 +129,7 @@ https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
 
 - **Any source**: audio and video files, YouTube videos and direct links to media files, the microphone (with a live draft of the text while you speak), the files of a folder and its subfolders, or a folder that is watched to transcribe the files added to it.
 - **Private and offline**: WhisperX runs on your computer, on the CPU or, much faster, on an NVIDIA GPU with CUDA or on the GPU of a Mac with Apple Silicon (with [MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper)).
-- **Speaker identification**, word-level timings, speech extraction (to reduce music and background noise), and keywords and context to spell names and terms right.
+- **Speaker identification**, word-level timings, background noise reduction (for hum and quiet speakers), and keywords and context to spell names and terms right.
 - **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL or Google Translate.
 - **A transcript you can play**: click a segment to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps.
 - **Summaries** with the key points and the chapters of the transcription.

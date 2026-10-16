@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -494,9 +494,6 @@ msgstr ""
 "Экспортировано в {path}, но ни в одном шрифте нет этих символов, поэтому "
 "они показаны квадратиками: {characters}"
 
-msgid "Extract speech"
-msgstr "Выделять речь"
-
 msgid "Failed"
 msgstr "Ошибка"
 
@@ -598,11 +595,19 @@ msgstr ""
 "Выделяет каждое слово при воспроизведении (модель whisper-1). Занимает "
 "больше времени."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Выделяет каждое слово при воспроизведении. Занимает чуть больше времени."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr ""
+"Выделяет каждое слово при воспроизведении и находит слова, которые могут "
+"быть ошибочными. Необходимо для субтитров."
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Выделяет каждое слово при воспроизведении. Субтитры уже их используют."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Выделяет каждое слово при воспроизведении и находит слова, которые могут "
+"быть ошибочными. Занимает чуть больше времени."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -674,8 +679,12 @@ msgstr "Ключевые слова"
 msgid "LLM providers"
 msgstr "Поставщики LLM"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Помечает, кто говорит в каждой части. Требуется токен Hugging Face."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr ""
+"Помечает, кто говорит в каждой части. Требуется токен Hugging Face. "
+"Занимает заметно больше времени."
 
 msgid "Landscape"
 msgstr "Горизонтальные"
@@ -1053,8 +1062,15 @@ msgstr "Запись…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Запись… Нажмите кнопку, чтобы остановить и транскрибировать."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Приглушает музыку и фоновый шум перед транскрипцией."
+msgid "Reduce background noise"
+msgstr "Подавить фоновый шум"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Подавляет гул и постоянный фоновый шум и выравнивает тихую речь. Занимает"
+" больше времени."
 
 msgid "Refine"
 msgstr "Уточнение"
@@ -1145,9 +1161,6 @@ msgstr "Сохранено в {folder}."
 
 msgid "Saved next to the source"
 msgstr "Сохраняется рядом с источником"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Прокручивать перевод вместе с транскрипцией"
 
 msgid "Search"
 msgstr "Поиск"
@@ -1257,8 +1270,8 @@ msgstr "Поверх других окон"
 msgid "Stop adding the subtitles to the video"
 msgstr "Остановить добавление субтитров в видео"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Не прокручивать перевод вместе с транскрипцией"
+msgid "Stop syncing scrolling"
+msgstr "Не синхронизировать прокрутку"
 
 msgid "Stop watching"
 msgstr "Остановить отслеживание"
@@ -1287,6 +1300,9 @@ msgstr "Сводка"
 
 msgid "Supported models"
 msgstr "Поддерживаемые модели"
+
+msgid "Sync scrolling"
+msgstr "Синхронизировать прокрутку"
 
 msgid "System"
 msgstr "Системная"
@@ -1868,7 +1884,7 @@ msgid "{done}/{total} files"
 msgstr "Файлы: {done}/{total}"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} мин {seconds} с"
 
 #, python-brace-format
@@ -1885,7 +1901,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{remaining} из {total} на проверку"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} с"
 
 #, python-brace-format

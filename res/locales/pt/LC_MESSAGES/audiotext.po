@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -497,9 +497,6 @@ msgstr ""
 "Exportado para {path}, mas nenhuma fonte tem estes caracteres, por isso "
 "são mostrados como quadrados: {characters}"
 
-msgid "Extract speech"
-msgstr "Extrair a voz"
-
 msgid "Failed"
 msgstr "Com erro"
 
@@ -597,11 +594,19 @@ msgstr "Destacar palavras"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Destaca cada palavra durante a reprodução (modelo whisper-1). Demora mais."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Destaca cada palavra durante a reprodução. Demora um pouco mais."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr ""
+"Destaca cada palavra durante a reprodução e encontra as palavras que "
+"podem estar erradas. Necessário para as legendas."
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Destaca cada palavra durante a reprodução. As legendas já as usam."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Destaca cada palavra durante a reprodução e encontra as palavras que "
+"podem estar erradas. Demora um pouco mais."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -673,8 +678,12 @@ msgstr "Palavras-chave"
 msgid "LLM providers"
 msgstr "Provedores de LLM"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Indica quem fala em cada parte. Requer um token do Hugging Face."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr ""
+"Indica quem fala em cada parte. Requer um token do Hugging Face. Demora "
+"bastante mais."
 
 msgid "Landscape"
 msgstr "Horizontal"
@@ -1051,8 +1060,15 @@ msgstr "Gravando…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Gravando… Pressione o botão para parar e transcrever."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Reduz a música e o ruído de fundo antes de transcrever."
+msgid "Reduce background noise"
+msgstr "Reduzir o ruído de fundo"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Reduz o zumbido e o ruído de fundo constante, e uniformiza a voz baixa. "
+"Demora mais."
 
 msgid "Refine"
 msgstr "Refinar"
@@ -1141,9 +1157,6 @@ msgstr "Salvo em {folder}."
 
 msgid "Saved next to the source"
 msgstr "Salvo junto à origem"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Rolar a tradução com a transcrição"
 
 msgid "Search"
 msgstr "Pesquisar"
@@ -1253,8 +1266,8 @@ msgstr "Manter no topo"
 msgid "Stop adding the subtitles to the video"
 msgstr "Parar de adicionar as legendas ao vídeo"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Parar de rolar a tradução com a transcrição"
+msgid "Stop syncing scrolling"
+msgstr "Parar de sincronizar a rolagem"
 
 msgid "Stop watching"
 msgstr "Parar de monitorar"
@@ -1283,6 +1296,9 @@ msgstr "Resumo"
 
 msgid "Supported models"
 msgstr "Modelos compatíveis"
+
+msgid "Sync scrolling"
+msgstr "Sincronizar rolagem"
 
 msgid "System"
 msgstr "Sistema"
@@ -1870,7 +1886,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} arquivos"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} min {seconds} s"
 
 #, python-brace-format
@@ -1887,7 +1903,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{remaining} de {total} por rever"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} s"
 
 #, python-brace-format

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -497,9 +497,6 @@ msgstr ""
 "Exportado a {path}, pero ninguna fuente tiene estos caracteres, así que "
 "se muestran como recuadros: {characters}"
 
-msgid "Extract speech"
-msgstr "Extraer la voz"
-
 msgid "Failed"
 msgstr "Con errores"
 
@@ -601,11 +598,19 @@ msgstr ""
 "Resalta cada palabra durante la reproducción (modelo whisper-1). Tarda "
 "más."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Resalta cada palabra durante la reproducción. Tarda un poco más."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr ""
+"Resalta cada palabra durante la reproducción y encuentra las palabras que"
+" pueden estar mal. Lo necesitan los subtítulos."
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Resalta cada palabra durante la reproducción. Los subtítulos ya los usan."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Resalta cada palabra durante la reproducción y encuentra las palabras que"
+" pueden estar mal. Tarda un poco más."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -676,8 +681,12 @@ msgstr "Palabras clave"
 msgid "LLM providers"
 msgstr "Proveedores de LLM"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Indica quién habla en cada parte. Necesita un token de Hugging Face."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr ""
+"Indica quién habla en cada parte. Necesita un token de Hugging Face. "
+"Tarda bastante más."
 
 msgid "Landscape"
 msgstr "Horizontal"
@@ -1058,8 +1067,15 @@ msgstr "Grabando…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Grabando… Pulsa el botón para detener y transcribir."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Reduce la música y el ruido de fondo antes de transcribir."
+msgid "Reduce background noise"
+msgstr "Reducir el ruido de fondo"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Reduce el zumbido y el ruido de fondo constante, e iguala la voz baja. "
+"Tarda más."
 
 msgid "Refine"
 msgstr "Refinar"
@@ -1148,9 +1164,6 @@ msgstr "Guardado en {folder}."
 
 msgid "Saved next to the source"
 msgstr "Se guarda junto al origen"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Desplazar la traducción con la transcripción"
 
 msgid "Search"
 msgstr "Buscar"
@@ -1258,8 +1271,8 @@ msgstr "Mantener encima"
 msgid "Stop adding the subtitles to the video"
 msgstr "Dejar de añadir los subtítulos al vídeo"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Dejar de desplazar la traducción con la transcripción"
+msgid "Stop syncing scrolling"
+msgstr "Dejar de sincronizar el desplazamiento"
 
 msgid "Stop watching"
 msgstr "Dejar de vigilar"
@@ -1288,6 +1301,9 @@ msgstr "Resumen"
 
 msgid "Supported models"
 msgstr "Modelos compatibles"
+
+msgid "Sync scrolling"
+msgstr "Sincronizar desplazamiento"
 
 msgid "System"
 msgstr "Sistema"
@@ -1878,7 +1894,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} archivos"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} min {seconds} s"
 
 #, python-brace-format
@@ -1895,7 +1911,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{remaining} de {total} por revisar"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} s"
 
 #, python-brace-format

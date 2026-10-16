@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -492,9 +492,6 @@ msgstr ""
 "Diekspor ke {path}, tetapi tidak ada fon yang memiliki karakter ini, "
 "sehingga ditampilkan sebagai kotak: {characters}"
 
-msgid "Extract speech"
-msgstr "Ekstrak suara"
-
 msgid "Failed"
 msgstr "Gagal"
 
@@ -596,11 +593,19 @@ msgstr ""
 "Menyorot setiap kata saat diputar (model whisper-1). Membutuhkan waktu "
 "lebih lama."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Menyorot setiap kata saat diputar. Membutuhkan waktu sedikit lebih lama."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr ""
+"Menyorot setiap kata saat diputar dan menemukan kata yang mungkin salah. "
+"Diperlukan oleh subtitle."
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "Menyorot setiap kata saat diputar. Subtitle sudah menggunakannya."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Menyorot setiap kata saat diputar dan menemukan kata yang mungkin salah. "
+"Membutuhkan waktu sedikit lebih lama."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -672,10 +677,12 @@ msgstr "Kata kunci"
 msgid "LLM providers"
 msgstr "Penyedia LLM"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
 msgstr ""
 "Menandai siapa yang berbicara di setiap bagian. Memerlukan token Hugging "
-"Face."
+"Face. Butuh waktu jauh lebih lama."
 
 msgid "Landscape"
 msgstr "Horizontal"
@@ -1054,8 +1061,15 @@ msgstr "Merekam…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Merekam… Tekan tombol untuk berhenti dan mentranskripsi."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Mengurangi musik dan kebisingan latar sebelum mentranskripsi."
+msgid "Reduce background noise"
+msgstr "Kurangi derau latar"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Mengurangi dengung dan derau latar yang konstan, serta meratakan suara "
+"pelan. Butuh waktu lebih lama."
 
 msgid "Refine"
 msgstr "Penyempurnaan"
@@ -1144,9 +1158,6 @@ msgstr "Disimpan di {folder}."
 
 msgid "Saved next to the source"
 msgstr "Disimpan di samping sumber"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Gulir terjemahan bersama transkripsi"
 
 msgid "Search"
 msgstr "Cari"
@@ -1256,8 +1267,8 @@ msgstr "Selalu di atas"
 msgid "Stop adding the subtitles to the video"
 msgstr "Berhenti menambahkan subtitle ke video"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Berhenti menggulir terjemahan bersama transkripsi"
+msgid "Stop syncing scrolling"
+msgstr "Berhenti menyinkronkan guliran"
 
 msgid "Stop watching"
 msgstr "Berhenti memantau"
@@ -1286,6 +1297,9 @@ msgstr "Ringkasan"
 
 msgid "Supported models"
 msgstr "Model yang didukung"
+
+msgid "Sync scrolling"
+msgstr "Sinkronkan guliran"
 
 msgid "System"
 msgstr "Sistem"
@@ -1865,7 +1879,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} file"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} mnt {seconds} dtk"
 
 #, python-brace-format
@@ -1882,7 +1896,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{remaining} dari {total} perlu ditinjau"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} dtk"
 
 #, python-brace-format

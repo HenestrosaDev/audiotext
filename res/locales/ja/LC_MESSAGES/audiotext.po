@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -476,9 +476,6 @@ msgid ""
 " boxes: {characters}"
 msgstr "{path} にエクスポートしましたが、次の文字を含むフォントがないため、四角で表示されます: {characters}"
 
-msgid "Extract speech"
-msgstr "音声を抽出"
-
 msgid "Failed"
 msgstr "失敗"
 
@@ -574,11 +571,15 @@ msgstr "単語をハイライト"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "再生中に各単語をハイライトします（whisper-1 モデル）。時間がかかります。"
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "再生中に各単語をハイライトします。少し時間がかかります。"
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
+msgstr "再生中に各単語をハイライトし、誤っている可能性のある単語を見つけます。字幕に必要です。"
 
-msgid "Highlights each word while playing. The subtitles already use them."
-msgstr "再生中に各単語をハイライトします。字幕ではすでに使用されています。"
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr "再生中に各単語をハイライトし、誤っている可能性のある単語を見つけます。少し時間がかかります。"
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -644,8 +645,10 @@ msgstr "キーワード"
 msgid "LLM providers"
 msgstr "LLM プロバイダー"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "各部分で誰が話しているかを示します。Hugging Face のトークンが必要です。"
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr "各部分で誰が話しているかを示します。Hugging Face のトークンが必要です。かなり時間がかかります。"
 
 msgid "Landscape"
 msgstr "横長"
@@ -1008,8 +1011,13 @@ msgstr "録音しています…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "録音しています… ボタンを押すと停止して文字起こしします。"
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "文字起こしの前に音楽や背景ノイズを抑えます。"
+msgid "Reduce background noise"
+msgstr "背景ノイズを低減"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr "ハム音や一定の背景ノイズを低減し、小さな声を聞き取りやすくします。時間がかかります。"
 
 msgid "Refine"
 msgstr "仕上げ"
@@ -1092,9 +1100,6 @@ msgstr "{folder} に保存しました。"
 
 msgid "Saved next to the source"
 msgstr "ソースと同じ場所に保存"
-
-msgid "Scroll the translation with the transcription"
-msgstr "翻訳を文字起こしと一緒にスクロール"
 
 msgid "Search"
 msgstr "検索"
@@ -1198,8 +1203,8 @@ msgstr "最前面に表示"
 msgid "Stop adding the subtitles to the video"
 msgstr "動画への字幕の追加を中止"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "翻訳と文字起こしの同期スクロールを停止"
+msgid "Stop syncing scrolling"
+msgstr "スクロールの同期を停止"
 
 msgid "Stop watching"
 msgstr "監視を停止"
@@ -1228,6 +1233,9 @@ msgstr "要約"
 
 msgid "Supported models"
 msgstr "対応モデル"
+
+msgid "Sync scrolling"
+msgstr "スクロールを同期"
 
 msgid "System"
 msgstr "システム"
@@ -1781,7 +1789,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} ファイル"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes}分{seconds}秒"
 
 #, python-brace-format
@@ -1798,7 +1806,7 @@ msgid "{remaining} of {total} to review"
 msgstr "確認待ち {total} 件中 {remaining} 件"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds}秒"
 
 #, python-brace-format

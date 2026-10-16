@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:48+0200\n"
+"POT-Creation-Date: 2026-10-16 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -502,9 +502,6 @@ msgstr ""
 "Exporté vers {path}, mais aucune police ne contient ces caractères, ils "
 "sont donc affichés sous forme de carrés : {characters}"
 
-msgid "Extract speech"
-msgstr "Extraire la voix"
-
 msgid "Failed"
 msgstr "Échouée"
 
@@ -604,13 +601,19 @@ msgstr "Surligner les mots"
 msgid "Highlights each word while playing (whisper-1 model). Takes longer."
 msgstr "Surligne chaque mot pendant la lecture (modèle whisper-1). Plus long."
 
-msgid "Highlights each word while playing. Takes a bit longer."
-msgstr "Surligne chaque mot pendant la lecture. Un peu plus long."
-
-msgid "Highlights each word while playing. The subtitles already use them."
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Needed by the subtitles."
 msgstr ""
-"Surligne chaque mot pendant la lecture. Les sous-titres les utilisent "
-"déjà."
+"Surligne chaque mot pendant la lecture et repère les mots qui pourraient "
+"être erronés. Nécessaire pour les sous-titres."
+
+msgid ""
+"Highlights each word while playing and finds the words that may be wrong."
+" Takes a bit longer."
+msgstr ""
+"Surligne chaque mot pendant la lecture et repère les mots qui pourraient "
+"être erronés. Un peu plus long."
 
 msgid ""
 "How many parts of the audio are transcribed at once. Higher is faster but"
@@ -682,8 +685,12 @@ msgstr "Mots-clés"
 msgid "LLM providers"
 msgstr "Fournisseurs de LLM"
 
-msgid "Labels who speaks in each part. Requires a Hugging Face token."
-msgstr "Indique qui parle dans chaque partie. Nécessite un jeton Hugging Face."
+msgid ""
+"Labels who speaks in each part. Requires a Hugging Face token. Takes "
+"noticeably longer."
+msgstr ""
+"Indique qui parle dans chaque partie. Nécessite un jeton Hugging Face. "
+"Nettement plus long."
 
 msgid "Landscape"
 msgstr "Horizontale"
@@ -1069,8 +1076,15 @@ msgstr "Enregistrement…"
 msgid "Recording… Press the button to stop and transcribe."
 msgstr "Enregistrement… Appuyez sur le bouton pour arrêter et transcrire."
 
-msgid "Reduces music and background noise before transcribing."
-msgstr "Réduit la musique et le bruit de fond avant la transcription."
+msgid "Reduce background noise"
+msgstr "Réduire le bruit de fond"
+
+msgid ""
+"Reduces hum and steady background noise, and evens out quiet speech. "
+"Takes longer."
+msgstr ""
+"Réduit le bourdonnement et le bruit de fond constant, et égalise la "
+"parole faible. Prend plus de temps."
 
 msgid "Refine"
 msgstr "Affiner"
@@ -1159,9 +1173,6 @@ msgstr "Enregistré dans {folder}."
 
 msgid "Saved next to the source"
 msgstr "Enregistré à côté de la source"
-
-msgid "Scroll the translation with the transcription"
-msgstr "Faire défiler la traduction avec la transcription"
 
 msgid "Search"
 msgstr "Rechercher"
@@ -1271,8 +1282,8 @@ msgstr "Garder au premier plan"
 msgid "Stop adding the subtitles to the video"
 msgstr "Arrêter l'ajout des sous-titres à la vidéo"
 
-msgid "Stop scrolling the translation with the transcription"
-msgstr "Ne plus faire défiler la traduction avec la transcription"
+msgid "Stop syncing scrolling"
+msgstr "Ne plus synchroniser le défilement"
 
 msgid "Stop watching"
 msgstr "Arrêter la surveillance"
@@ -1301,6 +1312,9 @@ msgstr "Résumé"
 
 msgid "Supported models"
 msgstr "Modèles compatibles"
+
+msgid "Sync scrolling"
+msgstr "Synchroniser le défilement"
 
 msgid "System"
 msgstr "Système"
@@ -1897,7 +1911,7 @@ msgid "{done}/{total} files"
 msgstr "{done}/{total} fichiers"
 
 #, python-brace-format
-msgid "{minutes} min {seconds} s"
+msgid "{minutes} min {seconds} sec"
 msgstr "{minutes} min {seconds} s"
 
 #, python-brace-format
@@ -1914,7 +1928,7 @@ msgid "{remaining} of {total} to review"
 msgstr "{remaining} sur {total} à revoir"
 
 #, python-brace-format
-msgid "{seconds} s"
+msgid "{seconds} sec"
 msgstr "{seconds} s"
 
 #, python-brace-format
