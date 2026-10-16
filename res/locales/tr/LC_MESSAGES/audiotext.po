@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -440,9 +440,6 @@ msgstr "Zamanlamayı düzenle"
 msgid "Edit the timing…"
 msgstr "Zamanlamayı düzenle…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "Burada yapılan düzenlemeler altyazıları değiştirmez."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Boş. Bir transkripsiyon eklemek için üzerine sağ tıklayıp \"Gruba taşı\" "
@@ -531,6 +528,16 @@ msgstr "{language} çeviride bul ve değiştir"
 
 msgid "Find in the summary"
 msgstr "Özette bul"
+
+msgid "Find in the transcription"
+msgstr "Transkripsiyonda bul"
+
+msgid "Find in the translation"
+msgstr "Çeviride bul"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "{language} çeviride bul"
 
 msgid "Find:"
 msgstr "Bul:"
@@ -1044,6 +1051,9 @@ msgstr "Sağlayıcılar"
 msgid "Queued"
 msgstr "Kuyrukta"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "Salt okunur. Bu metni değiştirmek için altyazıları düzenleyin."
+
 msgid "Reading…"
 msgstr "Okunuyor…"
 
@@ -1241,9 +1251,6 @@ msgstr "Boyut"
 
 msgid "Small"
 msgstr "Küçük"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr "Bazı altyazılar henüz çevrilmedi, bu yüzden bu metinde yer almıyor."
 
 msgid "Source"
 msgstr "Kaynak"
@@ -1521,13 +1528,6 @@ msgstr "Bu transkripsiyonun zaman damgası yok."
 
 msgid "Time format"
 msgstr "Saat biçimi"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Zaman damgaları yalnızca WhisperX ile ve Whisper API'nin whisper-1 ve "
-"gpt-4o-transcribe-diarize modelleriyle kullanılabilir."
 
 msgid "Timestamps of the words"
 msgstr "Kelimelerin zaman damgaları"
@@ -1819,9 +1819,6 @@ msgstr "Kelime düzeyinde zamanlama"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Doğrudan hedef dilde yaz ({language}, deneysel)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Metni düzenleyebilirsiniz. Değişiklikler otomatik olarak kaydedilir."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -443,9 +443,6 @@ msgstr "Editează temporizarea"
 msgid "Edit the timing…"
 msgstr "Editează temporizarea…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "Modificările făcute aici nu schimbă subtitrările."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Gol. Pentru a adăuga o transcriere, faceți clic dreapta pe ea și alegeți "
@@ -534,6 +531,16 @@ msgstr "Caută și înlocuiește în traducerea în {language}"
 
 msgid "Find in the summary"
 msgstr "Caută în rezumat"
+
+msgid "Find in the transcription"
+msgstr "Caută în transcriere"
+
+msgid "Find in the translation"
+msgstr "Caută în traducere"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "Caută în traducerea în {language}"
 
 msgid "Find:"
 msgstr "Caută:"
@@ -1052,6 +1059,9 @@ msgstr "Furnizori"
 msgid "Queued"
 msgstr "În coadă"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "Doar citire. Editează subtitrările pentru a schimba acest text."
+
 msgid "Reading…"
 msgstr "Se citește…"
 
@@ -1253,9 +1263,6 @@ msgstr "Dimensiune"
 
 msgid "Small"
 msgstr "Mic"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr "Unele subtitrări nu sunt încă traduse, așa că lipsesc din acest text."
 
 msgid "Source"
 msgstr "Sursă"
@@ -1536,13 +1543,6 @@ msgstr "Această transcriere nu are marcaje de timp."
 
 msgid "Time format"
 msgstr "Formatul orei"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Marcajele de timp sunt disponibile doar cu WhisperX și cu modelele "
-"whisper-1 și gpt-4o-transcribe-diarize ale API-ului Whisper."
 
 msgid "Timestamps of the words"
 msgstr "Marcaje de timp ale cuvintelor"
@@ -1833,9 +1833,6 @@ msgstr "Temporizare pe cuvânt"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Scrie-o direct în limba: {language} (experimental)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Puteți edita textul. Modificările sunt salvate automat."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

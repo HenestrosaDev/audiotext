@@ -123,7 +123,6 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         on_scroll: Callable[[], None] | None = None,
         on_flagged_click: Callable[[FlaggedText], None] | None = None,
         on_reveal: Callable[[int], None] | None = None,
-        show_usage_hints: bool = True,
         show_summary: bool = True,
         empty_segment_text: Text | None = None,
         empty_segment_action: tuple[Text, Callable[[int], None]] | None = None,
@@ -140,8 +139,6 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         :param on_reveal: Called with the index of a segment of the transcription
                           that is hidden (see `show_only`) and has to be shown,
                           e.g. because a search went to it.
-        :param show_usage_hints: Whether to explain above the plain text how to
-                                 use it (e.g. that it can be edited).
         :param show_summary: Whether to tell above the segments how many subtitles
                              are shown, and how many speakers.
         :param empty_segment_text: Shown, dimmed, in place of the text of a
@@ -166,7 +163,6 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._on_scroll = on_scroll
         self._on_flagged_click = on_flagged_click
         self._on_reveal = on_reveal
-        self._show_usage_hints = show_usage_hints
         self._show_summary = show_summary
         self._empty_segment_text = empty_segment_text
         self._empty_segment_action = empty_segment_action
@@ -185,7 +181,6 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._text_starts: list[str] = []
         self._current_segment: int | None = None
         self._current_word: int | None = None
-        self._is_text_edited = False
         self._mode = PLAIN_TEXT_MODE
         self._is_precise = False
         # The segment of the transcription that each segment shown is part of
@@ -205,8 +200,6 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self._current_match: int | None = None
         self._save_text_after_id: str | None = None
         self._note = ""
-        # Shown instead of the note with the plain text, which has no segments
-        self._plain_text_note = ""
         self._is_note_error = False
         # Whether the note has buttons to go to the segments without a text
         self._can_go_to_empty = False
@@ -368,7 +361,6 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         self,
         segments: list[TranscriptSegment],
         text: str,
-        is_text_edited: bool,
         source_indexes: list[int] | None = None,
     ) -> None:
         """
@@ -382,15 +374,18 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
             source_indexes if source_indexes is not None else list(range(len(segments)))
         )
         self._segment_starts = [segment.start for segment in segments]
-        self._is_text_edited = is_text_edited
         self._current_segment = self._current_word = None
 
         self._render_transcript()
         # The text being edited is not replaced, so its cursor is kept
         if self.get_text() != text:
+            self.tbx_plain.configure(state=ctk.NORMAL)
             self.tbx_plain.delete("1.0", ctk.END)
             self.tbx_plain.insert("1.0", text)
             self.tbx_plain.edit_reset()
+        # With segments, the text is built from them, which are what's edited.
+        # Without them, the text is all there is to correct
+        self.tbx_plain.configure(state=ctk.DISABLED if segments else ctk.NORMAL)
 
         if not segments:
             self._mode = PLAIN_TEXT_MODE
@@ -430,7 +425,6 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         note: str,
         is_error: bool = False,
         can_go_to_empty: bool = False,
-        plain_text_note: str = "",
     ) -> None:
         """
         Shows a note on its own line, above the hints of the text. An error
@@ -439,18 +433,17 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         :param note: Shown with the segments, if it's not an error.
         :param can_go_to_empty: Whether the note has buttons to go to the segments
                                 without a text (see `go_to_empty_segment`).
-        :param plain_text_note: Shown instead with the plain text.
         """
         self._note = note
         self._is_note_error = is_error
         self._can_go_to_empty = can_go_to_empty
-        self._plain_text_note = plain_text_note
         self._show_hint()
 
     def _shown_note(self) -> str:
+        # The plain text has no hints, only errors
         if self._is_note_error or self._mode == TRANSCRIPT_MODE:
             return self._note
-        return self._plain_text_note
+        return ""
 
     def _show_hint(self) -> None:
         """
@@ -463,24 +456,14 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         # An error replaces the hints
         note = self._shown_note()
         is_error = bool(note and self._is_note_error)
-        if self._mode == TRANSCRIPT_MODE and self._show_summary and not is_error:
-            if summary := self._summary():
-                hints.append(summary)
-        elif self._mode == PLAIN_TEXT_MODE and not is_error:
-            if self._show_usage_hints:
-                hints.append(
-                    _("You can edit the text. The changes are saved automatically.")
-                )
-            if self._is_text_edited:
-                hints.append(_("Edits made here don't change the subtitles."))
-            if self._show_usage_hints and not self._segments:
-                hints.append(
-                    _(
-                        "Timestamps are only available with WhisperX and the "
-                        "whisper-1 and gpt-4o-transcribe-diarize models of the "
-                        "Whisper API."
-                    )
-                )
+        # The plain text has none
+        if (
+            self._mode == TRANSCRIPT_MODE
+            and self._show_summary
+            and not is_error
+            and (summary := self._summary())
+        ):
+            hints.append(summary)
         self.lbl_hint.configure(text=" ".join(hints))
         if hints:
             self.lbl_hint.grid()
@@ -1287,6 +1270,9 @@ class TranscriptText(ctk.CTkFrame):  # type: ignore[misc]
         return None
 
     def _schedule_text_save(self) -> None:
+        # The keys still reach the read-only text (see `set_content`)
+        if self.tbx_plain.cget("state") == ctk.DISABLED:
+            return
         if self._save_text_after_id:
             self.after_cancel(self._save_text_after_id)
         self._save_text_after_id = self.after(TEXT_SAVE_DELAY_MS, self._save_text_now)

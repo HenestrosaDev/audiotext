@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -437,9 +437,6 @@ msgstr "Изменить тайминг"
 msgid "Edit the timing…"
 msgstr "Изменить тайминг…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "Изменения здесь не затрагивают субтитры."
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
 "Пусто. Чтобы добавить транскрипцию, нажмите на неё правой кнопкой и "
@@ -528,6 +525,16 @@ msgstr "Найти и заменить в переводе на {language}"
 
 msgid "Find in the summary"
 msgstr "Найти в сводке"
+
+msgid "Find in the transcription"
+msgstr "Найти в транскрипции"
+
+msgid "Find in the translation"
+msgstr "Найти в переводе"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "Найти в переводе на {language}"
 
 msgid "Find:"
 msgstr "Найти:"
@@ -1044,6 +1051,9 @@ msgstr "Поставщики"
 msgid "Queued"
 msgstr "В очереди"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "Только для чтения. Чтобы изменить этот текст, отредактируйте субтитры."
+
 msgid "Reading…"
 msgstr "Чтение…"
 
@@ -1245,9 +1255,6 @@ msgstr "Размер"
 
 msgid "Small"
 msgstr "Мелкий"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr "Некоторые субтитры ещё не переведены, поэтому их нет в этом тексте."
 
 msgid "Source"
 msgstr "Источник"
@@ -1527,13 +1534,6 @@ msgstr "У этой транскрипции нет временных мето�
 
 msgid "Time format"
 msgstr "Формат времени"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"Временные метки доступны только с WhisperX и с моделями whisper-1 и gpt-"
-"4o-transcribe-diarize в Whisper API."
 
 msgid "Timestamps of the words"
 msgstr "Временные метки слов"
@@ -1824,9 +1824,6 @@ msgstr "Тайминг слов"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "Писать сразу на нужном языке ({language}, экспериментально)"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "Текст можно редактировать. Изменения сохраняются автоматически."
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:57+0200\n"
+"POT-Creation-Date: 2026-10-16 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -424,9 +424,6 @@ msgstr "编辑时间"
 msgid "Edit the timing…"
 msgstr "编辑时间…"
 
-msgid "Edits made here don't change the subtitles."
-msgstr "在此处的编辑不会更改字幕。"
-
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr "空。要添加转写，请右键点击它并选择“移到分组”。"
 
@@ -511,6 +508,16 @@ msgstr "在{language}译文中查找和替换"
 
 msgid "Find in the summary"
 msgstr "在摘要中查找"
+
+msgid "Find in the transcription"
+msgstr "在转录内容中查找"
+
+msgid "Find in the translation"
+msgstr "在译文中查找"
+
+#, python-brace-format
+msgid "Find in the translation into {language}"
+msgstr "在{language}译文中查找"
 
 msgid "Find:"
 msgstr "查找："
@@ -994,6 +1001,9 @@ msgstr "提供商"
 msgid "Queued"
 msgstr "排队中"
 
+msgid "Read-only. Edit the subtitles to change this text."
+msgstr "只读。编辑字幕即可更改此文本。"
+
 msgid "Reading…"
 msgstr "正在读取…"
 
@@ -1181,9 +1191,6 @@ msgstr "大小"
 
 msgid "Small"
 msgstr "小"
-
-msgid "Some subtitles aren't translated yet, so they're left out of this text."
-msgstr "部分字幕尚未翻译，因此未包含在此文本中。"
 
 msgid "Source"
 msgstr "来源"
@@ -1448,13 +1455,6 @@ msgstr "此转写没有时间戳。"
 
 msgid "Time format"
 msgstr "时间格式"
-
-msgid ""
-"Timestamps are only available with WhisperX and the whisper-1 and gpt-4o-"
-"transcribe-diarize models of the Whisper API."
-msgstr ""
-"时间戳仅适用于 WhisperX 以及 Whisper API 的 whisper-1 和 gpt-4o-transcribe-diarize "
-"模型。"
 
 msgid "Timestamps of the words"
 msgstr "单词时间戳"
@@ -1726,9 +1726,6 @@ msgstr "逐词时间"
 #, python-brace-format
 msgid "Write it directly in {language} (experimental)"
 msgstr "直接用{language}书写（实验性）"
-
-msgid "You can edit the text. The changes are saved automatically."
-msgstr "你可以编辑文本。更改会自动保存。"
 
 msgid ""
 "You can keep using Audiotext meanwhile. The result is saved in your "

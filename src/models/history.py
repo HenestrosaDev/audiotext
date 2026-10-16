@@ -5,7 +5,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
-from models.transcript_segment import TranscriptSegment
+from models.transcript_segment import TranscriptSegment, join_segments
 from models.translation import TranscriptTranslation
 from utils.enums import AudioSource, TranscriptionMethod
 
@@ -72,7 +72,8 @@ class HistoryEntry:
     parent_id: str | None = None
     text: str = ""
     segments: list[TranscriptSegment] = field(default_factory=list)
-    # Whether the user has edited the text, which then differs from the segments
+    # Whether the user has edited the text, which can only be done without
+    # segments: with them, the text is always built from them
     is_text_edited: bool = False
     # Language of the result (e.g. "en"), if known
     language: str | None = None
@@ -176,5 +177,10 @@ class HistoryEntry:
             TranscriptSegment.from_dict(segment)
             for segment in values.get("segments", [])
         ]
+        # Older versions let the user edit the text of the segments, which is now
+        # built from them, as they're what's corrected
+        if values["segments"] and values.get("is_text_edited"):
+            values["text"] = join_segments(values["segments"])
+            values["is_text_edited"] = False
 
         return cls(**values)
