@@ -1,7 +1,8 @@
 """
-Answers questions about transcriptions with a language model of the provider of
-the summaries (see `AiProvider`). If the transcription has timestamps, each answer
-links to the parts of the transcription that support it.
+Answers questions about transcriptions with a language model of the provider set
+for them, or of the one of the summaries if none is (see `AiProvider`).
+If the transcription has timestamps, each answer links to the parts of the
+transcription that support it.
 """
 
 from datetime import datetime
@@ -131,8 +132,8 @@ class QuestionHandler:
         Answers a question about a transcription.
 
         :param provider: The provider of the language model. Defaults to the one
-                         of the summaries.
-        :param model: The language model. Defaults to the one of the summaries, or
+                         of the questions (see `ConfigAi.ask_provider_and_model`).
+        :param model: The language model. Defaults to the one of the questions, or
                       to the default one of the provider.
         :raises ValueError: If there is no question or nothing to ask about, or the
                             reply of the model is not valid.
@@ -145,9 +146,11 @@ class QuestionHandler:
             raise ValueError("There is no question or no transcription")
 
         if provider is None:
-            config = cm.ConfigManager.get_config_ai()
-            provider = get_provider(config.summary_provider)
-            model = model or config.summary_model
+            provider_name, config_model = (
+                cm.ConfigManager.get_config_ai().ask_provider_and_model()
+            )
+            provider = get_provider(provider_name)
+            model = model or config_model
         model = resolve_model(provider, model)
         is_partial = len(transcript) > MAX_INPUT_CHARS
         has_timestamps = bool(segments)

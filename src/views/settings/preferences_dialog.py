@@ -50,6 +50,7 @@ from views.localization import (
 )
 from views.settings.option_labels import save_config
 from views.style import icons, theme
+from views.widgets.bindings import bind_wraplength
 from views.widgets.localized_options import LocalizedOptions
 from views.widgets.option_menu import CTkOptionMenu, skip_scrollbar_forced_layout
 from views.widgets.scrollable_frame import CTkScrollableFrame
@@ -57,48 +58,36 @@ from views.widgets.window import place_dialog
 
 DEBOUNCE_DELAY_MS = 600
 ABOUT_ICON_SIZE = 96
+KEY_ICON_SIZE = 14
 
 # Tabs that can be opened directly (see `PreferencesDialog`)
 GENERAL_TAB = "general"
-AI_TAB = "ai"
+PROVIDERS_TAB = "providers"
 API_KEYS_TAB = "api_keys"
-WHISPERX_TAB = "whisperx"
+TRANSCRIPTION_TAB = "transcription"
 SUBTITLES_TAB = "subtitles"
-WHISPER_API_TAB = "whisper_api"
 ABOUT_TAB = "about"
 
 
-def api_key_labels() -> dict[EnvKeys, tuple[str, str]]:
-    """The title and the description of each API key."""
+def api_key_labels() -> dict[EnvKeys, tuple[str, str | None]]:
+    """
+    The title and the description of each API key. The keys whose use the
+    subtitle of their group already explains have none.
+    """
     return {
         EnvKeys.OPENAI_API_KEY: (
             _("OpenAI API key"),
-            _(
-                "Required by the Whisper API, and to summarize and translate with OpenAI."
-            ),
+            _("Also required for transcription with the Whisper API."),
         ),
-        EnvKeys.ANTHROPIC_API_KEY: (
-            _("Anthropic API key"),
-            _("Required to summarize and translate with Claude."),
-        ),
-        EnvKeys.DEEPSEEK_API_KEY: (
-            _("DeepSeek API key"),
-            _("Required to summarize and translate with DeepSeek."),
-        ),
+        EnvKeys.ANTHROPIC_API_KEY: (_("Anthropic API key"), None),
+        EnvKeys.DEEPSEEK_API_KEY: (_("DeepSeek API key"), None),
+        # Often mistaken for the keys of Google Cloud
         EnvKeys.GEMINI_API_KEY: (
             _("Gemini API key"),
-            _(
-                "Required to summarize and translate with Gemini (from Google AI Studio)."
-            ),
+            _("Get it from Google AI Studio."),
         ),
-        EnvKeys.MISTRAL_API_KEY: (
-            _("Mistral API key"),
-            _("Required to summarize and translate with Mistral."),
-        ),
-        EnvKeys.XAI_API_KEY: (
-            _("xAI API key"),
-            _("Required to summarize and translate with Grok."),
-        ),
+        EnvKeys.MISTRAL_API_KEY: (_("Mistral API key"), None),
+        EnvKeys.XAI_API_KEY: (_("xAI API key"), None),
         EnvKeys.DEEPL_API_KEY: (
             _("DeepL API key"),
             _("Required to translate with DeepL. Keys of the free plan work too."),
@@ -118,9 +107,45 @@ def api_key_labels() -> dict[EnvKeys, tuple[str, str]]:
     }
 
 
-def api_key_text(env_key: EnvKeys, index: int) -> Text:
-    """The title (0) or the description (1) of an API key."""
-    return lambda: api_key_labels()[env_key][index]
+def api_key_groups() -> list[tuple[Text, Text | None, list[EnvKeys]]]:
+    """
+    The API keys grouped by what they're used for, with the title and the
+    subtitle of each group.
+    """
+    return [
+        (
+            L_("LLM providers"),
+            L_(
+                "Needed to use these providers for summaries, questions, and "
+                "translations."
+            ),
+            [
+                EnvKeys.OPENAI_API_KEY,
+                EnvKeys.ANTHROPIC_API_KEY,
+                EnvKeys.DEEPSEEK_API_KEY,
+                EnvKeys.GEMINI_API_KEY,
+                EnvKeys.MISTRAL_API_KEY,
+                EnvKeys.XAI_API_KEY,
+            ],
+        ),
+        (L_("Translation"), None, [EnvKeys.DEEPL_API_KEY, EnvKeys.GOOGLE_API_KEY]),
+        (L_("Transcription"), None, [EnvKeys.HF_TOKEN]),
+    ]
+
+
+def api_key_title(env_key: EnvKeys) -> Text:
+    return lambda: api_key_labels()[env_key][0]
+
+
+def api_key_description(env_key: EnvKeys) -> Text | None:
+    if api_key_labels()[env_key][1] is None:
+        return None
+    return lambda: api_key_labels()[env_key][1] or ""
+
+
+def engines_docs_url() -> str:
+    """The page of the documentation that compares the engines and their models."""
+    return get_docs_url(c.DOCS_URL, get_language()) + "reference/engines/"
 
 
 class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
@@ -140,7 +165,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         on_subtitles_change: Callable[[], None] | None = None,
     ) -> None:
         """
-        :param initial_tab: The tab shown first, e.g. `AI_TAB`. Defaults to the
+        :param initial_tab: The tab shown first, e.g. `PROVIDERS_TAB`. Defaults to the
                             general one.
         :param on_ai_change: Called when the provider of the summaries or the
                              translations changes.
@@ -176,7 +201,9 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        self.tabs = ctk.CTkTabview(self)
+        # The background of the main window, so the cards of the sections stand
+        # out from it as they do there
+        self.tabs = ctk.CTkTabview(self, fg_color=theme.WINDOW_BG)
         self.tabs.grid(row=0, column=0, padx=16, pady=(8, 16), sticky=ctk.NSEW)
 
         self._key_buttons: dict[EnvKeys, list[ctk.CTkButton]] = {}
@@ -185,21 +212,19 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         # renamed when the language changes
         self._tab_texts: dict[str, Text] = {
             GENERAL_TAB: L_("General"),
-            AI_TAB: L_("AI"),
+            PROVIDERS_TAB: L_("Providers"),
             API_KEYS_TAB: L_("API keys"),
-            WHISPERX_TAB: lambda: "WhisperX",
+            TRANSCRIPTION_TAB: L_("Transcription"),
             SUBTITLES_TAB: L_("Subtitles"),
-            WHISPER_API_TAB: lambda: "Whisper API",
             ABOUT_TAB: L_("About"),
         }
         self._tab_names = {tab: text() for tab, text in self._tab_texts.items()}
         tabs = {tab: self.tabs.add(name) for tab, name in self._tab_names.items()}
         self._init_general(tabs[GENERAL_TAB])
-        self._init_ai(tabs[AI_TAB])
+        self._init_providers(tabs[PROVIDERS_TAB])
         self._init_api_keys(tabs[API_KEYS_TAB])
-        self._init_whisperx(tabs[WHISPERX_TAB])
+        self._init_transcription(tabs[TRANSCRIPTION_TAB])
         self._init_subtitles(tabs[SUBTITLES_TAB])
-        self._init_whisper_api(tabs[WHISPER_API_TAB])
         self._init_about(tabs[ABOUT_TAB])
         self._refresh_key_buttons()
         on_language_change(self, self._rename_tabs)
@@ -222,7 +247,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         super().destroy()
 
     def show_tab(self, tab: str) -> None:
-        """Shows a tab, e.g. `AI_TAB`."""
+        """Shows a tab, e.g. `PROVIDERS_TAB`."""
         if name := self._tab_names.get(tab):
             self.tabs.set(name)
 
@@ -252,18 +277,77 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             ctk.CTkLabel(frame, font=theme.font(13), anchor=ctk.W), text=label
         ).grid(row=0, column=0, sticky=ctk.W)
         if hint:
-            localize(
+            hint_label = localize(
                 ctk.CTkLabel(
                     frame,
                     font=theme.font(12),
                     text_color=theme.HINT_TEXT,
                     anchor=ctk.W,
                     justify=ctk.LEFT,
-                    wraplength=340,
+                    wraplength=300,
                 ),
                 text=hint,
-            ).grid(row=1, column=0, sticky=ctk.W)
+            )
+            # It takes the width that the control of the row leaves, which is
+            # narrower inside the cards of the sections
+            hint_label.grid(row=1, column=0, sticky=ctk.EW)
+            bind_wraplength(hint_label, minimum=160)
         return frame
+
+    @staticmethod
+    def _section(
+        tab: Any, row: int, title: Text, subtitle: Text | None = None
+    ) -> ctk.CTkFrame:
+        """
+        A card with a title that groups some rows, so the groups of a tab stand
+        apart, also while it scrolls. The rows go in the frame that it returns.
+        """
+        tab.grid_columnconfigure(0, weight=1)
+        card = ctk.CTkFrame(
+            tab,
+            fg_color=theme.CARD_BG,
+            border_color=theme.CARD_BORDER,
+            border_width=1,
+            corner_radius=10,
+        )
+        card.grid(row=row, column=0, padx=(0, 4), pady=(0, 12), sticky=ctk.EW)
+        card.grid_columnconfigure(0, weight=1)
+        localize(
+            ctk.CTkLabel(card, font=theme.font(14, "bold"), anchor=ctk.W), text=title
+        ).grid(row=0, column=0, padx=16, pady=(12, 0), sticky=ctk.W)
+        if subtitle:
+            subtitle_label = localize(
+                ctk.CTkLabel(
+                    card,
+                    font=theme.font(12),
+                    text_color=theme.HINT_TEXT,
+                    anchor=ctk.W,
+                    justify=ctk.LEFT,
+                    wraplength=300,
+                ),
+                text=subtitle,
+            )
+            subtitle_label.grid(row=1, column=0, padx=16, sticky=ctk.EW)
+            bind_wraplength(subtitle_label, minimum=160)
+        body = ctk.CTkFrame(card, fg_color="transparent")
+        body.grid(row=2, column=0, padx=8, pady=(0, 8), sticky=ctk.EW)
+        return body
+
+    @staticmethod
+    def _link(frame: Any, row: int, text: Text, get_url: Callable[[], str]) -> None:
+        """A text that opens a web page, below the label of a row."""
+        label = localize(
+            ctk.CTkLabel(
+                frame,
+                font=ctk.CTkFont(size=12, underline=True),
+                text_color=theme.ACCENT_TEXT,
+                anchor=ctk.W,
+                cursor="hand2",
+            ),
+            text=text,
+        )
+        label.grid(row=row, column=0, sticky=ctk.W)
+        label.bind("<Button-1>", lambda _event: webbrowser.open(get_url()))
 
     def _entry(
         self,
@@ -357,7 +441,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             tab,
             5,
             L_("Notifications"),
-            L_("Shows a notification of the system when a transcription is ready."),
+            L_("Shows a system notification when a transcription is ready."),
         )
         self._switch(
             frame,
@@ -365,12 +449,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             lambda is_on: save_config(ConfigSystem.Key.NOTIFY_WHEN_DONE, str(is_on)),
         )
 
-        frame = self._row(
-            tab,
-            6,
-            L_("Updates"),
-            L_("Checks for a new version when the app opens."),
-        )
+        frame = self._row(tab, 6, L_("Check for updates automatically"))
         self._switch(
             frame,
             self._config_system.check_for_updates,
@@ -403,7 +482,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             tab,
             4,
             L_("Time format"),
-            L_("Automatic uses the clock of the interface language."),
+            L_("Automatic follows the time format of the interface language."),
         )
         time_menu = ctk.CTkSegmentedButton(frame, values=[])
         LocalizedOptions(
@@ -439,11 +518,22 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         frame.grid(row=0, column=0, sticky=ctk.NSEW)
         return frame
 
+    @staticmethod
+    def _key_icon(is_set: bool) -> ctk.CTkImage:
+        """
+        A check for the keys that are set, so they're told apart at a glance in a
+        long list. Both buttons have an icon, so their texts line up.
+        """
+        if is_set:
+            return icons.icon("check", KEY_ICON_SIZE, theme.SUCCESS_TEXT)
+        return icons.icon("plus", KEY_ICON_SIZE, theme.ICON_MUTED)
+
     def _key_button(self, frame: Any, env_key: EnvKeys, column: int = 1) -> None:
         """A button that sets the API key, showing whether it's set."""
         button = ctk.CTkButton(
             frame,
             width=self._key_button_width(),
+            compound=ctk.LEFT,
             command=lambda: self._set_key(env_key),
             **theme.SECONDARY_BUTTON,
         )
@@ -452,11 +542,13 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
     def _init_api_keys(self, tab: Any) -> None:
         frame = self._scrollable(tab)
-        for row, env_key in enumerate(api_key_labels()):
-            row_frame = self._row(
-                frame, row, api_key_text(env_key, 0), api_key_text(env_key, 1)
-            )
-            self._key_button(row_frame, env_key)
+        for section_row, (title, subtitle, env_keys) in enumerate(api_key_groups()):
+            section = self._section(frame, section_row, title, subtitle)
+            for row, env_key in enumerate(env_keys):
+                row_frame = self._row(
+                    section, row, api_key_title(env_key), api_key_description(env_key)
+                )
+                self._key_button(row_frame, env_key)
 
     def _set_key(self, env_key: EnvKeys) -> None:
         self._on_set_api_key(env_key, api_key_labels()[env_key][0])
@@ -470,6 +562,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             is_set = bool(env_key.get_value(default=""))
             text = L_("Change API key…") if is_set else L_("Set API key…")
             for button in buttons:
+                button.configure(image=self._key_icon(is_set))
                 localize(button, text=text)
 
     def _key_button_width(self) -> float:
@@ -479,10 +572,15 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         """
         if self._key_width is None:
             # Measured with a button that isn't shown, so the others don't change
-            probe = ctk.CTkButton(self, width=0, **theme.SECONDARY_BUTTON)
+            probe = ctk.CTkButton(
+                self, width=0, compound=ctk.LEFT, **theme.SECONDARY_BUTTON
+            )
             widths = []
-            for text in (_("Set API key…"), _("Change API key…")):
-                probe.configure(text=text)
+            for text, is_set in (
+                (_("Set API key…"), False),
+                (_("Change API key…"), True),
+            ):
+                probe.configure(text=text, image=self._key_icon(is_set))
                 probe.update_idletasks()
                 widths.append(probe.winfo_reqwidth())
             # In unscaled pixels, as the width of the buttons is given
@@ -499,24 +597,57 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
                 if button.winfo_exists():
                     button.configure(width=width)
 
-    def _init_ai(self, tab: Any) -> None:
+    def _init_providers(self, tab: Any) -> None:
         frame = self._scrollable(tab)
         ai_names = {provider.value: info.name for provider, info in PROVIDERS.items()}
-        self._init_provider_rows(
-            frame,
-            row=0,
-            title=L_("Summary"),
-            get_labels=lambda: dict(
-                sorted(ai_names.items(), key=lambda item: sort_key(item[1]))
-            ),
-            provider=get_provider(self._config_ai.summary_provider).value,
-            model=self._config_ai.summary_model,
-            provider_key=ConfigAi.Key.SUMMARY_PROVIDER,
-            model_key=ConfigAi.Key.SUMMARY_MODEL,
-            get_env_key=lambda value: PROVIDERS[get_provider(value)].env_key,
-            get_default_model=lambda value: (
-                PROVIDERS[get_provider(value)].default_model
-            ),
+
+        def init_ai_rows(
+            row: int,
+            title: Text,
+            provider: str,
+            model: str,
+            provider_key: ConfigAi.Key,
+            model_key: ConfigAi.Key,
+        ) -> None:
+            self._init_provider_rows(
+                frame,
+                row=row,
+                title=title,
+                get_labels=lambda: dict(
+                    sorted(ai_names.items(), key=lambda item: sort_key(item[1]))
+                ),
+                provider=get_provider(provider).value,
+                model=model,
+                provider_key=provider_key,
+                model_key=model_key,
+                get_env_key=lambda value: PROVIDERS[get_provider(value)].env_key,
+                get_default_model=lambda value: (
+                    PROVIDERS[get_provider(value)].default_model
+                ),
+            )
+
+        init_ai_rows(
+            0,
+            L_("Summary"),
+            self._config_ai.summary_provider,
+            self._config_ai.summary_model,
+            ConfigAi.Key.SUMMARY_PROVIDER,
+            ConfigAi.Key.SUMMARY_MODEL,
+        )
+        ask_provider, ask_model = self._config_ai.ask_provider_and_model()
+        # Until it's set, it's the provider of the summaries, which answered the
+        # questions before they had their own. It's saved as shown, so changing
+        # only the model keeps the provider
+        if not self._config_ai.ask_provider:
+            save_config(ConfigAi.Key.ASK_PROVIDER, ask_provider)
+            save_config(ConfigAi.Key.ASK_MODEL, ask_model)
+        init_ai_rows(
+            1,
+            L_("Ask"),
+            ask_provider,
+            ask_model,
+            ConfigAi.Key.ASK_PROVIDER,
+            ConfigAi.Key.ASK_MODEL,
         )
 
         translation_provider = self._config_ai.translation_provider
@@ -529,7 +660,7 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
 
         self._init_provider_rows(
             frame,
-            row=3,
+            row=2,
             title=L_("Translation"),
             get_labels=translation_providers,
             provider=translation_provider,
@@ -540,13 +671,9 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             get_default_model=default_translation_model,
         )
 
-        localize(
-            ctk.CTkLabel(frame, font=theme.font(14, "bold"), anchor=ctk.W),
-            text=L_("Ollama"),
-        ).grid(row=6, column=0, padx=8, pady=(18, 0), sticky=ctk.W)
         row_frame = self._row(
-            frame,
-            7,
+            self._section(frame, 3, L_("Ollama")),
+            0,
             L_("Server URL"),
             L_("Ollama runs the models on your computer, without an API key."),
         )
@@ -572,20 +699,18 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         get_default_model: Callable[[str], str],
     ) -> None:
         """
-        The rows to choose a provider and its model, with a button to set the API
+        A section to choose a provider and its model, with a button to set the API
         key of the provider. The model is the default one of the provider unless
         the user changes it.
         """
-        localize(
-            ctk.CTkLabel(frame, font=theme.font(14, "bold"), anchor=ctk.W), text=title
-        ).grid(row=row, column=0, padx=8, pady=(18 if row else 4, 0), sticky=ctk.W)
-        provider_frame = self._row(frame, row + 1, L_("Provider"))
+        section = self._section(frame, row, title)
+        provider_frame = self._row(section, 0, L_("Provider"))
         key_buttons = ctk.CTkFrame(provider_frame, fg_color="transparent")
         key_buttons.grid(row=0, column=2, rowspan=2)
 
         model_frame = self._row(
-            frame,
-            row + 2,
+            section,
+            1,
             L_("Model"),
             L_("The default model of the provider if empty."),
         )
@@ -630,12 +755,34 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
         menu.grid(row=0, column=1, rowspan=2, padx=(12, 0))
         show_provider(provider)
 
+    def _init_transcription(self, tab: Any) -> None:
+        frame = self._scrollable(tab)
+        self._init_whisperx(self._section(frame, 0, lambda: "WhisperX"))
+        self._init_whisper_api(self._section(frame, 1, lambda: "Whisper API"))
+
     def _init_whisperx(self, tab: Any) -> None:
+        uses_mlx = self._config_whisperx.can_use_gpu and devices.is_mlx_available()
+
+        def gpu_hint(text: Text) -> Text:
+            """
+            A hint of an option that MLX ignores (it's always in half precision,
+            without batches), noted on the Macs that transcribe with it.
+            """
+            if not uses_mlx:
+                return text
+            return lambda: text() + "\n" + _("Doesn't apply on the Mac's GPU.")
+
         frame = self._row(
             tab,
             0,
             L_("Compute type"),
-            L_("float16 is faster on GPUs. int8 uses less memory."),
+            gpu_hint(
+                L_(
+                    "The precision of the calculations. int8 uses the least "
+                    "memory, float16 is the fastest on NVIDIA GPUs, and float32 "
+                    "is the most precise but the slowest."
+                )
+            ),
         )
         menu = CTkOptionMenu(
             frame,
@@ -652,7 +799,12 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             tab,
             1,
             L_("Batch size"),
-            L_("Lower it if you run out of memory."),
+            gpu_hint(
+                L_(
+                    "How many parts of the audio are transcribed at once. Higher "
+                    "is faster but uses more memory, so lower it if you run out."
+                )
+            ),
         )
         self._entry(
             frame,
@@ -666,13 +818,19 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             2,
             L_("Use CPU"),
             (
-                L_("Otherwise, the GPU of the Mac transcribes (with MLX), much faster.")
-                if devices.is_mlx_available()
+                L_(
+                    "When off, transcription runs on your Mac's GPU thanks to "
+                    "mlx-whisper, which is much faster. Models without an MLX "
+                    "version run on the CPU regardless."
+                )
+                if uses_mlx
                 else None
             )
             if self._config_whisperx.can_use_gpu
             else L_("No CUDA GPU was found, so WhisperX runs on the CPU."),
         )
+        if uses_mlx:
+            self._link(frame, 2, L_("Supported models"), engines_docs_url)
         switch = self._switch(
             frame,
             self._config_whisperx.use_cpu or not self._config_whisperx.can_use_gpu,
@@ -771,7 +929,11 @@ class PreferencesDialog(ctk.CTkToplevel):  # type: ignore[misc]
             tab,
             0,
             L_("Temperature"),
-            L_("Between 0 and 1. Higher values are more random."),
+            L_(
+                "Between 0 and 1. Lower is more consistent and literal; higher is "
+                "more varied and may introduce errors. 0 is recommended for most "
+                "audio."
+            ),
         )
         self._entry(
             frame,

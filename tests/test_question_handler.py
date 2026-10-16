@@ -73,12 +73,22 @@ def test_a_reply_without_an_answer_is_an_error(data: dict[str, Any]) -> None:
         answer_from_data(data, "?", "model", None, False)
 
 
-def test_the_provider_of_the_summaries_answers(
-    monkeypatch: pytest.MonkeyPatch,
+@pytest.mark.parametrize(
+    "settings",
+    [
+        {ConfigAi.Key.ASK_PROVIDER: "anthropic", ConfigAi.Key.ASK_MODEL: "claude-x"},
+        # Without their own, the questions are answered like the summaries
+        {
+            ConfigAi.Key.SUMMARY_PROVIDER: "anthropic",
+            ConfigAi.Key.SUMMARY_MODEL: "claude-x",
+        },
+    ],
+)
+def test_the_provider_of_the_questions_answers(
+    monkeypatch: pytest.MonkeyPatch, settings: dict[ConfigAi.Key, str]
 ) -> None:
-    section = ConfigAi.Key.SECTION
-    ConfigManager.modify_value(section, ConfigAi.Key.SUMMARY_PROVIDER, "anthropic")
-    ConfigManager.modify_value(section, ConfigAi.Key.SUMMARY_MODEL, "claude-x")
+    for key, value in settings.items():
+        ConfigManager.modify_value(ConfigAi.Key.SECTION, key, value)
     requests: list[tuple[Any, ...]] = []
 
     def complete_json(*args: Any) -> dict[str, Any]:
@@ -129,3 +139,11 @@ def test_the_answers_are_stored_and_read_back() -> None:
     )
 
     assert TranscriptAnswer.from_dict(answer.to_dict()) == answer
+
+
+def test_the_questions_have_their_own_provider_once_set() -> None:
+    config = ConfigAi(summary_provider="anthropic", summary_model="claude-x")
+    assert config.ask_provider_and_model() == ("anthropic", "claude-x")
+
+    config.ask_provider = "openai"
+    assert config.ask_provider_and_model() == ("openai", "")

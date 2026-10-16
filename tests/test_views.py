@@ -48,7 +48,7 @@ from views.settings.cards.context_card import ContextCard
 from views.settings.cards.engine_card import EngineCard
 from views.settings.cards.language_card import LanguageCard
 from views.settings.cards.output_card import OutputCard
-from views.settings.preferences_dialog import AI_TAB, API_KEYS_TAB, GENERAL_TAB
+from views.settings.preferences_dialog import API_KEYS_TAB, GENERAL_TAB, PROVIDERS_TAB
 
 
 def has_display() -> bool:
@@ -521,10 +521,10 @@ def test_the_summary_without_a_key_leads_to_the_settings(ui: Ui) -> None:
     # There is no summary to generate again
     assert not view.summary_panel.btn_regenerate.winfo_ismapped()
 
-    view._actions.window.show_preferences(AI_TAB)
+    view._actions.window.show_preferences(PROVIDERS_TAB)
     ui.pump()
     preferences = ui.window._preferences
-    assert preferences.tabs.get() == "AI"
+    assert preferences.tabs.get() == "Providers"
     preferences.destroy()
     ui.pump()
 
@@ -2002,8 +2002,8 @@ def test_the_preferences_change_the_interface_language(ui: Ui) -> None:
         assert preferences.winfo_exists()
         assert preferences.title() == "Preferencias"
         assert preferences.tabs.get() == "General"
-        preferences.show_tab(AI_TAB)
-        assert preferences.tabs.get() == "IA"
+        preferences.show_tab(PROVIDERS_TAB)
+        assert preferences.tabs.get() == "Proveedores"
         for tab in preferences._tab_names:
             preferences.show_tab(tab)
             ui.pump(0.3)
@@ -2039,16 +2039,63 @@ def test_the_buttons_of_the_api_keys_say_what_they_do(
         ui.pump()
 
 
+@pytest.mark.parametrize("uses_mlx", [True, False])
+def test_the_options_that_mlx_ignores_say_so_only_on_macs_that_use_it(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch, uses_mlx: bool
+) -> None:
+    import utils.devices as devices
+    from models.config.config_whisperx import ConfigWhisperX
+    from views.settings.preferences_dialog import TRANSCRIPTION_TAB
+
+    monkeypatch.setattr(devices, "is_mlx_available", lambda: uses_mlx)
+    ConfigManager.modify_value(
+        ConfigWhisperX.Key.SECTION, ConfigWhisperX.Key.CAN_USE_GPU, "True"
+    )
+    ui.window.show_preferences(TRANSCRIPTION_TAB)
+    ui.pump()
+    preferences = ui.window._preferences
+    try:
+
+        def texts(widget: Any) -> list[str]:
+            found = [widget.cget("text")] if isinstance(widget, ctk.CTkLabel) else []
+            for child in widget.winfo_children():
+                found += texts(child)
+            return found
+
+        notes = [
+            text
+            for text in texts(preferences)
+            if text.endswith("Doesn't apply on the Mac's GPU.")
+        ]
+        assert len(notes) == (2 if uses_mlx else 0)
+    finally:
+        preferences.destroy()
+        ui.pump()
+
+
+def test_every_api_key_is_in_one_group() -> None:
+    from views.settings.preferences_dialog import api_key_groups, api_key_labels
+
+    grouped = [
+        env_key
+        for _title, _subtitle, env_keys in api_key_groups()
+        for env_key in env_keys
+    ]
+
+    assert len(grouped) == len(set(grouped))
+    assert set(grouped) == set(api_key_labels())
+
+
 def test_a_provider_without_a_key_leaves_no_space_for_its_button(ui: Ui) -> None:
     import tkinter
 
     from views.widgets.option_menu import CTkOptionMenu
 
-    ui.window.show_preferences(AI_TAB)
+    ui.window.show_preferences(PROVIDERS_TAB)
     ui.pump()
     preferences = ui.window._preferences
     try:
-        tab = preferences.tabs.tab(preferences._tab_names[AI_TAB])
+        tab = preferences.tabs.tab(preferences._tab_names[PROVIDERS_TAB])
 
         def menus(widget: Any) -> list[Any]:
             found = [widget] if isinstance(widget, CTkOptionMenu) else []
