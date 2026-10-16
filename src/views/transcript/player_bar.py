@@ -140,27 +140,46 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         self.omn_speed.set(format_speed(1.0))
         self.omn_speed.grid(row=0, column=5, padx=(12, 0))
 
-        # Subtitles over the video, shown once a video is loaded
+        # Subtitles over the video, shown once a video is loaded. The button and
+        # the one of their options share a border, as a split button, so the
+        # chevron reads as part of it. The buttons are kept 2 points inside the
+        # border, since 1 point rounds down to none at the smaller sizes of the
+        # interface and they covered it
+        self.frm_subtitles = ctk.CTkFrame(
+            controls,
+            fg_color="transparent",
+            border_width=1,
+            border_color=theme.CARD_BORDER,
+            corner_radius=6,
+        )
         self.btn_subtitles = localize(
             ctk.CTkButton(
-                controls,
+                self.frm_subtitles,
                 image=icons.icon("subtitles", 15),
                 compound=ctk.LEFT,
                 width=0,
-                height=28,
+                height=24,
+                corner_radius=4,
                 command=on_toggle_subtitles,
-                **theme.SECONDARY_BUTTON,
+                **theme.GHOST_BUTTON,
             ),
             text=L_("Subtitles"),
         )
+        self.btn_subtitles.grid(row=0, column=0, padx=(2, 0), pady=2)
+        ctk.CTkFrame(
+            self.frm_subtitles, width=1, height=14, fg_color=theme.CARD_BORDER
+        ).grid(row=0, column=1)
         self.btn_subtitle_options = ctk.CTkButton(
-            controls,
+            self.frm_subtitles,
             text="",
             image=icons.icon("chevron_down", 11),
-            width=24,
-            height=28,
+            # As wide as its icon needs, or it grows past the width asked for
+            width=26,
+            height=24,
+            corner_radius=4,
             **theme.GHOST_BUTTON,
         )
+        self.btn_subtitle_options.grid(row=0, column=2, padx=(0, 2), pady=2)
         self.btn_subtitle_options.configure(
             command=lambda: on_subtitle_menu(self.btn_subtitle_options)
         )
@@ -210,16 +229,18 @@ class PlayerBar(ctk.CTkFrame):  # type: ignore[misc]
         localize(self.lbl_hint, text=message)
 
     def show_subtitle_buttons(self, is_on: bool) -> None:
-        self.btn_subtitles.grid(row=0, column=3, padx=(12, 0))
-        self.btn_subtitle_options.grid(row=0, column=4, padx=(2, 0))
+        self.frm_subtitles.grid(row=0, column=3, padx=(12, 0))
         self.set_subtitles_on(is_on)
 
     def set_subtitles_on(self, is_on: bool) -> None:
+        # Both halves of the split button, so the chevron reads as part of it
+        fg_color = theme.ROW_SELECTED if is_on else "transparent"
+        icon_color = theme.ACCENT_TEXT if is_on else theme.ICON
         self.btn_subtitles.configure(
-            fg_color=theme.ROW_SELECTED if is_on else "transparent",
-            image=icons.icon(
-                "subtitles", 15, theme.ACCENT_TEXT if is_on else theme.ICON
-            ),
+            fg_color=fg_color, image=icons.icon("subtitles", 15, icon_color)
+        )
+        self.btn_subtitle_options.configure(
+            fg_color=fg_color, image=icons.icon("chevron_down", 11, icon_color)
         )
 
     def toggle_playback(self) -> None:
