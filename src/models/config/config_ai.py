@@ -4,11 +4,18 @@ from enum import Enum
 
 @dataclass
 class ConfigAi:
-    """The providers of language models that summarize and translate."""
+    """
+    The providers of language models that summarize, answer questions and
+    translate.
+    """
 
     # Values of `AiProvider`. The models are the defaults of the providers if empty
     summary_provider: str = "openai"
     summary_model: str = ""
+    # The ones of the summaries if the provider is empty, as before the questions
+    # had their own
+    ask_provider: str = ""
+    ask_model: str = ""
     # Values of `TranslationProvider`
     translation_provider: str = "openai"
     translation_model: str = ""
@@ -16,6 +23,12 @@ class ConfigAi:
     translation_language: str = ""
     # Server of Ollama, which runs the models locally
     ollama_url: str = "http://localhost:11434"
+
+    def ask_provider_and_model(self) -> tuple[str, str]:
+        """The provider and the model that answer the questions."""
+        if self.ask_provider:
+            return self.ask_provider, self.ask_model
+        return self.summary_provider, self.summary_model
 
     class Key(Enum):
         """
@@ -25,6 +38,8 @@ class ConfigAi:
         SECTION = "ai"
         SUMMARY_PROVIDER = "summary_provider"
         SUMMARY_MODEL = "summary_model"
+        ASK_PROVIDER = "ask_provider"
+        ASK_MODEL = "ask_model"
         TRANSLATION_PROVIDER = "translation_provider"
         TRANSLATION_MODEL = "translation_model"
         TRANSLATION_LANGUAGE = "translation_language"
