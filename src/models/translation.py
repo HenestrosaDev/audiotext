@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from models.transcript_segment import TranscriptSegment, TranscriptWord
+from models.transcript_segment import TranscriptSegment
 
 
 @dataclass(frozen=True)
@@ -27,41 +27,13 @@ class TranscriptTranslation:
     # Whether the user edited the text, which then no longer follows the segments
     is_text_edited: bool = False
 
-    def translated_ratio(self, original: list[TranscriptSegment]) -> float:
+    def segment_progress(self) -> tuple[int, int]:
         """
-        How much of the transcription is translated, from 0 to 1: the share of
-        its words said while a segment of the translation with a text lasts. The
-        words with timestamps count where they're said, and the others where
-        their segment is, since the segments of the translation can be retimed.
-
-        :param original: The segments of the transcription.
+        How many of its segments have a text (not just whitespace), and how many
+        there are, e.g. (148, 150). Both are 0 if it has no segments.
         """
-        if not original or not self.segments:
-            # Without timestamps, the whole text is translated at once
-            return 1.0 if self.text.strip() else 0.0
-
-        translated = [(s.start, s.end) for s in self.segments if s.text.strip()]
-
-        def is_translated(start: float, end: float) -> bool:
-            return any(t_start < end and t_end > start for t_start, t_end in translated)
-
-        def is_word_translated(word: TranscriptWord) -> bool:
-            middle = (word.start + word.end) / 2
-            return any(t_start <= middle < t_end for t_start, t_end in translated)
-
-        total = done = 0
-        for segment in original:
-            if segment.words:
-                total += len(segment.words)
-                done += sum(1 for word in segment.words if is_word_translated(word))
-            else:
-                count = len(segment.text.split())
-                total += count
-                done += count if is_translated(segment.start, segment.end) else 0
-
-        if not total:
-            return 1.0 if translated else 0.0
-        return done / total
+        done = sum(1 for segment in self.segments if segment.text.strip())
+        return done, len(self.segments)
 
     def to_dict(self) -> dict[str, Any]:
         return {

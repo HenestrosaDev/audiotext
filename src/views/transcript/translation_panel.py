@@ -22,7 +22,15 @@ from models.transcript_segment import TranscriptSegment
 from models.translation import TranscriptTranslation
 from utils.config_manager import ConfigManager
 from utils.env_keys import EnvKeys
-from utils.i18n import L_, _, get_language, get_language_name, sort_key
+from utils.i18n import (
+    L_,
+    _,
+    format_number,
+    format_percent,
+    get_language,
+    get_language_name,
+    sort_key,
+)
 from views.history.formatting import format_full_date
 from views.settings.option_labels import get_language_labels
 from views.style import icons, theme
@@ -40,9 +48,16 @@ def language_name(code: str) -> str:
     return get_language_name(code, fallback=c.AUDIO_LANGUAGES.get(code, code))
 
 
-def format_ratio(ratio: float) -> str:
-    """How much is translated, e.g. "42%", rounded down so 100% means all of it."""
-    return f"{int(ratio * 100)}%"
+def translation_label(translation: TranscriptTranslation) -> str:
+    """
+    The name of its language, with how many of its segments are translated while
+    some aren't, e.g. "Spanish · 148/150".
+    """
+    done, total = translation.segment_progress()
+    name = language_name(translation.language)
+    if done < total:
+        return f"{name} · {format_number(done)}/{format_number(total)}"
+    return name
 
 
 def has_timed_texts(translation: TranscriptTranslation) -> bool:
@@ -72,6 +87,8 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         on_regenerate: Callable[[], None],
         on_close: Callable[[], None],
         on_select: Callable[[str], None],
+        on_translate_segment: Callable[[int], None],
+        on_hints_change: Callable[[], None] | None = None,
     ) -> None:
         """
         :param on_segment_click: Called with the index of a clicked segment of the
@@ -89,6 +106,10 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
                               language.
         :param on_close: Called to hide the panel.
         :param on_select: Called with the language of the translation to show.
+        :param on_translate_segment: Called with the index of a segment shown
+                                     without a text, to translate it.
+        :param on_hints_change: Called when the hints above the translation are
+                                shown or left out.
         """
         super().__init__(
             master,
@@ -103,6 +124,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         self._languages: dict[str, str] = {}
         # The option of the translation shown
         self._selected_label = ""
+        self._selected_name = ""
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
@@ -183,9 +205,14 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             on_segment_menu=on_segment_menu,
             on_text_edit=on_text_edit,
             on_scroll=on_scroll,
-            # The transcript on its left already explains it
+            # The transcript on its left already tells it
             show_usage_hints=False,
+            show_summary=False,
             empty_segment_text=L_("Not translated yet"),
+            # Like the item of the menu of a segment: the toolbar's "Translate"
+            # translates it all with a provider, this opens a dialog to write it
+            empty_segment_action=(L_("Translate text…"), on_translate_segment),
+            on_hints_change=on_hints_change,
         )
         # It's inside the card of the panel
         self.text.configure(fg_color="transparent", border_width=0)
@@ -246,7 +273,10 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             # same height as the transcript
             self._set_details("")
             self.text.set_note(
-                error or self._segments_left_hint(translation), bool(error)
+                error or self._progress_note(translation),
+                bool(error),
+                can_go_to_empty=True,
+                plain_text_note=self._missing_text_note(translation),
             )
             self.frm_message.grid_forget()
             self.text.grid(row=2, column=0, padx=2, pady=(0, 2), sticky=ctk.NSEW)
@@ -295,9 +325,12 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
 
         self._languages = {label: code for code, label in languages.items()}
         self._selected_label = languages.get(language or "", "")
+        # The list tells how much of each is translated, but the menu closed only
+        # names the one shown, whose hint tells it
+        self._selected_name = language_name(language) if language else ""
         add_label = _("Translate into another language…")
         self.omn_language.configure(values=[*languages.values(), add_label])
-        self.omn_language.set(self._selected_label)
+        self.omn_language.set(self._selected_label, shown=self._selected_name)
         self.lbl_title.grid_remove()
         self.omn_language.grid()
 
@@ -306,7 +339,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             self._on_select(language)
             return
         # The option to translate it into another language, which isn't kept
-        self.omn_language.set(self._selected_label)
+        self.omn_language.set(self._selected_label, shown=self._selected_name)
         self._on_translate()
 
     # STATES
@@ -353,16 +386,29 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             ).grid(row=1, column=0, pady=(14, 0))
 
     @staticmethod
-    def _segments_left_hint(translation: TranscriptTranslation) -> str:
-        """If the user translates it, how many segments are left."""
-        if translation.provider != MANUAL:
+    def _progress_note(translation: TranscriptTranslation) -> str:
+        """How many of its segments are translated, if it has segments."""
+        done, total = translation.segment_progress()
+        if not total:
             return ""
-        left = sum(1 for segment in translation.segments if not segment.text)
-        if not left:
+        return _("Translated: {done}/{total} · {percent}").format(
+            done=format_number(done),
+            total=format_number(total),
+            percent=format_percent(done / total),
+        )
+
+    @staticmethod
+    def _missing_text_note(translation: TranscriptTranslation) -> str:
+        """
+        Whether its plain text leaves out segments not translated yet, so it may
+        look whole when it isn't. The edited text no longer follows them.
+        """
+        done, total = translation.segment_progress()
+        if done == total or translation.is_text_edited:
             return ""
         return _(
-            "Segments left to translate: {count}. Right-click one to translate it."
-        ).format(count=left)
+            "Some subtitles aren't translated yet, so they're left out of this text."
+        )
 
     @staticmethod
     def _describe(translation: TranscriptTranslation) -> str:

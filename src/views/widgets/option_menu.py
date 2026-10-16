@@ -23,6 +23,17 @@ class CTkOptionMenu(ctk.CTkOptionMenu):  # type: ignore[misc]
         skip_forced_layout(self)
         super()._draw(no_color_updates)
 
+    def set(self, value: str, shown: str | None = None) -> None:
+        """
+        Selects an option.
+
+        :param shown: The text shown on the menu, if not the label of the option
+                      (e.g. without the details that the list shows).
+        """
+        super().set(value)
+        if shown is not None:
+            self._text_label.configure(text=shown)
+
 
 class CTkScrollbar(ctk.CTkScrollbar):  # type: ignore[misc]
     """Scrollbar that doesn't lay out the whole window when it's drawn."""

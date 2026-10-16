@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -254,11 +254,6 @@ msgstr "Vyberte, kam ukládat přepisy"
 msgid "Clear the conversation"
 msgstr "Vymazat konverzaci"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr ""
-"Kliknutím na segment ho přehrajete. Kliknutím pravým tlačítkem ho "
-"upravíte."
-
 msgid "Compute type"
 msgstr "Typ výpočtu"
 
@@ -440,6 +435,9 @@ msgstr "Upravit časování"
 
 msgid "Edit the timing…"
 msgstr "Upravit časování…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "Úpravy provedené zde nemění titulky."
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -818,6 +816,9 @@ msgstr "Další shoda"
 msgid "Next to the source"
 msgstr "Vedle zdroje"
 
+msgid "Next untranslated subtitle"
+msgstr "Další nepřeložený titulek"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "Chybí klíč API pro {provider}."
@@ -1019,6 +1020,9 @@ msgstr "Předchozí slovo s nízkou jistotou ({shortcut})"
 msgid "Previous match"
 msgstr "Předchozí shoda"
 
+msgid "Previous untranslated subtitle"
+msgstr "Předchozí nepřeložený titulek"
+
 msgid "Processing the recording…"
 msgstr "Zpracování nahrávky…"
 
@@ -1153,12 +1157,6 @@ msgstr "Hledat"
 msgid "Search language…"
 msgstr "Hledat jazyk…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-"Segmenty k přeložení: {count}. Klikněte na jeden pravým tlačítkem a "
-"přeložte ho."
-
 msgid "Select a file"
 msgstr "Vyberte soubor"
 
@@ -1233,12 +1231,19 @@ msgstr "Velikost"
 msgid "Small"
 msgstr "Malé"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr "Některé titulky ještě nejsou přeložené, proto v tomto textu chybí."
+
 msgid "Source"
 msgstr "Zdroj"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Mezerník: přehrát/pozastavit · ←/→: {seconds} s zpět/vpřed"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "Mluvčí: {count}"
 
 msgid "Start transcription"
 msgstr "Spustit přepis"
@@ -1276,6 +1281,10 @@ msgstr "Titulky"
 
 msgid "Subtitles (.srt)"
 msgstr "Titulky (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "Titulky: {count}"
 
 msgid "Summarizing…"
 msgstr "Shrnování…"
@@ -1396,9 +1405,6 @@ msgstr "Model rozhraní Whisper API rozpozná mluvčí."
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Nový segment bude za segmentem v {time}:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Prostý text byl upraven; přepis s časy zachovává originál."
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1622,6 +1628,10 @@ msgstr "Přeložit pomocí Whisper (doporučeno)"
 
 msgid "Translate with:"
 msgstr "Přeložit pomocí:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "Přeloženo: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "Přeloží každý segment a zachová jeho časové značky."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -259,11 +259,6 @@ msgstr "Alegeți unde se salvează transcrierile"
 msgid "Clear the conversation"
 msgstr "Șterge conversația"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr ""
-"Faceți clic pe un segment pentru a-l reda. Faceți clic dreapta pentru a-l"
-" edita."
-
 msgid "Compute type"
 msgstr "Tip de calcul"
 
@@ -447,6 +442,9 @@ msgstr "Editează temporizarea"
 
 msgid "Edit the timing…"
 msgstr "Editează temporizarea…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "Modificările făcute aici nu schimbă subtitrările."
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -834,6 +832,9 @@ msgstr "Rezultatul următor"
 msgid "Next to the source"
 msgstr "Lângă sursă"
 
+msgid "Next untranslated subtitle"
+msgstr "Subtitrarea netradusă următoare"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "Nu există cheie API pentru {provider}."
@@ -1036,6 +1037,9 @@ msgstr "Cuvântul anterior cu încredere scăzută ({shortcut})"
 msgid "Previous match"
 msgstr "Rezultatul anterior"
 
+msgid "Previous untranslated subtitle"
+msgstr "Subtitrarea netradusă anterioară"
+
 msgid "Processing the recording…"
 msgstr "Se procesează înregistrarea…"
 
@@ -1176,12 +1180,6 @@ msgstr "Caută"
 msgid "Search language…"
 msgstr "Caută limba…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-"Segmente rămase de tradus: {count}. Faceți clic dreapta pe unul pentru "
-"a-l traduce."
-
 msgid "Select a file"
 msgstr "Selectați un fișier"
 
@@ -1256,12 +1254,19 @@ msgstr "Dimensiune"
 msgid "Small"
 msgstr "Mic"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr "Unele subtitrări nu sunt încă traduse, așa că lipsesc din acest text."
+
 msgid "Source"
 msgstr "Sursă"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spațiu: redare/pauză · ←/→: {seconds} s înapoi/înainte"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "Vorbitori: {count}"
 
 msgid "Start transcription"
 msgstr "Începe transcrierea"
@@ -1299,6 +1304,10 @@ msgstr "Subtitrări"
 
 msgid "Subtitles (.srt)"
 msgstr "Subtitrări (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "Subtitrări: {count}"
 
 msgid "Summarizing…"
 msgstr "Se rezumă…"
@@ -1420,9 +1429,6 @@ msgstr "Modelul API-ului Whisper identifică vorbitorii."
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Noul segment vine după cel de la {time}:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Textul simplu a fost editat; transcrierea cu marcaje păstrează originalul."
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1654,6 +1660,10 @@ msgstr "Tradu cu Whisper (recomandat)"
 
 msgid "Translate with:"
 msgstr "Tradu cu:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "Tradus: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "Traduce fiecare segment, păstrând marcajele de timp."

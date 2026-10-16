@@ -84,9 +84,9 @@ from views.transcript.transcript_text import (
 from views.transcript.translation_panel import (
     TranslateDialog,
     TranslationPanel,
-    format_ratio,
     has_timed_texts,
     language_name,
+    translation_label,
 )
 from views.transcript.video_export import VideoExport, subtitle_look
 from views.transcript.video_pane import VideoPane
@@ -265,6 +265,8 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             on_regenerate=self._translate_again,
             on_close=lambda: self._set_translation_visible(False),
             on_select=self._select_translation,
+            on_translate_segment=lambda idx: self.translation_editor.edit_text(idx),
+            on_hints_change=self._align_hint_rows,
         )
         self.translation_splitter = Splitter(
             self.frm_texts,
@@ -742,6 +744,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             on_scroll=self._on_transcript_scroll,
             on_flagged_click=lambda text: self.reviewer.open_word_popover(text),
             on_reveal=lambda segment_idx: self.reviewer.reveal_segment(segment_idx),
+            on_hints_change=self._align_hint_rows,
         )
         # The text wraps again, so the popover would no longer be on its word
         self.text.text_widget.bind(
@@ -1206,6 +1209,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             self.btn_sync_scroll.place_forget()
             frame.grid_columnconfigure(0, weight=1, uniform="")
             frame.grid_columnconfigure(2, weight=0, uniform="")
+            self._align_hint_rows()
             return
 
         self.translation_splitter.grid(row=0, column=1, sticky=ctk.NS)
@@ -1216,6 +1220,22 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         )
         self.btn_sync_scroll.lift()
         self._apply_translation_ratio()
+        self._align_hint_rows()
+
+    def _align_hint_rows(self) -> None:
+        """
+        Keeps the row of the hints of each text while the other one has some, so
+        the segments of both start at the same height.
+        """
+        # Not created yet (e.g. while the panes are)
+        if not hasattr(self, "translation_panel") or not hasattr(self, "text"):
+            return
+        translation = self.translation_panel.text
+        is_translation_shown = (
+            self._is_translation_visible and translation.winfo_manager() != ""
+        )
+        self.text.reserve_hint_row(is_translation_shown and translation.has_hints)
+        translation.reserve_hint_row(is_translation_shown and self.text.has_hints)
 
     def _apply_translation_ratio(self) -> None:
         # The columns of a uniform group share the width in proportion to weights
@@ -1274,8 +1294,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         labels: dict[str, str] = {}
         for language in self._entry.translations:
             if translation := self._entry.get_translation(language):
-                ratio = translation.translated_ratio(self._entry.segments)
-                labels[language] = f"{language_name(language)} · {format_ratio(ratio)}"
+                labels[language] = translation_label(translation)
         shown = [self._translation_language] if self._translation_language else []
         for pending in [*translating, *shown]:
             if pending not in labels:
@@ -1329,6 +1348,8 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             languages=self._translation_labels(translating),
         )
         self.translation_panel.set_mode(self._mode)
+        # The panel may show a message instead of the text (e.g. while loading)
+        self._align_hint_rows()
 
     def _on_translate_button(self) -> None:
         translation = self._translation()

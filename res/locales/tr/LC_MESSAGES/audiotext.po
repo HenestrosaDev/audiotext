@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -258,9 +258,6 @@ msgstr "Transkripsiyonların nereye kaydedileceğini seçin"
 msgid "Clear the conversation"
 msgstr "Konuşmayı temizle"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr "Oynatmak için bir segmente tıklayın. Düzenlemek için sağ tıklayın."
-
 msgid "Compute type"
 msgstr "Hesaplama türü"
 
@@ -442,6 +439,9 @@ msgstr "Zamanlamayı düzenle"
 
 msgid "Edit the timing…"
 msgstr "Zamanlamayı düzenle…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "Burada yapılan düzenlemeler altyazıları değiştirmez."
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -824,6 +824,9 @@ msgstr "Sonraki sonuç"
 msgid "Next to the source"
 msgstr "Kaynağın yanına"
 
+msgid "Next untranslated subtitle"
+msgstr "Sonraki çevrilmemiş altyazı"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "{provider} için API anahtarı yok."
@@ -1026,6 +1029,9 @@ msgstr "Önceki düşük güvenilirlikli kelime ({shortcut})"
 msgid "Previous match"
 msgstr "Önceki sonuç"
 
+msgid "Previous untranslated subtitle"
+msgstr "Önceki çevrilmemiş altyazı"
+
 msgid "Processing the recording…"
 msgstr "Kayıt işleniyor…"
 
@@ -1162,10 +1168,6 @@ msgstr "Ara"
 msgid "Search language…"
 msgstr "Dil ara…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr "Çevrilecek segment sayısı: {count}. Çevirmek için birine sağ tıklayın."
-
 msgid "Select a file"
 msgstr "Bir dosya seçin"
 
@@ -1240,12 +1242,19 @@ msgstr "Boyut"
 msgid "Small"
 msgstr "Küçük"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr "Bazı altyazılar henüz çevrilmedi, bu yüzden bu metinde yer almıyor."
+
 msgid "Source"
 msgstr "Kaynak"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Boşluk: oynat/duraklat · ←/→: {seconds} sn geri/ileri"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "Konuşmacı: {count}"
 
 msgid "Start transcription"
 msgstr "Transkripsiyonu başlat"
@@ -1283,6 +1292,10 @@ msgstr "Altyazılar"
 
 msgid "Subtitles (.srt)"
 msgstr "Altyazılar (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "Altyazılar: {count}"
 
 msgid "Summarizing…"
 msgstr "Özetleniyor…"
@@ -1404,9 +1417,6 @@ msgstr "Whisper API'nin modeli konuşmacıları belirler."
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Yeni segment, {time} anındaki segmentten sonra gelir:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Düz metin düzenlendi; zaman damgalı döküm orijinali korur."
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1637,6 +1647,10 @@ msgstr "Whisper ile çevir (önerilen)"
 
 msgid "Translate with:"
 msgstr "Şununla çevir:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "Çevrildi: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "Her segmenti zaman damgalarını koruyarak çevirir."
