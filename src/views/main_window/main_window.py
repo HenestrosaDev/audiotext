@@ -656,7 +656,7 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     # PREFERENCES
 
     def show_preferences(self, tab: str | None = None) -> None:
-        """:param tab: The tab to show, e.g. `AI_TAB`."""
+        """:param tab: The tab to show, e.g. `PROVIDERS_TAB`."""
         if self._preferences is not None and self._preferences.winfo_exists():
             if tab:
                 self._preferences.show_tab(tab)

@@ -10,7 +10,7 @@ from typing import Any
 import customtkinter as ctk
 import numpy as np
 
-from handlers.ai_providers import PROVIDERS, get_provider, has_api_key
+from handlers.ai_providers import PROVIDERS, AiProvider, get_provider, has_api_key
 from handlers.openai_api_handler import WHISPER_1
 from handlers.summary_handler import format_summary
 from handlers.translation_handler import MANUAL
@@ -61,7 +61,7 @@ from views.entries.entry_header import EntryHeader
 from views.history.formatting import reveal_label
 from views.localization import Text, localize, on_language_change
 from views.settings.option_labels import save_config
-from views.settings.preferences_dialog import AI_TAB
+from views.settings.preferences_dialog import PROVIDERS_TAB
 from views.style import icons, theme
 from views.transcript.ask_panel import AskPanel
 from views.transcript.corrections import SegmentEditor, SegmentSource
@@ -324,7 +324,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             on_search=self._find_in_summary,
             on_copy=self._copy_summary,
             on_export=self.show_summary_export_menu,
-            on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
+            on_settings=lambda: self._actions.window.show_preferences(PROVIDERS_TAB),
             on_set_api_key=self._set_summary_api_key,
         )
         self.ask_panel = AskPanel(
@@ -332,9 +332,8 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             on_ask=self._ask,
             on_clear=self._clear_questions,
             on_source=self._play_from,
-            on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
-            # The questions are answered by the provider of the summaries
-            on_set_api_key=self._set_summary_api_key,
+            on_settings=lambda: self._actions.window.show_preferences(PROVIDERS_TAB),
+            on_set_api_key=self._set_ask_api_key,
         )
         self.player = PlayerBar(
             self,
@@ -1127,7 +1126,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             self._refresh_questions()
 
     def _refresh_questions(self) -> None:
-        provider = get_provider(ConfigManager.get_config_ai().summary_provider)
+        provider = self._ask_provider()
         self.ask_panel.show(
             [TranscriptAnswer.from_dict(data) for data in self._entry.questions],
             provider=PROVIDERS[provider].name,
@@ -1135,6 +1134,15 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             error=self._actions.transcript.get_question_error(self.entry_id),
             can_ask=has_api_key(provider),
         )
+
+    @staticmethod
+    def _ask_provider() -> AiProvider:
+        provider, _model = ConfigManager.get_config_ai().ask_provider_and_model()
+        return get_provider(provider)
+
+    def _set_ask_api_key(self) -> None:
+        if env_key := PROVIDERS[self._ask_provider()].env_key:
+            self._actions.window.set_api_key(env_key)
 
     def _ask(self, question: str) -> None:
         self.text.save_pending_text()
@@ -1421,7 +1429,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             self,
             source_language=self._entry.language,
             on_set_api_key=self._actions.window.set_api_key,
-            on_settings=lambda: self._actions.window.show_preferences(AI_TAB),
+            on_settings=lambda: self._actions.window.show_preferences(PROVIDERS_TAB),
         ).get_result()
         if request is None or self._is_destroyed:
             return
