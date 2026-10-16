@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:25+0200\n"
+"POT-Creation-Date: 2026-10-16 18:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -538,9 +538,6 @@ msgstr "Znajdź:"
 
 msgid "Folder"
 msgstr "Folder"
-
-msgid "Format of the files."
-msgstr "Format plików."
 
 msgid "Gemini API key"
 msgstr "Klucz API Gemini"
@@ -1374,9 +1371,6 @@ msgstr "Nie udało się pobrać pliku: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "Plik został przeniesiony lub usunięty: {path}"
 
-msgid "The files of a folder are always saved."
-msgstr "Pliki z folderu są zawsze zapisywane."
-
 msgid ""
 "The folder doesn't contain files to transcribe. The files that already "
 "have a transcription are skipped unless you check 'Overwrite existing "
@@ -1559,6 +1553,13 @@ msgstr ""
 #, python-brace-format
 msgid "Transcribed {done} of {total} files."
 msgstr "Przetranskrybowano {done} z {total} plików."
+
+msgid ""
+"Transcribes again the files that already have a transcription, replacing "
+"its files."
+msgstr ""
+"Ponownie transkrybuje pliki, które mają już transkrypcję, i zastępuje jej"
+" pliki."
 
 msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "

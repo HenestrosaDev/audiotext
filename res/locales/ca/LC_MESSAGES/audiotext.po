@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:25+0200\n"
+"POT-Creation-Date: 2026-10-16 18:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -536,9 +536,6 @@ msgstr "Cerca:"
 
 msgid "Folder"
 msgstr "Carpeta"
-
-msgid "Format of the files."
-msgstr "Format dels fitxers."
 
 msgid "Gemini API key"
 msgstr "Clau d'API de Gemini"
@@ -1374,9 +1371,6 @@ msgstr "No s'ha pogut baixar el fitxer: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "El fitxer s'ha mogut o eliminat: {path}"
 
-msgid "The files of a folder are always saved."
-msgstr "Els fitxers d'una carpeta sempre es desen."
-
 msgid ""
 "The folder doesn't contain files to transcribe. The files that already "
 "have a transcription are skipped unless you check 'Overwrite existing "
@@ -1561,6 +1555,13 @@ msgstr "Vols tornar a transcriure «{title}»? Es perdran els canvis fets al tex
 #, python-brace-format
 msgid "Transcribed {done} of {total} files."
 msgstr "S'han transcrit {done} de {total} fitxers."
+
+msgid ""
+"Transcribes again the files that already have a transcription, replacing "
+"its files."
+msgstr ""
+"Torna a transcriure els fitxers que ja tenen una transcripció i en "
+"substitueix els fitxers."
 
 msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "

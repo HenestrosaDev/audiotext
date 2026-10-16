@@ -1,3 +1,4 @@
+import json
 import logging
 from pathlib import Path
 from typing import Any
@@ -744,18 +745,18 @@ class TestSaveTranscription:
 
         assert list(tmp_path.glob("audio.*")) == []
 
-    def test_api_transcriptions_are_saved_in_the_response_format(
+    def test_api_transcriptions_are_saved_in_each_file_type(
         self, tmp_path: Path
     ) -> None:
         self.save(
             OpenAiApiTranscriber(),
             tmp_path,
             text="hello",
-            output_file_types=["json"],
-            api_response_format="json",
+            output_file_types=["txt", "json"],
         )
 
-        assert (tmp_path / "audio.json").read_text() == '{"text": "hello"}'
+        assert (tmp_path / "audio.txt").read_text() == "hello"
+        assert json.loads((tmp_path / "audio.json").read_text())["text"] == "hello"
 
     def test_whisperx_with_several_file_types_uses_the_file_stem(
         self, whisperx_handler: MagicMock, tmp_path: Path
@@ -844,7 +845,7 @@ class TestOpenAiApi:
         assert (file_path, text, language) == (audio_file, "Hello world.", "en")
         assert [segment.text for segment in segments] == ["Hello", "world."]
 
-    def test_the_files_of_a_folder_are_saved_in_the_response_format(
+    def test_the_files_of_a_folder_are_saved_in_each_file_type(
         self,
         controller: MainController,
         fake_view: FakeView,
@@ -859,12 +860,12 @@ class TestOpenAiApi:
                 audio_source=AudioSource.DIRECTORY,
                 audio_source_path=tmp_path,
                 should_autosave=True,
-                output_file_types=["srt"],
-                api_response_format="srt",
+                output_file_types=["srt", "txt"],
             )
         )
 
         assert fake_view.errors == []
+        assert (tmp_path / "a.txt").read_text() == "Hello world."
         assert (tmp_path / "a.srt").read_text() == (
             "1\n00:00:00,000 --> 00:00:01,000\n[SPEAKER_A]: Hello\n\n"
             "2\n00:00:01,000 --> 00:00:02,000\n[SPEAKER_A]: world.\n"
@@ -884,7 +885,6 @@ class TestOpenAiApi:
             audio_source_path=tmp_path,
             should_autosave=True,
             output_file_types=["vtt"],
-            api_response_format="vtt",
             api_model="gpt-transcribe",
         )
 

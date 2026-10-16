@@ -5,11 +5,9 @@ from typing import Any
 
 import customtkinter as ctk
 
-from handlers.openai_api_handler import get_api_model
 from models.config.config_transcription import ConfigTranscription
-from models.config.config_whisper_api import ConfigWhisperApi
 from models.config.config_whisperx import ConfigWhisperX
-from models.transcription_settings import TranscriptionSettings, TranslationMode
+from models.transcription_settings import TranscriptionSettings
 from utils.enums import TranscriptionMethod
 from utils.i18n import L_, _
 from views.localization import localize
@@ -17,7 +15,6 @@ from views.settings.cards.base import SettingsCard
 from views.settings.option_labels import save_config
 from views.style import theme
 from views.widgets.bindings import bind_wraplength
-from views.widgets.option_menu import CTkOptionMenu
 
 # Order of the output file type checkboxes
 OUTPUT_FILE_TYPES = ["txt", "srt", "vtt", "json", "tsv", "aud"]
@@ -32,12 +29,14 @@ class OutputCard(SettingsCard):
         on_change: Callable[[], None],
         config_transcription: ConfigTranscription,
         config_whisperx: ConfigWhisperX,
-        config_whisper_api: ConfigWhisperApi,
         output_dir: str = "",
     ) -> None:
         super().__init__(master, L_("Output"), on_change)
         # Files are saved next to the folder unless another one is chosen
         self._output_dir: Path | None = Path(output_dir) if output_dir else None
+        # The file types chosen, kept while some can't be saved with the model of
+        # the Whisper API (and are unchecked), so they're restored with another one
+        self._file_types: set[str] = set(config_whisperx.output_file_types)
 
         self._field_label(2, L_("File types"))
         self.frm_file_types = ctk.CTkFrame(self, fg_color="transparent")
@@ -52,24 +51,8 @@ class OutputCard(SettingsCard):
                 command=self._on_file_types_change,
             )
             checkbox.grid(row=idx // 3, column=idx % 3, pady=3, sticky=ctk.W)
-            if file_type in config_whisperx.output_file_types:
-                checkbox.select()
             self._file_type_checkboxes[file_type] = checkbox
             self.interactive_widgets.append(checkbox)
-
-        self.omn_response_format = CTkOptionMenu(
-            self,
-            values=[config_whisper_api.response_format],
-            command=lambda value: save_config(
-                ConfigWhisperApi.Key.RESPONSE_FORMAT, value
-            ),
-            dynamic_resizing=False,
-        )
-        self.omn_response_format.set(config_whisper_api.response_format)
-        self.omn_response_format.grid(
-            row=4, column=0, columnspan=2, padx=18, sticky=ctk.EW
-        )
-        self.interactive_widgets.append(self.omn_response_format)
         self.lbl_file_types_hint = self._hint(5)
 
         self.frm_location = ctk.CTkFrame(self, fg_color="transparent")
@@ -116,37 +99,31 @@ class OutputCard(SettingsCard):
             config_transcription.overwrite_files,
             ConfigTranscription.Key.OVERWRITE_FILES,
         )
-        self._hint(9, L_("The files of a folder are always saved."), (4, 16))
+        self._hint(
+            9,
+            L_(
+                "Transcribes again the files that already have a transcription, "
+                "replacing its files."
+            ),
+            (4, 16),
+        )
 
     def update_settings(self, settings: TranscriptionSettings) -> None:
-        settings.output_file_types = [
-            file_type
-            for file_type, checkbox in self._file_type_checkboxes.items()
-            if checkbox.get()
-        ]
-        settings.response_format = self.omn_response_format.get()
+        settings.output_file_types = self._chosen_file_types()
         settings.overwrite = bool(self.swi_overwrite.get())
         settings.output_dir = str(self._output_dir) if self._output_dir else ""
 
     def refresh(self, settings: TranscriptionSettings) -> None:
         method = settings.transcription_method
-        if method == TranscriptionMethod.WHISPERX:
-            self.frm_file_types.grid()
-            self.omn_response_format.grid_remove()
-            self.lbl_file_types_hint.configure(text="")
-            self.lbl_file_types_hint.grid_remove()
-        elif method == TranscriptionMethod.WHISPER_API:
+        if method == TranscriptionMethod.GOOGLE_API:
             self.frm_file_types.grid_remove()
-            self._refresh_response_formats(settings)
-            self.omn_response_format.grid()
-            self.lbl_file_types_hint.grid()
-        else:
-            self.frm_file_types.grid_remove()
-            self.omn_response_format.grid_remove()
             self.lbl_file_types_hint.configure(
                 text=_("The Google API returns plain text (.txt).")
             )
             self.lbl_file_types_hint.grid()
+        else:
+            self.frm_file_types.grid()
+            self._refresh_file_types(settings)
 
         if self._output_dir:
             location = _("Saved in {folder}").format(folder=self._output_dir)
@@ -156,39 +133,55 @@ class OutputCard(SettingsCard):
             self.btn_reset_location.grid_remove()
         self.lbl_location.configure(text=location)
 
-    def _refresh_response_formats(self, settings: TranscriptionSettings) -> None:
-        """Offers the formats of the model, since some need the timestamps."""
-        is_whisper_translation = (
-            settings.effective_translation_mode == TranslationMode.WHISPER
+    def _refresh_file_types(self, settings: TranscriptionSettings) -> None:
+        """
+        Offers the file types that can be saved, since some models of the Whisper
+        API don't return the timestamps that the subtitles need.
+        """
+        model = (
+            settings.api_model
+            if settings.transcription_method == TranscriptionMethod.WHISPER_API
+            else None
         )
-        # Whisper translates, whichever model is chosen
-        model = get_api_model(None if is_whisper_translation else settings.openai_model)
-        formats = model.response_formats
-        self.omn_response_format.configure(values=formats)
 
-        if settings.response_format not in formats:
-            self.omn_response_format.set(formats[0])
-            save_config(ConfigWhisperApi.Key.RESPONSE_FORMAT, formats[0])
+        for file_type, checkbox in self._file_type_checkboxes.items():
+            can_save = model is None or model.can_save(file_type)
+            if can_save and file_type in self._file_types:
+                checkbox.select()
+            else:
+                checkbox.deselect()
+            checkbox.configure(state=ctk.NORMAL if can_save else ctk.DISABLED)
 
-        if model.has_timestamps:
-            hint = _("Format of the files.")
+        if model is None or model.has_timestamps:
+            self.lbl_file_types_hint.configure(text="")
+            self.lbl_file_types_hint.grid_remove()
         else:
-            hint = _(
-                "The {model} model doesn't return timestamps, so it can't save "
-                "subtitles."
-            ).format(model=model.name)
-        self.lbl_file_types_hint.configure(text=hint)
+            self.lbl_file_types_hint.configure(
+                text=_(
+                    "The {model} model doesn't return timestamps, so it can't save "
+                    "subtitles."
+                ).format(model=model.name)
+            )
+            self.lbl_file_types_hint.grid()
+
+    def _chosen_file_types(self) -> list[str]:
+        """The file types chosen, in the order of the checkboxes."""
+        return [t for t in self._file_type_checkboxes if t in self._file_types]
 
     # EVENT HANDLERS
 
     def _on_file_types_change(self) -> None:
+        # The disabled checkboxes keep their file types chosen
+        for file_type, checkbox in self._file_type_checkboxes.items():
+            if checkbox.cget("state") == ctk.DISABLED:
+                continue
+            if checkbox.get():
+                self._file_types.add(file_type)
+            else:
+                self._file_types.discard(file_type)
+
         save_config(
-            ConfigWhisperX.Key.OUTPUT_FILE_TYPES,
-            ",".join(
-                file_type
-                for file_type, checkbox in self._file_type_checkboxes.items()
-                if checkbox.get()
-            ),
+            ConfigWhisperX.Key.OUTPUT_FILE_TYPES, ",".join(self._chosen_file_types())
         )
         self._on_change()
 

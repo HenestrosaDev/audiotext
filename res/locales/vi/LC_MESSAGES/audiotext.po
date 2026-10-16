@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-15 20:25+0200\n"
+"POT-Creation-Date: 2026-10-16 18:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -530,9 +530,6 @@ msgstr "Tìm:"
 
 msgid "Folder"
 msgstr "Thư mục"
-
-msgid "Format of the files."
-msgstr "Định dạng của các tệp."
 
 msgid "Gemini API key"
 msgstr "Khóa API Gemini"
@@ -1359,9 +1356,6 @@ msgstr "Không thể tải xuống tệp: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "Tệp đã bị di chuyển hoặc xóa: {path}"
 
-msgid "The files of a folder are always saved."
-msgstr "Các tệp của một thư mục luôn được lưu."
-
 msgid ""
 "The folder doesn't contain files to transcribe. The files that already "
 "have a transcription are skipped unless you check 'Overwrite existing "
@@ -1539,6 +1533,11 @@ msgstr "Chép lời lại “{title}”? Các thay đổi trong văn bản sẽ 
 #, python-brace-format
 msgid "Transcribed {done} of {total} files."
 msgstr "Đã chép lời {done}/{total} tệp."
+
+msgid ""
+"Transcribes again the files that already have a transcription, replacing "
+"its files."
+msgstr "Phiên âm lại các tệp đã có bản phiên âm và thay thế các tệp của nó."
 
 msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "

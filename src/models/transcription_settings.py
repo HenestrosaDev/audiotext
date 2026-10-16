@@ -1,11 +1,14 @@
 from dataclasses import asdict, dataclass, field, fields
 from enum import Enum
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from models.transcription import Transcription, split_keywords
 from utils import constants as c
-from utils.enums import AudioSource, TranscriptionMethod, WhisperApiResponseFormats
+from utils.enums import AudioSource, TranscriptionMethod
+
+if TYPE_CHECKING:
+    from handlers.openai_api_handler import ApiModel
 
 # Value of the output language to keep the language of the audio
 SAME_LANGUAGE = "same"
@@ -41,8 +44,6 @@ class TranscriptionSettings:
     diarize: bool = False
     num_speakers: int = 0
     output_file_types: list[str] = field(default_factory=lambda: ["txt"])
-    # Response format of the Whisper API
-    response_format: str = "text"
     # Model of the OpenAI API
     openai_model: str = "whisper-1"
     # What the audio is about (e.g. its topic or setting)
@@ -105,9 +106,22 @@ class TranscriptionSettings:
         if method == TranscriptionMethod.GOOGLE_API:
             return ["txt"]
         if method == TranscriptionMethod.WHISPER_API:
-            return [self.response_format]
+            model = self.api_model
+            return [t for t in self.output_file_types if model.can_save(t)]
 
         return list(self.output_file_types)
+
+    @property
+    def api_model(self) -> "ApiModel":
+        """The model of the OpenAI API that transcribes with these settings."""
+        # Imported here, since the handler loads the OpenAI client
+        from handlers.openai_api_handler import get_api_model
+
+        # Whisper translates, whichever model is chosen
+        is_whisper_translation = (
+            self.effective_translation_mode == TranslationMode.WHISPER
+        )
+        return get_api_model(None if is_whisper_translation else self.openai_model)
 
     def to_transcription(
         self,
@@ -167,13 +181,6 @@ class TranscriptionSettings:
                 and is_whisperx
                 and self.live_transcription
                 else None
-            ),
-            # Only the files of a folder are saved in the format of the response.
-            # The rest are kept as text in the history and exported from there
-            api_response_format=(
-                self.response_format
-                if is_folder
-                else WhisperApiResponseFormats.TEXT.value
             ),
             api_model=(
                 self.openai_model if method == TranscriptionMethod.WHISPER_API else None

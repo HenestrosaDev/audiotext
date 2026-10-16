@@ -1869,10 +1869,13 @@ def test_the_settings_follow_the_method_and_the_model(ui: Ui, tmp_path: Path) ->
     assert ConfigManager.get_config_transcription().prompt == ("A talk.\nAbout speech.")
 
     # The model has no timestamps, so it can't save subtitles
-    assert output.omn_response_format.cget("values") == ["text", "json"]
+    srt = output._file_type_checkboxes["srt"]
+    assert srt.cget("state") == "disabled"
+    assert output._file_type_checkboxes["json"].cget("state") == "normal"
+    assert output.lbl_file_types_hint.winfo_ismapped()
     settings = form.get_settings()
     assert settings.openai_model == "gpt-transcribe"
-    assert settings.response_format in ("text", "json")
+    assert "srt" not in settings.effective_output_file_types
     assert settings.keywords == "Audiotext, WhisperX"
     assert settings.prompt == "A talk.\n  About speech."
     assert context.ent_keywords.cget("state") == "normal"
