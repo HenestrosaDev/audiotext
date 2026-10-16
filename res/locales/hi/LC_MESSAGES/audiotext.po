@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -254,11 +254,6 @@ msgstr "चुनें कि ट्रांसक्रिप्शन कह
 msgid "Clear the conversation"
 msgstr "बातचीत साफ़ करें"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr ""
-"किसी सेगमेंट को चलाने के लिए उस पर क्लिक करें। संपादित करने के लिए उस पर "
-"राइट-क्लिक करें।"
-
 msgid "Compute type"
 msgstr "गणना प्रकार"
 
@@ -439,6 +434,9 @@ msgstr "समय संपादित करें"
 
 msgid "Edit the timing…"
 msgstr "समय संपादित करें…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "यहाँ किए गए बदलाव सबटाइटल नहीं बदलते।"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -822,6 +820,9 @@ msgstr "अगला परिणाम"
 msgid "Next to the source"
 msgstr "स्रोत के पास"
 
+msgid "Next untranslated subtitle"
+msgstr "अगला अनुवाद-रहित सबटाइटल"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "{provider} की API कुंजी नहीं है।"
@@ -1022,6 +1023,9 @@ msgstr "पिछला कम विश्वसनीयता वाला �
 msgid "Previous match"
 msgstr "पिछला परिणाम"
 
+msgid "Previous untranslated subtitle"
+msgstr "पिछला अनुवाद-रहित सबटाइटल"
+
 msgid "Processing the recording…"
 msgstr "रिकॉर्डिंग प्रोसेस की जा रही है…"
 
@@ -1160,12 +1164,6 @@ msgstr "खोजें"
 msgid "Search language…"
 msgstr "भाषा खोजें…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr ""
-"अनुवाद के लिए बचे सेगमेंट: {count}। अनुवाद करने के लिए किसी एक पर "
-"राइट-क्लिक करें।"
-
 msgid "Select a file"
 msgstr "फ़ाइल चुनें"
 
@@ -1240,12 +1238,21 @@ msgstr "आकार"
 msgid "Small"
 msgstr "छोटा"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr ""
+"कुछ सबटाइटल का अभी तक अनुवाद नहीं हुआ है, इसलिए वे इस टेक्स्ट में शामिल "
+"नहीं हैं।"
+
 msgid "Source"
 msgstr "स्रोत"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: चलाएँ/रोकें · ←/→: {seconds} सेकंड पीछे/आगे"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "वक्ता: {count}"
 
 msgid "Start transcription"
 msgstr "ट्रांसक्रिप्शन शुरू करें"
@@ -1283,6 +1290,10 @@ msgstr "सबटाइटल"
 
 msgid "Subtitles (.srt)"
 msgstr "सबटाइटल (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "सबटाइटल: {count}"
 
 msgid "Summarizing…"
 msgstr "सारांश बनाया जा रहा है…"
@@ -1402,9 +1413,6 @@ msgstr "Whisper API का मॉडल वक्ताओं की पहच�
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "नया सेगमेंट {time} वाले सेगमेंट के बाद आएगा:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "सादा टेक्स्ट संपादित किया गया है; ट्रांसक्रिप्ट मूल को बनाए रखता है।"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1635,6 +1643,10 @@ msgstr "Whisper से अनुवाद करें (अनुशंसित
 
 msgid "Translate with:"
 msgstr "इससे अनुवाद करें:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "अनूदित: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "हर सेगमेंट का अनुवाद करता है, उसके टाइमस्टैम्प बनाए रखते हुए।"

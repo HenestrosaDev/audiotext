@@ -14,6 +14,7 @@ The catalogs live in `res/locales/<language>/LC_MESSAGES/audiotext.po` (see the
 import gettext
 import locale
 import logging
+import math
 import os
 import subprocess
 import sys
@@ -21,6 +22,7 @@ import unicodedata
 from collections.abc import Callable
 
 from babel import Locale, UnknownLocaleError
+from babel import numbers as babel_numbers
 
 from utils.path_helper import ROOT_PATH
 
@@ -217,6 +219,31 @@ def get_language_name(language_code: str, fallback: str) -> str:
 
     # Some languages write the names of languages in lowercase (e.g. "inglés")
     return name[0].upper() + name[1:]
+
+
+def format_number(number: int) -> str:
+    """A whole number as written in the interface language, e.g. "1.234" in Spanish."""
+    try:
+        return str(
+            babel_numbers.format_decimal(number, locale=_interface_language.code)
+        )
+    except (UnknownLocaleError, ValueError):
+        return str(number)
+
+
+def format_percent(ratio: float) -> str:
+    """
+    A ratio from 0 to 1 as a whole percentage written in the interface language
+    (e.g. "98 %" in French, "%98" in Turkish), rounded down so that 100% means
+    all of it.
+    """
+    percent = math.floor(ratio * 100)
+    try:
+        return str(
+            babel_numbers.format_percent(percent / 100, locale=_interface_language.code)
+        )
+    except (UnknownLocaleError, ValueError):
+        return f"{percent}%"
 
 
 def sort_key(text: str) -> str:

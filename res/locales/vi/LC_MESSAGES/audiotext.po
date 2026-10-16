@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -254,9 +254,6 @@ msgstr "Chọn nơi lưu các bản chép lời"
 msgid "Clear the conversation"
 msgstr "Xóa cuộc trò chuyện"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr "Nhấp vào một đoạn để phát. Nhấp chuột phải để chỉnh sửa."
-
 msgid "Compute type"
 msgstr "Kiểu tính toán"
 
@@ -439,6 +436,9 @@ msgstr "Chỉnh sửa thời gian"
 
 msgid "Edit the timing…"
 msgstr "Chỉnh sửa thời gian…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "Các chỉnh sửa ở đây không thay đổi phụ đề."
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -823,6 +823,9 @@ msgstr "Kết quả tiếp theo"
 msgid "Next to the source"
 msgstr "Cạnh nguồn"
 
+msgid "Next untranslated subtitle"
+msgstr "Phụ đề chưa dịch tiếp theo"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "Chưa có khóa API cho {provider}."
@@ -1022,6 +1025,9 @@ msgstr "Từ có độ tin cậy thấp trước đó ({shortcut})"
 msgid "Previous match"
 msgstr "Kết quả trước"
 
+msgid "Previous untranslated subtitle"
+msgstr "Phụ đề chưa dịch trước"
+
 msgid "Processing the recording…"
 msgstr "Đang xử lý bản ghi âm…"
 
@@ -1160,10 +1166,6 @@ msgstr "Tìm kiếm"
 msgid "Search language…"
 msgstr "Tìm ngôn ngữ…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr "Số đoạn còn phải dịch: {count}. Nhấp chuột phải vào một đoạn để dịch."
-
 msgid "Select a file"
 msgstr "Chọn tệp"
 
@@ -1238,12 +1240,19 @@ msgstr "Kích thước"
 msgid "Small"
 msgstr "Nhỏ"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr "Một số phụ đề chưa được dịch nên không có trong văn bản này."
+
 msgid "Source"
 msgstr "Nguồn"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Phím cách: phát/tạm dừng · ←/→: lùi/tới {seconds} giây"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "Số người nói: {count}"
 
 msgid "Start transcription"
 msgstr "Bắt đầu chép lời"
@@ -1281,6 +1290,10 @@ msgstr "Phụ đề"
 
 msgid "Subtitles (.srt)"
 msgstr "Phụ đề (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "Phụ đề: {count}"
 
 msgid "Summarizing…"
 msgstr "Đang tóm tắt…"
@@ -1403,9 +1416,6 @@ msgstr "Mô hình của Whisper API nhận diện người nói."
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "Đoạn mới nằm sau đoạn lúc {time}:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "Văn bản thuần đã được chỉnh sửa; bản ghi lời giữ nguyên bản gốc."
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1629,6 +1639,10 @@ msgstr "Dịch bằng Whisper (khuyên dùng)"
 
 msgid "Translate with:"
 msgstr "Dịch bằng:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "Đã dịch: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "Dịch từng đoạn, giữ nguyên dấu thời gian."

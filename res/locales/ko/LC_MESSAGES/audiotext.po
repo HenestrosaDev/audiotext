@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 18:51+0200\n"
+"POT-Creation-Date: 2026-10-16 18:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -246,9 +246,6 @@ msgstr "받아쓰기를 저장할 위치를 선택하세요"
 msgid "Clear the conversation"
 msgstr "대화 지우기"
 
-msgid "Click a segment to play it. Right-click it to edit it."
-msgstr "세그먼트를 클릭하면 재생합니다. 마우스 오른쪽 버튼을 클릭하면 편집합니다."
-
 msgid "Compute type"
 msgstr "연산 유형"
 
@@ -429,6 +426,9 @@ msgstr "타이밍 편집"
 
 msgid "Edit the timing…"
 msgstr "타이밍 편집…"
+
+msgid "Edits made here don't change the subtitles."
+msgstr "여기서 편집한 내용은 자막에 반영되지 않습니다."
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr "비어 있습니다. 받아쓰기를 추가하려면 받아쓰기를 마우스 오른쪽 버튼으로 클릭하고 '그룹으로 이동'을 선택하세요."
@@ -786,6 +786,9 @@ msgstr "다음 결과"
 msgid "Next to the source"
 msgstr "소스와 같은 위치"
 
+msgid "Next untranslated subtitle"
+msgstr "다음 번역되지 않은 자막"
+
 #, python-brace-format
 msgid "No API key for {provider}."
 msgstr "{provider} API 키가 없습니다."
@@ -979,6 +982,9 @@ msgstr "이전 신뢰도 낮은 단어 ({shortcut})"
 msgid "Previous match"
 msgstr "이전 결과"
 
+msgid "Previous untranslated subtitle"
+msgstr "이전 번역되지 않은 자막"
+
 msgid "Processing the recording…"
 msgstr "녹음을 처리하는 중…"
 
@@ -1109,10 +1115,6 @@ msgstr "검색"
 msgid "Search language…"
 msgstr "언어 검색…"
 
-#, python-brace-format
-msgid "Segments left to translate: {count}. Right-click one to translate it."
-msgstr "번역할 세그먼트: {count}개. 하나를 마우스 오른쪽 버튼으로 클릭하여 번역하세요."
-
 msgid "Select a file"
 msgstr "파일 선택"
 
@@ -1183,12 +1185,19 @@ msgstr "크기"
 msgid "Small"
 msgstr "작게"
 
+msgid "Some subtitles aren't translated yet, so they're left out of this text."
+msgstr "아직 번역되지 않은 자막이 있어 이 텍스트에서 빠져 있습니다."
+
 msgid "Source"
 msgstr "소스"
 
 #, python-brace-format
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: 재생/일시정지 · ←/→: {seconds}초 뒤로/앞으로"
+
+#, python-brace-format
+msgid "Speakers: {count}"
+msgstr "화자: {count}명"
 
 msgid "Start transcription"
 msgstr "받아쓰기 시작"
@@ -1226,6 +1235,10 @@ msgstr "자막"
 
 msgid "Subtitles (.srt)"
 msgstr "자막 (.srt)"
+
+#, python-brace-format
+msgid "Subtitles: {count}"
+msgstr "자막: {count}개"
 
 msgid "Summarizing…"
 msgstr "요약 중…"
@@ -1340,9 +1353,6 @@ msgstr "Whisper API의 모델이 화자를 식별합니다."
 #, python-brace-format
 msgid "The new segment goes after the one at {time}:"
 msgstr "새 세그먼트는 {time}의 세그먼트 뒤에 들어갑니다:"
-
-msgid "The plain text has been edited; the transcript keeps the original."
-msgstr "일반 텍스트가 편집되었습니다. 대본에는 원본이 유지됩니다."
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1560,6 +1570,10 @@ msgstr "Whisper로 번역(권장)"
 
 msgid "Translate with:"
 msgstr "번역 방법:"
+
+#, python-brace-format
+msgid "Translated: {done}/{total} · {percent}"
+msgstr "번역됨: {done}/{total} · {percent}"
 
 msgid "Translates each segment, keeping its timestamps."
 msgstr "타임스탬프를 유지하며 각 세그먼트를 번역합니다."
