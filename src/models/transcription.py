@@ -45,8 +45,6 @@ class Transcription:
     # Model that transcribes the microphone while recording, to show the text as
     # it's said. If None, the text is only shown when the recording stops
     live_model_size: str | None = None
-    # Response format of the Whisper API. If None, the configured one is used
-    api_response_format: str | None = None
     # Model of the OpenAI API (e.g. "whisper-1"). If None, the configured one is used
     api_model: str | None = None
     # What the audio is about (e.g. its topic or setting)

@@ -32,31 +32,31 @@ def validate_transcription(transcription: Transcription) -> None:
         transcription.method == TranscriptionMethod.WHISPER_API
         and transcription.should_autosave
     ):
-        _validate_api_response_format(transcription)
+        _validate_api_file_types(transcription)
 
     _validate_audio_source(transcription)
 
 
-def _validate_api_response_format(transcription: Transcription) -> None:
+def _validate_api_file_types(transcription: Transcription) -> None:
     """
     :raises ValueError: If the model of the OpenAI API can't generate the files of
-                        the response format.
+                        any of the output file types.
     """
     config = cm.ConfigManager.get_config_whisper_api()
-    response_format = transcription.api_response_format or config.response_format
     model = get_api_model(
         # Whisper translates, whichever model is chosen
         None
         if transcription.should_translate
         else transcription.api_model or config.model
     )
+    unsupported = [t for t in transcription.output_file_types if not model.can_save(t)]
 
-    if response_format not in model.response_formats:
+    if unsupported:
         raise ValueError(
             _(
                 "The {model} model doesn't return timestamps, so it can't save "
                 "{format} files. Choose another format or the whisper-1 model."
-            ).format(model=model.name, format=response_format)
+            ).format(model=model.name, format=", ".join(unsupported))
         )
 
 

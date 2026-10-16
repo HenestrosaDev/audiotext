@@ -17,7 +17,7 @@ from handlers.openai_api_handler import (
     get_api_model,
     language_code,
     plan_chunks,
-    render_response,
+    render_file,
 )
 from models.config.config_whisper_api import ConfigWhisperApi
 from models.transcript_segment import TranscriptSegment, TranscriptWord
@@ -433,11 +433,13 @@ def test_unknown_models_are_assumed_to_return_text() -> None:
     model = get_api_model("gpt-9-transcribe")
 
     assert model.api_format == "json"
-    assert model.response_formats == ["text", "json"]
+    assert model.can_save("txt")
+    assert model.can_save("json")
+    assert not model.can_save("srt")
     assert get_api_model(None).name == "whisper-1"
 
 
-def test_render_response() -> None:
+def test_render_file() -> None:
     transcript = ApiTranscript(
         "Hello world.",
         [TranscriptSegment(0.0, 1.0, "Hello"), TranscriptSegment(1.0, 2.0, "world.")],
@@ -445,15 +447,21 @@ def test_render_response() -> None:
         2.0,
     )
 
-    assert render_response(transcript, "text") == "Hello world."
-    assert json.loads(render_response(transcript, "json")) == {"text": "Hello world."}
-    assert render_response(transcript, "srt").startswith(
+    assert render_file(transcript, "txt") == "Hello world."
+    assert render_file(transcript, "srt").startswith(
         "1\n00:00:00,000 --> 00:00:01,000\nHello\n"
     )
-    assert render_response(transcript, "vtt").startswith("WEBVTT")
-    verbose = json.loads(render_response(transcript, "verbose_json"))
-    assert verbose["language"] == "en"
-    assert verbose["segments"][1] == {
+    assert render_file(transcript, "vtt").startswith("WEBVTT")
+    assert render_file(transcript, "tsv") == (
+        "start\tend\ttext\n0\t1000\tHello\n1000\t2000\tworld.\n"
+    )
+    assert render_file(transcript, "aud") == (
+        "0.000000\t1.000000\tHello\n1.000000\t2.000000\tworld.\n"
+    )
+    data = json.loads(render_file(transcript, "json"))
+    assert data["text"] == "Hello world."
+    assert data["language"] == "en"
+    assert data["segments"][1] == {
         "id": 1,
         "start": 1.0,
         "end": 2.0,
@@ -461,10 +469,10 @@ def test_render_response() -> None:
     }
 
 
-def test_render_response_without_segments_uses_a_single_cue() -> None:
+def test_render_file_without_segments_uses_a_single_cue() -> None:
     transcript = ApiTranscript("Hello.", [], None, 3.0)
 
-    assert render_response(transcript, "srt") == (
+    assert render_file(transcript, "srt") == (
         "1\n00:00:00,000 --> 00:00:03,000\nHello.\n"
     )
 

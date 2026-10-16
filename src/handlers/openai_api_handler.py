@@ -8,8 +8,9 @@ timestamps of each chunk are shifted to the position of the chunk in the audio.
 
 The response of each model is turned into segments with timestamps (when the model
 returns them), so the transcription can be played and exported like the WhisperX
-ones. The response formats of the files saved automatically are generated from
-them, since the responses of several chunks can't be joined as they are.
+ones. The files saved automatically are generated from them, in any of the
+output file types, since the responses of several chunks can't be joined as they
+are.
 """
 
 import base64
@@ -32,9 +33,18 @@ from models.transcript_segment import TranscriptSegment, TranscriptWord, join_se
 from models.transcription import Transcription
 from utils import constants as c
 from utils.cancellation import CancellationToken
-from utils.enums import TimestampGranularities, WhisperApiResponseFormats
+from utils.enums import (
+    TimestampGranularities,
+    WhisperApiResponseFormats,
+    WhisperXFileTypes,
+)
 from utils.env_keys import EnvKeys
-from utils.exporters import segments_to_srt, segments_to_vtt
+from utils.exporters import (
+    segments_to_aud,
+    segments_to_srt,
+    segments_to_tsv,
+    segments_to_vtt,
+)
 from utils.i18n import _
 from utils.progress import ProgressCallback, ignore_progress
 
@@ -65,13 +75,8 @@ WHISPER_1 = "whisper-1"
 # Translations are always into English
 TRANSLATION_LANGUAGE = "en"
 
-ALL_RESPONSE_FORMATS = [
-    response_format.value for response_format in WhisperApiResponseFormats
-]
-TEXT_RESPONSE_FORMATS = [
-    WhisperApiResponseFormats.TEXT.value,
-    WhisperApiResponseFormats.JSON.value,
-]
+# The file types that need the timestamps of the segments
+TIMED_FILE_TYPES = {"srt", "vtt", "tsv", "aud"}
 
 
 @dataclass(frozen=True)
@@ -91,10 +96,9 @@ class ApiModel:
     # Only Whisper translates (into English)
     can_translate: bool = False
 
-    @property
-    def response_formats(self) -> list[str]:
-        """The formats of the files that can be generated from its responses."""
-        return ALL_RESPONSE_FORMATS if self.has_timestamps else TEXT_RESPONSE_FORMATS
+    def can_save(self, file_type: str) -> bool:
+        """Whether files of the type can be generated from its responses."""
+        return self.has_timestamps or file_type not in TIMED_FILE_TYPES
 
 
 API_MODELS = {
@@ -224,13 +228,15 @@ def detected_language(data: dict[str, Any]) -> str | None:
     return language_code(data.get("language"))
 
 
-def render_response(
-    transcript: ApiTranscript, response_format: str, is_vertical: bool = False
+def render_file(
+    transcript: ApiTranscript, file_type: str, is_vertical: bool = False
 ) -> str:
     """
-    Writes the transcription in one of the response formats of the API, to save
-    it in a file.
+    Writes the transcription in one of the output file types, to save it in a
+    file.
 
+    :param file_type: One of `WhisperXFileTypes`, which are the same for every
+                      method.
     :param is_vertical: Whether the video is taller than it's wide, which narrows
                         its subtitles.
     """
@@ -238,13 +244,16 @@ def render_response(
         TranscriptSegment(0, transcript.duration, transcript.text)
     ]
 
-    if response_format == WhisperApiResponseFormats.SRT.value:
+    if file_type == WhisperXFileTypes.SRT.value:
         return segments_to_srt(segments, is_vertical)
-    if response_format == WhisperApiResponseFormats.VTT.value:
+    if file_type == WhisperXFileTypes.VTT.value:
         return segments_to_vtt(segments, is_vertical)
-    if response_format == WhisperApiResponseFormats.JSON.value:
-        return json.dumps({"text": transcript.text}, ensure_ascii=False)
-    if response_format == WhisperApiResponseFormats.VERBOSE_JSON.value:
+    if file_type == WhisperXFileTypes.TSV.value:
+        return segments_to_tsv(segments)
+    if file_type == WhisperXFileTypes.AUD.value:
+        return segments_to_aud(segments)
+    if file_type == WhisperXFileTypes.JSON.value:
+        # Like the verbose JSON response of the API
         data: dict[str, Any] = {
             "task": "transcribe",
             "language": transcript.language,

@@ -577,8 +577,10 @@ def build_transcription(
     elif method == TranscriptionMethod.WHISPER_API:
         config_whisper_api = cm.ConfigManager.get_config_whisper_api()
         transcription.api_model = args.openai_model or config_whisper_api.model
-        transcription.api_response_format = config_whisper_api.response_format
-        transcription.output_file_types = [config_whisper_api.response_format]
+        # The same file types as WhisperX, generated from the response
+        transcription.output_file_types = list(
+            cm.ConfigManager.get_config_whisperx().output_file_types
+        )
     else:
         transcription.output_file_types = ["txt"]
 

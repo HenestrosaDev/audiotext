@@ -256,14 +256,26 @@ def to_ass(document: ExportDocument) -> str:
     return segments_to_ass(document.segments, document.is_vertical)
 
 
-def to_tsv(document: ExportDocument) -> str:
+def segments_to_tsv(segments: list[TranscriptSegment]) -> str:
     rows = ["start\tend\ttext"]
     rows.extend(
         f"{round(s.start * 1000)}\t{round(s.end * 1000)}\t"
         f"{_cue_text(s).replace(chr(9), ' ')}"
-        for s in document.segments
+        for s in segments
     )
     return "\n".join(rows) + "\n"
+
+
+def segments_to_aud(segments: list[TranscriptSegment]) -> str:
+    """The segments as labels of Audacity, which can import them over the audio."""
+    return "".join(
+        f"{s.start:.6f}\t{s.end:.6f}\t{_cue_text(s).replace(chr(9), ' ')}\n"
+        for s in segments
+    )
+
+
+def to_tsv(document: ExportDocument) -> str:
+    return segments_to_tsv(document.segments)
 
 
 def to_json(document: ExportDocument) -> str:
