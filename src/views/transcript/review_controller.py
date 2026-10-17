@@ -502,6 +502,10 @@ class ReviewController:
         if self.current is None:
             self._widgets.text.focus_text()
 
+    def close_word_popover(self) -> None:
+        self._widgets.popover.hide()
+        self._widgets.text.focus_text()
+
     def follow_popover(self) -> None:
         """Moves the popover to its word, if it's open (e.g. after a scroll)."""
         widgets = self._widgets

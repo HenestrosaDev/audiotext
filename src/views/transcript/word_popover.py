@@ -1,3 +1,4 @@
+import tkinter as tk
 from collections.abc import Callable
 from typing import Any
 
@@ -52,6 +53,7 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
         self._on_commit = on_commit
         self._on_close = on_close
         self._is_open = False
+        self._anchor: Any = None
 
         self.ent_text = ctk.CTkEntry(self, width=WORD_FIELD_WIDTH, height=32)
         self.ent_text.grid(row=0, column=0, padx=(10, 6), pady=10)
@@ -143,6 +145,7 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
             self.place_forget()
             return
         x, top, bottom = box
+        self._anchor = anchor
         self.update_idletasks()
         # Kept inside the text (and so the window), even for a word at its right
         # end, or at its bottom, where it's shown above the word
@@ -174,4 +177,22 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
     def hide(self) -> None:
         """Closes it after the word was saved or accepted."""
         self._is_open = False
+        was_placed = bool(self.winfo_manager())
         self.place_forget()
+        if was_placed:
+            self._redraw_anchor()
+
+    def _redraw_anchor(self) -> None:
+        """
+        Redraws the text it was over: on macOS, Tk may not repaint the area a
+        placed widget leaves, which would keep showing it (without working)
+        until the text changes.
+        """
+        anchor = self._anchor
+        if anchor is None or not anchor.winfo_exists():
+            return
+        try:
+            # Configuring a Text widget, even with the same value, redraws it all
+            anchor.configure(padx=anchor.cget("padx"))
+        except tk.TclError:
+            anchor.update_idletasks()
