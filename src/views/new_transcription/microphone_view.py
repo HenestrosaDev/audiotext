@@ -68,6 +68,8 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         self._is_busy = is_busy
         self._run_on_ui_thread = run_on_ui_thread
         self._state = MicState.IDLE
+        # Whether the recording waits to start (see `set_state`)
+        self._is_starting = False
         # Whether the text is shown while recording, as chosen in the settings
         self._is_live = False
         self._devices: list[InputDevice] = []
@@ -318,9 +320,18 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             self.on_recording_progress(0, 0)
         self._apply_state(message)
 
+    def _show_recording_state(self) -> None:
+        localize(
+            self.lbl_state,
+            text=L_("Recording… Press the button to stop and transcribe."),
+        )
+
     def on_recording_progress(self, elapsed_seconds: float, level: float) -> None:
         if self._state != MicState.RECORDING:
             return
+        if self._is_starting:
+            self._is_starting = False
+            self._show_recording_state()
         dbfs = level_to_dbfs(level)
         self.lbl_duration.configure(text=format_timestamp(elapsed_seconds))
         self.level_meter.set_level(dbfs)
@@ -395,10 +406,12 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
             localize(self.lbl_speech, text=L_("The level is shown while recording"))
         elif state == MicState.RECORDING:
             self.stepper.set_current(1)
-            localize(
-                self.lbl_state,
-                text=L_("Recording… Press the button to stop and transcribe."),
-            )
+            # Until it starts (e.g. once a watched folder is paused)
+            self._is_starting = bool(message)
+            if message:
+                self.lbl_state.configure(text=message)
+            else:
+                self._show_recording_state()
         elif state == MicState.TRANSCRIBING:
             self.stepper.set_current(2)
             if message:

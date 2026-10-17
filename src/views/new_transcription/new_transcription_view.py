@@ -18,6 +18,7 @@ from utils.i18n import L_, _
 from utils.media import MediaInfo, probe_media
 from utils.time_format import format_duration
 from utils.validators import is_valid_url, is_youtube_url
+from views.history.formatting import format_size
 from views.localization import Text, localize
 from views.settings.settings_form import FormMode, SettingsForm
 from views.style import icons, theme
@@ -30,15 +31,6 @@ SOURCE_STEP = 0
 SETTINGS_STEP = 1
 
 StartCallback = Callable[[AudioSource, str, TranscriptionSettings], None]
-
-
-def format_size(size: int) -> str:
-    value = float(size)
-    for unit in ("B", "KB", "MB", "GB"):
-        if value < 1024 or unit == "GB":
-            return f"{value:.0f} {unit}" if unit == "B" else f"{value:.1f} {unit}"
-        value /= 1024
-    return f"{value:.1f} GB"
 
 
 class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
@@ -58,11 +50,15 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
         is_busy: Callable[[], bool],
         run_on_ui_thread: Callable[..., None],
         initial_settings: TranscriptionSettings | None = None,
+        start_text: Text | None = None,
     ) -> None:
         """
         :param initial_settings: The settings to start from (e.g. those of a
                                  transcription that failed), instead of the
                                  configured ones.
+        :param start_text: The text of the button that starts the transcription,
+                           if not the usual one (e.g. to save the settings of a
+                           folder and scan it again).
         """
         super().__init__(master, fg_color="transparent")
         assert source in (AudioSource.FILE, AudioSource.YOUTUBE, AudioSource.DIRECTORY)
@@ -74,6 +70,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
         self._is_busy = is_busy
         self._run_on_ui_thread = run_on_ui_thread
         self._initial_settings = initial_settings
+        self._start_text = start_text
         self._step = SOURCE_STEP
         self._selected: str = ""
         # Increases with each selection, so stale background results are ignored
@@ -421,9 +418,16 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
             )
             self.btn_back.grid()
             is_busy = self._is_busy()
+            start_text = self._start_text
             localize(
                 self.btn_primary,
-                text=lambda: _("Add to queue") if is_busy else _("Start transcription"),
+                text=lambda: (
+                    _("Add to queue")
+                    if is_busy
+                    else start_text()
+                    if start_text
+                    else _("Start transcription")
+                ),
             )
             self.btn_primary.configure(
                 image=icons.icon("play", 12, theme.ICON_ON_ACCENT),

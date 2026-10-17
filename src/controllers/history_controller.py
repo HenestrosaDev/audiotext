@@ -1,9 +1,15 @@
 import logging
 import subprocess
+from collections.abc import Callable
 from dataclasses import replace
 from datetime import datetime
 from pathlib import Path
 
+from controllers.transcription_saver import (
+    TranscriptionSaver,
+    get_output_dir,
+    transcription_paths,
+)
 from handlers.question_handler import QuestionHandler
 from handlers.summary_handler import SummaryHandler
 from handlers.translation_handler import MANUAL, TranslationHandler
@@ -15,8 +21,10 @@ from models.history import HistoryEntry
 from models.question import TranscriptAnswer
 from models.summary import TranscriptSummary
 from models.transcript_segment import TranscriptSegment
+from models.transcription_settings import TranscriptionSettings
 from models.translation import TranscriptTranslation
 from utils.background import TaskStarter, start_in_background
+from utils.enums import AudioSource
 from utils.errors import format_error
 from utils.history_store import HistoryStore
 from utils.system import open_in_file_manager, reveal_in_file_manager
@@ -110,19 +118,105 @@ class HistoryController:
             logger.error("Could not open %s", folder, exc_info=e)
             self.view.on_open_folder_failed(folder, e)
 
-    def delete_entry(self, entry_id: str) -> None:
+    def skipped_files_counter(self, entry_id: str) -> Callable[[], int] | None:
+        """
+        Counts the files of a folder that aren't in its history because they
+        already have a transcription. It reads the folder, so it's returned to be
+        run in the background.
+
+        :return: The counter, or None if the entry isn't a folder.
+        """
+        entry = self._store.get(entry_id)
+        if entry is None or not entry.is_folder or entry.source_path is None:
+            return None
+        folder = entry.source_path
+        listed = {child.source for child in self._store.children(entry_id)}
+        saver = TranscriptionSaver(
+            TranscriptionSettings.from_dict(entry.settings).to_transcription(
+                AudioSource.DIRECTORY, entry.source
+            )
+        )
+
+        def count() -> int:
+            return sum(
+                str(file_path) not in listed and saver.has_transcription(file_path)
+                for file_path in saver.list_files(folder)
+            )
+
+        return count
+
+    def delete_entries(self, entry_ids: list[str]) -> None:
+        """
+        Deletes some entries (e.g. files of a folder) at once, refreshing the
+        views once.
+        """
+        entries = [entry for id_ in entry_ids if (entry := self._store.get(id_))]
+        for entry in entries:
+            self._store.delete(entry.id)
+        for view_id in {entry.parent_id or entry.id for entry in entries}:
+            self.view.refresh_entry_view(view_id)
+        if entries:
+            self.view.refresh_sidebar()
+
+    def saved_transcripts(self, entry_id: str) -> list[Path]:
+        """
+        The files saved for the files of a folder, in each output file type, that
+        still exist. The ones of each file are the ones of the settings it was
+        transcribed with.
+        """
+        entry = self._store.get(entry_id)
+        if entry is None or not entry.is_folder or not entry.source:
+            return []
+
+        source_dir = Path(entry.source)
+        paths: list[Path] = []
+        for child in self._store.children(entry_id):
+            file_path = Path(child.source)
+            settings = TranscriptionSettings.from_dict(child.settings or entry.settings)
+            output_dir = Path(settings.output_dir) if settings.output_dir else None
+            paths += [
+                path
+                for path in transcription_paths(
+                    file_path,
+                    settings.effective_output_file_types,
+                    get_output_dir(file_path, output_dir, source_dir),
+                )
+                if path != file_path and path.is_file() and path not in paths
+            ]
+        return paths
+
+    def delete_entry(
+        self, entry_id: str, should_delete_transcripts: bool = False
+    ) -> tuple[int, int]:
         """
         Deletes an entry and, if it's a folder, the entries of its files. A
         transcription in progress must be cancelled first.
+
+        :param should_delete_transcripts: Whether to also delete the files saved
+                                          for the files of a folder.
+        :return: How many saved files were deleted, and how many couldn't be.
         """
         entry = self._store.get(entry_id)
         if entry is None:
-            return
+            return 0, 0
+        transcripts = (
+            self.saved_transcripts(entry_id) if should_delete_transcripts else []
+        )
         self._store.delete(entry_id)
+
+        deleted = failed = 0
+        for path in transcripts:
+            try:
+                path.unlink()
+                deleted += 1
+            except OSError as e:
+                logger.error("Could not delete %s", path, exc_info=e)
+                failed += 1
         # The view of the entry is closed if it was shown, or the one of its folder
         # is updated
         self.view.refresh_entry_view(entry.parent_id or entry_id)
         self.view.refresh_sidebar()
+        return deleted, failed
 
     # TRANSCRIPT
 

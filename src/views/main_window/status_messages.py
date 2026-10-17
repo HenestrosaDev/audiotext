@@ -1,14 +1,23 @@
+from collections.abc import Callable
 from pathlib import Path
-from typing import Protocol
+from typing import Any, Protocol
 
 import utils.notifications as notifications
 from models.history import EntryStatus, HistoryEntry
 from utils.config_manager import ConfigManager
-from utils.i18n import _
+from utils.i18n import P_, _
+
+# How long the files of a watched folder transcribed one after the other are
+# waited for, to notify them together
+GROUPED_NOTIFICATION_DELAY_MS = 5000
 
 
 class StatusDisplay(Protocol):
     def show_status(self, message: str, is_error: bool = False) -> None: ...
+
+    def after(self, ms: int, func: Callable[[], Any]) -> str: ...
+
+    def after_cancel(self, id: str) -> None: ...
 
     def refresh_entry_view(self, entry_id: str) -> None:
         """Shows the changes of an entry if it's shown."""
@@ -23,6 +32,9 @@ class StatusMessages:
 
     def __init__(self, display: StatusDisplay) -> None:
         self._display = display
+        # The files of watched folders waiting to be notified, by folder
+        self._ready_files: dict[str, list[str]] = {}
+        self._notify_after_id: str | None = None
 
     # TRANSCRIPTIONS
 
@@ -34,10 +46,42 @@ class StatusMessages:
         elif status_message:
             self._display.show_status(f"{entry.title}: {status_message}")
 
-    @staticmethod
-    def on_transcription_ready(entry: HistoryEntry) -> None:
-        if ConfigManager.get_config_system().notify_when_done:
+    def on_transcription_ready(
+        self, entry: HistoryEntry, folder_title: str | None = None
+    ) -> None:
+        """
+        :param folder_title: The title of the watched folder of the file, if it's
+                             one. Its files transcribed one after the other are
+                             notified together.
+        """
+        if not ConfigManager.get_config_system().notify_when_done:
+            return
+        if folder_title is None:
             notifications.notify(_("Transcription ready"), entry.title)
+            return
+
+        self._ready_files.setdefault(folder_title, []).append(entry.title)
+        if self._notify_after_id is not None:
+            self._display.after_cancel(self._notify_after_id)
+        self._notify_after_id = self._display.after(
+            GROUPED_NOTIFICATION_DELAY_MS, self._notify_ready_files
+        )
+
+    def _notify_ready_files(self) -> None:
+        self._notify_after_id = None
+        ready_files, self._ready_files = self._ready_files, {}
+        for folder_title, titles in ready_files.items():
+            if len(titles) == 1:
+                notifications.notify(_("Transcription ready"), titles[0])
+            else:
+                notifications.notify(
+                    _("Transcription ready"),
+                    P_(
+                        "{count} file transcribed in {folder}",
+                        "{count} files transcribed in {folder}",
+                        len(titles),
+                    ).format(count=len(titles), folder=folder_title),
+                )
 
     def on_transcription_saved(self, folder: Path) -> None:
         self._display.show_status(_("Saved in {folder}.").format(folder=folder))

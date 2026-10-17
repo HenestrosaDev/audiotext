@@ -72,6 +72,8 @@ class MainController:
         self.recording_view = recording_view
         self._is_transcribing = False
         self._cancellation_token = CancellationToken()
+        # The folder being transcribed, if any
+        self._folder_transcriber: FolderTranscriber | None = None
 
         self._whisperx_handler = whisperx_handler or WhisperXHandler()
         self._transcribers = transcribers or create_transcribers(self._whisperx_handler)
@@ -112,8 +114,45 @@ class MainController:
 
         self._cancellation_token = CancellationToken()
         self._is_transcribing = True
+        self._folder_transcriber = None
 
         self._start_task(lambda: self._run_process(self._get_process(transcription)))
+
+    def pause_watch(self, is_urgent: bool = False) -> bool:
+        """
+        Pauses the folder being watched, so something else can be transcribed (see
+        `TranscriptionView.on_watch_paused`).
+
+        :param is_urgent: Whether to stop the file being transcribed, which is
+                          transcribed again later, instead of waiting for it
+                          (e.g. to record from the microphone right away).
+        :return: Whether it'll be paused, which it isn't if no folder is watched.
+        """
+        folder_transcriber = self._folder_transcriber
+        if not (
+            self._is_transcribing
+            and folder_transcriber is not None
+            and folder_transcriber.pause()
+        ):
+            return False
+        if is_urgent:
+            self._cancellation_token.cancel()
+        return True
+
+    def retranscribe_files(self, files: list[Path]) -> bool:
+        """
+        Transcribes some files of the folder being transcribed again, once the
+        current file is done.
+
+        :return: Whether they'll be transcribed, which they aren't if no folder is
+                 being transcribed or it's already done.
+        """
+        folder_transcriber = self._folder_transcriber
+        return (
+            self._is_transcribing
+            and folder_transcriber is not None
+            and folder_transcriber.retranscribe(files)
+        )
 
     def cancel_transcription(self) -> None:
         """
@@ -166,9 +205,16 @@ class MainController:
                 transcription.path,
                 self.view,
                 TranscriptionSaver(transcription),
-                functools.partial(self._transcribe_file, transcription),
+                functools.partial(self._transcribe_folder_file, transcription),
                 self._cancellation_token,
+                retranscribed_files=transcription.retranscribed_files,
+                should_scan_folder=transcription.should_scan_folder,
+                should_overwrite=transcription.should_overwrite,
+                should_transcribe_existing=transcription.should_transcribe_existing,
+                watch_known_files=transcription.watch_known_files,
+                should_wait_for_folder=transcription.should_wait_for_folder,
             )
+            self._folder_transcriber = folder_transcriber
             if source == AudioSource.WATCH:
                 return folder_transcriber.watch
             return folder_transcriber.transcribe_all
@@ -236,6 +282,20 @@ class MainController:
 
         return _("Done in {duration}.").format(
             duration=format_elapsed_time(time.monotonic() - start_time)
+        )
+
+    def _transcribe_folder_file(
+        self,
+        transcription: Transcription,
+        file_path: Path,
+        on_progress: ProgressCallback,
+        should_overwrite: bool,
+    ) -> None:
+        """Transcribes a file of a folder, replacing its transcription if asked."""
+        self._transcribe_file(
+            dataclasses.replace(transcription, should_overwrite=should_overwrite),
+            file_path,
+            on_progress,
         )
 
     def _transcribe_file(

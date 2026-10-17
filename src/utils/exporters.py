@@ -300,6 +300,12 @@ def to_markdown(document: ExportDocument) -> str:
         lines += _markdown_summary(summary)
         lines += ["## " + _("Transcription"), ""]
 
+    lines += _markdown_paragraphs(document)
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _markdown_paragraphs(document: ExportDocument) -> list[str]:
+    lines: list[str] = []
     for paragraph in paragraphs(document):
         prefix = ""
         if paragraph.start is not None:
@@ -310,8 +316,7 @@ def to_markdown(document: ExportDocument) -> str:
             f"**{prefix.strip()}** {paragraph.text}" if prefix else paragraph.text,
             "",
         ]
-
-    return "\n".join(lines).rstrip() + "\n"
+    return lines
 
 
 def _markdown_summary(summary: TranscriptSummary) -> list[str]:
@@ -371,6 +376,11 @@ def to_docx(document: ExportDocument) -> bytes:
         _add_docx_summary(docx, summary)
         docx.add_heading(_("Transcription"), level=1)
 
+    _add_docx_paragraphs(docx, document)
+    return _docx_bytes(docx)
+
+
+def _add_docx_paragraphs(docx: Any, document: ExportDocument) -> None:
     for paragraph in paragraphs(document):
         docx_paragraph = docx.add_paragraph()
         if paragraph.start is not None:
@@ -380,8 +390,6 @@ def to_docx(document: ExportDocument) -> bytes:
         if paragraph.speaker:
             docx_paragraph.add_run(f"{paragraph.speaker}: ").bold = True
         docx_paragraph.add_run(paragraph.text)
-
-    return _docx_bytes(docx)
 
 
 Exporter = Callable[[ExportDocument], str | bytes]
@@ -478,6 +486,43 @@ def export_summary(
     if file_type not in SUMMARY_EXPORTERS:
         raise ValueError(f"Unsupported file type: {file_type}")
     return _write(file_path, file_type, SUMMARY_EXPORTERS[file_type](title, summary))
+
+
+# The formats that several transcriptions can be exported to, in a single file
+COLLECTION_FORMATS = ("txt", "md", "docx")
+
+
+def export_collection(
+    file_path: Path, file_type: str, title: str, documents: list[ExportDocument]
+) -> Path:
+    """
+    Writes several transcriptions (e.g. the files of a folder) to a single file,
+    each one under its title.
+
+    :param file_type: One of `COLLECTION_FORMATS`.
+    :return: The path of the written file.
+    """
+    content: str | bytes
+    if file_type == "txt":
+        content = "\n\n".join(
+            f"{document.title}\n{'=' * len(document.title)}\n\n{to_txt(document)}"
+            for document in documents
+        )
+    elif file_type == "md":
+        lines = [f"# {title}", ""]
+        for document in documents:
+            lines += [f"## {document.title}", "", *_markdown_paragraphs(document)]
+        content = "\n".join(lines).rstrip() + "\n"
+    elif file_type == "docx":
+        docx = _new_docx(title)
+        for document in documents:
+            docx.add_heading(document.title, level=1)
+            _add_docx_paragraphs(docx, document)
+        content = _docx_bytes(docx)
+    else:
+        raise ValueError(f"Unsupported file type: {file_type}")
+
+    return _write(file_path, file_type, content)
 
 
 def _write(file_path: Path, file_type: str, content: str | bytes) -> Path:

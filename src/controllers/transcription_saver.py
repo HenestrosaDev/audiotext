@@ -1,11 +1,12 @@
 import dataclasses
+import glob
 import logging
 from pathlib import Path
 
 from interfaces.transcriber import Transcriber
 from models.transcription import Transcription, TranscriptionResult
 from utils import constants as c
-from utils.folder_watcher import list_supported_files
+from utils.folder_watcher import FileFilter, list_supported_files
 
 logger = logging.getLogger(__name__)
 
@@ -41,14 +42,49 @@ def has_transcription(
     :param output_file_types: The output file types of the transcriptions.
     :param output_dir: The folder of the transcriptions. Defaults to the folder of
                        the file.
-    :return: Whether the file has a transcription for any of the output file types.
+    :return: Whether the file has a transcription for each of the output file
+             types, so it's transcribed again if one of them is added.
     """
-    transcription_path = (output_dir or file_path.parent) / file_path.name
-
-    return any(
-        transcription_path.with_suffix(f".{get_file_extension(file_type)}").exists()
-        for file_type in output_file_types
+    return bool(output_file_types) and all(
+        path.exists()
+        for path in transcription_paths(file_path, output_file_types, output_dir)
     )
+
+
+def transcription_paths(
+    file_path: Path, output_file_types: list[str], output_dir: Path | None = None
+) -> list[Path]:
+    """
+    The paths of the transcriptions of a file, one for each output file type. See
+    `has_transcription`.
+    """
+    name = transcription_name(file_path)
+    folder = output_dir or file_path.parent
+
+    return [
+        folder / f"{name}.{get_file_extension(file_type)}"
+        for file_type in output_file_types
+    ]
+
+
+def transcription_name(file_path: Path) -> str:
+    """
+    The name of the transcriptions of a file, without their extension: the name
+    of the file without its extension (e.g. "talk" for "talk.mp3"), or with it
+    (e.g. "talk.mp3") if another audio or video file of its folder has the same
+    one, so their transcriptions don't replace each other.
+    """
+    try:
+        others = [
+            other
+            for other in file_path.parent.glob(f"{glob.escape(file_path.stem)}.*")
+            if other.stem == file_path.stem
+            and other.name != file_path.name
+            and other.suffix.lower() in c.SUPPORTED_FILE_EXTENSIONS
+        ]
+    except OSError:
+        others = []
+    return file_path.name if others else file_path.stem
 
 
 def get_file_extension(file_type: str) -> str:
@@ -89,15 +125,27 @@ class TranscriptionSaver:
         """
         Retrieves the supported files of a directory (and its subdirectories).
         Unless the transcription overwrites the existing files, files that already
-        have a transcription for any of the output file types are skipped.
+        have a transcription for each of the output file types are skipped.
 
         :return: A sorted list of the paths of the files to transcribe.
         """
         return [
             file_path
-            for file_path in list_supported_files(dir_path)
+            for file_path in self.list_files(dir_path)
             if not self.should_skip(file_path)
         ]
+
+    @property
+    def file_filter(self) -> FileFilter:
+        """Which files of the folder are transcribed."""
+        return FileFilter(
+            include_subfolders=self._transcription.should_include_subfolders,
+            exclude_patterns=tuple(self._transcription.exclude_patterns),
+        )
+
+    def list_files(self, dir_path: Path) -> list[Path]:
+        """The files of a folder that are transcribed, with a transcription or not."""
+        return list_supported_files(dir_path, self.file_filter)
 
     def should_skip(self, file_path: Path) -> bool:
         """Whether the file is skipped because it already has a transcription."""
@@ -120,7 +168,12 @@ class TranscriptionSaver:
         """
         output_dir = self.get_output_dir(file_path)
         output_dir.mkdir(parents=True, exist_ok=True)
-        save_path = output_dir / f"{file_path.stem}{self._get_extension()}"
+        # With the extension of the first file type, which the transcribers
+        # replace by the one of each type, since the name can have dots (e.g.
+        # "talk.mp3", if there is also a "talk.mp4")
+        file_types = self._transcription.output_file_types or ["txt"]
+        extension = get_file_extension(file_types[0])
+        save_path = output_dir / f"{transcription_name(file_path)}.{extension}"
 
         # Pointing to the file, not to its folder, e.g. to know if it's a vertical
         # video, which narrows its subtitles
@@ -131,15 +184,3 @@ class TranscriptionSaver:
         )
 
         return save_path.parent.resolve()
-
-    def _get_extension(self) -> str:
-        """
-        Returns the extension of the output file, which is only known if there is a
-        single output file type. Otherwise, each output file type adds its own.
-        """
-        output_file_types = self._transcription.output_file_types
-
-        if len(output_file_types) != 1:
-            return ""
-
-        return f".{get_file_extension(output_file_types[0])}"

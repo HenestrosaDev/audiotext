@@ -55,6 +55,8 @@ def test_active_entries_are_interrupted_on_reload(store: HistoryStore) -> None:
     assert loaded.get(processing.id).status == EntryStatus.INTERRUPTED  # type: ignore[union-attr]
     assert loaded.get(watching.id).status == EntryStatus.INTERRUPTED  # type: ignore[union-attr]
     assert loaded.get(done.id).status == EntryStatus.DONE  # type: ignore[union-attr]
+    # To watch it again
+    assert loaded.interrupted_watches == [watching.id]
 
 
 def test_top_level_entries_are_sorted_newest_first(store: HistoryStore) -> None:

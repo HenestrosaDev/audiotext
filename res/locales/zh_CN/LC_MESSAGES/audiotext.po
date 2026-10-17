@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -97,6 +97,9 @@ msgstr "调整阈值"
 msgid "Aligning subtitles…"
 msgstr "正在对齐字幕…"
 
+msgid "All"
+msgstr "全部"
+
 msgid "All files"
 msgstr "所有文件"
 
@@ -112,6 +115,14 @@ msgid ""
 "All the audio and video files of a folder, or the new ones as they're "
 "added."
 msgstr "文件夹中的所有音频和视频文件，或新添加的文件。"
+
+msgid "All the files already have a transcription."
+msgstr "所有文件都已有转写。"
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "同时删除为它们保存的 {count} 个文件"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "使用 Whisper API 转写时也需要。"
@@ -242,8 +253,16 @@ msgstr "选择一个来源，或从历史记录中选择转写来阅读和播放
 msgid "Choose where to save the transcriptions"
 msgstr "选择转写的保存位置"
 
+msgid "Clear selection"
+msgstr "清除选择"
+
 msgid "Clear the conversation"
 msgstr "清除对话"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "关闭 ({shortcut})"
 
 msgid "Compute type"
 msgstr "计算类型"
@@ -258,11 +277,22 @@ msgstr "背景信息"
 msgid "Continue"
 msgstr "继续"
 
+msgid "Copied to the clipboard."
+msgstr "已复制到剪贴板。"
+
 msgid "Copy"
 msgstr "复制"
 
+msgid "Copy text"
+msgstr "复制文本"
+
 msgid "Could not check for updates."
 msgstr "无法检查更新。"
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "无法删除 {count} 个已保存的文件。"
 
 #, python-brace-format
 msgid ""
@@ -366,6 +396,11 @@ msgstr "删除转写"
 msgid "Delete “{title}” from the history?"
 msgstr "从历史记录中删除“{title}”？"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "已删除 {count} 个已保存的文件。"
+
 msgid "Delete…"
 msgstr "删除…"
 
@@ -409,6 +444,9 @@ msgstr "将音频或视频文件拖放到此处"
 msgid "Edit note…"
 msgstr "编辑备注…"
 
+msgid "Edit settings"
+msgstr "编辑设置"
+
 msgid "Edit tag…"
 msgstr "编辑标签…"
 
@@ -449,6 +487,9 @@ msgstr ""
 msgid "Export"
 msgstr "导出"
 
+msgid "Export all…"
+msgstr "全部导出…"
+
 msgid "Export summary"
 msgstr "导出摘要"
 
@@ -472,11 +513,17 @@ msgid ""
 " boxes: {characters}"
 msgstr "已导出到 {path}，但没有字体包含这些字符，因此它们显示为方框：{characters}"
 
+msgid "Export…"
+msgstr "导出…"
+
 msgid "Failed"
 msgstr "失败"
 
 msgid "File"
 msgstr "文件"
+
+msgid "File not found"
+msgstr "找不到文件"
 
 msgid "File types"
 msgstr "文件类型"
@@ -521,6 +568,11 @@ msgstr "在{language}译文中查找"
 
 msgid "Find:"
 msgstr "查找："
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr "先转写文件夹中已有但尚未转写的文件。"
 
 msgid "Folder"
 msgstr "文件夹"
@@ -613,6 +665,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "正在识别说话人…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "位于 {folder}"
+
+msgid "Include subfolders"
+msgstr "包含子文件夹"
+
 msgid "Interface language"
 msgstr "界面语言"
 
@@ -639,8 +698,8 @@ msgstr "固定在主窗口上方"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
-msgstr "持续运行并转写添加到文件夹中的文件，直到你停止。文件夹中已有的文件会被跳过。"
+"stop it."
+msgstr "持续运行并转写添加到文件夹的文件，直到你停止。"
 
 msgid "Key points"
 msgstr "要点"
@@ -673,6 +732,10 @@ msgstr "大"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "模型越大越准确，但速度越慢。"
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "最后一个文件转写于 {time}：{name}"
 
 msgid "Light"
 msgstr "浅色"
@@ -763,6 +826,11 @@ msgid "Name of the transcription:"
 msgstr "转写名称："
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr "要跳过的文件的名称或路径，用逗号分隔。隐藏文件始终会被跳过。"
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr "音频中出现的人名、术语或缩写，用逗号分隔，以便正确拼写。"
@@ -838,6 +906,9 @@ msgstr "无结果"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "没有声音。请检查麦克风是否已打开并获得授权。"
 
+msgid "No speech found"
+msgstr "未检测到语音"
+
 msgid "No summary yet"
 msgstr "暂无摘要"
 
@@ -902,11 +973,23 @@ msgid ""
 "size."
 msgstr "仅转写英语，比相同大小的多语言模型更快。"
 
+msgid "Open folder"
+msgstr "打开文件夹"
+
 msgid "Open in history"
 msgstr "在历史记录中打开"
 
-msgid "Open the folder of the saved files"
-msgstr "打开已保存文件所在的文件夹"
+msgid "Open in the browser"
+msgstr "在浏览器中打开"
+
+msgid "Open source folder"
+msgstr "打开源文件夹"
+
+msgid "Open transcript"
+msgstr "打开转写"
+
+msgid "Open transcripts folder"
+msgstr "打开转写文件夹"
 
 msgid "OpenAI API key"
 msgstr "OpenAI API 密钥"
@@ -927,11 +1010,11 @@ msgstr "描边"
 msgid "Output"
 msgstr "输出"
 
-msgid "Overwrite existing files"
-msgstr "覆盖现有文件"
-
 msgid "Paste"
 msgstr "粘贴"
+
+msgid "Pending"
+msgstr "待处理"
 
 msgid "Pin to the top"
 msgstr "置顶"
@@ -1001,6 +1084,21 @@ msgstr "提供商"
 msgid "Queued"
 msgstr "排队中"
 
+msgid "Re-transcribe"
+msgstr "重新转写"
+
+msgid "Re-transcribe all"
+msgstr "全部重新转写"
+
+msgid "Re-transcribe all…"
+msgstr "全部重新转写…"
+
+msgid "Re-transcribe them"
+msgstr "重新转写它们"
+
+msgid "Re-transcribe this file"
+msgstr "重新转写此文件"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "只读。编辑字幕即可更改此文本。"
 
@@ -1039,6 +1137,27 @@ msgstr "精修"
 
 msgid "Regenerate the summary"
 msgstr "重新生成摘要"
+
+msgid "Remove"
+msgstr "移除"
+
+msgid "Remove from history"
+msgstr "从历史记录中移除"
+
+msgid "Remove from history…"
+msgstr "从历史记录中移除…"
+
+msgid "Remove missing files from the list…"
+msgstr "从列表中移除缺失的文件…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "从历史记录中移除 {count} 个文件？"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "从历史记录中移除“{title}”及其文件？"
 
 msgid "Rename"
 msgstr "重命名"
@@ -1084,6 +1203,15 @@ msgstr "使用 WhisperX 识别说话人时必需（pyannote/speaker-diarization-
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "使用 DeepL 翻译时必需。免费套餐的密钥也可以使用。"
 
+msgid "Rescan folder"
+msgstr "重新扫描文件夹"
+
+msgid "Resume watching"
+msgstr "继续监视"
+
+msgid "Retry failed"
+msgstr "重试失败项"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "重新检查已接受的词"
@@ -1104,6 +1232,9 @@ msgstr "与音频相同"
 
 msgid "Save"
 msgstr "保存"
+
+msgid "Save and rescan"
+msgstr "保存并重新扫描"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1174,6 +1305,9 @@ msgstr "在文件管理器中显示"
 msgid "Show it as the subtitles of the video"
 msgstr "显示为视频字幕"
 
+msgid "Show more"
+msgstr "显示更多"
+
 msgid "Show subtitles on the video"
 msgstr "在视频上显示字幕"
 
@@ -1189,8 +1323,23 @@ msgstr "转写完成时显示系统通知。"
 msgid "Size"
 msgstr "大小"
 
+msgid "Skip files matching"
+msgstr "跳过匹配以下内容的文件"
+
 msgid "Small"
 msgstr "小"
+
+msgid "Sort by duration"
+msgstr "按时长排序"
+
+msgid "Sort by name"
+msgstr "按名称排序"
+
+msgid "Sort by size"
+msgstr "按大小排序"
+
+msgid "Sort by status"
+msgstr "按状态排序"
 
 msgid "Source"
 msgstr "来源"
@@ -1224,6 +1373,9 @@ msgstr "停止同步滚动"
 msgid "Stop watching"
 msgstr "停止监视"
 
+msgid "Stop watching to edit settings"
+msgstr "停止监视后才能编辑设置"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "已停止监视文件夹。已转录的文件:{done}。"
@@ -1243,6 +1395,9 @@ msgstr "字幕 (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "字幕：{count} 条"
+
+msgid "Summarize…"
+msgstr "总结…"
 
 msgid "Summarizing…"
 msgstr "正在总结…"
@@ -1333,11 +1488,11 @@ msgstr "无法下载文件：{error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "文件已被移动或删除：{path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr "该文件夹中没有要转写的文件。除非勾选“覆盖现有文件”，否则会跳过已有转写的文件。"
+msgid "The files it already contains are skipped."
+msgstr "跳过文件夹中已有的文件。"
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "文件夹中没有可转写的音频或视频文件。"
 
 msgid "The level is shown while recording"
 msgstr "录音时会显示音量"
@@ -1483,6 +1638,12 @@ msgstr "转写文件夹"
 msgid "Transcribe again"
 msgstr "重新转写"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr "重新转写“{title}”中的所有文件？为它们保存的文件将被替换。"
+
 msgid "Transcribe from a URL"
 msgstr "从 URL 转写"
 
@@ -1493,6 +1654,9 @@ msgstr "从麦克风转写"
 msgid "Transcribe it again to score its words"
 msgstr "重新转录以为单词评分"
 
+msgid "Transcribe the files already in the folder"
+msgstr "转写文件夹中已有的文件"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "要重新转录“{title}”吗？对其文本所做的更改将丢失。"
@@ -1502,15 +1666,13 @@ msgid "Transcribed {done} of {total} files."
 msgstr "已转写 {done}/{total} 个文件。"
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr "重新转录已有转录的文件，并替换其文件。"
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
-msgstr "转写文件夹及其子文件夹中的音频和视频文件。已有转写的文件会被跳过，除非你选择覆盖。"
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
+msgstr "转写文件夹及其子文件夹中的音频和视频文件。已有转写的文件会被跳过。你可以在文件夹中重新转写它们。"
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "转写没有转写的文件，例如新文件。"
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1655,6 +1817,9 @@ msgstr "视频文件"
 msgid "Video with subtitles (.mp4)…"
 msgstr "带字幕的视频 (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "等待完成后才能编辑设置"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "请等待当前转写完成，或将其取消。"
 
@@ -1670,6 +1835,10 @@ msgstr "正在等待语音…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "正在等待当前转写完成。"
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "正在等待文件夹可用：{folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1741,14 +1910,24 @@ msgstr "YouTube 或文件链接"
 msgid "YouTube video"
 msgstr "YouTube 视频"
 
+msgid "Your audio and video files are not deleted."
+msgstr "你的音频和视频文件不会被删除。"
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "你的音频、视频和已保存的文件不会被删除。"
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "大约还剩 {time}"
 
 msgid "cancelled"
 msgstr "已取消"
 
 msgid "default"
 msgstr "默认"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "例如 *.wav, drafts/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "例如：一场关于语音识别的访谈"
@@ -1775,8 +1954,34 @@ msgid "{count} failed"
 msgstr "{count} 个失败"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} 个文件"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} 个文件"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "已在 {folder} 中转写 {count} 个文件"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] "{count} 个文件是用其他设置转写的。已更改：{settings}。"
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} 个缺失"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "已选择 {count} 个"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "已跳过 {count} 个（已有转写）"
 
 #, python-brace-format
 msgid "{count} transcriptions"

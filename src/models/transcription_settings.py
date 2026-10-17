@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any
 from models.transcription import Transcription, split_keywords
 from utils import constants as c
 from utils.enums import AudioSource, TranscriptionMethod
+from utils.folder_watcher import split_patterns
 
 if TYPE_CHECKING:
     from handlers.openai_api_handler import ApiModel
@@ -53,12 +54,22 @@ class TranscriptionSettings:
     # Unused: only the files of a folder are saved, always. Kept so the settings
     # of older entries can be read
     autosave: bool = False
+    # Unused: the files of a folder that already have a transcription are only
+    # transcribed again when asked for. Kept so the settings of older entries can
+    # be read
     overwrite: bool = False
     # Folder of the files saved automatically. If empty, they're saved next to
     # the transcribed file
     output_dir: str = ""
     # Whether to watch the folder for new files instead of transcribing its files
     watch: bool = False
+    # Whether watching the folder transcribes the files it already contains first
+    transcribe_existing: bool = False
+    # Whether the files of the subfolders of the folder are transcribed too
+    include_subfolders: bool = True
+    # Patterns of the names or paths of the files of the folder to skip,
+    # separated by commas (e.g. "*.wav, drafts/*")
+    exclude_patterns: str = ""
     # Whether to show the text while recording from the microphone (WhisperX)
     live_transcription: bool = False
     live_model_size: str = "small"
@@ -171,7 +182,11 @@ class TranscriptionSettings:
             # Only the files of a folder are saved, since there is no other way to
             # get all of them at once. The rest are exported from the history
             should_autosave=is_folder,
-            should_overwrite=self.overwrite,
+            should_transcribe_existing=(
+                audio_source == AudioSource.WATCH and self.transcribe_existing
+            ),
+            should_include_subfolders=self.include_subfolders,
+            exclude_patterns=list(split_patterns(self.exclude_patterns)),
             output_dir=Path(self.output_dir) if self.output_dir else None,
             media_path=media_path,
             mic_device_index=mic_device_index,
@@ -203,3 +218,73 @@ class TranscriptionSettings:
     def from_dict(cls, data: dict[str, Any]) -> "TranscriptionSettings":
         known_fields = {settings_field.name for settings_field in fields(cls)}
         return cls(**{key: value for key, value in data.items() if key in known_fields})
+
+    def result_options(self) -> dict[str, Any]:
+        """
+        The options that change the transcription of a file, leaving out the ones
+        that its method ignores (e.g. the model of WhisperX for the Whisper API).
+        """
+        method = self.transcription_method
+        is_whisperx = method == TranscriptionMethod.WHISPERX
+        is_google = method == TranscriptionMethod.GOOGLE_API
+        translation_mode = self.effective_translation_mode
+        options: dict[str, Any] = {
+            SettingsChange.METHOD: self.method,
+            SettingsChange.LANGUAGE: (
+                self.input_language,
+                self.output_language if translation_mode else SAME_LANGUAGE,
+                translation_mode,
+            ),
+            SettingsChange.SPEECH_ISOLATION: self.isolate_speech,
+        }
+        if is_whisperx:
+            options[SettingsChange.MODEL] = self.model_size
+            options[SettingsChange.WORD_TIMINGS] = self.align_words
+            options[SettingsChange.SPEAKERS] = (
+                self.diarize,
+                self.num_speakers if self.diarize else 0,
+            )
+        elif method == TranscriptionMethod.WHISPER_API:
+            options[SettingsChange.MODEL] = self.openai_model
+        if not is_google:
+            options[SettingsChange.CONTEXT] = (
+                self.prompt.strip(),
+                tuple(split_keywords(self.keywords)),
+            )
+        return options
+
+
+class SettingsChange(str, Enum):
+    """An option that changes the transcription of a file (see `changed_options`)."""
+
+    METHOD = "method"
+    MODEL = "model"
+    LANGUAGE = "language"
+    WORD_TIMINGS = "word_timings"
+    SPEAKERS = "speakers"
+    SPEECH_ISOLATION = "speech_isolation"
+    CONTEXT = "context"
+
+
+def changed_options(
+    used: dict[str, Any], current: dict[str, Any]
+) -> list[SettingsChange]:
+    """
+    The options that differ between the settings a file was transcribed with and
+    the current ones of its folder, so the user knows that transcribing it again
+    would give another result.
+
+    :param used: The settings of the file (see `TranscriptionSettings.to_dict`).
+    :param current: The settings of its folder.
+    """
+    try:
+        used_options = TranscriptionSettings.from_dict(used).result_options()
+        current_options = TranscriptionSettings.from_dict(current).result_options()
+    except (TypeError, ValueError):
+        return []
+
+    return [
+        change
+        for change in SettingsChange
+        if used_options.get(change) != current_options.get(change)
+    ]

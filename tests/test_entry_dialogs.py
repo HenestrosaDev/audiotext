@@ -137,6 +137,63 @@ def test_an_entry_in_progress_is_cancelled_before_deleting_it(
     ]
 
 
+def test_a_folder_is_removed_keeping_its_saved_files_unless_asked(
+    dialogs: EntryDialogs,
+    store: HistoryStore,
+    history: MagicMock,
+    answers: Answers,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    folder = add(store, kind="Directory", source="/talks")
+    results = iter([None, False, True])
+    options: list[str] = []
+
+    class FakeConfirmDialog:
+        def __init__(self, *_args: Any, option_text: str, **_kwargs: Any) -> None:
+            options.append(option_text)
+
+        def get_result(self) -> bool | None:
+            return next(results)
+
+    monkeypatch.setattr(entry_dialogs, "ConfirmDialog", FakeConfirmDialog)
+    history.saved_transcripts.return_value = [Path("/talks/a.txt")]
+    history.delete_entry.return_value = (1, 0)
+
+    # Cancelled
+    dialogs.confirm_delete_entry(folder.id)
+    history.delete_entry.assert_not_called()
+
+    dialogs.confirm_delete_entry(folder.id)
+    dialogs.confirm_delete_entry(folder.id)
+    assert options[0] == "Also delete the 1 file saved for them"
+    assert [call.args for call in history.delete_entry.call_args_list] == [
+        (folder.id,),
+        (folder.id,),
+    ]
+    assert history.delete_entry.call_args.kwargs == {"should_delete_transcripts": True}
+
+    # Without saved files, there is nothing else to ask
+    history.saved_transcripts.return_value = []
+    history.delete_entry.reset_mock()
+    answers.is_confirmed = True
+    dialogs.confirm_delete_entry(folder.id)
+    history.delete_entry.assert_called_once_with(folder.id)
+
+
+def test_files_are_only_removed_from_the_history_if_confirmed(
+    dialogs: EntryDialogs, store: HistoryStore, history: MagicMock, answers: Answers
+) -> None:
+    folder = add(store, kind="Directory", source="/talks")
+    child = add(store, parent_id=folder.id, status=EntryStatus.QUEUED)
+
+    dialogs.confirm_remove_entries([child.id])
+    history.delete_entries.assert_not_called()
+
+    answers.is_confirmed = True
+    dialogs.confirm_remove_entries([child.id, "missing"])
+    history.delete_entries.assert_called_once_with([child.id])
+
+
 def test_an_entry_is_moved_to_a_new_group(
     dialogs: EntryDialogs, store: HistoryStore, history: MagicMock, answers: Answers
 ) -> None:

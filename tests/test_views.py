@@ -12,6 +12,7 @@ import tkinter as tk
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import replace
+from datetime import datetime
 from functools import cache, partial
 from pathlib import Path
 from types import SimpleNamespace
@@ -50,6 +51,7 @@ from views.settings.cards.engine_card import EngineCard
 from views.settings.cards.language_card import LanguageCard
 from views.settings.cards.output_card import OutputCard
 from views.settings.preferences_dialog import API_KEYS_TAB, GENERAL_TAB, PROVIDERS_TAB
+from views.style import icons, theme
 
 
 def has_display() -> bool:
@@ -297,6 +299,469 @@ def test_the_views_of_the_entries(ui: Ui, audio_file: Path) -> None:
         for entry in entries[2:]:
             ui.window.select_entry(entry.id)
             ui.pump(0.12)
+
+
+def widget_texts(root: Any) -> list[str]:
+    """The texts of the labels and buttons shown inside a widget."""
+    texts: list[str] = []
+    widgets = [root]
+    while widgets:
+        widget = widgets.pop(0)
+        if not widget.winfo_viewable():
+            continue
+        widgets.extend(widget.winfo_children())
+        if isinstance(widget, (ctk.CTkLabel, ctk.CTkButton)):
+            texts.append(widget.cget("text").strip())
+    return [text for text in texts if text]
+
+
+def menu_labels(menu: tk.Menu) -> dict[str, str]:
+    """The labels of the items of a menu, with their state."""
+    return {
+        menu.entrycget(idx, "label"): menu.entrycget(idx, "state")
+        for idx in range((menu.index("end") or 0) + 1)
+        if menu.type(idx) != "separator"
+    }
+
+
+def test_the_files_of_a_folder_are_listed_with_their_details(
+    ui: Ui, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.entries import folder_view
+
+    source = tmp_path / "talks"
+    source.mkdir()
+    (source / "a.mp3").write_bytes(b"0" * 2048)
+    (source / "b.mp3").write_bytes(b"0" * 1024)
+    (source / "c.mp3").write_bytes(b"0" * 1024)
+    settings = TranscriptionSettings(
+        model_size="small", input_language="es", output_file_types=["txt", "srt"]
+    )
+    folder = ui.add(
+        title="Talks",
+        kind=AudioSource.DIRECTORY.value,
+        source=str(source),
+        method="WhisperX",
+        settings=settings.to_dict(),
+    )
+    first = ui.add(
+        title="a.mp3",
+        source=str(source / "a.mp3"),
+        parent_id=folder.id,
+        text="Hola a todos y bienvenidos",
+        segments=[TranscriptSegment(0.0, 65.0, "Hola a todos y bienvenidos")],
+        settings=settings.to_dict(),
+    )
+    failed = ui.add(
+        title="b.mp3",
+        source=str(source / "b.mp3"),
+        parent_id=folder.id,
+        status=EntryStatus.FAILED,
+        error="Broken file",
+        settings=settings.to_dict(),
+    )
+    outdated = ui.add(
+        title="c.mp3",
+        source=str(source / "c.mp3"),
+        parent_id=folder.id,
+        text="Adiós",
+        settings=replace(settings, model_size="tiny").to_dict(),
+    )
+    ui.window.select_entry(folder.id)
+    ui.pump()
+    view = ui.window._entry_view
+    calls: list[tuple[str, Any]] = []
+    for name in ("retry_entry", "retranscribe_files", "retranscribe_folder"):
+        monkeypatch.setattr(
+            view._actions.jobs, name, lambda arg, name=name: calls.append((name, arg))
+        )
+
+    assert view.lbl_summary.cget("text") == "3 files · 2 done · 1 failed"
+    header = widget_texts(view.header)
+    assert "Spanish" in header
+    assert ".txt .srt" in header
+    assert "Saved next to the source" in header
+    assert "Edit settings" in header
+
+    rows = view.rows
+    assert [row.entry_id for row in rows] == [first.id, failed.id, outdated.id]
+    assert rows[0].detail == "Hola a todos y bienvenidos"
+    assert rows[0].lbl_meta.cget("text") == "01:05 · 2.0 KB"
+    # The texts are shortened to the row, which they don't widen, or each
+    # shortened text would resize the row again, freezing the window
+    assert rows[0].frm_text.winfo_reqwidth() < 50
+    assert rows[0].lbl_name.winfo_ismapped() and rows[0].lbl_detail.winfo_ismapped()
+    assert rows[1].detail == "Broken file"
+    assert view.lbl_outdated.cget("text") == (
+        "1 file was transcribed with other settings. Changed: Model."
+    )
+    assert view.btn_rescan.cget("text") == "Rescan folder"
+
+    view.btn_retry_failed.invoke()
+    view.btn_rescan.invoke()
+    view._retranscribe_outdated()
+    assert calls == [
+        ("retranscribe_files", [failed.id]),
+        ("retry_entry", folder.id),
+        ("retranscribe_files", [outdated.id]),
+    ]
+
+    # Searched in their names and texts, filtered by status, and sorted
+    view.query.set("bienvenidos")
+    assert [row.entry_id for row in view.rows] == [first.id]
+    view.query.set("")
+    view.status_filter.set(folder_view.FAILED_FILTER)
+    view._on_list_change()
+    assert [row.entry_id for row in view.rows] == [failed.id]
+    view.status_filter.set(folder_view.ALL_FILTER)
+    view.sort.set(folder_view.STATUS_SORT)
+    view._on_list_change()
+    assert [row.entry_id for row in view.rows] == [failed.id, first.id, outdated.id]
+    view.query.set("nothing like this")
+    assert view.rows == []
+    assert view.lbl_empty.cget("text") == "No results"
+    view.query.set("")
+
+    # The actions of each file, from its menu
+    menus: list[tk.Menu] = []
+    monkeypatch.setattr(tk.Menu, "tk_popup", lambda menu, *_args: menus.append(menu))
+    view.show_file_menu(failed.id, view.rows[0].btn_more)
+    labels = menu_labels(menus[-1])
+    assert labels["Copy text"] == tk.DISABLED
+    assert labels["Re-transcribe this file"] == tk.NORMAL
+    view.show_file_menu(first.id, view.rows[1].btn_more)
+    labels = menu_labels(menus[-1])
+    assert labels["Open transcript"] == tk.NORMAL
+    assert labels["Export…"] == tk.NORMAL
+    menus[-1].invoke("Copy text")
+    assert view.clipboard_get() == "Hola a todos y bienvenidos"
+    menus[-1].invoke("Re-transcribe this file")
+    assert calls[-1] == ("retranscribe_files", [first.id])
+
+    view._show_folder_menu()
+    labels = menu_labels(menus[-1])
+    assert labels["Re-transcribe all…"] == tk.NORMAL
+    assert "Remove from history…" in labels
+    monkeypatch.setattr(folder_view.messagebox, "askyesno", lambda *_a, **_k: True)
+    menus[-1].invoke("Re-transcribe all…")
+    assert calls[-1] == ("retranscribe_folder", folder.id)
+    for menu in menus:
+        menu.destroy()
+
+    # Opened from the folder to export it
+    exported: list[str] = []
+    monkeypatch.setattr(
+        "views.transcript.transcript_view.TranscriptView.show_export_menu",
+        lambda transcript: exported.append(transcript.entry_id),
+    )
+    ui.window.open_transcript(first.id, folder_view.TranscriptAction.EXPORT)
+    ui.pump()
+    assert exported == [first.id]
+
+
+def test_a_folder_with_one_file_is_singular_and_its_settings_can_be_edited(
+    ui: Ui, tmp_path: Path
+) -> None:
+    folder = ui.add(
+        title="Talks",
+        kind=AudioSource.DIRECTORY.value,
+        source=str(tmp_path),
+        settings=TranscriptionSettings().to_dict(),
+    )
+    (tmp_path / "a.mp3").touch()
+    ui.add(title="a.mp3", source=str(tmp_path / "a.mp3"), parent_id=folder.id)
+    ui.window.select_entry(folder.id)
+    ui.pump()
+    view = ui.window._entry_view
+
+    assert view.lbl_summary.cget("text") == "1 file · 1 done"
+    assert not view.frm_controls.winfo_ismapped()
+    assert not view.btn_retry_failed.winfo_ismapped()
+    assert not view.frm_outdated.winfo_ismapped()
+
+    view.header.btn_settings.invoke()
+    ui.pump()
+    settings_view = ui.window._back_view
+    assert settings_view.btn_primary.cget("text") == "Save and rescan"
+
+
+def test_the_settings_of_a_watched_folder_are_edited_once_stopped(
+    ui: Ui, tmp_path: Path
+) -> None:
+    folder = ui.add(
+        title="Inbox",
+        kind=AudioSource.WATCH.value,
+        source=str(tmp_path),
+        status=EntryStatus.WATCHING,
+        settings=TranscriptionSettings(watch=True).to_dict(),
+    )
+    ui.window.select_entry(folder.id)
+    ui.pump()
+    header = ui.window._entry_view.header
+
+    # Shown, so it's clear how to change them
+    assert header.btn_settings.cget("state") == ctk.DISABLED
+    assert header.tip_settings._text() == "Stop watching to edit settings"
+    back_view = ui.window._back_view
+    header.btn_settings.invoke()
+    ui.pump()
+    assert ui.window._back_view is back_view
+
+    ui.store.update(folder, status=EntryStatus.DONE)
+    ui.window.on_entry_changed(folder.id)
+    ui.pump()
+    header = ui.window._entry_view.header
+    assert header.btn_settings.cget("state") == ctk.NORMAL
+
+
+def test_several_files_of_a_folder_are_selected_and_acted_on(
+    ui: Ui, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.entries import folder_view
+
+    folder = ui.add(
+        title="Talks",
+        kind=AudioSource.DIRECTORY.value,
+        source=str(tmp_path),
+        settings=TranscriptionSettings().to_dict(),
+    )
+    # Transcribed before, so it's skipped and not listed
+    (tmp_path / "old.mp3").touch()
+    (tmp_path / "old.txt").touch()
+    children = []
+    for name in ("a.mp3", "b.mp3", "c.mp3", "gone.mp3"):
+        if name != "gone.mp3":
+            (tmp_path / name).touch()
+        children.append(
+            ui.add(
+                title=name,
+                source=str(tmp_path / name),
+                parent_id=folder.id,
+                text=f"Text of {name}",
+            )
+        )
+    first, second, third, gone = children
+    ui.window.select_entry(folder.id)
+    ui.pump()
+    view = ui.window._entry_view
+    retranscribed: list[list[str]] = []
+    monkeypatch.setattr(view._actions.jobs, "retranscribe_files", retranscribed.append)
+
+    # The files already transcribed and the missing ones are told
+    # They're counted in the background
+    ui.pump(0.5)
+    assert view.lbl_summary.cget("text") == (
+        "4 files · 4 done · 1 missing · 1 skipped, already transcribed"
+    )
+    missing_row = view.rows[3]
+    assert missing_row.detail == "File not found"
+
+    view.select_file(first.id, is_toggle=True)
+    view.select_file(third.id, is_range=True)
+    assert view.selected_ids == [first.id, second.id, third.id]
+    assert view.lbl_selection.cget("text") == "3 selected"
+    ui.pump()
+    assert view.frm_selection.winfo_ismapped()
+    view.select_file(second.id, is_toggle=True)
+    assert view.selected_ids == [first.id, third.id]
+
+    # Exported together, in a single file
+    exported = tmp_path / "talks.md"
+    monkeypatch.setattr(
+        folder_view.filedialog, "asksaveasfilename", lambda **_kwargs: str(exported)
+    )
+    view._export("md", selected=True)
+    assert exported.read_text(encoding="utf-8") == (
+        "# Talks\n\n## a.mp3\n\nText of a.mp3\n\n## c.mp3\n\nText of c.mp3\n"
+    )
+
+    view._retranscribe_selected()
+    assert retranscribed == [[first.id, third.id]]
+    # Done with them, the selection is cleared
+    assert view.selected_ids == []
+    ui.pump()
+    assert not view.frm_selection.winfo_ismapped()
+
+    # The missing files are removed from the list, after confirming it
+    import views.main_window.entry_dialogs as entry_dialogs
+
+    monkeypatch.setattr(entry_dialogs.messagebox, "askyesno", lambda *_a, **_k: True)
+    menus: list[tk.Menu] = []
+    monkeypatch.setattr(tk.Menu, "tk_popup", lambda menu, *_args: menus.append(menu))
+    view._show_folder_menu()
+    labels = menu_labels(menus[-1])
+    assert labels["Export all…"] == tk.NORMAL
+    menus[-1].invoke("Remove missing files from the list…")
+    ui.pump()
+    assert ui.store.get(gone.id) is None
+    assert [row.entry_id for row in view.rows] == [first.id, second.id, third.id]
+    for menu in menus:
+        menu.destroy()
+
+
+def test_the_folder_view_polish(
+    ui: Ui, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from views.entries import folder_view
+
+    folder = ui.add(
+        title="Talks",
+        kind=AudioSource.WATCH.value,
+        source=str(tmp_path),
+        status=EntryStatus.WATCHING,
+        settings=TranscriptionSettings(watch=True).to_dict(),
+    )
+    for name in ("a.mp3", "b.mp3"):
+        (tmp_path / name).touch()
+    quiet = ui.add(
+        title="a.mp3", source=str(tmp_path / "a.mp3"), parent_id=folder.id, text=""
+    )
+    long_text = "Intro. " * 20 + "The budget for next year is approved."
+    talk = ui.add(
+        title="b.mp3",
+        source=str(tmp_path / "b.mp3"),
+        parent_id=folder.id,
+        text=long_text,
+    )
+    ui.window.select_entry(folder.id)
+    ui.pump()
+    view = ui.window._entry_view
+    rows = {row.entry_id: row for row in view.rows}
+
+    # A file without speech says so
+    assert rows[quiet.id].detail == "No speech found"
+    # The search shows where it matched
+    view.query.set("budget")
+    assert view.rows[0].detail.startswith("…")
+    assert "The budget for next year" in view.rows[0].detail
+    view.query.set("")
+
+    # The header is only built again if something it shows changes
+    title_label = view.header.lbl_title
+    ui.window.on_entry_changed(talk.id)
+    ui.pump()
+    assert view.header.lbl_title is title_label
+
+    # Waiting for files, without a busy progress bar
+    card = view.card
+    assert card is not None
+    jobs = ui.window._jobs
+    monkeypatch.setattr(jobs, "is_watch_idle", lambda _entry_id: True)
+    monkeypatch.setattr(
+        jobs,
+        "get_last_watched_file",
+        lambda _entry_id: ("b.mp3", datetime(2026, 10, 17, 9, 30).astimezone()),
+    )
+    card.update_progress()
+    ui.pump()
+    assert not card.progress_bar.winfo_ismapped()
+    assert "Last file transcribed at" in card.lbl_message.cget("text")
+    assert card.lbl_message.cget("text").endswith(": b.mp3")
+
+    # The shortcuts of the list
+    ui.window.trigger_select_all()
+    assert view.selected_ids == [quiet.id, talk.id]
+    ui.window.trigger_cancel()
+    assert view.selected_ids == []
+    view.select_file(talk.id)
+    ui.window.trigger_open()
+    ui.pump()
+    assert ui.window._entry_view_id == talk.id
+
+    # The filter and the order are kept while the app is open
+    ui.window.select_entry(folder.id)
+    ui.pump()
+    view = ui.window._entry_view
+    view.status_filter.set(folder_view.DONE_FILTER)
+    view.sort.set(folder_view.SIZE_SORT)
+    view._on_list_change()
+    ui.window.select_entry(talk.id)
+    ui.pump()
+    ui.window.select_entry(folder.id)
+    ui.pump()
+    view = ui.window._entry_view
+    assert view.status_filter.get() == folder_view.DONE_FILTER
+    assert view.sort.get() == folder_view.SIZE_SORT
+    view.status_filter.set(folder_view.ALL_FILTER)
+    view.sort.set(folder_view.NAME_SORT)
+    view._on_list_change()
+
+    # A file moved or deleted is told in the sidebar too
+    (tmp_path / "a.mp3").unlink()
+    ui.window.sidebar.refresh()
+    ui.pump()
+    row = ui.window.sidebar._rows[quiet.id]
+    missing_icon = icons.icon("alert_circle", 13, theme.ICON_MUTED)
+    assert row.lbl_status_icon.cget("image") is missing_icon
+
+
+def test_the_source_of_an_entry_opens_where_it_is(
+    ui: Ui, audio_file: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import views.entries.entry_header as entry_header
+
+    opened: list[str] = []
+    monkeypatch.setattr(entry_header.webbrowser, "open", opened.append)
+    url = "https://example.com/talk.mp3"
+    entry = ui.add(kind=AudioSource.YOUTUBE.value, source=url, title="Talk")
+    ui.window.select_entry(entry.id)
+    ui.pump()
+
+    ui.window._entry_view.header.lbl_source._label.event_generate("<Button-1>")
+    assert opened == [url]
+
+    revealed: list[str] = []
+    file_entry = ui.add(
+        source=str(audio_file), title="Talk", segments=SEGMENTS, text=TEXT
+    )
+    ui.window.select_entry(file_entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    monkeypatch.setattr(view.header._files, "reveal_entry", revealed.append)
+    view.header.lbl_source._label.event_generate("<Button-1>")
+    assert revealed == [file_entry.id]
+
+
+def test_the_recording_says_it_is_starting_until_it_does(ui: Ui) -> None:
+    from views.new_transcription.microphone_view import MicState
+
+    ui.window.show_source(AudioSource.MIC)
+    ui.pump()
+    mic_view = ui.window._mic_view
+
+    mic_view.set_state(MicState.RECORDING, "Starting…")
+    assert mic_view.lbl_state.cget("text") == "Starting…"
+    mic_view.on_recording_progress(0.5, 0.1)
+    assert mic_view.lbl_state.cget("text") == (
+        "Recording… Press the button to stop and transcribe."
+    )
+    mic_view.set_state(MicState.IDLE)
+
+
+def test_the_files_of_a_folder_can_be_filtered_in_its_settings(
+    ui: Ui, tmp_path: Path
+) -> None:
+    from views.settings.cards.folder_card import FolderCard
+
+    ui.window.show_source(AudioSource.DIRECTORY)
+    ui.pump()
+    new_view = ui.window._new_views[AudioSource.DIRECTORY]
+    new_view.set_source(str(tmp_path), should_advance=True)
+    ui.pump()
+    form = new_view.frm_settings
+    card = next(card for card in form._cards if isinstance(card, FolderCard))
+
+    card.swi_subfolders.toggle()
+    card._exclude_patterns.set("*.wav, drafts/*")
+    settings = form.get_settings()
+    assert not settings.include_subfolders
+    assert settings.exclude_patterns == "*.wav, drafts/*"
+    transcription = settings.to_transcription(AudioSource.DIRECTORY, str(tmp_path))
+    assert not transcription.should_include_subfolders
+    assert transcription.exclude_patterns == ["*.wav", "drafts/*"]
+    card.swi_subfolders.toggle()
+    card._exclude_patterns.set("")
+    ui.pump(0.8)
 
 
 def test_the_actions_of_the_views_reach_the_history(
@@ -2358,19 +2823,33 @@ def test_a_notification_is_sent_when_a_transcription_is_ready(
 
 
 def test_each_file_of_a_watched_folder_is_notified(
-    ui: Ui, tmp_path: Path, sent_notifications: list[tuple[str, str]]
+    ui: Ui,
+    tmp_path: Path,
+    sent_notifications: list[tuple[str, str]],
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    import views.main_window.status_messages as status_messages
+
+    # The files transcribed one after the other are notified together
+    monkeypatch.setattr(status_messages, "GROUPED_NOTIFICATION_DELAY_MS", 50)
+
     def transcribe_file(kind: AudioSource, file_name: str) -> None:
         entry = ui.add(
             kind=kind.value, source=str(tmp_path), status=EntryStatus.PROCESSING
         )
-        ui.window._jobs._job = Job(entry_id=entry.id, is_folder=True, is_mic=False)
+        ui.window._jobs._job = Job(
+            entry_id=entry.id,
+            is_folder=True,
+            is_mic=False,
+            is_watch=kind == AudioSource.WATCH,
+        )
         ui.window._jobs.on_file_transcribed(tmp_path / file_name, "Hello", [], "en")
         ui.window._jobs._job = None
 
     transcribe_file(AudioSource.WATCH, "new.mp3")
     # A folder that isn't watched is notified once all its files are done
     transcribe_file(AudioSource.DIRECTORY, "listed.mp3")
+    ui.pump()
 
     assert sent_notifications == [("Transcription ready", "new.mp3")]
 

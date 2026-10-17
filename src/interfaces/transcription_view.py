@@ -62,6 +62,27 @@ class TranscriptionView(Protocol):
     def on_files_queued(self, files: list[Path]) -> None:
         """Called with the files of a folder before transcribing them."""
 
+    def on_files_skipped(self, files: list[Path]) -> None:
+        """
+        Called with the files of a folder that aren't transcribed, since they
+        already have a transcription.
+        """
+
+    def on_watch_paused(
+        self,
+        known_files: dict[Path, tuple[int, int]],
+        unfinished: list[Path],
+        retranscribed: list[Path],
+    ) -> None:
+        """
+        Called when a watched folder is paused (see `MainController.pause_watch`),
+        to watch it again later from where it left off.
+
+        :param known_files: The files seen, which aren't new when it goes on.
+        :param unfinished: The new files that weren't transcribed yet.
+        :param retranscribed: The files to transcribe again that weren't yet.
+        """
+
     def on_file_started(self, file_path: Path) -> None: ...
 
     def on_file_transcribed(
@@ -91,6 +112,17 @@ class IgnoreHistoryEvents:
         pass
 
     def on_files_queued(self, files: list[Path]) -> None:
+        pass
+
+    def on_files_skipped(self, files: list[Path]) -> None:
+        pass
+
+    def on_watch_paused(
+        self,
+        known_files: dict[Path, tuple[int, int]],
+        unfinished: list[Path],
+        retranscribed: list[Path],
+    ) -> None:
         pass
 
     def on_file_started(self, file_path: Path) -> None:

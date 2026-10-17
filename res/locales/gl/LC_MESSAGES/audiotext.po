@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -100,6 +100,9 @@ msgstr "Axustar o limiar"
 msgid "Aligning subtitles…"
 msgstr "Aliñando os subtítulos…"
 
+msgid "All"
+msgstr "Todos"
+
 msgid "All files"
 msgstr "Todos os ficheiros"
 
@@ -117,6 +120,15 @@ msgid ""
 msgstr ""
 "Todos os ficheiros de audio e vídeo dun cartafol, ou os novos a medida "
 "que se engaden."
+
+msgid "All the files already have a transcription."
+msgstr "Todos os ficheiros xa teñen unha transcrición."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Eliminar tamén o {count} ficheiro gardado para eles"
+msgstr[1] "Eliminar tamén os {count} ficheiros gardados para eles"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Tamén é necesaria para transcribir coa Whisper API."
@@ -256,8 +268,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "Escolle onde gardar as transcricións"
 
+msgid "Clear selection"
+msgstr "Quitar a selección"
+
 msgid "Clear the conversation"
 msgstr "Borrar a conversa"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Pechar ({shortcut})"
 
 msgid "Compute type"
 msgstr "Tipo de cálculo"
@@ -272,11 +292,23 @@ msgstr "Contexto"
 msgid "Continue"
 msgstr "Continuar"
 
+msgid "Copied to the clipboard."
+msgstr "Copiado no portapapeis."
+
 msgid "Copy"
 msgstr "Copiar"
 
+msgid "Copy text"
+msgstr "Copiar texto"
+
 msgid "Could not check for updates."
 msgstr "Non se puido comprobar se hai actualizacións."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "Non se puido eliminar {count} ficheiro gardado."
+msgstr[1] "Non se puideron eliminar {count} ficheiros gardados."
 
 #, python-brace-format
 msgid ""
@@ -383,6 +415,12 @@ msgstr "Eliminar transcrición"
 msgid "Delete “{title}” from the history?"
 msgstr "Eliminar «{title}» do historial?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "Eliminouse {count} ficheiro gardado."
+msgstr[1] "Elimináronse {count} ficheiros gardados."
+
 msgid "Delete…"
 msgstr "Eliminar…"
 
@@ -426,6 +464,9 @@ msgstr "Solta aquí un ficheiro de audio ou vídeo"
 msgid "Edit note…"
 msgstr "Editar nota…"
 
+msgid "Edit settings"
+msgstr "Editar a configuración"
+
 msgid "Edit tag…"
 msgstr "Editar etiqueta…"
 
@@ -468,6 +509,9 @@ msgstr ""
 msgid "Export"
 msgstr "Exportar"
 
+msgid "Export all…"
+msgstr "Exportar todo…"
+
 msgid "Export summary"
 msgstr "Exportar o resumo"
 
@@ -493,11 +537,17 @@ msgstr ""
 "Exportado a {path}, pero ningunha fonte ten estes caracteres, así que se "
 "amosan como cadros: {characters}"
 
+msgid "Export…"
+msgstr "Exportar…"
+
 msgid "Failed"
 msgstr "Con erros"
 
 msgid "File"
 msgstr "Ficheiro"
+
+msgid "File not found"
+msgstr "Non se atopa o ficheiro"
 
 msgid "File types"
 msgstr "Tipos de ficheiro"
@@ -542,6 +592,13 @@ msgstr "Buscar na tradución ao {language}"
 
 msgid "Find:"
 msgstr "Buscar:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr ""
+"Primeiro transcribe os ficheiros que xa contén e que aínda non teñen "
+"transcrición."
 
 msgid "Folder"
 msgstr "Cartafol"
@@ -645,6 +702,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "Identificando falantes…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "En {folder}"
+
+msgid "Include subfolders"
+msgstr "Incluír subcartafoles"
+
 msgid "Interface language"
 msgstr "Idioma da interface"
 
@@ -671,10 +735,10 @@ msgstr "Manter sobre a xanela principal"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
-"Segue en marcha e transcribe os ficheiros que se engaden ao cartafol ata "
-"que o deteñas. Os ficheiros que xa contén omítense."
+"Segue en marcha e transcribe os ficheiros que se engaden ao cartafol, ata"
+" que o deteñas."
 
 msgid "Key points"
 msgstr "Puntos clave"
@@ -709,6 +773,10 @@ msgstr "Grande"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Os modelos máis grandes son máis precisos, pero máis lentos."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "Último ficheiro transcrito ás {time}: {name}"
 
 msgid "Light"
 msgstr "Claro"
@@ -803,6 +871,13 @@ msgid "Name of the transcription:"
 msgstr "Nome da transcrición:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Nomes ou rutas dos ficheiros que omitir, separados por comas. Os "
+"ficheiros agochados sempre se omiten."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -882,6 +957,9 @@ msgstr "Sen resultados"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "Non hai son. Comproba que o micrófono está aceso e ten permiso."
 
+msgid "No speech found"
+msgstr "Non se atopou voz"
+
 msgid "No summary yet"
 msgstr "Aínda non hai resumo"
 
@@ -952,11 +1030,23 @@ msgstr ""
 "Só transcribe inglés, máis rápido que o modelo multilingüe do mesmo "
 "tamaño."
 
+msgid "Open folder"
+msgstr "Abrir cartafol"
+
 msgid "Open in history"
 msgstr "Abrir no historial"
 
-msgid "Open the folder of the saved files"
-msgstr "Abrir o cartafol dos ficheiros gardados"
+msgid "Open in the browser"
+msgstr "Abrir no navegador"
+
+msgid "Open source folder"
+msgstr "Abrir cartafol de orixe"
+
+msgid "Open transcript"
+msgstr "Abrir a transcrición"
+
+msgid "Open transcripts folder"
+msgstr "Abrir cartafol das transcricións"
 
 msgid "OpenAI API key"
 msgstr "Clave de API de OpenAI"
@@ -977,11 +1067,11 @@ msgstr "Contorno"
 msgid "Output"
 msgstr "Saída"
 
-msgid "Overwrite existing files"
-msgstr "Sobrescribir os ficheiros existentes"
-
 msgid "Paste"
 msgstr "Pegar"
+
+msgid "Pending"
+msgstr "Pendentes"
 
 msgid "Pin to the top"
 msgstr "Fixar arriba"
@@ -1053,6 +1143,21 @@ msgstr "Provedores"
 msgid "Queued"
 msgstr "En cola"
 
+msgid "Re-transcribe"
+msgstr "Volver transcribir"
+
+msgid "Re-transcribe all"
+msgstr "Volver transcribir todo"
+
+msgid "Re-transcribe all…"
+msgstr "Volver transcribir todo…"
+
+msgid "Re-transcribe them"
+msgstr "Volver transcribilos"
+
+msgid "Re-transcribe this file"
+msgstr "Volver transcribir este ficheiro"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Só lectura. Edita os subtítulos para cambiar este texto."
 
@@ -1093,6 +1198,28 @@ msgstr "Refinar"
 
 msgid "Regenerate the summary"
 msgstr "Xerar de novo o resumo"
+
+msgid "Remove"
+msgstr "Quitar"
+
+msgid "Remove from history"
+msgstr "Quitar do historial"
+
+msgid "Remove from history…"
+msgstr "Quitar do historial…"
+
+msgid "Remove missing files from the list…"
+msgstr "Quitar da lista os ficheiros que faltan…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "Quitar {count} ficheiro do historial?"
+msgstr[1] "Quitar {count} ficheiros do historial?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "Quitar «{title}» e os seus ficheiros do historial?"
 
 msgid "Rename"
 msgstr "Renomear"
@@ -1142,6 +1269,15 @@ msgstr ""
 "Necesaria para traducir con DeepL. Tamén serven as claves do plan "
 "gratuíto."
 
+msgid "Rescan folder"
+msgstr "Volver analizar o cartafol"
+
+msgid "Resume watching"
+msgstr "Retomar a vixilancia"
+
+msgid "Retry failed"
+msgstr "Reintentar os fallidos"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Revisar de novo as palabras aceptadas"
@@ -1164,6 +1300,9 @@ msgstr "O mesmo que o audio"
 
 msgid "Save"
 msgstr "Gardar"
+
+msgid "Save and rescan"
+msgstr "Gardar e volver analizar"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1238,6 +1377,9 @@ msgstr "Mostrar no xestor de ficheiros"
 msgid "Show it as the subtitles of the video"
 msgstr "Mostrala como subtítulos do vídeo"
 
+msgid "Show more"
+msgstr "Mostrar máis"
+
 msgid "Show subtitles on the video"
 msgstr "Mostrar subtítulos no vídeo"
 
@@ -1253,8 +1395,23 @@ msgstr "Mostra unha notificación do sistema cando unha transcrición está list
 msgid "Size"
 msgstr "Tamaño"
 
+msgid "Skip files matching"
+msgstr "Omitir os ficheiros que coincidan con"
+
 msgid "Small"
 msgstr "Pequeno"
+
+msgid "Sort by duration"
+msgstr "Ordenar por duración"
+
+msgid "Sort by name"
+msgstr "Ordenar por nome"
+
+msgid "Sort by size"
+msgstr "Ordenar por tamaño"
+
+msgid "Sort by status"
+msgstr "Ordenar por estado"
 
 msgid "Source"
 msgstr "Orixe"
@@ -1288,6 +1445,9 @@ msgstr "Deixar de sincronizar o desprazamento"
 msgid "Stop watching"
 msgstr "Deixar de vixiar"
 
+msgid "Stop watching to edit settings"
+msgstr "Deixa de vixiar para editar a configuración"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "Deixouse de vixiar o cartafol. Ficheiros transcritos: {done}."
@@ -1307,6 +1467,9 @@ msgstr "Subtítulos (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Subtítulos: {count}"
+
+msgid "Summarize…"
+msgstr "Resumir…"
 
 msgid "Summarizing…"
 msgstr "Resumindo…"
@@ -1403,14 +1566,11 @@ msgstr "Non se puido descargar o ficheiro: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "O ficheiro moveuse ou eliminouse: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"O cartafol non contén ficheiros que transcribir. Os ficheiros que xa "
-"teñen unha transcrición omítense agás que marques «Sobrescribir os "
-"ficheiros existentes»."
+msgid "The files it already contains are skipped."
+msgstr "Os ficheiros que xa contén omítense."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "O cartafol non contén ficheiros de audio nin de vídeo que transcribir."
 
 msgid "The level is shown while recording"
 msgstr "O nivel móstrase mentres gravas"
@@ -1566,6 +1726,14 @@ msgstr "Transcribir un cartafol"
 msgid "Transcribe again"
 msgstr "Volver transcribir"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"Volver transcribir todos os ficheiros de «{title}»? Os ficheiros gardados"
+" para eles substituiranse."
+
 msgid "Transcribe from a URL"
 msgstr "Transcribir desde un URL"
 
@@ -1576,6 +1744,9 @@ msgstr "Transcribir desde o micrófono"
 msgid "Transcribe it again to score its words"
 msgstr "Transcríbeo de novo para puntuar as palabras"
 
+msgid "Transcribe the files already in the folder"
+msgstr "Transcribir os ficheiros que xa hai no cartafol"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Volver transcribir «{title}»? Perderanse os cambios feitos no seu texto."
@@ -1585,20 +1756,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "Transcribíronse {done} de {total} ficheiros."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr ""
-"Volve transcribir os ficheiros que xa teñen unha transcrición e substitúe"
-" os seus ficheiros."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
-"Transcribe os ficheiros de audio e vídeo do cartafol e os seus "
-"subcartafoles. Os ficheiros que xa teñen unha transcrición omítense, agás"
-" que os sobrescribas."
+"Transcribe os ficheiros de audio e vídeo do cartafol e dos seus "
+"subcartafoles. Os ficheiros que xa teñen unha transcrición omítense. "
+"Podes volver transcribilos desde o cartafol."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Transcribe os ficheiros sen transcrición, como os novos."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1747,6 +1914,9 @@ msgstr "Ficheiros de vídeo"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Vídeo con subtítulos (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Agarda a que remate para editar a configuración"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Agarda a que remate a transcrición actual ou cancélaa."
 
@@ -1762,6 +1932,10 @@ msgstr "Agardando a que fales…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "Agardando a que remate a transcrición actual."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "Agardando a que o cartafol estea dispoñible: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1843,14 +2017,24 @@ msgstr "YouTube ou a ligazón a un ficheiro"
 msgid "YouTube video"
 msgstr "Vídeo de YouTube"
 
+msgid "Your audio and video files are not deleted."
+msgstr "Os teus ficheiros de audio e vídeo non se eliminan."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "Os teus ficheiros de audio, vídeo e os gardados non se eliminan."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "quedan uns {time}"
 
 msgid "cancelled"
 msgstr "cancelado"
 
 msgid "default"
 msgstr "predeterminado"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "p. ex. *.wav, borradores/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "p. ex., Unha entrevista sobre recoñecemento de voz"
@@ -1877,8 +2061,44 @@ msgid "{count} failed"
 msgstr "{count} con erros"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} ficheiros"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} ficheiro"
+msgstr[1] "{count} ficheiros"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "Transcribiuse {count} ficheiro en {folder}"
+msgstr[1] "Transcribíronse {count} ficheiros en {folder}"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] ""
+"{count} ficheiro transcribiuse con outra configuración. Cambios: "
+"{settings}."
+msgstr[1] ""
+"{count} ficheiros transcribíronse con outra configuración. Cambios: "
+"{settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} non atopado"
+msgstr[1] "{count} non atopados"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} seleccionado"
+msgstr[1] "{count} seleccionados"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} omitido, xa transcrito"
+msgstr[1] "{count} omitidos, xa transcritos"
 
 #, python-brace-format
 msgid "{count} transcriptions"

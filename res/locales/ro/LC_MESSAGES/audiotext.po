@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -100,6 +100,9 @@ msgstr "Ajustează pragul"
 msgid "Aligning subtitles…"
 msgstr "Se aliniază subtitrările…"
 
+msgid "All"
+msgstr "Toate"
+
 msgid "All files"
 msgstr "Toate fișierele"
 
@@ -117,6 +120,16 @@ msgid ""
 msgstr ""
 "Toate fișierele audio și video dintr-un dosar sau cele noi, pe măsură ce "
 "sunt adăugate."
+
+msgid "All the files already have a transcription."
+msgstr "Toate fișierele au deja o transcriere."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Șterge și {count} fișier salvat pentru ele"
+msgstr[1] "Șterge și {count} fișiere salvate pentru ele"
+msgstr[2] "Șterge și {count} de fișiere salvate pentru ele"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Necesară și pentru transcrierea cu Whisper API."
@@ -256,8 +269,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "Alegeți unde se salvează transcrierile"
 
+msgid "Clear selection"
+msgstr "Golește selecția"
+
 msgid "Clear the conversation"
 msgstr "Șterge conversația"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Închide ({shortcut})"
 
 msgid "Compute type"
 msgstr "Tip de calcul"
@@ -272,11 +293,24 @@ msgstr "Context"
 msgid "Continue"
 msgstr "Continuă"
 
+msgid "Copied to the clipboard."
+msgstr "Copiat în clipboard."
+
 msgid "Copy"
 msgstr "Copiază"
 
+msgid "Copy text"
+msgstr "Copiază textul"
+
 msgid "Could not check for updates."
 msgstr "Nu s-au putut căuta actualizări."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "Nu s-a putut șterge {count} fișier salvat."
+msgstr[1] "Nu s-au putut șterge {count} fișiere salvate."
+msgstr[2] "Nu s-au putut șterge {count} de fișiere salvate."
 
 #, python-brace-format
 msgid ""
@@ -385,6 +419,13 @@ msgstr "Șterge transcrierea"
 msgid "Delete “{title}” from the history?"
 msgstr "Ștergeți „{title}” din istoric?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "A fost șters {count} fișier salvat."
+msgstr[1] "Au fost șterse {count} fișiere salvate."
+msgstr[2] "Au fost șterse {count} de fișiere salvate."
+
 msgid "Delete…"
 msgstr "Șterge…"
 
@@ -428,6 +469,9 @@ msgstr "Plasați aici un fișier audio sau video"
 msgid "Edit note…"
 msgstr "Editează nota…"
 
+msgid "Edit settings"
+msgstr "Editează setările"
+
 msgid "Edit tag…"
 msgstr "Editează eticheta…"
 
@@ -470,6 +514,9 @@ msgstr ""
 msgid "Export"
 msgstr "Exportă"
 
+msgid "Export all…"
+msgstr "Exportă tot…"
+
 msgid "Export summary"
 msgstr "Exportă rezumatul"
 
@@ -495,11 +542,17 @@ msgstr ""
 "Exportat în {path}, dar niciun font nu conține aceste caractere, așa că "
 "sunt afișate ca pătrățele: {characters}"
 
+msgid "Export…"
+msgstr "Exportă…"
+
 msgid "Failed"
 msgstr "Eșuată"
 
 msgid "File"
 msgstr "Fișier"
+
+msgid "File not found"
+msgstr "Fișierul nu a fost găsit"
 
 msgid "File types"
 msgstr "Tipuri de fișiere"
@@ -544,6 +597,13 @@ msgstr "Caută în traducerea în {language}"
 
 msgid "Find:"
 msgstr "Caută:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr ""
+"Mai întâi transcrie fișierele pe care le conține deja și care nu au încă "
+"o transcriere."
 
 msgid "Folder"
 msgstr "Dosar"
@@ -650,6 +710,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "Se identifică vorbitorii…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "În {folder}"
+
+msgid "Include subfolders"
+msgstr "Include subdosarele"
+
 msgid "Interface language"
 msgstr "Limba interfeței"
 
@@ -676,10 +743,10 @@ msgstr "Păstrează deasupra ferestrei principale"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
-"Rămâne activ și transcrie fișierele adăugate în dosar, până când îl "
-"opriți. Fișierele pe care le conține deja sunt omise."
+"Rulează în continuare și transcrie fișierele adăugate în dosar, până când"
+" îl oprești."
 
 msgid "Key points"
 msgstr "Puncte cheie"
@@ -714,6 +781,10 @@ msgstr "Mare"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Modelele mai mari sunt mai precise, dar mai lente."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "Ultimul fișier transcris la {time}: {name}"
 
 msgid "Light"
 msgstr "Luminos"
@@ -808,6 +879,13 @@ msgid "Name of the transcription:"
 msgstr "Numele transcrierii:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Numele sau căile fișierelor de omis, separate prin virgule. Fișierele "
+"ascunse sunt omise mereu."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -887,6 +965,9 @@ msgstr "Niciun rezultat"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "Fără sunet. Verificați dacă microfonul este pornit și permis."
 
+msgid "No speech found"
+msgstr "Nu s-a găsit vorbire"
+
 msgid "No summary yet"
 msgstr "Încă niciun rezumat"
 
@@ -957,11 +1038,23 @@ msgstr ""
 "Transcrie doar engleza, mai rapid decât modelul multilingv de aceeași "
 "dimensiune."
 
+msgid "Open folder"
+msgstr "Deschide dosarul"
+
 msgid "Open in history"
 msgstr "Deschide în istoric"
 
-msgid "Open the folder of the saved files"
-msgstr "Deschide dosarul fișierelor salvate"
+msgid "Open in the browser"
+msgstr "Deschide în browser"
+
+msgid "Open source folder"
+msgstr "Deschide dosarul sursă"
+
+msgid "Open transcript"
+msgstr "Deschide transcrierea"
+
+msgid "Open transcripts folder"
+msgstr "Deschide dosarul transcrierilor"
 
 msgid "OpenAI API key"
 msgstr "Cheie API OpenAI"
@@ -983,11 +1076,11 @@ msgstr "Contur"
 msgid "Output"
 msgstr "Ieșire"
 
-msgid "Overwrite existing files"
-msgstr "Suprascrie fișierele existente"
-
 msgid "Paste"
 msgstr "Lipește"
+
+msgid "Pending"
+msgstr "În așteptare"
 
 msgid "Pin to the top"
 msgstr "Fixează sus"
@@ -1059,6 +1152,21 @@ msgstr "Furnizori"
 msgid "Queued"
 msgstr "În coadă"
 
+msgid "Re-transcribe"
+msgstr "Transcrie din nou"
+
+msgid "Re-transcribe all"
+msgstr "Transcrie din nou tot"
+
+msgid "Re-transcribe all…"
+msgstr "Transcrie din nou tot…"
+
+msgid "Re-transcribe them"
+msgstr "Transcrie-le din nou"
+
+msgid "Re-transcribe this file"
+msgstr "Transcrie din nou acest fișier"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Doar citire. Editează subtitrările pentru a schimba acest text."
 
@@ -1101,6 +1209,29 @@ msgstr "Rafinare"
 
 msgid "Regenerate the summary"
 msgstr "Regenerează rezumatul"
+
+msgid "Remove"
+msgstr "Elimină"
+
+msgid "Remove from history"
+msgstr "Elimină din istoric"
+
+msgid "Remove from history…"
+msgstr "Elimină din istoric…"
+
+msgid "Remove missing files from the list…"
+msgstr "Elimină din listă fișierele care lipsesc…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "Eliminați {count} fișier din istoric?"
+msgstr[1] "Eliminați {count} fișiere din istoric?"
+msgstr[2] "Eliminați {count} de fișiere din istoric?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "Eliminați „{title}” și fișierele sale din istoric?"
 
 msgid "Rename"
 msgstr "Redenumește"
@@ -1150,6 +1281,15 @@ msgstr ""
 "Necesară pentru a traduce cu DeepL. Funcționează și cheile planului "
 "gratuit."
 
+msgid "Rescan folder"
+msgstr "Scanează din nou dosarul"
+
+msgid "Resume watching"
+msgstr "Reia monitorizarea"
+
+msgid "Retry failed"
+msgstr "Reîncearcă cele eșuate"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Verifică din nou cuvintele acceptate"
@@ -1172,6 +1312,9 @@ msgstr "La fel ca audio"
 
 msgid "Save"
 msgstr "Salvează"
+
+msgid "Save and rescan"
+msgstr "Salvează și scanează din nou"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1246,6 +1389,9 @@ msgstr "Afișează în managerul de fișiere"
 msgid "Show it as the subtitles of the video"
 msgstr "Afișeaz-o ca subtitrări ale videoclipului"
 
+msgid "Show more"
+msgstr "Afișează mai multe"
+
 msgid "Show subtitles on the video"
 msgstr "Afișează subtitrările pe videoclip"
 
@@ -1261,8 +1407,23 @@ msgstr "Afișează o notificare de sistem când o transcriere este gata."
 msgid "Size"
 msgstr "Dimensiune"
 
+msgid "Skip files matching"
+msgstr "Omite fișierele care corespund cu"
+
 msgid "Small"
 msgstr "Mic"
+
+msgid "Sort by duration"
+msgstr "Sortează după durată"
+
+msgid "Sort by name"
+msgstr "Sortează după nume"
+
+msgid "Sort by size"
+msgstr "Sortează după dimensiune"
+
+msgid "Sort by status"
+msgstr "Sortează după stare"
 
 msgid "Source"
 msgstr "Sursă"
@@ -1296,6 +1457,9 @@ msgstr "Nu mai sincroniza derularea"
 msgid "Stop watching"
 msgstr "Oprește monitorizarea"
 
+msgid "Stop watching to edit settings"
+msgstr "Oprește monitorizarea pentru a edita setările"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "Monitorizarea dosarului a fost oprită. Fișiere transcrise: {done}."
@@ -1315,6 +1479,9 @@ msgstr "Subtitrări (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Subtitrări: {count}"
+
+msgid "Summarize…"
+msgstr "Rezumă…"
 
 msgid "Summarizing…"
 msgstr "Se rezumă…"
@@ -1409,14 +1576,11 @@ msgstr "Fișierul nu a putut fi descărcat: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "Fișierul a fost mutat sau șters: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"Dosarul nu conține fișiere de transcris. Fișierele care au deja o "
-"transcriere sunt omise, cu excepția cazului în care bifați „Suprascrie "
-"fișierele existente”."
+msgid "The files it already contains are skipped."
+msgstr "Fișierele pe care le conține deja sunt omise."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "Dosarul nu conține fișiere audio sau video de transcris."
 
 msgid "The level is shown while recording"
 msgstr "Nivelul este afișat în timpul înregistrării"
@@ -1573,6 +1737,14 @@ msgstr "Transcrie un dosar"
 msgid "Transcribe again"
 msgstr "Transcrie din nou"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"Transcrieți din nou toate fișierele din „{title}”? Fișierele salvate "
+"pentru ele vor fi înlocuite."
+
 msgid "Transcribe from a URL"
 msgstr "Transcrie de la un URL"
 
@@ -1583,6 +1755,9 @@ msgstr "Transcrie de la microfon"
 msgid "Transcribe it again to score its words"
 msgstr "Transcrie din nou pentru a evalua cuvintele"
 
+msgid "Transcribe the files already in the folder"
+msgstr "Transcrie fișierele aflate deja în dosar"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Transcrii din nou „{title}”? Modificările aduse textului se vor pierde."
@@ -1592,20 +1767,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "Au fost transcrise {done} din {total} fișiere."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr ""
-"Transcrie din nou fișierele care au deja o transcriere și îi înlocuiește "
-"fișierele."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
 "Transcrie fișierele audio și video din dosar și din subdosarele sale. "
-"Fișierele care au deja o transcriere sunt omise, cu excepția cazului în "
-"care le suprascrieți."
+"Fișierele care au deja o transcriere sunt omise. Le poți transcrie din "
+"nou din dosar."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Transcrie fișierele fără transcriere, cum ar fi cele noi."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1754,6 +1925,9 @@ msgstr "Fișiere video"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Videoclip cu subtitrări (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Așteaptă să se termine pentru a edita setările"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Așteptați până se termină transcrierea curentă sau anulați-o."
 
@@ -1769,6 +1943,10 @@ msgstr "Se așteaptă vorbirea…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "Se așteaptă finalizarea transcrierii curente."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "Se așteaptă ca dosarul să fie disponibil: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1850,14 +2028,24 @@ msgstr "YouTube sau un link către un fișier"
 msgid "YouTube video"
 msgstr "Videoclip YouTube"
 
+msgid "Your audio and video files are not deleted."
+msgstr "Fișierele audio și video nu sunt șterse."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "Fișierele audio, video și cele salvate nu sunt șterse."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "mai sunt aproximativ {time}"
 
 msgid "cancelled"
 msgstr "anulat"
 
 msgid "default"
 msgstr "implicit"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "de ex. *.wav, ciorne/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "de ex. Un interviu despre recunoașterea vorbirii"
@@ -1884,8 +2072,48 @@ msgid "{count} failed"
 msgstr "Eșuate: {count}"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "Fișiere: {count}"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} fișier"
+msgstr[1] "{count} fișiere"
+msgstr[2] "{count} de fișiere"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "{count} fișier transcris în {folder}"
+msgstr[1] "{count} fișiere transcrise în {folder}"
+msgstr[2] "{count} de fișiere transcrise în {folder}"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] "{count} fișier a fost transcris cu alte setări. Modificat: {settings}."
+msgstr[1] "{count} fișiere au fost transcrise cu alte setări. Modificat: {settings}."
+msgstr[2] ""
+"{count} de fișiere au fost transcrise cu alte setări. Modificat: "
+"{settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} lipsește"
+msgstr[1] "{count} lipsesc"
+msgstr[2] "{count} lipsesc"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} selectat"
+msgstr[1] "{count} selectate"
+msgstr[2] "{count} selectate"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} omis, deja transcris"
+msgstr[1] "{count} omise, deja transcrise"
+msgstr[2] "{count} de omise, deja transcrise"
 
 #, python-brace-format
 msgid "{count} transcriptions"

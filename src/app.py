@@ -262,6 +262,8 @@ class App(ctk.CTk, DnDWrapper):  # type: ignore[misc]
             f"<{SHORTCUT_MODIFIER}-j>": lambda: self._view.trigger_low_confidence(1),
             f"<{SHORTCUT_MODIFIER}-J>": lambda: self._view.trigger_low_confidence(-1),
             "<Escape>": self._view.trigger_cancel,
+            f"<{SHORTCUT_MODIFIER}-a>": self._view.trigger_select_all,
+            "<Return>": self._view.trigger_open,
         }
 
         for sequence, action in shortcuts.items():

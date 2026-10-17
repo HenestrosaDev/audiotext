@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -99,6 +99,9 @@ msgstr "Drempel aanpassen"
 msgid "Aligning subtitles…"
 msgstr "Ondertitels uitlijnen…"
 
+msgid "All"
+msgstr "Alle"
+
 msgid "All files"
 msgstr "Alle bestanden"
 
@@ -116,6 +119,15 @@ msgid ""
 msgstr ""
 "Alle audio- en videobestanden in een map, of de nieuwe zodra ze worden "
 "toegevoegd."
+
+msgid "All the files already have a transcription."
+msgstr "Alle bestanden hebben al een transcriptie."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Ook het {count} bestand verwijderen dat ervoor is opgeslagen"
+msgstr[1] "Ook de {count} bestanden verwijderen die ervoor zijn opgeslagen"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Ook nodig voor transcriptie met de Whisper API."
@@ -255,8 +267,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "Kies waar de transcripties worden opgeslagen"
 
+msgid "Clear selection"
+msgstr "Selectie wissen"
+
 msgid "Clear the conversation"
 msgstr "Gesprek wissen"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Sluiten ({shortcut})"
 
 msgid "Compute type"
 msgstr "Rekentype"
@@ -271,11 +291,23 @@ msgstr "Context"
 msgid "Continue"
 msgstr "Doorgaan"
 
+msgid "Copied to the clipboard."
+msgstr "Gekopieerd naar het klembord."
+
 msgid "Copy"
 msgstr "Kopiëren"
 
+msgid "Copy text"
+msgstr "Tekst kopiëren"
+
 msgid "Could not check for updates."
 msgstr "Kan niet controleren op updates."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "Kan {count} opgeslagen bestand niet verwijderen."
+msgstr[1] "Kan {count} opgeslagen bestanden niet verwijderen."
 
 #, python-brace-format
 msgid ""
@@ -386,6 +418,12 @@ msgstr "Transcriptie verwijderen"
 msgid "Delete “{title}” from the history?"
 msgstr "‘{title}’ uit de geschiedenis verwijderen?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "{count} opgeslagen bestand verwijderd."
+msgstr[1] "{count} opgeslagen bestanden verwijderd."
+
 msgid "Delete…"
 msgstr "Verwijderen…"
 
@@ -429,6 +467,9 @@ msgstr "Sleep hier een audio- of videobestand naartoe"
 msgid "Edit note…"
 msgstr "Notitie bewerken…"
 
+msgid "Edit settings"
+msgstr "Instellingen bewerken"
+
 msgid "Edit tag…"
 msgstr "Label bewerken…"
 
@@ -471,6 +512,9 @@ msgstr ""
 msgid "Export"
 msgstr "Exporteren"
 
+msgid "Export all…"
+msgstr "Alles exporteren…"
+
 msgid "Export summary"
 msgstr "Samenvatting exporteren"
 
@@ -496,11 +540,17 @@ msgstr ""
 "Geëxporteerd naar {path}, maar geen lettertype bevat deze tekens, dus "
 "worden ze als vakjes weergegeven: {characters}"
 
+msgid "Export…"
+msgstr "Exporteren…"
+
 msgid "Failed"
 msgstr "Mislukt"
 
 msgid "File"
 msgstr "Bestand"
+
+msgid "File not found"
+msgstr "Bestand niet gevonden"
 
 msgid "File types"
 msgstr "Bestandstypen"
@@ -545,6 +595,13 @@ msgstr "Zoeken in de vertaling naar het {language}"
 
 msgid "Find:"
 msgstr "Zoeken:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr ""
+"Transcribeert eerst de bestanden die er al in staan en nog geen "
+"transcriptie hebben."
 
 msgid "Folder"
 msgstr "Map"
@@ -649,6 +706,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "Sprekers herkennen…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "In {folder}"
+
+msgid "Include subfolders"
+msgstr "Submappen opnemen"
+
 msgid "Interface language"
 msgstr "Taal van de interface"
 
@@ -675,11 +739,10 @@ msgstr "Boven het hoofdvenster houden"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
 "Blijft actief en transcribeert de bestanden die aan de map worden "
-"toegevoegd, totdat je stopt. Bestanden die er al in staan worden "
-"overgeslagen."
+"toegevoegd, totdat je het stopt."
 
 msgid "Key points"
 msgstr "Belangrijkste punten"
@@ -714,6 +777,10 @@ msgstr "Groot"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Grotere modellen zijn nauwkeuriger, maar trager."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "Laatste bestand getranscribeerd om {time}: {name}"
 
 msgid "Light"
 msgstr "Licht"
@@ -808,6 +875,13 @@ msgid "Name of the transcription:"
 msgstr "Naam van de transcriptie:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Namen of paden van de bestanden die worden overgeslagen, gescheiden door "
+"komma's. Verborgen bestanden worden altijd overgeslagen."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -887,6 +961,9 @@ msgstr "Geen resultaten"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "Geen geluid. Controleer of de microfoon aan staat en toegestaan is."
 
+msgid "No speech found"
+msgstr "Geen spraak gevonden"
+
 msgid "No summary yet"
 msgstr "Nog geen samenvatting"
 
@@ -957,11 +1034,23 @@ msgstr ""
 "Transcribeert alleen Engels, sneller dan het meertalige model van "
 "dezelfde grootte."
 
+msgid "Open folder"
+msgstr "Map openen"
+
 msgid "Open in history"
 msgstr "Openen in geschiedenis"
 
-msgid "Open the folder of the saved files"
-msgstr "Map met opgeslagen bestanden openen"
+msgid "Open in the browser"
+msgstr "Openen in de browser"
+
+msgid "Open source folder"
+msgstr "Bronmap openen"
+
+msgid "Open transcript"
+msgstr "Transcriptie openen"
+
+msgid "Open transcripts folder"
+msgstr "Map met transcripties openen"
 
 msgid "OpenAI API key"
 msgstr "OpenAI API-sleutel"
@@ -983,11 +1072,11 @@ msgstr "Omlijning"
 msgid "Output"
 msgstr "Uitvoer"
 
-msgid "Overwrite existing files"
-msgstr "Bestaande bestanden overschrijven"
-
 msgid "Paste"
 msgstr "Plakken"
+
+msgid "Pending"
+msgstr "In afwachting"
 
 msgid "Pin to the top"
 msgstr "Bovenaan vastzetten"
@@ -1059,6 +1148,21 @@ msgstr "Aanbieders"
 msgid "Queued"
 msgstr "In wachtrij"
 
+msgid "Re-transcribe"
+msgstr "Opnieuw transcriberen"
+
+msgid "Re-transcribe all"
+msgstr "Alles opnieuw transcriberen"
+
+msgid "Re-transcribe all…"
+msgstr "Alles opnieuw transcriberen…"
+
+msgid "Re-transcribe them"
+msgstr "Opnieuw transcriberen"
+
+msgid "Re-transcribe this file"
+msgstr "Dit bestand opnieuw transcriberen"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Alleen-lezen. Bewerk de ondertitels om deze tekst te wijzigen."
 
@@ -1099,6 +1203,28 @@ msgstr "Verfijnen"
 
 msgid "Regenerate the summary"
 msgstr "Samenvatting opnieuw genereren"
+
+msgid "Remove"
+msgstr "Verwijderen"
+
+msgid "Remove from history"
+msgstr "Uit de geschiedenis verwijderen"
+
+msgid "Remove from history…"
+msgstr "Uit de geschiedenis verwijderen…"
+
+msgid "Remove missing files from the list…"
+msgstr "Ontbrekende bestanden uit de lijst verwijderen…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "{count} bestand uit de geschiedenis verwijderen?"
+msgstr[1] "{count} bestanden uit de geschiedenis verwijderen?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "‘{title}’ en de bestanden ervan uit de geschiedenis verwijderen?"
 
 msgid "Rename"
 msgstr "Hernoemen"
@@ -1148,6 +1274,15 @@ msgstr ""
 "Vereist om te vertalen met DeepL. Sleutels van het gratis abonnement "
 "werken ook."
 
+msgid "Rescan folder"
+msgstr "Map opnieuw scannen"
+
+msgid "Resume watching"
+msgstr "Bewaken hervatten"
+
+msgid "Retry failed"
+msgstr "Mislukte opnieuw proberen"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Geaccepteerde woorden opnieuw nakijken"
@@ -1170,6 +1305,9 @@ msgstr "Zelfde als de audio"
 
 msgid "Save"
 msgstr "Opslaan"
+
+msgid "Save and rescan"
+msgstr "Opslaan en opnieuw scannen"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1244,6 +1382,9 @@ msgstr "Weergeven in bestandsbeheer"
 msgid "Show it as the subtitles of the video"
 msgstr "Als ondertitels van de video tonen"
 
+msgid "Show more"
+msgstr "Meer weergeven"
+
 msgid "Show subtitles on the video"
 msgstr "Ondertitels op de video weergeven"
 
@@ -1259,8 +1400,23 @@ msgstr "Toont een systeemmelding wanneer een transcriptie klaar is."
 msgid "Size"
 msgstr "Grootte"
 
+msgid "Skip files matching"
+msgstr "Bestanden overslaan die overeenkomen met"
+
 msgid "Small"
 msgstr "Klein"
+
+msgid "Sort by duration"
+msgstr "Sorteren op duur"
+
+msgid "Sort by name"
+msgstr "Sorteren op naam"
+
+msgid "Sort by size"
+msgstr "Sorteren op grootte"
+
+msgid "Sort by status"
+msgstr "Sorteren op status"
 
 msgid "Source"
 msgstr "Bron"
@@ -1294,6 +1450,9 @@ msgstr "Scrollen niet meer synchroniseren"
 msgid "Stop watching"
 msgstr "Stoppen met bewaken"
 
+msgid "Stop watching to edit settings"
+msgstr "Stop met bewaken om de instellingen te bewerken"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "Map wordt niet meer bewaakt. Getranscribeerde bestanden: {done}."
@@ -1313,6 +1472,9 @@ msgstr "Ondertitels (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Ondertitels: {count}"
+
+msgid "Summarize…"
+msgstr "Samenvatten…"
 
 msgid "Summarizing…"
 msgstr "Samenvatten…"
@@ -1409,14 +1571,11 @@ msgstr "Het bestand kon niet worden gedownload: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "Het bestand is verplaatst of verwijderd: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"De map bevat geen bestanden om te transcriberen. Bestanden die al een "
-"transcriptie hebben, worden overgeslagen, tenzij je ‘Bestaande bestanden "
-"overschrijven’ aanvinkt."
+msgid "The files it already contains are skipped."
+msgstr "De bestanden die er al in staan, worden overgeslagen."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "De map bevat geen audio- of videobestanden om te transcriberen."
 
 msgid "The level is shown while recording"
 msgstr "Het niveau wordt getoond tijdens het opnemen"
@@ -1574,6 +1733,14 @@ msgstr "Een map transcriberen"
 msgid "Transcribe again"
 msgstr "Opnieuw transcriberen"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"Alle bestanden van ‘{title}’ opnieuw transcriberen? De bestanden die "
+"ervoor zijn opgeslagen, worden vervangen."
+
 msgid "Transcribe from a URL"
 msgstr "Transcriberen vanaf een URL"
 
@@ -1584,6 +1751,9 @@ msgstr "Transcriberen vanaf de microfoon"
 msgid "Transcribe it again to score its words"
 msgstr "Transcribeer opnieuw om de woorden te beoordelen"
 
+msgid "Transcribe the files already in the folder"
+msgstr "Bestanden transcriberen die al in de map staan"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "“{title}” opnieuw transcriberen? De wijzigingen in de tekst gaan verloren."
@@ -1593,20 +1763,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "{done} van {total} bestanden getranscribeerd."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr ""
-"Transcribeert bestanden die al een transcriptie hebben opnieuw en "
-"vervangt de bestanden ervan."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
-"Transcribeert de audio- en videobestanden in de map en de submappen. "
-"Bestanden die al een transcriptie hebben, worden overgeslagen, tenzij je "
-"ze overschrijft."
+"Transcribeert de audio- en videobestanden van de map en de submappen. "
+"Bestanden die al een transcriptie hebben, worden overgeslagen. Je kunt ze"
+" vanuit de map opnieuw transcriberen."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Transcribeert de bestanden zonder transcriptie, zoals de nieuwe."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1755,6 +1921,9 @@ msgstr "Videobestanden"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Video met ondertitels (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Wacht tot het klaar is om de instellingen te bewerken"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Wacht tot de huidige transcriptie klaar is, of annuleer die."
 
@@ -1770,6 +1939,10 @@ msgstr "Wachten op spraak…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "Wachten tot de huidige transcriptie klaar is."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "Wachten tot de map beschikbaar is: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1851,14 +2024,24 @@ msgstr "YouTube of een link naar een bestand"
 msgid "YouTube video"
 msgstr "YouTube-video"
 
+msgid "Your audio and video files are not deleted."
+msgstr "Je audio- en videobestanden worden niet verwijderd."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "Je audio-, video- en opgeslagen bestanden worden niet verwijderd."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "nog ongeveer {time}"
 
 msgid "cancelled"
 msgstr "geannuleerd"
 
 msgid "default"
 msgstr "standaard"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "bijv. *.wav, concepten/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "bijv. Een interview over spraakherkenning"
@@ -1885,8 +2068,44 @@ msgid "{count} failed"
 msgstr "{count} mislukt"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} bestanden"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} bestand"
+msgstr[1] "{count} bestanden"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "{count} bestand getranscribeerd in {folder}"
+msgstr[1] "{count} bestanden getranscribeerd in {folder}"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] ""
+"{count} bestand is met andere instellingen getranscribeerd. Gewijzigd: "
+"{settings}."
+msgstr[1] ""
+"{count} bestanden zijn met andere instellingen getranscribeerd. "
+"Gewijzigd: {settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} ontbreekt"
+msgstr[1] "{count} ontbreken"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} geselecteerd"
+msgstr[1] "{count} geselecteerd"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} overgeslagen, al getranscribeerd"
+msgstr[1] "{count} overgeslagen, al getranscribeerd"
 
 #, python-brace-format
 msgid "{count} transcriptions"

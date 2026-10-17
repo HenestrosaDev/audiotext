@@ -144,6 +144,11 @@ def _check_circle(d: Draw) -> None:
     d.line([(19, 33), (28, 42), (45, 23)], fill=OFF, width=7, joint="curve")
 
 
+def _x(d: Draw) -> None:
+    _line(d, [(16, 16), (48, 48)], width=6)
+    _line(d, [(48, 16), (16, 48)], width=6)
+
+
 def _x_circle(d: Draw) -> None:
     d.ellipse((4, 4, 60, 60), fill=ON)
     d.line([(22, 22), (42, 42)], fill=OFF, width=7)
@@ -314,6 +319,7 @@ ICONS: dict[str, Callable[[Draw], None]] = {
     "pause": _pause,
     "check": _check,
     "check_circle": _check_circle,
+    "x": _x,
     "x_circle": _x_circle,
     "alert_circle": _alert_circle,
     "warning": _warning,

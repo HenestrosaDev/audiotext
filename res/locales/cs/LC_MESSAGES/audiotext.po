@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -98,6 +98,9 @@ msgstr "Upravit práh"
 msgid "Aligning subtitles…"
 msgstr "Zarovnávání titulků…"
 
+msgid "All"
+msgstr "Vše"
+
 msgid "All files"
 msgstr "Všechny soubory"
 
@@ -115,6 +118,16 @@ msgid ""
 msgstr ""
 "Všechny zvukové a video soubory ve složce nebo nové soubory, jakmile jsou"
 " přidány."
+
+msgid "All the files already have a transcription."
+msgstr "Všechny soubory už mají přepis."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Smazat také {count} soubor, který se pro ně uložil"
+msgstr[1] "Smazat také {count} soubory, které se pro ně uložily"
+msgstr[2] "Smazat také {count} souborů, které se pro ně uložily"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Je potřeba také pro přepis pomocí Whisper API."
@@ -251,8 +264,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "Vyberte, kam ukládat přepisy"
 
+msgid "Clear selection"
+msgstr "Zrušit výběr"
+
 msgid "Clear the conversation"
 msgstr "Vymazat konverzaci"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Zavřít ({shortcut})"
 
 msgid "Compute type"
 msgstr "Typ výpočtu"
@@ -267,11 +288,24 @@ msgstr "Kontext"
 msgid "Continue"
 msgstr "Pokračovat"
 
+msgid "Copied to the clipboard."
+msgstr "Zkopírováno do schránky."
+
 msgid "Copy"
 msgstr "Kopírovat"
 
+msgid "Copy text"
+msgstr "Kopírovat text"
+
 msgid "Could not check for updates."
 msgstr "Nepodařilo se zkontrolovat aktualizace."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "Nepodařilo se smazat {count} uložený soubor."
+msgstr[1] "Nepodařilo se smazat {count} uložené soubory."
+msgstr[2] "Nepodařilo se smazat {count} uložených souborů."
 
 #, python-brace-format
 msgid ""
@@ -378,6 +412,13 @@ msgstr "Smazat přepis"
 msgid "Delete “{title}” from the history?"
 msgstr "Smazat „{title}“ z historie?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "Smazán {count} uložený soubor."
+msgstr[1] "Smazány {count} uložené soubory."
+msgstr[2] "Smazáno {count} uložených souborů."
+
 msgid "Delete…"
 msgstr "Smazat…"
 
@@ -421,6 +462,9 @@ msgstr "Sem přetáhněte zvukový nebo video soubor"
 msgid "Edit note…"
 msgstr "Upravit poznámku…"
 
+msgid "Edit settings"
+msgstr "Upravit nastavení"
+
 msgid "Edit tag…"
 msgstr "Upravit štítek…"
 
@@ -463,6 +507,9 @@ msgstr ""
 msgid "Export"
 msgstr "Exportovat"
 
+msgid "Export all…"
+msgstr "Exportovat vše…"
+
 msgid "Export summary"
 msgstr "Exportovat shrnutí"
 
@@ -488,11 +535,17 @@ msgstr ""
 "Exportováno do {path}, ale žádné písmo nemá tyto znaky, takže se "
 "zobrazují jako čtverečky: {characters}"
 
+msgid "Export…"
+msgstr "Exportovat…"
+
 msgid "Failed"
 msgstr "Selhalo"
 
 msgid "File"
 msgstr "Soubor"
+
+msgid "File not found"
+msgstr "Soubor nebyl nalezen"
 
 msgid "File types"
 msgstr "Typy souborů"
@@ -537,6 +590,11 @@ msgstr "Hledat v překladu do jazyka {language}"
 
 msgid "Find:"
 msgstr "Najít:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr "Nejprve přepíše soubory, které už obsahuje a které ještě nemají přepis."
 
 msgid "Folder"
 msgstr "Složka"
@@ -638,6 +696,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "Rozpoznávání mluvčích…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "Ve složce {folder}"
+
+msgid "Include subfolders"
+msgstr "Zahrnout podsložky"
+
 msgid "Interface language"
 msgstr "Jazyk rozhraní"
 
@@ -664,10 +729,8 @@ msgstr "Držet nad hlavním oknem"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
-msgstr ""
-"Běží dál a přepisuje soubory přidané do složky, dokud jej nezastavíte. "
-"Soubory, které již obsahuje, se přeskočí."
+"stop it."
+msgstr "Běží dál a přepisuje soubory přidané do složky, dokud ho nezastavíte."
 
 msgid "Key points"
 msgstr "Klíčové body"
@@ -702,6 +765,10 @@ msgstr "Velké"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Větší modely jsou přesnější, ale pomalejší."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "Poslední soubor přepsán v {time}: {name}"
 
 msgid "Light"
 msgstr "Světlý"
@@ -794,6 +861,13 @@ msgid "Name of the transcription:"
 msgstr "Název přepisu:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Názvy nebo cesty souborů, které se mají přeskočit, oddělené čárkami. "
+"Skryté soubory se přeskakují vždy."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -871,6 +945,9 @@ msgstr "Žádné výsledky"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "Žádný zvuk. Zkontrolujte, zda je mikrofon zapnutý a povolený."
 
+msgid "No speech found"
+msgstr "Nebyla nalezena žádná řeč"
+
 msgid "No summary yet"
 msgstr "Zatím žádné shrnutí"
 
@@ -941,11 +1018,23 @@ msgstr ""
 "Přepisuje pouze angličtinu, rychlejší než vícejazyčný model stejné "
 "velikosti."
 
+msgid "Open folder"
+msgstr "Otevřít složku"
+
 msgid "Open in history"
 msgstr "Otevřít v historii"
 
-msgid "Open the folder of the saved files"
-msgstr "Otevřít složku uložených souborů"
+msgid "Open in the browser"
+msgstr "Otevřít v prohlížeči"
+
+msgid "Open source folder"
+msgstr "Otevřít zdrojovou složku"
+
+msgid "Open transcript"
+msgstr "Otevřít přepis"
+
+msgid "Open transcripts folder"
+msgstr "Otevřít složku s přepisy"
 
 msgid "OpenAI API key"
 msgstr "Klíč OpenAI API"
@@ -966,11 +1055,11 @@ msgstr "Obrys"
 msgid "Output"
 msgstr "Výstup"
 
-msgid "Overwrite existing files"
-msgstr "Přepsat existující soubory"
-
 msgid "Paste"
 msgstr "Vložit"
+
+msgid "Pending"
+msgstr "Čekající"
 
 msgid "Pin to the top"
 msgstr "Připnout nahoru"
@@ -1042,6 +1131,21 @@ msgstr "Poskytovatelé"
 msgid "Queued"
 msgstr "Ve frontě"
 
+msgid "Re-transcribe"
+msgstr "Přepsat znovu"
+
+msgid "Re-transcribe all"
+msgstr "Přepsat vše znovu"
+
+msgid "Re-transcribe all…"
+msgstr "Přepsat vše znovu…"
+
+msgid "Re-transcribe them"
+msgstr "Přepsat je znovu"
+
+msgid "Re-transcribe this file"
+msgstr "Přepsat tento soubor znovu"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Jen pro čtení. Tento text změníte úpravou titulků."
 
@@ -1080,6 +1184,29 @@ msgstr "Zpřesnění"
 
 msgid "Regenerate the summary"
 msgstr "Znovu vytvořit shrnutí"
+
+msgid "Remove"
+msgstr "Odebrat"
+
+msgid "Remove from history"
+msgstr "Odebrat z historie"
+
+msgid "Remove from history…"
+msgstr "Odebrat z historie…"
+
+msgid "Remove missing files from the list…"
+msgstr "Odebrat chybějící soubory ze seznamu…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "Odebrat {count} soubor z historie?"
+msgstr[1] "Odebrat {count} soubory z historie?"
+msgstr[2] "Odebrat {count} souborů z historie?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "Odebrat „{title}“ a jeho soubory z historie?"
 
 msgid "Rename"
 msgstr "Přejmenovat"
@@ -1127,6 +1254,15 @@ msgstr ""
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "Vyžadován pro překlad pomocí DeepL. Fungují i klíče bezplatného tarifu."
 
+msgid "Rescan folder"
+msgstr "Znovu prohledat složku"
+
+msgid "Resume watching"
+msgstr "Pokračovat ve sledování"
+
+msgid "Retry failed"
+msgstr "Zkusit neúspěšné znovu"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Znovu zkontrolovat přijatá slova"
@@ -1149,6 +1285,9 @@ msgstr "Stejný jako zvuk"
 
 msgid "Save"
 msgstr "Uložit"
+
+msgid "Save and rescan"
+msgstr "Uložit a znovu prohledat"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1223,6 +1362,9 @@ msgstr "Zobrazit ve správci souborů"
 msgid "Show it as the subtitles of the video"
 msgstr "Zobrazit ho jako titulky videa"
 
+msgid "Show more"
+msgstr "Zobrazit více"
+
 msgid "Show subtitles on the video"
 msgstr "Zobrazit titulky ve videu"
 
@@ -1238,8 +1380,23 @@ msgstr "Zobrazí systémové oznámení, když je přepis hotový."
 msgid "Size"
 msgstr "Velikost"
 
+msgid "Skip files matching"
+msgstr "Přeskočit soubory odpovídající"
+
 msgid "Small"
 msgstr "Malé"
+
+msgid "Sort by duration"
+msgstr "Řadit podle délky"
+
+msgid "Sort by name"
+msgstr "Řadit podle názvu"
+
+msgid "Sort by size"
+msgstr "Řadit podle velikosti"
+
+msgid "Sort by status"
+msgstr "Řadit podle stavu"
 
 msgid "Source"
 msgstr "Zdroj"
@@ -1273,6 +1430,9 @@ msgstr "Přestat synchronizovat posouvání"
 msgid "Stop watching"
 msgstr "Zastavit sledování"
 
+msgid "Stop watching to edit settings"
+msgstr "Pro úpravu nastavení zastavte sledování"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "Sledování složky bylo zastaveno. Přepsané soubory: {done}."
@@ -1292,6 +1452,9 @@ msgstr "Titulky (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Titulky: {count}"
+
+msgid "Summarize…"
+msgstr "Shrnout…"
 
 msgid "Summarizing…"
 msgstr "Shrnování…"
@@ -1386,13 +1549,11 @@ msgstr "Soubor se nepodařilo stáhnout: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "Soubor byl přesunut nebo smazán: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"Složka neobsahuje žádné soubory k přepisu. Soubory, které již mají "
-"přepis, se přeskakují, pokud nezaškrtnete „Přepsat existující soubory“."
+msgid "The files it already contains are skipped."
+msgstr "Soubory, které už obsahuje, se přeskočí."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "Složka neobsahuje žádné zvukové ani video soubory k přepsání."
 
 msgid "The level is shown while recording"
 msgstr "Úroveň se zobrazuje během nahrávání"
@@ -1544,6 +1705,14 @@ msgstr "Přepsat složku"
 msgid "Transcribe again"
 msgstr "Přepsat znovu"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"Přepsat znovu všechny soubory složky „{title}“? Soubory, které se pro ně "
+"uložily, budou nahrazeny."
+
 msgid "Transcribe from a URL"
 msgstr "Přepsat z URL"
 
@@ -1554,6 +1723,9 @@ msgstr "Přepsat z mikrofonu"
 msgid "Transcribe it again to score its words"
 msgstr "Přepište to znovu, aby se slova ohodnotila"
 
+msgid "Transcribe the files already in the folder"
+msgstr "Přepsat soubory, které už ve složce jsou"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Znovu přepsat „{title}“? Změny provedené v textu budou ztraceny."
@@ -1563,17 +1735,15 @@ msgid "Transcribed {done} of {total} files."
 msgstr "Přepsáno {done} z {total} souborů."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr "Znovu přepíše soubory, které už přepis mají, a nahradí jeho soubory."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
-"Přepíše zvukové a video soubory ve složce a jejích podsložkách. Soubory, "
-"které již mají přepis, se přeskočí, pokud je nepřepíšete."
+"Přepíše zvukové a video soubory složky a jejích podsložek. Soubory, které"
+" už mají přepis, se přeskočí. Znovu je můžete přepsat ze složky."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Přepíše soubory bez přepisu, například nové."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1722,6 +1892,9 @@ msgstr "Video soubory"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Video s titulky (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Pro úpravu nastavení počkejte, až se dokončí"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Počkejte, až aktuální přepis skončí, nebo jej zrušte."
 
@@ -1737,6 +1910,10 @@ msgstr "Čekání na řeč…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "Čekání na dokončení aktuálního přepisu."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "Čekání, až bude složka dostupná: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1817,14 +1994,24 @@ msgstr "YouTube nebo odkaz na soubor"
 msgid "YouTube video"
 msgstr "Video z YouTube"
 
+msgid "Your audio and video files are not deleted."
+msgstr "Vaše zvukové a video soubory se nesmažou."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "Vaše zvukové, video a uložené soubory se nesmažou."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "zbývá asi {time}"
 
 msgid "cancelled"
 msgstr "zrušeno"
 
 msgid "default"
 msgstr "výchozí"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "např. *.wav, koncepty/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "např. Rozhovor o rozpoznávání řeči"
@@ -1851,8 +2038,46 @@ msgid "{count} failed"
 msgstr "Selhalo: {count}"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "Soubory: {count}"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} soubor"
+msgstr[1] "{count} soubory"
+msgstr[2] "{count} souborů"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "Ve složce {folder} byl přepsán {count} soubor"
+msgstr[1] "Ve složce {folder} byly přepsány {count} soubory"
+msgstr[2] "Ve složce {folder} bylo přepsáno {count} souborů"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] "{count} soubor byl přepsán s jiným nastavením. Změněno: {settings}."
+msgstr[1] "{count} soubory byly přepsány s jiným nastavením. Změněno: {settings}."
+msgstr[2] "{count} souborů bylo přepsáno s jiným nastavením. Změněno: {settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} chybí"
+msgstr[1] "{count} chybí"
+msgstr[2] "{count} chybí"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} vybraný"
+msgstr[1] "{count} vybrané"
+msgstr[2] "{count} vybraných"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} přeskočen, už přepsán"
+msgstr[1] "{count} přeskočeny, už přepsány"
+msgstr[2] "{count} přeskočeno, už přepsáno"
 
 #, python-brace-format
 msgid "{count} transcriptions"
