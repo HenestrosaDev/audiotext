@@ -5,7 +5,9 @@ Strings are marked with `_()` to be translated when they are shown, or with `N_(
 when they are defined before the interface language is set (e.g. module constants),
 so they are extracted for translation but translated later with `_()`. `L_()`
 gives a text of the interface that is translated again when the language changes
-(see `views.localization`), e.g. `localize(label, text=L_("Settings"))`.
+(see `views.localization`), e.g. `localize(label, text=L_("Settings"))`. `P_()`
+translates a text that depends on a number, e.g. `P_("{count} file", "{count} files",
+count)`, with the plural forms of each language.
 
 The catalogs live in `res/locales/<language>/LC_MESSAGES/audiotext.po` (see the
 "Translations" section of the README to add or update them).
@@ -77,6 +79,14 @@ _interface_language = _InterfaceLanguage()
 def _(message: str) -> str:
     """Translates the message into the current interface language."""
     return _interface_language.translation.gettext(message)
+
+
+def P_(singular: str, plural: str, count: int) -> str:
+    """
+    Translates the singular or the plural form of a message, the one of the
+    current interface language for the count.
+    """
+    return _interface_language.translation.ngettext(singular, plural, count)
 
 
 def N_(message: str) -> str:
