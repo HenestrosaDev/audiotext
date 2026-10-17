@@ -5,8 +5,10 @@ import pytest
 from models.transcription import Transcription
 from models.transcription_settings import (
     SAME_LANGUAGE,
+    SettingsChange,
     TranscriptionSettings,
     TranslationMode,
+    changed_options,
 )
 from utils.enums import AudioSource, TranscriptionMethod
 
@@ -198,4 +200,61 @@ def test_whisper_gets_the_keywords_in_the_prompt() -> None:
     assert (
         Transcription(AudioSource.FILE, TranscriptionMethod.WHISPERX).whisper_prompt
         == ""
+    )
+
+
+def test_the_changed_options_are_the_ones_that_change_the_result() -> None:
+    used = TranscriptionSettings(model_size="small", input_language="es")
+
+    def changes(**kwargs: object) -> list[SettingsChange]:
+        current = TranscriptionSettings(model_size="small", input_language="es")
+        for name, value in kwargs.items():
+            setattr(current, name, value)
+        return changed_options(used.to_dict(), current.to_dict())
+
+    assert changes() == []
+    # Where and how the files are saved doesn't change the transcription
+    assert changes(output_file_types=["srt"], output_dir="/out", watch=True) == []
+    assert changes(model_size="large-v3", input_language="en") == [
+        SettingsChange.MODEL,
+        SettingsChange.LANGUAGE,
+    ]
+    assert changes(output_language="en") == [SettingsChange.LANGUAGE]
+    assert changes(keywords="Audiotext") == [SettingsChange.CONTEXT]
+    # The number of speakers only matters when identifying them
+    assert changes(num_speakers=3) == []
+    assert changes(diarize=True) == [SettingsChange.SPEAKERS]
+
+
+def test_the_options_that_the_method_ignores_are_not_changes() -> None:
+    used = TranscriptionSettings(
+        method=TranscriptionMethod.WHISPER_API.value, model_size="small"
+    )
+    current = TranscriptionSettings(
+        method=TranscriptionMethod.WHISPER_API.value, model_size="large-v3"
+    )
+
+    assert changed_options(used.to_dict(), current.to_dict()) == []
+    assert changed_options(used.to_dict(), TranscriptionSettings().to_dict()) == [
+        SettingsChange.METHOD,
+        SettingsChange.MODEL,
+        SettingsChange.WORD_TIMINGS,
+        SettingsChange.SPEAKERS,
+    ]
+    assert changed_options({"method": "Unknown"}, current.to_dict()) == []
+
+
+def test_only_a_watched_folder_transcribes_its_existing_files() -> None:
+    settings = TranscriptionSettings(watch=True, transcribe_existing=True)
+
+    watched = settings.to_transcription(AudioSource.WATCH, "/talks")
+    scanned = settings.to_transcription(AudioSource.DIRECTORY, "/talks")
+
+    assert watched.should_transcribe_existing
+    assert not scanned.should_transcribe_existing
+    # Files that have a transcription are only replaced when asked for
+    assert (
+        not TranscriptionSettings(overwrite=True)
+        .to_transcription(AudioSource.DIRECTORY, "/talks")
+        .should_overwrite
     )

@@ -92,25 +92,10 @@ class OutputCard(SettingsCard):
         )
         self.btn_reset_location.grid(row=1, column=0, pady=(4, 0), sticky=ctk.W)
         self.interactive_widgets.extend([self.btn_location, self.btn_reset_location])
-
-        self.swi_overwrite = self._switch(
-            8,
-            L_("Overwrite existing files"),
-            config_transcription.overwrite_files,
-            ConfigTranscription.Key.OVERWRITE_FILES,
-        )
-        self._hint(
-            9,
-            L_(
-                "Transcribes again the files that already have a transcription, "
-                "replacing its files."
-            ),
-            (4, 16),
-        )
+        self._spacer(8)
 
     def update_settings(self, settings: TranscriptionSettings) -> None:
         settings.output_file_types = self._chosen_file_types()
-        settings.overwrite = bool(self.swi_overwrite.get())
         settings.output_dir = str(self._output_dir) if self._output_dir else ""
 
     def refresh(self, settings: TranscriptionSettings) -> None:

@@ -3,6 +3,7 @@
 import sys
 from datetime import datetime
 from enum import Enum
+from pathlib import Path
 from typing import TypeVar
 
 import customtkinter as ctk
@@ -158,9 +159,40 @@ def format_full_date(value: datetime) -> str:
         return value.strftime("%Y-%m-%d %H:%M")
 
 
+def format_size(size: int) -> str:
+    """The size of a file (e.g. "1.5 MB")."""
+    value = float(size)
+    for unit in ("B", "KB", "MB", "GB"):
+        if value < 1024 or unit == "GB":
+            return f"{value:.0f} {unit}" if unit == "B" else f"{value:.1f} {unit}"
+        value /= 1024
+    return f"{value:.1f} GB"
+
+
 def reveal_label() -> str:
     if theme.IS_MACOS:
         return _("Show in Finder")
     if sys.platform == "win32":
         return _("Show in Explorer")
     return _("Show in file manager")
+
+
+def folder_actions(
+    source_dir: Path | None, output_dir: Path | None
+) -> list[tuple[str, Path]]:
+    """
+    The labels and folders to open of an entry: a single one if its source and
+    its saved files are in the same folder, or one for each of them otherwise.
+    Folders that don't exist are left out.
+    """
+    source_dir = source_dir if source_dir and source_dir.is_dir() else None
+    output_dir = output_dir if output_dir and output_dir.is_dir() else None
+    if source_dir and output_dir and source_dir.resolve() != output_dir.resolve():
+        return [
+            (_("Open source folder"), source_dir),
+            (_("Open transcripts folder"), output_dir),
+        ]
+    if output_dir and not source_dir:
+        return [(_("Open transcripts folder"), output_dir)]
+    folder = source_dir or output_dir
+    return [(_("Open folder"), folder)] if folder else []

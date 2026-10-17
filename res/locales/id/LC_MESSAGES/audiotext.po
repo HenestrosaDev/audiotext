@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -98,6 +98,9 @@ msgstr "Sesuaikan ambang"
 msgid "Aligning subtitles…"
 msgstr "Menyelaraskan subtitel…"
 
+msgid "All"
+msgstr "Semua"
+
 msgid "All files"
 msgstr "Semua file"
 
@@ -113,6 +116,15 @@ msgid ""
 "All the audio and video files of a folder, or the new ones as they're "
 "added."
 msgstr "Semua file audio dan video dalam folder, atau file baru saat ditambahkan."
+
+msgid "All the files already have a transcription."
+msgstr "Semua file sudah memiliki transkripsi."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Hapus juga {count} file yang disimpan untuknya"
+msgstr[1] "Hapus juga {count} file yang disimpan untuknya"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Juga diperlukan untuk transkripsi dengan Whisper API."
@@ -253,8 +265,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "Pilih tempat menyimpan transkripsi"
 
+msgid "Clear selection"
+msgstr "Hapus pilihan"
+
 msgid "Clear the conversation"
 msgstr "Hapus percakapan"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Tutup ({shortcut})"
 
 msgid "Compute type"
 msgstr "Jenis komputasi"
@@ -269,11 +289,23 @@ msgstr "Konteks"
 msgid "Continue"
 msgstr "Lanjutkan"
 
+msgid "Copied to the clipboard."
+msgstr "Disalin ke papan klip."
+
 msgid "Copy"
 msgstr "Salin"
 
+msgid "Copy text"
+msgstr "Salin teks"
+
 msgid "Could not check for updates."
 msgstr "Tidak dapat memeriksa pembaruan."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "Tidak dapat menghapus {count} file yang disimpan."
+msgstr[1] "Tidak dapat menghapus {count} file yang disimpan."
 
 #, python-brace-format
 msgid ""
@@ -379,6 +411,12 @@ msgstr "Hapus transkripsi"
 msgid "Delete “{title}” from the history?"
 msgstr "Hapus \"{title}\" dari riwayat?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "{count} file yang disimpan telah dihapus."
+msgstr[1] "{count} file yang disimpan telah dihapus."
+
 msgid "Delete…"
 msgstr "Hapus…"
 
@@ -422,6 +460,9 @@ msgstr "Letakkan file audio atau video di sini"
 msgid "Edit note…"
 msgstr "Edit catatan…"
 
+msgid "Edit settings"
+msgstr "Edit pengaturan"
+
 msgid "Edit tag…"
 msgstr "Edit label…"
 
@@ -464,6 +505,9 @@ msgstr ""
 msgid "Export"
 msgstr "Ekspor"
 
+msgid "Export all…"
+msgstr "Ekspor semua…"
+
 msgid "Export summary"
 msgstr "Ekspor ringkasan"
 
@@ -489,11 +533,17 @@ msgstr ""
 "Diekspor ke {path}, tetapi tidak ada fon yang memiliki karakter ini, "
 "sehingga ditampilkan sebagai kotak: {characters}"
 
+msgid "Export…"
+msgstr "Ekspor…"
+
 msgid "Failed"
 msgstr "Gagal"
 
 msgid "File"
 msgstr "File"
+
+msgid "File not found"
+msgstr "File tidak ditemukan"
 
 msgid "File types"
 msgstr "Jenis file"
@@ -538,6 +588,13 @@ msgstr "Cari di terjemahan bahasa {language}"
 
 msgid "Find:"
 msgstr "Cari:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr ""
+"Terlebih dahulu mentranskripsi file yang sudah ada di dalamnya dan belum "
+"memiliki transkripsi."
 
 msgid "Folder"
 msgstr "Folder"
@@ -644,6 +701,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "Mengidentifikasi pembicara…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "Di {folder}"
+
+msgid "Include subfolders"
+msgstr "Sertakan subfolder"
+
 msgid "Interface language"
 msgstr "Bahasa antarmuka"
 
@@ -670,10 +734,10 @@ msgstr "Tetap di atas jendela utama"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
-"Tetap berjalan dan mentranskripsi file yang ditambahkan ke folder, sampai"
-" Anda menghentikannya. File yang sudah ada di dalamnya dilewati."
+"Terus berjalan dan mentranskripsi file yang ditambahkan ke folder, hingga"
+" Anda menghentikannya."
 
 msgid "Key points"
 msgstr "Poin penting"
@@ -708,6 +772,10 @@ msgstr "Besar"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Model yang lebih besar lebih akurat, tetapi lebih lambat."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "File terakhir ditranskripsi pukul {time}: {name}"
 
 msgid "Light"
 msgstr "Terang"
@@ -800,6 +868,13 @@ msgid "Name of the transcription:"
 msgstr "Nama transkripsi:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Nama atau jalur file yang dilewati, dipisahkan dengan koma. File "
+"tersembunyi selalu dilewati."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -879,6 +954,9 @@ msgstr "Tidak ada hasil"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "Tidak ada suara. Periksa apakah mikrofon menyala dan diizinkan."
 
+msgid "No speech found"
+msgstr "Tidak ada ucapan yang ditemukan"
+
 msgid "No summary yet"
 msgstr "Belum ada ringkasan"
 
@@ -950,11 +1028,23 @@ msgstr ""
 "Hanya mentranskripsi bahasa Inggris, lebih cepat daripada model "
 "multibahasa dengan ukuran yang sama."
 
+msgid "Open folder"
+msgstr "Buka folder"
+
 msgid "Open in history"
 msgstr "Buka di riwayat"
 
-msgid "Open the folder of the saved files"
-msgstr "Buka folder file yang disimpan"
+msgid "Open in the browser"
+msgstr "Buka di browser"
+
+msgid "Open source folder"
+msgstr "Buka folder sumber"
+
+msgid "Open transcript"
+msgstr "Buka transkrip"
+
+msgid "Open transcripts folder"
+msgstr "Buka folder transkrip"
 
 msgid "OpenAI API key"
 msgstr "Kunci OpenAI API"
@@ -976,11 +1066,11 @@ msgstr "Garis tepi"
 msgid "Output"
 msgstr "Keluaran"
 
-msgid "Overwrite existing files"
-msgstr "Timpa file yang ada"
-
 msgid "Paste"
 msgstr "Tempel"
+
+msgid "Pending"
+msgstr "Tertunda"
 
 msgid "Pin to the top"
 msgstr "Sematkan di atas"
@@ -1052,6 +1142,21 @@ msgstr "Penyedia"
 msgid "Queued"
 msgstr "Dalam antrean"
 
+msgid "Re-transcribe"
+msgstr "Transkripsi ulang"
+
+msgid "Re-transcribe all"
+msgstr "Transkripsi ulang semua"
+
+msgid "Re-transcribe all…"
+msgstr "Transkripsi ulang semua…"
+
+msgid "Re-transcribe them"
+msgstr "Transkripsi ulang"
+
+msgid "Re-transcribe this file"
+msgstr "Transkripsi ulang file ini"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Hanya baca. Edit subtitle untuk mengubah teks ini."
 
@@ -1092,6 +1197,28 @@ msgstr "Penyempurnaan"
 
 msgid "Regenerate the summary"
 msgstr "Buat ulang ringkasan"
+
+msgid "Remove"
+msgstr "Hapus"
+
+msgid "Remove from history"
+msgstr "Hapus dari riwayat"
+
+msgid "Remove from history…"
+msgstr "Hapus dari riwayat…"
+
+msgid "Remove missing files from the list…"
+msgstr "Hapus file yang hilang dari daftar…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "Hapus {count} file dari riwayat?"
+msgstr[1] "Hapus {count} file dari riwayat?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "Hapus \"{title}\" dan file-filenya dari riwayat?"
 
 msgid "Rename"
 msgstr "Ganti nama"
@@ -1141,6 +1268,15 @@ msgstr ""
 "Diperlukan untuk menerjemahkan dengan DeepL. Kunci paket gratis juga "
 "berfungsi."
 
+msgid "Rescan folder"
+msgstr "Pindai ulang folder"
+
+msgid "Resume watching"
+msgstr "Lanjutkan pemantauan"
+
+msgid "Retry failed"
+msgstr "Coba lagi yang gagal"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Tinjau lagi kata yang diterima"
@@ -1163,6 +1299,9 @@ msgstr "Sama dengan audio"
 
 msgid "Save"
 msgstr "Simpan"
+
+msgid "Save and rescan"
+msgstr "Simpan dan pindai ulang"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1237,6 +1376,9 @@ msgstr "Tampilkan di pengelola file"
 msgid "Show it as the subtitles of the video"
 msgstr "Tampilkan sebagai subtitle video"
 
+msgid "Show more"
+msgstr "Tampilkan lebih banyak"
+
 msgid "Show subtitles on the video"
 msgstr "Tampilkan subtitle di video"
 
@@ -1252,8 +1394,23 @@ msgstr "Menampilkan notifikasi sistem saat transkripsi siap."
 msgid "Size"
 msgstr "Ukuran"
 
+msgid "Skip files matching"
+msgstr "Lewati file yang cocok dengan"
+
 msgid "Small"
 msgstr "Kecil"
+
+msgid "Sort by duration"
+msgstr "Urutkan menurut durasi"
+
+msgid "Sort by name"
+msgstr "Urutkan menurut nama"
+
+msgid "Sort by size"
+msgstr "Urutkan menurut ukuran"
+
+msgid "Sort by status"
+msgstr "Urutkan menurut status"
 
 msgid "Source"
 msgstr "Sumber"
@@ -1287,6 +1444,9 @@ msgstr "Berhenti menyinkronkan guliran"
 msgid "Stop watching"
 msgstr "Berhenti memantau"
 
+msgid "Stop watching to edit settings"
+msgstr "Hentikan pemantauan untuk mengedit pengaturan"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "Berhenti memantau folder. File yang ditranskripsi: {done}."
@@ -1306,6 +1466,9 @@ msgstr "Subtitle (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Subtitle: {count}"
+
+msgid "Summarize…"
+msgstr "Ringkas…"
 
 msgid "Summarizing…"
 msgstr "Meringkas…"
@@ -1400,13 +1563,11 @@ msgstr "File tidak dapat diunduh: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "File telah dipindahkan atau dihapus: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"Folder tidak berisi file untuk ditranskripsi. File yang sudah memiliki "
-"transkripsi dilewati kecuali Anda mencentang \"Timpa file yang ada\"."
+msgid "The files it already contains are skipped."
+msgstr "File yang sudah ada di dalamnya dilewati."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "Folder tidak berisi file audio atau video untuk ditranskripsi."
 
 msgid "The level is shown while recording"
 msgstr "Level ditampilkan saat merekam"
@@ -1563,6 +1724,14 @@ msgstr "Transkripsi folder"
 msgid "Transcribe again"
 msgstr "Transkripsi lagi"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"Transkripsi ulang semua file \"{title}\"? File yang disimpan untuknya "
+"akan diganti."
+
 msgid "Transcribe from a URL"
 msgstr "Transkripsi dari URL"
 
@@ -1573,6 +1742,9 @@ msgstr "Transkripsi dari mikrofon"
 msgid "Transcribe it again to score its words"
 msgstr "Transkripsikan ulang untuk menilai kata-katanya"
 
+msgid "Transcribe the files already in the folder"
+msgstr "Transkripsi file yang sudah ada di folder"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Transkripsikan ulang “{title}”? Perubahan pada teksnya akan hilang."
@@ -1582,19 +1754,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "{done} dari {total} file berhasil ditranskripsi."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr ""
-"Mentranskripsi ulang file yang sudah memiliki transkripsi dan mengganti "
-"file-filenya."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
 "Mentranskripsi file audio dan video di folder dan subfoldernya. File yang"
-" sudah memiliki transkripsi dilewati kecuali Anda menimpanya."
+" sudah memiliki transkripsi dilewati. Anda dapat mentranskripsinya ulang "
+"dari folder."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Mentranskripsi file tanpa transkripsi, seperti file baru."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1743,6 +1912,9 @@ msgstr "File video"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Video dengan subtitle (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Tunggu hingga selesai untuk mengedit pengaturan"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Tunggu hingga transkripsi saat ini selesai, atau batalkan."
 
@@ -1758,6 +1930,10 @@ msgstr "Menunggu suara…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "Menunggu transkripsi saat ini selesai."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "Menunggu folder tersedia: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1838,14 +2014,24 @@ msgstr "YouTube atau tautan ke file"
 msgid "YouTube video"
 msgstr "Video YouTube"
 
+msgid "Your audio and video files are not deleted."
+msgstr "File audio dan video Anda tidak dihapus."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "File audio, video, dan file yang disimpan tidak dihapus."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "sekitar {time} lagi"
 
 msgid "cancelled"
 msgstr "dibatalkan"
 
 msgid "default"
 msgstr "default"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "mis. *.wav, draf/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "mis. Wawancara tentang pengenalan suara"
@@ -1872,8 +2058,40 @@ msgid "{count} failed"
 msgstr "{count} gagal"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} file"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} file"
+msgstr[1] "{count} file"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "{count} file ditranskripsi di {folder}"
+msgstr[1] "{count} file ditranskripsi di {folder}"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] "{count} file ditranskripsi dengan pengaturan lain. Diubah: {settings}."
+msgstr[1] "{count} file ditranskripsi dengan pengaturan lain. Diubah: {settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} hilang"
+msgstr[1] "{count} hilang"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} dipilih"
+msgstr[1] "{count} dipilih"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} dilewati, sudah ditranskripsi"
+msgstr[1] "{count} dilewati, sudah ditranskripsi"
 
 #, python-brace-format
 msgid "{count} transcriptions"

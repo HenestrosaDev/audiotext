@@ -37,6 +37,9 @@ class HistoryStore:
         self._groups: dict[str, HistoryGroup] = {}
         # Whether there are changes that weren't written yet (see `flush`)
         self._has_unsaved_changes = False
+        # The folders that were being watched when the app was closed, which are
+        # watched again when it opens (see `TranscriptionQueue.resume_watches`)
+        self.interrupted_watches: list[str] = []
 
         self._load()
 
@@ -228,6 +231,8 @@ class HistoryStore:
                 continue
 
             # The processes don't survive the app being closed
+            if entry.status == EntryStatus.WATCHING and entry.parent_id is None:
+                self.interrupted_watches.append(entry.id)
             if entry.status.is_active:
                 entry.status = EntryStatus.INTERRUPTED
 

@@ -14,6 +14,7 @@ from utils.exporters import (
     Paragraph,
     available_formats,
     export,
+    export_collection,
     export_summary,
     paragraphs,
 )
@@ -300,3 +301,29 @@ def test_docx(tmp_path: Path) -> None:
     assert texts[0] == "Talk"
     assert "A greeting." in texts
     assert "[01:01:01] SPEAKER_01: Bye." in texts
+
+
+def test_several_transcriptions_are_exported_together(tmp_path: Path) -> None:
+    documents = [
+        document(title="a.mp3", segments=[], text="Hello."),
+        document(title="b.mp3", segments=[], text="Bye."),
+    ]
+
+    txt = export_collection(tmp_path / "talks", "txt", "Talks", documents)
+    md = export_collection(tmp_path / "talks", "md", "Talks", documents)
+    docx = export_collection(tmp_path / "talks", "docx", "Talks", documents)
+
+    assert txt.read_text(encoding="utf-8") == (
+        "a.mp3\n=====\n\nHello.\n\n\nb.mp3\n=====\n\nBye.\n"
+    )
+    assert md.read_text(encoding="utf-8") == (
+        "# Talks\n\n## a.mp3\n\nHello.\n\n## b.mp3\n\nBye.\n"
+    )
+    headings = [
+        paragraph.text
+        for paragraph in Document(str(docx)).paragraphs
+        if paragraph.style.name.startswith(("Heading", "Title"))
+    ]
+    assert headings == ["Talks", "a.mp3", "b.mp3"]
+    with pytest.raises(ValueError):
+        export_collection(tmp_path / "talks", "srt", "Talks", documents)

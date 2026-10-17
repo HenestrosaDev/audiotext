@@ -6,6 +6,7 @@ import customtkinter as ctk
 from utils.i18n import L_, _
 from views.localization import localize
 from views.style import icons, theme
+from views.widgets.button import icon_button
 from views.widgets.tooltip import Tooltip
 
 # Between the word and the popover below it, and between the popover and the
@@ -17,7 +18,7 @@ POPOVER_MARGIN = 8
 WORD_FIELD_WIDTH = 200
 SEGMENT_FIELD_WIDTH = 480
 # The space taken by the buttons and the margins next to the field
-BUTTONS_WIDTH = 240
+BUTTONS_WIDTH = 276
 REPLAY_SHORTCUT = f"<{theme.SHORTCUT_MODIFIER}-r>"
 
 
@@ -25,8 +26,8 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
     """
     Corrects a low confidence word where it is, below it (or above it, near the
     bottom of the text): its text can be changed (Return saves it), played again
-    (Command/Control + R), or accepted as it is. Escape, or clicking elsewhere,
-    closes it without changes: what was typed is discarded.
+    (Command/Control + R), or accepted as it is. Escape, its close button, or
+    clicking elsewhere, closes it without changes: what was typed is discarded.
     """
 
     def __init__(
@@ -84,7 +85,14 @@ class WordPopover(ctk.CTkFrame):  # type: ignore[misc]
             ),
             text=L_("Accept"),
         )
-        self.btn_accept.grid(row=0, column=2, padx=(0, 10), pady=10)
+        self.btn_accept.grid(row=0, column=2, padx=(0, 4), pady=10)
+        self.btn_close = icon_button(
+            self,
+            "x",
+            self.close,
+            lambda: _("Close ({shortcut})").format(shortcut="Esc"),
+        )
+        self.btn_close.grid(row=0, column=3, padx=(0, 6), pady=10)
 
         for sequence in ("<Return>", "<KP_Enter>"):
             self.ent_text.bind(sequence, self._on_return)

@@ -9,6 +9,7 @@ from controllers.history_controller import HistoryController
 from handlers.translation_handler import MANUAL
 from models.history import EntryStatus, HistoryEntry
 from models.transcript_segment import TranscriptSegment
+from models.transcription_settings import TranscriptionSettings
 from tests.conftest import FakeAnswerer, FakeSummarizer, FakeTranslator
 from utils.history_store import HistoryStore
 
@@ -266,6 +267,87 @@ def test_deleting_a_file_of_a_folder_refreshes_the_folder(
     history.delete_entry(child.id)
 
     assert store.get(child.id) is None
+    view.refresh_entry_view.assert_called_once_with(folder.id)
+    view.refresh_sidebar.assert_called_once()
+
+
+def test_the_files_saved_for_a_folder_are_only_deleted_if_asked(
+    history: HistoryController, store: HistoryStore, tmp_path: Path
+) -> None:
+    source = tmp_path / "talks"
+    output = tmp_path / "out"
+    (source / "sub").mkdir(parents=True)
+    (output / "sub").mkdir(parents=True)
+    for path in (source / "a.mp3", source / "sub" / "b.mp3"):
+        path.touch()
+    # Saved in another folder, mirroring the subfolders
+    saved = [output / "a.txt", output / "a.srt", output / "sub" / "b.txt"]
+    for path in [*saved, output / "notes.txt"]:
+        path.touch()
+    settings = TranscriptionSettings(
+        output_file_types=["txt", "srt"], output_dir=str(output)
+    )
+    folder = add(
+        store, kind="Directory", source=str(source), settings=settings.to_dict()
+    )
+    add(store, parent_id=folder.id, source=str(source / "a.mp3"))
+    # Transcribed when only the text was saved
+    used = TranscriptionSettings(output_file_types=["txt"], output_dir=str(output))
+    add(
+        store,
+        parent_id=folder.id,
+        source=str(source / "sub" / "b.mp3"),
+        settings=used.to_dict(),
+    )
+
+    assert sorted(history.saved_transcripts(folder.id)) == sorted(saved)
+    assert history.delete_entry(folder.id) == (0, 0)
+    assert all(path.exists() for path in saved)
+
+    folder = add(
+        store, kind="Directory", source=str(source), settings=settings.to_dict()
+    )
+    add(store, parent_id=folder.id, source=str(source / "a.mp3"))
+    assert history.delete_entry(folder.id, should_delete_transcripts=True) == (2, 0)
+    assert not (output / "a.txt").exists() and not (output / "a.srt").exists()
+    # Neither the sources nor the other files are deleted
+    assert (source / "a.mp3").exists()
+    assert (output / "notes.txt").exists()
+    assert (output / "sub" / "b.txt").exists()
+
+
+def test_the_files_skipped_because_they_had_a_transcription_are_counted(
+    history: HistoryController, store: HistoryStore, tmp_path: Path
+) -> None:
+    for name in ("listed.mp3", "listed.txt", "old.mp3", "old.txt", "new.mp3"):
+        (tmp_path / name).touch()
+    folder = add(
+        store,
+        kind="Directory",
+        source=str(tmp_path),
+        settings=TranscriptionSettings(output_file_types=["txt"]).to_dict(),
+    )
+    add(store, parent_id=folder.id, source=str(tmp_path / "listed.mp3"))
+
+    counter = history.skipped_files_counter(folder.id)
+
+    assert counter is not None
+    # The listed one is in the history, and the new one isn't transcribed yet
+    assert counter() == 1
+    assert history.skipped_files_counter(add(store).id) is None
+
+
+def test_several_files_of_a_folder_are_deleted_at_once(
+    history: HistoryController, store: HistoryStore, view: MagicMock
+) -> None:
+    folder = add(store, kind="Directory", source="/talks")
+    first = add(store, parent_id=folder.id, source="/talks/a.mp3")
+    second = add(store, parent_id=folder.id, source="/talks/b.mp3")
+    kept = add(store, parent_id=folder.id, source="/talks/c.mp3")
+
+    history.delete_entries([first.id, second.id, "missing"])
+
+    assert [child.id for child in store.children(folder.id)] == [kept.id]
     view.refresh_entry_view.assert_called_once_with(folder.id)
     view.refresh_sidebar.assert_called_once()
 

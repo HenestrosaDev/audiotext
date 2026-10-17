@@ -84,6 +84,9 @@ class HistoryEntry:
     media_path: str | None = None
     # Folder where the output files were saved automatically
     output_dir: str | None = None
+    # The files of a folder that weren't transcribed the last time it was
+    # scanned, since they already had a transcription, and aren't in its history
+    skipped_files: int = 0
     # The settings used, to transcribe it again (see `TranscriptionSettings`)
     settings: dict[str, Any] = field(default_factory=dict)
     # Summary generated from the text (see `TranscriptSummary`), if any
@@ -132,6 +135,17 @@ class HistoryEntry:
             return Path(self.source) if self.source else None
 
         return None
+
+    @property
+    def transcripts_dir(self) -> Path | None:
+        """
+        The folder where the files of a folder transcription are saved: the one
+        chosen in its settings, or the folder itself.
+        """
+        if not self.is_folder:
+            return None
+        output_dir = self.settings.get("output_dir")
+        return Path(output_dir) if output_dir else self.source_path
 
     def matches(self, query: str) -> bool:
         """Whether the entry contains the search query, ignoring the case."""

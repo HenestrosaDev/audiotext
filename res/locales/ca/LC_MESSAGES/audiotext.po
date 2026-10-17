@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -99,6 +99,9 @@ msgstr "Ajusta el llindar"
 msgid "Aligning subtitles…"
 msgstr "S'estan alineant els subtítols…"
 
+msgid "All"
+msgstr "Tots"
+
 msgid "All files"
 msgstr "Tots els fitxers"
 
@@ -116,6 +119,15 @@ msgid ""
 msgstr ""
 "Tots els fitxers d'àudio i vídeo d'una carpeta, o els nous a mesura que "
 "s'hi afegeixen."
+
+msgid "All the files already have a transcription."
+msgstr "Tots els fitxers ja tenen una transcripció."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Elimina també el {count} fitxer que s'hi ha desat"
+msgstr[1] "Elimina també els {count} fitxers que s'hi han desat"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "També cal per transcriure amb la Whisper API."
@@ -254,8 +266,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "Tria on desar les transcripcions"
 
+msgid "Clear selection"
+msgstr "Esborra la selecció"
+
 msgid "Clear the conversation"
 msgstr "Esborra la conversa"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Tanca ({shortcut})"
 
 msgid "Compute type"
 msgstr "Tipus de càlcul"
@@ -270,11 +290,23 @@ msgstr "Context"
 msgid "Continue"
 msgstr "Continua"
 
+msgid "Copied to the clipboard."
+msgstr "S'ha copiat al porta-retalls."
+
 msgid "Copy"
 msgstr "Copia"
 
+msgid "Copy text"
+msgstr "Copia el text"
+
 msgid "Could not check for updates."
 msgstr "No s'han pogut cercar actualitzacions."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "No s'ha pogut eliminar {count} fitxer desat."
+msgstr[1] "No s'han pogut eliminar {count} fitxers desats."
 
 #, python-brace-format
 msgid ""
@@ -383,6 +415,12 @@ msgstr "Elimina la transcripció"
 msgid "Delete “{title}” from the history?"
 msgstr "Vols eliminar «{title}» de l'historial?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "S'ha eliminat {count} fitxer desat."
+msgstr[1] "S'han eliminat {count} fitxers desats."
+
 msgid "Delete…"
 msgstr "Elimina…"
 
@@ -426,6 +464,9 @@ msgstr "Deixa anar un fitxer d'àudio o vídeo aquí"
 msgid "Edit note…"
 msgstr "Edita la nota…"
 
+msgid "Edit settings"
+msgstr "Edita la configuració"
+
 msgid "Edit tag…"
 msgstr "Edita l'etiqueta…"
 
@@ -468,6 +509,9 @@ msgstr ""
 msgid "Export"
 msgstr "Exporta"
 
+msgid "Export all…"
+msgstr "Exporta-ho tot…"
+
 msgid "Export summary"
 msgstr "Exporta el resum"
 
@@ -493,11 +537,17 @@ msgstr ""
 "S'ha exportat a {path}, però cap tipus de lletra no té aquests caràcters,"
 " així que es mostren com a quadres: {characters}"
 
+msgid "Export…"
+msgstr "Exporta…"
+
 msgid "Failed"
 msgstr "Amb errors"
 
 msgid "File"
 msgstr "Fitxer"
+
+msgid "File not found"
+msgstr "No s'ha trobat el fitxer"
 
 msgid "File types"
 msgstr "Tipus de fitxer"
@@ -542,6 +592,13 @@ msgstr "Cerca a la traducció al {language}"
 
 msgid "Find:"
 msgstr "Cerca:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr ""
+"Primer transcriu els fitxers que ja conté i que encara no tenen "
+"transcripció."
 
 msgid "Folder"
 msgstr "Carpeta"
@@ -645,6 +702,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "S'estan identificant els parlants…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "A {folder}"
+
+msgid "Include subfolders"
+msgstr "Inclou les subcarpetes"
+
 msgid "Interface language"
 msgstr "Idioma de la interfície"
 
@@ -671,10 +735,10 @@ msgstr "Mantén sobre la finestra principal"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
-"Continua en marxa i transcriu els fitxers que s'afegeixen a la carpeta "
-"fins que l'aturis. Els fitxers que ja conté s'ometen."
+"Continua en marxa i transcriu els fitxers que s'afegeixen a la carpeta, "
+"fins que l'aturis."
 
 msgid "Key points"
 msgstr "Punts clau"
@@ -709,6 +773,10 @@ msgstr "Gran"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Els models més grans són més precisos, però més lents."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "Últim fitxer transcrit a les {time}: {name}"
 
 msgid "Light"
 msgstr "Clar"
@@ -805,6 +873,13 @@ msgid "Name of the transcription:"
 msgstr "Nom de la transcripció:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Noms o camins dels fitxers que cal ometre, separats per comes. Els "
+"fitxers ocults sempre s'ometen."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -886,6 +961,9 @@ msgstr "Cap resultat"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "No hi ha so. Comprova que el micròfon està engegat i té permís."
 
+msgid "No speech found"
+msgstr "No s'ha trobat cap veu"
+
 msgid "No summary yet"
 msgstr "Encara no hi ha resum"
 
@@ -956,11 +1034,23 @@ msgstr ""
 "Només transcriu anglès, més ràpid que el model multilingüe de la mateixa "
 "mida."
 
+msgid "Open folder"
+msgstr "Obre la carpeta"
+
 msgid "Open in history"
 msgstr "Obre a l'historial"
 
-msgid "Open the folder of the saved files"
-msgstr "Obre la carpeta dels fitxers desats"
+msgid "Open in the browser"
+msgstr "Obre al navegador"
+
+msgid "Open source folder"
+msgstr "Obre la carpeta d'origen"
+
+msgid "Open transcript"
+msgstr "Obre la transcripció"
+
+msgid "Open transcripts folder"
+msgstr "Obre la carpeta de les transcripcions"
 
 msgid "OpenAI API key"
 msgstr "Clau d'API d'OpenAI"
@@ -982,11 +1072,11 @@ msgstr "Contorn"
 msgid "Output"
 msgstr "Sortida"
 
-msgid "Overwrite existing files"
-msgstr "Sobreescriu els fitxers existents"
-
 msgid "Paste"
 msgstr "Enganxa"
+
+msgid "Pending"
+msgstr "Pendents"
 
 msgid "Pin to the top"
 msgstr "Fixa a dalt"
@@ -1058,6 +1148,21 @@ msgstr "Proveïdors"
 msgid "Queued"
 msgstr "A la cua"
 
+msgid "Re-transcribe"
+msgstr "Torna a transcriure"
+
+msgid "Re-transcribe all"
+msgstr "Torna a transcriure-ho tot"
+
+msgid "Re-transcribe all…"
+msgstr "Torna a transcriure-ho tot…"
+
+msgid "Re-transcribe them"
+msgstr "Torna a transcriure'ls"
+
+msgid "Re-transcribe this file"
+msgstr "Torna a transcriure aquest fitxer"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Només lectura. Edita els subtítols per canviar aquest text."
 
@@ -1098,6 +1203,28 @@ msgstr "Refina"
 
 msgid "Regenerate the summary"
 msgstr "Torna a generar el resum"
+
+msgid "Remove"
+msgstr "Treu"
+
+msgid "Remove from history"
+msgstr "Treu de l'historial"
+
+msgid "Remove from history…"
+msgstr "Treu de l'historial…"
+
+msgid "Remove missing files from the list…"
+msgstr "Treu de la llista els fitxers que falten…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "Vols treure {count} fitxer de l'historial?"
+msgstr[1] "Vols treure {count} fitxers de l'historial?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "Vols treure «{title}» i els seus fitxers de l'historial?"
 
 msgid "Rename"
 msgstr "Canvia el nom"
@@ -1147,6 +1274,15 @@ msgstr ""
 "Necessària per traduir amb DeepL. També funcionen les claus del pla "
 "gratuït."
 
+msgid "Rescan folder"
+msgstr "Torna a analitzar la carpeta"
+
+msgid "Resume watching"
+msgstr "Reprèn la vigilància"
+
+msgid "Retry failed"
+msgstr "Reintenta els fallits"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Revisa de nou les paraules acceptades"
@@ -1169,6 +1305,9 @@ msgstr "El mateix que l'àudio"
 
 msgid "Save"
 msgstr "Desa"
+
+msgid "Save and rescan"
+msgstr "Desa i torna a analitzar"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1243,6 +1382,9 @@ msgstr "Mostra al gestor de fitxers"
 msgid "Show it as the subtitles of the video"
 msgstr "Mostra-la com a subtítols del vídeo"
 
+msgid "Show more"
+msgstr "Mostra'n més"
+
 msgid "Show subtitles on the video"
 msgstr "Mostra els subtítols al vídeo"
 
@@ -1258,8 +1400,23 @@ msgstr "Mostra una notificació del sistema quan una transcripció està a punt.
 msgid "Size"
 msgstr "Mida"
 
+msgid "Skip files matching"
+msgstr "Omet els fitxers que coincideixin amb"
+
 msgid "Small"
 msgstr "Petit"
+
+msgid "Sort by duration"
+msgstr "Ordena per durada"
+
+msgid "Sort by name"
+msgstr "Ordena per nom"
+
+msgid "Sort by size"
+msgstr "Ordena per mida"
+
+msgid "Sort by status"
+msgstr "Ordena per estat"
 
 msgid "Source"
 msgstr "Origen"
@@ -1293,6 +1450,9 @@ msgstr "Deixa de sincronitzar el desplaçament"
 msgid "Stop watching"
 msgstr "Deixa de vigilar"
 
+msgid "Stop watching to edit settings"
+msgstr "Deixa de vigilar per editar la configuració"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "S'ha deixat de vigilar la carpeta. Fitxers transcrits: {done}."
@@ -1312,6 +1472,9 @@ msgstr "Subtítols (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Subtítols: {count}"
+
+msgid "Summarize…"
+msgstr "Resumeix…"
 
 msgid "Summarizing…"
 msgstr "S'està resumint…"
@@ -1408,14 +1571,11 @@ msgstr "No s'ha pogut baixar el fitxer: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "El fitxer s'ha mogut o eliminat: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"La carpeta no conté fitxers per transcriure. Els fitxers que ja tenen una"
-" transcripció s'ometen tret que marquis «Sobreescriu els fitxers "
-"existents»."
+msgid "The files it already contains are skipped."
+msgstr "Els fitxers que ja conté s'ometen."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "La carpeta no conté fitxers d'àudio ni de vídeo per transcriure."
 
 msgid "The level is shown while recording"
 msgstr "El nivell es mostra mentre graves"
@@ -1573,6 +1733,14 @@ msgstr "Transcriu una carpeta"
 msgid "Transcribe again"
 msgstr "Torna a transcriure"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"Vols tornar a transcriure tots els fitxers de «{title}»? Els fitxers que "
+"s'hi han desat se substituiran."
+
 msgid "Transcribe from a URL"
 msgstr "Transcriu des d'un URL"
 
@@ -1583,6 +1751,9 @@ msgstr "Transcriu des del micròfon"
 msgid "Transcribe it again to score its words"
 msgstr "Torna-ho a transcriure per puntuar les paraules"
 
+msgid "Transcribe the files already in the folder"
+msgstr "Transcriu els fitxers que ja hi ha a la carpeta"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Vols tornar a transcriure «{title}»? Es perdran els canvis fets al text."
@@ -1592,20 +1763,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "S'han transcrit {done} de {total} fitxers."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr ""
-"Torna a transcriure els fitxers que ja tenen una transcripció i en "
-"substitueix els fitxers."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
 "Transcriu els fitxers d'àudio i vídeo de la carpeta i les seves "
-"subcarpetes. Els fitxers que ja tenen una transcripció s'ometen, tret que"
-" els sobreescriguis."
+"subcarpetes. S'ometen els fitxers que ja tenen una transcripció. Els pots"
+" tornar a transcriure des de la carpeta."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Transcriu els fitxers sense transcripció, com els nous."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1754,6 +1921,9 @@ msgstr "Fitxers de vídeo"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Vídeo amb subtítols (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Espera que acabi per editar la configuració"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Espera que acabi la transcripció actual o cancel·la-la."
 
@@ -1769,6 +1939,10 @@ msgstr "S'està esperant que parlis…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "S'està esperant que acabi la transcripció actual."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "S'està esperant que la carpeta estigui disponible: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1850,14 +2024,24 @@ msgstr "YouTube o l'enllaç a un fitxer"
 msgid "YouTube video"
 msgstr "Vídeo de YouTube"
 
+msgid "Your audio and video files are not deleted."
+msgstr "Els teus fitxers d'àudio i vídeo no s'eliminen."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "Els teus fitxers d'àudio, vídeo i els desats no s'eliminen."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "falten uns {time}"
 
 msgid "cancelled"
 msgstr "cancel·lat"
 
 msgid "default"
 msgstr "predeterminat"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "p. ex. *.wav, esborranys/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "p. ex., Una entrevista sobre reconeixement de veu"
@@ -1884,8 +2068,44 @@ msgid "{count} failed"
 msgstr "{count} amb errors"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} fitxers"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} fitxer"
+msgstr[1] "{count} fitxers"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "S'ha transcrit {count} fitxer a {folder}"
+msgstr[1] "S'han transcrit {count} fitxers a {folder}"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] ""
+"{count} fitxer s'ha transcrit amb una altra configuració. Canvis: "
+"{settings}."
+msgstr[1] ""
+"{count} fitxers s'han transcrit amb una altra configuració. Canvis: "
+"{settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} no trobat"
+msgstr[1] "{count} no trobats"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} seleccionat"
+msgstr[1] "{count} seleccionats"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} omès, ja transcrit"
+msgstr[1] "{count} omesos, ja transcrits"
 
 #, python-brace-format
 msgid "{count} transcriptions"

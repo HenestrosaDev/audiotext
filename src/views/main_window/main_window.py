@@ -21,9 +21,9 @@ from utils.config_manager import ConfigManager
 from utils.enums import AudioSource
 from utils.env_keys import EnvKeys
 from utils.history_store import HistoryStore
-from utils.i18n import _
+from utils.i18n import L_, _
 from utils.update_checker import Release, UpdateCheckError, get_available_update
-from views.entries.delegates import EntryActions
+from views.entries.delegates import EntryActions, TranscriptAction
 from views.entries.folder_view import FolderView
 from views.entries.status_view import StatusView
 from views.history.formatting import format_full_date
@@ -172,6 +172,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.frm_content.grid_rowconfigure(0, weight=1)
 
         self.show_welcome()
+        # Once the window is shown
+        self.after_idle(jobs.resume_watches)
 
     def destroy(self) -> None:
         self._ui_queue.stop()
@@ -234,7 +236,8 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
     def go_back_to_settings(self, entry_id: str) -> None:
         """
         Opens the settings of an entry that didn't finish (e.g. it failed because
-        of a missing token), so they can be changed before transcribing it again.
+        of a missing token), so they can be changed before transcribing it again,
+        or the ones of a folder, to change them and scan it again.
         """
         entry = self._store.get(entry_id)
         if entry is None or entry.status.is_active or entry.parent_id:
@@ -261,6 +264,9 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             is_busy=self._jobs.is_busy,
             run_on_ui_thread=self.run_on_ui_thread,
             initial_settings=TranscriptionSettings.from_dict(entry.settings),
+            start_text=L_("Save and rescan")
+            if entry.is_folder and entry.status == EntryStatus.DONE
+            else None,
         )
         self._back_view = view
         self._show_page(Page.NEW, view)
@@ -292,6 +298,15 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             self._show_entry_view(entry)
         else:
             self._entry_view.grid(row=0, column=0, sticky=ctk.NSEW)
+
+    def open_transcript(self, entry_id: str, action: TranscriptAction) -> None:
+        """Opens a transcription to do something with it (e.g. to export it)."""
+        self.select_entry(entry_id)
+        view = self._entry_view
+        if isinstance(view, TranscriptView) and self._entry_view_id == entry_id:
+            # Once it's laid out, since its menus are shown below its buttons
+            self.update_idletasks()
+            view.run_action(action)
 
     def _show_entry_view(self, entry: HistoryEntry) -> None:
         self._destroy_entry_view()
@@ -392,7 +407,12 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
         self.messages.on_transcription_finished(entry, status_message)
 
     def on_transcription_ready(self, entry: HistoryEntry) -> None:
-        self.messages.on_transcription_ready(entry)
+        # The files of a watched folder are notified together
+        folder = self._store.get(entry.parent_id)
+        is_watched = folder is not None and folder.kind == AudioSource.WATCH.value
+        self.messages.on_transcription_ready(
+            entry, folder.title if folder and is_watched else None
+        )
 
     def on_transcription_saved(self, folder: Path) -> None:
         self.messages.on_transcription_saved(folder)
@@ -465,7 +485,11 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             date=format_full_date(datetime.now().astimezone())
         )
         if self._jobs.start_recording(title, settings, device_index):
-            self._mic_view.set_state(MicState.RECORDING)
+            # It starts once the watched folder is paused, if one is
+            self._mic_view.set_state(
+                MicState.RECORDING,
+                _("Starting…") if self._jobs.is_recording_pending else "",
+            )
 
     def _open_last_recording(self) -> None:
         if self._jobs.last_mic_entry_id:
@@ -540,6 +564,26 @@ class MainWindow(ctk.CTkFrame):  # type: ignore[misc]
             and self._mic_view.state == MicState.RECORDING
         ):
             self._jobs.stop_recording()
+        elif view := self._shown_folder_view():
+            view.clear_selection()
+
+    def trigger_select_all(self) -> None:
+        if (view := self._shown_folder_view()) and not self._is_typing():
+            view.select_all()
+
+    def trigger_open(self) -> None:
+        if (view := self._shown_folder_view()) and not self._is_typing():
+            view.open_selected()
+
+    def _shown_folder_view(self) -> FolderView | None:
+        view = self._entry_view
+        if self._page == Page.ENTRY and isinstance(view, FolderView):
+            return view
+        return None
+
+    def _is_typing(self) -> bool:
+        """Whether a text field has the focus, whose keys are left to it."""
+        return isinstance(self.focus_get(), (tk.Entry, tk.Text))
 
     def trigger_search(self) -> None:
         if self._page == Page.ENTRY and isinstance(self._entry_view, TranscriptView):

@@ -230,7 +230,15 @@ class SettingsForm(CTkScrollableFrame):
         if self._has_output:
             values |= {
                 ConfigTranscription.Key.WATCH_FOLDER: str(settings.watch),
-                ConfigTranscription.Key.OVERWRITE_FILES: str(settings.overwrite),
+                ConfigTranscription.Key.WATCH_TRANSCRIBE_EXISTING: str(
+                    settings.transcribe_existing
+                ),
+                ConfigTranscription.Key.FOLDER_INCLUDE_SUBFOLDERS: str(
+                    settings.include_subfolders
+                ),
+                ConfigTranscription.Key.FOLDER_EXCLUDE_PATTERNS: (
+                    settings.exclude_patterns
+                ),
                 ConfigWhisperX.Key.OUTPUT_FILE_TYPES: ",".join(
                     settings.output_file_types
                 ),

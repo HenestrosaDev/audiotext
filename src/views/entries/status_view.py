@@ -16,7 +16,7 @@ class StatusView(ctk.CTkFrame):  # type: ignore[misc]
         self.entry_id = entry.id
         self.grid_columnconfigure(0, weight=1)
 
-        self.header = EntryHeader(self, entry, actions.prompts)
+        self.header = EntryHeader(self, entry, actions.prompts, files=actions.files)
         self.header.grid(row=0, column=0, padx=28, pady=(22, 0), sticky=ctk.EW)
         self.card = ProgressCard(self, entry, actions)
         self.card.grid(row=1, column=0, padx=28, pady=24, sticky=ctk.EW)

@@ -15,7 +15,11 @@ import handlers.transcribers as transcribers
 import utils.audio_utils as au
 from controllers.directory_report import DirectoryReport, FileStatus
 from controllers.main_controller import MainController
-from controllers.transcription_saver import TranscriptionSaver, get_output_dir
+from controllers.transcription_saver import (
+    TranscriptionSaver,
+    get_output_dir,
+    transcription_name,
+)
 from handlers.openai_api_handler import ApiTranscript, OpenAiApiHandler
 from handlers.transcribers import (
     GoogleApiTranscriber,
@@ -118,12 +122,63 @@ class TestGetFilesToTranscribe:
 
         assert files == [tmp_path / "a.mp3"]
 
+    def test_includes_files_without_every_file_type(self, tmp_path: Path) -> None:
+        # So adding a file type to a folder that was transcribed saves it
+        create_files(tmp_path, "a.mp3", "a.txt", "b.mp3", "b.txt", "b.srt")
+
+        files = get_files_to_transcribe(
+            tmp_path, ["txt", "srt"], should_overwrite=False
+        )
+
+        assert files == [tmp_path / "a.mp3"]
+
     def test_maps_api_response_formats_to_file_extensions(self, tmp_path: Path) -> None:
         create_files(tmp_path, "a.mp3", "a.txt")
 
         files = get_files_to_transcribe(tmp_path, ["text"], should_overwrite=False)
 
         assert files == []
+
+
+class TestTranscriptionNames:
+    def test_files_with_the_same_name_keep_their_extension(
+        self, tmp_path: Path
+    ) -> None:
+        create_files(tmp_path, "talk.mp3", "talk.mp4", "talk.txt", "solo.mp3")
+
+        assert transcription_name(tmp_path / "talk.mp3") == "talk.mp3"
+        assert transcription_name(tmp_path / "talk.mp4") == "talk.mp4"
+        assert transcription_name(tmp_path / "solo.mp3") == "solo"
+        # So the transcription of one isn't taken for the other's
+        files = get_files_to_transcribe(tmp_path, ["txt"], should_overwrite=False)
+        assert files == [
+            tmp_path / "solo.mp3",
+            tmp_path / "talk.mp3",
+            tmp_path / "talk.mp4",
+        ]
+
+    def test_they_are_saved_with_their_extension(
+        self,
+        controller: MainController,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "talk.mp3", "talk.mp4")
+
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.DIRECTORY,
+                audio_source_path=tmp_path,
+                should_autosave=True,
+                output_file_types=["srt", "txt"],
+            )
+        )
+
+        saved_paths = [
+            call.kwargs["file_path"]
+            for call in whisperx_handler.save_transcription.call_args_list
+        ]
+        assert saved_paths == [tmp_path / "talk.mp3.srt", tmp_path / "talk.mp4.srt"]
 
 
 class TestValidation:
@@ -476,8 +531,124 @@ class TestDirectoryTranscription:
     ) -> None:
         self.transcribe_directory(controller, tmp_path)
 
-        assert "doesn't contain files to transcribe" in fake_view.errors[-1]
+        assert fake_view.errors[-1] == (
+            "The folder doesn't contain audio or video files to transcribe."
+        )
         whisperx_handler.transcribe_file.assert_not_called()
+
+    def test_the_files_with_a_transcription_are_reported(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "a.mp3", "a.txt", "b.mp3")
+
+        self.transcribe_directory(controller, tmp_path)
+
+        assert fake_view.skipped_files == [[tmp_path / "a.mp3"]]
+
+    def test_how_long_the_rest_takes_is_estimated(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        for name in ("a.mp3", "b.mp3", "c.mp3"):
+            (tmp_path / name).write_bytes(b"0" * 100)
+        # Each file takes two minutes
+        now = [0.0]
+        monkeypatch.setattr(folder_transcriber.time, "monotonic", lambda: now[0])
+
+        def transcribe_file(_transcription: Any, on_progress: Any, _token: Any) -> str:
+            on_progress("Transcribing…", 0.0)
+            now[0] += 120
+            return "text"
+
+        whisperx_handler.transcribe_file.side_effect = transcribe_file
+
+        self.transcribe_directory(controller, tmp_path)
+
+        messages = [message for message, _fraction in fake_view.progress_updates]
+        assert messages == [
+            "File 1 of 3 (a.mp3): Transcribing…",
+            "File 2 of 3 (b.mp3): Transcribing… · about 4 min 0 sec left",
+            "File 3 of 3 (c.mp3): Transcribing… · about 2 min 0 sec left",
+        ]
+
+    def test_a_folder_whose_files_are_transcribed_is_done(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "a.mp3", "a.txt")
+
+        self.transcribe_directory(controller, tmp_path)
+
+        assert fake_view.errors == []
+        assert fake_view.processed_statuses == [
+            "All the files already have a transcription."
+        ]
+        whisperx_handler.transcribe_file.assert_not_called()
+
+    def test_only_the_files_transcribed_again_are_without_scanning(
+        self,
+        controller: MainController,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "a.mp3", "a.txt", "b.mp3")
+
+        self.transcribe_directory(
+            controller,
+            tmp_path,
+            should_scan_folder=False,
+            retranscribed_files=[tmp_path / "a.mp3"],
+        )
+
+        saves = whisperx_handler.save_transcription.call_args_list
+        assert [call.kwargs["file_path"] for call in saves] == [tmp_path / "a.txt"]
+        assert saves[0].kwargs["should_overwrite"]
+
+    def test_files_are_transcribed_again_while_the_folder_is(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "a.mp3", "b.mp3")
+        accepted: list[bool] = []
+
+        def transcribe_file(_transcription: Any, _on_progress: Any, _token: Any) -> str:
+            if not accepted:
+                # The user asks for the first one again while it's transcribed
+                accepted.append(controller.retranscribe_files([tmp_path / "a.mp3"]))
+            return "text"
+
+        whisperx_handler.transcribe_file.side_effect = transcribe_file
+
+        self.transcribe_directory(controller, tmp_path)
+
+        saves = whisperx_handler.save_transcription.call_args_list
+        assert accepted == [True]
+        assert [call.kwargs["file_path"] for call in saves] == [
+            tmp_path / "a.txt",
+            tmp_path / "b.txt",
+            tmp_path / "a.txt",
+        ]
+        assert [call.kwargs["should_overwrite"] for call in saves] == [
+            False,
+            False,
+            True,
+        ]
+        assert fake_view.processed_statuses == ["Transcribed 2 of 2 files."]
+        # Once it's done, it doesn't take more files
+        assert not controller.retranscribe_files([tmp_path / "b.mp3"])
 
 
 class TestCancellation:
@@ -772,7 +943,8 @@ class TestSaveTranscription:
         # The result is saved as WhisperX returned it
         whisperx_handler.save_transcription.assert_called_once_with(
             result={"segments": []},
-            file_path=tmp_path / "audio",
+            # With the extension of the first type, replaced by each one
+            file_path=tmp_path / "audio.srt",
             output_file_types=["srt", "txt"],
             should_overwrite=True,
             # The transcribed file is an audio
@@ -918,12 +1090,25 @@ class FakeFolderWatcher:
     """Returns a batch of files on each poll."""
 
     batches: list[list[Path]] = []
+    # The known files of the last one created
+    created_with: list[Any] = []
 
-    def __init__(self, _dir_path: Path) -> None:
+    def __init__(
+        self, _dir_path: Path, known_files: Any = None, _file_filter: Any = None
+    ) -> None:
         self._batches = iter(self.batches)
+        self.changed_files: set[Path] = set()
+        self.known_files: dict[Path, tuple[int, int]] = dict(known_files or {})
+        FakeFolderWatcher.created_with.append(known_files)
 
     def poll(self) -> list[Path]:
-        return next(self._batches, [])
+        batch = next(self._batches, [])
+        self.known_files.update({file_path: (1, 1) for file_path in batch})
+        return batch
+
+    def forget(self, files: list[Path]) -> None:
+        for file_path in files:
+            self.known_files.pop(file_path, None)
 
 
 class TestWatchFolder:
@@ -1017,6 +1202,153 @@ class TestWatchFolder:
         assert whisperx_handler.transcribe_file.call_count == 1
         assert fake_view.displayed_texts[-1] == "✓ b.mp3"
 
+    def test_transcribes_the_existing_files_first_if_asked(
+        self,
+        controller: MainController,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "a.mp3", "a.txt", "b.mp3", "c.mp3")
+        FakeFolderWatcher.batches = [[tmp_path / "c.mp3"]]
+        self.stop_after(controller, whisperx_handler, transcriptions=2)
+
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.WATCH,
+                audio_source_path=tmp_path,
+                should_autosave=True,
+                should_transcribe_existing=True,
+            )
+        )
+
+        saved_paths = [
+            call.kwargs["file_path"]
+            for call in whisperx_handler.save_transcription.call_args_list
+        ]
+        assert saved_paths == [tmp_path / "b.txt", tmp_path / "c.txt"]
+
+    def test_files_are_transcribed_again_while_watching(
+        self,
+        controller: MainController,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "a.mp3")
+        FakeFolderWatcher.batches = [[tmp_path / "a.mp3"]]
+
+        def transcribe_file(_transcription: Any, _on_progress: Any, _token: Any) -> str:
+            if whisperx_handler.transcribe_file.call_count == 1:
+                assert controller.retranscribe_files([tmp_path / "a.mp3"])
+            else:
+                controller.cancel_transcription()
+            return "text"
+
+        whisperx_handler.transcribe_file.side_effect = transcribe_file
+
+        self.watch(controller, tmp_path)
+
+        saves = whisperx_handler.save_transcription.call_args_list
+        assert [call.kwargs["should_overwrite"] for call in saves] == [False, True]
+
+    def test_it_is_paused_once_the_file_is_done(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "a.mp3", "b.mp3")
+        FakeFolderWatcher.batches = [[tmp_path / "a.mp3"], [tmp_path / "b.mp3"]]
+        paused: list[bool] = []
+
+        def transcribe_file(_transcription: Any, _on_progress: Any, _token: Any) -> str:
+            paused.append(controller.pause_watch())
+            return "text"
+
+        whisperx_handler.transcribe_file.side_effect = transcribe_file
+
+        self.watch(controller, tmp_path)
+
+        assert paused == [True]
+        assert whisperx_handler.save_transcription.call_count == 1
+        [(known_files, unfinished, retranscribed)] = fake_view.paused_watches
+        assert set(known_files) == {tmp_path / "a.mp3"}
+        assert (unfinished, retranscribed) == ([], [])
+        # It's not stopped, so there is nothing to tell
+        assert fake_view.processed_statuses == [""]
+        assert not controller.pause_watch()
+
+    def test_an_urgent_pause_stops_the_file_which_is_left_for_later(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+    ) -> None:
+        create_files(tmp_path, "a.mp3")
+        FakeFolderWatcher.batches = [[tmp_path / "a.mp3"]]
+
+        def transcribe_file(_transcription: Any, _on_progress: Any, token: Any) -> str:
+            assert controller.pause_watch(is_urgent=True)
+            token.raise_if_cancelled()
+            return "text"
+
+        whisperx_handler.transcribe_file.side_effect = transcribe_file
+
+        self.watch(controller, tmp_path)
+
+        whisperx_handler.save_transcription.assert_not_called()
+        [(known_files, unfinished, _retranscribed)] = fake_view.paused_watches
+        assert unfinished == [tmp_path / "a.mp3"]
+        assert tmp_path / "a.mp3" not in known_files
+
+    def test_it_goes_on_from_the_files_seen_before_pausing(
+        self,
+        controller: MainController,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        known = {tmp_path / "a.mp3": (1, 1)}
+        FakeFolderWatcher.batches = []
+        # Stopped while waiting for files
+        monkeypatch.setattr(CancellationToken, "wait", lambda _self, _timeout: True)
+
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.WATCH,
+                audio_source_path=tmp_path,
+                should_autosave=True,
+                watch_known_files=known,
+            )
+        )
+
+        assert FakeFolderWatcher.created_with[-1] == known
+
+    def test_changed_files_are_transcribed_again(
+        self,
+        controller: MainController,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        create_files(tmp_path, "a.mp3")
+        FakeFolderWatcher.batches = [[tmp_path / "a.mp3"]]
+        original_poll = FakeFolderWatcher.poll
+
+        def poll(watcher: FakeFolderWatcher) -> list[Path]:
+            batch = original_poll(watcher)
+            watcher.changed_files = set(batch)
+            return batch
+
+        monkeypatch.setattr(FakeFolderWatcher, "poll", poll)
+        self.stop_after(controller, whisperx_handler, transcriptions=1)
+
+        self.watch(controller, tmp_path)
+
+        saves = whisperx_handler.save_transcription.call_args_list
+        assert [call.kwargs["should_overwrite"] for call in saves] == [True]
+
     def test_stopping_without_new_files(
         self,
         controller: MainController,
@@ -1044,6 +1376,55 @@ class TestWatchFolder:
     ) -> None:
         self.watch(controller, audio_file)
 
+        assert fake_view.errors == ["Please select a valid folder."]
+
+    def test_a_folder_that_is_not_available_is_waited_for(
+        self,
+        controller: MainController,
+        fake_view: FakeView,
+        whisperx_handler: MagicMock,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        folder = tmp_path / "drive" / "inbox"
+        FakeFolderWatcher.batches = []
+        FakeFolderWatcher.created_with.clear()
+        waits = [0]
+
+        def wait(_token: Any, _timeout: float) -> bool:
+            # The drive is connected after a while, and then it's stopped
+            waits[0] += 1
+            if waits[0] == 2:
+                folder.mkdir(parents=True)
+            return waits[0] > 3
+
+        monkeypatch.setattr(CancellationToken, "wait", wait)
+
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.WATCH,
+                audio_source_path=folder,
+                should_autosave=True,
+                should_wait_for_folder=True,
+            )
+        )
+
+        assert fake_view.errors == []
+        assert fake_view.progress_updates[0] == (
+            f"Waiting for the folder to be available: {folder}",
+            None,
+        )
+        # It's watched once it's available
+        assert FakeFolderWatcher.created_with == [None]
+
+        # Without waiting for it (e.g. from the command line), it's an error
+        controller.prepare_for_transcription(
+            make_transcription(
+                audio_source=AudioSource.WATCH,
+                audio_source_path=tmp_path / "missing",
+                should_autosave=True,
+            )
+        )
         assert fake_view.errors == ["Please select a valid folder."]
 
 

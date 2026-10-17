@@ -32,7 +32,11 @@ import utils.config_manager as cm
 import utils.constants as c
 import utils.devices as devices
 from controllers.main_controller import MainController
-from controllers.transcription_saver import get_file_extension, get_output_dir
+from controllers.transcription_saver import (
+    get_file_extension,
+    get_output_dir,
+    transcription_name,
+)
 from handlers import translation_handler
 from handlers.ai_providers import AiProvider, get_provider, has_api_key
 from handlers.openai_api_handler import API_MODELS
@@ -100,7 +104,8 @@ class FollowUps:
         :return: The saved files, and the errors of the ones that failed.
         """
         folder = get_output_dir(file_path, self.output_dir, self.source_dir)
-        stem, title = file_path.stem, file_path.stem
+        # Like the transcriptions, so they're next to them with the same name
+        stem, title = transcription_name(file_path), file_path.stem
         document = ExportDocument(title, text, segments)
         saved: list[Path] = []
         errors: list[str] = []
@@ -337,10 +342,16 @@ def build_parser() -> argparse.ArgumentParser:
         "watch",
         help="transcribe the files added to a folder until stopped with Ctrl+C",
         description="Watch a folder (and its subfolders) and transcribe each audio "
-        "or video file added to it. The files it already contains are ignored. "
-        "Press Ctrl+C to stop.",
+        "or video file added to it. The files it already contains are ignored, "
+        "unless --existing is given. Press Ctrl+C to stop.",
     )
     watch_parser.add_argument("source", help="path of the folder to watch")
+    watch_parser.add_argument(
+        "--existing",
+        action="store_true",
+        help="first transcribe the files that the folder already contains and "
+        "that don't have a transcription yet",
+    )
 
     for subparser in (transcribe_parser, watch_parser):
         add_common_arguments(subparser)
@@ -379,8 +390,8 @@ def add_common_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--overwrite",
         action="store_true",
-        default=None,
-        help="overwrite existing transcriptions",
+        help="transcribe again the files that already have a transcription, "
+        "replacing it",
     )
     parser.add_argument(
         "-p",
@@ -546,11 +557,8 @@ def build_transcription(
         audio_source=audio_source,
         method=method,
         should_autosave=True,
-        should_overwrite=(
-            args.overwrite
-            if args.overwrite is not None
-            else config_transcription.overwrite_files
-        ),
+        should_overwrite=bool(args.overwrite),
+        should_transcribe_existing=bool(getattr(args, "existing", False)),
         output_dir=args.output_dir,
     )
 

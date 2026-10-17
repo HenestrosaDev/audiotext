@@ -139,6 +139,8 @@ class FakeView:
         self.live_texts: list[str] = []
         self.live_statuses: list[str] = []
         self.queued_files: list[list[Path]] = []
+        self.skipped_files: list[list[Path]] = []
+        self.paused_watches: list[tuple[Any, list[Path], list[Path]]] = []
         self.started_files: list[Path] = []
         self.transcribed_files: list[tuple[Path, str, list[Any], str | None]] = []
         self.failed_files: list[tuple[Path, str]] = []
@@ -179,6 +181,14 @@ class FakeView:
 
     def on_files_queued(self, files: list[Path]) -> None:
         self.queued_files.append(files)
+
+    def on_files_skipped(self, files: list[Path]) -> None:
+        self.skipped_files.append(files)
+
+    def on_watch_paused(
+        self, known_files: Any, unfinished: list[Path], retranscribed: list[Path]
+    ) -> None:
+        self.paused_watches.append((known_files, unfinished, retranscribed))
 
     def on_file_started(self, file_path: Path) -> None:
         self.started_files.append(file_path)

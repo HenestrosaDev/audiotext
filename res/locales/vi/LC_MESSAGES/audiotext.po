@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -98,6 +98,9 @@ msgstr "Điều chỉnh ngưỡng"
 msgid "Aligning subtitles…"
 msgstr "Đang căn chỉnh phụ đề…"
 
+msgid "All"
+msgstr "Tất cả"
+
 msgid "All files"
 msgstr "Tất cả tệp"
 
@@ -115,6 +118,14 @@ msgid ""
 msgstr ""
 "Tất cả tệp âm thanh và video trong một thư mục, hoặc các tệp mới khi "
 "chúng được thêm vào."
+
+msgid "All the files already have a transcription."
+msgstr "Tất cả tệp đều đã có bản chép lời."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Đồng thời xóa {count} tệp đã lưu cho chúng"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Cũng cần để chép lời bằng Whisper API."
@@ -251,8 +262,16 @@ msgstr "Chọn một nguồn, hoặc chọn một bản chép lời trong lịch
 msgid "Choose where to save the transcriptions"
 msgstr "Chọn nơi lưu các bản chép lời"
 
+msgid "Clear selection"
+msgstr "Bỏ chọn"
+
 msgid "Clear the conversation"
 msgstr "Xóa cuộc trò chuyện"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Đóng ({shortcut})"
 
 msgid "Compute type"
 msgstr "Kiểu tính toán"
@@ -267,11 +286,22 @@ msgstr "Ngữ cảnh"
 msgid "Continue"
 msgstr "Tiếp tục"
 
+msgid "Copied to the clipboard."
+msgstr "Đã sao chép vào bảng nhớ tạm."
+
 msgid "Copy"
 msgstr "Sao chép"
 
+msgid "Copy text"
+msgstr "Sao chép văn bản"
+
 msgid "Could not check for updates."
 msgstr "Không thể kiểm tra cập nhật."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "Không thể xóa {count} tệp đã lưu."
 
 #, python-brace-format
 msgid ""
@@ -379,6 +409,11 @@ msgstr "Xóa bản chép lời"
 msgid "Delete “{title}” from the history?"
 msgstr "Xóa \"{title}\" khỏi lịch sử?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "Đã xóa {count} tệp đã lưu."
+
 msgid "Delete…"
 msgstr "Xóa…"
 
@@ -422,6 +457,9 @@ msgstr "Thả tệp âm thanh hoặc video vào đây"
 msgid "Edit note…"
 msgstr "Chỉnh sửa ghi chú…"
 
+msgid "Edit settings"
+msgstr "Sửa cài đặt"
+
 msgid "Edit tag…"
 msgstr "Chỉnh sửa nhãn…"
 
@@ -464,6 +502,9 @@ msgstr ""
 msgid "Export"
 msgstr "Xuất"
 
+msgid "Export all…"
+msgstr "Xuất tất cả…"
+
 msgid "Export summary"
 msgstr "Xuất bản tóm tắt"
 
@@ -489,11 +530,17 @@ msgstr ""
 "Đã xuất sang {path}, nhưng không có phông chữ nào có các ký tự này nên "
 "chúng hiển thị dưới dạng ô vuông: {characters}"
 
+msgid "Export…"
+msgstr "Xuất…"
+
 msgid "Failed"
 msgstr "Thất bại"
 
 msgid "File"
 msgstr "Tệp"
+
+msgid "File not found"
+msgstr "Không tìm thấy tệp"
 
 msgid "File types"
 msgstr "Loại tệp"
@@ -538,6 +585,11 @@ msgstr "Tìm trong bản dịch sang {language}"
 
 msgid "Find:"
 msgstr "Tìm:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr "Trước tiên chép lời các tệp đã có trong thư mục mà chưa có bản chép lời."
 
 msgid "Folder"
 msgstr "Thư mục"
@@ -641,6 +693,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "Đang nhận diện người nói…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "Trong {folder}"
+
+msgid "Include subfolders"
+msgstr "Bao gồm thư mục con"
+
 msgid "Interface language"
 msgstr "Ngôn ngữ giao diện"
 
@@ -667,10 +726,10 @@ msgstr "Giữ trên cửa sổ chính"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
-"Tiếp tục chạy và chép lời các tệp được thêm vào thư mục cho đến khi bạn "
-"dừng. Các tệp đã có trong thư mục sẽ bị bỏ qua."
+"Tiếp tục chạy và chép lời các tệp được thêm vào thư mục, cho đến khi bạn "
+"dừng lại."
 
 msgid "Key points"
 msgstr "Ý chính"
@@ -705,6 +764,10 @@ msgstr "Lớn"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Mô hình lớn hơn chính xác hơn nhưng chậm hơn."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "Tệp cuối cùng được chép lời lúc {time}: {name}"
 
 msgid "Light"
 msgstr "Sáng"
@@ -801,6 +864,13 @@ msgid "Name of the transcription:"
 msgstr "Tên bản chép lời:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Tên hoặc đường dẫn của các tệp cần bỏ qua, phân tách bằng dấu phẩy. Tệp "
+"ẩn luôn bị bỏ qua."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -878,6 +948,9 @@ msgstr "Không có kết quả"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "Không có âm thanh. Hãy kiểm tra micrô đã bật và được cấp quyền."
 
+msgid "No speech found"
+msgstr "Không tìm thấy giọng nói"
+
 msgid "No summary yet"
 msgstr "Chưa có bản tóm tắt"
 
@@ -946,11 +1019,23 @@ msgid ""
 "size."
 msgstr "Chỉ chép lời tiếng Anh, nhanh hơn mô hình đa ngôn ngữ cùng kích thước."
 
+msgid "Open folder"
+msgstr "Mở thư mục"
+
 msgid "Open in history"
 msgstr "Mở trong lịch sử"
 
-msgid "Open the folder of the saved files"
-msgstr "Mở thư mục chứa các tệp đã lưu"
+msgid "Open in the browser"
+msgstr "Mở trong trình duyệt"
+
+msgid "Open source folder"
+msgstr "Mở thư mục nguồn"
+
+msgid "Open transcript"
+msgstr "Mở bản chép lời"
+
+msgid "Open transcripts folder"
+msgstr "Mở thư mục bản chép lời"
 
 msgid "OpenAI API key"
 msgstr "Khóa OpenAI API"
@@ -971,11 +1056,11 @@ msgstr "Viền chữ"
 msgid "Output"
 msgstr "Đầu ra"
 
-msgid "Overwrite existing files"
-msgstr "Ghi đè tệp hiện có"
-
 msgid "Paste"
 msgstr "Dán"
+
+msgid "Pending"
+msgstr "Đang chờ"
 
 msgid "Pin to the top"
 msgstr "Ghim lên đầu"
@@ -1047,6 +1132,21 @@ msgstr "Nhà cung cấp"
 msgid "Queued"
 msgstr "Đang chờ"
 
+msgid "Re-transcribe"
+msgstr "Chép lời lại"
+
+msgid "Re-transcribe all"
+msgstr "Chép lời lại tất cả"
+
+msgid "Re-transcribe all…"
+msgstr "Chép lời lại tất cả…"
+
+msgid "Re-transcribe them"
+msgstr "Chép lời lại"
+
+msgid "Re-transcribe this file"
+msgstr "Chép lời lại tệp này"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Chỉ đọc. Hãy chỉnh sửa phụ đề để thay đổi văn bản này."
 
@@ -1089,6 +1189,27 @@ msgstr "Tinh chỉnh"
 
 msgid "Regenerate the summary"
 msgstr "Tạo lại bản tóm tắt"
+
+msgid "Remove"
+msgstr "Gỡ"
+
+msgid "Remove from history"
+msgstr "Gỡ khỏi lịch sử"
+
+msgid "Remove from history…"
+msgstr "Gỡ khỏi lịch sử…"
+
+msgid "Remove missing files from the list…"
+msgstr "Gỡ các tệp bị thiếu khỏi danh sách…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "Gỡ {count} tệp khỏi lịch sử?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "Gỡ \"{title}\" và các tệp của nó khỏi lịch sử?"
 
 msgid "Rename"
 msgstr "Đổi tên"
@@ -1136,6 +1257,15 @@ msgstr ""
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "Bắt buộc để dịch bằng DeepL. Khóa của gói miễn phí cũng dùng được."
 
+msgid "Rescan folder"
+msgstr "Quét lại thư mục"
+
+msgid "Resume watching"
+msgstr "Tiếp tục theo dõi"
+
+msgid "Retry failed"
+msgstr "Thử lại các tệp lỗi"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Xem lại các từ đã chấp nhận"
@@ -1158,6 +1288,9 @@ msgstr "Giống âm thanh"
 
 msgid "Save"
 msgstr "Lưu"
+
+msgid "Save and rescan"
+msgstr "Lưu và quét lại"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1232,6 +1365,9 @@ msgstr "Hiển thị trong trình quản lý tệp"
 msgid "Show it as the subtitles of the video"
 msgstr "Hiển thị làm phụ đề của video"
 
+msgid "Show more"
+msgstr "Hiển thị thêm"
+
 msgid "Show subtitles on the video"
 msgstr "Hiển thị phụ đề trên video"
 
@@ -1247,8 +1383,23 @@ msgstr "Hiển thị thông báo hệ thống khi bản chép lời đã sẵn s
 msgid "Size"
 msgstr "Kích thước"
 
+msgid "Skip files matching"
+msgstr "Bỏ qua các tệp khớp với"
+
 msgid "Small"
 msgstr "Nhỏ"
+
+msgid "Sort by duration"
+msgstr "Sắp xếp theo thời lượng"
+
+msgid "Sort by name"
+msgstr "Sắp xếp theo tên"
+
+msgid "Sort by size"
+msgstr "Sắp xếp theo kích thước"
+
+msgid "Sort by status"
+msgstr "Sắp xếp theo trạng thái"
 
 msgid "Source"
 msgstr "Nguồn"
@@ -1282,6 +1433,9 @@ msgstr "Ngừng đồng bộ cuộn"
 msgid "Stop watching"
 msgstr "Dừng theo dõi"
 
+msgid "Stop watching to edit settings"
+msgstr "Dừng theo dõi để sửa cài đặt"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "Đã dừng theo dõi thư mục. Số tệp đã chép lời: {done}."
@@ -1301,6 +1455,9 @@ msgstr "Phụ đề (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Phụ đề: {count}"
+
+msgid "Summarize…"
+msgstr "Tóm tắt…"
 
 msgid "Summarizing…"
 msgstr "Đang tóm tắt…"
@@ -1397,13 +1554,11 @@ msgstr "Không thể tải xuống tệp: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "Tệp đã bị di chuyển hoặc xóa: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"Thư mục không chứa tệp nào để chép lời. Các tệp đã có bản chép lời sẽ bị "
-"bỏ qua trừ khi bạn chọn \"Ghi đè tệp hiện có\"."
+msgid "The files it already contains are skipped."
+msgstr "Các tệp đã có trong thư mục sẽ bị bỏ qua."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "Thư mục không chứa tệp âm thanh hoặc video nào để chép lời."
 
 msgid "The level is shown while recording"
 msgstr "Mức âm được hiển thị khi ghi âm"
@@ -1555,6 +1710,14 @@ msgstr "Chép lời thư mục"
 msgid "Transcribe again"
 msgstr "Chép lời lại"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"Chép lời lại tất cả các tệp của \"{title}\"? Các tệp đã lưu cho chúng sẽ "
+"bị thay thế."
+
 msgid "Transcribe from a URL"
 msgstr "Chép lời từ URL"
 
@@ -1565,6 +1728,9 @@ msgstr "Chép lời từ micrô"
 msgid "Transcribe it again to score its words"
 msgstr "Phiên âm lại để chấm điểm các từ"
 
+msgid "Transcribe the files already in the folder"
+msgstr "Chép lời các tệp đã có trong thư mục"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Chép lời lại “{title}”? Các thay đổi trong văn bản sẽ bị mất."
@@ -1574,17 +1740,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "Đã chép lời {done}/{total} tệp."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr "Phiên âm lại các tệp đã có bản phiên âm và thay thế các tệp của nó."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
-"Chép lời các tệp âm thanh và video trong thư mục và các thư mục con. Các "
-"tệp đã có bản chép lời sẽ bị bỏ qua trừ khi bạn ghi đè."
+"Chép lời các tệp âm thanh và video của thư mục và các thư mục con. Các "
+"tệp đã có bản chép lời sẽ bị bỏ qua. Bạn có thể chép lời lại chúng từ thư"
+" mục."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Chép lời các tệp chưa có bản chép lời, như các tệp mới."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1733,6 +1898,9 @@ msgstr "Tệp video"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Video có phụ đề (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Đợi hoàn tất để sửa cài đặt"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Hãy đợi bản chép lời hiện tại hoàn tất, hoặc hủy nó."
 
@@ -1748,6 +1916,10 @@ msgstr "Đang chờ giọng nói…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "Đang chờ bản chép lời hiện tại hoàn tất."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "Đang chờ thư mục khả dụng: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1826,14 +1998,24 @@ msgstr "YouTube hoặc liên kết đến tệp"
 msgid "YouTube video"
 msgstr "Video YouTube"
 
+msgid "Your audio and video files are not deleted."
+msgstr "Các tệp âm thanh và video của bạn không bị xóa."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "Các tệp âm thanh, video và tệp đã lưu của bạn không bị xóa."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "còn khoảng {time}"
 
 msgid "cancelled"
 msgstr "đã hủy"
 
 msgid "default"
 msgstr "mặc định"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "vd: *.wav, drafts/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "ví dụ: Một cuộc phỏng vấn về nhận dạng giọng nói"
@@ -1860,8 +2042,34 @@ msgid "{count} failed"
 msgstr "{count} thất bại"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} tệp"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} tệp"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "Đã chép lời {count} tệp trong {folder}"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] "{count} tệp đã được chép lời với cài đặt khác. Đã thay đổi: {settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} bị thiếu"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "Đã chọn {count}"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} bị bỏ qua, đã chép lời"
 
 #, python-brace-format
 msgid "{count} transcriptions"
