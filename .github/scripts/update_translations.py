@@ -1,7 +1,7 @@
 """
 Updates the translations of the interface after the texts of the code change:
 
-1. Extracts the texts marked with `_()`, `N_()` and `L_()` into
+1. Extracts the texts marked with `_()`, `N_()`, `L_()` and `P_()` into
    `res/locales/audiotext.pot`.
 2. Merges the template into the catalog of each language (`audiotext.po`). New
    texts are left empty, and changed ones are marked as fuzzy with a guess.
@@ -41,7 +41,7 @@ import compile_translations  # noqa: E402
 from utils.constants import APP_NAME, APP_VERSION  # noqa: E402
 
 # Keywords that mark the texts to translate (see `utils/i18n.py`)
-KEYWORDS = ["_", "N_", "L_"]
+KEYWORDS = ["_", "N_", "L_", "P_:1,2"]
 
 
 def extract(output_path: Path = TEMPLATE_PATH) -> None:
