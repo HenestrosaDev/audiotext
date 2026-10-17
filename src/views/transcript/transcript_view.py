@@ -756,7 +756,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             on_commit=lambda value: self.reviewer.commit_word(value),
             on_accept=lambda: self.reviewer.accept_from_popover(),
             on_replay=lambda: self.reviewer.replay_current(),
-            on_close=self.text.focus_text,
+            on_close=lambda: self.reviewer.close_word_popover(),
         )
         # Shown over the text when only the segments to review are, and there
         # are none
