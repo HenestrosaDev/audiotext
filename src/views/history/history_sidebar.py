@@ -7,6 +7,7 @@ from typing import Any, Protocol
 import customtkinter as ctk
 
 from models.history import EntryStatus, HistoryEntry, HistoryGroup
+from utils.enums import AudioSource
 from utils.history_store import HistoryStore
 from utils.i18n import L_, _
 from views.entries.delegates import EntryFiles, EntryPrompts, JobControls
@@ -371,18 +372,32 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
             menu.add_command(
                 label=_("Stop watching")
                 if entry.status == EntryStatus.WATCHING
+                or entry.kind == AudioSource.WATCH.value
                 else _("Cancel"),
                 command=lambda: self.actions.jobs.cancel_entry(entry_id),
+            )
+        elif entry.is_folder:
+            menu.add_command(
+                label=_("Resume watching")
+                if entry.kind == AudioSource.WATCH.value
+                else _("Rescan folder"),
+                command=lambda: self.actions.jobs.retry_entry(entry_id),
             )
         elif not is_child:
             menu.add_command(
                 label=_("Transcribe again"),
                 command=lambda: self.actions.jobs.retry_entry(entry_id),
             )
+        if is_child:
+            menu.add_command(
+                label=_("Re-transcribe this file"),
+                command=lambda: self.actions.jobs.retranscribe_files([entry_id]),
+                state=tk.DISABLED if entry.status.is_active else tk.NORMAL,
+            )
 
         menu.add_separator()
         menu.add_command(
-            label=_("Delete…"),
+            label=_("Remove from history…") if entry.is_folder else _("Delete…"),
             command=lambda: self.actions.prompts.confirm_delete_entry(entry_id),
         )
 

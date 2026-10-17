@@ -132,10 +132,10 @@ class OpenAiApiTranscriber:
         )
         is_vertical = has_vertical_video(transcription)
         file_types = transcription.output_file_types
-        # With a single file type, the path already has its extension (see
-        # `TranscriptionSaver`). It's replaced by name, since the name of the
+        # The path has the extension of the first file type (see
+        # `TranscriptionSaver`), which is replaced by name, since the name of the
         # transcribed file can have dots
-        stem_path = file_path.with_suffix("") if len(file_types) == 1 else file_path
+        stem_path = file_path.with_suffix("")
 
         for file_type in file_types:
             write_text(

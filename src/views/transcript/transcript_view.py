@@ -56,9 +56,9 @@ from utils.transcript_editing import (
     overlapping_segments,
     speakers,
 )
-from views.entries.delegates import EntryActions
+from views.entries.delegates import EntryActions, TranscriptAction
 from views.entries.entry_header import EntryHeader
-from views.history.formatting import reveal_label
+from views.history.formatting import folder_actions, reveal_label
 from views.localization import Text, localize, on_language_change
 from views.settings.option_labels import save_config
 from views.settings.preferences_dialog import PROVIDERS_TAB
@@ -243,7 +243,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        self.header = EntryHeader(self, entry, actions.prompts)
+        self.header = EntryHeader(self, entry, actions.prompts, files=actions.files)
         self.header.grid(row=0, column=0, padx=28, pady=(22, 0), sticky=ctk.EW)
         self._init_body()
         self._init_toolbar()
@@ -446,6 +446,16 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             self.show_translation_export_menu(self.translation_panel.btn_export)
         else:
             self.show_export_menu()
+
+    def run_action(self, action: TranscriptAction) -> None:
+        """Does what was asked from outside the view, e.g. from the folder."""
+        if action == TranscriptAction.EXPORT:
+            self.show_export_menu()
+        elif action == TranscriptAction.SUMMARIZE:
+            # The summary is generated from its panel, which tells if it can be
+            self._on_mode_change(SUMMARY_MODE)
+        elif action == TranscriptAction.TRANSLATE:
+            self._on_translate_button()
 
     def handle_key(self, key: str) -> bool:
         """Handles the playback shortcuts. :return: Whether the key was handled."""
@@ -1927,14 +1937,20 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             command=lambda: self._actions.files.reveal_entry(self.entry_id),
             state=tk.NORMAL if source_path and source_path.exists() else tk.DISABLED,
         )
+        # Only shown once the transcription is saved, since the source alone is
+        # already shown by the item above
         output_dir = Path(entry.output_dir) if entry.output_dir else None
-        menu.add_command(
-            label=_("Open the folder of the saved files"),
-            command=lambda: (
-                self._actions.files.open_folder(output_dir) if output_dir else None
-            ),
-            state=tk.NORMAL if output_dir and output_dir.is_dir() else tk.DISABLED,
+        folders = (
+            folder_actions(source_path.parent if source_path else None, output_dir)
+            if output_dir
+            else []
         )
+        for label, folder in folders:
+            menu.add_command(
+                label=label, command=partial(self._actions.files.open_folder, folder)
+            )
+        if not folders:
+            menu.add_command(label=_("Open folder"), state=tk.DISABLED)
         menu.add_separator()
         menu.add_command(
             label=_("Rename…"),

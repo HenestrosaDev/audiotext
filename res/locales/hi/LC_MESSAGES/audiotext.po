@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -99,6 +99,9 @@ msgstr "सीमा बदलें"
 msgid "Aligning subtitles…"
 msgstr "सबटाइटल संरेखित किए जा रहे हैं…"
 
+msgid "All"
+msgstr "सभी"
+
 msgid "All files"
 msgstr "सभी फ़ाइलें"
 
@@ -114,6 +117,15 @@ msgid ""
 "All the audio and video files of a folder, or the new ones as they're "
 "added."
 msgstr "किसी फ़ोल्डर की सभी ऑडियो और वीडियो फ़ाइलें, या जोड़े जाने पर नई फ़ाइलें।"
+
+msgid "All the files already have a transcription."
+msgstr "सभी फ़ाइलों का ट्रांसक्रिप्शन पहले से मौजूद है।"
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "उनके लिए सहेजी गई {count} फ़ाइल भी हटाएँ"
+msgstr[1] "उनके लिए सहेजी गई {count} फ़ाइलें भी हटाएँ"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Whisper API से ट्रांसक्रिप्शन के लिए भी ज़रूरी है।"
@@ -251,8 +263,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "चुनें कि ट्रांसक्रिप्शन कहाँ सहेजे जाएँ"
 
+msgid "Clear selection"
+msgstr "चयन हटाएँ"
+
 msgid "Clear the conversation"
 msgstr "बातचीत साफ़ करें"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "बंद करें ({shortcut})"
 
 msgid "Compute type"
 msgstr "गणना प्रकार"
@@ -267,11 +287,23 @@ msgstr "संदर्भ"
 msgid "Continue"
 msgstr "जारी रखें"
 
+msgid "Copied to the clipboard."
+msgstr "क्लिपबोर्ड पर कॉपी किया गया।"
+
 msgid "Copy"
 msgstr "कॉपी करें"
 
+msgid "Copy text"
+msgstr "टेक्स्ट कॉपी करें"
+
 msgid "Could not check for updates."
 msgstr "अपडेट की जाँच नहीं हो सकी।"
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "सहेजी गई {count} फ़ाइल नहीं हटाई जा सकी।"
+msgstr[1] "सहेजी गई {count} फ़ाइलें नहीं हटाई जा सकीं।"
 
 #, python-brace-format
 msgid ""
@@ -377,6 +409,12 @@ msgstr "ट्रांसक्रिप्शन हटाएँ"
 msgid "Delete “{title}” from the history?"
 msgstr "\"{title}\" को इतिहास से हटाएँ?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "सहेजी गई {count} फ़ाइल हटाई गई।"
+msgstr[1] "सहेजी गई {count} फ़ाइलें हटाई गईं।"
+
 msgid "Delete…"
 msgstr "हटाएँ…"
 
@@ -420,6 +458,9 @@ msgstr "ऑडियो या वीडियो फ़ाइल यहाँ �
 msgid "Edit note…"
 msgstr "नोट संपादित करें…"
 
+msgid "Edit settings"
+msgstr "सेटिंग्स बदलें"
+
 msgid "Edit tag…"
 msgstr "टैग संपादित करें…"
 
@@ -462,6 +503,9 @@ msgstr ""
 msgid "Export"
 msgstr "निर्यात करें"
 
+msgid "Export all…"
+msgstr "सभी एक्सपोर्ट करें…"
+
 msgid "Export summary"
 msgstr "सारांश निर्यात करें"
 
@@ -487,11 +531,17 @@ msgstr ""
 "{path} में निर्यात किया गया, लेकिन किसी भी फ़ॉन्ट में ये अक्षर नहीं हैं, "
 "इसलिए ये बक्सों के रूप में दिखते हैं: {characters}"
 
+msgid "Export…"
+msgstr "एक्सपोर्ट करें…"
+
 msgid "Failed"
 msgstr "विफल"
 
 msgid "File"
 msgstr "फ़ाइल"
+
+msgid "File not found"
+msgstr "फ़ाइल नहीं मिली"
 
 msgid "File types"
 msgstr "फ़ाइल प्रकार"
@@ -536,6 +586,13 @@ msgstr "{language} अनुवाद में खोजें"
 
 msgid "Find:"
 msgstr "ढूँढें:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr ""
+"पहले उन फ़ाइलों को ट्रांसक्राइब करता है जो इसमें पहले से हैं और जिनका अभी"
+" तक ट्रांसक्रिप्शन नहीं है।"
 
 msgid "Folder"
 msgstr "फ़ोल्डर"
@@ -635,6 +692,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "वक्ताओं की पहचान की जा रही है…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "{folder} में"
+
+msgid "Include subfolders"
+msgstr "सबफ़ोल्डर शामिल करें"
+
 msgid "Interface language"
 msgstr "इंटरफ़ेस की भाषा"
 
@@ -661,11 +725,10 @@ msgstr "मुख्य विंडो के ऊपर रखें"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
-"चलता रहता है और फ़ोल्डर में जोड़ी गई फ़ाइलों को तब तक ट्रांसक्राइब करता "
-"है, जब तक आप इसे रोक न दें। फ़ोल्डर में पहले से मौजूद फ़ाइलें छोड़ दी "
-"जाती हैं।"
+"चलता रहता है और फ़ोल्डर में जोड़ी गई फ़ाइलों को ट्रांसक्राइब करता है, जब "
+"तक आप इसे रोक न दें।"
 
 msgid "Key points"
 msgstr "मुख्य बिंदु"
@@ -700,6 +763,10 @@ msgstr "बड़ा"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "बड़े मॉडल ज़्यादा सटीक होते हैं, लेकिन धीमे होते हैं।"
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "अंतिम फ़ाइल {time} पर ट्रांसक्राइब की गई: {name}"
 
 msgid "Light"
 msgstr "लाइट"
@@ -796,6 +863,13 @@ msgid "Name of the transcription:"
 msgstr "ट्रांसक्रिप्शन का नाम:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"छोड़ी जाने वाली फ़ाइलों के नाम या पथ, कॉमा से अलग किए गए। छिपी हुई "
+"फ़ाइलें हमेशा छोड़ दी जाती हैं।"
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -875,6 +949,9 @@ msgstr "कोई परिणाम नहीं"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "कोई आवाज़ नहीं। जाँचें कि माइक्रोफ़ोन चालू है और उसकी अनुमति है।"
 
+msgid "No speech found"
+msgstr "कोई बोली नहीं मिली"
+
 msgid "No summary yet"
 msgstr "अभी तक कोई सारांश नहीं"
 
@@ -943,11 +1020,23 @@ msgid ""
 "size."
 msgstr "केवल अंग्रेज़ी ट्रांसक्राइब करता है, उसी आकार के बहुभाषी मॉडल से तेज़।"
 
+msgid "Open folder"
+msgstr "फ़ोल्डर खोलें"
+
 msgid "Open in history"
 msgstr "इतिहास में खोलें"
 
-msgid "Open the folder of the saved files"
-msgstr "सहेजी गई फ़ाइलों का फ़ोल्डर खोलें"
+msgid "Open in the browser"
+msgstr "ब्राउज़र में खोलें"
+
+msgid "Open source folder"
+msgstr "स्रोत फ़ोल्डर खोलें"
+
+msgid "Open transcript"
+msgstr "ट्रांसक्रिप्ट खोलें"
+
+msgid "Open transcripts folder"
+msgstr "ट्रांसक्रिप्ट फ़ोल्डर खोलें"
 
 msgid "OpenAI API key"
 msgstr "OpenAI API कुंजी"
@@ -969,11 +1058,11 @@ msgstr "आउटलाइन"
 msgid "Output"
 msgstr "आउटपुट"
 
-msgid "Overwrite existing files"
-msgstr "मौजूदा फ़ाइलें अधिलेखित करें"
-
 msgid "Paste"
 msgstr "चिपकाएँ"
+
+msgid "Pending"
+msgstr "बाकी"
 
 msgid "Pin to the top"
 msgstr "ऊपर पिन करें"
@@ -1045,6 +1134,21 @@ msgstr "प्रदाता"
 msgid "Queued"
 msgstr "कतार में"
 
+msgid "Re-transcribe"
+msgstr "फिर से ट्रांसक्राइब करें"
+
+msgid "Re-transcribe all"
+msgstr "सभी को फिर से ट्रांसक्राइब करें"
+
+msgid "Re-transcribe all…"
+msgstr "सभी को फिर से ट्रांसक्राइब करें…"
+
+msgid "Re-transcribe them"
+msgstr "इन्हें फिर से ट्रांसक्राइब करें"
+
+msgid "Re-transcribe this file"
+msgstr "इस फ़ाइल को फिर से ट्रांसक्राइब करें"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "केवल पढ़ने के लिए। इस टेक्स्ट को बदलने के लिए सबटाइटल संपादित करें।"
 
@@ -1087,6 +1191,28 @@ msgstr "परिष्कृत करें"
 
 msgid "Regenerate the summary"
 msgstr "सारांश फिर से बनाएँ"
+
+msgid "Remove"
+msgstr "हटाएँ"
+
+msgid "Remove from history"
+msgstr "इतिहास से हटाएँ"
+
+msgid "Remove from history…"
+msgstr "इतिहास से हटाएँ…"
+
+msgid "Remove missing files from the list…"
+msgstr "गायब फ़ाइलों को सूची से हटाएँ…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "{count} फ़ाइल को इतिहास से हटाएँ?"
+msgstr[1] "{count} फ़ाइलों को इतिहास से हटाएँ?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "\"{title}\" और उसकी फ़ाइलों को इतिहास से हटाएँ?"
 
 msgid "Rename"
 msgstr "नाम बदलें"
@@ -1134,6 +1260,15 @@ msgstr ""
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "DeepL से अनुवाद के लिए आवश्यक। मुफ़्त प्लान की कुंजियाँ भी काम करती हैं।"
 
+msgid "Rescan folder"
+msgstr "फ़ोल्डर फिर से स्कैन करें"
+
+msgid "Resume watching"
+msgstr "निगरानी फिर से शुरू करें"
+
+msgid "Retry failed"
+msgstr "विफल फ़ाइलें फिर से आज़माएँ"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "स्वीकार किए गए शब्दों की फिर से समीक्षा करें"
@@ -1156,6 +1291,9 @@ msgstr "ऑडियो के समान"
 
 msgid "Save"
 msgstr "सहेजें"
+
+msgid "Save and rescan"
+msgstr "सहेजें और फिर से स्कैन करें"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1230,6 +1368,9 @@ msgstr "फ़ाइल प्रबंधक में दिखाएँ"
 msgid "Show it as the subtitles of the video"
 msgstr "इसे वीडियो के सबटाइटल के रूप में दिखाएँ"
 
+msgid "Show more"
+msgstr "और दिखाएँ"
+
 msgid "Show subtitles on the video"
 msgstr "वीडियो पर सबटाइटल दिखाएँ"
 
@@ -1245,8 +1386,23 @@ msgstr "ट्रांसक्रिप्शन तैयार होने 
 msgid "Size"
 msgstr "आकार"
 
+msgid "Skip files matching"
+msgstr "इनसे मेल खाने वाली फ़ाइलें छोड़ें"
+
 msgid "Small"
 msgstr "छोटा"
+
+msgid "Sort by duration"
+msgstr "अवधि के अनुसार क्रमबद्ध करें"
+
+msgid "Sort by name"
+msgstr "नाम के अनुसार क्रमबद्ध करें"
+
+msgid "Sort by size"
+msgstr "आकार के अनुसार क्रमबद्ध करें"
+
+msgid "Sort by status"
+msgstr "स्थिति के अनुसार क्रमबद्ध करें"
 
 msgid "Source"
 msgstr "स्रोत"
@@ -1280,6 +1436,9 @@ msgstr "स्क्रॉलिंग सिंक करना बंद क�
 msgid "Stop watching"
 msgstr "निगरानी बंद करें"
 
+msgid "Stop watching to edit settings"
+msgstr "सेटिंग्स बदलने के लिए निगरानी बंद करें"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "फ़ोल्डर की निगरानी बंद कर दी गई। ट्रांसक्राइब की गई फ़ाइलें: {done}।"
@@ -1299,6 +1458,9 @@ msgstr "सबटाइटल (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "सबटाइटल: {count}"
+
+msgid "Summarize…"
+msgstr "सारांश बनाएँ…"
 
 msgid "Summarizing…"
 msgstr "सारांश बनाया जा रहा है…"
@@ -1391,14 +1553,11 @@ msgstr "फ़ाइल डाउनलोड नहीं हो सकी: {er
 msgid "The file was moved or deleted: {path}"
 msgstr "फ़ाइल को ले जाया गया या हटा दिया गया: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"फ़ोल्डर में ट्रांसक्राइब करने के लिए कोई फ़ाइल नहीं है। जिन फ़ाइलों का "
-"ट्रांसक्रिप्शन पहले से मौजूद है, उन्हें छोड़ दिया जाता है, जब तक कि आप "
-"\"मौजूदा फ़ाइलें अधिलेखित करें\" न चुनें।"
+msgid "The files it already contains are skipped."
+msgstr "इसमें पहले से मौजूद फ़ाइलें छोड़ दी जाती हैं।"
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "फ़ोल्डर में ट्रांसक्राइब करने के लिए कोई ऑडियो या वीडियो फ़ाइल नहीं है।"
 
 msgid "The level is shown while recording"
 msgstr "रिकॉर्डिंग के दौरान स्तर दिखाया जाता है"
@@ -1552,6 +1711,14 @@ msgstr "फ़ोल्डर ट्रांसक्राइब करें"
 msgid "Transcribe again"
 msgstr "फिर से ट्रांसक्राइब करें"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"\"{title}\" की सभी फ़ाइलों को फिर से ट्रांसक्राइब करें? उनके लिए सहेजी गई"
+" फ़ाइलें बदल दी जाएँगी।"
+
 msgid "Transcribe from a URL"
 msgstr "URL से ट्रांसक्राइब करें"
 
@@ -1561,6 +1728,9 @@ msgstr "माइक्रोफ़ोन से ट्रांसक्रा�
 # Needs review by a native speaker
 msgid "Transcribe it again to score its words"
 msgstr "शब्दों को स्कोर करने के लिए फिर से ट्रांसक्राइब करें"
+
+msgid "Transcribe the files already in the folder"
+msgstr "फ़ोल्डर में पहले से मौजूद फ़ाइलें ट्रांसक्राइब करें"
 
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
@@ -1573,20 +1743,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "{total} में से {done} फ़ाइलें ट्रांसक्राइब की गईं।"
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr ""
-"जिन फ़ाइलों का ट्रांसक्रिप्शन पहले से है, उन्हें फिर से ट्रांसक्राइब करता"
-" है और उसकी फ़ाइलें बदल देता है।"
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
-"फ़ोल्डर और उसके सबफ़ोल्डर की ऑडियो और वीडियो फ़ाइलों को ट्रांसक्राइब करता"
-" है। जिन फ़ाइलों का ट्रांसक्रिप्शन पहले से है, उन्हें छोड़ दिया जाता है, "
-"जब तक कि आप उन्हें अधिलेखित न करें।"
+"फ़ोल्डर और उसके सबफ़ोल्डरों की ऑडियो और वीडियो फ़ाइलों को ट्रांसक्राइब "
+"करता है। जिन फ़ाइलों का ट्रांसक्रिप्शन पहले से है, उन्हें छोड़ दिया जाता "
+"है। आप उन्हें फ़ोल्डर से फिर से ट्रांसक्राइब कर सकते हैं।"
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "बिना ट्रांसक्रिप्शन वाली फ़ाइलों को ट्रांसक्राइब करता है, जैसे नई फ़ाइलें।"
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1735,6 +1901,9 @@ msgstr "वीडियो फ़ाइलें"
 msgid "Video with subtitles (.mp4)…"
 msgstr "सबटाइटल वाला वीडियो (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "सेटिंग्स बदलने के लिए इसके पूरा होने तक प्रतीक्षा करें"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "मौजूदा ट्रांसक्रिप्शन पूरा होने तक प्रतीक्षा करें, या उसे रद्द करें।"
 
@@ -1750,6 +1919,10 @@ msgstr "आवाज़ की प्रतीक्षा हो रही ह�
 
 msgid "Waiting for the current transcription to finish."
 msgstr "मौजूदा ट्रांसक्रिप्शन पूरा होने की प्रतीक्षा हो रही है।"
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "फ़ोल्डर के उपलब्ध होने की प्रतीक्षा हो रही है: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1831,14 +2004,24 @@ msgstr "YouTube या किसी फ़ाइल का लिंक"
 msgid "YouTube video"
 msgstr "YouTube वीडियो"
 
+msgid "Your audio and video files are not deleted."
+msgstr "आपकी ऑडियो और वीडियो फ़ाइलें नहीं हटाई जातीं।"
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "आपकी ऑडियो, वीडियो और सहेजी गई फ़ाइलें नहीं हटाई जातीं।"
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "लगभग {time} बाकी"
 
 msgid "cancelled"
 msgstr "रद्द किया गया"
 
 msgid "default"
 msgstr "डिफ़ॉल्ट"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "जैसे *.wav, drafts/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "जैसे वाक् पहचान पर एक साक्षात्कार"
@@ -1865,8 +2048,44 @@ msgid "{count} failed"
 msgstr "{count} विफल"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} फ़ाइलें"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} फ़ाइल"
+msgstr[1] "{count} फ़ाइलें"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "{folder} में {count} फ़ाइल ट्रांसक्राइब की गई"
+msgstr[1] "{folder} में {count} फ़ाइलें ट्रांसक्राइब की गईं"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] ""
+"{count} फ़ाइल अन्य सेटिंग्स से ट्रांसक्राइब की गई थी। बदला गया: "
+"{settings}।"
+msgstr[1] ""
+"{count} फ़ाइलें अन्य सेटिंग्स से ट्रांसक्राइब की गई थीं। बदला गया: "
+"{settings}।"
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} गायब"
+msgstr[1] "{count} गायब"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} चुनी गई"
+msgstr[1] "{count} चुनी गईं"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} छोड़ी गई, पहले से ट्रांसक्राइब"
+msgstr[1] "{count} छोड़ी गईं, पहले से ट्रांसक्राइब"
 
 #, python-brace-format
 msgid "{count} transcriptions"

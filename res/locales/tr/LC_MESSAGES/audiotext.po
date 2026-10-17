@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -100,6 +100,9 @@ msgstr "Eşiği ayarla"
 msgid "Aligning subtitles…"
 msgstr "Altyazılar hizalanıyor…"
 
+msgid "All"
+msgstr "Tümü"
+
 msgid "All files"
 msgstr "Tüm dosyalar"
 
@@ -115,6 +118,14 @@ msgid ""
 "All the audio and video files of a folder, or the new ones as they're "
 "added."
 msgstr "Bir klasördeki tüm ses ve video dosyaları veya eklendikçe yeni dosyalar."
+
+msgid "All the files already have a transcription."
+msgstr "Tüm dosyaların zaten bir transkripsiyonu var."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Onlar için kaydedilen {count} dosyayı da sil"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Whisper API ile yazıya dökme için de gereklidir."
@@ -255,8 +266,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "Transkripsiyonların nereye kaydedileceğini seçin"
 
+msgid "Clear selection"
+msgstr "Seçimi temizle"
+
 msgid "Clear the conversation"
 msgstr "Konuşmayı temizle"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Kapat ({shortcut})"
 
 msgid "Compute type"
 msgstr "Hesaplama türü"
@@ -271,11 +290,22 @@ msgstr "Bağlam"
 msgid "Continue"
 msgstr "Devam"
 
+msgid "Copied to the clipboard."
+msgstr "Panoya kopyalandı."
+
 msgid "Copy"
 msgstr "Kopyala"
 
+msgid "Copy text"
+msgstr "Metni kopyala"
+
 msgid "Could not check for updates."
 msgstr "Güncellemeler denetlenemedi."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "Kaydedilen {count} dosya silinemedi."
 
 #, python-brace-format
 msgid ""
@@ -382,6 +412,11 @@ msgstr "Transkripsiyonu sil"
 msgid "Delete “{title}” from the history?"
 msgstr "\"{title}\" geçmişten silinsin mi?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "Kaydedilen {count} dosya silindi."
+
 msgid "Delete…"
 msgstr "Sil…"
 
@@ -425,6 +460,9 @@ msgstr "Bir ses veya video dosyasını buraya bırakın"
 msgid "Edit note…"
 msgstr "Notu düzenle…"
 
+msgid "Edit settings"
+msgstr "Ayarları düzenle"
+
 msgid "Edit tag…"
 msgstr "Etiketi düzenle…"
 
@@ -467,6 +505,9 @@ msgstr ""
 msgid "Export"
 msgstr "Dışa aktar"
 
+msgid "Export all…"
+msgstr "Tümünü dışa aktar…"
+
 msgid "Export summary"
 msgstr "Özeti dışa aktar"
 
@@ -492,11 +533,17 @@ msgstr ""
 "Dışa aktarıldı: {path}. Ancak hiçbir yazı tipinde bu karakterler yok, bu "
 "yüzden kutu olarak gösteriliyorlar: {characters}"
 
+msgid "Export…"
+msgstr "Dışa aktar…"
+
 msgid "Failed"
 msgstr "Başarısız"
 
 msgid "File"
 msgstr "Dosya"
+
+msgid "File not found"
+msgstr "Dosya bulunamadı"
 
 msgid "File types"
 msgstr "Dosya türleri"
@@ -541,6 +588,13 @@ msgstr "{language} çeviride bul"
 
 msgid "Find:"
 msgstr "Bul:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr ""
+"Önce içinde zaten bulunan ve henüz transkripsiyonu olmayan dosyaları "
+"yazıya döker."
 
 msgid "Folder"
 msgstr "Klasör"
@@ -644,6 +698,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "Konuşmacılar belirleniyor…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "Konum: {folder}"
+
+msgid "Include subfolders"
+msgstr "Alt klasörleri dahil et"
+
 msgid "Interface language"
 msgstr "Arayüz dili"
 
@@ -670,10 +731,10 @@ msgstr "Ana pencerenin üstünde tut"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
-"Siz durdurana kadar çalışmaya devam eder ve klasöre eklenen dosyaların "
-"transkripsiyonunu yapar. Klasörde zaten bulunan dosyalar atlanır."
+"Siz durdurana kadar çalışmaya devam eder ve klasöre eklenen dosyaları "
+"yazıya döker."
 
 msgid "Key points"
 msgstr "Önemli noktalar"
@@ -708,6 +769,10 @@ msgstr "Büyük"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Daha büyük modeller daha doğrudur ama daha yavaştır."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "Son dosya {time} saatinde yazıya döküldü: {name}"
 
 msgid "Light"
 msgstr "Açık"
@@ -800,6 +865,13 @@ msgid "Name of the transcription:"
 msgstr "Transkripsiyonun adı:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Atlanacak dosyaların adları veya yolları, virgülle ayrılmış. Gizli "
+"dosyalar her zaman atlanır."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -879,6 +951,9 @@ msgstr "Sonuç yok"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "Ses yok. Mikrofonun açık olduğunu ve izin verildiğini kontrol edin."
 
+msgid "No speech found"
+msgstr "Konuşma bulunamadı"
+
 msgid "No summary yet"
 msgstr "Henüz özet yok"
 
@@ -949,11 +1024,23 @@ msgstr ""
 "Yalnızca İngilizce yazıya döker; aynı boyuttaki çok dilli modelden daha "
 "hızlıdır."
 
+msgid "Open folder"
+msgstr "Klasörü aç"
+
 msgid "Open in history"
 msgstr "Geçmişte aç"
 
-msgid "Open the folder of the saved files"
-msgstr "Kaydedilen dosyaların klasörünü aç"
+msgid "Open in the browser"
+msgstr "Tarayıcıda aç"
+
+msgid "Open source folder"
+msgstr "Kaynak klasörü aç"
+
+msgid "Open transcript"
+msgstr "Transkripsiyonu aç"
+
+msgid "Open transcripts folder"
+msgstr "Döküm klasörünü aç"
 
 msgid "OpenAI API key"
 msgstr "OpenAI API anahtarı"
@@ -975,11 +1062,11 @@ msgstr "Kontur"
 msgid "Output"
 msgstr "Çıktı"
 
-msgid "Overwrite existing files"
-msgstr "Mevcut dosyaların üzerine yaz"
-
 msgid "Paste"
 msgstr "Yapıştır"
+
+msgid "Pending"
+msgstr "Bekleyen"
 
 msgid "Pin to the top"
 msgstr "En üste sabitle"
@@ -1051,6 +1138,21 @@ msgstr "Sağlayıcılar"
 msgid "Queued"
 msgstr "Kuyrukta"
 
+msgid "Re-transcribe"
+msgstr "Yeniden yazıya dök"
+
+msgid "Re-transcribe all"
+msgstr "Tümünü yeniden yazıya dök"
+
+msgid "Re-transcribe all…"
+msgstr "Tümünü yeniden yazıya dök…"
+
+msgid "Re-transcribe them"
+msgstr "Bunları yeniden yazıya dök"
+
+msgid "Re-transcribe this file"
+msgstr "Bu dosyayı yeniden yazıya dök"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Salt okunur. Bu metni değiştirmek için altyazıları düzenleyin."
 
@@ -1091,6 +1193,27 @@ msgstr "İyileştir"
 
 msgid "Regenerate the summary"
 msgstr "Özeti yeniden oluştur"
+
+msgid "Remove"
+msgstr "Kaldır"
+
+msgid "Remove from history"
+msgstr "Geçmişten kaldır"
+
+msgid "Remove from history…"
+msgstr "Geçmişten kaldır…"
+
+msgid "Remove missing files from the list…"
+msgstr "Eksik dosyaları listeden kaldır…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "{count} dosya geçmişten kaldırılsın mı?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "\"{title}\" ve dosyaları geçmişten kaldırılsın mı?"
 
 msgid "Rename"
 msgstr "Yeniden adlandır"
@@ -1138,6 +1261,15 @@ msgstr ""
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "DeepL ile çeviri için gereklidir. Ücretsiz planın anahtarları da çalışır."
 
+msgid "Rescan folder"
+msgstr "Klasörü yeniden tara"
+
+msgid "Resume watching"
+msgstr "İzlemeye devam et"
+
+msgid "Retry failed"
+msgstr "Başarısız olanları yeniden dene"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Kabul edilen kelimeleri yeniden incele"
@@ -1160,6 +1292,9 @@ msgstr "Sesle aynı"
 
 msgid "Save"
 msgstr "Kaydet"
+
+msgid "Save and rescan"
+msgstr "Kaydet ve yeniden tara"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1234,6 +1369,9 @@ msgstr "Dosya yöneticisinde göster"
 msgid "Show it as the subtitles of the video"
 msgstr "Videonun altyazısı olarak göster"
 
+msgid "Show more"
+msgstr "Daha fazla göster"
+
 msgid "Show subtitles on the video"
 msgstr "Altyazıları videoda göster"
 
@@ -1249,8 +1387,23 @@ msgstr "Bir transkripsiyon hazır olduğunda sistem bildirimi gösterir."
 msgid "Size"
 msgstr "Boyut"
 
+msgid "Skip files matching"
+msgstr "Şununla eşleşen dosyaları atla"
+
 msgid "Small"
 msgstr "Küçük"
+
+msgid "Sort by duration"
+msgstr "Süreye göre sırala"
+
+msgid "Sort by name"
+msgstr "Ada göre sırala"
+
+msgid "Sort by size"
+msgstr "Boyuta göre sırala"
+
+msgid "Sort by status"
+msgstr "Duruma göre sırala"
 
 msgid "Source"
 msgstr "Kaynak"
@@ -1284,6 +1437,9 @@ msgstr "Kaydırmayı eşitlemeyi durdur"
 msgid "Stop watching"
 msgstr "İzlemeyi durdur"
 
+msgid "Stop watching to edit settings"
+msgstr "Ayarları düzenlemek için izlemeyi durdurun"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "Klasörün izlenmesi durduruldu. Yazıya dökülen dosyalar: {done}."
@@ -1303,6 +1459,9 @@ msgstr "Altyazılar (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Altyazılar: {count}"
+
+msgid "Summarize…"
+msgstr "Özetle…"
 
 msgid "Summarizing…"
 msgstr "Özetleniyor…"
@@ -1397,14 +1556,11 @@ msgstr "Dosya indirilemedi: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "Dosya taşındı veya silindi: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"Klasörde transkripsiyonu yapılacak dosya yok. \"Mevcut dosyaların üzerine"
-" yaz\" seçeneğini işaretlemediğiniz sürece, zaten transkripsiyonu olan "
-"dosyalar atlanır."
+msgid "The files it already contains are skipped."
+msgstr "İçinde zaten bulunan dosyalar atlanır."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "Klasörde yazıya dökülecek ses veya video dosyası yok."
 
 msgid "The level is shown while recording"
 msgstr "Kayıt sırasında seviye gösterilir"
@@ -1558,6 +1714,14 @@ msgstr "Klasörü yazıya dök"
 msgid "Transcribe again"
 msgstr "Yeniden yazıya dök"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"\"{title}\" içindeki tüm dosyalar yeniden yazıya dökülsün mü? Onlar için "
+"kaydedilen dosyalar değiştirilecek."
+
 msgid "Transcribe from a URL"
 msgstr "URL'den yazıya dök"
 
@@ -1567,6 +1731,9 @@ msgstr "Mikrofondan yazıya dök"
 # Needs review by a native speaker
 msgid "Transcribe it again to score its words"
 msgstr "Kelimeleri puanlamak için yeniden yazıya dökün"
+
+msgid "Transcribe the files already in the folder"
+msgstr "Klasörde zaten bulunan dosyaları yazıya dök"
 
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
@@ -1579,20 +1746,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "{total} dosyadan {done} tanesinin transkripsiyonu yapıldı."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr ""
-"Zaten bir transkripsiyonu olan dosyaları yeniden yazıya döker ve "
-"dosyalarını değiştirir."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
-"Klasördeki ve alt klasörlerindeki ses ve video dosyalarının "
-"transkripsiyonunu yapar. Zaten transkripsiyonu olan dosyalar, üzerine "
-"yazmadığınız sürece atlanır."
+"Klasördeki ve alt klasörlerindeki ses ve video dosyalarını yazıya döker. "
+"Zaten transkripsiyonu olan dosyalar atlanır. Bunları klasörden yeniden "
+"yazıya dökebilirsiniz."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Yenileri gibi, transkripsiyonu olmayan dosyaları yazıya döker."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1741,6 +1904,9 @@ msgstr "Video dosyaları"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Altyazılı video (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Ayarları düzenlemek için bitmesini bekleyin"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Geçerli transkripsiyonun bitmesini bekleyin veya iptal edin."
 
@@ -1756,6 +1922,10 @@ msgstr "Konuşma bekleniyor…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "Geçerli transkripsiyonun bitmesi bekleniyor."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "Klasörün kullanılabilir olması bekleniyor: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1836,14 +2006,24 @@ msgstr "YouTube veya bir dosya bağlantısı"
 msgid "YouTube video"
 msgstr "YouTube videosu"
 
+msgid "Your audio and video files are not deleted."
+msgstr "Ses ve video dosyalarınız silinmez."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "Ses, video ve kaydedilmiş dosyalarınız silinmez."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "yaklaşık {time} kaldı"
 
 msgid "cancelled"
 msgstr "iptal edildi"
 
 msgid "default"
 msgstr "varsayılan"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "ör. *.wav, taslaklar/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "ör. Konuşma tanıma hakkında bir röportaj"
@@ -1870,8 +2050,34 @@ msgid "{count} failed"
 msgstr "{count} başarısız"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} dosya"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} dosya"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "{folder} içinde {count} dosya yazıya döküldü"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] "{count} dosya başka ayarlarla yazıya döküldü. Değişen: {settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} eksik"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} seçili"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} atlandı, zaten yazıya dökülmüş"
 
 #, python-brace-format
 msgid "{count} transcriptions"

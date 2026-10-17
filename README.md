@@ -502,6 +502,9 @@ audiotext transcribe talk.mp4 --output-types srt,docx --summarize --translate-to
 
 # Transcribe the files added to a folder until stopped with Ctrl+C
 audiotext watch inbox/ --output-types srt
+
+# The same, transcribing first the files it already contains
+audiotext watch inbox/ --existing
 ```
 
 The output types that the transcription method doesn't save itself (e.g. `md` or `docx`) are exported from its result. `--summarize` writes a `.summary.md` file next to each transcription, and `--translate-to` writes the translation in its output types (e.g. `talk.es.srt`), with the providers configured in the app unless `--summary-provider` or `--translation-provider` are given.

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -99,6 +99,9 @@ msgstr "Justera tröskeln"
 msgid "Aligning subtitles…"
 msgstr "Justerar undertexterna…"
 
+msgid "All"
+msgstr "Alla"
+
 msgid "All files"
 msgstr "Alla filer"
 
@@ -114,6 +117,15 @@ msgid ""
 "All the audio and video files of a folder, or the new ones as they're "
 "added."
 msgstr "Alla ljud- och videofiler i en mapp, eller nya filer när de läggs till."
+
+msgid "All the files already have a transcription."
+msgstr "Alla filer har redan en transkribering."
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "Ta även bort den {count} fil som sparats för dem"
+msgstr[1] "Ta även bort de {count} filer som sparats för dem"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Krävs även för transkribering med Whisper API."
@@ -252,8 +264,16 @@ msgstr ""
 msgid "Choose where to save the transcriptions"
 msgstr "Välj var transkriberingarna ska sparas"
 
+msgid "Clear selection"
+msgstr "Rensa markeringen"
+
 msgid "Clear the conversation"
 msgstr "Rensa konversationen"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "Stäng ({shortcut})"
 
 msgid "Compute type"
 msgstr "Beräkningstyp"
@@ -268,11 +288,23 @@ msgstr "Sammanhang"
 msgid "Continue"
 msgstr "Fortsätt"
 
+msgid "Copied to the clipboard."
+msgstr "Kopierat till urklipp."
+
 msgid "Copy"
 msgstr "Kopiera"
 
+msgid "Copy text"
+msgstr "Kopiera text"
+
 msgid "Could not check for updates."
 msgstr "Det gick inte att söka efter uppdateringar."
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "Det gick inte att ta bort {count} sparad fil."
+msgstr[1] "Det gick inte att ta bort {count} sparade filer."
 
 #, python-brace-format
 msgid ""
@@ -379,6 +411,12 @@ msgstr "Ta bort transkribering"
 msgid "Delete “{title}” from the history?"
 msgstr "Ta bort ”{title}” från historiken?"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "Tog bort {count} sparad fil."
+msgstr[1] "Tog bort {count} sparade filer."
+
 msgid "Delete…"
 msgstr "Ta bort…"
 
@@ -422,6 +460,9 @@ msgstr "Släpp en ljud- eller videofil här"
 msgid "Edit note…"
 msgstr "Redigera anteckning…"
 
+msgid "Edit settings"
+msgstr "Redigera inställningar"
+
 msgid "Edit tag…"
 msgstr "Redigera etikett…"
 
@@ -464,6 +505,9 @@ msgstr ""
 msgid "Export"
 msgstr "Exportera"
 
+msgid "Export all…"
+msgstr "Exportera alla…"
+
 msgid "Export summary"
 msgstr "Exportera sammanfattningen"
 
@@ -489,11 +533,17 @@ msgstr ""
 "Exporterad till {path}, men inget typsnitt har de här tecknen, så de "
 "visas som rutor: {characters}"
 
+msgid "Export…"
+msgstr "Exportera…"
+
 msgid "Failed"
 msgstr "Misslyckad"
 
 msgid "File"
 msgstr "Fil"
+
+msgid "File not found"
+msgstr "Filen hittades inte"
 
 msgid "File types"
 msgstr "Filtyper"
@@ -538,6 +588,13 @@ msgstr "Sök i översättningen till {language}"
 
 msgid "Find:"
 msgstr "Sök:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr ""
+"Transkriberar först de filer som den redan innehåller och som inte har "
+"någon transkribering än."
 
 msgid "Folder"
 msgstr "Mapp"
@@ -639,6 +696,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "Identifierar talare…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "I {folder}"
+
+msgid "Include subfolders"
+msgstr "Inkludera undermappar"
+
 msgid "Interface language"
 msgstr "Gränssnittets språk"
 
@@ -665,10 +729,10 @@ msgstr "Håll ovanför huvudfönstret"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
+"stop it."
 msgstr ""
-"Fortsätter att köra och transkriberar filer som läggs till i mappen tills"
-" du stoppar det. Filer som redan finns hoppas över."
+"Fortsätter köras och transkriberar filerna som läggs till i mappen, tills"
+" du stoppar den."
 
 msgid "Key points"
 msgstr "Huvudpunkter"
@@ -703,6 +767,10 @@ msgstr "Stor"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "Större modeller är mer exakta, men långsammare."
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "Senaste filen transkriberades {time}: {name}"
 
 msgid "Light"
 msgstr "Ljust"
@@ -797,6 +865,13 @@ msgid "Name of the transcription:"
 msgstr "Transkriberingens namn:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr ""
+"Namn eller sökvägar för filerna som ska hoppas över, avgränsade med "
+"kommatecken. Dolda filer hoppas alltid över."
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr ""
@@ -876,6 +951,9 @@ msgstr "Inga resultat"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "Inget ljud. Kontrollera att mikrofonen är på och tillåten."
 
+msgid "No speech found"
+msgstr "Inget tal hittades"
+
 msgid "No summary yet"
 msgstr "Ingen sammanfattning ännu"
 
@@ -946,11 +1024,23 @@ msgstr ""
 "Transkriberar endast engelska, snabbare än den flerspråkiga modellen av "
 "samma storlek."
 
+msgid "Open folder"
+msgstr "Öppna mapp"
+
 msgid "Open in history"
 msgstr "Öppna i historiken"
 
-msgid "Open the folder of the saved files"
-msgstr "Öppna mappen med sparade filer"
+msgid "Open in the browser"
+msgstr "Öppna i webbläsaren"
+
+msgid "Open source folder"
+msgstr "Öppna källmapp"
+
+msgid "Open transcript"
+msgstr "Öppna transkribering"
+
+msgid "Open transcripts folder"
+msgstr "Öppna mappen med transkriptioner"
 
 msgid "OpenAI API key"
 msgstr "OpenAI API-nyckel"
@@ -971,11 +1061,11 @@ msgstr "Kontur"
 msgid "Output"
 msgstr "Utdata"
 
-msgid "Overwrite existing files"
-msgstr "Skriv över befintliga filer"
-
 msgid "Paste"
 msgstr "Klistra in"
+
+msgid "Pending"
+msgstr "Väntande"
 
 msgid "Pin to the top"
 msgstr "Fäst överst"
@@ -1047,6 +1137,21 @@ msgstr "Leverantörer"
 msgid "Queued"
 msgstr "I kö"
 
+msgid "Re-transcribe"
+msgstr "Transkribera igen"
+
+msgid "Re-transcribe all"
+msgstr "Transkribera alla igen"
+
+msgid "Re-transcribe all…"
+msgstr "Transkribera alla igen…"
+
+msgid "Re-transcribe them"
+msgstr "Transkribera dem igen"
+
+msgid "Re-transcribe this file"
+msgstr "Transkribera den här filen igen"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "Skrivskyddad. Redigera undertexterna för att ändra den här texten."
 
@@ -1087,6 +1192,28 @@ msgstr "Förfina"
 
 msgid "Regenerate the summary"
 msgstr "Generera sammanfattningen igen"
+
+msgid "Remove"
+msgstr "Ta bort"
+
+msgid "Remove from history"
+msgstr "Ta bort från historiken"
+
+msgid "Remove from history…"
+msgstr "Ta bort från historiken…"
+
+msgid "Remove missing files from the list…"
+msgstr "Ta bort saknade filer från listan…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "Ta bort {count} fil från historiken?"
+msgstr[1] "Ta bort {count} filer från historiken?"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "Ta bort ”{title}” och dess filer från historiken?"
 
 msgid "Rename"
 msgstr "Byt namn"
@@ -1136,6 +1263,15 @@ msgstr ""
 "Krävs för att översätta med DeepL. Nycklar för gratisplanen fungerar "
 "också."
 
+msgid "Rescan folder"
+msgstr "Sök igenom mappen igen"
+
+msgid "Resume watching"
+msgstr "Återuppta bevakning"
+
+msgid "Retry failed"
+msgstr "Försök igen med misslyckade"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "Granska godkända ord igen"
@@ -1158,6 +1294,9 @@ msgstr "Samma som ljudet"
 
 msgid "Save"
 msgstr "Spara"
+
+msgid "Save and rescan"
+msgstr "Spara och sök igenom igen"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1232,6 +1371,9 @@ msgstr "Visa i filhanteraren"
 msgid "Show it as the subtitles of the video"
 msgstr "Visa den som videons undertexter"
 
+msgid "Show more"
+msgstr "Visa fler"
+
 msgid "Show subtitles on the video"
 msgstr "Visa undertexter på videon"
 
@@ -1247,8 +1389,23 @@ msgstr "Visar en systemavisering när en transkribering är klar."
 msgid "Size"
 msgstr "Storlek"
 
+msgid "Skip files matching"
+msgstr "Hoppa över filer som matchar"
+
 msgid "Small"
 msgstr "Liten"
+
+msgid "Sort by duration"
+msgstr "Sortera efter längd"
+
+msgid "Sort by name"
+msgstr "Sortera efter namn"
+
+msgid "Sort by size"
+msgstr "Sortera efter storlek"
+
+msgid "Sort by status"
+msgstr "Sortera efter status"
 
 msgid "Source"
 msgstr "Källa"
@@ -1282,6 +1439,9 @@ msgstr "Sluta synkronisera rullning"
 msgid "Stop watching"
 msgstr "Sluta bevaka"
 
+msgid "Stop watching to edit settings"
+msgstr "Sluta bevaka för att redigera inställningarna"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "Slutade bevaka mappen. Transkriberade filer: {done}."
@@ -1301,6 +1461,9 @@ msgstr "Undertexter (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "Undertexter: {count}"
+
+msgid "Summarize…"
+msgstr "Sammanfatta…"
 
 msgid "Summarizing…"
 msgstr "Sammanfattar…"
@@ -1395,14 +1558,11 @@ msgstr "Det gick inte att ladda ned filen: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "Filen har flyttats eller tagits bort: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr ""
-"Mappen innehåller inga filer att transkribera. Filer som redan har en "
-"transkribering hoppas över, om du inte markerar ”Skriv över befintliga "
-"filer”."
+msgid "The files it already contains are skipped."
+msgstr "De filer som den redan innehåller hoppas över."
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "Mappen innehåller inga ljud- eller videofiler att transkribera."
 
 msgid "The level is shown while recording"
 msgstr "Nivån visas under inspelning"
@@ -1558,6 +1718,14 @@ msgstr "Transkribera en mapp"
 msgid "Transcribe again"
 msgstr "Transkribera igen"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr ""
+"Transkribera alla filer i ”{title}” igen? Filerna som sparats för dem "
+"ersätts."
+
 msgid "Transcribe from a URL"
 msgstr "Transkribera från en URL"
 
@@ -1568,6 +1736,9 @@ msgstr "Transkribera från mikrofonen"
 msgid "Transcribe it again to score its words"
 msgstr "Transkribera igen för att poängsätta orden"
 
+msgid "Transcribe the files already in the folder"
+msgstr "Transkribera filerna som redan finns i mappen"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "Transkribera ”{title}” igen? Ändringarna i texten går förlorade."
@@ -1577,20 +1748,16 @@ msgid "Transcribed {done} of {total} files."
 msgstr "{done} av {total} filer transkriberades."
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr ""
-"Transkriberar om filer som redan har en transkription och ersätter dess "
-"filer."
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
 msgstr ""
-"Transkriberar ljud- och videofilerna i mappen och dess undermappar. Filer"
-" som redan har en transkribering hoppas över, om du inte skriver över "
-"dem."
+"Transkriberar mappens och dess undermappars ljud- och videofiler. Filer "
+"som redan har en transkribering hoppas över. Du kan transkribera dem igen"
+" från mappen."
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "Transkriberar filerna utan transkribering, som de nya."
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1739,6 +1906,9 @@ msgstr "Videofiler"
 msgid "Video with subtitles (.mp4)…"
 msgstr "Video med undertexter (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "Vänta tills det är klart för att redigera inställningarna"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "Vänta tills den aktuella transkriberingen är klar, eller avbryt den."
 
@@ -1754,6 +1924,10 @@ msgstr "Väntar på tal…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "Väntar på att den aktuella transkriberingen ska bli klar."
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "Väntar på att mappen ska bli tillgänglig: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1835,14 +2009,24 @@ msgstr "YouTube eller en länk till en fil"
 msgid "YouTube video"
 msgstr "YouTube-video"
 
+msgid "Your audio and video files are not deleted."
+msgstr "Dina ljud- och videofiler tas inte bort."
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "Dina ljud-, video- och sparade filer tas inte bort."
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "ungefär {time} kvar"
 
 msgid "cancelled"
 msgstr "avbruten"
 
 msgid "default"
 msgstr "standard"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "t.ex. *.wav, utkast/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "t.ex. En intervju om taligenkänning"
@@ -1869,8 +2053,40 @@ msgid "{count} failed"
 msgstr "{count} misslyckade"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} filer"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} fil"
+msgstr[1] "{count} filer"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "{count} fil transkriberades i {folder}"
+msgstr[1] "{count} filer transkriberades i {folder}"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] "{count} fil transkriberades med andra inställningar. Ändrat: {settings}."
+msgstr[1] "{count} filer transkriberades med andra inställningar. Ändrat: {settings}."
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} saknas"
+msgstr[1] "{count} saknas"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} markerad"
+msgstr[1] "{count} markerade"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} överhoppad, redan transkriberad"
+msgstr[1] "{count} överhoppade, redan transkriberade"
 
 #, python-brace-format
 msgid "{count} transcriptions"

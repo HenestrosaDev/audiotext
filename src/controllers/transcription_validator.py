@@ -77,7 +77,14 @@ def _validate_audio_source(transcription: Transcription) -> None:
             raise ValueError(_("Please select a valid audio or video file."))
 
     elif source.has_several_files:
-        if not (path and path.is_dir()):
+        # A watched folder that isn't available is waited for
+        is_waited_for = (
+            source == AudioSource.WATCH
+            and transcription.should_wait_for_folder
+            and path is not None
+            and not path.exists()
+        )
+        if not (path and (path.is_dir() or is_waited_for)):
             raise ValueError(_("Please select a valid folder."))
 
     elif source == AudioSource.YOUTUBE and not (

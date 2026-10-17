@@ -7,7 +7,7 @@ from models.history import EntryStatus, HistoryEntry
 from utils.enums import AudioSource
 from utils.i18n import L_, _
 from views.entries.delegates import EntryActions
-from views.history.formatting import status_icon, status_label
+from views.history.formatting import format_clock_time, status_icon, status_label
 from views.localization import on_language_change
 from views.style import icons, theme
 from views.widgets.bindings import bind_wraplength
@@ -117,9 +117,11 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
         if status.is_active:
             self.lbl_status.configure(text=status_label(status))
             self.update_progress()
-            label = (
-                _("Stop watching") if status == EntryStatus.WATCHING else _("Cancel")
+            # Also while it waits, paused for another transcription
+            is_watch = (
+                status == EntryStatus.WATCHING or entry.kind == AudioSource.WATCH.value
             )
+            label = _("Stop watching") if is_watch else _("Cancel")
             ctk.CTkButton(
                 self.frm_actions,
                 text=label,
@@ -201,6 +203,31 @@ class ProgressCard(ctk.CTkFrame):  # type: ignore[misc]
             fraction = None
         else:
             message, fraction = self._actions.jobs.get_progress_message(self._entry.id)
+
+        jobs = self._actions.jobs
+        # A watched folder waiting for files is at rest, not busy
+        if self._entry.status == EntryStatus.WATCHING and jobs.is_watch_idle(
+            self._entry.id
+        ):
+            if last_file := jobs.get_last_watched_file(self._entry.id):
+                name, done_at = last_file
+                message = "\n".join(
+                    part
+                    for part in (
+                        message,
+                        _("Last file transcribed at {time}: {name}").format(
+                            time=format_clock_time(done_at), name=name
+                        ),
+                    )
+                    if part
+                )
+            self.lbl_message.configure(
+                text=message or _("Waiting for new files…"),
+                text_color=theme.HINT_TEXT,
+            )
+            self._stop_progress()
+            self.progress_bar.grid_remove()
+            return
 
         self.lbl_message.configure(
             text=message or _("Starting…"), text_color=theme.HINT_TEXT

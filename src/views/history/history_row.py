@@ -1,4 +1,5 @@
 import tkinter as tk
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import customtkinter as ctk
@@ -183,8 +184,17 @@ class HistoryRow(ctk.CTkFrame):  # type: ignore[misc]
             else:
                 label.grid_remove()
 
+        # The files of a folder that were moved or deleted, like in the folder
+        is_missing = (
+            self._is_child
+            and not entry.status.is_active
+            and bool(entry.source)
+            and not Path(entry.source).exists()
+        )
         self.lbl_status_icon.configure(
-            image=status_icon(entry.status, 13, spinner_frame)
+            image=icons.icon("alert_circle", 13, theme.ICON_MUTED)
+            if is_missing
+            else status_icon(entry.status, 13, spinner_frame)
         )
 
         if not self._is_child:

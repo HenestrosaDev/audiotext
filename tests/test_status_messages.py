@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 from unittest.mock import MagicMock, call
 
 import pytest
@@ -63,3 +64,35 @@ def test_the_entry_is_refreshed_once_its_summary_or_translation_finishes(
         call("Could not translate “Talk”: No key", is_error=True),
     ]
     assert display.refresh_entry_view.call_args_list == [call(entry.id), call(entry.id)]
+
+
+def test_the_files_of_a_watched_folder_are_notified_together(
+    messages: StatusMessages, display: MagicMock, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import utils.notifications as notifications
+    from utils.config_manager import ConfigManager
+
+    sent: list[tuple[str, str]] = []
+    monkeypatch.setattr(notifications, "notify", lambda *args: sent.append(args))
+    monkeypatch.setattr(
+        ConfigManager,
+        "get_config_system",
+        lambda: MagicMock(notify_when_done=True),
+    )
+    scheduled: list[Any] = []
+    display.after.side_effect = lambda _ms, callback: scheduled.append(callback) or "id"
+
+    messages.on_transcription_ready(make_entry(title="a.mp3"), "inbox")
+    messages.on_transcription_ready(make_entry(title="b.mp3"), "inbox")
+    # The previous wait is replaced, so they're notified once
+    display.after_cancel.assert_called_once_with("id")
+    scheduled[-1]()
+    messages.on_transcription_ready(make_entry(title="c.mp3"), "inbox")
+    scheduled[-1]()
+    messages.on_transcription_ready(make_entry(title="Talk"))
+
+    assert sent == [
+        ("Transcription ready", "2 files transcribed in inbox"),
+        ("Transcription ready", "c.mp3"),
+        ("Transcription ready", "Talk"),
+    ]

@@ -32,6 +32,24 @@ class Transcription:
     should_isolate_speech: bool = False
     should_autosave: bool = False
     should_overwrite: bool = False
+    # Whether the files of the folder are transcribed. If not, only the
+    # `retranscribed_files` are
+    should_scan_folder: bool = True
+    # Files of the folder transcribed again, replacing their transcriptions
+    retranscribed_files: list[Path] = field(default_factory=list)
+    # Whether watching a folder transcribes the files it already contains first
+    should_transcribe_existing: bool = False
+    # Whether the files of the subfolders of a folder are transcribed too
+    should_include_subfolders: bool = True
+    # Patterns of the names or paths of the files of a folder to skip (e.g. "*.wav")
+    exclude_patterns: list[str] = field(default_factory=list)
+    # The files that a paused watch had already seen, with their size and
+    # modification time, so it goes on where it left off. If None, the ones that
+    # the folder contains are ignored
+    watch_known_files: dict[Path, tuple[int, int]] | None = None
+    # Whether watching a folder that isn't available (e.g. on a drive that isn't
+    # connected) waits until it is, instead of failing
+    should_wait_for_folder: bool = False
     # URL of the audio or video to download (YouTube or a direct link to a file)
     url: str | None = None
     # Folder where the autosaved files are stored. If None, they're stored next to

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-16 19:00+0200\n"
+"POT-Creation-Date: 2026-10-17 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -96,6 +96,9 @@ msgstr "しきい値を調整"
 msgid "Aligning subtitles…"
 msgstr "字幕のタイミングを調整しています…"
 
+msgid "All"
+msgstr "すべて"
+
 msgid "All files"
 msgstr "すべてのファイル"
 
@@ -111,6 +114,14 @@ msgid ""
 "All the audio and video files of a folder, or the new ones as they're "
 "added."
 msgstr "フォルダー内のすべての音声・動画ファイル、または追加された新しいファイル。"
+
+msgid "All the files already have a transcription."
+msgstr "すべてのファイルに文字起こしがあります。"
+
+#, python-brace-format
+msgid "Also delete the {count} file saved for them"
+msgid_plural "Also delete the {count} files saved for them"
+msgstr[0] "保存された {count} 件のファイルも削除する"
 
 msgid "Also required for transcription with the Whisper API."
 msgstr "Whisper API での文字起こしにも必要です。"
@@ -241,8 +252,16 @@ msgstr "ソースを選ぶか、履歴から文字起こしを選んで表示・
 msgid "Choose where to save the transcriptions"
 msgstr "文字起こしの保存先を選択"
 
+msgid "Clear selection"
+msgstr "選択を解除"
+
 msgid "Clear the conversation"
 msgstr "会話を消去"
+
+# Needs review by a native speaker
+#, python-brace-format
+msgid "Close ({shortcut})"
+msgstr "閉じる ({shortcut})"
 
 msgid "Compute type"
 msgstr "計算タイプ"
@@ -257,11 +276,22 @@ msgstr "コンテキスト"
 msgid "Continue"
 msgstr "続行"
 
+msgid "Copied to the clipboard."
+msgstr "クリップボードにコピーしました。"
+
 msgid "Copy"
 msgstr "コピー"
 
+msgid "Copy text"
+msgstr "テキストをコピー"
+
 msgid "Could not check for updates."
 msgstr "アップデートを確認できませんでした。"
+
+#, python-brace-format
+msgid "Could not delete {count} saved file."
+msgid_plural "Could not delete {count} saved files."
+msgstr[0] "保存した {count} 件のファイルを削除できませんでした。"
 
 #, python-brace-format
 msgid ""
@@ -367,6 +397,11 @@ msgstr "文字起こしを削除"
 msgid "Delete “{title}” from the history?"
 msgstr "「{title}」を履歴から削除しますか？"
 
+#, python-brace-format
+msgid "Deleted {count} saved file."
+msgid_plural "Deleted {count} saved files."
+msgstr[0] "保存した {count} 件のファイルを削除しました。"
+
 msgid "Delete…"
 msgstr "削除…"
 
@@ -410,6 +445,9 @@ msgstr "ここに音声または動画ファイルをドロップ"
 msgid "Edit note…"
 msgstr "メモを編集…"
 
+msgid "Edit settings"
+msgstr "設定を編集"
+
 msgid "Edit tag…"
 msgstr "タグを編集…"
 
@@ -450,6 +488,9 @@ msgstr ""
 msgid "Export"
 msgstr "エクスポート"
 
+msgid "Export all…"
+msgstr "すべてエクスポート…"
+
 msgid "Export summary"
 msgstr "要約をエクスポート"
 
@@ -473,11 +514,17 @@ msgid ""
 " boxes: {characters}"
 msgstr "{path} にエクスポートしましたが、次の文字を含むフォントがないため、四角で表示されます: {characters}"
 
+msgid "Export…"
+msgstr "エクスポート…"
+
 msgid "Failed"
 msgstr "失敗"
 
 msgid "File"
 msgstr "ファイル"
+
+msgid "File not found"
+msgstr "ファイルが見つかりません"
 
 msgid "File types"
 msgstr "ファイルの種類"
@@ -522,6 +569,11 @@ msgstr "{language}への翻訳内を検索"
 
 msgid "Find:"
 msgstr "検索:"
+
+msgid ""
+"First transcribes the files it already contains that don't have a "
+"transcription yet."
+msgstr "最初に、すでにあるファイルのうち文字起こしがないものを文字起こしします。"
 
 msgid "Folder"
 msgstr "フォルダー"
@@ -614,6 +666,13 @@ msgstr ""
 msgid "Identifying speakers…"
 msgstr "話者を識別しています…"
 
+#, python-brace-format
+msgid "In {folder}"
+msgstr "場所: {folder}"
+
+msgid "Include subfolders"
+msgstr "サブフォルダーを含める"
+
 msgid "Interface language"
 msgstr "インターフェースの言語"
 
@@ -640,8 +699,8 @@ msgstr "メインウィンドウの前面に固定"
 
 msgid ""
 "Keeps running and transcribes the files added to the folder, until you "
-"stop it. The files it already contains are skipped."
-msgstr "停止するまで実行を続け、フォルダーに追加されたファイルを文字起こしします。すでにあるファイルはスキップされます。"
+"stop it."
+msgstr "停止するまで実行を続け、フォルダーに追加されたファイルを文字起こしします。"
 
 msgid "Key points"
 msgstr "要点"
@@ -674,6 +733,10 @@ msgstr "大"
 
 msgid "Larger models are more accurate, but slower."
 msgstr "大きいモデルほど正確ですが、遅くなります。"
+
+#, python-brace-format
+msgid "Last file transcribed at {time}: {name}"
+msgstr "最後のファイルを {time} に文字起こし: {name}"
 
 msgid "Light"
 msgstr "ライト"
@@ -764,6 +827,11 @@ msgid "Name of the transcription:"
 msgstr "文字起こしの名前:"
 
 msgid ""
+"Names or paths of the files to skip, separated by commas. Hidden files "
+"are always skipped."
+msgstr "スキップするファイルの名前またはパス（カンマ区切り）。隠しファイルは常にスキップされます。"
+
+msgid ""
 "Names, terms or acronyms said in the audio, separated by commas, so "
 "they're spelled right."
 msgstr "音声に出てくる名前、用語、略語をカンマ区切りで入力すると、正しく表記されます。"
@@ -839,6 +907,9 @@ msgstr "結果なし"
 msgid "No sound. Check that the microphone is on and allowed."
 msgstr "音がありません。マイクがオンで、許可されているか確認してください。"
 
+msgid "No speech found"
+msgstr "音声が見つかりません"
+
 msgid "No summary yet"
 msgstr "まだ要約はありません"
 
@@ -903,11 +974,23 @@ msgid ""
 "size."
 msgstr "英語のみを文字起こしします。同じサイズの多言語モデルより高速です。"
 
+msgid "Open folder"
+msgstr "フォルダーを開く"
+
 msgid "Open in history"
 msgstr "履歴で開く"
 
-msgid "Open the folder of the saved files"
-msgstr "保存したファイルのフォルダーを開く"
+msgid "Open in the browser"
+msgstr "ブラウザーで開く"
+
+msgid "Open source folder"
+msgstr "元のフォルダーを開く"
+
+msgid "Open transcript"
+msgstr "文字起こしを開く"
+
+msgid "Open transcripts folder"
+msgstr "文字起こしのフォルダーを開く"
 
 msgid "OpenAI API key"
 msgstr "OpenAI API キー"
@@ -928,11 +1011,11 @@ msgstr "縁取り"
 msgid "Output"
 msgstr "出力"
 
-msgid "Overwrite existing files"
-msgstr "既存のファイルを上書き"
-
 msgid "Paste"
 msgstr "貼り付け"
+
+msgid "Pending"
+msgstr "未完了"
 
 msgid "Pin to the top"
 msgstr "上部に固定"
@@ -1002,6 +1085,21 @@ msgstr "プロバイダー"
 msgid "Queued"
 msgstr "待機中"
 
+msgid "Re-transcribe"
+msgstr "再文字起こし"
+
+msgid "Re-transcribe all"
+msgstr "すべて再文字起こし"
+
+msgid "Re-transcribe all…"
+msgstr "すべて再文字起こし…"
+
+msgid "Re-transcribe them"
+msgstr "再文字起こし"
+
+msgid "Re-transcribe this file"
+msgstr "このファイルを再文字起こし"
+
 msgid "Read-only. Edit the subtitles to change this text."
 msgstr "読み取り専用です。このテキストを変更するには字幕を編集してください。"
 
@@ -1040,6 +1138,27 @@ msgstr "仕上げ"
 
 msgid "Regenerate the summary"
 msgstr "要約を再生成"
+
+msgid "Remove"
+msgstr "削除"
+
+msgid "Remove from history"
+msgstr "履歴から削除"
+
+msgid "Remove from history…"
+msgstr "履歴から削除…"
+
+msgid "Remove missing files from the list…"
+msgstr "見つからないファイルをリストから削除…"
+
+#, python-brace-format
+msgid "Remove {count} file from the history?"
+msgid_plural "Remove {count} files from the history?"
+msgstr[0] "{count} 件のファイルを履歴から削除しますか？"
+
+#, python-brace-format
+msgid "Remove “{title}” and its files from the history?"
+msgstr "「{title}」とそのファイルを履歴から削除しますか？"
 
 msgid "Rename"
 msgstr "名前を変更"
@@ -1085,6 +1204,15 @@ msgstr "WhisperX で話者を識別するのに必要です（pyannote/speaker-d
 msgid "Required to translate with DeepL. Keys of the free plan work too."
 msgstr "DeepL での翻訳に必要です。無料プランのキーも使えます。"
 
+msgid "Rescan folder"
+msgstr "フォルダーを再スキャン"
+
+msgid "Resume watching"
+msgstr "監視を再開"
+
+msgid "Retry failed"
+msgstr "失敗したものを再試行"
+
 # Needs review by a native speaker
 msgid "Review accepted words again"
 msgstr "承認した単語をもう一度確認"
@@ -1105,6 +1233,9 @@ msgstr "音声と同じ"
 
 msgid "Save"
 msgstr "保存"
+
+msgid "Save and rescan"
+msgstr "保存して再スキャン"
 
 #, python-brace-format
 msgid "Saved in {folder}"
@@ -1175,6 +1306,9 @@ msgstr "ファイルマネージャーで表示"
 msgid "Show it as the subtitles of the video"
 msgstr "動画の字幕として表示"
 
+msgid "Show more"
+msgstr "さらに表示"
+
 msgid "Show subtitles on the video"
 msgstr "動画に字幕を表示"
 
@@ -1190,8 +1324,23 @@ msgstr "文字起こしが完了したときにシステム通知を表示しま
 msgid "Size"
 msgstr "サイズ"
 
+msgid "Skip files matching"
+msgstr "次に一致するファイルをスキップ"
+
 msgid "Small"
 msgstr "小"
+
+msgid "Sort by duration"
+msgstr "長さで並べ替え"
+
+msgid "Sort by name"
+msgstr "名前で並べ替え"
+
+msgid "Sort by size"
+msgstr "サイズで並べ替え"
+
+msgid "Sort by status"
+msgstr "状態で並べ替え"
 
 msgid "Source"
 msgstr "ソース"
@@ -1225,6 +1374,9 @@ msgstr "スクロールの同期を停止"
 msgid "Stop watching"
 msgstr "監視を停止"
 
+msgid "Stop watching to edit settings"
+msgstr "設定を編集するには監視を停止してください"
+
 #, python-brace-format
 msgid "Stopped watching the folder. Files transcribed: {done}."
 msgstr "フォルダーの監視を停止しました。文字起こししたファイル: {done}。"
@@ -1244,6 +1396,9 @@ msgstr "字幕 (.srt)"
 #, python-brace-format
 msgid "Subtitles: {count}"
 msgstr "字幕: {count}"
+
+msgid "Summarize…"
+msgstr "要約…"
 
 msgid "Summarizing…"
 msgstr "要約しています…"
@@ -1334,11 +1489,11 @@ msgstr "ファイルをダウンロードできませんでした: {error}"
 msgid "The file was moved or deleted: {path}"
 msgstr "ファイルが移動または削除されました: {path}"
 
-msgid ""
-"The folder doesn't contain files to transcribe. The files that already "
-"have a transcription are skipped unless you check 'Overwrite existing "
-"files'."
-msgstr "フォルダーに文字起こしするファイルがありません。「既存のファイルを上書き」をオンにしない限り、文字起こし済みのファイルはスキップされます。"
+msgid "The files it already contains are skipped."
+msgstr "すでにあるファイルはスキップされます。"
+
+msgid "The folder doesn't contain audio or video files to transcribe."
+msgstr "フォルダーに文字起こしする音声または動画ファイルがありません。"
 
 msgid "The level is shown while recording"
 msgstr "録音中はレベルが表示されます"
@@ -1488,6 +1643,12 @@ msgstr "フォルダーを文字起こし"
 msgid "Transcribe again"
 msgstr "もう一度文字起こし"
 
+#, python-brace-format
+msgid ""
+"Transcribe all the files of “{title}” again? The files saved for them "
+"will be replaced."
+msgstr "「{title}」のすべてのファイルを再度文字起こししますか？保存したファイルは置き換えられます。"
+
 msgid "Transcribe from a URL"
 msgstr "URL から文字起こし"
 
@@ -1498,6 +1659,9 @@ msgstr "マイクから文字起こし"
 msgid "Transcribe it again to score its words"
 msgstr "単語を評価するには再度文字起こしする"
 
+msgid "Transcribe the files already in the folder"
+msgstr "フォルダー内の既存のファイルを文字起こし"
+
 #, python-brace-format
 msgid "Transcribe “{title}” again? The changes made to its text will be lost."
 msgstr "「{title}」をもう一度文字起こししますか？テキストへの変更は失われます。"
@@ -1507,15 +1671,13 @@ msgid "Transcribed {done} of {total} files."
 msgstr "{total} 件中 {done} 件のファイルを文字起こししました。"
 
 msgid ""
-"Transcribes again the files that already have a transcription, replacing "
-"its files."
-msgstr "すでに文字起こしがあるファイルをもう一度文字起こしし、そのファイルを置き換えます。"
-
-msgid ""
 "Transcribes the audio and video files of the folder and its subfolders. "
-"Files that already have a transcription are skipped unless you overwrite "
-"them."
-msgstr "フォルダーとそのサブフォルダーの音声・動画ファイルを文字起こしします。文字起こし済みのファイルは、上書きしない限りスキップされます。"
+"Files that already have a transcription are skipped. You can transcribe "
+"them again from the folder."
+msgstr "フォルダーとそのサブフォルダーの音声・動画ファイルを文字起こしします。すでに文字起こしがあるファイルはスキップされます。フォルダーから再度文字起こしできます。"
+
+msgid "Transcribes the files without a transcription, like the new ones."
+msgstr "新しいファイルなど、文字起こしがないファイルを文字起こしします。"
 
 #, python-brace-format
 msgid "Transcribing chunk {current} of {total}…"
@@ -1660,6 +1822,9 @@ msgstr "動画ファイル"
 msgid "Video with subtitles (.mp4)…"
 msgstr "字幕付き動画 (.mp4)…"
 
+msgid "Wait until it finishes to edit settings"
+msgstr "設定を編集するには完了するまでお待ちください"
+
 msgid "Wait until the current transcription finishes, or cancel it."
 msgstr "現在の文字起こしが終わるまで待つか、キャンセルしてください。"
 
@@ -1675,6 +1840,10 @@ msgstr "音声を待っています…"
 
 msgid "Waiting for the current transcription to finish."
 msgstr "現在の文字起こしが終わるのを待っています。"
+
+#, python-brace-format
+msgid "Waiting for the folder to be available: {folder}"
+msgstr "フォルダーが利用可能になるのを待っています: {folder}"
 
 #, python-brace-format
 msgid "Waiting for {count} transcription(s) to finish."
@@ -1750,14 +1919,24 @@ msgstr "YouTube またはファイルへのリンク"
 msgid "YouTube video"
 msgstr "YouTube 動画"
 
+msgid "Your audio and video files are not deleted."
+msgstr "音声と動画のファイルは削除されません。"
+
 msgid "Your audio, video and saved files are not deleted."
 msgstr "音声、動画、保存したファイルは削除されません。"
+
+#, python-brace-format
+msgid "about {time} left"
+msgstr "残り約 {time}"
 
 msgid "cancelled"
 msgstr "キャンセル済み"
 
 msgid "default"
 msgstr "既定"
+
+msgid "e.g. *.wav, drafts/*"
+msgstr "例: *.wav, drafts/*"
 
 msgid "e.g. An interview about speech recognition"
 msgstr "例: 音声認識についてのインタビュー"
@@ -1784,8 +1963,34 @@ msgid "{count} failed"
 msgstr "{count} 件失敗"
 
 #, python-brace-format
-msgid "{count} files"
-msgstr "{count} 件のファイル"
+msgid "{count} file"
+msgid_plural "{count} files"
+msgstr[0] "{count} 件のファイル"
+
+#, python-brace-format
+msgid "{count} file transcribed in {folder}"
+msgid_plural "{count} files transcribed in {folder}"
+msgstr[0] "{folder} で {count} 件のファイルを文字起こししました"
+
+#, python-brace-format
+msgid "{count} file was transcribed with other settings. Changed: {settings}."
+msgid_plural "{count} files were transcribed with other settings. Changed: {settings}."
+msgstr[0] "{count} 件のファイルが別の設定で文字起こしされました。変更: {settings}。"
+
+#, python-brace-format
+msgid "{count} missing"
+msgid_plural "{count} missing"
+msgstr[0] "{count} 件が見つかりません"
+
+#, python-brace-format
+msgid "{count} selected"
+msgid_plural "{count} selected"
+msgstr[0] "{count} 件を選択"
+
+#, python-brace-format
+msgid "{count} skipped, already transcribed"
+msgid_plural "{count} skipped, already transcribed"
+msgstr[0] "{count} 件をスキップ（文字起こし済み）"
 
 #, python-brace-format
 msgid "{count} transcriptions"
