@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 01:25+0200\n"
+"POT-Creation-Date: 2026-10-23 01:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -205,9 +205,6 @@ msgstr "キャンセルしています…"
 
 msgid "Change API key…"
 msgstr "API キーを変更…"
-
-msgid "Change Hugging Face token…"
-msgstr "Hugging Face のトークンを変更…"
 
 msgid "Change…"
 msgstr "変更…"
