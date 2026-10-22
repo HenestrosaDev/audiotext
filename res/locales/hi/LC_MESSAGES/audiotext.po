@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-17 03:08+0200\n"
+"POT-Creation-Date: 2026-10-23 01:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -214,6 +214,9 @@ msgstr "रद्द किया जा रहा है…"
 
 msgid "Change API key…"
 msgstr "API कुंजी बदलें…"
+
+msgid "Change Hugging Face token…"
+msgstr "Hugging Face टोकन बदलें…"
 
 msgid "Change…"
 msgstr "बदलें…"
@@ -433,6 +436,10 @@ msgstr "दान करें"
 msgid "Done"
 msgstr "पूरा हुआ"
 
+msgctxt "files"
+msgid "Done"
+msgstr "पूरे हुए"
+
 #, python-brace-format
 msgid "Done in {duration}."
 msgstr "{duration} में पूरा हुआ।"
@@ -534,6 +541,10 @@ msgstr ""
 msgid "Export…"
 msgstr "एक्सपोर्ट करें…"
 
+msgid "Failed"
+msgstr "विफल"
+
+msgctxt "files"
 msgid "Failed"
 msgstr "विफल"
 
@@ -1632,9 +1643,6 @@ msgstr "ट्रांसक्रिप्शन बाधित हो गय
 
 msgid "The transcription will appear here when you stop recording."
 msgstr "रिकॉर्डिंग रोकने पर ट्रांसक्रिप्शन यहाँ दिखाई देगा।"
-
-msgid "The transcriptions of its files are deleted too."
-msgstr "इसकी फ़ाइलों के ट्रांसक्रिप्शन भी हटा दिए जाते हैं।"
 
 #, python-brace-format
 msgid "The translation of “{title}” is ready."

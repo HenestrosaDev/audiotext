@@ -97,8 +97,6 @@ class EntryDialogs:
             return
 
         message = _("Delete “{title}” from the history?").format(title=entry.title)
-        if entry.is_folder:
-            message += "\n\n" + _("The transcriptions of its files are deleted too.")
         message += "\n\n" + _("Your audio, video and saved files are not deleted.")
         if not messagebox.askyesno(
             _("Delete transcription"), message, parent=self._parent.winfo_toplevel()

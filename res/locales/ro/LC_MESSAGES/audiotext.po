@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-17 03:08+0200\n"
+"POT-Creation-Date: 2026-10-23 01:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -218,6 +218,9 @@ msgstr "Se anulează…"
 
 msgid "Change API key…"
 msgstr "Schimbă cheia API…"
+
+msgid "Change Hugging Face token…"
+msgstr "Schimbă tokenul Hugging Face…"
 
 msgid "Change…"
 msgstr "Schimbă…"
@@ -444,6 +447,10 @@ msgstr "Donează"
 msgid "Done"
 msgstr "Finalizată"
 
+msgctxt "files"
+msgid "Done"
+msgstr "Finalizate"
+
 #, python-brace-format
 msgid "Done in {duration}."
 msgstr "Finalizat în {duration}."
@@ -547,6 +554,10 @@ msgstr "Exportă…"
 
 msgid "Failed"
 msgstr "Eșuată"
+
+msgctxt "files"
+msgid "Failed"
+msgstr "Eșuate"
 
 msgid "File"
 msgstr "Fișier"
@@ -1656,9 +1667,6 @@ msgstr "Transcrierea a fost întreruptă"
 
 msgid "The transcription will appear here when you stop recording."
 msgstr "Transcrierea va apărea aici când opriți înregistrarea."
-
-msgid "The transcriptions of its files are deleted too."
-msgstr "Transcrierile fișierelor sale sunt și ele șterse."
 
 #, python-brace-format
 msgid "The translation of “{title}” is ready."
