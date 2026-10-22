@@ -14,7 +14,7 @@ from models.transcription_settings import SettingsChange, changed_options
 from utils.enums import AudioSource
 from utils.exporters import COLLECTION_FORMATS, ExportDocument, export_collection
 from utils.history_store import HistoryStore, sanitize_file_name
-from utils.i18n import L_, P_, _
+from utils.i18n import C_, L_, P_, _
 from utils.time_format import format_duration
 from views.entries.delegates import EntryActions, TranscriptAction
 from views.entries.entry_header import EntryHeader
@@ -513,8 +513,8 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
             self.seg_status,
             lambda: {
                 ALL_FILTER: _("All"),
-                DONE_FILTER: _("Done"),
-                FAILED_FILTER: _("Failed"),
+                DONE_FILTER: C_("files", "Done"),
+                FAILED_FILTER: C_("files", "Failed"),
                 PENDING_FILTER: _("Pending"),
             },
             list_state.get(self.entry_id, (ALL_FILTER, NAME_SORT))[0],
@@ -969,6 +969,12 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
             command=lambda: actions.jobs.retranscribe_files([entry_id]),
             state=tk.DISABLED if entry.status.is_active or is_missing else tk.NORMAL,
         )
+        # The files that were moved or deleted can't be transcribed again
+        if is_missing:
+            menu.add_command(
+                label=_("Remove from history…"),
+                command=lambda: actions.prompts.confirm_remove_entries([entry_id]),
+            )
         self._popup(menu, anchor)
         return "break"
 

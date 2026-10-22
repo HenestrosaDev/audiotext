@@ -90,7 +90,7 @@
   </p>
 </div>
 
-https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
+https://github.com/user-attachments/assets/561d9862-938e-4213-a922-9dd905934e1f
 
 <!-- TABLE OF CONTENTS -->
 
@@ -127,7 +127,8 @@ https://github.com/user-attachments/assets/31c458cd-25f7-4a58-9854-479dcd77a654
 
 ### Features
 
-- **Any source**: audio and video files, YouTube videos and direct links to media files, the microphone (with a live draft of the text while you speak), the files of a folder and its subfolders, or a folder that is watched to transcribe the files added to it.
+- **Any source**: audio and video files, YouTube videos and direct links to media files, the microphone (with a live draft of the text while you speak), the files of a folder (with or without its subfolders, skipping the ones you choose), or a folder that is watched to transcribe the files added to it, even after the app is restarted.
+- **The files of a folder in one place**: each file with its status, duration, size and a preview of its text, to search, filter and sort them, transcribe them again with other settings, or export several of them to a single TXT, Markdown or Word file.
 - **Private and offline**: WhisperX runs on your computer, on the CPU or, much faster, on an NVIDIA GPU with CUDA or on the GPU of a Mac with Apple Silicon (with [MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper)).
 - **Speaker identification**, word-level timings, background noise reduction (for hum and quiet speakers), and keywords and context to spell names and terms right.
 - **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL or Google Translate.
@@ -543,7 +544,7 @@ Contributions are what make the open source community such an amazing place to l
 
 ### Translations
 
-The interface is translated with [gettext](https://www.gnu.org/software/gettext/). The texts marked with `_()` (or `N_()`, for the ones defined before the language is set, `L_()`, for the ones translated again when it changes, and `P_()`, for the ones with a plural form) are in `res/locales/audiotext.pot`, and the translations of each language in `res/locales/<language>/LC_MESSAGES/audiotext.po`, which are compiled into the `audiotext.mo` files that the app loads.
+The interface is translated with [gettext](https://www.gnu.org/software/gettext/). The texts marked with `_()` (or `N_()`, for the ones defined before the language is set, `L_()`, for the ones translated again when it changes, `P_()`, for the ones with a plural form, and `C_()`, for the ones translated differently in a context) are in `res/locales/audiotext.pot`, and the translations of each language in `res/locales/<language>/LC_MESSAGES/audiotext.po`, which are compiled into the `audiotext.mo` files that the app loads.
 
 After the texts of the code change, or after editing a `.po` file (e.g. with [Poedit](https://poedit.net/)), run:
 
