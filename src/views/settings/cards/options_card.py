@@ -96,16 +96,28 @@ class OptionsCard(SettingsCard):
             ctk.CTkButton(
                 self.frm_speakers,
                 height=26,
-                command=lambda: on_set_api_key(
-                    EnvKeys.HF_TOKEN, _("Hugging Face token")
-                ),
+                command=lambda: self._set_hf_token(on_set_api_key),
                 **theme.SECONDARY_BUTTON,
             ),
-            text=L_("Set Hugging Face token…"),
+            text=self._hf_token_text(),
         )
         self.btn_hf_token.grid(row=1, column=0, columnspan=2, pady=(8, 0), sticky=ctk.W)
         self.interactive_widgets.extend([self.ent_num_speakers, self.btn_hf_token])
         self.lbl_diarize_hint = self._hint(8, pady=(2, 16))
+
+    @staticmethod
+    def _hf_token_text() -> Callable[[], str]:
+        def text() -> str:
+            if EnvKeys.HF_TOKEN.get_value(default=""):
+                return _("Change Hugging Face token…")
+            return _("Set Hugging Face token…")
+
+        return text
+
+    def _set_hf_token(self, on_set_api_key: Callable[[EnvKeys, str], None]) -> None:
+        on_set_api_key(EnvKeys.HF_TOKEN, _("Hugging Face token"))
+        if self.winfo_exists():
+            localize(self.btn_hf_token, text=self._hf_token_text())
 
     def destroy(self) -> None:
         if self._debounce_after_id:
@@ -126,6 +138,7 @@ class OptionsCard(SettingsCard):
         is_whisperx = method == TranscriptionMethod.WHISPERX
         state = ctk.NORMAL if is_whisperx else ctk.DISABLED
         self.swi_diarize.configure(state=state)
+        localize(self.btn_hf_token, text=self._hf_token_text())
 
         # The subtitles need the timings of the words, so they're always added
         self._is_align_forced = is_whisperx and self._has_subtitles(settings)
