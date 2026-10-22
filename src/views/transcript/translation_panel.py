@@ -19,7 +19,7 @@ from handlers.translation_handler import (
     translation_providers,
 )
 from models.transcript_segment import TranscriptSegment
-from models.translation import TranscriptTranslation
+from models.translation import TranscriptTranslation, segment_progress
 from utils.config_manager import ConfigManager
 from utils.env_keys import EnvKeys
 from utils.i18n import (
@@ -48,12 +48,20 @@ def language_name(code: str) -> str:
     return get_language_name(code, fallback=c.AUDIO_LANGUAGES.get(code, code))
 
 
-def translation_label(translation: TranscriptTranslation) -> str:
+def translation_label(
+    translation: TranscriptTranslation,
+    segments: list[TranscriptSegment] | None = None,
+) -> str:
     """
     The name of its language, with how many of its segments are translated while
     some aren't, e.g. "Spanish · 148/150".
+
+    :param segments: The segments shown, if not the ones of the translation (e.g.
+                     split into subtitles), so the count matches what's shown.
     """
-    done, total = translation.segment_progress()
+    done, total = segment_progress(
+        translation.segments if segments is None else segments
+    )
     name = language_name(translation.language)
     if done < total:
         return f"{name} · {format_number(done)}/{format_number(total)}"
@@ -272,7 +280,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             # same height as the transcript
             self._set_details("")
             self.text.set_note(
-                error or self._progress_note(translation),
+                error or self._progress_note(translation, segments),
                 bool(error),
                 can_go_to_empty=True,
             )
@@ -382,9 +390,19 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
             ).grid(row=1, column=0, pady=(14, 0))
 
     @staticmethod
-    def _progress_note(translation: TranscriptTranslation) -> str:
-        """How many of its segments are translated, if it has segments."""
-        done, total = translation.segment_progress()
+    def _progress_note(
+        translation: TranscriptTranslation,
+        segments: list[TranscriptSegment] | None = None,
+    ) -> str:
+        """
+        How many of its segments are translated, if it has segments.
+
+        :param segments: The segments shown, if not the ones of the translation
+                         (e.g. split into subtitles).
+        """
+        done, total = segment_progress(
+            translation.segments if segments is None else segments
+        )
         if not total:
             return ""
         return _("Translated: {done}/{total} · {percent}").format(
