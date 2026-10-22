@@ -307,9 +307,13 @@ class HistoryRow(ctk.CTkFrame):  # type: ignore[misc]
             chevron.configure(image=_chevron_icon(is_expanded, 12))
 
     def _on_click(self, event: Any) -> None:
-        if getattr(event, "widget", None) is getattr(self, "btn_chevron", None):
-            return
-        self._sidebar.actions.select_entry(self.entry_id)
+        # The chevron toggles the folder by itself. The click comes from its inner
+        # Tk widgets, whose paths start with its own
+        if chevron := getattr(self, "btn_chevron", None):
+            widget = str(getattr(event, "widget", ""))
+            if widget == str(chevron) or widget.startswith(f"{chevron}."):
+                return
+        self._sidebar.click_entry(self.entry_id)
 
     def start_rename(self, title: str) -> None:
         """Replaces the title with an entry to rename it in place."""

@@ -276,6 +276,14 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
         if entry_id not in self._expanded_folders:
             self._set_folder_expanded(entry_id, True)
 
+    def click_entry(self, entry_id: str) -> None:
+        # Clicking the folder that is already open shows or hides its files
+        entry = self.store.get(entry_id)
+        if entry and entry.is_folder and entry_id == self._selected_id:
+            self.toggle_folder(entry_id)
+        else:
+            self.actions.select_entry(entry_id)
+
     def toggle_folder(self, entry_id: str) -> None:
         self._set_folder_expanded(entry_id, entry_id not in self._expanded_folders)
 
