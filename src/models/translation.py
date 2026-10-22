@@ -1,7 +1,18 @@
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any
 
 from models.transcript_segment import TranscriptSegment, join_segments
+
+
+def segment_progress(segments: Iterable[TranscriptSegment]) -> tuple[int, int]:
+    """
+    How many of the segments have a text (not just whitespace), and how many there
+    are, e.g. (148, 150). Both are 0 if there are no segments.
+    """
+    segments = list(segments)
+    done = sum(1 for segment in segments if segment.text.strip())
+    return done, len(segments)
 
 
 @dataclass(frozen=True)
@@ -29,12 +40,8 @@ class TranscriptTranslation:
     is_text_edited: bool = False
 
     def segment_progress(self) -> tuple[int, int]:
-        """
-        How many of its segments have a text (not just whitespace), and how many
-        there are, e.g. (148, 150). Both are 0 if it has no segments.
-        """
-        done = sum(1 for segment in self.segments if segment.text.strip())
-        return done, len(self.segments)
+        """How many of its segments have a text, and how many there are."""
+        return segment_progress(self.segments)
 
     def to_dict(self) -> dict[str, Any]:
         return {
