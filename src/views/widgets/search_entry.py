@@ -37,8 +37,14 @@ class SearchEntry(ctk.CTkFrame):  # type: ignore[misc]
         self.grid_propagate(False)
         self.grid_rowconfigure(0, weight=1)
 
+        # As tall as the icon, since the default height covers the border of the
+        # shorter fields
         lbl_icon = ctk.CTkLabel(
-            self, text="", width=14, image=icons.icon("search", 13, theme.ICON_MUTED)
+            self,
+            text="",
+            width=14,
+            height=14,
+            image=icons.icon("search", 13, theme.ICON_MUTED),
         )
         lbl_icon.grid(row=0, column=0, padx=(9, 0))
 
