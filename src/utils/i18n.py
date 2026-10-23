@@ -7,7 +7,9 @@ so they are extracted for translation but translated later with `_()`. `L_()`
 gives a text of the interface that is translated again when the language changes
 (see `views.localization`), e.g. `localize(label, text=L_("Settings"))`. `P_()`
 translates a text that depends on a number, e.g. `P_("{count} file", "{count} files",
-count)`, with the plural forms of each language.
+count)`, with the plural forms of each language. `C_()` translates a text in a
+context, for the same text that is translated differently elsewhere, e.g.
+`C_("files", "Done")` for a filter of files instead of a transcription.
 
 The catalogs live in `res/locales/<language>/LC_MESSAGES/audiotext.po` (see the
 "Translations" section of the README to add or update them).
@@ -87,6 +89,14 @@ def P_(singular: str, plural: str, count: int) -> str:
     current interface language for the count.
     """
     return _interface_language.translation.ngettext(singular, plural, count)
+
+
+def C_(context: str, message: str) -> str:
+    """
+    Translates the message in a context, so it can be translated differently
+    from the same message in another one (e.g. by gender or number).
+    """
+    return _interface_language.translation.pgettext(context, message)
 
 
 def N_(message: str) -> str:

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-17 03:08+0200\n"
+"POT-Creation-Date: 2026-10-23 01:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -420,6 +420,10 @@ msgstr "寄付する"
 msgid "Done"
 msgstr "完了"
 
+msgctxt "files"
+msgid "Done"
+msgstr "完了"
+
 #, python-brace-format
 msgid "Done in {duration}."
 msgstr "{duration}で完了しました。"
@@ -517,6 +521,10 @@ msgstr "{path} にエクスポートしましたが、次の文字を含むフ�
 msgid "Export…"
 msgstr "エクスポート…"
 
+msgid "Failed"
+msgstr "失敗"
+
+msgctxt "files"
 msgid "Failed"
 msgstr "失敗"
 
@@ -1568,9 +1576,6 @@ msgstr "文字起こしは中断されました"
 
 msgid "The transcription will appear here when you stop recording."
 msgstr "録音を停止すると、ここに文字起こしが表示されます。"
-
-msgid "The transcriptions of its files are deleted too."
-msgstr "そのファイルの文字起こしも削除されます。"
 
 #, python-brace-format
 msgid "The translation of “{title}” is ready."

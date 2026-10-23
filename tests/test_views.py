@@ -110,6 +110,13 @@ class Ui:
         if self.errors:
             raise self.errors[0]
 
+    def pump_until(self, condition: Callable[[], bool], timeout: float = 5) -> None:
+        """Pumps until `condition` holds, for slow runners like macOS ones."""
+        end = time.monotonic() + timeout
+        while not condition() and time.monotonic() < end:
+            self.pump(0.05)
+        assert condition()
+
     def add(self, **kwargs: Any) -> HistoryEntry:
         values: dict[str, Any] = {
             "kind": AudioSource.FILE.value,
@@ -3310,6 +3317,8 @@ def test_the_translation_scrolls_with_the_transcription(ui: Ui) -> None:
     view = ui.window._entry_view
     original = view.text
     copy = view.translation_panel.text
+    # A text scrolled before it's shown stays at the top
+    ui.pump_until(lambda: original.winfo_ismapped() and copy.winfo_ismapped())
 
     original.tbx_transcript.yview_moveto(0.5)
     ui.pump()
