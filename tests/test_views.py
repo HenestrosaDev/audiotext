@@ -1574,6 +1574,57 @@ def test_the_parts_of_the_translation_are_changed_on_their_own(
     ]
 
 
+def test_the_progress_of_a_translation_is_counted_in_its_subtitles(
+    ui: Ui, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from models.translation import TranscriptTranslation
+    from views.transcript.edit_dialogs import Timing
+
+    for key, value in (
+        (ConfigSubtitles.Key.MAX_LINE_WIDTH, "10"),
+        (ConfigSubtitles.Key.MAX_LINE_COUNT, "1"),
+    ):
+        ConfigManager.modify_value(ConfigSubtitles.Key.SECTION, key, value)
+    translation = TranscriptTranslation(
+        "es", "", translated("Hola wisper", "Encantado de conocerte.", ""), "deepl"
+    )
+    entry = ui.add(
+        segments=SEGMENTS,
+        text=TEXT,
+        translations={translation.language: translation.to_dict()},
+    )
+    ui.window.select_entry(entry.id)
+    ui.pump()
+    view = ui.window._entry_view
+    note = view.translation_panel.text.lbl_note
+
+    # As many as the subtitles shown, not as the segments
+    assert note.cget("text") == "Translated: 5/6 · 83%"
+    assert view._translation_labels([])["es"] == "Spanish · 5/6"
+
+    # Adding a segment after a subtitle of a long segment splits it into its
+    # subtitles, which are still the same ones, so only the new one is counted
+    monkeypatch.setattr(
+        corrections.TimingDialog, "get_result", lambda _self: Timing(0.4, 0.5)
+    )
+    monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: None)
+    view.translation_editor.add_after(0)
+    ui.pump()
+    assert note.cget("text") == "Translated: 5/7 · 71%"
+    assert view._translation_labels([])["es"] == "Spanish · 5/7"
+
+    # and translating it counts it as done
+    added = next(
+        idx
+        for idx, part in enumerate(view._translation_parts())
+        if part.segment.start == 0.4
+    )
+    monkeypatch.setattr(corrections.TextDialog, "get_input", lambda _self: "Hey")
+    view.translation_editor.edit_text(added)
+    ui.pump()
+    assert note.cget("text") == "Translated: 6/7 · 85%"
+
+
 def test_the_subtitles_of_a_vertical_video_are_narrower(ui: Ui) -> None:
     ConfigManager.modify_value(
         ConfigSubtitles.Key.SECTION, ConfigSubtitles.Key.MAX_LINE_WIDTH_VERTICAL, "10"

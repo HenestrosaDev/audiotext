@@ -1361,12 +1361,16 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
     def _translation_labels(self, translating: list[str]) -> dict[str, str]:
         """
         The languages of the translations and how much of each is translated,
-        then the ones being translated into, and the one shown if it failed.
+        counted in subtitles like its panel, then the ones being translated into,
+        and the one shown if it failed.
         """
         labels: dict[str, str] = {}
         for language in self._entry.translations:
             if translation := self._entry.get_translation(language):
-                labels[language] = translation_label(translation)
+                parts = transcript_parts(list(translation.segments), self._is_vertical)
+                labels[language] = translation_label(
+                    translation, [part.segment for part in parts]
+                )
         shown = [self._translation_language] if self._translation_language else []
         for pending in [*translating, *shown]:
             if pending not in labels:
