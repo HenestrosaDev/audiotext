@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-17 03:08+0200\n"
+"POT-Creation-Date: 2026-10-23 01:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -422,6 +422,10 @@ msgstr "후원하기"
 msgid "Done"
 msgstr "완료"
 
+msgctxt "files"
+msgid "Done"
+msgstr "완료"
+
 #, python-brace-format
 msgid "Done in {duration}."
 msgstr "{duration} 만에 완료되었습니다."
@@ -519,6 +523,10 @@ msgstr "{path}(으)로 내보냈지만, 다음 문자가 있는 글꼴이 없어
 msgid "Export…"
 msgstr "내보내기…"
 
+msgid "Failed"
+msgstr "실패"
+
+msgctxt "files"
 msgid "Failed"
 msgstr "실패"
 
@@ -1570,9 +1578,6 @@ msgstr "받아쓰기가 중단되었습니다"
 
 msgid "The transcription will appear here when you stop recording."
 msgstr "녹음을 중지하면 여기에 받아쓰기가 표시됩니다."
-
-msgid "The transcriptions of its files are deleted too."
-msgstr "폴더에 있는 파일의 받아쓰기도 삭제됩니다."
 
 #, python-brace-format
 msgid "The translation of “{title}” is ready."

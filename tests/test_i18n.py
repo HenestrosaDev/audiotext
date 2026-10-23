@@ -38,3 +38,13 @@ def test_the_numbers_are_written_as_in_the_language(
     assert format_number(1234) == number
     # Rounded down, so 100% means all of it
     assert format_percent(0.999) == percent
+
+
+def test_a_text_is_translated_differently_in_a_context() -> None:
+    i18n.set_language("es")
+    try:
+        # A transcription is "Completada", and the files of a folder "Completados"
+        assert i18n._("Done") == "Completada"
+        assert i18n.C_("files", "Done") == "Completados"
+    finally:
+        i18n.set_language(i18n.DEFAULT_LANGUAGE)

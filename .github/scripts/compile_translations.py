@@ -36,10 +36,15 @@ def get_messages(catalog: Catalog) -> dict[MessageKey, tuple[str, ...]]:
     :return: The translated messages of the catalog, without the header.
     """
     return {
-        (as_tuple(message.id), message.context): as_tuple(message.string)
+        (as_tuple(message.id), as_context(message.context)): as_tuple(message.string)
         for message in catalog
         if message.id and message.string and not message.fuzzy
     }
+
+
+def as_context(context: str | bytes | None) -> str | None:
+    """The context of a message, which Babel reads from the .mo files as bytes."""
+    return context.decode() if isinstance(context, bytes) else context
 
 
 def check_placeholders(po_path: Path, catalog: Catalog) -> list[str]:
