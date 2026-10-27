@@ -289,6 +289,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
                     segments, text
                 ),
                 edit_prompt=self._transcript_edit_prompt,
+                edits_speakers=True,
             ),
             self._format_time,
         )
@@ -1604,14 +1605,14 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             command=lambda: self.translation_editor.edit_timing(idx),
         )
         menu.add_command(
-            label=_("Add a segment after…"),
+            label=_("Add subtitle after…"),
             command=lambda: self.translation_editor.add_after(idx),
         )
         menu.add_separator()
         menu.add_command(
-            label=_("Delete the segment"),
+            label=_("Delete subtitle"),
             command=lambda: self.translation_editor.delete(idx),
-            # Without segments, the translation would have no timestamps
+            # Without subtitles, the translation would have no timestamps
             state=tk.NORMAL if len(parts) > 1 else tk.DISABLED,
         )
         try:
@@ -1653,7 +1654,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             return title, _(
                 "Translation of “{text}”, said from {start} to {end}:"
             ).format(text=original, start=start, end=end)
-        return title, _("Translation of the segment from {start} to {end}:").format(
+        return title, _("Translation of the subtitle from {start} to {end}:").format(
             start=start, end=end
         )
 
@@ -1833,11 +1834,31 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         menu.add_command(
             label=_("Edit text…"), command=lambda: self.transcript_editor.edit_text(idx)
         )
+        menu.add_command(
+            label=_("Edit timing…"),
+            command=lambda: self.transcript_editor.edit_timing(idx),
+        )
+        menu.add_command(
+            label=_("Add subtitle after…"),
+            command=lambda: self.transcript_editor.add_after(idx),
+        )
         if segment.speaker:
+            menu.add_separator()
+            menu.add_command(
+                label=_("Change speaker…"),
+                command=lambda: self.transcript_editor.change_speaker(idx),
+            )
             menu.add_command(
                 label=_("Rename speakers…"),
                 command=self.transcript_editor.rename_speakers,
             )
+        menu.add_separator()
+        menu.add_command(
+            label=_("Delete subtitle"),
+            command=lambda: self.transcript_editor.delete(idx),
+            # Without subtitles, the transcription would have no timestamps
+            state=tk.NORMAL if len(self._parts) > 1 else tk.DISABLED,
+        )
         try:
             menu.tk_popup(event.x_root, event.y_root)
         finally:

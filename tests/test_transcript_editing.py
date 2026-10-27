@@ -13,6 +13,7 @@ from utils.transcript_editing import (
     rename_speakers_in_text,
     replace_in_segments,
     replace_text,
+    set_segment_speaker,
     set_segment_timing,
     speakers,
     split_segment,
@@ -211,6 +212,20 @@ def test_rename_speakers_can_swap_and_merge_them() -> None:
     result = rename_speakers(segments, {"A": "B", "B": "A", "C": "A"})
 
     assert [segment.speaker for segment in result] == ["B", "A", "A"]
+
+
+def test_set_segment_speaker_changes_only_that_segment() -> None:
+    segments = [
+        TranscriptSegment(0, 1, "Hi.", "A", WORDS[:1]),
+        TranscriptSegment(1, 2, "Hello.", "A"),
+    ]
+
+    result = set_segment_speaker(segments, 0, " B ")
+
+    assert result[0] == TranscriptSegment(0, 1, "Hi.", "B", WORDS[:1])
+    assert result[1] is segments[1]
+    with pytest.raises(ValueError):
+        set_segment_speaker(segments, 0, " ")
 
 
 def test_rename_speakers_in_text() -> None:
