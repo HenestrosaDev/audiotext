@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -67,17 +67,17 @@ msgstr "बाकी सभी स्वीकार करें"
 msgid "Add"
 msgstr "जोड़ें"
 
-msgid "Add a segment"
-msgstr "सेगमेंट जोड़ें"
-
-msgid "Add a segment after…"
-msgstr "इसके बाद एक सेगमेंट जोड़ें…"
-
 msgid "Add note"
 msgstr "नोट जोड़ें"
 
 msgid "Add note…"
 msgstr "नोट जोड़ें…"
+
+msgid "Add subtitle"
+msgstr "सबटाइटल जोड़ें"
+
+msgid "Add subtitle after…"
+msgstr "इसके बाद सबटाइटल जोड़ें…"
 
 msgid "Add to queue"
 msgstr "कतार में जोड़ें"
@@ -218,6 +218,12 @@ msgstr "API कुंजी बदलें…"
 msgid "Change Hugging Face token…"
 msgstr "Hugging Face टोकन बदलें…"
 
+msgid "Change speaker"
+msgstr "वक्ता बदलें"
+
+msgid "Change speaker…"
+msgstr "वक्ता बदलें…"
+
 msgid "Change…"
 msgstr "बदलें…"
 
@@ -241,18 +247,6 @@ msgid ""
 "ones."
 msgstr "चीनी, जापानी और कोरियाई अक्षर लैटिन अक्षरों से लगभग दोगुने चौड़े होते हैं।"
 
-msgid "Choose a file"
-msgstr "फ़ाइल चुनें"
-
-msgid "Choose a file…"
-msgstr "फ़ाइल चुनें…"
-
-msgid "Choose a folder"
-msgstr "फ़ोल्डर चुनें"
-
-msgid "Choose a folder…"
-msgstr "फ़ोल्डर चुनें…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "अपनी पहली फ़ाइल ट्रांसक्राइब करने के लिए ऊपर से कोई स्रोत चुनें।"
 
@@ -263,14 +257,29 @@ msgstr ""
 "कोई स्रोत चुनें, या पढ़ने और चलाने के लिए अपने इतिहास से कोई "
 "ट्रांसक्रिप्शन चुनें।"
 
+msgid "Choose file"
+msgstr "फ़ाइल चुनें"
+
+msgid "Choose file…"
+msgstr "फ़ाइल चुनें…"
+
+msgid "Choose folder"
+msgstr "फ़ोल्डर चुनें"
+
+msgid "Choose folder…"
+msgstr "फ़ोल्डर चुनें…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "चुनें कि ट्रांसक्रिप्शन कहाँ सहेजे जाएँ"
 
+msgid "Choose who says it."
+msgstr "चुनें कि इसे कौन कहता है।"
+
+msgid "Clear conversation"
+msgstr "बातचीत साफ़ करें"
+
 msgid "Clear selection"
 msgstr "चयन हटाएँ"
-
-msgid "Clear the conversation"
-msgstr "बातचीत साफ़ करें"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -344,8 +353,8 @@ msgstr "\"{title}\" का अनुवाद नहीं हो सका: {er
 msgid "Create"
 msgstr "बनाएँ"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "मूल टाइमस्टैम्प के साथ खाली सेगमेंट बनाता है, जिन्हें आप भरेंगे।"
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
+msgstr "मूल टाइमस्टैम्प के साथ खाली सबटाइटल बनाता है, जिन्हें आप भर सकते हैं।"
 
 msgid "Dark"
 msgstr "डार्क"
@@ -384,6 +393,9 @@ msgstr "नोट हटाएँ"
 msgid "Delete note…"
 msgstr "नोट हटाएँ…"
 
+msgid "Delete subtitle"
+msgstr "सबटाइटल हटाएँ"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "समूह \"{name}\" हटाएँ? इसके ट्रांसक्रिप्शन बिना समूह के रखे जाएँगे।"
@@ -395,18 +407,15 @@ msgstr "“{title}” का नोट हटाएँ?"
 msgid "Delete the questions and their answers?"
 msgstr "प्रश्न और उनके उत्तर हटाएँ?"
 
-msgid "Delete the segment"
-msgstr "सेगमेंट हटाएँ"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "सेगमेंट \"{text}\" हटाएँ?"
-
-msgid "Delete the translation"
-msgstr "अनुवाद हटाएँ"
+msgid "Delete the subtitle “{text}”?"
+msgstr "सबटाइटल \"{text}\" हटाएँ?"
 
 msgid "Delete transcription"
 msgstr "ट्रांसक्रिप्शन हटाएँ"
+
+msgid "Delete translation"
+msgstr "अनुवाद हटाएँ"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -477,10 +486,10 @@ msgstr "टेक्स्ट संपादित करें"
 msgid "Edit text…"
 msgstr "टेक्स्ट संपादित करें…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "समय संपादित करें"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "समय संपादित करें…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -494,11 +503,11 @@ msgstr "अंत:"
 msgid "Engine"
 msgstr "इंजन"
 
+msgid "Enter URL"
+msgstr "URL दर्ज करें"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "http:// या https:// से शुरू होने वाला URL दर्ज करें"
-
-msgid "Enter the URL"
-msgstr "URL दर्ज करें"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -572,27 +581,27 @@ msgstr "खोजें ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "ढूँढें और बदलें ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "ट्रांसक्रिप्शन में खोजें और बदलें"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "अनुवाद में खोजें और बदलें"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "{language} अनुवाद में खोजें और बदलें"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "सारांश में खोजें"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "ट्रांसक्रिप्शन में खोजें"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "अनुवाद में खोजें"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "{language} अनुवाद में खोजें"
 
 msgid "Find:"
@@ -647,7 +656,7 @@ msgstr "Google API कुंजी"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Translate ने मान्य अनुवाद नहीं लौटाया।"
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "अनुवाद छिपाएँ"
 
 # Needs review by a native speaker
@@ -728,10 +737,17 @@ msgstr "इसमें थोड़ा समय लगेगा।"
 msgid "It will start when the current transcription finishes."
 msgstr "मौजूदा ट्रांसक्रिप्शन पूरा होने पर शुरू होगा।"
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr ""
+"इसके शब्दों का समय और विश्वसनीयता खो जाएगी, इसलिए वे अब हाइलाइट नहीं "
+"होंगे।"
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "मुख्य विंडो के ऊपर रखें"
 
 msgid ""
@@ -861,7 +877,7 @@ msgstr ""
 "अधिक सटीक, लेकिन टाइमस्टैम्प के बिना: ट्रांसक्रिप्शन को न तो "
 "सेगमेंट-दर-सेगमेंट चलाया जा सकता है और न ही सबटाइटल बनाए जा सकते हैं।"
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "सेटिंग्स में और विकल्प"
 
 msgid "Move to group"
@@ -1034,11 +1050,11 @@ msgstr "केवल अंग्रेज़ी ट्रांसक्रा�
 msgid "Open folder"
 msgstr "फ़ोल्डर खोलें"
 
+msgid "Open in browser"
+msgstr "ब्राउज़र में खोलें"
+
 msgid "Open in history"
 msgstr "इतिहास में खोलें"
-
-msgid "Open in the browser"
-msgstr "ब्राउज़र में खोलें"
 
 msgid "Open source folder"
 msgstr "स्रोत फ़ोल्डर खोलें"
@@ -1075,7 +1091,7 @@ msgstr "चिपकाएँ"
 msgid "Pending"
 msgstr "बाकी"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "ऊपर पिन करें"
 
 msgid "Pinned"
@@ -1200,7 +1216,7 @@ msgstr ""
 msgid "Refine"
 msgstr "परिष्कृत करें"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "सारांश फिर से बनाएँ"
 
 msgid "Remove"
@@ -1212,7 +1228,7 @@ msgstr "इतिहास से हटाएँ"
 msgid "Remove from history…"
 msgstr "इतिहास से हटाएँ…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "गायब फ़ाइलों को सूची से हटाएँ…"
 
 #, python-brace-format
@@ -1323,14 +1339,14 @@ msgstr "खोजें"
 msgid "Search language…"
 msgstr "भाषा खोजें…"
 
-msgid "Select a file"
-msgstr "फ़ाइल चुनें"
-
-msgid "Select a folder"
-msgstr "फ़ोल्डर चुनें"
-
 msgid "Select at least one output file type."
 msgstr "कम से कम एक आउटपुट फ़ाइल प्रकार चुनें।"
+
+msgid "Select file"
+msgstr "फ़ाइल चुनें"
+
+msgid "Select folder"
+msgstr "फ़ोल्डर चुनें"
 
 msgid "Server URL"
 msgstr "सर्वर URL"
@@ -1364,8 +1380,11 @@ msgid "Set…"
 msgstr "सेट करें…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "सभी खंड दिखाएँ"
+msgid "Show all subtitles"
+msgstr "सभी सबटाइटल दिखाएँ"
+
+msgid "Show as video subtitles"
+msgstr "इसे वीडियो के सबटाइटल के रूप में दिखाएँ"
 
 msgid "Show in Explorer"
 msgstr "Explorer में दिखाएँ"
@@ -1376,19 +1395,16 @@ msgstr "Finder में दिखाएँ"
 msgid "Show in file manager"
 msgstr "फ़ाइल प्रबंधक में दिखाएँ"
 
-msgid "Show it as the subtitles of the video"
-msgstr "इसे वीडियो के सबटाइटल के रूप में दिखाएँ"
-
 msgid "Show more"
 msgstr "और दिखाएँ"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "वीडियो पर सबटाइटल दिखाएँ"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "रिकॉर्डिंग के दौरान टेक्स्ट दिखाएँ"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "अनुवाद दिखाएँ"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1422,6 +1438,9 @@ msgstr "स्रोत"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: चलाएँ/रोकें · ←/→: {seconds} सेकंड पीछे/आगे"
 
+msgid "Speaker:"
+msgstr "वक्ता:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "वक्ता: {count}"
@@ -1438,7 +1457,7 @@ msgstr "शुरू किया जा रहा है…"
 msgid "Stay on top"
 msgstr "सबसे ऊपर रखें"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "वीडियो में सबटाइटल जोड़ना रोकें"
 
 msgid "Stop syncing scrolling"
@@ -1586,8 +1605,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Whisper API का मॉडल वक्ताओं की पहचान करता है।"
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "नया सेगमेंट {time} वाले सेगमेंट के बाद आएगा:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "नया सबटाइटल {time} वाले के बाद आएगा:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1604,11 +1623,11 @@ msgid "The reply of the model was too long."
 msgstr "मॉडल का जवाब बहुत लंबा था।"
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "{time} वाला सेगमेंट, अभी तक अनुवाद नहीं हुआ।"
+msgid "The subtitle at {time}, not translated yet."
+msgstr "{time} वाला सबटाइटल, अभी तक अनुवाद नहीं हुआ।"
 
-msgid "The segment must end after it starts."
-msgstr "सेगमेंट शुरू होने के बाद ही समाप्त होना चाहिए।"
+msgid "The subtitle must end after it starts."
+msgstr "सबटाइटल शुरू होने के बाद ही समाप्त होना चाहिए।"
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1710,12 +1729,6 @@ msgstr "ऊपर"
 msgid "Transcribe"
 msgstr "ट्रांसक्राइब करें"
 
-msgid "Transcribe a file"
-msgstr "फ़ाइल ट्रांसक्राइब करें"
-
-msgid "Transcribe a folder"
-msgstr "फ़ोल्डर ट्रांसक्राइब करें"
-
 msgid "Transcribe again"
 msgstr "फिर से ट्रांसक्राइब करें"
 
@@ -1727,10 +1740,16 @@ msgstr ""
 "\"{title}\" की सभी फ़ाइलों को फिर से ट्रांसक्राइब करें? उनके लिए सहेजी गई"
 " फ़ाइलें बदल दी जाएँगी।"
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
+msgstr "फ़ाइल ट्रांसक्राइब करें"
+
+msgid "Transcribe folder"
+msgstr "फ़ोल्डर ट्रांसक्राइब करें"
+
+msgid "Transcribe from URL"
 msgstr "URL से ट्रांसक्राइब करें"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe from microphone"
 msgstr "माइक्रोफ़ोन से ट्रांसक्राइब करें"
 
 # Needs review by a native speaker
@@ -1820,8 +1839,8 @@ msgstr "इससे अनुवाद करें:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "अनूदित: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "हर सेगमेंट का अनुवाद करता है, उसके टाइमस्टैम्प बनाए रखते हुए।"
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "हर सबटाइटल का अनुवाद करता है, उसके टाइमस्टैम्प बनाए रखते हुए।"
 
 msgid "Translate…"
 msgstr "अनुवाद करें…"
@@ -1841,8 +1860,8 @@ msgid "Translation into {language}"
 msgstr "{language} अनुवाद"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "{start} से {end} तक के सेगमेंट का अनुवाद:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "{start} से {end} तक के सबटाइटल का अनुवाद:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1878,7 +1897,7 @@ msgstr "पूर्ववत करें"
 msgid "Unpin"
 msgstr "अनपिन करें"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "मुख्य विंडो के ऊपर रखना बंद करें"
 
 #, python-brace-format
@@ -1936,7 +1955,7 @@ msgstr "फ़ोल्डर के उपलब्ध होने की प�
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "{count} ट्रांसक्रिप्शन पूरे होने की प्रतीक्षा हो रही है।"
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "फ़ोल्डर की निगरानी करें"
 
 msgid "Watched folder"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -64,17 +64,17 @@ msgstr "残りをすべて承認"
 msgid "Add"
 msgstr "追加"
 
-msgid "Add a segment"
-msgstr "セグメントを追加"
-
-msgid "Add a segment after…"
-msgstr "後ろにセグメントを追加…"
-
 msgid "Add note"
 msgstr "メモを追加"
 
 msgid "Add note…"
 msgstr "メモを追加…"
+
+msgid "Add subtitle"
+msgstr "字幕を追加"
+
+msgid "Add subtitle after…"
+msgstr "後に字幕を追加…"
 
 msgid "Add to queue"
 msgstr "キューに追加"
@@ -209,6 +209,12 @@ msgstr "API キーを変更…"
 msgid "Change Hugging Face token…"
 msgstr "Hugging Face のトークンを変更…"
 
+msgid "Change speaker"
+msgstr "話者を変更"
+
+msgid "Change speaker…"
+msgstr "話者を変更…"
+
 msgid "Change…"
 msgstr "変更…"
 
@@ -232,18 +238,6 @@ msgid ""
 "ones."
 msgstr "中国語・日本語・韓国語の文字はラテン文字の約 2 倍の幅があります。"
 
-msgid "Choose a file"
-msgstr "ファイルを選択してください"
-
-msgid "Choose a file…"
-msgstr "ファイルを選択…"
-
-msgid "Choose a folder"
-msgstr "フォルダーを選択してください"
-
-msgid "Choose a folder…"
-msgstr "フォルダーを選択…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "上でソースを選んで、最初のファイルを文字起こししましょう。"
 
@@ -252,14 +246,29 @@ msgid ""
 "play it."
 msgstr "ソースを選ぶか、履歴から文字起こしを選んで表示・再生します。"
 
+msgid "Choose file"
+msgstr "ファイルを選択してください"
+
+msgid "Choose file…"
+msgstr "ファイルを選択…"
+
+msgid "Choose folder"
+msgstr "フォルダーを選択してください"
+
+msgid "Choose folder…"
+msgstr "フォルダーを選択…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "文字起こしの保存先を選択"
 
+msgid "Choose who says it."
+msgstr "話している人を選んでください。"
+
+msgid "Clear conversation"
+msgstr "会話を消去"
+
 msgid "Clear selection"
 msgstr "選択を解除"
-
-msgid "Clear the conversation"
-msgstr "会話を消去"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -332,8 +341,8 @@ msgstr "「{title}」を翻訳できませんでした: {error}"
 msgid "Create"
 msgstr "作成"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "元のタイムスタンプ付きの空のセグメントを作成し、自分で入力します。"
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
+msgstr "元のタイムスタンプ付きの空の字幕を作成し、自分で入力できるようにします。"
 
 msgid "Dark"
 msgstr "ダーク"
@@ -372,6 +381,9 @@ msgstr "メモを削除"
 msgid "Delete note…"
 msgstr "メモを削除…"
 
+msgid "Delete subtitle"
+msgstr "字幕を削除"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "グループ「{name}」を削除しますか？ 文字起こしはグループなしで残ります。"
@@ -383,18 +395,15 @@ msgstr "「{title}」のメモを削除しますか？"
 msgid "Delete the questions and their answers?"
 msgstr "質問とその回答を削除しますか？"
 
-msgid "Delete the segment"
-msgstr "セグメントを削除"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "セグメント「{text}」を削除しますか？"
-
-msgid "Delete the translation"
-msgstr "翻訳を削除"
+msgid "Delete the subtitle “{text}”?"
+msgstr "字幕「{text}」を削除しますか？"
 
 msgid "Delete transcription"
 msgstr "文字起こしを削除"
+
+msgid "Delete translation"
+msgstr "翻訳を削除"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -464,10 +473,10 @@ msgstr "テキストを編集"
 msgid "Edit text…"
 msgstr "テキストを編集…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "タイミングを編集"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "タイミングを編集…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -479,11 +488,11 @@ msgstr "終了:"
 msgid "Engine"
 msgstr "エンジン"
 
+msgid "Enter URL"
+msgstr "URL を入力"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "http:// または https:// で始まる URL を入力してください"
-
-msgid "Enter the URL"
-msgstr "URL を入力"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -555,27 +564,27 @@ msgstr "検索 ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "検索と置換（{shortcut}）"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "文字起こし内を検索して置換"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "翻訳内を検索して置換"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "{language}への翻訳内を検索して置換"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "要約内を検索"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "文字起こし内を検索"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "翻訳内を検索"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "{language}への翻訳内を検索"
 
 msgid "Find:"
@@ -628,7 +637,7 @@ msgstr "Google API キー"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google 翻訳から有効な翻訳が返されませんでした。"
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "翻訳を非表示"
 
 # Needs review by a native speaker
@@ -702,10 +711,15 @@ msgstr "少し時間がかかります。"
 msgid "It will start when the current transcription finishes."
 msgstr "現在の文字起こしが終わると開始します。"
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr "単語のタイミングと信頼度が失われるため、ハイライトされなくなります。"
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "メインウィンドウの前面に固定"
 
 msgid ""
@@ -825,7 +839,7 @@ msgid ""
 "segment by segment nor subtitled."
 msgstr "より正確ですが、タイムスタンプはありません。文字起こしをセグメントごとに再生したり、字幕を付けたりすることはできません。"
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "その他のオプションは設定で"
 
 msgid "Move to group"
@@ -988,11 +1002,11 @@ msgstr "英語のみを文字起こしします。同じサイズの多言語モ
 msgid "Open folder"
 msgstr "フォルダーを開く"
 
+msgid "Open in browser"
+msgstr "ブラウザーで開く"
+
 msgid "Open in history"
 msgstr "履歴で開く"
-
-msgid "Open in the browser"
-msgstr "ブラウザーで開く"
 
 msgid "Open source folder"
 msgstr "元のフォルダーを開く"
@@ -1028,7 +1042,7 @@ msgstr "貼り付け"
 msgid "Pending"
 msgstr "未完了"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "上部に固定"
 
 msgid "Pinned"
@@ -1147,7 +1161,7 @@ msgstr "ハム音や一定の背景ノイズを低減し、小さな声を聞き
 msgid "Refine"
 msgstr "仕上げ"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "要約を再生成"
 
 msgid "Remove"
@@ -1159,7 +1173,7 @@ msgstr "履歴から削除"
 msgid "Remove from history…"
 msgstr "履歴から削除…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "見つからないファイルをリストから削除…"
 
 #, python-brace-format
@@ -1265,14 +1279,14 @@ msgstr "検索"
 msgid "Search language…"
 msgstr "言語を検索…"
 
-msgid "Select a file"
-msgstr "ファイルを選択"
-
-msgid "Select a folder"
-msgstr "フォルダーを選択"
-
 msgid "Select at least one output file type."
 msgstr "出力ファイルの種類を 1 つ以上選択してください。"
+
+msgid "Select file"
+msgstr "ファイルを選択"
+
+msgid "Select folder"
+msgstr "フォルダーを選択"
 
 msgid "Server URL"
 msgstr "サーバー URL"
@@ -1302,8 +1316,11 @@ msgid "Set…"
 msgstr "設定…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "すべてのセグメントを表示"
+msgid "Show all subtitles"
+msgstr "すべての字幕を表示"
+
+msgid "Show as video subtitles"
+msgstr "動画の字幕として表示"
 
 msgid "Show in Explorer"
 msgstr "エクスプローラーで表示"
@@ -1314,19 +1331,16 @@ msgstr "Finder で表示"
 msgid "Show in file manager"
 msgstr "ファイルマネージャーで表示"
 
-msgid "Show it as the subtitles of the video"
-msgstr "動画の字幕として表示"
-
 msgid "Show more"
 msgstr "さらに表示"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "動画に字幕を表示"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "録音中にテキストを表示"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "翻訳を表示"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1360,6 +1374,9 @@ msgstr "ソース"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Space: 再生/一時停止 · ←/→: {seconds} 秒戻る/進む"
 
+msgid "Speaker:"
+msgstr "話者:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "話者: {count}"
@@ -1376,7 +1393,7 @@ msgstr "開始しています…"
 msgid "Stay on top"
 msgstr "最前面に表示"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "動画への字幕の追加を中止"
 
 msgid "Stop syncing scrolling"
@@ -1522,8 +1539,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Whisper API のモデルが話者を識別します。"
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "新しいセグメントは {time} のセグメントの後に入ります:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "新しい字幕は {time} の字幕の後に入ります:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1540,11 +1557,11 @@ msgid "The reply of the model was too long."
 msgstr "モデルの応答が長すぎました。"
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "{time} のセグメント（未翻訳）。"
+msgid "The subtitle at {time}, not translated yet."
+msgstr "{time} の字幕（未翻訳）。"
 
-msgid "The segment must end after it starts."
-msgstr "セグメントの終了は開始より後にしてください。"
+msgid "The subtitle must end after it starts."
+msgstr "字幕の終了は開始より後にしてください。"
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1642,12 +1659,6 @@ msgstr "上"
 msgid "Transcribe"
 msgstr "文字起こし"
 
-msgid "Transcribe a file"
-msgstr "ファイルを文字起こし"
-
-msgid "Transcribe a folder"
-msgstr "フォルダーを文字起こし"
-
 msgid "Transcribe again"
 msgstr "もう一度文字起こし"
 
@@ -1657,10 +1668,16 @@ msgid ""
 "will be replaced."
 msgstr "「{title}」のすべてのファイルを再度文字起こししますか？保存したファイルは置き換えられます。"
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
+msgstr "ファイルを文字起こし"
+
+msgid "Transcribe folder"
+msgstr "フォルダーを文字起こし"
+
+msgid "Transcribe from URL"
 msgstr "URL から文字起こし"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe from microphone"
 msgstr "マイクから文字起こし"
 
 # Needs review by a native speaker
@@ -1743,8 +1760,8 @@ msgstr "翻訳方法:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "翻訳済み: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "タイムスタンプを保ったまま、各セグメントを翻訳します。"
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "タイムスタンプを保ったまま、各字幕を翻訳します。"
 
 msgid "Translate…"
 msgstr "翻訳…"
@@ -1764,8 +1781,8 @@ msgid "Translation into {language}"
 msgstr "{language}への翻訳"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "{start} から {end} までのセグメントの翻訳:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "{start} から {end} までの字幕の翻訳:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1799,7 +1816,7 @@ msgstr "元に戻す"
 msgid "Unpin"
 msgstr "固定を解除"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "メインウィンドウの前面に固定しない"
 
 #, python-brace-format
@@ -1857,7 +1874,7 @@ msgstr "フォルダーが利用可能になるのを待っています: {folder
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "{count} 件の文字起こしが終わるのを待っています。"
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "フォルダーを監視"
 
 msgid "Watched folder"

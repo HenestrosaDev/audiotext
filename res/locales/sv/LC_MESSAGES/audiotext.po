@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -67,17 +67,17 @@ msgstr "Godkänn återstående"
 msgid "Add"
 msgstr "Lägg till"
 
-msgid "Add a segment"
-msgstr "Lägg till ett segment"
-
-msgid "Add a segment after…"
-msgstr "Lägg till ett segment efter…"
-
 msgid "Add note"
 msgstr "Lägg till anteckning"
 
 msgid "Add note…"
 msgstr "Lägg till anteckning…"
+
+msgid "Add subtitle"
+msgstr "Lägg till undertext"
+
+msgid "Add subtitle after…"
+msgstr "Lägg till undertext efter…"
 
 msgid "Add to queue"
 msgstr "Lägg till i kön"
@@ -217,6 +217,12 @@ msgstr "Ändra API-nyckel…"
 msgid "Change Hugging Face token…"
 msgstr "Ändra Hugging Face-token…"
 
+msgid "Change speaker"
+msgstr "Byt talare"
+
+msgid "Change speaker…"
+msgstr "Byt talare…"
+
 msgid "Change…"
 msgstr "Ändra…"
 
@@ -242,18 +248,6 @@ msgstr ""
 "Kinesiska, japanska och koreanska tecken är ungefär dubbelt så breda som "
 "latinska."
 
-msgid "Choose a file"
-msgstr "Välj en fil"
-
-msgid "Choose a file…"
-msgstr "Välj en fil…"
-
-msgid "Choose a folder"
-msgstr "Välj en mapp"
-
-msgid "Choose a folder…"
-msgstr "Välj en mapp…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "Välj en källa ovan för att transkribera din första fil."
 
@@ -264,14 +258,29 @@ msgstr ""
 "Välj en källa, eller välj en transkribering i historiken för att läsa och"
 " spela upp den."
 
+msgid "Choose file"
+msgstr "Välj en fil"
+
+msgid "Choose file…"
+msgstr "Välj fil…"
+
+msgid "Choose folder"
+msgstr "Välj en mapp"
+
+msgid "Choose folder…"
+msgstr "Välj mapp…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "Välj var transkriberingarna ska sparas"
 
+msgid "Choose who says it."
+msgstr "Välj vem som säger det."
+
+msgid "Clear conversation"
+msgstr "Rensa konversation"
+
 msgid "Clear selection"
 msgstr "Rensa markeringen"
-
-msgid "Clear the conversation"
-msgstr "Rensa konversationen"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -346,8 +355,10 @@ msgstr "Det gick inte att översätta ”{title}”: {error}"
 msgid "Create"
 msgstr "Skapa"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "Skapar tomma segment med de ursprungliga tidsstämplarna som du fyller i."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
+msgstr ""
+"Skapar tomma undertexter med de ursprungliga tidsstämplarna som du fyller"
+" i."
 
 msgid "Dark"
 msgstr "Mörkt"
@@ -386,6 +397,9 @@ msgstr "Radera anteckning"
 msgid "Delete note…"
 msgstr "Radera anteckning…"
 
+msgid "Delete subtitle"
+msgstr "Radera undertext"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "Ta bort gruppen ”{name}”? Dess transkriberingar behålls, utan grupp."
@@ -397,18 +411,15 @@ msgstr "Radera anteckningen till ”{title}”?"
 msgid "Delete the questions and their answers?"
 msgstr "Ta bort frågorna och deras svar?"
 
-msgid "Delete the segment"
-msgstr "Radera segmentet"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Radera segmentet ”{text}”?"
-
-msgid "Delete the translation"
-msgstr "Ta bort översättningen"
+msgid "Delete the subtitle “{text}”?"
+msgstr "Radera undertexten ”{text}”?"
 
 msgid "Delete transcription"
 msgstr "Ta bort transkribering"
+
+msgid "Delete translation"
+msgstr "Ta bort översättning"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -479,11 +490,11 @@ msgstr "Redigera text"
 msgid "Edit text…"
 msgstr "Redigera text…"
 
-msgid "Edit the timing"
-msgstr "Redigera tiderna"
+msgid "Edit timing"
+msgstr "Redigera tider"
 
-msgid "Edit the timing…"
-msgstr "Redigera tiderna…"
+msgid "Edit timing…"
+msgstr "Redigera tider…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
 msgstr ""
@@ -496,11 +507,11 @@ msgstr "Slut:"
 msgid "Engine"
 msgstr "Motor"
 
+msgid "Enter URL"
+msgstr "Ange URL:en"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "Ange en URL som börjar med http:// eller https://"
-
-msgid "Enter the URL"
-msgstr "Ange URL:en"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -574,27 +585,27 @@ msgstr "Sök ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "Sök och ersätt ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "Sök och ersätt i transkriptionen"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "Sök och ersätt i översättningen"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "Sök och ersätt i översättningen till {language}"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "Sök i sammanfattningen"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "Sök i transkriptionen"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "Sök i översättningen"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "Sök i översättningen till {language}"
 
 msgid "Find:"
@@ -651,8 +662,8 @@ msgstr "Google API-nyckel"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Översätt returnerade ingen giltig översättning."
 
-msgid "Hide the translation"
-msgstr "Dölj översättningen"
+msgid "Hide translation"
+msgstr "Dölj översättning"
 
 # Needs review by a native speaker
 msgid "Highlight low-confidence words"
@@ -732,10 +743,15 @@ msgstr "Det tar en stund."
 msgid "It will start when the current transcription finishes."
 msgstr "Startar när den aktuella transkriberingen är klar."
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr "Orden förlorar sina tider och sin säkerhet, så de markeras inte längre."
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "Håll ovanför huvudfönstret"
 
 msgid ""
@@ -863,7 +879,7 @@ msgstr ""
 "Mer exakt, men utan tidsstämplar: transkriberingen kan inte spelas upp "
 "segment för segment eller textas."
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "Fler alternativ i inställningarna"
 
 msgid "Move to group"
@@ -1038,11 +1054,11 @@ msgstr ""
 msgid "Open folder"
 msgstr "Öppna mapp"
 
+msgid "Open in browser"
+msgstr "Öppna i webbläsaren"
+
 msgid "Open in history"
 msgstr "Öppna i historiken"
-
-msgid "Open in the browser"
-msgstr "Öppna i webbläsaren"
 
 msgid "Open source folder"
 msgstr "Öppna källmapp"
@@ -1078,7 +1094,7 @@ msgstr "Klistra in"
 msgid "Pending"
 msgstr "Väntande"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "Fäst överst"
 
 msgid "Pinned"
@@ -1201,8 +1217,8 @@ msgstr ""
 msgid "Refine"
 msgstr "Förfina"
 
-msgid "Regenerate the summary"
-msgstr "Generera sammanfattningen igen"
+msgid "Regenerate summary"
+msgstr "Generera sammanfattning igen"
 
 msgid "Remove"
 msgstr "Ta bort"
@@ -1213,7 +1229,7 @@ msgstr "Ta bort från historiken"
 msgid "Remove from history…"
 msgstr "Ta bort från historiken…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "Ta bort saknade filer från listan…"
 
 #, python-brace-format
@@ -1326,14 +1342,14 @@ msgstr "Sök"
 msgid "Search language…"
 msgstr "Sök språk…"
 
-msgid "Select a file"
-msgstr "Välj en fil"
-
-msgid "Select a folder"
-msgstr "Välj en mapp"
-
 msgid "Select at least one output file type."
 msgstr "Välj minst en typ av utdatafil."
+
+msgid "Select file"
+msgstr "Välj en fil"
+
+msgid "Select folder"
+msgstr "Välj en mapp"
 
 msgid "Server URL"
 msgstr "Serverns URL"
@@ -1367,8 +1383,11 @@ msgid "Set…"
 msgstr "Ange…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "Visa alla segment"
+msgid "Show all subtitles"
+msgstr "Visa alla undertexter"
+
+msgid "Show as video subtitles"
+msgstr "Visa som videoundertexter"
 
 msgid "Show in Explorer"
 msgstr "Visa i Utforskaren"
@@ -1379,20 +1398,17 @@ msgstr "Visa i Finder"
 msgid "Show in file manager"
 msgstr "Visa i filhanteraren"
 
-msgid "Show it as the subtitles of the video"
-msgstr "Visa den som videons undertexter"
-
 msgid "Show more"
 msgstr "Visa fler"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "Visa undertexter på videon"
 
-msgid "Show the text while recording"
-msgstr "Visa texten under inspelning"
+msgid "Show text while recording"
+msgstr "Visa text under inspelning"
 
-msgid "Show the translation"
-msgstr "Visa översättningen"
+msgid "Show translation"
+msgstr "Visa översättning"
 
 msgid "Shows a system notification when a transcription is ready."
 msgstr "Visar en systemavisering när en transkribering är klar."
@@ -1425,6 +1441,9 @@ msgstr "Källa"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Blanksteg: spela upp/pausa · ←/→: {seconds} s bakåt/framåt"
 
+msgid "Speaker:"
+msgstr "Talare:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "Talare: {count}"
@@ -1441,8 +1460,8 @@ msgstr "Startar…"
 msgid "Stay on top"
 msgstr "Håll överst"
 
-msgid "Stop adding the subtitles to the video"
-msgstr "Sluta lägga till undertexterna i videon"
+msgid "Stop adding subtitles to video"
+msgstr "Sluta lägga till undertexter i videon"
 
 msgid "Stop syncing scrolling"
 msgstr "Sluta synkronisera rullning"
@@ -1591,8 +1610,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Modellen i Whisper-API:et identifierar talarna."
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Det nya segmentet hamnar efter det vid {time}:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "Den nya undertexten kommer efter den vid {time}:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1609,11 +1628,11 @@ msgid "The reply of the model was too long."
 msgstr "Modellens svar var för långt."
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Segmentet vid {time}, inte översatt ännu."
+msgid "The subtitle at {time}, not translated yet."
+msgstr "Undertexten vid {time}, inte översatt ännu."
 
-msgid "The segment must end after it starts."
-msgstr "Segmentet måste sluta efter att det börjar."
+msgid "The subtitle must end after it starts."
+msgstr "Undertexten måste sluta efter att den börjar."
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1717,12 +1736,6 @@ msgstr "Överst"
 msgid "Transcribe"
 msgstr "Transkribera"
 
-msgid "Transcribe a file"
-msgstr "Transkribera en fil"
-
-msgid "Transcribe a folder"
-msgstr "Transkribera en mapp"
-
 msgid "Transcribe again"
 msgstr "Transkribera igen"
 
@@ -1734,10 +1747,16 @@ msgstr ""
 "Transkribera alla filer i ”{title}” igen? Filerna som sparats för dem "
 "ersätts."
 
-msgid "Transcribe from a URL"
-msgstr "Transkribera från en URL"
+msgid "Transcribe file"
+msgstr "Transkribera fil"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe folder"
+msgstr "Transkribera mapp"
+
+msgid "Transcribe from URL"
+msgstr "Transkribera från URL"
+
+msgid "Transcribe from microphone"
 msgstr "Transkribera från mikrofonen"
 
 # Needs review by a native speaker
@@ -1825,8 +1844,8 @@ msgstr "Översätt med:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "Översatt: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Översätter varje segment och behåller dess tidsstämplar."
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "Översätter varje undertext och behåller dess tidsstämplar."
 
 msgid "Translate…"
 msgstr "Översätt…"
@@ -1846,8 +1865,8 @@ msgid "Translation into {language}"
 msgstr "Översättning till {language}"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Översättning av segmentet från {start} till {end}:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "Översättning av undertexten från {start} till {end}:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1883,7 +1902,7 @@ msgstr "Ångra"
 msgid "Unpin"
 msgstr "Lossa"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "Håll inte ovanför huvudfönstret"
 
 #, python-brace-format
@@ -1941,8 +1960,8 @@ msgstr "Väntar på att mappen ska bli tillgänglig: {folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "Väntar på att {count} transkribering(ar) ska bli klara."
 
-msgid "Watch the folder"
-msgstr "Bevaka mappen"
+msgid "Watch folder"
+msgstr "Bevaka mapp"
 
 msgid "Watched folder"
 msgstr "Bevakad mapp"

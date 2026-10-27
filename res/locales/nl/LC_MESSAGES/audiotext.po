@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -67,17 +67,17 @@ msgstr "Overige accepteren"
 msgid "Add"
 msgstr "Toevoegen"
 
-msgid "Add a segment"
-msgstr "Segment toevoegen"
-
-msgid "Add a segment after…"
-msgstr "Segment erna toevoegen…"
-
 msgid "Add note"
 msgstr "Notitie toevoegen"
 
 msgid "Add note…"
 msgstr "Notitie toevoegen…"
+
+msgid "Add subtitle"
+msgstr "Ondertitel toevoegen"
+
+msgid "Add subtitle after…"
+msgstr "Ondertitel erna toevoegen…"
 
 msgid "Add to queue"
 msgstr "Toevoegen aan wachtrij"
@@ -220,6 +220,12 @@ msgstr "API-sleutel wijzigen…"
 msgid "Change Hugging Face token…"
 msgstr "Hugging Face-token wijzigen…"
 
+msgid "Change speaker"
+msgstr "Spreker wijzigen"
+
+msgid "Change speaker…"
+msgstr "Spreker wijzigen…"
+
 msgid "Change…"
 msgstr "Wijzigen…"
 
@@ -245,18 +251,6 @@ msgstr ""
 "Chinese, Japanse en Koreaanse tekens zijn ongeveer twee keer zo breed als"
 " Latijnse."
 
-msgid "Choose a file"
-msgstr "Kies een bestand"
-
-msgid "Choose a file…"
-msgstr "Bestand kiezen…"
-
-msgid "Choose a folder"
-msgstr "Kies een map"
-
-msgid "Choose a folder…"
-msgstr "Map kiezen…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "Kies hierboven een bron om je eerste bestand te transcriberen."
 
@@ -267,14 +261,29 @@ msgstr ""
 "Kies een bron, of selecteer een transcriptie uit je geschiedenis om die "
 "te lezen en af te spelen."
 
+msgid "Choose file"
+msgstr "Kies een bestand"
+
+msgid "Choose file…"
+msgstr "Bestand kiezen…"
+
+msgid "Choose folder"
+msgstr "Kies een map"
+
+msgid "Choose folder…"
+msgstr "Map kiezen…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "Kies waar de transcripties worden opgeslagen"
 
+msgid "Choose who says it."
+msgstr "Kies wie het zegt."
+
+msgid "Clear conversation"
+msgstr "Gesprek wissen"
+
 msgid "Clear selection"
 msgstr "Selectie wissen"
-
-msgid "Clear the conversation"
-msgstr "Gesprek wissen"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -349,9 +358,9 @@ msgstr "Kan ‘{title}’ niet vertalen: {error}"
 msgid "Create"
 msgstr "Maken"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
 msgstr ""
-"Maakt lege segmenten met de oorspronkelijke tijdstempels die je zelf "
+"Maakt lege ondertitels met de oorspronkelijke tijdstempels die je zelf "
 "invult."
 
 msgid "Dark"
@@ -391,6 +400,9 @@ msgstr "Notitie verwijderen"
 msgid "Delete note…"
 msgstr "Notitie verwijderen…"
 
+msgid "Delete subtitle"
+msgstr "Ondertitel verwijderen"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr ""
@@ -404,18 +416,15 @@ msgstr "De notitie van ‘{title}’ verwijderen?"
 msgid "Delete the questions and their answers?"
 msgstr "De vragen en hun antwoorden verwijderen?"
 
-msgid "Delete the segment"
-msgstr "Segment verwijderen"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Segment ‘{text}’ verwijderen?"
-
-msgid "Delete the translation"
-msgstr "Vertaling verwijderen"
+msgid "Delete the subtitle “{text}”?"
+msgstr "Ondertitel ‘{text}’ verwijderen?"
 
 msgid "Delete transcription"
 msgstr "Transcriptie verwijderen"
+
+msgid "Delete translation"
+msgstr "Vertaling verwijderen"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -486,10 +495,10 @@ msgstr "Tekst bewerken"
 msgid "Edit text…"
 msgstr "Tekst bewerken…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "Timing bewerken"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "Timing bewerken…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -503,11 +512,11 @@ msgstr "Einde:"
 msgid "Engine"
 msgstr "Engine"
 
+msgid "Enter URL"
+msgstr "Voer de URL in"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "Voer een URL in die begint met http:// of https://"
-
-msgid "Enter the URL"
-msgstr "Voer de URL in"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -581,27 +590,27 @@ msgstr "Zoeken ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "Zoeken en vervangen ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "Zoeken en vervangen in de transcriptie"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "Zoeken en vervangen in de vertaling"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "Zoeken en vervangen in de vertaling naar het {language}"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "Zoeken in de samenvatting"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "Zoeken in de transcriptie"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "Zoeken in de vertaling"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "Zoeken in de vertaling naar het {language}"
 
 msgid "Find:"
@@ -660,7 +669,7 @@ msgstr "Google API-sleutel"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Translate gaf geen geldige vertaling terug."
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "Vertaling verbergen"
 
 # Needs review by a native speaker
@@ -742,10 +751,17 @@ msgstr "Dit duurt even."
 msgid "It will start when the current transcription finishes."
 msgstr "Begint zodra de huidige transcriptie klaar is."
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr ""
+"De woorden verliezen hun timing en betrouwbaarheid, dus ze worden niet "
+"meer gemarkeerd."
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "Boven het hoofdvenster houden"
 
 msgid ""
@@ -873,7 +889,7 @@ msgstr ""
 "Nauwkeuriger, maar zonder tijdstempels: de transcriptie kan niet segment "
 "voor segment worden afgespeeld of ondertiteld."
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "Meer opties in de instellingen"
 
 msgid "Move to group"
@@ -1048,11 +1064,11 @@ msgstr ""
 msgid "Open folder"
 msgstr "Map openen"
 
+msgid "Open in browser"
+msgstr "Openen in de browser"
+
 msgid "Open in history"
 msgstr "Openen in geschiedenis"
-
-msgid "Open in the browser"
-msgstr "Openen in de browser"
 
 msgid "Open source folder"
 msgstr "Bronmap openen"
@@ -1089,7 +1105,7 @@ msgstr "Plakken"
 msgid "Pending"
 msgstr "In afwachting"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "Bovenaan vastzetten"
 
 msgid "Pinned"
@@ -1212,7 +1228,7 @@ msgstr ""
 msgid "Refine"
 msgstr "Verfijnen"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "Samenvatting opnieuw genereren"
 
 msgid "Remove"
@@ -1224,7 +1240,7 @@ msgstr "Uit de geschiedenis verwijderen"
 msgid "Remove from history…"
 msgstr "Uit de geschiedenis verwijderen…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "Ontbrekende bestanden uit de lijst verwijderen…"
 
 #, python-brace-format
@@ -1337,14 +1353,14 @@ msgstr "Zoeken"
 msgid "Search language…"
 msgstr "Taal zoeken…"
 
-msgid "Select a file"
-msgstr "Selecteer een bestand"
-
-msgid "Select a folder"
-msgstr "Selecteer een map"
-
 msgid "Select at least one output file type."
 msgstr "Selecteer ten minste één uitvoerbestandstype."
+
+msgid "Select file"
+msgstr "Selecteer een bestand"
+
+msgid "Select folder"
+msgstr "Selecteer een map"
 
 msgid "Server URL"
 msgstr "Server-URL"
@@ -1378,8 +1394,11 @@ msgid "Set…"
 msgstr "Instellen…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "Alle segmenten tonen"
+msgid "Show all subtitles"
+msgstr "Alle ondertitels tonen"
+
+msgid "Show as video subtitles"
+msgstr "Als video-ondertitels tonen"
 
 msgid "Show in Explorer"
 msgstr "Weergeven in Verkenner"
@@ -1390,19 +1409,16 @@ msgstr "Weergeven in Finder"
 msgid "Show in file manager"
 msgstr "Weergeven in bestandsbeheer"
 
-msgid "Show it as the subtitles of the video"
-msgstr "Als ondertitels van de video tonen"
-
 msgid "Show more"
 msgstr "Meer weergeven"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "Ondertitels op de video weergeven"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "Tekst weergeven tijdens opname"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "Vertaling weergeven"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1436,6 +1452,9 @@ msgstr "Bron"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spatie: afspelen/pauzeren · ←/→: {seconds} s terug/vooruit"
 
+msgid "Speaker:"
+msgstr "Spreker:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "Sprekers: {count}"
@@ -1452,8 +1471,8 @@ msgstr "Starten…"
 msgid "Stay on top"
 msgstr "Bovenop houden"
 
-msgid "Stop adding the subtitles to the video"
-msgstr "Stoppen met het toevoegen van de ondertitels aan de video"
+msgid "Stop adding subtitles to video"
+msgstr "Stoppen met ondertitels toevoegen aan video"
 
 msgid "Stop syncing scrolling"
 msgstr "Scrollen niet meer synchroniseren"
@@ -1604,8 +1623,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Het model van de Whisper-API herkent de sprekers."
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Het nieuwe segment komt na het segment op {time}:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "De nieuwe ondertitel komt na die op {time}:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1623,11 +1642,11 @@ msgid "The reply of the model was too long."
 msgstr "Het antwoord van het model was te lang."
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Het segment op {time}, nog niet vertaald."
+msgid "The subtitle at {time}, not translated yet."
+msgstr "De ondertitel op {time}, nog niet vertaald."
 
-msgid "The segment must end after it starts."
-msgstr "Het segment moet eindigen nadat het begint."
+msgid "The subtitle must end after it starts."
+msgstr "De ondertitel moet eindigen nadat hij begint."
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1732,12 +1751,6 @@ msgstr "Boven"
 msgid "Transcribe"
 msgstr "Transcriberen"
 
-msgid "Transcribe a file"
-msgstr "Een bestand transcriberen"
-
-msgid "Transcribe a folder"
-msgstr "Een map transcriberen"
-
 msgid "Transcribe again"
 msgstr "Opnieuw transcriberen"
 
@@ -1749,10 +1762,16 @@ msgstr ""
 "Alle bestanden van ‘{title}’ opnieuw transcriberen? De bestanden die "
 "ervoor zijn opgeslagen, worden vervangen."
 
-msgid "Transcribe from a URL"
-msgstr "Transcriberen vanaf een URL"
+msgid "Transcribe file"
+msgstr "Bestand transcriberen"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe folder"
+msgstr "Map transcriberen"
+
+msgid "Transcribe from URL"
+msgstr "Transcriberen vanaf URL"
+
+msgid "Transcribe from microphone"
 msgstr "Transcriberen vanaf de microfoon"
 
 # Needs review by a native speaker
@@ -1840,8 +1859,8 @@ msgstr "Vertalen met:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "Vertaald: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Vertaalt elk segment en behoudt de tijdstempels."
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "Vertaalt elke ondertitel en behoudt de tijdstempels."
 
 msgid "Translate…"
 msgstr "Vertalen…"
@@ -1861,8 +1880,8 @@ msgid "Translation into {language}"
 msgstr "Vertaling naar het {language}"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Vertaling van het segment van {start} tot {end}:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "Vertaling van de ondertitel van {start} tot {end}:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1898,7 +1917,7 @@ msgstr "Ongedaan maken"
 msgid "Unpin"
 msgstr "Losmaken"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "Niet meer boven het hoofdvenster houden"
 
 #, python-brace-format
@@ -1956,7 +1975,7 @@ msgstr "Wachten tot de map beschikbaar is: {folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "Wachten tot {count} transcriptie(s) klaar zijn."
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "Map bewaken"
 
 msgid "Watched folder"

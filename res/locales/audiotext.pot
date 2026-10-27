@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Audiotext 3.3.0\n"
+"Project-Id-Version: Audiotext 3.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,16 +60,16 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-msgid "Add a segment"
-msgstr ""
-
-msgid "Add a segment after…"
-msgstr ""
-
 msgid "Add note"
 msgstr ""
 
 msgid "Add note…"
+msgstr ""
+
+msgid "Add subtitle"
+msgstr ""
+
+msgid "Add subtitle after…"
 msgstr ""
 
 msgid "Add to queue"
@@ -202,6 +202,12 @@ msgstr ""
 msgid "Change Hugging Face token…"
 msgstr ""
 
+msgid "Change speaker"
+msgstr ""
+
+msgid "Change speaker…"
+msgstr ""
+
 msgid "Change…"
 msgstr ""
 
@@ -225,18 +231,6 @@ msgid ""
 "ones."
 msgstr ""
 
-msgid "Choose a file"
-msgstr ""
-
-msgid "Choose a file…"
-msgstr ""
-
-msgid "Choose a folder"
-msgstr ""
-
-msgid "Choose a folder…"
-msgstr ""
-
 msgid "Choose a source above to transcribe your first file."
 msgstr ""
 
@@ -245,13 +239,28 @@ msgid ""
 "play it."
 msgstr ""
 
+msgid "Choose file"
+msgstr ""
+
+msgid "Choose file…"
+msgstr ""
+
+msgid "Choose folder"
+msgstr ""
+
+msgid "Choose folder…"
+msgstr ""
+
 msgid "Choose where to save the transcriptions"
 msgstr ""
 
-msgid "Clear selection"
+msgid "Choose who says it."
 msgstr ""
 
-msgid "Clear the conversation"
+msgid "Clear conversation"
+msgstr ""
+
+msgid "Clear selection"
 msgstr ""
 
 #, python-brace-format
@@ -322,7 +331,7 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
 msgstr ""
 
 msgid "Dark"
@@ -362,6 +371,9 @@ msgstr ""
 msgid "Delete note…"
 msgstr ""
 
+msgid "Delete subtitle"
+msgstr ""
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr ""
@@ -373,17 +385,14 @@ msgstr ""
 msgid "Delete the questions and their answers?"
 msgstr ""
 
-msgid "Delete the segment"
-msgstr ""
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr ""
-
-msgid "Delete the translation"
+msgid "Delete the subtitle “{text}”?"
 msgstr ""
 
 msgid "Delete transcription"
+msgstr ""
+
+msgid "Delete translation"
 msgstr ""
 
 #, python-brace-format
@@ -455,10 +464,10 @@ msgstr ""
 msgid "Edit text…"
 msgstr ""
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr ""
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr ""
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -470,10 +479,10 @@ msgstr ""
 msgid "Engine"
 msgstr ""
 
-msgid "Enter a URL that starts with http:// or https://"
+msgid "Enter URL"
 msgstr ""
 
-msgid "Enter the URL"
+msgid "Enter a URL that starts with http:// or https://"
 msgstr ""
 
 msgid ""
@@ -544,27 +553,27 @@ msgstr ""
 msgid "Find and replace ({shortcut})"
 msgstr ""
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr ""
 
-msgid "Find and replace in the translation"
-msgstr ""
-
-#, python-brace-format
-msgid "Find and replace in the translation into {language}"
-msgstr ""
-
-msgid "Find in the summary"
-msgstr ""
-
-msgid "Find in the transcription"
-msgstr ""
-
-msgid "Find in the translation"
+msgid "Find and replace in translation"
 msgstr ""
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find and replace in translation into {language}"
+msgstr ""
+
+msgid "Find in summary"
+msgstr ""
+
+msgid "Find in transcription"
+msgstr ""
+
+msgid "Find in translation"
+msgstr ""
+
+#, python-brace-format
+msgid "Find in translation into {language}"
 msgstr ""
 
 msgid "Find:"
@@ -617,7 +626,7 @@ msgstr ""
 msgid "Google Translate didn't return a valid translation."
 msgstr ""
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr ""
 
 msgid "Highlight low-confidence words"
@@ -688,10 +697,15 @@ msgstr ""
 msgid "It will start when the current transcription finishes."
 msgstr ""
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr ""
+
 msgid "JSON (.json)"
 msgstr ""
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr ""
 
 msgid ""
@@ -810,7 +824,7 @@ msgid ""
 "segment by segment nor subtitled."
 msgstr ""
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr ""
 
 msgid "Move to group"
@@ -968,10 +982,10 @@ msgstr ""
 msgid "Open folder"
 msgstr ""
 
-msgid "Open in history"
+msgid "Open in browser"
 msgstr ""
 
-msgid "Open in the browser"
+msgid "Open in history"
 msgstr ""
 
 msgid "Open source folder"
@@ -1006,7 +1020,7 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr ""
 
 msgid "Pinned"
@@ -1124,7 +1138,7 @@ msgstr ""
 msgid "Refine"
 msgstr ""
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr ""
 
 msgid "Remove"
@@ -1136,7 +1150,7 @@ msgstr ""
 msgid "Remove from history…"
 msgstr ""
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr ""
 
 #, python-brace-format
@@ -1240,13 +1254,13 @@ msgstr ""
 msgid "Search language…"
 msgstr ""
 
-msgid "Select a file"
-msgstr ""
-
-msgid "Select a folder"
-msgstr ""
-
 msgid "Select at least one output file type."
+msgstr ""
+
+msgid "Select file"
+msgstr ""
+
+msgid "Select folder"
 msgstr ""
 
 msgid "Server URL"
@@ -1276,7 +1290,10 @@ msgstr ""
 msgid "Set…"
 msgstr ""
 
-msgid "Show all segments"
+msgid "Show all subtitles"
+msgstr ""
+
+msgid "Show as video subtitles"
 msgstr ""
 
 msgid "Show in Explorer"
@@ -1288,19 +1305,16 @@ msgstr ""
 msgid "Show in file manager"
 msgstr ""
 
-msgid "Show it as the subtitles of the video"
-msgstr ""
-
 msgid "Show more"
 msgstr ""
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr ""
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr ""
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr ""
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1334,6 +1348,9 @@ msgstr ""
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr ""
 
+msgid "Speaker:"
+msgstr ""
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr ""
@@ -1350,7 +1367,7 @@ msgstr ""
 msgid "Stay on top"
 msgstr ""
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr ""
 
 msgid "Stop syncing scrolling"
@@ -1496,7 +1513,7 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr ""
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
+msgid "The new subtitle goes after the one at {time}:"
 msgstr ""
 
 msgid ""
@@ -1512,10 +1529,10 @@ msgid "The reply of the model was too long."
 msgstr ""
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
+msgid "The subtitle at {time}, not translated yet."
 msgstr ""
 
-msgid "The segment must end after it starts."
+msgid "The subtitle must end after it starts."
 msgstr ""
 
 #, python-brace-format
@@ -1611,12 +1628,6 @@ msgstr ""
 msgid "Transcribe"
 msgstr ""
 
-msgid "Transcribe a file"
-msgstr ""
-
-msgid "Transcribe a folder"
-msgstr ""
-
 msgid "Transcribe again"
 msgstr ""
 
@@ -1626,10 +1637,16 @@ msgid ""
 "will be replaced."
 msgstr ""
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
 msgstr ""
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe folder"
+msgstr ""
+
+msgid "Transcribe from URL"
+msgstr ""
+
+msgid "Transcribe from microphone"
 msgstr ""
 
 msgid "Transcribe it again to score its words"
@@ -1711,7 +1728,7 @@ msgstr ""
 msgid "Translated: {done}/{total} · {percent}"
 msgstr ""
 
-msgid "Translates each segment, keeping its timestamps."
+msgid "Translates each subtitle, keeping its timestamps."
 msgstr ""
 
 msgid "Translate…"
@@ -1732,7 +1749,7 @@ msgid "Translation into {language}"
 msgstr ""
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
+msgid "Translation of the subtitle from {start} to {end}:"
 msgstr ""
 
 #, python-brace-format
@@ -1765,7 +1782,7 @@ msgstr ""
 msgid "Unpin"
 msgstr ""
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr ""
 
 #, python-brace-format
@@ -1823,7 +1840,7 @@ msgstr ""
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr ""
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr ""
 
 msgid "Watched folder"

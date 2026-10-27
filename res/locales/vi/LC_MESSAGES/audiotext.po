@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -66,17 +66,17 @@ msgstr "Chấp nhận phần còn lại"
 msgid "Add"
 msgstr "Thêm"
 
-msgid "Add a segment"
-msgstr "Thêm một đoạn"
-
-msgid "Add a segment after…"
-msgstr "Thêm một đoạn phía sau…"
-
 msgid "Add note"
 msgstr "Thêm ghi chú"
 
 msgid "Add note…"
 msgstr "Thêm ghi chú…"
+
+msgid "Add subtitle"
+msgstr "Thêm phụ đề"
+
+msgid "Add subtitle after…"
+msgstr "Thêm phụ đề phía sau…"
 
 msgid "Add to queue"
 msgstr "Thêm vào hàng đợi"
@@ -219,6 +219,12 @@ msgstr "Đổi khóa API…"
 msgid "Change Hugging Face token…"
 msgstr "Đổi token Hugging Face…"
 
+msgid "Change speaker"
+msgstr "Đổi người nói"
+
+msgid "Change speaker…"
+msgstr "Đổi người nói…"
+
 msgid "Change…"
 msgstr "Thay đổi…"
 
@@ -242,18 +248,6 @@ msgid ""
 "ones."
 msgstr "Ký tự tiếng Trung, Nhật và Hàn rộng gần gấp đôi ký tự Latinh."
 
-msgid "Choose a file"
-msgstr "Chọn tệp"
-
-msgid "Choose a file…"
-msgstr "Chọn tệp…"
-
-msgid "Choose a folder"
-msgstr "Chọn thư mục"
-
-msgid "Choose a folder…"
-msgstr "Chọn thư mục…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "Chọn một nguồn ở trên để chép lời tệp đầu tiên của bạn."
 
@@ -262,14 +256,29 @@ msgid ""
 "play it."
 msgstr "Chọn một nguồn, hoặc chọn một bản chép lời trong lịch sử để đọc và phát."
 
+msgid "Choose file"
+msgstr "Chọn tệp"
+
+msgid "Choose file…"
+msgstr "Chọn tệp…"
+
+msgid "Choose folder"
+msgstr "Chọn thư mục"
+
+msgid "Choose folder…"
+msgstr "Chọn thư mục…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "Chọn nơi lưu các bản chép lời"
 
+msgid "Choose who says it."
+msgstr "Chọn người nói câu này."
+
+msgid "Clear conversation"
+msgstr "Xóa cuộc trò chuyện"
+
 msgid "Clear selection"
 msgstr "Bỏ chọn"
-
-msgid "Clear the conversation"
-msgstr "Xóa cuộc trò chuyện"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -342,8 +351,8 @@ msgstr "Không thể dịch \"{title}\": {error}"
 msgid "Create"
 msgstr "Tạo"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "Tạo các đoạn trống với dấu thời gian gốc để bạn tự điền."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
+msgstr "Tạo phụ đề trống với dấu thời gian gốc để bạn điền vào."
 
 msgid "Dark"
 msgstr "Tối"
@@ -382,6 +391,9 @@ msgstr "Xóa ghi chú"
 msgid "Delete note…"
 msgstr "Xóa ghi chú…"
 
+msgid "Delete subtitle"
+msgstr "Xóa phụ đề"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr ""
@@ -395,18 +407,15 @@ msgstr "Xóa ghi chú của “{title}”?"
 msgid "Delete the questions and their answers?"
 msgstr "Xóa các câu hỏi và câu trả lời?"
 
-msgid "Delete the segment"
-msgstr "Xóa đoạn"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Xóa đoạn \"{text}\"?"
-
-msgid "Delete the translation"
-msgstr "Xóa bản dịch"
+msgid "Delete the subtitle “{text}”?"
+msgstr "Xóa phụ đề \"{text}\"?"
 
 msgid "Delete transcription"
 msgstr "Xóa bản chép lời"
+
+msgid "Delete translation"
+msgstr "Xóa bản dịch"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -476,10 +485,10 @@ msgstr "Chỉnh sửa văn bản"
 msgid "Edit text…"
 msgstr "Chỉnh sửa văn bản…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "Chỉnh sửa thời gian"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "Chỉnh sửa thời gian…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -493,11 +502,11 @@ msgstr "Kết thúc:"
 msgid "Engine"
 msgstr "Công cụ"
 
+msgid "Enter URL"
+msgstr "Nhập URL"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "Nhập URL bắt đầu bằng http:// hoặc https://"
-
-msgid "Enter the URL"
-msgstr "Nhập URL"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -571,27 +580,27 @@ msgstr "Tìm ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "Tìm và thay thế ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "Tìm và thay thế trong bản chép lời"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "Tìm và thay thế trong bản dịch"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "Tìm và thay thế trong bản dịch sang {language}"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "Tìm trong bản tóm tắt"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "Tìm trong bản chép lời"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "Tìm trong bản dịch"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "Tìm trong bản dịch sang {language}"
 
 msgid "Find:"
@@ -648,7 +657,7 @@ msgstr "Khóa Google API"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Dịch không trả về bản dịch hợp lệ."
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "Ẩn bản dịch"
 
 # Needs review by a native speaker
@@ -729,10 +738,17 @@ msgstr "Việc này mất một lát."
 msgid "It will start when the current transcription finishes."
 msgstr "Sẽ bắt đầu khi bản chép lời hiện tại hoàn tất."
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr ""
+"Các từ của nó sẽ mất thời gian và độ tin cậy, nên sẽ không còn được làm "
+"nổi bật."
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "Giữ trên cửa sổ chính"
 
 msgid ""
@@ -862,7 +878,7 @@ msgstr ""
 "Chính xác hơn nhưng không có dấu thời gian: không thể phát bản chép lời "
 "theo từng đoạn hay tạo phụ đề."
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "Thêm tùy chọn trong phần cài đặt"
 
 msgid "Move to group"
@@ -1033,11 +1049,11 @@ msgstr "Chỉ chép lời tiếng Anh, nhanh hơn mô hình đa ngôn ngữ cùn
 msgid "Open folder"
 msgstr "Mở thư mục"
 
+msgid "Open in browser"
+msgstr "Mở trong trình duyệt"
+
 msgid "Open in history"
 msgstr "Mở trong lịch sử"
-
-msgid "Open in the browser"
-msgstr "Mở trong trình duyệt"
 
 msgid "Open source folder"
 msgstr "Mở thư mục nguồn"
@@ -1073,7 +1089,7 @@ msgstr "Dán"
 msgid "Pending"
 msgstr "Đang chờ"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "Ghim lên đầu"
 
 msgid "Pinned"
@@ -1198,7 +1214,7 @@ msgstr ""
 msgid "Refine"
 msgstr "Tinh chỉnh"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "Tạo lại bản tóm tắt"
 
 msgid "Remove"
@@ -1210,7 +1226,7 @@ msgstr "Gỡ khỏi lịch sử"
 msgid "Remove from history…"
 msgstr "Gỡ khỏi lịch sử…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "Gỡ các tệp bị thiếu khỏi danh sách…"
 
 #, python-brace-format
@@ -1320,14 +1336,14 @@ msgstr "Tìm kiếm"
 msgid "Search language…"
 msgstr "Tìm ngôn ngữ…"
 
-msgid "Select a file"
-msgstr "Chọn tệp"
-
-msgid "Select a folder"
-msgstr "Chọn thư mục"
-
 msgid "Select at least one output file type."
 msgstr "Chọn ít nhất một loại tệp đầu ra."
+
+msgid "Select file"
+msgstr "Chọn tệp"
+
+msgid "Select folder"
+msgstr "Chọn thư mục"
 
 msgid "Server URL"
 msgstr "URL máy chủ"
@@ -1361,8 +1377,11 @@ msgid "Set…"
 msgstr "Đặt…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "Hiện tất cả các đoạn"
+msgid "Show all subtitles"
+msgstr "Hiện tất cả phụ đề"
+
+msgid "Show as video subtitles"
+msgstr "Hiển thị làm phụ đề của video"
 
 msgid "Show in Explorer"
 msgstr "Hiển thị trong Explorer"
@@ -1373,19 +1392,16 @@ msgstr "Hiển thị trong Finder"
 msgid "Show in file manager"
 msgstr "Hiển thị trong trình quản lý tệp"
 
-msgid "Show it as the subtitles of the video"
-msgstr "Hiển thị làm phụ đề của video"
-
 msgid "Show more"
 msgstr "Hiển thị thêm"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "Hiển thị phụ đề trên video"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "Hiển thị văn bản khi ghi âm"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "Hiển thị bản dịch"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1419,6 +1435,9 @@ msgstr "Nguồn"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Phím cách: phát/tạm dừng · ←/→: lùi/tới {seconds} giây"
 
+msgid "Speaker:"
+msgstr "Người nói:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "Số người nói: {count}"
@@ -1435,7 +1454,7 @@ msgstr "Đang bắt đầu…"
 msgid "Stay on top"
 msgstr "Luôn ở trên cùng"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "Dừng thêm phụ đề vào video"
 
 msgid "Stop syncing scrolling"
@@ -1587,8 +1606,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Mô hình của Whisper API nhận diện người nói."
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Đoạn mới nằm sau đoạn lúc {time}:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "Phụ đề mới nằm sau phụ đề lúc {time}:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1605,11 +1624,11 @@ msgid "The reply of the model was too long."
 msgstr "Phản hồi của mô hình quá dài."
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Đoạn lúc {time}, chưa được dịch."
+msgid "The subtitle at {time}, not translated yet."
+msgstr "Phụ đề lúc {time}, chưa được dịch."
 
-msgid "The segment must end after it starts."
-msgstr "Đoạn phải kết thúc sau khi bắt đầu."
+msgid "The subtitle must end after it starts."
+msgstr "Phụ đề phải kết thúc sau khi bắt đầu."
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1709,12 +1728,6 @@ msgstr "Trên"
 msgid "Transcribe"
 msgstr "Chép lời"
 
-msgid "Transcribe a file"
-msgstr "Chép lời tệp"
-
-msgid "Transcribe a folder"
-msgstr "Chép lời thư mục"
-
 msgid "Transcribe again"
 msgstr "Chép lời lại"
 
@@ -1726,10 +1739,16 @@ msgstr ""
 "Chép lời lại tất cả các tệp của \"{title}\"? Các tệp đã lưu cho chúng sẽ "
 "bị thay thế."
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
+msgstr "Chép lời tệp"
+
+msgid "Transcribe folder"
+msgstr "Chép lời thư mục"
+
+msgid "Transcribe from URL"
 msgstr "Chép lời từ URL"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe from microphone"
 msgstr "Chép lời từ micrô"
 
 # Needs review by a native speaker
@@ -1817,8 +1836,8 @@ msgstr "Dịch bằng:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "Đã dịch: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Dịch từng đoạn, giữ nguyên dấu thời gian."
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "Dịch từng phụ đề, giữ nguyên dấu thời gian."
 
 msgid "Translate…"
 msgstr "Dịch…"
@@ -1838,8 +1857,8 @@ msgid "Translation into {language}"
 msgstr "Bản dịch sang {language}"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Bản dịch của đoạn từ {start} đến {end}:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "Bản dịch của phụ đề từ {start} đến {end}:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1875,7 +1894,7 @@ msgstr "Hoàn tác"
 msgid "Unpin"
 msgstr "Bỏ ghim"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "Bỏ giữ trên cửa sổ chính"
 
 #, python-brace-format
@@ -1933,7 +1952,7 @@ msgstr "Đang chờ thư mục khả dụng: {folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "Đang chờ {count} bản chép lời hoàn tất."
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "Theo dõi thư mục"
 
 msgid "Watched folder"
