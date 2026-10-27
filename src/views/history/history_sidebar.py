@@ -340,7 +340,7 @@ class HistorySidebar(ctk.CTkFrame):  # type: ignore[misc]
 
         if not is_child:
             menu.add_command(
-                label=_("Unpin") if entry.is_pinned else _("Pin to the top"),
+                label=_("Unpin") if entry.is_pinned else _("Pin to top"),
                 command=lambda: self.actions.history.toggle_pin(entry_id),
             )
             groups_menu = tk.Menu(menu, tearoff=False)

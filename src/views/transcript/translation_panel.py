@@ -181,9 +181,7 @@ class TranslationPanel(ctk.CTkFrame):  # type: ignore[misc]
         self.btn_regenerate = icon_button(
             header, "refresh", on_regenerate, L_("Translate again")
         )
-        btn_close = icon_button(
-            header, "x_circle", on_close, L_("Hide the translation")
-        )
+        btn_close = icon_button(header, "x_circle", on_close, L_("Hide translation"))
         for column, button in enumerate(
             (
                 self.btn_search,
@@ -540,7 +538,7 @@ class TranslateDialog(_Dialog):
 
         ctk.CTkButton(
             self.frm_body,
-            text=_("More options in the settings"),
+            text=_("More options in settings"),
             image=icons.icon("gear", 14),
             compound=ctk.LEFT,
             width=0,

@@ -186,7 +186,7 @@ class SegmentEditor:
         segment = segments[idx]
         timing = TimingDialog(
             self._master,
-            _("Edit the timing"),
+            _("Edit timing"),
             _("Save"),
             self._describe(segment),
             Timing(segment.start, segment.end),

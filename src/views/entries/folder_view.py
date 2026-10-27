@@ -1011,7 +1011,7 @@ class FolderView(ctk.CTkFrame):  # type: ignore[misc]
         )
         if self._missing_ids:
             menu.add_command(
-                label=_("Remove missing files from the list…"),
+                label=_("Remove missing files from list…"),
                 command=lambda: actions.prompts.confirm_remove_entries(
                     sorted(self._missing_ids)
                 ),

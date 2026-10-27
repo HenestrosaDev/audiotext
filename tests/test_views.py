@@ -598,7 +598,7 @@ def test_several_files_of_a_folder_are_selected_and_acted_on(
     view._show_folder_menu()
     labels = menu_labels(menus[-1])
     assert labels["Export all…"] == tk.NORMAL
-    menus[-1].invoke("Remove missing files from the list…")
+    menus[-1].invoke("Remove missing files from list…")
     ui.pump()
     assert ui.store.get(gone.id) is None
     assert [row.entry_id for row in view.rows] == [first.id, second.id, third.id]
@@ -1378,7 +1378,7 @@ def test_the_find_dialog_goes_through_the_matches_and_replaces_them(
     ui.pump()
     dialog = view._find_dialog
     assert dialog is not None
-    assert dialog.title() == "Find and replace in the transcription"
+    assert dialog.title() == "Find and replace in transcription"
 
     # The timestamps and the speakers aren't searched
     dialog._find.set("00")
@@ -1415,7 +1415,7 @@ def test_the_find_dialog_goes_through_the_matches_and_replaces_them(
     view.translation_panel.btn_search.invoke()
     ui.pump()
     assert view._find_dialog is dialog
-    assert dialog.title() == "Find and replace in the translation into Spanish"
+    assert dialog.title() == "Find and replace in translation into Spanish"
     assert view.text.match_status == (None, 0)
     assert view.translation_panel.text.match_status == (0, 2)
     dialog._replace_all()
@@ -3100,7 +3100,7 @@ def test_the_summary_can_be_searched(ui: Ui) -> None:
     ui.pump()
     dialog = view._find_dialog
     assert dialog is not None
-    assert dialog.title() == "Find in the summary"
+    assert dialog.title() == "Find in summary"
     assert not dialog.ent_replacement.winfo_ismapped()
     dialog._find.set("talk")
     ui.pump()
@@ -4343,7 +4343,7 @@ def test_the_plain_text_built_from_the_subtitles_is_only_searched(ui: Ui) -> Non
     # Its matches can't be traced back to the subtitles
     view._on_mode_change(PLAIN_TEXT_MODE)
     ui.pump()
-    assert dialog.title() == "Find in the transcription"
+    assert dialog.title() == "Find in transcription"
     assert not dialog.btn_replace.winfo_ismapped()
     dialog._find.set("wisper")
     ui.pump()
@@ -4351,7 +4351,7 @@ def test_the_plain_text_built_from_the_subtitles_is_only_searched(ui: Ui) -> Non
 
     view._on_mode_change(TRANSCRIPT_MODE)
     ui.pump()
-    assert dialog.title() == "Find and replace in the transcription"
+    assert dialog.title() == "Find and replace in transcription"
     assert dialog.btn_replace.winfo_ismapped()
 
 

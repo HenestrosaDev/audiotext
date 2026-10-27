@@ -257,7 +257,7 @@ class VideoPane(ctk.CTkFrame):  # type: ignore[misc]
         is_shown = tk.BooleanVar(menu, config.show_subtitles)
         variables.append(is_shown)
         menu.add_checkbutton(
-            label=_("Show subtitles on the video"),
+            label=_("Show subtitles on video"),
             variable=is_shown,
             command=self.toggle_subtitles,
         )

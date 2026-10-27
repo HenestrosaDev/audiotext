@@ -25,7 +25,7 @@ class FolderCard(SettingsCard):
         super().__init__(master, L_("Folder"), on_change)
         self.swi_watch = self._switch(
             2,
-            L_("Watch the folder"),
+            L_("Watch folder"),
             config_transcription.watch_folder,
             ConfigTranscription.Key.WATCH_FOLDER,
         )

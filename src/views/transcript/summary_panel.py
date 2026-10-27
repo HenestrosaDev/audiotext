@@ -208,7 +208,7 @@ class SummaryPanel(ctk.CTkFrame):  # type: ignore[misc]
             header, "export", lambda: on_export(self.btn_export), L_("Export")
         )
         self.btn_regenerate = icon_button(
-            header, "refresh", on_regenerate, L_("Regenerate the summary")
+            header, "refresh", on_regenerate, L_("Regenerate summary")
         )
         self._buttons = (self.btn_search, self.btn_copy, self.btn_export)
         for column, button in enumerate((*self._buttons, self.btn_regenerate), start=2):

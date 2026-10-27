@@ -133,7 +133,7 @@ class MicrophoneView(ctk.CTkFrame):  # type: ignore[misc]
         ).grid(row=0, column=0, rowspan=2, padx=(0, 14))
         localize(
             ctk.CTkLabel(header, font=theme.font(22, "bold")),
-            text=L_("Transcribe from the microphone"),
+            text=L_("Transcribe from microphone"),
         ).grid(row=0, column=1, sticky=ctk.W)
         localize(
             ctk.CTkLabel(header, font=theme.font(13), text_color=theme.HINT_TEXT),
