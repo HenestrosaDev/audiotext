@@ -1,11 +1,11 @@
 """
 Translation of the user interface.
 
-Strings are marked with `_()` to be translated when they are shown, or with `N_()`
-when they are defined before the interface language is set (e.g. module constants),
-so they are extracted for translation but translated later with `_()`. `L_()`
-gives a text of the interface that is translated again when the language changes
-(see `views.localization`), e.g. `localize(label, text=L_("Settings"))`. `P_()`
+Strings are marked with `_()` to be translated when they are shown. `L_()` gives
+a text of the interface that is translated again when the language changes (see
+`views.localization`), e.g. `localize(label, text=L_("Settings"))`, so it is also
+used for texts defined before the interface language is set (e.g. module
+constants). `P_()`
 translates a text that depends on a number, e.g. `P_("{count} file", "{count} files",
 count)`, with the plural forms of each language. `C_()` translates a text in a
 context, for the same text that is translated differently elsewhere, e.g.
@@ -97,11 +97,6 @@ def C_(context: str, message: str) -> str:
     from the same message in another one (e.g. by gender or number).
     """
     return _interface_language.translation.pgettext(context, message)
-
-
-def N_(message: str) -> str:
-    """Marks a message for translation without translating it."""
-    return message
 
 
 def L_(message: str) -> Callable[[], str]:
