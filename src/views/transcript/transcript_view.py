@@ -788,7 +788,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
                 command=lambda: self.review_bar.set_only_flagged(False),
                 **(theme.GHOST_BUTTON | {"text_color": theme.ACCENT_TEXT}),
             ),
-            text=L_("Show all segments"),
+            text=L_("Show all subtitles"),
         ).grid(row=1, column=0, pady=(4, 0))
         # It's inside the card
         self.text.configure(fg_color="transparent", border_width=0)

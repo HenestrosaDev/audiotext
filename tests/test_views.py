@@ -2280,7 +2280,7 @@ def test_the_dialog_to_translate_explains_each_provider(ui: Ui) -> None:
         hints[label] = dialog.lbl_hint.cget("text")
 
     assert hints["Manual"] == (
-        "Creates empty segments with the original timestamps for you to fill in."
+        "Creates empty subtitles with the original timestamps for you to fill in."
     )
     # The dialog keeps its size when the provider changes
     assert len(set(heights)) == 1

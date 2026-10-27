@@ -578,7 +578,7 @@ class TranslateDialog(_Dialog):
     def _hint(self, provider: str) -> str:
         if provider == MANUAL:
             return _(
-                "Creates empty segments with the original timestamps for you to "
+                "Creates empty subtitles with the original timestamps for you to "
                 "fill in."
             )
         if ai_provider := get_ai_provider(provider):
@@ -591,7 +591,7 @@ class TranslateDialog(_Dialog):
             return _("Uses the model {model}.").format(
                 model=resolve_model(ai_provider, model)
             )
-        return _("Translates each segment, keeping its timestamps.")
+        return _("Translates each subtitle, keeping its timestamps.")
 
     def _reserve_hint_row(self) -> None:
         """
