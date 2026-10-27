@@ -129,7 +129,7 @@ https://github.com/user-attachments/assets/242e9299-b615-4c48-b627-d3ac08b5eb73
 
 - **Any source**: sources can include audio and video files, YouTube videos, direct links to media files, live text transcription of your speech via the microphone, files from a folder (with or without subfolders) excluding those you choose, and a folder that transcribes files added to it even after the app has been restarted.
 - **All the files in a folder in one place**: each file is displayed with its status, duration and size, as well as a preview of the text. You can then search, filter and sort the files, transcribe them again with different settings or export several files to a single TXT, Markdown or Word file.
-- **Private and offline**: WhisperX can run run on your computer's CPU, or much faster on an NVIDIA GPU with CUDA, or on a Mac's Apple Silicon GPU using [MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper)).
+- **Private and offline**: WhisperX can run on your computer's CPU, or much faster on an NVIDIA GPU with CUDA, or on a Mac's Apple Silicon GPU using [MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper).
 - **Speaker identification**, word-level timings, background noise reduction for quiet speakers and hum, and keywords and context to spell names and terms correctly.
 - **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL, or Google Translate.
 - **A transcript you can play**: click a subtitle to play it, change the speed, search (and replace) the text, watch videos with their subtitles, rename the speakers, and edit the text while maintaining the timestamps.
@@ -187,7 +187,7 @@ Both WhisperX and the Whisper API can transcribe and automatically detect about 
   │   │       make_gpu_addon.py
   │   │       smoke_test_app.py
   │   │       update_translations.py
-  │   │   │
+  │   │
   │   └───workflows
   │           build.yml
   │           code-quality.yml
@@ -449,7 +449,7 @@ If you have an NVIDIA GPU, the installer on Windows and Linux offers to download
    # Windows
    choco install ffmpeg
    ```
-   Homebrew's FFmpeg can't burn subtitles into videos, since it's built without libass. To burn subtitles into videos on macOS, build the version that the app bundles after cloning the repository, then add it to the `PATH` variable with the command: `packaging/macos/build_ffmpeg.sh && export PATH="$PWD/build/ffmpeg/bin:$PATH"`.
+   Homebrew's FFmpeg can't burn subtitles into videos, since it's built without libass. To burn subtitles into videos on macOS, build the version that the app bundles after cloning the repository, then add it to the `PATH` variable with the command `packaging/macos/build_ffmpeg.sh && export PATH="$PWD/build/ffmpeg/bin:$PATH"`.
 2. Clone the repository by running `git clone https://github.com/HenestrosaDev/audiotext.git` and change the current working directory to `audiotext` by running `cd audiotext`.
 3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/), which manages the project's dependencies and virtual environment. It also downloads a supported version of Python (**3.10 to 3.13**, since WhisperX doesn't support Python 3.14 yet) if you don't have one.
 4. Run `uv sync` to create the virtual environment (`.venv`) and install the dependencies, including the development ones.
@@ -548,7 +548,7 @@ The interface is translated using [gettext](https://www.gnu.org/software/gettext
 - `_()`, for texts that are translated once, when they are first displayed.
 - `L_()` for texts that are translated again when the language changes.
 - `P_()` for texts with a plural form.
-- `C_()` for texts translated differently in a context.
+- `C_()` for texts translated differently in a specific context.
 
 The translations are in `res/locales/audiotext.pot`. Translations for each language are in `res/locales/<language>/LC_MESSAGES/audiotext.po` and are compiled into `audiotext.mo` files that the app loads.
 
