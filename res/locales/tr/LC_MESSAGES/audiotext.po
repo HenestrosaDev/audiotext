@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -68,17 +68,17 @@ msgstr "Kalanları kabul et"
 msgid "Add"
 msgstr "Ekle"
 
-msgid "Add a segment"
-msgstr "Segment ekle"
-
-msgid "Add a segment after…"
-msgstr "Sonrasına segment ekle…"
-
 msgid "Add note"
 msgstr "Not ekle"
 
 msgid "Add note…"
 msgstr "Not ekle…"
+
+msgid "Add subtitle"
+msgstr "Altyazı ekle"
+
+msgid "Add subtitle after…"
+msgstr "Sonrasına altyazı ekle…"
 
 msgid "Add to queue"
 msgstr "Kuyruğa ekle"
@@ -219,6 +219,12 @@ msgstr "API anahtarını değiştir…"
 msgid "Change Hugging Face token…"
 msgstr "Hugging Face belirtecini değiştir…"
 
+msgid "Change speaker"
+msgstr "Konuşmacıyı değiştir"
+
+msgid "Change speaker…"
+msgstr "Konuşmacıyı değiştir…"
+
 msgid "Change…"
 msgstr "Değiştir…"
 
@@ -244,18 +250,6 @@ msgstr ""
 "Çince, Japonca ve Korece karakterler Latin karakterlerinin yaklaşık iki "
 "katı genişliktedir."
 
-msgid "Choose a file"
-msgstr "Bir dosya seçin"
-
-msgid "Choose a file…"
-msgstr "Dosya seç…"
-
-msgid "Choose a folder"
-msgstr "Bir klasör seçin"
-
-msgid "Choose a folder…"
-msgstr "Klasör seç…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "İlk dosyanızın transkripsiyonunu yapmak için yukarıdan bir kaynak seçin."
 
@@ -266,14 +260,29 @@ msgstr ""
 "Bir kaynak seçin veya okumak ve oynatmak için geçmişinizden bir "
 "transkripsiyon seçin."
 
+msgid "Choose file"
+msgstr "Bir dosya seçin"
+
+msgid "Choose file…"
+msgstr "Dosya seç…"
+
+msgid "Choose folder"
+msgstr "Bir klasör seçin"
+
+msgid "Choose folder…"
+msgstr "Klasör seç…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "Transkripsiyonların nereye kaydedileceğini seçin"
 
+msgid "Choose who says it."
+msgstr "Bunu kimin söylediğini seçin."
+
+msgid "Clear conversation"
+msgstr "Konuşmayı temizle"
+
 msgid "Clear selection"
 msgstr "Seçimi temizle"
-
-msgid "Clear the conversation"
-msgstr "Konuşmayı temizle"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -347,8 +356,8 @@ msgstr "Çevrilemedi: \"{title}\" ({error})"
 msgid "Create"
 msgstr "Oluştur"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "Doldurmanız için orijinal zaman damgalarıyla boş segmentler oluşturur."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
+msgstr "Doldurmanız için orijinal zaman damgalarıyla boş altyazılar oluşturur."
 
 msgid "Dark"
 msgstr "Koyu"
@@ -387,6 +396,9 @@ msgstr "Notu sil"
 msgid "Delete note…"
 msgstr "Notu sil…"
 
+msgid "Delete subtitle"
+msgstr "Altyazıyı sil"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "\"{name}\" grubu silinsin mi? Transkripsiyonları grupsuz olarak korunur."
@@ -398,18 +410,15 @@ msgstr "“{title}” notu silinsin mi?"
 msgid "Delete the questions and their answers?"
 msgstr "Sorular ve yanıtları silinsin mi?"
 
-msgid "Delete the segment"
-msgstr "Segmenti sil"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "\"{text}\" segmenti silinsin mi?"
-
-msgid "Delete the translation"
-msgstr "Çeviriyi sil"
+msgid "Delete the subtitle “{text}”?"
+msgstr "\"{text}\" altyazısı silinsin mi?"
 
 msgid "Delete transcription"
 msgstr "Transkripsiyonu sil"
+
+msgid "Delete translation"
+msgstr "Çeviriyi sil"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -479,10 +488,10 @@ msgstr "Metni düzenle"
 msgid "Edit text…"
 msgstr "Metni düzenle…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "Zamanlamayı düzenle"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "Zamanlamayı düzenle…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -496,11 +505,11 @@ msgstr "Bitiş:"
 msgid "Engine"
 msgstr "Motor"
 
+msgid "Enter URL"
+msgstr "URL'yi girin"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "http:// veya https:// ile başlayan bir URL girin"
-
-msgid "Enter the URL"
-msgstr "URL'yi girin"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -574,27 +583,27 @@ msgstr "Bul ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "Bul ve değiştir ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "Transkripsiyonda bul ve değiştir"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "Çeviride bul ve değiştir"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "{language} çeviride bul ve değiştir"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "Özette bul"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "Transkripsiyonda bul"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "Çeviride bul"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "{language} çeviride bul"
 
 msgid "Find:"
@@ -653,7 +662,7 @@ msgstr "Google API anahtarı"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Çeviri geçerli bir çeviri döndürmedi."
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "Çeviriyi gizle"
 
 # Needs review by a native speaker
@@ -734,10 +743,17 @@ msgstr "Bu biraz zaman alır."
 msgid "It will start when the current transcription finishes."
 msgstr "Geçerli transkripsiyon bittiğinde başlayacak."
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr ""
+"Sözcükleri zamanlamalarını ve güven puanlarını kaybeder, bu yüzden artık "
+"vurgulanmaz."
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "Ana pencerenin üstünde tut"
 
 msgid ""
@@ -863,7 +879,7 @@ msgstr ""
 "Daha doğru, ancak zaman damgası yok: transkripsiyon segment segment "
 "oynatılamaz ve altyazılanamaz."
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "Ayarlarda daha fazla seçenek"
 
 msgid "Move to group"
@@ -1038,11 +1054,11 @@ msgstr ""
 msgid "Open folder"
 msgstr "Klasörü aç"
 
+msgid "Open in browser"
+msgstr "Tarayıcıda aç"
+
 msgid "Open in history"
 msgstr "Geçmişte aç"
-
-msgid "Open in the browser"
-msgstr "Tarayıcıda aç"
 
 msgid "Open source folder"
 msgstr "Kaynak klasörü aç"
@@ -1079,7 +1095,7 @@ msgstr "Yapıştır"
 msgid "Pending"
 msgstr "Bekleyen"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "En üste sabitle"
 
 msgid "Pinned"
@@ -1202,7 +1218,7 @@ msgstr ""
 msgid "Refine"
 msgstr "İyileştir"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "Özeti yeniden oluştur"
 
 msgid "Remove"
@@ -1214,7 +1230,7 @@ msgstr "Geçmişten kaldır"
 msgid "Remove from history…"
 msgstr "Geçmişten kaldır…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "Eksik dosyaları listeden kaldır…"
 
 #, python-brace-format
@@ -1324,14 +1340,14 @@ msgstr "Ara"
 msgid "Search language…"
 msgstr "Dil ara…"
 
-msgid "Select a file"
-msgstr "Bir dosya seçin"
-
-msgid "Select a folder"
-msgstr "Bir klasör seçin"
-
 msgid "Select at least one output file type."
 msgstr "En az bir çıktı dosyası türü seçin."
+
+msgid "Select file"
+msgstr "Bir dosya seçin"
+
+msgid "Select folder"
+msgstr "Bir klasör seçin"
 
 msgid "Server URL"
 msgstr "Sunucu URL'si"
@@ -1365,8 +1381,11 @@ msgid "Set…"
 msgstr "Ayarla…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "Tüm bölümleri göster"
+msgid "Show all subtitles"
+msgstr "Tüm altyazıları göster"
+
+msgid "Show as video subtitles"
+msgstr "Videonun altyazısı olarak göster"
 
 msgid "Show in Explorer"
 msgstr "Explorer'da göster"
@@ -1377,19 +1396,16 @@ msgstr "Finder'da göster"
 msgid "Show in file manager"
 msgstr "Dosya yöneticisinde göster"
 
-msgid "Show it as the subtitles of the video"
-msgstr "Videonun altyazısı olarak göster"
-
 msgid "Show more"
 msgstr "Daha fazla göster"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "Altyazıları videoda göster"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "Kayıt sırasında metni göster"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "Çeviriyi göster"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1423,6 +1439,9 @@ msgstr "Kaynak"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Boşluk: oynat/duraklat · ←/→: {seconds} sn geri/ileri"
 
+msgid "Speaker:"
+msgstr "Konuşmacı:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "Konuşmacı: {count}"
@@ -1439,7 +1458,7 @@ msgstr "Başlatılıyor…"
 msgid "Stay on top"
 msgstr "Üstte tut"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "Altyazıları videoya eklemeyi durdur"
 
 msgid "Stop syncing scrolling"
@@ -1589,8 +1608,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Whisper API'nin modeli konuşmacıları belirler."
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Yeni segment, {time} anındaki segmentten sonra gelir:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "Yeni altyazı {time} anındakinden sonra gelir:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1607,11 +1626,11 @@ msgid "The reply of the model was too long."
 msgstr "Modelin yanıtı çok uzundu."
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "{time} anındaki segment, henüz çevrilmedi."
+msgid "The subtitle at {time}, not translated yet."
+msgstr "{time} anındaki altyazı, henüz çevrilmedi."
 
-msgid "The segment must end after it starts."
-msgstr "Segment, başladıktan sonra bitmelidir."
+msgid "The subtitle must end after it starts."
+msgstr "Altyazı başladıktan sonra bitmelidir."
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1713,12 +1732,6 @@ msgstr "Üst"
 msgid "Transcribe"
 msgstr "Yazıya dök"
 
-msgid "Transcribe a file"
-msgstr "Dosyayı yazıya dök"
-
-msgid "Transcribe a folder"
-msgstr "Klasörü yazıya dök"
-
 msgid "Transcribe again"
 msgstr "Yeniden yazıya dök"
 
@@ -1730,10 +1743,16 @@ msgstr ""
 "\"{title}\" içindeki tüm dosyalar yeniden yazıya dökülsün mü? Onlar için "
 "kaydedilen dosyalar değiştirilecek."
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
+msgstr "Dosyayı yazıya dök"
+
+msgid "Transcribe folder"
+msgstr "Klasörü yazıya dök"
+
+msgid "Transcribe from URL"
 msgstr "URL'den yazıya dök"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe from microphone"
 msgstr "Mikrofondan yazıya dök"
 
 # Needs review by a native speaker
@@ -1823,8 +1842,8 @@ msgstr "Şununla çevir:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "Çevrildi: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Her segmenti zaman damgalarını koruyarak çevirir."
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "Her altyazıyı zaman damgalarını koruyarak çevirir."
 
 msgid "Translate…"
 msgstr "Çevir…"
@@ -1844,8 +1863,8 @@ msgid "Translation into {language}"
 msgstr "Çeviri ({language})"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "{start} ile {end} arasındaki segmentin çevirisi:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "{start} ile {end} arasındaki altyazının çevirisi:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1881,7 +1900,7 @@ msgstr "Geri al"
 msgid "Unpin"
 msgstr "Sabitlemeyi kaldır"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "Ana pencerenin üstünde tutma"
 
 #, python-brace-format
@@ -1939,7 +1958,7 @@ msgstr "Klasörün kullanılabilir olması bekleniyor: {folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "Bitmesi beklenen transkripsiyonlar: {count}."
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "Klasörü izle"
 
 msgid "Watched folder"

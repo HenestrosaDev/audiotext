@@ -1,7 +1,7 @@
 """
 Corrections of a transcription: replacing a text, renaming a speaker and editing
-the text of a segment. The timing of the segments of a translation can also
-change, and segments can be added to it or deleted from it.
+the text, the timing or the speaker of a segment. Segments can also be added and
+deleted, in a transcription and in its translations.
 
 The segments keep the timings of their words, which highlight each word while
 playing and are needed by the subtitles. When the text of a segment changes, the
@@ -303,6 +303,25 @@ def overlapping_segments(
     that a segment of its translation translates.
     """
     return [s for s in segments if s.start < end and s.end > start]
+
+
+def set_segment_speaker(
+    segments: list[TranscriptSegment], idx: int, speaker: str
+) -> list[TranscriptSegment]:
+    """
+    Says that a segment is said by another speaker, unlike `rename_speakers`,
+    which renames all the segments of a speaker.
+
+    :raises ValueError: If the speaker has no name.
+    """
+    speaker = speaker.strip()
+    if not speaker:
+        raise ValueError("The name of a speaker can't be empty")
+
+    return [
+        replace(s, speaker=speaker) if segment_idx == idx else s
+        for segment_idx, s in enumerate(segments)
+    ]
 
 
 def speakers(segments: list[TranscriptSegment]) -> list[str]:

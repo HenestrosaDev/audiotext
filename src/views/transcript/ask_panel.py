@@ -178,7 +178,7 @@ class AskPanel(ctk.CTkFrame):  # type: ignore[misc]
             text=L_("Ask"),
         ).grid(row=0, column=1, sticky=ctk.W)
         self.btn_clear = icon_button(
-            header, "trash", on_clear, L_("Clear the conversation")
+            header, "trash", on_clear, L_("Clear conversation")
         )
         self.btn_clear.grid(row=0, column=2, padx=(2, 0))
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -67,17 +67,17 @@ msgstr "Прийняти решту"
 msgid "Add"
 msgstr "Додати"
 
-msgid "Add a segment"
-msgstr "Додати сегмент"
-
-msgid "Add a segment after…"
-msgstr "Додати сегмент після…"
-
 msgid "Add note"
 msgstr "Додати нотатку"
 
 msgid "Add note…"
 msgstr "Додати нотатку…"
+
+msgid "Add subtitle"
+msgstr "Додати субтитр"
+
+msgid "Add subtitle after…"
+msgstr "Додати субтитр після…"
 
 msgid "Add to queue"
 msgstr "Додати до черги"
@@ -219,6 +219,12 @@ msgstr "Змінити ключ API…"
 msgid "Change Hugging Face token…"
 msgstr "Змінити токен Hugging Face…"
 
+msgid "Change speaker"
+msgstr "Змінити мовця"
+
+msgid "Change speaker…"
+msgstr "Змінити мовця…"
+
 msgid "Change…"
 msgstr "Змінити…"
 
@@ -244,18 +250,6 @@ msgstr ""
 "Китайські, японські та корейські символи приблизно вдвічі ширші за "
 "латинські."
 
-msgid "Choose a file"
-msgstr "Виберіть файл"
-
-msgid "Choose a file…"
-msgstr "Вибрати файл…"
-
-msgid "Choose a folder"
-msgstr "Виберіть папку"
-
-msgid "Choose a folder…"
-msgstr "Вибрати папку…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "Виберіть джерело вище, щоб транскрибувати перший файл."
 
@@ -266,14 +260,29 @@ msgstr ""
 "Виберіть джерело або транскрипцію з історії, щоб прочитати й прослухати "
 "її."
 
+msgid "Choose file"
+msgstr "Виберіть файл"
+
+msgid "Choose file…"
+msgstr "Вибрати файл…"
+
+msgid "Choose folder"
+msgstr "Виберіть папку"
+
+msgid "Choose folder…"
+msgstr "Вибрати папку…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "Виберіть, куди зберігати транскрипції"
 
+msgid "Choose who says it."
+msgstr "Виберіть, хто це каже."
+
+msgid "Clear conversation"
+msgstr "Очистити розмову"
+
 msgid "Clear selection"
 msgstr "Зняти виділення"
-
-msgid "Clear the conversation"
-msgstr "Очистити розмову"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -348,10 +357,10 @@ msgstr "Не вдалося перекласти «{title}»: {error}"
 msgid "Create"
 msgstr "Створити"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
 msgstr ""
-"Створює порожні сегменти з оригінальними часовими мітками, які ви "
-"заповните."
+"Створює порожні субтитри з початковими часовими мітками, щоб ви їх "
+"заповнили."
 
 msgid "Dark"
 msgstr "Темна"
@@ -390,6 +399,9 @@ msgstr "Видалити нотатку"
 msgid "Delete note…"
 msgstr "Видалити нотатку…"
 
+msgid "Delete subtitle"
+msgstr "Видалити субтитр"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "Видалити групу «{name}»? Її транскрипції збережуться, але без групи."
@@ -401,18 +413,15 @@ msgstr "Видалити нотатку до «{title}»?"
 msgid "Delete the questions and their answers?"
 msgstr "Видалити запитання та відповіді на них?"
 
-msgid "Delete the segment"
-msgstr "Видалити сегмент"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Видалити сегмент «{text}»?"
-
-msgid "Delete the translation"
-msgstr "Видалити переклад"
+msgid "Delete the subtitle “{text}”?"
+msgstr "Видалити субтитр «{text}»?"
 
 msgid "Delete transcription"
 msgstr "Видалити транскрипцію"
+
+msgid "Delete translation"
+msgstr "Видалити переклад"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -484,10 +493,10 @@ msgstr "Змінити текст"
 msgid "Edit text…"
 msgstr "Змінити текст…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "Змінити таймінг"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "Змінити таймінг…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -501,11 +510,11 @@ msgstr "Кінець:"
 msgid "Engine"
 msgstr "Рушій"
 
+msgid "Enter URL"
+msgstr "Введіть URL"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "Введіть URL, що починається з http:// або https://"
-
-msgid "Enter the URL"
-msgstr "Введіть URL"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -579,27 +588,27 @@ msgstr "Знайти ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "Знайти й замінити ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "Знайти й замінити в транскрипції"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "Знайти й замінити в перекладі"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "Знайти й замінити в перекладі мовою {language}"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "Знайти в підсумку"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "Знайти в транскрипції"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "Знайти в перекладі"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "Знайти в перекладі мовою {language}"
 
 msgid "Find:"
@@ -656,7 +665,7 @@ msgstr "Ключ Google API"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Перекладач не повернув коректний переклад."
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "Сховати переклад"
 
 # Needs review by a native speaker
@@ -737,10 +746,15 @@ msgstr "Це займе трохи часу."
 msgid "It will start when the current transcription finishes."
 msgstr "Почнеться, коли завершиться поточна транскрипція."
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr "Його слова втратять таймінг і впевненість, тому більше не виділятимуться."
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "Тримати над головним вікном"
 
 msgid ""
@@ -870,7 +884,7 @@ msgstr ""
 "Точніше, але без часових міток: транскрипцію не можна відтворювати по "
 "сегментах або додати до неї субтитри."
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "Більше параметрів у налаштуваннях"
 
 msgid "Move to group"
@@ -1045,11 +1059,11 @@ msgstr ""
 msgid "Open folder"
 msgstr "Відкрити папку"
 
+msgid "Open in browser"
+msgstr "Відкрити в браузері"
+
 msgid "Open in history"
 msgstr "Відкрити в історії"
-
-msgid "Open in the browser"
-msgstr "Відкрити в браузері"
 
 msgid "Open source folder"
 msgstr "Відкрити вихідну папку"
@@ -1086,7 +1100,7 @@ msgstr "Вставити"
 msgid "Pending"
 msgstr "Очікують"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "Закріпити вгорі"
 
 msgid "Pinned"
@@ -1209,7 +1223,7 @@ msgstr ""
 msgid "Refine"
 msgstr "Уточнення"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "Створити підсумок знову"
 
 msgid "Remove"
@@ -1221,7 +1235,7 @@ msgstr "Прибрати з історії"
 msgid "Remove from history…"
 msgstr "Прибрати з історії…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "Прибрати зі списку відсутні файли…"
 
 #, python-brace-format
@@ -1335,14 +1349,14 @@ msgstr "Пошук"
 msgid "Search language…"
 msgstr "Пошук мови…"
 
-msgid "Select a file"
-msgstr "Виберіть файл"
-
-msgid "Select a folder"
-msgstr "Виберіть папку"
-
 msgid "Select at least one output file type."
 msgstr "Виберіть принаймні один тип вихідного файлу."
+
+msgid "Select file"
+msgstr "Виберіть файл"
+
+msgid "Select folder"
+msgstr "Виберіть папку"
 
 msgid "Server URL"
 msgstr "URL сервера"
@@ -1376,8 +1390,11 @@ msgid "Set…"
 msgstr "Задати…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "Показати всі сегменти"
+msgid "Show all subtitles"
+msgstr "Показати всі субтитри"
+
+msgid "Show as video subtitles"
+msgstr "Показувати як субтитри відео"
 
 msgid "Show in Explorer"
 msgstr "Показати в Провіднику"
@@ -1388,19 +1405,16 @@ msgstr "Показати у Finder"
 msgid "Show in file manager"
 msgstr "Показати у файловому менеджері"
 
-msgid "Show it as the subtitles of the video"
-msgstr "Показувати як субтитри відео"
-
 msgid "Show more"
 msgstr "Показати більше"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "Показувати субтитри на відео"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "Показувати текст під час запису"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "Показати переклад"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1434,6 +1448,9 @@ msgstr "Джерело"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Пробіл: відтворення/пауза · ←/→: на {seconds} с назад/вперед"
 
+msgid "Speaker:"
+msgstr "Мовець:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "Мовці: {count}"
@@ -1450,7 +1467,7 @@ msgstr "Запуск…"
 msgid "Stay on top"
 msgstr "Поверх інших вікон"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "Зупинити додавання субтитрів до відео"
 
 msgid "Stop syncing scrolling"
@@ -1600,8 +1617,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Модель Whisper API визначає мовців."
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Новий сегмент буде після сегмента о {time}:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "Новий субтитр буде після субтитру о {time}:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1618,11 +1635,11 @@ msgid "The reply of the model was too long."
 msgstr "Відповідь моделі була задовгою."
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Сегмент о {time}, ще не перекладено."
+msgid "The subtitle at {time}, not translated yet."
+msgstr "Субтитр о {time}, ще не перекладено."
 
-msgid "The segment must end after it starts."
-msgstr "Сегмент має закінчуватися після початку."
+msgid "The subtitle must end after it starts."
+msgstr "Субтитр має закінчуватися після початку."
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1724,12 +1741,6 @@ msgstr "Угорі"
 msgid "Transcribe"
 msgstr "Транскрибувати"
 
-msgid "Transcribe a file"
-msgstr "Транскрибувати файл"
-
-msgid "Transcribe a folder"
-msgstr "Транскрибувати папку"
-
 msgid "Transcribe again"
 msgstr "Транскрибувати знову"
 
@@ -1741,10 +1752,16 @@ msgstr ""
 "Транскрибувати знову всі файли «{title}»? Збережені для них файли буде "
 "замінено."
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
+msgstr "Транскрибувати файл"
+
+msgid "Transcribe folder"
+msgstr "Транскрибувати папку"
+
+msgid "Transcribe from URL"
 msgstr "Транскрибувати за URL"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe from microphone"
 msgstr "Транскрибувати з мікрофона"
 
 # Needs review by a native speaker
@@ -1831,8 +1848,8 @@ msgstr "Перекласти за допомогою:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "Перекладено: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Перекладає кожен сегмент, зберігаючи його часові мітки."
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "Перекладає кожен субтитр, зберігаючи його часові мітки."
 
 msgid "Translate…"
 msgstr "Перекласти…"
@@ -1852,8 +1869,8 @@ msgid "Translation into {language}"
 msgstr "Переклад (мова: {language})"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Переклад сегмента з {start} до {end}:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "Переклад субтитру з {start} до {end}:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1889,7 +1906,7 @@ msgstr "Скасувати"
 msgid "Unpin"
 msgstr "Відкріпити"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "Не тримати над головним вікном"
 
 #, python-brace-format
@@ -1947,7 +1964,7 @@ msgstr "Очікування доступності папки: {folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "Очікування завершення транскрипцій: {count}."
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "Стежити за папкою"
 
 msgid "Watched folder"

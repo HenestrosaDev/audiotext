@@ -342,7 +342,7 @@ class EntryHeader(ctk.CTkFrame):  # type: ignore[misc]
         """Opens a URL in the browser when the label is clicked."""
         if self._files is None or not url.startswith(("http://", "https://")):
             return
-        Tooltip(label, lambda: _("Open in the browser"))
+        Tooltip(label, lambda: _("Open in browser"))
         label.bind("<Button-1>", lambda _event: webbrowser.open(url))
         self._show_as_link(label)
 

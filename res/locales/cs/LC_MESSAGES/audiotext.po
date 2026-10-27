@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -66,17 +66,17 @@ msgstr "Přijmout zbývající"
 msgid "Add"
 msgstr "Přidat"
 
-msgid "Add a segment"
-msgstr "Přidat segment"
-
-msgid "Add a segment after…"
-msgstr "Přidat segment za…"
-
 msgid "Add note"
 msgstr "Přidat poznámku"
 
 msgid "Add note…"
 msgstr "Přidat poznámku…"
+
+msgid "Add subtitle"
+msgstr "Přidat titulek"
+
+msgid "Add subtitle after…"
+msgstr "Přidat titulek za…"
 
 msgid "Add to queue"
 msgstr "Přidat do fronty"
@@ -219,6 +219,12 @@ msgstr "Změnit klíč API…"
 msgid "Change Hugging Face token…"
 msgstr "Změnit token Hugging Face…"
 
+msgid "Change speaker"
+msgstr "Změnit mluvčího"
+
+msgid "Change speaker…"
+msgstr "Změnit mluvčího…"
+
 msgid "Change…"
 msgstr "Změnit…"
 
@@ -242,18 +248,6 @@ msgid ""
 "ones."
 msgstr "Čínské, japonské a korejské znaky jsou asi dvakrát širší než latinské."
 
-msgid "Choose a file"
-msgstr "Vyberte soubor"
-
-msgid "Choose a file…"
-msgstr "Vybrat soubor…"
-
-msgid "Choose a folder"
-msgstr "Vyberte složku"
-
-msgid "Choose a folder…"
-msgstr "Vybrat složku…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "Vyberte zdroj výše a přepište svůj první soubor."
 
@@ -264,14 +258,29 @@ msgstr ""
 "Vyberte zdroj nebo přepis z historie, abyste si jej mohli přečíst a "
 "přehrát."
 
+msgid "Choose file"
+msgstr "Vyberte soubor"
+
+msgid "Choose file…"
+msgstr "Vybrat soubor…"
+
+msgid "Choose folder"
+msgstr "Vyberte složku"
+
+msgid "Choose folder…"
+msgstr "Vybrat složku…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "Vyberte, kam ukládat přepisy"
 
+msgid "Choose who says it."
+msgstr "Vyberte, kdo to říká."
+
+msgid "Clear conversation"
+msgstr "Vymazat konverzaci"
+
 msgid "Clear selection"
 msgstr "Zrušit výběr"
-
-msgid "Clear the conversation"
-msgstr "Vymazat konverzaci"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -347,8 +356,8 @@ msgstr "Nepodařilo se přeložit „{title}“: {error}"
 msgid "Create"
 msgstr "Vytvořit"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "Vytvoří prázdné segmenty s původními časovými značkami, které vyplníte."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
+msgstr "Vytvoří prázdné titulky s původními časovými značkami, které vyplníte."
 
 msgid "Dark"
 msgstr "Tmavý"
@@ -387,6 +396,9 @@ msgstr "Smazat poznámku"
 msgid "Delete note…"
 msgstr "Smazat poznámku…"
 
+msgid "Delete subtitle"
+msgstr "Smazat titulek"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "Smazat skupinu „{name}“? Její přepisy zůstanou zachovány, bez skupiny."
@@ -398,18 +410,15 @@ msgstr "Smazat poznámku k „{title}“?"
 msgid "Delete the questions and their answers?"
 msgstr "Smazat otázky a jejich odpovědi?"
 
-msgid "Delete the segment"
-msgstr "Smazat segment"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Smazat segment „{text}“?"
-
-msgid "Delete the translation"
-msgstr "Smazat překlad"
+msgid "Delete the subtitle “{text}”?"
+msgstr "Smazat titulek „{text}“?"
 
 msgid "Delete transcription"
 msgstr "Smazat přepis"
+
+msgid "Delete translation"
+msgstr "Smazat překlad"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -481,10 +490,10 @@ msgstr "Upravit text"
 msgid "Edit text…"
 msgstr "Upravit text…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "Upravit časování"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "Upravit časování…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -498,11 +507,11 @@ msgstr "Konec:"
 msgid "Engine"
 msgstr "Nástroj"
 
+msgid "Enter URL"
+msgstr "Zadejte URL"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "Zadejte URL, která začíná http:// nebo https://"
-
-msgid "Enter the URL"
-msgstr "Zadejte URL"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -576,27 +585,27 @@ msgstr "Hledat ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "Najít a nahradit ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "Najít a nahradit v přepisu"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "Najít a nahradit v překladu"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "Najít a nahradit v překladu do jazyka {language}"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "Hledat ve shrnutí"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "Hledat v přepisu"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "Hledat v překladu"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "Hledat v překladu do jazyka {language}"
 
 msgid "Find:"
@@ -651,7 +660,7 @@ msgstr "Klíč Google API"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Překladač Google nevrátil platný překlad."
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "Skrýt překlad"
 
 # Needs review by a native speaker
@@ -732,10 +741,15 @@ msgstr "Chvíli to potrvá."
 msgid "It will start when the current transcription finishes."
 msgstr "Začne, jakmile skončí aktuální přepis."
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr "Jeho slova ztratí časování a spolehlivost, takže už nebudou zvýrazněna."
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "Držet nad hlavním oknem"
 
 msgid ""
@@ -859,7 +873,7 @@ msgstr ""
 "Přesnější, ale bez časových značek: přepis nelze přehrávat po segmentech "
 "ani otitulkovat."
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "Další možnosti v nastavení"
 
 msgid "Move to group"
@@ -1032,11 +1046,11 @@ msgstr ""
 msgid "Open folder"
 msgstr "Otevřít složku"
 
+msgid "Open in browser"
+msgstr "Otevřít v prohlížeči"
+
 msgid "Open in history"
 msgstr "Otevřít v historii"
-
-msgid "Open in the browser"
-msgstr "Otevřít v prohlížeči"
 
 msgid "Open source folder"
 msgstr "Otevřít zdrojovou složku"
@@ -1072,7 +1086,7 @@ msgstr "Vložit"
 msgid "Pending"
 msgstr "Čekající"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "Připnout nahoru"
 
 msgid "Pinned"
@@ -1193,7 +1207,7 @@ msgstr "Potlačí brum a stálý šum na pozadí a vyrovná tichou řeč. Trvá 
 msgid "Refine"
 msgstr "Zpřesnění"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "Znovu vytvořit shrnutí"
 
 msgid "Remove"
@@ -1205,7 +1219,7 @@ msgstr "Odebrat z historie"
 msgid "Remove from history…"
 msgstr "Odebrat z historie…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "Odebrat chybějící soubory ze seznamu…"
 
 #, python-brace-format
@@ -1317,14 +1331,14 @@ msgstr "Hledat"
 msgid "Search language…"
 msgstr "Hledat jazyk…"
 
-msgid "Select a file"
-msgstr "Vyberte soubor"
-
-msgid "Select a folder"
-msgstr "Vyberte složku"
-
 msgid "Select at least one output file type."
 msgstr "Vyberte alespoň jeden typ výstupního souboru."
+
+msgid "Select file"
+msgstr "Vyberte soubor"
+
+msgid "Select folder"
+msgstr "Vyberte složku"
 
 msgid "Server URL"
 msgstr "URL serveru"
@@ -1358,8 +1372,11 @@ msgid "Set…"
 msgstr "Nastavit…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "Zobrazit všechny segmenty"
+msgid "Show all subtitles"
+msgstr "Zobrazit všechny titulky"
+
+msgid "Show as video subtitles"
+msgstr "Zobrazit ho jako titulky videa"
 
 msgid "Show in Explorer"
 msgstr "Zobrazit v Průzkumníkovi"
@@ -1370,19 +1387,16 @@ msgstr "Zobrazit ve Finderu"
 msgid "Show in file manager"
 msgstr "Zobrazit ve správci souborů"
 
-msgid "Show it as the subtitles of the video"
-msgstr "Zobrazit ho jako titulky videa"
-
 msgid "Show more"
 msgstr "Zobrazit více"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "Zobrazit titulky ve videu"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "Zobrazovat text během nahrávání"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "Zobrazit překlad"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1416,6 +1430,9 @@ msgstr "Zdroj"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Mezerník: přehrát/pozastavit · ←/→: {seconds} s zpět/vpřed"
 
+msgid "Speaker:"
+msgstr "Mluvčí:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "Mluvčí: {count}"
@@ -1432,7 +1449,7 @@ msgstr "Spouštění…"
 msgid "Stay on top"
 msgstr "Vždy navrchu"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "Přestat přidávat titulky do videa"
 
 msgid "Stop syncing scrolling"
@@ -1582,8 +1599,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Model rozhraní Whisper API rozpozná mluvčí."
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Nový segment bude za segmentem v {time}:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "Nový titulek bude za titulkem v {time}:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1600,11 +1617,11 @@ msgid "The reply of the model was too long."
 msgstr "Odpověď modelu byla příliš dlouhá."
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Segment v {time}, zatím nepřeložený."
+msgid "The subtitle at {time}, not translated yet."
+msgstr "Titulek v {time}, zatím nepřeložený."
 
-msgid "The segment must end after it starts."
-msgstr "Segment musí skončit až po svém začátku."
+msgid "The subtitle must end after it starts."
+msgstr "Titulek musí skončit až po svém začátku."
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1704,12 +1721,6 @@ msgstr "Nahoře"
 msgid "Transcribe"
 msgstr "Přepsat"
 
-msgid "Transcribe a file"
-msgstr "Přepsat soubor"
-
-msgid "Transcribe a folder"
-msgstr "Přepsat složku"
-
 msgid "Transcribe again"
 msgstr "Přepsat znovu"
 
@@ -1721,10 +1732,16 @@ msgstr ""
 "Přepsat znovu všechny soubory složky „{title}“? Soubory, které se pro ně "
 "uložily, budou nahrazeny."
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
+msgstr "Přepsat soubor"
+
+msgid "Transcribe folder"
+msgstr "Přepsat složku"
+
+msgid "Transcribe from URL"
 msgstr "Přepsat z URL"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe from microphone"
 msgstr "Přepsat z mikrofonu"
 
 # Needs review by a native speaker
@@ -1811,8 +1828,8 @@ msgstr "Přeložit pomocí:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "Přeloženo: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Přeloží každý segment a zachová jeho časové značky."
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "Přeloží každý titulek a zachová jeho časové značky."
 
 msgid "Translate…"
 msgstr "Přeložit…"
@@ -1832,8 +1849,8 @@ msgid "Translation into {language}"
 msgstr "Překlad (jazyk: {language})"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Překlad segmentu od {start} do {end}:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "Překlad titulku od {start} do {end}:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1869,7 +1886,7 @@ msgstr "Zpět"
 msgid "Unpin"
 msgstr "Odepnout"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "Nedržet nad hlavním oknem"
 
 #, python-brace-format
@@ -1927,7 +1944,7 @@ msgstr "Čekání, až bude složka dostupná: {folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "Čekání na dokončení přepisů (počet: {count})."
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "Sledovat složku"
 
 msgid "Watched folder"

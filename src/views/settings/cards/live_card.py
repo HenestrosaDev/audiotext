@@ -27,7 +27,7 @@ class LiveCard(SettingsCard):
         super().__init__(master, L_("Live text"), on_change)
         self.swi_live = self._switch(
             2,
-            L_("Show the text while recording"),
+            L_("Show text while recording"),
             config_whisperx.live_transcription,
             ConfigWhisperX.Key.LIVE_TRANSCRIPTION,
         )

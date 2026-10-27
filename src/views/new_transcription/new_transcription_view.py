@@ -99,23 +99,23 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
         titles: dict[AudioSource, tuple[str, Text, Text, Text]] = {
             AudioSource.FILE: (
                 "file",
-                L_("Transcribe a file"),
+                L_("Transcribe file"),
                 L_("Audio and video files: MP3, WAV, M4A, MP4, MOV, MKV and more."),
-                L_("Choose a file"),
+                L_("Choose file"),
             ),
             AudioSource.YOUTUBE: (
                 "link",
-                L_("Transcribe from a URL"),
+                L_("Transcribe from URL"),
                 L_("A YouTube video or a direct link to an audio or video file."),
-                L_("Enter the URL"),
+                L_("Enter URL"),
             ),
             AudioSource.DIRECTORY: (
                 "folder",
-                L_("Transcribe a folder"),
+                L_("Transcribe folder"),
                 L_(
                     "All the audio and video files of a folder, or the new ones as they're added."
                 ),
-                L_("Choose a folder"),
+                L_("Choose folder"),
             ),
         }
         icon_name, title, subtitle, source_step = titles[self.source]
@@ -188,7 +188,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
                 command=self.trigger_browse,
             ),
             text=lambda: (
-                (_("Choose a file…") if is_file else _("Choose a folder…"))
+                (_("Choose file…") if is_file else _("Choose folder…"))
                 + f"   {theme.SHORTCUT_MODIFIER_LABEL}O"
             ),
         ).grid(row=4, column=0)
@@ -352,7 +352,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
     def trigger_browse(self) -> None:
         if self.source == AudioSource.FILE:
             path = filedialog.askopenfilename(
-                title=_("Select a file"),
+                title=_("Select file"),
                 filetypes=[
                     (_("All supported files"), c.SUPPORTED_FILE_EXTENSIONS),
                     (_("Audio files"), c.AUDIO_FILE_EXTENSIONS),
@@ -360,7 +360,7 @@ class NewTranscriptionView(ctk.CTkFrame):  # type: ignore[misc]
                 ],
             )
         elif self.source == AudioSource.DIRECTORY:
-            path = filedialog.askdirectory(title=_("Select a folder"))
+            path = filedialog.askdirectory(title=_("Select folder"))
         else:
             self.ent_url.focus_set()
             return

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -66,17 +66,17 @@ msgstr "Terima sisanya"
 msgid "Add"
 msgstr "Tambahkan"
 
-msgid "Add a segment"
-msgstr "Tambahkan segmen"
-
-msgid "Add a segment after…"
-msgstr "Tambahkan segmen sesudahnya…"
-
 msgid "Add note"
 msgstr "Tambahkan catatan"
 
 msgid "Add note…"
 msgstr "Tambahkan catatan…"
+
+msgid "Add subtitle"
+msgstr "Tambah subtitle"
+
+msgid "Add subtitle after…"
+msgstr "Tambah subtitle setelahnya…"
 
 msgid "Add to queue"
 msgstr "Tambahkan ke antrean"
@@ -218,6 +218,12 @@ msgstr "Ubah kunci API…"
 msgid "Change Hugging Face token…"
 msgstr "Ubah token Hugging Face…"
 
+msgid "Change speaker"
+msgstr "Ganti pembicara"
+
+msgid "Change speaker…"
+msgstr "Ganti pembicara…"
+
 msgid "Change…"
 msgstr "Ubah…"
 
@@ -243,18 +249,6 @@ msgstr ""
 "Karakter Mandarin, Jepang, dan Korea sekitar dua kali lebih lebar "
 "daripada karakter Latin."
 
-msgid "Choose a file"
-msgstr "Pilih file"
-
-msgid "Choose a file…"
-msgstr "Pilih file…"
-
-msgid "Choose a folder"
-msgstr "Pilih folder"
-
-msgid "Choose a folder…"
-msgstr "Pilih folder…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "Pilih sumber di atas untuk mentranskripsi file pertama Anda."
 
@@ -265,14 +259,29 @@ msgstr ""
 "Pilih sumber, atau pilih transkripsi dari riwayat Anda untuk membaca dan "
 "memutarnya."
 
+msgid "Choose file"
+msgstr "Pilih file"
+
+msgid "Choose file…"
+msgstr "Pilih file…"
+
+msgid "Choose folder"
+msgstr "Pilih folder"
+
+msgid "Choose folder…"
+msgstr "Pilih folder…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "Pilih tempat menyimpan transkripsi"
 
+msgid "Choose who says it."
+msgstr "Pilih siapa yang mengatakannya."
+
+msgid "Clear conversation"
+msgstr "Hapus percakapan"
+
 msgid "Clear selection"
 msgstr "Hapus pilihan"
-
-msgid "Clear the conversation"
-msgstr "Hapus percakapan"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -346,8 +355,8 @@ msgstr "Tidak dapat menerjemahkan \"{title}\": {error}"
 msgid "Create"
 msgstr "Buat"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "Membuat segmen kosong dengan stempel waktu asli untuk Anda isi."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
+msgstr "Membuat subtitle kosong dengan stempel waktu asli untuk Anda isi."
 
 msgid "Dark"
 msgstr "Gelap"
@@ -386,6 +395,9 @@ msgstr "Hapus catatan"
 msgid "Delete note…"
 msgstr "Hapus catatan…"
 
+msgid "Delete subtitle"
+msgstr "Hapus subtitle"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "Hapus grup \"{name}\"? Transkripsinya tetap disimpan, tanpa grup."
@@ -397,18 +409,15 @@ msgstr "Hapus catatan untuk “{title}”?"
 msgid "Delete the questions and their answers?"
 msgstr "Hapus pertanyaan dan jawabannya?"
 
-msgid "Delete the segment"
-msgstr "Hapus segmen"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Hapus segmen \"{text}\"?"
-
-msgid "Delete the translation"
-msgstr "Hapus terjemahan"
+msgid "Delete the subtitle “{text}”?"
+msgstr "Hapus subtitle \"{text}\"?"
 
 msgid "Delete transcription"
 msgstr "Hapus transkripsi"
+
+msgid "Delete translation"
+msgstr "Hapus terjemahan"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -479,10 +488,10 @@ msgstr "Edit teks"
 msgid "Edit text…"
 msgstr "Edit teks…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "Edit waktu"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "Edit waktu…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -496,11 +505,11 @@ msgstr "Selesai:"
 msgid "Engine"
 msgstr "Mesin"
 
+msgid "Enter URL"
+msgstr "Masukkan URL"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "Masukkan URL yang diawali http:// atau https://"
-
-msgid "Enter the URL"
-msgstr "Masukkan URL"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -574,27 +583,27 @@ msgstr "Cari ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "Cari dan ganti ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "Cari dan ganti di transkripsi"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "Cari dan ganti di terjemahan"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "Cari dan ganti di terjemahan bahasa {language}"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "Cari di ringkasan"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "Cari di transkripsi"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "Cari di terjemahan"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "Cari di terjemahan bahasa {language}"
 
 msgid "Find:"
@@ -653,7 +662,7 @@ msgstr "Kunci Google API"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Terjemahan tidak mengembalikan terjemahan yang valid."
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "Sembunyikan terjemahan"
 
 # Needs review by a native speaker
@@ -737,10 +746,17 @@ msgstr "Ini butuh waktu sebentar."
 msgid "It will start when the current transcription finishes."
 msgstr "Akan dimulai setelah transkripsi saat ini selesai."
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr ""
+"Kata-katanya kehilangan waktu dan tingkat keyakinannya, sehingga tidak "
+"akan disorot lagi."
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "Tetap di atas jendela utama"
 
 msgid ""
@@ -866,7 +882,7 @@ msgstr ""
 "Lebih akurat, tetapi tanpa stempel waktu: transkripsi tidak dapat diputar"
 " segmen demi segmen maupun diberi subtitle."
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "Opsi lainnya di pengaturan"
 
 msgid "Move to group"
@@ -1042,11 +1058,11 @@ msgstr ""
 msgid "Open folder"
 msgstr "Buka folder"
 
+msgid "Open in browser"
+msgstr "Buka di browser"
+
 msgid "Open in history"
 msgstr "Buka di riwayat"
-
-msgid "Open in the browser"
-msgstr "Buka di browser"
 
 msgid "Open source folder"
 msgstr "Buka folder sumber"
@@ -1083,7 +1099,7 @@ msgstr "Tempel"
 msgid "Pending"
 msgstr "Tertunda"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "Sematkan di atas"
 
 msgid "Pinned"
@@ -1206,7 +1222,7 @@ msgstr ""
 msgid "Refine"
 msgstr "Penyempurnaan"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "Buat ulang ringkasan"
 
 msgid "Remove"
@@ -1218,7 +1234,7 @@ msgstr "Hapus dari riwayat"
 msgid "Remove from history…"
 msgstr "Hapus dari riwayat…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "Hapus file yang hilang dari daftar…"
 
 #, python-brace-format
@@ -1331,14 +1347,14 @@ msgstr "Cari"
 msgid "Search language…"
 msgstr "Cari bahasa…"
 
-msgid "Select a file"
-msgstr "Pilih file"
-
-msgid "Select a folder"
-msgstr "Pilih folder"
-
 msgid "Select at least one output file type."
 msgstr "Pilih setidaknya satu jenis file keluaran."
+
+msgid "Select file"
+msgstr "Pilih file"
+
+msgid "Select folder"
+msgstr "Pilih folder"
 
 msgid "Server URL"
 msgstr "URL server"
@@ -1372,8 +1388,11 @@ msgid "Set…"
 msgstr "Atur…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "Tampilkan semua segmen"
+msgid "Show all subtitles"
+msgstr "Tampilkan semua subtitle"
+
+msgid "Show as video subtitles"
+msgstr "Tampilkan sebagai subtitle video"
 
 msgid "Show in Explorer"
 msgstr "Tampilkan di Explorer"
@@ -1384,19 +1403,16 @@ msgstr "Tampilkan di Finder"
 msgid "Show in file manager"
 msgstr "Tampilkan di pengelola file"
 
-msgid "Show it as the subtitles of the video"
-msgstr "Tampilkan sebagai subtitle video"
-
 msgid "Show more"
 msgstr "Tampilkan lebih banyak"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "Tampilkan subtitle di video"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "Tampilkan teks saat merekam"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "Tampilkan terjemahan"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1430,6 +1446,9 @@ msgstr "Sumber"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spasi: putar/jeda · ←/→: mundur/maju {seconds} dtk"
 
+msgid "Speaker:"
+msgstr "Pembicara:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "Pembicara: {count}"
@@ -1446,7 +1465,7 @@ msgstr "Memulai…"
 msgid "Stay on top"
 msgstr "Selalu di atas"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "Berhenti menambahkan subtitle ke video"
 
 msgid "Stop syncing scrolling"
@@ -1596,8 +1615,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Model Whisper API mengidentifikasi pembicara."
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Segmen baru ditempatkan setelah segmen pada {time}:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "Subtitle baru ditempatkan setelah subtitle pada {time}:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1615,11 +1634,11 @@ msgid "The reply of the model was too long."
 msgstr "Balasan model terlalu panjang."
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Segmen pada {time}, belum diterjemahkan."
+msgid "The subtitle at {time}, not translated yet."
+msgstr "Subtitle pada {time}, belum diterjemahkan."
 
-msgid "The segment must end after it starts."
-msgstr "Segmen harus berakhir setelah dimulai."
+msgid "The subtitle must end after it starts."
+msgstr "Subtitle harus berakhir setelah dimulai."
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1723,12 +1742,6 @@ msgstr "Atas"
 msgid "Transcribe"
 msgstr "Transkripsi"
 
-msgid "Transcribe a file"
-msgstr "Transkripsi file"
-
-msgid "Transcribe a folder"
-msgstr "Transkripsi folder"
-
 msgid "Transcribe again"
 msgstr "Transkripsi lagi"
 
@@ -1740,10 +1753,16 @@ msgstr ""
 "Transkripsi ulang semua file \"{title}\"? File yang disimpan untuknya "
 "akan diganti."
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
+msgstr "Transkripsi file"
+
+msgid "Transcribe folder"
+msgstr "Transkripsi folder"
+
+msgid "Transcribe from URL"
 msgstr "Transkripsi dari URL"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe from microphone"
 msgstr "Transkripsi dari mikrofon"
 
 # Needs review by a native speaker
@@ -1831,8 +1850,8 @@ msgstr "Terjemahkan dengan:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "Diterjemahkan: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Menerjemahkan setiap segmen dengan mempertahankan stempel waktunya."
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "Menerjemahkan setiap subtitle dengan mempertahankan stempel waktunya."
 
 msgid "Translate…"
 msgstr "Terjemahkan…"
@@ -1852,8 +1871,8 @@ msgid "Translation into {language}"
 msgstr "Terjemahan bahasa {language}"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Terjemahan segmen dari {start} sampai {end}:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "Terjemahan subtitle dari {start} sampai {end}:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1889,7 +1908,7 @@ msgstr "Urungkan"
 msgid "Unpin"
 msgstr "Lepas sematan"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "Jangan tetap di atas jendela utama"
 
 #, python-brace-format
@@ -1947,7 +1966,7 @@ msgstr "Menunggu folder tersedia: {folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "Menunggu {count} transkripsi selesai."
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "Pantau folder"
 
 msgid "Watched folder"

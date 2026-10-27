@@ -289,6 +289,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
                     segments, text
                 ),
                 edit_prompt=self._transcript_edit_prompt,
+                edits_speakers=True,
             ),
             self._format_time,
         )
@@ -520,7 +521,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         menu.add_separator()
         if VideoExport.is_running():
             menu.add_command(
-                label=_("Stop adding the subtitles to the video"),
+                label=_("Stop adding subtitles to video"),
                 command=VideoExport.cancel,
             )
         else:
@@ -787,7 +788,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
                 command=lambda: self.review_bar.set_only_flagged(False),
                 **(theme.GHOST_BUTTON | {"text_color": theme.ACCENT_TEXT}),
             ),
-            text=L_("Show all segments"),
+            text=L_("Show all subtitles"),
         ).grid(row=1, column=0, pady=(4, 0))
         # It's inside the card
         self.text.configure(fg_color="transparent", border_width=0)
@@ -1087,9 +1088,9 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         # A match in the plain text built from the subtitles can't be traced back
         # to them, so it's only found there
         if self._is_plain_text_read_only():
-            return FindTarget(title=L_("Find in the transcription"), text=self.text)
+            return FindTarget(title=L_("Find in transcription"), text=self.text)
         return FindTarget(
-            title=L_("Find and replace in the transcription"),
+            title=L_("Find and replace in transcription"),
             text=self.text,
             replace_current=self._replace_current,
             replace_all=self._replace_all,
@@ -1106,18 +1107,16 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             translation = self._translation()
             if translation is None:
                 return (
-                    _("Find and replace in the translation")
+                    _("Find and replace in translation")
                     if can_replace
-                    else _("Find in the translation")
+                    else _("Find in translation")
                 )
             language = language_name(translation.language)
             if can_replace:
-                return _("Find and replace in the translation into {language}").format(
+                return _("Find and replace in translation into {language}").format(
                     language=language
                 )
-            return _("Find in the translation into {language}").format(
-                language=language
-            )
+            return _("Find in translation into {language}").format(language=language)
 
         if not can_replace:
             return FindTarget(title=title, text=self.translation_panel.text)
@@ -1143,7 +1142,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
 
     def _summary_find_target(self) -> FindTarget:
         # The summary is generated, so it isn't corrected like the texts
-        return FindTarget(title=L_("Find in the summary"), text=self.summary_panel.text)
+        return FindTarget(title=L_("Find in summary"), text=self.summary_panel.text)
 
     def _find_in_summary(self) -> None:
         self._open_find_dialog(self._summary_find_target())
@@ -1226,7 +1225,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
 
     def _clear_questions(self) -> None:
         if messagebox.askyesno(
-            _("Clear the conversation"),
+            _("Clear conversation"),
             _("Delete the questions and their answers?"),
             icon=messagebox.WARNING,
             parent=self.winfo_toplevel(),
@@ -1255,7 +1254,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
 
     def _regenerate_summary(self) -> None:
         if messagebox.askyesno(
-            _("Regenerate the summary"),
+            _("Regenerate summary"),
             _("Generate the summary again? The current one will be replaced."),
             icon=messagebox.WARNING,
             parent=self.winfo_toplevel(),
@@ -1436,12 +1435,12 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         menu = tk.Menu(self, tearoff=False)
         if self._is_translation_visible:
             menu.add_command(
-                label=_("Hide the translation"),
+                label=_("Hide translation"),
                 command=lambda: self._set_translation_visible(False),
             )
         else:
             menu.add_command(
-                label=_("Show the translation"),
+                label=_("Show translation"),
                 command=lambda: self._set_translation_visible(True),
             )
         menu.add_command(
@@ -1456,14 +1455,14 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
                 and self.video.is_showing_translation,
             )
             menu.add_checkbutton(
-                label=_("Show it as the subtitles of the video"),
+                label=_("Show as video subtitles"),
                 variable=self._subtitles_variable,
                 command=self._toggle_translation_subtitles,
             )
         if translation is not None:
             menu.add_separator()
             menu.add_command(
-                label=_("Delete the translation"),
+                label=_("Delete translation"),
                 command=self._delete_translation,
             )
         self._popup_below(menu, self.btn_translate)
@@ -1600,18 +1599,18 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             command=lambda: self.translation_editor.edit_text(idx),
         )
         menu.add_command(
-            label=_("Edit the timing…"),
+            label=_("Edit timing…"),
             command=lambda: self.translation_editor.edit_timing(idx),
         )
         menu.add_command(
-            label=_("Add a segment after…"),
+            label=_("Add subtitle after…"),
             command=lambda: self.translation_editor.add_after(idx),
         )
         menu.add_separator()
         menu.add_command(
-            label=_("Delete the segment"),
+            label=_("Delete subtitle"),
             command=lambda: self.translation_editor.delete(idx),
-            # Without segments, the translation would have no timestamps
+            # Without subtitles, the translation would have no timestamps
             state=tk.NORMAL if len(parts) > 1 else tk.DISABLED,
         )
         try:
@@ -1653,7 +1652,7 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
             return title, _(
                 "Translation of “{text}”, said from {start} to {end}:"
             ).format(text=original, start=start, end=end)
-        return title, _("Translation of the segment from {start} to {end}:").format(
+        return title, _("Translation of the subtitle from {start} to {end}:").format(
             start=start, end=end
         )
 
@@ -1833,11 +1832,31 @@ class TranscriptView(ctk.CTkFrame):  # type: ignore[misc]
         menu.add_command(
             label=_("Edit text…"), command=lambda: self.transcript_editor.edit_text(idx)
         )
+        menu.add_command(
+            label=_("Edit timing…"),
+            command=lambda: self.transcript_editor.edit_timing(idx),
+        )
+        menu.add_command(
+            label=_("Add subtitle after…"),
+            command=lambda: self.transcript_editor.add_after(idx),
+        )
         if segment.speaker:
+            menu.add_separator()
+            menu.add_command(
+                label=_("Change speaker…"),
+                command=lambda: self.transcript_editor.change_speaker(idx),
+            )
             menu.add_command(
                 label=_("Rename speakers…"),
                 command=self.transcript_editor.rename_speakers,
             )
+        menu.add_separator()
+        menu.add_command(
+            label=_("Delete subtitle"),
+            command=lambda: self.transcript_editor.delete(idx),
+            # Without subtitles, the transcription would have no timestamps
+            state=tk.NORMAL if len(self._parts) > 1 else tk.DISABLED,
+        )
         try:
             menu.tk_popup(event.x_root, event.y_root)
         finally:

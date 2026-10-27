@@ -110,9 +110,9 @@ class FindDialog(ctk.CTkToplevel):  # type: ignore[misc]
         self.btn_pin._tooltip = Tooltip(
             self.btn_pin,
             lambda: (
-                _("Unpin from the main window")
+                _("Unpin from main window")
                 if self._is_pinned
-                else _("Keep above the main window")
+                else _("Keep above main window")
             ),
         )
         self.btn_pin.grid(row=0, column=0, sticky=ctk.W)

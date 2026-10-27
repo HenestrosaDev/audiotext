@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -65,17 +65,17 @@ msgstr "接受其余全部"
 msgid "Add"
 msgstr "添加"
 
-msgid "Add a segment"
-msgstr "添加片段"
-
-msgid "Add a segment after…"
-msgstr "在后面添加片段…"
-
 msgid "Add note"
 msgstr "添加备注"
 
 msgid "Add note…"
 msgstr "添加备注…"
+
+msgid "Add subtitle"
+msgstr "添加字幕"
+
+msgid "Add subtitle after…"
+msgstr "在后面添加字幕…"
 
 msgid "Add to queue"
 msgstr "添加到队列"
@@ -210,6 +210,12 @@ msgstr "更改 API 密钥…"
 msgid "Change Hugging Face token…"
 msgstr "更改 Hugging Face 令牌…"
 
+msgid "Change speaker"
+msgstr "更改说话人"
+
+msgid "Change speaker…"
+msgstr "更改说话人…"
+
 msgid "Change…"
 msgstr "更改…"
 
@@ -233,18 +239,6 @@ msgid ""
 "ones."
 msgstr "中文、日语和韩语字符的宽度约为拉丁字符的两倍。"
 
-msgid "Choose a file"
-msgstr "选择文件"
-
-msgid "Choose a file…"
-msgstr "选择文件…"
-
-msgid "Choose a folder"
-msgstr "选择文件夹"
-
-msgid "Choose a folder…"
-msgstr "选择文件夹…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "在上方选择一个来源，转写你的第一个文件。"
 
@@ -253,14 +247,29 @@ msgid ""
 "play it."
 msgstr "选择一个来源，或从历史记录中选择转写来阅读和播放。"
 
+msgid "Choose file"
+msgstr "选择文件"
+
+msgid "Choose file…"
+msgstr "选择文件…"
+
+msgid "Choose folder"
+msgstr "选择文件夹"
+
+msgid "Choose folder…"
+msgstr "选择文件夹…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "选择转写的保存位置"
 
+msgid "Choose who says it."
+msgstr "请选择是谁说的。"
+
+msgid "Clear conversation"
+msgstr "清除对话"
+
 msgid "Clear selection"
 msgstr "清除选择"
-
-msgid "Clear the conversation"
-msgstr "清除对话"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -331,8 +340,8 @@ msgstr "无法翻译“{title}”：{error}"
 msgid "Create"
 msgstr "创建"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
-msgstr "创建带有原始时间戳的空白片段，供你自行填写。"
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
+msgstr "创建带有原始时间戳的空字幕，供你填写。"
 
 msgid "Dark"
 msgstr "深色"
@@ -371,6 +380,9 @@ msgstr "删除备注"
 msgid "Delete note…"
 msgstr "删除备注…"
 
+msgid "Delete subtitle"
+msgstr "删除字幕"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "删除分组“{name}”？其中的转写会保留，但不再属于任何分组。"
@@ -382,18 +394,15 @@ msgstr "删除“{title}”的备注？"
 msgid "Delete the questions and their answers?"
 msgstr "删除这些问题及其回答？"
 
-msgid "Delete the segment"
-msgstr "删除片段"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "删除片段“{text}”？"
-
-msgid "Delete the translation"
-msgstr "删除翻译"
+msgid "Delete the subtitle “{text}”?"
+msgstr "删除字幕“{text}”？"
 
 msgid "Delete transcription"
 msgstr "删除转写"
+
+msgid "Delete translation"
+msgstr "删除翻译"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -463,10 +472,10 @@ msgstr "编辑文本"
 msgid "Edit text…"
 msgstr "编辑文本…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "编辑时间"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "编辑时间…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -478,11 +487,11 @@ msgstr "结束："
 msgid "Engine"
 msgstr "引擎"
 
+msgid "Enter URL"
+msgstr "输入 URL"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "请输入以 http:// 或 https:// 开头的 URL"
-
-msgid "Enter the URL"
-msgstr "输入 URL"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -554,27 +563,27 @@ msgstr "查找 ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "查找和替换（{shortcut}）"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "在转录内容中查找和替换"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "在译文中查找和替换"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "在{language}译文中查找和替换"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "在摘要中查找"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "在转录内容中查找"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "在译文中查找"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "在{language}译文中查找"
 
 msgid "Find:"
@@ -627,7 +636,7 @@ msgstr "Google API 密钥"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google 翻译未返回有效的翻译。"
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "隐藏翻译"
 
 # Needs review by a native speaker
@@ -701,10 +710,15 @@ msgstr "需要一点时间。"
 msgid "It will start when the current transcription finishes."
 msgstr "将在当前转写完成后开始。"
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr "其中的词会失去时间和置信度，因此不再高亮显示。"
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "固定在主窗口上方"
 
 msgid ""
@@ -824,7 +838,7 @@ msgid ""
 "segment by segment nor subtitled."
 msgstr "更准确，但没有时间戳：转写无法逐段播放，也无法生成字幕。"
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "设置中有更多选项"
 
 msgid "Move to group"
@@ -987,11 +1001,11 @@ msgstr "仅转写英语，比相同大小的多语言模型更快。"
 msgid "Open folder"
 msgstr "打开文件夹"
 
+msgid "Open in browser"
+msgstr "在浏览器中打开"
+
 msgid "Open in history"
 msgstr "在历史记录中打开"
-
-msgid "Open in the browser"
-msgstr "在浏览器中打开"
 
 msgid "Open source folder"
 msgstr "打开源文件夹"
@@ -1027,7 +1041,7 @@ msgstr "粘贴"
 msgid "Pending"
 msgstr "待处理"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "置顶"
 
 msgid "Pinned"
@@ -1146,7 +1160,7 @@ msgstr "降低嗡嗡声和持续的背景噪音，并均衡较轻的语音。耗
 msgid "Refine"
 msgstr "精修"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "重新生成摘要"
 
 msgid "Remove"
@@ -1158,7 +1172,7 @@ msgstr "从历史记录中移除"
 msgid "Remove from history…"
 msgstr "从历史记录中移除…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "从列表中移除缺失的文件…"
 
 #, python-brace-format
@@ -1264,14 +1278,14 @@ msgstr "搜索"
 msgid "Search language…"
 msgstr "搜索语言…"
 
-msgid "Select a file"
-msgstr "选择文件"
-
-msgid "Select a folder"
-msgstr "选择文件夹"
-
 msgid "Select at least one output file type."
 msgstr "请至少选择一种输出文件类型。"
+
+msgid "Select file"
+msgstr "选择文件"
+
+msgid "Select folder"
+msgstr "选择文件夹"
 
 msgid "Server URL"
 msgstr "服务器 URL"
@@ -1301,8 +1315,11 @@ msgid "Set…"
 msgstr "设置…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "显示所有片段"
+msgid "Show all subtitles"
+msgstr "显示所有字幕"
+
+msgid "Show as video subtitles"
+msgstr "显示为视频字幕"
 
 msgid "Show in Explorer"
 msgstr "在资源管理器中显示"
@@ -1313,19 +1330,16 @@ msgstr "在访达中显示"
 msgid "Show in file manager"
 msgstr "在文件管理器中显示"
 
-msgid "Show it as the subtitles of the video"
-msgstr "显示为视频字幕"
-
 msgid "Show more"
 msgstr "显示更多"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "在视频上显示字幕"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "录音时显示文本"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "显示翻译"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1359,6 +1373,9 @@ msgstr "来源"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "空格：播放/暂停 · ←/→：后退/前进 {seconds} 秒"
 
+msgid "Speaker:"
+msgstr "说话人："
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "说话人：{count} 位"
@@ -1375,7 +1392,7 @@ msgstr "正在启动…"
 msgid "Stay on top"
 msgstr "保持置顶"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "停止向视频添加字幕"
 
 msgid "Stop syncing scrolling"
@@ -1521,8 +1538,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Whisper API 的模型会识别说话人。"
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "新片段位于 {time} 的片段之后："
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "新字幕位于 {time} 的字幕之后："
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1537,11 +1554,11 @@ msgid "The reply of the model was too long."
 msgstr "模型的回复太长。"
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "{time} 的片段，尚未翻译。"
+msgid "The subtitle at {time}, not translated yet."
+msgstr "{time} 的字幕，尚未翻译。"
 
-msgid "The segment must end after it starts."
-msgstr "片段的结束时间必须晚于开始时间。"
+msgid "The subtitle must end after it starts."
+msgstr "字幕必须在开始之后结束。"
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1637,12 +1654,6 @@ msgstr "顶部"
 msgid "Transcribe"
 msgstr "转写"
 
-msgid "Transcribe a file"
-msgstr "转写文件"
-
-msgid "Transcribe a folder"
-msgstr "转写文件夹"
-
 msgid "Transcribe again"
 msgstr "重新转写"
 
@@ -1652,10 +1663,16 @@ msgid ""
 "will be replaced."
 msgstr "重新转写“{title}”中的所有文件？为它们保存的文件将被替换。"
 
-msgid "Transcribe from a URL"
+msgid "Transcribe file"
+msgstr "转写文件"
+
+msgid "Transcribe folder"
+msgstr "转写文件夹"
+
+msgid "Transcribe from URL"
 msgstr "从 URL 转写"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe from microphone"
 msgstr "从麦克风转写"
 
 # Needs review by a native speaker
@@ -1738,8 +1755,8 @@ msgstr "翻译方式："
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "已翻译：{done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "逐段翻译，并保留时间戳。"
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "逐条翻译字幕，并保留时间戳。"
 
 msgid "Translate…"
 msgstr "翻译…"
@@ -1759,8 +1776,8 @@ msgid "Translation into {language}"
 msgstr "{language}翻译"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "从 {start} 到 {end} 的片段的翻译："
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "{start} 至 {end} 的字幕的翻译："
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1794,7 +1811,7 @@ msgstr "撤销"
 msgid "Unpin"
 msgstr "取消置顶"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "取消固定在主窗口上方"
 
 #, python-brace-format
@@ -1852,7 +1869,7 @@ msgstr "正在等待文件夹可用：{folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "正在等待 {count} 个转写完成。"
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "监视文件夹"
 
 msgid "Watched folder"

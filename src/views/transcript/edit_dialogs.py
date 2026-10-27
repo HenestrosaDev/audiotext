@@ -15,6 +15,8 @@ from views.widgets.window import place_dialog
 class Timing:
     start: float
     end: float
+    # The speaker chosen, if the dialog asks for it
+    speaker: str | None = None
 
 
 class _Dialog(ctk.CTkToplevel):  # type: ignore[misc]
@@ -69,6 +71,21 @@ class _Dialog(ctk.CTkToplevel):  # type: ignore[misc]
     def wait(self) -> None:
         place_dialog(self, self.master)
         self.master.wait_window(self)
+
+
+def _speaker_field(
+    master: Any, row: int, speakers: list[str], variable: ctk.StringVar
+) -> ctk.CTkComboBox:
+    """
+    A field to choose one of the speakers of the transcription, or to type
+    another one (e.g. one that the diarization missed).
+    """
+    ctk.CTkLabel(master, text=_("Speaker:"), font=theme.font(13)).grid(
+        row=row, column=0, padx=(0, 10), pady=4, sticky=ctk.W
+    )
+    field = ctk.CTkComboBox(master, width=240, values=speakers, variable=variable)
+    field.grid(row=row, column=1, pady=4, sticky=ctk.W)
+    return field
 
 
 class SpeakersDialog(_Dialog):
@@ -129,14 +146,27 @@ class SpeakersDialog(_Dialog):
 
 
 class TimingDialog(_Dialog):
-    """Sets when a segment starts and ends, precise to the millisecond."""
+    """
+    Sets when a subtitle starts and ends, precise to the millisecond, and who says
+    it if the speakers are identified.
+    """
 
     def __init__(
-        self, master: Any, title: str, ok_text: str, message: str, timing: Timing
+        self,
+        master: Any,
+        title: str,
+        ok_text: str,
+        message: str,
+        timing: Timing,
+        speakers: list[str] | None = None,
+        note: str = "",
     ) -> None:
         """
-        :param message: Explains what the segment is, e.g. its text.
-        :param timing: The current timing of the segment, or the suggested one.
+        :param message: Explains what the subtitle is, e.g. its text.
+        :param timing: The current timing of the subtitle, or the suggested one,
+                       with its speaker if it's asked for.
+        :param speakers: The speakers to choose from, or None to not ask for one.
+        :param note: Warns of what changes besides the timing.
         """
         super().__init__(master, title, ok_text)
         self._result: Timing | None = None
@@ -169,6 +199,24 @@ class TimingDialog(_Dialog):
             self._variables.append(variable)
             self._entries.append(entry)
 
+        # Asked for if the speakers are identified
+        self._speaker: ctk.StringVar | None = None
+        if speakers is not None:
+            self._speaker = ctk.StringVar(self, timing.speaker or "")
+            self._speaker.trace_add("write", lambda *_args: self._refresh())
+            _speaker_field(self.frm_body, 3, speakers, self._speaker)
+
+        if note:
+            ctk.CTkLabel(
+                self.frm_body,
+                text=note,
+                font=theme.font(12),
+                text_color=theme.HINT_TEXT,
+                anchor=ctk.W,
+                justify=ctk.LEFT,
+                wraplength=380,
+            ).grid(row=4, column=0, columnspan=2, pady=(6, 0), sticky=ctk.W)
+
         self.lbl_error = ctk.CTkLabel(
             self.frm_body,
             text="",
@@ -178,7 +226,7 @@ class TimingDialog(_Dialog):
             justify=ctk.LEFT,
             wraplength=380,
         )
-        self.lbl_error.grid(row=3, column=0, columnspan=2, pady=(6, 0), sticky=ctk.W)
+        self.lbl_error.grid(row=5, column=0, columnspan=2, pady=(6, 0), sticky=ctk.W)
         self._refresh()
 
     def get_result(self) -> Timing | None:
@@ -193,8 +241,12 @@ class TimingDialog(_Dialog):
         except ValueError:
             return None, _("Type the times as 00:01:05,900, 01:05,9 or 65.9.")
         if end <= start:
-            return None, _("The segment must end after it starts.")
-        return Timing(start, end), ""
+            return None, _("The subtitle must end after it starts.")
+        if self._speaker is None:
+            return Timing(start, end), ""
+        if not (speaker := self._speaker.get().strip()):
+            return None, _("Choose who says it.")
+        return Timing(start, end, speaker), ""
 
     def _refresh(self) -> None:
         timing, error = self._parse()
@@ -211,3 +263,52 @@ class TimingDialog(_Dialog):
             return
         self._result = timing
         self._close()
+
+
+class SpeakerDialog(_Dialog):
+    """Changes who says a subtitle, unlike `SpeakersDialog`, which renames them."""
+
+    def __init__(
+        self, master: Any, message: str, speakers: list[str], speaker: str | None
+    ) -> None:
+        """
+        :param message: Explains what the subtitle is, e.g. its text.
+        :param speakers: The speakers of the transcription.
+        :param speaker: Who says the subtitle now.
+        """
+        super().__init__(master, _("Change speaker"), _("Save"))
+        self._result: str | None = None
+
+        ctk.CTkLabel(
+            self.frm_body,
+            text=message,
+            font=theme.font(13),
+            wraplength=380,
+            justify=ctk.LEFT,
+        ).grid(row=0, column=0, columnspan=2, pady=(0, 8), sticky=ctk.W)
+
+        self._speaker = ctk.StringVar(self, speaker or "")
+        self._speaker.trace_add("write", lambda *_args: self._refresh())
+        self.cbx_speaker = _speaker_field(self.frm_body, 1, speakers, self._speaker)
+        self._refresh()
+
+    def get_result(self) -> str | None:
+        """
+        Waits until the dialog is closed.
+
+        :return: The speaker chosen, or None if it was cancelled.
+        """
+        self.wait()
+        return self._result
+
+    def _refresh(self) -> None:
+        is_valid = bool(self._speaker.get().strip())
+        self.btn_ok.configure(state=ctk.NORMAL if is_valid else ctk.DISABLED)
+
+    def _focus_first(self) -> None:
+        self.cbx_speaker.focus_set()
+
+    def _ok(self) -> None:
+        if speaker := self._speaker.get().strip():
+            self._result = speaker
+            self._close()

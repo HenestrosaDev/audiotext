@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from tkinter import messagebox
 from typing import TYPE_CHECKING, Any
 
@@ -15,18 +15,24 @@ from utils.transcript_editing import (
     replace_in_segments,
     replace_range,
     replace_text,
+    set_segment_speaker,
     set_segment_timing,
     speakers,
     split_segment,
 )
-from views.transcript.edit_dialogs import SpeakersDialog, Timing, TimingDialog
+from views.transcript.edit_dialogs import (
+    SpeakerDialog,
+    SpeakersDialog,
+    Timing,
+    TimingDialog,
+)
 from views.transcript.transcript_text import PLAIN_TEXT_MODE
 from views.widgets.text_dialog import TextDialog
 
 if TYPE_CHECKING:
     from views.transcript.transcript_text import TranscriptText
 
-# How long a segment added by default lasts, if there is no gap to fill until the
+# How long a subtitle added by default lasts, if there is no gap to fill until the
 # next one
 NEW_SEGMENT_SECONDS = 2.0
 
@@ -52,6 +58,9 @@ class SegmentSource:
     # Whether a segment can be left without text, e.g. one of a translation, which
     # can be translated later
     allow_empty: bool = False
+    # Whether who says each segment can be changed, e.g. in the transcription,
+    # whose speakers are identified by the diarization
+    edits_speakers: bool = False
 
 
 class SegmentEditor:
@@ -177,10 +186,19 @@ class SegmentEditor:
         segment = segments[idx]
         timing = TimingDialog(
             self._master,
-            _("Edit the timing"),
+            _("Edit timing"),
             _("Save"),
             self._describe(segment),
             Timing(segment.start, segment.end),
+            # The timings of its words no longer apply (see `set_segment_timing`)
+            note=(
+                _(
+                    "Its words lose their timing and their confidence, so they "
+                    "won't be highlighted anymore."
+                )
+                if segment.words
+                else ""
+            ),
         ).get_result()
         if timing is None or (timing.start, timing.end) == (segment.start, segment.end):
             return
@@ -191,31 +209,50 @@ class SegmentEditor:
         )
 
     def add_after(self, idx: int) -> None:
-        """Adds a segment after a part, and asks for its text right away."""
+        """
+        Adds a segment after a part, and asks for its text right away. If it can't
+        be left without text, it's only added once it has one.
+        """
         split = self._split_part(idx)
         if split is None:
             return
 
         segments, idx = split
 
-        # By default, it fills the gap until the next segment
+        # By default, it fills the gap until the next segment, said by the same
+        # speaker
         previous = segments[idx]
         start = previous.end
         following = segments[idx + 1].start if idx + 1 < len(segments) else start
         end = following if following > start else start + NEW_SEGMENT_SECONDS
+        names = speakers(segments) if self._source.edits_speakers else []
         timing = TimingDialog(
             self._master,
-            _("Add a segment"),
+            _("Add subtitle"),
             _("Add"),
-            _("The new segment goes after the one at {time}:").format(
+            _("The new subtitle goes after the one at {time}:").format(
                 time=self._format_time(previous.start)
             ),
-            Timing(start, end),
+            Timing(start, end, previous.speaker),
+            speakers=names or None,
         ).get_result()
         if timing is None:
             return
 
-        added = TranscriptSegment(timing.start, timing.end, "", previous.speaker)
+        speaker = timing.speaker if names else previous.speaker
+        added = TranscriptSegment(timing.start, timing.end, "", speaker)
+        if not self._source.allow_empty:
+            title, message = self._source.edit_prompt(added)
+            text = TextDialog(
+                self._master, title, message, is_multiline=True, allow_empty=False
+            ).get_input()
+            if not text or not text.strip():
+                return
+            self.update(
+                insert_segment(segments, replace(added, text=text)), lambda text: text
+            )
+            return
+
         segments = insert_segment(segments, added)
         self.update(segments, lambda text: text)
         # It's filled right away, or it's left to fill later
@@ -237,13 +274,29 @@ class SegmentEditor:
         segments, idx = split
         segment = segments[idx]
         if segment.text and not messagebox.askyesno(
-            _("Delete the segment"),
-            _("Delete the segment “{text}”?").format(text=segment.text),
+            _("Delete subtitle"),
+            _("Delete the subtitle “{text}”?").format(text=segment.text),
             icon=messagebox.WARNING,
             parent=self._master.winfo_toplevel(),
         ):
             return
         self.update(delete_segment(segments, idx), lambda text: text)
+
+    def change_speaker(self, idx: int) -> None:
+        """Changes who says a part, choosing one of the speakers or a new one."""
+        split = self._split_part(idx)
+        if split is None:
+            return
+
+        segments, idx = split
+        segment = segments[idx]
+        speaker = SpeakerDialog(
+            self._master, self._describe(segment), speakers(segments), segment.speaker
+        ).get_result()
+        if speaker is None or speaker == segment.speaker:
+            return
+
+        self.update(set_segment_speaker(segments, idx, speaker), lambda text: text)
 
     def _split_part(self, idx: int) -> tuple[list[TranscriptSegment], int] | None:
         """
@@ -272,6 +325,6 @@ class SegmentEditor:
         """Its text, or the time it starts if it has none yet."""
         if segment.text:
             return f"“{segment.text}”"
-        return _("The segment at {time}, not translated yet.").format(
+        return _("The subtitle at {time}, not translated yet.").format(
             time=self._format_time(segment.start)
         )

@@ -17,11 +17,11 @@ from views.widgets.stepper import Stepper
 def first_step_label(kind: str) -> str:
     """The first step of the transcription of a kind of source."""
     return {
-        AudioSource.FILE.value: _("Choose a file"),
-        AudioSource.YOUTUBE.value: _("Enter the URL"),
+        AudioSource.FILE.value: _("Choose file"),
+        AudioSource.YOUTUBE.value: _("Enter URL"),
         AudioSource.MIC.value: _("Record"),
-        AudioSource.DIRECTORY.value: _("Choose a folder"),
-        AudioSource.WATCH.value: _("Choose a folder"),
+        AudioSource.DIRECTORY.value: _("Choose folder"),
+        AudioSource.WATCH.value: _("Choose folder"),
     }.get(kind, _("Source"))
 
 

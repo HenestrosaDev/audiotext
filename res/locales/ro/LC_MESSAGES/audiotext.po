@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audiotext 2.3.0\n"
 "Report-Msgid-Bugs-To: https://github.com/HenestrosaDev/audiotext/issues\n"
-"POT-Creation-Date: 2026-10-23 02:02+0200\n"
+"POT-Creation-Date: 2026-10-27 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Machine translation (please review) "
 "<https://github.com/HenestrosaDev/audiotext>\n"
@@ -68,17 +68,17 @@ msgstr "Acceptă restul"
 msgid "Add"
 msgstr "Adaugă"
 
-msgid "Add a segment"
-msgstr "Adaugă un segment"
-
-msgid "Add a segment after…"
-msgstr "Adaugă un segment după…"
-
 msgid "Add note"
 msgstr "Adaugă notă"
 
 msgid "Add note…"
 msgstr "Adaugă notă…"
+
+msgid "Add subtitle"
+msgstr "Adaugă subtitrare"
+
+msgid "Add subtitle after…"
+msgstr "Adaugă subtitrare după…"
 
 msgid "Add to queue"
 msgstr "Adaugă în coadă"
@@ -222,6 +222,12 @@ msgstr "Schimbă cheia API…"
 msgid "Change Hugging Face token…"
 msgstr "Schimbă tokenul Hugging Face…"
 
+msgid "Change speaker"
+msgstr "Schimbă vorbitorul"
+
+msgid "Change speaker…"
+msgstr "Schimbă vorbitorul…"
+
 msgid "Change…"
 msgstr "Schimbă…"
 
@@ -247,18 +253,6 @@ msgstr ""
 "Caracterele chinezești, japoneze și coreene sunt de aproximativ două ori "
 "mai late decât cele latine."
 
-msgid "Choose a file"
-msgstr "Alegeți un fișier"
-
-msgid "Choose a file…"
-msgstr "Alege un fișier…"
-
-msgid "Choose a folder"
-msgstr "Alegeți un dosar"
-
-msgid "Choose a folder…"
-msgstr "Alege un dosar…"
-
 msgid "Choose a source above to transcribe your first file."
 msgstr "Alegeți o sursă de mai sus pentru a transcrie primul fișier."
 
@@ -269,14 +263,29 @@ msgstr ""
 "Alegeți o sursă sau selectați o transcriere din istoric pentru a o citi "
 "și reda."
 
+msgid "Choose file"
+msgstr "Alegeți un fișier"
+
+msgid "Choose file…"
+msgstr "Alege fișier…"
+
+msgid "Choose folder"
+msgstr "Alegeți un dosar"
+
+msgid "Choose folder…"
+msgstr "Alege dosar…"
+
 msgid "Choose where to save the transcriptions"
 msgstr "Alegeți unde se salvează transcrierile"
 
+msgid "Choose who says it."
+msgstr "Alegeți cine o spune."
+
+msgid "Clear conversation"
+msgstr "Șterge conversația"
+
 msgid "Clear selection"
 msgstr "Golește selecția"
-
-msgid "Clear the conversation"
-msgstr "Șterge conversația"
 
 # Needs review by a native speaker
 #, python-brace-format
@@ -352,10 +361,10 @@ msgstr "Nu s-a putut traduce „{title}”: {error}"
 msgid "Create"
 msgstr "Creează"
 
-msgid "Creates empty segments with the original timestamps for you to fill in."
+msgid "Creates empty subtitles with the original timestamps for you to fill in."
 msgstr ""
-"Creează segmente goale cu marcajele de timp originale, pe care le "
-"completezi."
+"Creează subtitrări goale cu marcajele de timp originale, pe care le "
+"completați."
 
 msgid "Dark"
 msgstr "Întunecat"
@@ -394,6 +403,9 @@ msgstr "Șterge nota"
 msgid "Delete note…"
 msgstr "Șterge nota…"
 
+msgid "Delete subtitle"
+msgstr "Șterge subtitrarea"
+
 #, python-brace-format
 msgid "Delete the group “{name}”? Its transcriptions are kept, without a group."
 msgstr "Ștergeți grupul „{name}”? Transcrierile sale sunt păstrate, fără grup."
@@ -405,18 +417,15 @@ msgstr "Ștergi nota pentru „{title}”?"
 msgid "Delete the questions and their answers?"
 msgstr "Ștergeți întrebările și răspunsurile lor?"
 
-msgid "Delete the segment"
-msgstr "Șterge segmentul"
-
 #, python-brace-format
-msgid "Delete the segment “{text}”?"
-msgstr "Ștergeți segmentul „{text}”?"
-
-msgid "Delete the translation"
-msgstr "Șterge traducerea"
+msgid "Delete the subtitle “{text}”?"
+msgstr "Ștergeți subtitrarea „{text}”?"
 
 msgid "Delete transcription"
 msgstr "Șterge transcrierea"
+
+msgid "Delete translation"
+msgstr "Șterge traducerea"
 
 #, python-brace-format
 msgid "Delete “{title}” from the history?"
@@ -488,10 +497,10 @@ msgstr "Editează textul"
 msgid "Edit text…"
 msgstr "Editează textul…"
 
-msgid "Edit the timing"
+msgid "Edit timing"
 msgstr "Editează temporizarea"
 
-msgid "Edit the timing…"
+msgid "Edit timing…"
 msgstr "Editează temporizarea…"
 
 msgid "Empty. To add a transcription, right-click it and choose “Move to group”."
@@ -505,11 +514,11 @@ msgstr "Sfârșit:"
 msgid "Engine"
 msgstr "Motor"
 
+msgid "Enter URL"
+msgstr "Introduceți URL-ul"
+
 msgid "Enter a URL that starts with http:// or https://"
 msgstr "Introduceți un URL care începe cu http:// sau https://"
-
-msgid "Enter the URL"
-msgstr "Introduceți URL-ul"
 
 msgid ""
 "Examples: https://youtu.be/dQw4w9WgXcQ · "
@@ -583,27 +592,27 @@ msgstr "Caută ({shortcut})"
 msgid "Find and replace ({shortcut})"
 msgstr "Caută și înlocuiește ({shortcut})"
 
-msgid "Find and replace in the transcription"
+msgid "Find and replace in transcription"
 msgstr "Caută și înlocuiește în transcriere"
 
-msgid "Find and replace in the translation"
+msgid "Find and replace in translation"
 msgstr "Caută și înlocuiește în traducere"
 
 #, python-brace-format
-msgid "Find and replace in the translation into {language}"
+msgid "Find and replace in translation into {language}"
 msgstr "Caută și înlocuiește în traducerea în {language}"
 
-msgid "Find in the summary"
+msgid "Find in summary"
 msgstr "Caută în rezumat"
 
-msgid "Find in the transcription"
+msgid "Find in transcription"
 msgstr "Caută în transcriere"
 
-msgid "Find in the translation"
+msgid "Find in translation"
 msgstr "Caută în traducere"
 
 #, python-brace-format
-msgid "Find in the translation into {language}"
+msgid "Find in translation into {language}"
 msgstr "Caută în traducerea în {language}"
 
 msgid "Find:"
@@ -662,7 +671,7 @@ msgstr "Cheie API Google"
 msgid "Google Translate didn't return a valid translation."
 msgstr "Google Translate nu a returnat o traducere validă."
 
-msgid "Hide the translation"
+msgid "Hide translation"
 msgstr "Ascunde traducerea"
 
 # Needs review by a native speaker
@@ -746,10 +755,17 @@ msgstr "Durează un moment."
 msgid "It will start when the current transcription finishes."
 msgstr "Va începe când se termină transcrierea curentă."
 
+msgid ""
+"Its words lose their timing and their confidence, so they won't be "
+"highlighted anymore."
+msgstr ""
+"Cuvintele sale își pierd temporizarea și încrederea, așa că nu vor mai fi"
+" evidențiate."
+
 msgid "JSON (.json)"
 msgstr "JSON (.json)"
 
-msgid "Keep above the main window"
+msgid "Keep above main window"
 msgstr "Păstrează deasupra ferestrei principale"
 
 msgid ""
@@ -877,7 +893,7 @@ msgstr ""
 "Mai precis, dar fără marcaje de timp: transcrierea nu poate fi redată "
 "segment cu segment și nici subtitrată."
 
-msgid "More options in the settings"
+msgid "More options in settings"
 msgstr "Mai multe opțiuni în setări"
 
 msgid "Move to group"
@@ -1052,11 +1068,11 @@ msgstr ""
 msgid "Open folder"
 msgstr "Deschide dosarul"
 
+msgid "Open in browser"
+msgstr "Deschide în browser"
+
 msgid "Open in history"
 msgstr "Deschide în istoric"
-
-msgid "Open in the browser"
-msgstr "Deschide în browser"
 
 msgid "Open source folder"
 msgstr "Deschide dosarul sursă"
@@ -1093,7 +1109,7 @@ msgstr "Lipește"
 msgid "Pending"
 msgstr "În așteptare"
 
-msgid "Pin to the top"
+msgid "Pin to top"
 msgstr "Fixează sus"
 
 msgid "Pinned"
@@ -1218,7 +1234,7 @@ msgstr ""
 msgid "Refine"
 msgstr "Rafinare"
 
-msgid "Regenerate the summary"
+msgid "Regenerate summary"
 msgstr "Regenerează rezumatul"
 
 msgid "Remove"
@@ -1230,7 +1246,7 @@ msgstr "Elimină din istoric"
 msgid "Remove from history…"
 msgstr "Elimină din istoric…"
 
-msgid "Remove missing files from the list…"
+msgid "Remove missing files from list…"
 msgstr "Elimină din listă fișierele care lipsesc…"
 
 #, python-brace-format
@@ -1344,14 +1360,14 @@ msgstr "Caută"
 msgid "Search language…"
 msgstr "Caută limba…"
 
-msgid "Select a file"
-msgstr "Selectați un fișier"
-
-msgid "Select a folder"
-msgstr "Selectați un dosar"
-
 msgid "Select at least one output file type."
 msgstr "Selectați cel puțin un tip de fișier de ieșire."
+
+msgid "Select file"
+msgstr "Selectați un fișier"
+
+msgid "Select folder"
+msgstr "Selectați un dosar"
 
 msgid "Server URL"
 msgstr "URL-ul serverului"
@@ -1385,8 +1401,11 @@ msgid "Set…"
 msgstr "Setează…"
 
 # Needs review by a native speaker
-msgid "Show all segments"
-msgstr "Arată toate segmentele"
+msgid "Show all subtitles"
+msgstr "Arată toate subtitrările"
+
+msgid "Show as video subtitles"
+msgstr "Afișează ca subtitrări ale videoclipului"
 
 msgid "Show in Explorer"
 msgstr "Afișează în Explorer"
@@ -1397,19 +1416,16 @@ msgstr "Afișează în Finder"
 msgid "Show in file manager"
 msgstr "Afișează în managerul de fișiere"
 
-msgid "Show it as the subtitles of the video"
-msgstr "Afișeaz-o ca subtitrări ale videoclipului"
-
 msgid "Show more"
 msgstr "Afișează mai multe"
 
-msgid "Show subtitles on the video"
+msgid "Show subtitles on video"
 msgstr "Afișează subtitrările pe videoclip"
 
-msgid "Show the text while recording"
+msgid "Show text while recording"
 msgstr "Afișează textul în timpul înregistrării"
 
-msgid "Show the translation"
+msgid "Show translation"
 msgstr "Afișează traducerea"
 
 msgid "Shows a system notification when a transcription is ready."
@@ -1443,6 +1459,9 @@ msgstr "Sursă"
 msgid "Space: play/pause · ←/→: {seconds} s back/forward"
 msgstr "Spațiu: redare/pauză · ←/→: {seconds} s înapoi/înainte"
 
+msgid "Speaker:"
+msgstr "Vorbitor:"
+
 #, python-brace-format
 msgid "Speakers: {count}"
 msgstr "Vorbitori: {count}"
@@ -1459,7 +1478,7 @@ msgstr "Se pornește…"
 msgid "Stay on top"
 msgstr "Păstrează deasupra"
 
-msgid "Stop adding the subtitles to the video"
+msgid "Stop adding subtitles to video"
 msgstr "Oprește adăugarea subtitrărilor în videoclip"
 
 msgid "Stop syncing scrolling"
@@ -1609,8 +1628,8 @@ msgid "The model of the Whisper API identifies the speakers."
 msgstr "Modelul API-ului Whisper identifică vorbitorii."
 
 #, python-brace-format
-msgid "The new segment goes after the one at {time}:"
-msgstr "Noul segment vine după cel de la {time}:"
+msgid "The new subtitle goes after the one at {time}:"
+msgstr "Noua subtitrare vine după cea de la {time}:"
 
 msgid ""
 "The precision of the calculations. int8 uses the least memory, float16 is"
@@ -1628,11 +1647,11 @@ msgid "The reply of the model was too long."
 msgstr "Răspunsul modelului a fost prea lung."
 
 #, python-brace-format
-msgid "The segment at {time}, not translated yet."
-msgstr "Segmentul de la {time}, netradus încă."
+msgid "The subtitle at {time}, not translated yet."
+msgstr "Subtitrarea de la {time}, netradusă încă."
 
-msgid "The segment must end after it starts."
-msgstr "Segmentul trebuie să se termine după ce începe."
+msgid "The subtitle must end after it starts."
+msgstr "Subtitrarea trebuie să se termine după ce începe."
 
 #, python-brace-format
 msgid "The summary of “{title}” is ready."
@@ -1736,12 +1755,6 @@ msgstr "Sus"
 msgid "Transcribe"
 msgstr "Transcrie"
 
-msgid "Transcribe a file"
-msgstr "Transcrie un fișier"
-
-msgid "Transcribe a folder"
-msgstr "Transcrie un dosar"
-
 msgid "Transcribe again"
 msgstr "Transcrie din nou"
 
@@ -1753,10 +1766,16 @@ msgstr ""
 "Transcrieți din nou toate fișierele din „{title}”? Fișierele salvate "
 "pentru ele vor fi înlocuite."
 
-msgid "Transcribe from a URL"
-msgstr "Transcrie de la un URL"
+msgid "Transcribe file"
+msgstr "Transcrie fișier"
 
-msgid "Transcribe from the microphone"
+msgid "Transcribe folder"
+msgstr "Transcrie dosar"
+
+msgid "Transcribe from URL"
+msgstr "Transcrie de la URL"
+
+msgid "Transcribe from microphone"
 msgstr "Transcrie de la microfon"
 
 # Needs review by a native speaker
@@ -1844,8 +1863,8 @@ msgstr "Tradu cu:"
 msgid "Translated: {done}/{total} · {percent}"
 msgstr "Tradus: {done}/{total} · {percent}"
 
-msgid "Translates each segment, keeping its timestamps."
-msgstr "Traduce fiecare segment, păstrând marcajele de timp."
+msgid "Translates each subtitle, keeping its timestamps."
+msgstr "Traduce fiecare subtitrare, păstrând marcajele de timp."
 
 msgid "Translate…"
 msgstr "Tradu…"
@@ -1865,8 +1884,8 @@ msgid "Translation into {language}"
 msgstr "Traducere în limba {language}"
 
 #, python-brace-format
-msgid "Translation of the segment from {start} to {end}:"
-msgstr "Traducerea segmentului de la {start} la {end}:"
+msgid "Translation of the subtitle from {start} to {end}:"
+msgstr "Traducerea subtitrării de la {start} la {end}:"
 
 #, python-brace-format
 msgid "Translation of “{text}”, said from {start} to {end}:"
@@ -1902,7 +1921,7 @@ msgstr "Anulează"
 msgid "Unpin"
 msgstr "Anulează fixarea"
 
-msgid "Unpin from the main window"
+msgid "Unpin from main window"
 msgstr "Nu mai păstra deasupra ferestrei principale"
 
 #, python-brace-format
@@ -1960,7 +1979,7 @@ msgstr "Se așteaptă ca dosarul să fie disponibil: {folder}"
 msgid "Waiting for {count} transcription(s) to finish."
 msgstr "Se așteaptă finalizarea transcrierilor: {count}."
 
-msgid "Watch the folder"
+msgid "Watch folder"
 msgstr "Monitorizează dosarul"
 
 msgid "Watched folder"
