@@ -189,13 +189,19 @@ begin
   if (CurStep <> ssPostInstall) or not WizardIsTaskSelected('gpu') then
     Exit;
 
-  // Deletes the files of the CPU build that aren't in the GPU build
+  // Deletes the files of the CPU build that aren't in the GPU build, and then its
+  // directories that aren't either (ending in a slash), which RemoveDir only deletes
+  // when they're empty
   RemoveListPath := ExpandConstant('{app}\gpu-addon-remove.txt');
   if LoadStringsFromFile(RemoveListPath, RemoveList) then begin
     for I := 0 to GetArrayLength(RemoveList) - 1 do begin
       RelativePath := RemoveList[I];
       StringChange(RelativePath, '/', '\');
-      if RelativePath <> '' then
+      if RelativePath = '' then
+        Continue;
+      if RelativePath[Length(RelativePath)] = '\' then
+        RemoveDir(ExpandConstant('{app}\') + RelativePath)
+      else
         DeleteFile(ExpandConstant('{app}\') + RelativePath);
     end;
     DeleteFile(RemoveListPath);
