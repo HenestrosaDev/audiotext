@@ -59,9 +59,14 @@ install_gpu_addon() {
 		rm "$tmp_dir/$name"
 	done <"$here/gpu-addon.txt"
 
-	# Deletes the files of the CPU build that aren't in the GPU build
+	# Deletes the files of the CPU build that aren't in the GPU build, and then its
+	# directories that aren't either (ending in a slash) once they're empty
 	while IFS= read -r path; do
-		[[ -n $path ]] && rm -f -- "$app_dir/$path"
+		if [[ $path == */ ]]; then
+			rmdir --ignore-fail-on-non-empty -- "$app_dir/$path" 2>/dev/null || true
+		elif [[ -n $path ]]; then
+			rm -f -- "$app_dir/$path"
+		fi
 	done <"$app_dir/gpu-addon-remove.txt"
 	rm -f "$app_dir/gpu-addon-remove.txt"
 }

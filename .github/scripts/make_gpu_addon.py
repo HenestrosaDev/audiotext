@@ -8,7 +8,11 @@ the CPU build, which turns it into the GPU build. The add-on contains:
 - The files that are new or different in the GPU build, split into archives that fit
   in a GitHub release asset (2 GiB at most).
 - `gpu-addon-remove.txt`, in the first archive, with the files of the CPU build that
-  aren't in the GPU build and must be deleted after extracting the archives.
+  aren't in the GPU build and must be deleted after extracting the archives. They're
+  followed by the directories that aren't in the GPU build either (ending in `/`, the
+  deepest first), which are deleted once they're empty. Otherwise, the metadata
+  directories of the CPU build of PyTorch (e.g. `torch-2.8.0+cpu.dist-info`) would be
+  left empty, and `importlib.metadata` would read no version from them.
 
 It also writes:
 
@@ -53,6 +57,16 @@ def scan(root: Path) -> dict[str, Path]:
             if path.is_symlink() or path.is_file():
                 entries[path.relative_to(root).as_posix()] = path
     return entries
+
+
+def scan_dirs(root: Path) -> set[str]:
+    """Returns the directories of a build by their relative path."""
+    return {
+        Path(dir_path, name).relative_to(root).as_posix()
+        for dir_path, dir_names, _ in os.walk(root)
+        for name in dir_names
+        if not Path(dir_path, name).is_symlink()
+    }
 
 
 def is_same(cpu_path: Path, gpu_path: Path) -> bool:
@@ -177,11 +191,22 @@ def main() -> None:
         if rel_path not in cpu_entries or not is_same(cpu_entries[rel_path], path)
     }
     removed = sorted(set(cpu_entries) - set(gpu_entries))
-    print(f"{len(changed)} files to add or replace, {len(removed)} to remove")
+    removed_dirs = sorted(
+        scan_dirs(args.cpu) - scan_dirs(args.gpu),
+        key=lambda p: p.count("/"),
+        reverse=True,
+    )
+    print(
+        f"{len(changed)} files to add or replace, {len(removed)} to remove "
+        f"({len(removed_dirs)} directories)"
+    )
 
     # The GPU build is only used to create the add-on, so the list can be written there
     remove_list = args.gpu / REMOVE_LIST_NAME
-    remove_list.write_text("".join(f"{p}\n" for p in removed), encoding="utf-8")
+    remove_list.write_text(
+        "".join(f"{p}\n" for p in removed) + "".join(f"{p}/\n" for p in removed_dirs),
+        encoding="utf-8",
+    )
 
     sizes = compressed_sizes(args.gpu, sorted(changed), args.format)
     print(f"{format_size(sum(sizes.values()))} once compressed")
