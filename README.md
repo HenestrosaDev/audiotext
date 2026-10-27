@@ -132,7 +132,7 @@ https://github.com/user-attachments/assets/561d9862-938e-4213-a922-9dd905934e1f
 - **Private and offline**: WhisperX runs on your computer, on the CPU or, much faster, on an NVIDIA GPU with CUDA or on the GPU of a Mac with Apple Silicon (with [MLX Whisper](https://github.com/ml-explore/mlx-examples/tree/main/whisper)).
 - **Speaker identification**, word-level timings, background noise reduction (for hum and quiet speakers), and keywords and context to spell names and terms right.
 - **Translation while transcribing**, with Whisper, or afterwards with OpenAI, Claude, Gemini, DeepSeek, Mistral, Grok, Ollama, DeepL or Google Translate.
-- **A transcript you can play**: click a segment to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps.
+- **A transcript you can play**: click a subtitle to play it, change the speed, search the text, watch videos with their subtitles, rename the speakers and correct the text while keeping the timestamps, or retime, add and delete subtitles and change who says each one.
 - **Summaries** with the key points and the chapters of the transcription.
 - **Questions about the transcription**, answered by the language model you choose for them (the one of the summaries by default), with links to where the answer is said.
 - **Export** to plain text, Markdown, Word, SRT, VTT, ASS (with a color per speaker), TSV and JSON.
