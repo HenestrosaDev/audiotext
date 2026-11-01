@@ -76,7 +76,7 @@ jobs:
         with:
           python-version: "3.12"
       # Without the cache, since the CUDA build of PyTorch would take most of it
-      - uses: astral-sh/setup-uv@v10.2.0
+      - uses: astral-sh/setup-uv@v10.3.3
         with:
           python-version: ${{ steps.setup-python.outputs.python-path }}
       # FFmpeg and FFprobe are bundled with the app

@@ -55,7 +55,7 @@ jobs:
         id: setup-python
         with:
           python-version: "3.12"
-      - uses: astral-sh/setup-uv@v10.2.0
+      - uses: astral-sh/setup-uv@v10.3.3
         with:
           python-version: ${{ steps.setup-python.outputs.python-path }}
           enable-cache: true
