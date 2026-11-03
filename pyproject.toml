@@ -6,7 +6,7 @@ requires-python = ">=3.10,<3.14"
 license = "MIT"
 license-files = ["LICENSE"]
 dependencies = [
-    "anthropic==1.11.0",
+    "anthropic==2.3.0",
     "audioop-lts==0.2.2; python_version >= '3.13'",
     "babel==2.18.0",
     "customtkinter==6.0.0",
